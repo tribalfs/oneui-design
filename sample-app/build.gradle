@@ -2,11 +2,6 @@ plugins {
     id 'com.android.application'
 }
 
-// Exclude Google AndroidX.
-configurations.all {
-    exclude group: 'androidx.appcompat', module: 'appcompat'
-    exclude group: 'androidx.core', module: 'core'
-}
 
 android {
     compileSdk 34
