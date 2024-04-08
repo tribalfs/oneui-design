@@ -25,7 +25,8 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
             android:layout_marginBottom="8dp"
-            android:textSize="38sp"
+            android:textSize="34sp"
+            android:textAppearance="@style/RobotoBold"
             android:textColor="@color/oui_primary_text_color"
             android:textAlignment="center" />
 
@@ -37,6 +38,7 @@
             android:layout_marginBottom="8dp"
             android:paddingTop="2dp"
             android:textSize="14sp"
+            android:textAppearance="@style/RobotoRegular"
             android:textColor="@color/oui_appinfolayout_info_text_color"
             android:textAlignment="center" />
 
@@ -53,6 +55,7 @@
             android:layout_marginHorizontal="24dp"
             android:text="@string/latest_version"
             android:textSize="14sp"
+            android:textAppearance="@style/RobotoRegular"
             android:textColor="@color/oui_appinfolayout_info_text_color"
             android:textAlignment="center" />
 
