@@ -21,12 +21,12 @@ public class SeekBarFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        HapticSeekBar seekBar_1 = view.findViewById(R.id.fragment_seekbar_1);
-        SeekBarUtils.showTickMark(seekBar_1, true);
+        SeslSeekBar seekbarSeamless = view.findViewById(R.id.seekbar_level_seamless);
+        seekbarSeamless.setSeamless(true);
 
-        SeslSeekBar seekBar_2 = view.findViewById(R.id.fragment_seekbar_2);
-        seekBar_2.setOverlapPointForDualColor(70);
-        SeekBarUtils.showOverlapPreview(seekBar_2, true);
+        SeslSeekBar seekBarOverlap = view.findViewById(R.id.fragment_seekbar_overlap);
+        seekBarOverlap.setOverlapPointForDualColor(70);
+        SeekBarUtils.showOverlapPreview(seekBarOverlap, true);
     }
 
     @Override
