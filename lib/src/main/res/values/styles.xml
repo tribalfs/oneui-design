@@ -7,7 +7,7 @@
     <style name="OneUI.RelativeLinkTitleTextStyle">
         <item name="android:textSize">@dimen/oui_relative_link_title_text_size</item>
         <item name="android:textColor">@color/oui_relative_link_title_text_color</item>
-        <item name="android:fontFamily">@string/sesl_font_family_regular</item>
+        <item name="android:textAppearance">@style/RobotoRegular</item>
     </style>
 
     <style name="OneUI.RelativeLinkTextViewStyle">
@@ -19,11 +19,9 @@
         <item name="android:textAppearance">@style/OneUI.RelativeLinkTextViewTextStyle</item>
     </style>
 
-    <style name="OneUI.RelativeLinkTextViewTextStyle">
+    <style name="OneUI.RelativeLinkTextViewTextStyle" parent="@style/RobotoRegular">
         <item name="android:textSize">@dimen/oui_relative_link_text_size</item>
-        <item name="android:textStyle">bold</item>
         <item name="android:textColor">?attr/colorPrimaryDark</item>
-        <item name="android:fontFamily">@string/sesl_font_family_regular</item>
     </style>
 
     <!-- UnclickablePreference -->
