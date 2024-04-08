@@ -19,3 +19,8 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+#Prevent proguard from removing drawables from oneui-icons lib
+-keepclassmembers class dev.oneuiproject.oneui.R$drawable {
+    public static <fields>;
+}
