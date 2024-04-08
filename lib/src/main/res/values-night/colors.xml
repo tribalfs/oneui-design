@@ -31,6 +31,8 @@
     </color>
     <color name="oui_seekbar_circle_marker_color">#ff808080</color>
 
+    <color name="oui_widget_seekbar_preference_label_text_color">@color/sesl_text3_dark</color>
+
     <!-- ProgressDialog -->
     <color name="oui_progress_dialog_text_color">#ffe5e5e5</color>
     <color name="oui_progress_dialog_horizontal_text_color">#ffb0b0b0</color>

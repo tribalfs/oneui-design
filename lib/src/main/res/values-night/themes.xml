@@ -18,6 +18,8 @@
         <item name="collapsingToolbarLayoutStyle">@style/Widget.Design.CollapsingToolbar</item>
         <item name="bottomNavigationStyle">@style/Widget.Design.BottomNavigationView</item>
         <item name="tabStyle">@style/Widget.Design.TabLayout</item>
+
+        <item name="seekBarPreferenceProStyle">@style/OneUI.SeekBarPreferencePro</item>
     </style>
 
 </resources>

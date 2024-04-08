@@ -3,7 +3,8 @@
     android:width="24dp"
     android:height="24dp"
     android:viewportWidth="24.0"
-    android:viewportHeight="24.0">
+    android:viewportHeight="24.0"
+    android:tint="@color/oui_functional_green_color">
     <path
         android:fillColor="@color/oui_primary_icon_color"
         android:fillType="evenOdd"

@@ -43,22 +43,26 @@
         <attr name="roundedCorners" />
     </declare-styleable>
 
-    <declare-styleable name="SeekBarPreferencePro">
-        <attr name="min" />
-        <attr name="android:max" />
-        <attr name="android:layout" />
-        <attr name="seekBarIncrement" />
-        <attr name="adjustable" />
-        <attr name="showSeekBarValue" />
-        <attr name="updatesContinuously" />
+    <attr name="seekBarPreferenceProStyle" format="reference"/>
 
+    <declare-styleable name="SeekBarPreferencePro">
+        <!-- Set seekbar to only put tick marks at the start, center and end.
+       The center point is 0.
+       This will ignore seekBarMode value and will use level_bar mode instead-->
+        <attr name="centerBasedSeekBar"  format="boolean" />
+        <attr name="leftLabelName"  format="string" />
+        <attr name="overlapPoint" format="integer" />
+        <attr name="rightLabelName" format="string"/>
+        <attr name="seamlessSeekBar" format="boolean"/>
+        <!-- Defaults to level_bar.
+         Note: This does not apply when centerBasedSeekBar is true-->
         <attr name="seekBarMode">
             <enum name="standard" value="0" />
             <enum name="expand" value="5" />
+            <enum name="level_bar" value="8" />
         </attr>
-        <attr name="seekBarSeamless" format="boolean" />
+        <!-- Note: This does not apply when centerBasedSeekBar is true-->
         <attr name="showTickMark" format="boolean" />
-        <attr name="overlap" format="integer" />
         <attr name="units" format="string" />
     </declare-styleable>
 
@@ -115,4 +119,12 @@
         <attr name="animation" format="reference" />
     </declare-styleable>
 
+    <declare-styleable name="SeekBarPlus">
+        <!-- Set seekbar to only put tick marks at the start, center and end.
+        The center point is 0.
+        This will ignore seekBarMode value and will use level_bar mode instead-->
+        <attr name="centerBasedBar"  format="boolean" />
+        <!-- Allow the thumb to be draggable seamlessly-->
+        <attr name="seamless" format="boolean"/>
+    </declare-styleable>
 </resources>
