@@ -9,10 +9,23 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20"
+        classpath 'com.android.tools.build:gradle:8.3.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.0-Beta5"
     }
 }
+
+
+/**
+ * Note: You have to create a "github.properties" file inside your project folder containing the following:
+ *
+ * <pre>
+ *   gp_username="YOUR_GITHUB_USERNAME"
+ *   gp_access_token="YOUR_GITHUB_ACCESS_TOKEN"
+ * </pre>
+ */
+def githubProperties = new Properties()
+githubProperties.load(new FileInputStream(rootProject.file("github.properties")))
+
 
 allprojects {
     repositories {
@@ -20,6 +33,20 @@ allprojects {
         mavenLocal()
         mavenCentral()
         maven { url 'https://jitpack.io' }
+        maven {
+            url = uri("https://maven.pkg.github.com/tribalfs/sesl-androidx")
+            credentials {
+                username = githubProperties.getProperty("gp_username")
+                password = githubProperties.getProperty("gp_access_token")
+            }
+        }
+        maven {
+            url = uri("https://maven.pkg.github.com/tribalfs/sesl-material-components-android")
+            credentials {
+                username = githubProperties.getProperty("gp_username")
+                password = githubProperties.getProperty("gp_access_token")
+            }
+        }
     }
 
     tasks.withType(Javadoc) {

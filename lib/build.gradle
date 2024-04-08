@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    compileSdk target_sdk
-
+    compileSdk 34
+    namespace = "dev.oneuiproject.oneui.design"
     defaultConfig {
         minSdk 23
-        targetSdk target_sdk
+        targetSdk 34
         versionCode 1
         versionName lib_version
 
@@ -17,22 +17,23 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
+
 }
 
 dependencies {
-    api("androidx.annotation:annotation:$androidx_annotation_version")
+    api("androidx.annotation:annotation:1.7.1")
 
-    api("io.github.oneuiproject.sesl:appcompat:$sesl_appcompat_version")
-    implementation("io.github.oneuiproject.sesl:indexscroll:$sesl_indexscroll_version")
-    implementation("io.github.oneuiproject.sesl:picker-color:$sesl_picker_color_version")
-    implementation("io.github.oneuiproject.sesl:picker-basic:$sesl_picker_basic_version")
-    implementation("io.github.oneuiproject.sesl:preference:$sesl_preference_version")
-    implementation("io.github.oneuiproject.sesl:material:$sesl_material_version")
+    implementation("sesl.androidx.appcompat:appcompat:1.7.0-alpha03+1.0.28-sesl6+rev0")
+    implementation("sesl.androidx.indexscroll:indexscroll:1.0.3+1.0.3-sesl6+rev0")
+    implementation("sesl.androidx.picker:picker-color:1.0.6+1.0.6-sesl6+rev1")
+    implementation("sesl.androidx.picker:picker-basic:1.0.16+1.0.16-sesl6+rev0")
+    implementation("sesl.androidx.preference:preference:1.2.1+1.0.4-sesl6+rev0")
+    implementation("sesl.com.google.android.material:material:1.12.0-rc01+1.0.18-sesl6+rev0")
 
-    implementation("com.google.zxing:core:3.4.1")
+    implementation("com.google.zxing:core:3.5.3")
 }
 
 ext {
