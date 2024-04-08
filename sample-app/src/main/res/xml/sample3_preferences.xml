@@ -96,14 +96,43 @@
             android:defaultValue="#0381FE"
             app:showAlphaSlider="true" />
 
+
         <dev.oneuiproject.oneui.preference.SeekBarPreferencePro
-            android:title="SeekBarPreferencePro"
-            android:summary="Summary"
-            app:min="0"
-            android:max="5"
-            android:defaultValue="2"
+            android:key="key_sbp"
+            android:summary="Expanded"
+            android:title="SeekBarPreference"
+            app:seekBarMode="expand"
+            app:adjustable="false"
+            app:showTickMark="false"
+            app:showSeekBarValue="false"
+            android:max="100"/>
+
+        <dev.oneuiproject.oneui.preference.SeekBarPreferencePro
+            android:key="key_sbpp"
             app:showTickMark="true"
-            app:adjustable="true" />
+            android:summary="LevelBar"
+            android:title="SeekBarPreference"
+            app:centerBasedSeekBar="false"
+            app:seamlessSeekBar="false"
+            android:max="10"
+            app:min="2"
+            app:seekBarMode="level_bar"
+            app:adjustable="true"
+            />
+
+        <dev.oneuiproject.oneui.preference.SeekBarPreferencePro
+            android:key="key_sbpp_cb"
+            android:summary="CenterBasedBar"
+            android:title="SeekBarPreference"
+            app:centerBasedSeekBar="true"
+            app:seamlessSeekBar="true"
+            app:updatesContinuously="true"
+            app:adjustable="false"
+            app:leftLabelName="Left"
+            app:rightLabelName="Right"
+            app:showTickMark="false"
+            app:showSeekBarValue="false"
+            />
 
     </PreferenceCategory>
 
