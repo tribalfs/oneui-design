@@ -25,14 +25,13 @@
     </style>
 
     <!-- UnclickablePreference -->
-    <style name="OneUI.UnclickablePreferenceTextStyle">
+    <style name="OneUI.UnclickablePreferenceTextStyle" parent="@style/RobotoRegular">
         <item name="android:textAppearance">?android:attr/textAppearanceListItem</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/oui_unclickablepref_text_color</item>
         <item name="android:textColorHighlight">?android:attr/colorControlHighlight</item>
         <item name="android:textColorLink">@color/oui_unclickablepref_link_text_color</item>
         <item name="android:lineSpacingExtra">4sp</item>
-        <item name="android:fontFamily">@string/sesl_font_family_regular</item>
     </style>
 
     <!-- ToolbarLayout -->
