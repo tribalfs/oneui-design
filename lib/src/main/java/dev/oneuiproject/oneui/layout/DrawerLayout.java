@@ -136,7 +136,7 @@ public class DrawerLayout extends ToolbarLayout {
         scrimAlpha = ((scrimColor >> 24) & 0xFF)/255f;
 
         TypedValue sbTypedValue = new TypedValue();
-        if (mContext.getTheme().resolveAttribute(R.attr.roundedCornerColor, sbTypedValue, true)) {
+        if (mContext.getTheme().resolveAttribute(androidx.appcompat.R.attr.roundedCornerColor, sbTypedValue, true)) {
             systemBarsColor = sbTypedValue.data;
         } else {
             systemBarsColor = ContextCompat.getColor(mContext, R.color.oui_round_and_bgcolor);

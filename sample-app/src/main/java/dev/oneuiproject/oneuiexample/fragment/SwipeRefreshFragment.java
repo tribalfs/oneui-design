@@ -49,7 +49,7 @@ public class SwipeRefreshFragment extends BaseFragment {
 
     @Override
     public int getIconResId() {
-        return R.drawable.ic_oui_refresh;
+        return dev.oneuiproject.oneui.R.drawable.ic_oui_refresh;
     }
 
     @Override
@@ -66,7 +66,7 @@ public class SwipeRefreshFragment extends BaseFragment {
     private ColorStateList getButtonColor() {
         TypedValue colorPrimaryDark = new TypedValue();
         mContext.getTheme().resolveAttribute(
-                R.attr.colorPrimaryDark, colorPrimaryDark, true);
+                androidx.appcompat.R.attr.colorPrimaryDark, colorPrimaryDark, true);
 
         int[][] states = new int[][]{
                 new int[]{android.R.attr.state_enabled},

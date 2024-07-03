@@ -2,6 +2,7 @@ package dev.oneuiproject.oneui.preference;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -55,21 +56,22 @@ public class LayoutPreference extends Preference {
         mIsRelativeLinkView = isRelativeLinkView;
     }
 
+    @SuppressLint("RestrictedApi")
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
-        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.Preference);
+        TypedArray array = context.obtainStyledAttributes(attrs, androidx.preference.R.styleable.Preference);
         mAllowDividerAbove = TypedArrayUtils.getBoolean(array,
-                R.styleable.Preference_allowDividerAbove,
-                R.styleable.Preference_allowDividerAbove,
+                androidx.preference.R.styleable.Preference_allowDividerAbove,
+                androidx.preference.R.styleable.Preference_allowDividerAbove,
                 false);
         mAllowDividerBelow = TypedArrayUtils.getBoolean(array,
-                R.styleable.Preference_allowDividerBelow,
-                R.styleable.Preference_allowDividerBelow,
+                androidx.preference.R.styleable.Preference_allowDividerBelow,
+                androidx.preference.R.styleable.Preference_allowDividerBelow,
                 false);
         array.recycle();
 
         final TypedArray a = context.obtainStyledAttributes(
-                attrs, R.styleable.Preference, defStyleAttr, 0);
-        int layoutResource = a.getResourceId(R.styleable.Preference_android_layout,
+                attrs, androidx.preference.R.styleable.Preference, defStyleAttr, 0);
+        int layoutResource = a.getResourceId(androidx.preference.R.styleable.Preference_android_layout,
                 0);
         if (layoutResource == 0) {
             throw new IllegalArgumentException("LayoutPreference requires a layout to be defined");

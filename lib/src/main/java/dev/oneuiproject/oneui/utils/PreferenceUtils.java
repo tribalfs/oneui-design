@@ -73,7 +73,7 @@ public class PreferenceUtils {
 
     public void applyThemeRoundedCornerColor(@NonNull PreferenceFragmentCompat preferenceFragment){
         TypedValue typedValue = new TypedValue();
-        if (preferenceFragment.getContext().getTheme().resolveAttribute(R.attr.roundedCornerColor, typedValue, true)) {
+        if (preferenceFragment.getContext().getTheme().resolveAttribute(androidx.appcompat.R.attr.roundedCornerColor, typedValue, true)) {
             int roundColor = typedValue.data;
             setPreferenceRoundedCornerColor(preferenceFragment, roundColor);
         }
