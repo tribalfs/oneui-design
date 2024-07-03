@@ -37,7 +37,7 @@ public class TabsFragment extends BaseFragment {
 
     @Override
     public int getIconResId() {
-        return R.drawable.ic_oui_prompt_from_menu;
+        return dev.oneuiproject.oneui.R.drawable.ic_oui_prompt_from_menu;
     }
 
     @Override
@@ -70,7 +70,7 @@ public class TabsFragment extends BaseFragment {
         gridMenuDialog.inflateMenu(R.menu.sample3_tabs_grid_menu);
         gridMenuDialog.setOnItemClickListener(item -> true);
 
-        TabLayoutUtils.addCustomButton(mTabs, R.drawable.ic_oui_drawer,
+        TabLayoutUtils.addCustomButton(mTabs, dev.oneuiproject.oneui.R.drawable.ic_oui_drawer,
                 v -> gridMenuDialog.show());
     }
 

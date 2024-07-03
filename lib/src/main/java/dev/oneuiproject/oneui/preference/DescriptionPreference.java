@@ -30,8 +30,8 @@ public class DescriptionPreference extends Preference {
         setSelectable(false);
 
         if (attrs != null) {
-            TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.Preference);
-            setLayoutResource(a.getResourceId(R.styleable.Preference_android_layout,
+            TypedArray a = context.obtainStyledAttributes(attrs, androidx.preference.R.styleable.Preference);
+            setLayoutResource(a.getResourceId(androidx.preference.R.styleable.Preference_android_layout,
                     R.layout.oui_preference_unclickable_layout));
             a.recycle();
 

@@ -1,5 +1,6 @@
 package dev.oneuiproject.oneui.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
@@ -28,6 +29,7 @@ public class SeekBarUtils {
         }
     }
 
+    @SuppressLint("RestrictedApi")
     public static void showTickMark(@NonNull SeslSeekBar seekBar,
                                     boolean show) {
         if (seekBar != null) {
@@ -39,7 +41,7 @@ public class SeekBarUtils {
             ColorStateList progressColor = ColorStateList
                     .valueOf(seekBar.getContext().getColor(show
                             ? android.R.color.transparent
-                            : R.color.sesl_seekbar_control_color_activated));
+                            : androidx.appcompat.R.color.sesl_seekbar_control_color_activated));
             seekBar.setProgressTintList(progressColor);
         } else {
             Log.e(TAG, "showTickMark: seekBar is null");

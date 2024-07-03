@@ -324,7 +324,7 @@ public class ToolbarLayout extends LinearLayout {
             } else {
                 mAppBarLayout.setEnabled(false);
                 mAppBarLayout.seslSetCustomHeight(mContext.getResources()
-                        .getDimensionPixelSize(R.dimen.sesl_action_bar_height_with_padding));
+                        .getDimensionPixelSize(androidx.appcompat.R.dimen.sesl_action_bar_height_with_padding));
             }
         } else
             Log.w(TAG, "resetAppBar: mAppBarLayout is null.");
@@ -671,7 +671,7 @@ public class ToolbarLayout extends LinearLayout {
         mFooterContainer.setVisibility(GONE);
 
         mCollapsingToolbarLayout.setTitle(getResources()
-                .getString(R.string.sesl_searchview_description_search));
+                .getString(androidx.appcompat.R.string.sesl_searchview_description_search));
         mCollapsingToolbarLayout.seslSetSubtitle(null);
         setExpanded(false, true);
 

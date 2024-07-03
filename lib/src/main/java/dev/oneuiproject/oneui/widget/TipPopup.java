@@ -257,10 +257,10 @@ public class TipPopup {
     @SuppressLint("RestrictedApi")
     private void initInterpolator() {
         if (INTERPOLATOR_SINE_IN_OUT_33 == null) {
-            INTERPOLATOR_SINE_IN_OUT_33 = AnimationUtils.loadInterpolator(this.mContext, R.interpolator.sine_in_out_33);
+            INTERPOLATOR_SINE_IN_OUT_33 = AnimationUtils.loadInterpolator(this.mContext, androidx.appcompat.R.interpolator.sine_in_out_33);
         }
         if (INTERPOLATOR_SINE_IN_OUT_70 == null) {
-            INTERPOLATOR_SINE_IN_OUT_70 = AnimationUtils.loadInterpolator(this.mContext, R.interpolator.sine_in_out_70);
+            INTERPOLATOR_SINE_IN_OUT_70 = AnimationUtils.loadInterpolator(this.mContext, androidx.appcompat.R.interpolator.sine_in_out_70);
         }
         if (INTERPOLATOR_ELASTIC_50 == null) {
             INTERPOLATOR_ELASTIC_50 = SeslAnimationUtils.ELASTIC_50;

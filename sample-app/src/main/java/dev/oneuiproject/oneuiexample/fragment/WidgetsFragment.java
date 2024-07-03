@@ -40,7 +40,7 @@ public class WidgetsFragment extends BaseFragment
             items.add("Spinner Item " + i);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext,
                 android.R.layout.simple_spinner_item, items);
-        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
         SearchView searchView = view.findViewById(R.id.fragment_searchview);
@@ -58,7 +58,7 @@ public class WidgetsFragment extends BaseFragment
 
     @Override
     public int getIconResId() {
-        return R.drawable.ic_oui_game_launcher;
+        return dev.oneuiproject.oneui.R.drawable.ic_oui_game_launcher;
     }
 
     @Override

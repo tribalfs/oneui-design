@@ -33,14 +33,14 @@ public class ProgressDialog extends AlertDialog {
     private View mContentView;
     private SeslProgressBar mProgress;
     private TextView mMessageView;
-    
+
     private int mProgressStyle = STYLE_SPINNER;
 
     private TextView mProgressNumber;
     private String mProgressNumberFormat;
     private TextView mProgressPercent;
     private NumberFormat mProgressPercentFormat;
-    
+
     private int mMax;
     private int mProgressVal;
     private int mSecondaryProgressVal;
@@ -50,7 +50,7 @@ public class ProgressDialog extends AlertDialog {
     private Drawable mIndeterminateDrawable;
     private CharSequence mMessage;
     private boolean mIndeterminate;
-    
+
     private boolean mHasStarted;
     private Handler mViewUpdateHandler;
 
@@ -94,7 +94,7 @@ public class ProgressDialog extends AlertDialog {
      * @return the ProgressDialog
      */
     public static ProgressDialog show(Context context, CharSequence title,
-            CharSequence message) {
+                                      CharSequence message) {
         return show(context, title, message, false);
     }
 
@@ -109,7 +109,7 @@ public class ProgressDialog extends AlertDialog {
      * @return the ProgressDialog
      */
     public static ProgressDialog show(Context context, CharSequence title,
-            CharSequence message, boolean indeterminate) {
+                                      CharSequence message, boolean indeterminate) {
         return show(context, title, message, indeterminate, false, null);
     }
 
@@ -126,7 +126,7 @@ public class ProgressDialog extends AlertDialog {
      * @return the ProgressDialog
      */
     public static ProgressDialog show(Context context, CharSequence title,
-            CharSequence message, boolean indeterminate, boolean cancelable) {
+                                      CharSequence message, boolean indeterminate, boolean cancelable) {
         return show(context, title, message, indeterminate, cancelable, null);
     }
 
@@ -145,8 +145,8 @@ public class ProgressDialog extends AlertDialog {
      * @return the ProgressDialog
      */
     public static ProgressDialog show(Context context, CharSequence title,
-            CharSequence message, boolean indeterminate,
-            boolean cancelable, OnCancelListener cancelListener) {
+                                      CharSequence message, boolean indeterminate,
+                                      boolean cancelable, OnCancelListener cancelListener) {
         ProgressDialog dialog = new ProgressDialog(context);
         dialog.setTitle(title);
         dialog.setMessage(message);
@@ -161,11 +161,11 @@ public class ProgressDialog extends AlertDialog {
     public void show() {
         super.show();
 
-        DialogTitle dialogTitle = findViewById(R.id.alertTitle);
+        DialogTitle dialogTitle = findViewById(androidx.appcompat.R.id.alertTitle);
         if (dialogTitle != null && !dialogTitle.getText().toString().isEmpty()) {
             if (mContentView != null) {
                 final int topPadding = mContext.getResources()
-                        .getDimensionPixelSize(R.dimen.sesl_dialog_title_padding_bottom);
+                        .getDimensionPixelSize(androidx.appcompat.R.dimen.sesl_dialog_title_padding_bottom);
                 mContentView.setPaddingRelative(
                         mContentView.getPaddingStart(), topPadding,
                         mContentView.getPaddingEnd(), mContentView.getPaddingBottom());
@@ -177,10 +177,10 @@ public class ProgressDialog extends AlertDialog {
     protected void onCreate(Bundle savedInstanceState) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         TypedArray a = mContext.obtainStyledAttributes(null,
-                R.styleable.AlertDialog,
-                R.attr.alertDialogStyle, 0);
+                androidx.appcompat.R.styleable.AlertDialog,
+                androidx.appcompat.R.attr.alertDialogStyle, 0);
         if (mProgressStyle == STYLE_HORIZONTAL) {
-            
+
             /* Use a separate handler to update the text views as they
              * must be updated on the same thread that created them.
              */
@@ -188,7 +188,7 @@ public class ProgressDialog extends AlertDialog {
                 @Override
                 public void handleMessage(Message msg) {
                     super.handleMessage(msg);
-                    
+
                     /* Update the number and percent */
                     int progress = mProgress.getProgress();
                     int max = mProgress.getMax();
@@ -268,13 +268,13 @@ public class ProgressDialog extends AlertDialog {
             getWindow().setLayout(size, size);
         }
     }
-    
+
     @Override
     public void onStart() {
         super.onStart();
         mHasStarted = true;
     }
-    
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -460,9 +460,9 @@ public class ProgressDialog extends AlertDialog {
         super.setTitle(title);
         if (mContentView != null) {
             final int topPaddingWithoutTitle = mContext.getResources()
-                    .getDimensionPixelSize(R.dimen.sesl_dialog_padding_vertical);
+                    .getDimensionPixelSize(androidx.appcompat.R.dimen.sesl_dialog_padding_vertical);
             final int topPaddingWithTitle = mContext.getResources()
-                    .getDimensionPixelSize(R.dimen.sesl_dialog_title_padding_bottom);
+                    .getDimensionPixelSize(androidx.appcompat.R.dimen.sesl_dialog_title_padding_bottom);
             final int paddingTop = title.toString().isEmpty()
                     ? topPaddingWithoutTitle
                     : topPaddingWithTitle;
@@ -471,7 +471,7 @@ public class ProgressDialog extends AlertDialog {
                     mContentView.getPaddingEnd(), mContentView.getPaddingBottom());
         }
     }
-    
+
     @Override
     public void setMessage(CharSequence message) {
         if (mProgress != null) {
@@ -533,7 +533,7 @@ public class ProgressDialog extends AlertDialog {
         mProgressPercentFormat = format;
         onProgressChanged();
     }
-    
+
     private void onProgressChanged() {
         if (mProgressStyle == STYLE_HORIZONTAL) {
             if (mViewUpdateHandler != null && !mViewUpdateHandler.hasMessages(0)) {

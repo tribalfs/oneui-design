@@ -38,7 +38,7 @@ public class MarginsTabLayout extends TabLayout {
     }
 
     public MarginsTabLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, R.attr.tabStyle);
+        this(context, attrs, com.google.android.material.R.attr.tabStyle);
     }
 
     public MarginsTabLayout(@NonNull Context context,@Nullable AttributeSet attrs,
