@@ -81,7 +81,7 @@ public class AppPickerFragment extends BaseFragment
             systemAppsItem.setTitle("Show system apps");
         }
         ((SeslMenuItem) systemAppsItem)
-                .setBadgeText(getString(R.string.oui_new_badge_text));
+                .setBadgeText(getString(dev.oneuiproject.oneui.design.R.string.oui_new_badge_text));
     }
 
     @Override
@@ -111,7 +111,7 @@ public class AppPickerFragment extends BaseFragment
 
     @Override
     public int getIconResId() {
-        return R.drawable.ic_oui_all_apps;
+        return dev.oneuiproject.oneui.R.drawable.ic_oui_all_apps;
     }
 
     @Override
@@ -135,7 +135,7 @@ public class AppPickerFragment extends BaseFragment
 
         ArrayAdapter<String> adapter
                 = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, categories);
-        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(androidx.constraintlayout.widget.R.layout.support_simple_spinner_dropdown_item);
 
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);

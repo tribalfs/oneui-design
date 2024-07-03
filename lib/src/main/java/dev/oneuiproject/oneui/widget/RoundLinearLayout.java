@@ -49,7 +49,7 @@ public class RoundLinearLayout extends LinearLayout {
 
         mRoundedCorner = new SeslRoundedCorner(mContext);
         TypedValue typedValue = new TypedValue();
-        context.getTheme().resolveAttribute(R.attr.roundedCornerColor, typedValue, true);
+        context.getTheme().resolveAttribute(androidx.appcompat.R.attr.roundedCornerColor, typedValue, true);
         if (typedValue.resourceId > 0) {
             mRoundedCornerColor = context.getResources().getColor(typedValue.resourceId, context.getTheme());
         }

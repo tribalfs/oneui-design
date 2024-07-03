@@ -67,7 +67,7 @@ public class PickersFragment extends BaseFragment
 
     @Override
     public int getIconResId() {
-        return R.drawable.ic_oui_calendar;
+        return dev.oneuiproject.oneui.R.drawable.ic_oui_calendar;
     }
 
     @Override
@@ -191,7 +191,7 @@ public class PickersFragment extends BaseFragment
 
         ArrayAdapter<String> adapter
                 = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, categories);
-        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
 
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);

@@ -54,7 +54,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getView().setBackgroundColor(mContext.getColor(R.color.oui_background_color));
+        getView().setBackgroundColor(mContext.getColor(dev.oneuiproject.oneui.design.R.color.oui_background_color));
         getListView().seslSetLastRoundedCorner(false);
     }
 
@@ -71,7 +71,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat
 
     @Override
     public int getIconResId() {
-        return R.drawable.ic_oui_settings_outline;
+        return dev.oneuiproject.oneui.R.drawable.ic_oui_settings_outline;
     }
 
     @Override
@@ -167,7 +167,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat
         if (enabled) {
             TypedValue colorPrimaryDark = new TypedValue();
             mContext.getTheme().resolveAttribute(
-                    R.attr.colorPrimaryDark, colorPrimaryDark, true);
+                    androidx.appcompat.R.attr.colorPrimaryDark, colorPrimaryDark, true);
 
             int[][] states = new int[][] {
                     new int[] {android.R.attr.state_enabled},
@@ -187,10 +187,10 @@ public class PreferencesFragment extends PreferenceFragmentCompat
         } else {
             TypedValue outValue = new TypedValue();
             mContext.getTheme().resolveAttribute(
-                    R.attr.isLightTheme, outValue, true);
+                    androidx.appcompat.R.attr.isLightTheme, outValue, true);
             return mContext.getColorStateList(outValue.data != 0
-                    ? R.color.sesl_secondary_text_light
-                    : R.color.sesl_secondary_text_dark);
+                    ? androidx.appcompat.R.color.sesl_secondary_text_light
+                    : androidx.appcompat.R.color.sesl_secondary_text_dark);
         }
     }
 

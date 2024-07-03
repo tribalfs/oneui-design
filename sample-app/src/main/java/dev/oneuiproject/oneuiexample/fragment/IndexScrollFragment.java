@@ -77,7 +77,7 @@ public class IndexScrollFragment extends BaseFragment {
             textModeItem.setTitle("Show letters");
         }
         ((SeslMenuItem) textModeItem)
-                .setBadgeText(getString(R.string.oui_new_badge_text));
+                .setBadgeText(getString(dev.oneuiproject.oneui.design.R.string.oui_new_badge_text));
     }
 
     @Override
@@ -121,7 +121,7 @@ public class IndexScrollFragment extends BaseFragment {
 
     @Override
     public int getIconResId() {
-        return R.drawable.ic_oui_edge_panels;
+        return dev.oneuiproject.oneui.R.drawable.ic_oui_edge_panels;
     }
 
     @Override
@@ -307,11 +307,11 @@ public class IndexScrollFragment extends BaseFragment {
 
         public ItemDecoration(@NonNull Context context) {
             TypedValue outValue = new TypedValue();
-            context.getTheme().resolveAttribute(R.attr.isLightTheme, outValue, true);
+            context.getTheme().resolveAttribute(androidx.appcompat.R.attr.isLightTheme, outValue, true);
 
             mDivider = context.getDrawable(outValue.data == 0
-                    ? R.drawable.sesl_list_divider_dark
-                    : R.drawable.sesl_list_divider_light);
+                    ? androidx.appcompat.R.drawable.sesl_list_divider_dark
+                    : androidx.appcompat.R.drawable.sesl_list_divider_light);
 
             mRoundedCorner = new SeslSubheaderRoundedCorner(mContext);
             mRoundedCorner.setRoundedCorners(SeslRoundedCorner.ROUNDED_CORNER_ALL);

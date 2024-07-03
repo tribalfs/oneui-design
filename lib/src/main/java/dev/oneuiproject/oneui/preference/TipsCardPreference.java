@@ -48,7 +48,7 @@ public class TipsCardPreference extends Preference {
     }
 
     public TipsCardPreference(@NonNull Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, R.attr.preferenceStyle);
+        this(context, attrs, androidx.preference.R.attr.preferenceStyle);
     }
 
     public TipsCardPreference(@NonNull Context context) {

@@ -95,9 +95,9 @@ public class DialogUtils {
 
             ViewGroup.LayoutParams lp = dialogBtn.getLayoutParams();
             lp.width = context.getResources()
-                    .getDimensionPixelSize(R.dimen.sesl_dialog_button_min_height);
+                    .getDimensionPixelSize(androidx.appcompat.R.dimen.sesl_dialog_button_min_height);
             lp.height = context.getResources()
-                    .getDimensionPixelSize(R.dimen.sesl_dialog_button_min_height);
+                    .getDimensionPixelSize(androidx.appcompat.R.dimen.sesl_dialog_button_min_height);
 
             LayoutInflater inflater = LayoutInflater.from(context);
             View progressView = inflater.inflate(

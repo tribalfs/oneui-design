@@ -24,7 +24,7 @@ public class InsetPreferenceCategory extends PreferenceCategory {
         super(context, attrs);
 
         mHeight = context.getResources()
-                .getDimensionPixelSize(R.dimen.sesl_list_subheader_min_height);
+                .getDimensionPixelSize(androidx.appcompat.R.dimen.sesl_list_subheader_min_height);
 
         if (attrs != null) {
             TypedArray a = context.obtainStyledAttributes(attrs,
