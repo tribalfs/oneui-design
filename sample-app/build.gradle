@@ -61,6 +61,7 @@ dependencies {
     //Once the updated design lib is published, you can comment out above
     //and replace it with the following:
     //implementation("io.github.oneuiproject:design:<version>"
+    //check comment in settings.gradle file
 
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
