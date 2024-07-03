@@ -54,7 +54,7 @@ public class HorizontalRadioPreference extends Preference {
         super(context, attrs);
 
         TypedValue outValue = new TypedValue();
-        getContext().getTheme().resolveAttribute(R.attr.colorPrimaryDark, outValue, true);
+        getContext().getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, outValue, true);
         SELECTED_COLOR = outValue.data;
         UNSELECTED_COLOR = getContext().getColor(R.color.oui_horizontalradiopref_text_unselected_color);
 

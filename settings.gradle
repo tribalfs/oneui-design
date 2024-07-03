@@ -1,2 +1,8 @@
-include ':lib'
-include ':sample-app'
+include(":sample-app")
+include(":lib")
+
+//To include this design `lib' to your project as a local module,
+//you may add the following lines to your project's settings.gradle:
+//include(":lib")
+//project(":lib").projectDir = new File("<Path to the `lib` folder of your local clone of this design-lib/sample-app>")
+

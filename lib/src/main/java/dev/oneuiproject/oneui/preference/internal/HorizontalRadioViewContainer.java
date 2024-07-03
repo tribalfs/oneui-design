@@ -35,7 +35,7 @@ public class HorizontalRadioViewContainer extends LinearLayout {
                     24.f, getContext().getResources().getDisplayMetrics()));
             int height = (getHeight() - marginTop) - Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                     61.f, getContext().getResources().getDisplayMetrics()));
-            int width = Math.round(getContext().getResources().getDimension(R.dimen.sesl_list_divider_height));
+            int width = Math.round(getContext().getResources().getDimension(androidx.appcompat.R.dimen.sesl_list_divider_height));
 
             for (int i = 0; i < getChildCount() - 1; i++) {
                 divider.setBounds(0, 0, width, height);

@@ -63,7 +63,7 @@ public class IconsFragment extends BaseFragment {
 
     @Override
     public int getIconResId() {
-        return R.drawable.ic_oui_emoji_2;
+        return dev.oneuiproject.oneui.R.drawable.ic_oui_emoji_2;
     }
 
     @Override
@@ -147,11 +147,11 @@ public class IconsFragment extends BaseFragment {
 
         public ItemDecoration(@NonNull Context context) {
             TypedValue outValue = new TypedValue();
-            context.getTheme().resolveAttribute(R.attr.isLightTheme, outValue, true);
+            context.getTheme().resolveAttribute(androidx.appcompat.R.attr.isLightTheme, outValue, true);
 
             mDivider = context.getDrawable(outValue.data == 0
-                    ? R.drawable.sesl_list_divider_dark
-                    : R.drawable.sesl_list_divider_light);
+                    ? androidx.appcompat.R.drawable.sesl_list_divider_dark
+                    : androidx.appcompat.R.drawable.sesl_list_divider_light);
         }
 
         public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent,

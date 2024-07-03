@@ -22,7 +22,7 @@ public class Separator extends TextView {
 
     public Separator(@NonNull Context context, @Nullable AttributeSet attrs,
                        int defStyleAttr) {
-        this(context, attrs, defStyleAttr, R.style.Widget_AppCompat_Light_TextView_ListSeparator);
+        this(context, attrs, defStyleAttr, androidx.appcompat.R.style.Widget_AppCompat_Light_TextView_ListSeparator);
     }
 
     public Separator(@NonNull Context context, @Nullable AttributeSet attrs,

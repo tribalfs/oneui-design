@@ -29,12 +29,12 @@ public class QRCodeFragment extends BaseFragment {
                 .generate());
 
         qr_image_2.setImageBitmap(new QREncoder(mContext, "https://github.com/OneUIProject/oneui-design/raw/main/sample-app/release/sample-app-release.apk")
-                .setIcon(R.drawable.ic_oui_file_type_apk)
+                .setIcon(dev.oneuiproject.oneui.R.drawable.ic_oui_file_type_apk)
                 .setFGColor(Color.parseColor("#ff6ebe64"), true, true)
                 .generate());
 
         qr_image_3.setImageBitmap(new QREncoder(mContext, "custom colors and size")
-                .setIcon(R.drawable.ic_oui_file_type_txt)
+                .setIcon(dev.oneuiproject.oneui.R.drawable.ic_oui_file_type_txt)
                 .setSize(350)
                 .setBGColor(Color.BLACK)
                 .setFGColor(Color.RED, true, true)
@@ -53,7 +53,7 @@ public class QRCodeFragment extends BaseFragment {
 
     @Override
     public int getIconResId() {
-        return R.drawable.ic_oui_qr_code;
+        return dev.oneuiproject.oneui.R.drawable.ic_oui_qr_code;
     }
 
     @Override

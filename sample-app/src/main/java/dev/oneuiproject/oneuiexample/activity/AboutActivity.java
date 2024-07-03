@@ -138,7 +138,7 @@ public class AboutActivity extends AppCompatActivity
                 ViewUtils.SEM_ROUNDED_CORNER_TOP_LEFT | ViewUtils.SEM_ROUNDED_CORNER_TOP_RIGHT);
         ViewUtils.semSetRoundedCornerColor(mBinding.aboutBottomContent.getRoot(),
                 ViewUtils.SEM_ROUNDED_CORNER_TOP_LEFT | ViewUtils.SEM_ROUNDED_CORNER_TOP_RIGHT,
-                getColor(R.color.oui_round_and_bgcolor));
+                getColor(dev.oneuiproject.oneui.design.R.color.oui_round_and_bgcolor));
 
         Drawable appIcon = getDrawable(R.mipmap.ic_launcher);
         mBinding.aboutHeaderAppIcon.setImageDrawable(appIcon);
