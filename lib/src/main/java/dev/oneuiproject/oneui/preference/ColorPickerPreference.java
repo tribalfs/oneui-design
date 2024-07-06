@@ -1,5 +1,6 @@
 package dev.oneuiproject.oneui.preference;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -25,6 +26,7 @@ import dev.oneuiproject.oneui.design.R;
 public class ColorPickerPreference extends Preference implements Preference.OnPreferenceClickListener,
         SeslColorPickerDialog.OnColorSetListener {
     private Dialog mDialog;
+    @SuppressLint("RestrictedApi")
     private PreferenceImageView mPreview;
 
     private int mValue = Color.BLACK;
@@ -83,6 +85,7 @@ public class ColorPickerPreference extends Preference implements Preference.OnPr
         a.recycle();
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public void onBindViewHolder(@NonNull PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);

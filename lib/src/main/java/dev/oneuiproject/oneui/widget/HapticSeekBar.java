@@ -1,5 +1,6 @@
 package dev.oneuiproject.oneui.widget;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -36,6 +37,7 @@ public class HapticSeekBar extends SeslSeekBar {
             if (validDrawable) {
                 super.setOnSeekBarChangeListener(
                         new SeslSeekBar.OnSeekBarChangeListener() {
+                            @SuppressLint("RestrictedApi")
                             final int HAPTIC_CONSTANT_CURSOR_MOVE
                                     = SeslHapticFeedbackConstantsReflector.semGetVibrationIndex(41);
 
