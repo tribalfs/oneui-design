@@ -25,6 +25,7 @@ public class LayoutPreference extends Preference {
     private boolean mAllowDividerBelow;
     private boolean mIsRelativeLinkView = false;
 
+    @SuppressLint("RestrictedApi")
     private final View.OnClickListener mClickListener = this::performClick;
 
     public LayoutPreference(Context context, AttributeSet attrs) {
