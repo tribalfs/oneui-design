@@ -1,7 +1,5 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    apply from: 'manifest.gradle'
-
     repositories {
         google()
         mavenCentral()
@@ -9,8 +7,8 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.3.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.0-Beta5"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.0"
+        classpath 'com.android.tools.build:gradle:8.5.0'
     }
 }
 
@@ -23,7 +21,7 @@ buildscript {
  *   gp_access_token="YOUR_GITHUB_ACCESS_TOKEN"
  * </pre>
  */
-def githubProperties = new Properties()
+Properties githubProperties = new Properties()
 githubProperties.load(new FileInputStream(rootProject.file("github.properties")))
 
 

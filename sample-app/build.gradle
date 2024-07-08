@@ -14,8 +14,8 @@ android {
         minSdk 24
         targetSdk 34
 
-        versionCode sample_version_code
-        versionName sample_version_name
+        versionCode 17
+        versionName "1.2.7-beta1"
 
         vectorDrawables.useSupportLibrary = true
     }
@@ -32,10 +32,6 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
 
     lint {
         baseline = file("lint-baseline.xml")
@@ -44,17 +40,18 @@ android {
 
 dependencies {
     //sesl6 modules
+    implementation("sesl.androidx.core:core:1.13.1+1.0.7-sesl6+rev0")
     implementation("sesl.androidx.core:core-ktx:1.13.1+1.0.0-sesl6+rev0")
     implementation("sesl.androidx.fragment:fragment:1.8.0+1.0.0-sesl6+rev0")
-    implementation("sesl.androidx.appcompat:appcompat:1.7.0+1.0.28-sesl6+rev0")
+    implementation("sesl.androidx.appcompat:appcompat:1.7.0+1.0.31-sesl6+rev0")
     implementation("sesl.androidx.picker:picker-basic:1.0.16+1.0.16-sesl6+rev0")
     implementation("sesl.androidx.picker:picker-color:1.0.6+1.0.6-sesl6+rev1")
     implementation("sesl.androidx.preference:preference:1.2.1+1.0.4-sesl6+rev0")
-    implementation("sesl.androidx.recyclerview:recyclerview:1.4.0-alpha01+1.0.13-sesl6+rev0")
+    implementation("sesl.androidx.recyclerview:recyclerview:1.4.0-alpha01+1.0.13-sesl6+rev1")
     implementation("sesl.androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01+1.0.0-sesl6+rev0")
-    implementation("sesl.androidx.apppickerview:apppickerview:1.0.1+1.0.1-sesl6+rev0")
+    implementation("sesl.androidx.apppickerview:apppickerview:1.0.1+1.0.1-sesl6+rev2")
     implementation("sesl.androidx.indexscroll:indexscroll:1.0.3+1.0.3-sesl6+rev0")
-    implementation("sesl.com.google.android.material:material:1.12.0+1.0.18-sesl6+rev0")
+    implementation("sesl.com.google.android.material:material:1.12.0+1.0.19-sesl6+rev0")
     implementation("sesl.androidx.viewpager2:viewpager2:1.1.0+1.0.0-sesl6+rev0")
 
     implementation (project(path: ':lib'))
