@@ -169,6 +169,29 @@
 
         </dev.oneuiproject.oneui.widget.RoundFrameLayout>
 
+        <dev.oneuiproject.oneui.widget.Separator
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <dev.oneuiproject.oneui.widget.RelatedCard
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Relative link 1"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Relative link 2"
+                />
+        </dev.oneuiproject.oneui.widget.RelatedCard>
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="8dp"/>
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>
