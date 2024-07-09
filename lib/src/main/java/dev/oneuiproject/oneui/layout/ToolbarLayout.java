@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -30,18 +31,24 @@ import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.view.menu.ActionMenuItemView;
+import androidx.appcompat.view.menu.SeslMenuItem;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.os.LocaleListCompat;
 import androidx.core.view.ViewCompat;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import dev.oneuiproject.oneui.design.R;
 import dev.oneuiproject.oneui.utils.internal.ToolbarLayoutUtils;
@@ -488,67 +495,135 @@ public class ToolbarLayout extends LinearLayout {
         return mAppBarLayout.seslGetImmersiveScroll();
     }
 
+    /**
+     * @deprecated Use {@link #setMenuItemBadge(int, Badge)}
+     */
+    @Deprecated
+    public void setMenuItemBadge(@IdRes int id, String text){
+
+    }
 
     /**
-     * Set the badge of a Toolbar MenuItem. Only use this for MenuItems which show as action! It won't work for overflow items.
+     * Sets the badge of a Toolbar MenuItem.
+     * <p>Issue: Invoking this on any overflow item will clear any badges on action items.
+     * Set badges on overflow items first before the action items to workaround the issue.
+     *
+     * @param id    the resource ID of the MenuItem
+     * @param badge The {@link Badge} to be displayed.
      */
     @SuppressLint("RestrictedApi")
-    public void setMenuItemBadgeText(@IdRes int id, String text) {
+    public void setMenuItemBadge(@IdRes int id, Badge badge) {
         for (int i = 0; i < mMainToolbar.getChildCount(); i++) {
-            View v1 = mMainToolbar.getChildAt(i);
-            if (v1 instanceof ActionMenuView) {
-                ActionMenuView menuView = (ActionMenuView) v1;
-                for (int j = 0; j < menuView.getChildCount(); j++) {
-                    View v2 = menuView.getChildAt(j);
+            View toolbarChild = mMainToolbar.getChildAt(i);
+            if (toolbarChild instanceof ActionMenuView actionMenuView) {
+                for (int menuIndex = 0; menuIndex < actionMenuView.getChildCount(); menuIndex++) {
+                    View menuItemView = actionMenuView.getChildAt(menuIndex);
 
-                    if (v2 instanceof ActionMenuItemView) {
-                        ActionMenuItemView menuItemView = (ActionMenuItemView) v2;
-                        if (menuItemView.getItemData().getItemId() == id) {
+                    if (menuItemView instanceof ActionMenuItemView actionMenuItemView) {
+                        if (actionMenuItemView.getItemData().getItemId() == id) {
 
-                            menuView.removeView(menuItemView);
-                            FrameLayout fl = new FrameLayout(mContext);
-                            fl.addView(menuItemView);
+                            if (badge instanceof Badge.None){
+                                //there's nothing to do here
+                                return;
+                            }
+
+                            actionMenuView.removeView(actionMenuItemView);
+                            FrameLayout newMenuContainer = new FrameLayout(mContext);
+                            newMenuContainer.addView(actionMenuItemView);
 
                             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                            ViewGroup mBadgeBackground = (ViewGroup) inflater.inflate(androidx.appcompat.R.layout.sesl_action_menu_item_badge, fl, false);
-                            TextView mBadgeText = (TextView) mBadgeBackground.getChildAt(0);
-                            fl.addView(mBadgeBackground);
+                            ViewGroup badgeView = (ViewGroup) inflater.inflate(androidx.appcompat.R.layout.sesl_action_menu_item_badge, newMenuContainer, false);
+                            TextView badgeCounterView = (TextView) badgeView.getChildAt(0);
+                            newMenuContainer.addView(badgeView);
 
-                            setMenuItemBadgeText(mBadgeBackground, mBadgeText, text);
+                            if (badge instanceof Badge.Dot){
+                                setMenuItemBadgeDot(badgeView, badgeCounterView);
+                            }else if (badge instanceof Badge.Numeric) {
+                                setMenuItemBadgeText(badgeView, badgeCounterView, ((Badge.Numeric) badge).count);
+                            }
 
-                            menuView.addView(fl, j);
+                            actionMenuView.addView(newMenuContainer, menuIndex);
                             return;
                         }
-                    } else if (v2 instanceof FrameLayout) {
-                        FrameLayout fl = (FrameLayout) v2;
-                        View v3 = fl.getChildAt(0);
-                        if (v3 instanceof ActionMenuItemView && ((ActionMenuItemView) v3).getItemData().getItemId() == id) {
-                            ViewGroup mBadgeBackground = (ViewGroup) fl.getChildAt(1);
-                            TextView mBadgeText = (TextView) mBadgeBackground.getChildAt(0);
-                            setMenuItemBadgeText(mBadgeBackground, mBadgeText, text);
+                    } else if (menuItemView instanceof FrameLayout existingMenuContainer) {
+                        View containerChild = existingMenuContainer.getChildAt(0);
+                        if (containerChild instanceof ActionMenuItemView
+                                && ((ActionMenuItemView) containerChild).getItemData().getItemId() == id) {
+                            ViewGroup badgeView = (ViewGroup) existingMenuContainer.getChildAt(1);
+
+                            if (badge instanceof Badge.None){
+                                badgeView.setVisibility(GONE);
+                                return;
+                            }
+
+                            TextView badgeCounterView = (TextView) badgeView.getChildAt(0);
+                            if (badge instanceof Badge.Dot){
+                                setMenuItemBadgeDot(badgeView, badgeCounterView);
+                            }else if (badge instanceof Badge.Numeric) {
+                                setMenuItemBadgeText(badgeView, badgeCounterView, ((Badge.Numeric) badge).count);
+                            }
                             return;
                         }
                     }
                 }
-
-                Log.e(TAG, "no MenuItem with id " + id);
-                return;
             }
         }
 
-        Log.e(TAG, "no ActionMenuView in Toolbar");
+        //TODO(Resolve: setting badge of an overflow item hides existing badges of action items)
+        MenuItem menuItem = mMainToolbar.getMenu().findItem(id);
+        if (menuItem instanceof SeslMenuItem) {
+            //This means it is an overflow item
+            String badgeText = badge instanceof Badge.None
+                    ? null
+                    : (badge instanceof Badge.Dot ? "" : getLocalizedNumberFormatter().format(((Badge.Numeric) badge).count));
+            ((SeslMenuItem)menuItem).setBadgeText(badgeText);
+            return;
+        }
+
+        Log.e(TAG, "no MenuItem with id " + id);
     }
 
-    private void setMenuItemBadgeText(ViewGroup mBadgeBackground, TextView mBadgeText, String text) {
-        mBadgeText.setText(text);
-        mBadgeBackground.setVisibility(text == null || text.isEmpty() ? GONE : VISIBLE);
-        if (text == null) return;
-        ViewGroup.MarginLayoutParams lp = (MarginLayoutParams) mBadgeBackground.getLayoutParams();
+    private void setMenuItemBadgeText(ViewGroup badgeView, TextView badgeCounterView, Integer count) {
+        if (count > 99){
+            count = 99;
+        }
+        String formattedCount = getLocalizedNumberFormatter().format(count);
+        badgeCounterView.setText(formattedCount);
+        Resources res = getResources();
+        float defaultWidth = res.getDimension(androidx.appcompat.R.dimen.sesl_badge_default_width);
+        float additionalWidth = res.getDimension(androidx.appcompat.R.dimen.sesl_badge_additional_width);
+        ViewGroup.MarginLayoutParams lp = (MarginLayoutParams) badgeView.getLayoutParams();
         lp.setMarginEnd(0);
-        lp.width = (int) (getResources().getDimension(androidx.appcompat.R.dimen.sesl_badge_default_width) + (text.length() * getResources().getDimension(androidx.appcompat.R.dimen.sesl_badge_additional_width)));
-        mBadgeBackground.setLayoutParams(lp);
+        lp.width = (int) (defaultWidth + (formattedCount.length() * additionalWidth));
+        lp.height = (int) (defaultWidth + additionalWidth);
+        badgeView.setLayoutParams(lp);
+        badgeView.setVisibility(VISIBLE);
     }
 
+    private void setMenuItemBadgeDot(ViewGroup badgeView, TextView badgeCounterView) {
+        badgeCounterView.setText("");
+        Resources res = getResources();
+        float badgeSize = res.getDimension(androidx.appcompat.R.dimen.sesl_menu_item_badge_size);
+        ViewGroup.MarginLayoutParams lp = (MarginLayoutParams) badgeView.getLayoutParams();
+        lp.setMarginEnd(0);
+        lp.width = (int) badgeSize;
+        lp.height = (int) badgeSize;
+        badgeView.setLayoutParams(lp);
+        badgeView.setVisibility(VISIBLE);
+    }
+
+    private NumberFormat getLocalizedNumberFormatter(){
+        return NumberFormat.getInstance(getApplicableLocale());
+    }
+
+    private Locale getApplicableLocale() {
+        LocaleListCompat appLocales = AppCompatDelegate.getApplicationLocales();
+        if(!appLocales.isEmpty()){
+            return appLocales.get(0) ;
+        }else{
+            return Locale.getDefault();
+        }
+    }
 
     //
     // Navigation Button methods
@@ -1073,4 +1148,25 @@ public class ToolbarLayout extends LinearLayout {
         }
     }
 
+    /**
+     * Select instance of either  {@link Badge.Dot Dot}, {@link Badge.Numeric Numeric} or {@link Badge.None None}
+     */
+    public abstract static class Badge {
+
+        private Badge() {}
+
+        public static final class Dot extends Badge { }
+
+        public static final class Numeric extends Badge {
+            private final Integer count;
+
+            public Numeric(Integer count) {
+                this.count = count;
+            }
+
+        }
+
+        public static final class None extends Badge { }
+
+    }
 }
