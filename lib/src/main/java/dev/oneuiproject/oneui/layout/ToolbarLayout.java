@@ -491,6 +491,7 @@ public class ToolbarLayout extends LinearLayout {
 
     /**
      * Set the badge of a Toolbar MenuItem. Only use this for MenuItems which show as action! It won't work for overflow items.
+     * Empty text for show just dot
      */
     @SuppressLint("RestrictedApi")
     public void setMenuItemBadgeText(@IdRes int id, String text) {
@@ -514,7 +515,11 @@ public class ToolbarLayout extends LinearLayout {
                             TextView mBadgeText = (TextView) mBadgeBackground.getChildAt(0);
                             fl.addView(mBadgeBackground);
 
-                            setMenuItemBadgeText(mBadgeBackground, mBadgeText, text);
+                            if (text.isEmpty()){
+                                setMenuItemBadgeDot(mBadgeBackground, true);
+                            }else {
+                                setMenuItemBadgeText(mBadgeBackground, mBadgeText, text);
+                            }
 
                             menuView.addView(fl, j);
                             return;
@@ -546,6 +551,17 @@ public class ToolbarLayout extends LinearLayout {
         ViewGroup.MarginLayoutParams lp = (MarginLayoutParams) mBadgeBackground.getLayoutParams();
         lp.setMarginEnd(0);
         lp.width = (int) (getResources().getDimension(androidx.appcompat.R.dimen.sesl_badge_default_width) + (text.length() * getResources().getDimension(androidx.appcompat.R.dimen.sesl_badge_additional_width)));
+        lp.height = (int) (getResources().getDimension(androidx.appcompat.R.dimen.sesl_badge_default_width) + (text.length() * getResources().getDimension(androidx.appcompat.R.dimen.sesl_badge_additional_width)));
+        mBadgeBackground.setLayoutParams(lp);
+    }
+
+    private void setMenuItemBadgeDot(ViewGroup mBadgeBackground, Boolean status) {
+        mBadgeBackground.setVisibility(status == null || !status ? GONE : VISIBLE);
+        if (status == null) return;
+        ViewGroup.MarginLayoutParams lp = (MarginLayoutParams) mBadgeBackground.getLayoutParams();
+        lp.setMarginEnd(0);
+        lp.width = (int) (getResources().getDimension(androidx.appcompat.R.dimen.sesl_menu_item_badge_size));
+        lp.height = (int) (getResources().getDimension(androidx.appcompat.R.dimen.sesl_menu_item_badge_size));
         mBadgeBackground.setLayoutParams(lp);
     }
 
