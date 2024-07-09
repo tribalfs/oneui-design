@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -548,20 +549,25 @@ public class ToolbarLayout extends LinearLayout {
         mBadgeText.setText(text);
         mBadgeBackground.setVisibility(text == null || text.isEmpty() ? GONE : VISIBLE);
         if (text == null) return;
+        Resources res = getResources();
+        float defaultWidth = res.getDimension(androidx.appcompat.R.dimen.sesl_badge_default_width);
+        float additionalWidth = res.getDimension(androidx.appcompat.R.dimen.sesl_badge_additional_width);
         ViewGroup.MarginLayoutParams lp = (MarginLayoutParams) mBadgeBackground.getLayoutParams();
         lp.setMarginEnd(0);
-        lp.width = (int) (getResources().getDimension(androidx.appcompat.R.dimen.sesl_badge_default_width) + (text.length() * getResources().getDimension(androidx.appcompat.R.dimen.sesl_badge_additional_width)));
-        lp.height = (int) (getResources().getDimension(androidx.appcompat.R.dimen.sesl_badge_default_width) + (text.length() * getResources().getDimension(androidx.appcompat.R.dimen.sesl_badge_additional_width)));
+        lp.width = (int) (defaultWidth + (text.length() * additionalWidth));
+        lp.height = (int) (defaultWidth + (text.length() * additionalWidth));
         mBadgeBackground.setLayoutParams(lp);
     }
 
     private void setMenuItemBadgeDot(ViewGroup mBadgeBackground, Boolean status) {
         mBadgeBackground.setVisibility(status == null || !status ? GONE : VISIBLE);
         if (status == null) return;
+        Resources res = getResources();
+        float badgeSize = res.getDimension(androidx.appcompat.R.dimen.sesl_menu_item_badge_size);
         ViewGroup.MarginLayoutParams lp = (MarginLayoutParams) mBadgeBackground.getLayoutParams();
         lp.setMarginEnd(0);
-        lp.width = (int) (getResources().getDimension(androidx.appcompat.R.dimen.sesl_menu_item_badge_size));
-        lp.height = (int) (getResources().getDimension(androidx.appcompat.R.dimen.sesl_menu_item_badge_size));
+        lp.width = (int) (badgeSize);
+        lp.height = (int) (badgeSize);
         mBadgeBackground.setLayoutParams(lp);
     }
 
