@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -490,10 +491,16 @@ public class ToolbarLayout extends LinearLayout {
 
 
     /**
-     * Set the badge of a Toolbar MenuItem. Only use this for MenuItems which show as action! It won't work for overflow items.
+     * Sets the badge of a Toolbar MenuItem. This should only be used for MenuItems that are displayed as actions.
+     * It will not work for overflow items.
+     *
+     * @param id    the resource ID of the MenuItem
+     * @param text  the text to display on the badge; should be a numeric string or "N" for new.
+     *              Use "0" or an empty string to hide the badge.
+     * @param style the style of the badge; 0 for dot badge, 1 for counter badge
      */
     @SuppressLint("RestrictedApi")
-    public void setMenuItemBadgeText(@IdRes int id, String text) {
+    public void setMenuItemBadge(@IdRes int id, String text, Integer style) {
         for (int i = 0; i < mMainToolbar.getChildCount(); i++) {
             View v1 = mMainToolbar.getChildAt(i);
             if (v1 instanceof ActionMenuView) {
@@ -514,7 +521,11 @@ public class ToolbarLayout extends LinearLayout {
                             TextView mBadgeText = (TextView) mBadgeBackground.getChildAt(0);
                             fl.addView(mBadgeBackground);
 
-                            setMenuItemBadgeText(mBadgeBackground, mBadgeText, text);
+                            if (style == 0){
+                                setMenuItemBadgeDot(mBadgeBackground, text);
+                            }else {
+                                setMenuItemBadgeText(mBadgeBackground, mBadgeText, text);
+                            }
 
                             menuView.addView(fl, j);
                             return;
@@ -525,7 +536,11 @@ public class ToolbarLayout extends LinearLayout {
                         if (v3 instanceof ActionMenuItemView && ((ActionMenuItemView) v3).getItemData().getItemId() == id) {
                             ViewGroup mBadgeBackground = (ViewGroup) fl.getChildAt(1);
                             TextView mBadgeText = (TextView) mBadgeBackground.getChildAt(0);
-                            setMenuItemBadgeText(mBadgeBackground, mBadgeText, text);
+                            if (style == 0){
+                                setMenuItemBadgeDot(mBadgeBackground, text);
+                            }else {
+                                setMenuItemBadgeText(mBadgeBackground, mBadgeText, text);
+                            }
                             return;
                         }
                     }
@@ -541,11 +556,27 @@ public class ToolbarLayout extends LinearLayout {
 
     private void setMenuItemBadgeText(ViewGroup mBadgeBackground, TextView mBadgeText, String text) {
         mBadgeText.setText(text);
-        mBadgeBackground.setVisibility(text == null || text.isEmpty() ? GONE : VISIBLE);
-        if (text == null) return;
+        mBadgeBackground.setVisibility(text == "0" || text.isEmpty() ? GONE : VISIBLE);
+        if (text == "0" || text.isEmpty()) return;
+        Resources res = getResources();
+        float defaultWidth = res.getDimension(androidx.appcompat.R.dimen.sesl_badge_default_width);
+        float additionalWidth = res.getDimension(androidx.appcompat.R.dimen.sesl_badge_additional_width);
         ViewGroup.MarginLayoutParams lp = (MarginLayoutParams) mBadgeBackground.getLayoutParams();
         lp.setMarginEnd(0);
-        lp.width = (int) (getResources().getDimension(androidx.appcompat.R.dimen.sesl_badge_default_width) + (text.length() * getResources().getDimension(androidx.appcompat.R.dimen.sesl_badge_additional_width)));
+        lp.width = (int) (defaultWidth + (text.length() * additionalWidth));
+        lp.height = (int) (defaultWidth + additionalWidth);
+        mBadgeBackground.setLayoutParams(lp);
+    }
+
+    private void setMenuItemBadgeDot(ViewGroup mBadgeBackground, String text) {
+        mBadgeBackground.setVisibility(text == "0" || text.isEmpty() ? GONE : VISIBLE);
+        if (text == "0" || text.isEmpty()) return;
+        Resources res = getResources();
+        float badgeSize = res.getDimension(androidx.appcompat.R.dimen.sesl_menu_item_badge_size);
+        ViewGroup.MarginLayoutParams lp = (MarginLayoutParams) mBadgeBackground.getLayoutParams();
+        lp.setMarginEnd(0);
+        lp.width = (int) (badgeSize);
+        lp.height = (int) (badgeSize);
         mBadgeBackground.setLayoutParams(lp);
     }
 
