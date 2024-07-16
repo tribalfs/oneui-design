@@ -50,7 +50,7 @@
     <color name="oui_appinfolayout_button_default_text">#fffafafa</color>
 
     <!-- TipsCardPreference -->
-    <color name="oui_tipscardpref_bg_color">#ff252525</color>
+<!--    <color name="oui_tipscardpref_bg_color">#ff252525</color>-->
 
     <!-- HorizontalRadioPreference -->
     <color name="oui_horizontalradiopref_text_unselected_color">#ffa8a9a9</color>
