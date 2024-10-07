@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sec.sesl.tester.R;
 
+import dev.oneuiproject.oneuiexample.utils.TypefaceUtilsKt;
+
 public class DrawerListViewHolder extends RecyclerView.ViewHolder {
     private final boolean mIsSeparator;
     private Typeface mNormalTypeface;
@@ -27,8 +29,8 @@ public class DrawerListViewHolder extends RecyclerView.ViewHolder {
         if (!mIsSeparator) {
             mIconView = itemView.findViewById(R.id.drawer_item_icon);
             mTitleView = itemView.findViewById(R.id.drawer_item_title);
-            mNormalTypeface = Typeface.create("sec-roboto-light", Typeface.NORMAL);
-            mSelectedTypeface = Typeface.create("sec-roboto-light", Typeface.BOLD);
+            mNormalTypeface = TypefaceUtilsKt.getNormalFont();
+            mSelectedTypeface = TypefaceUtilsKt.getBoldFont();
         }
     }
 
