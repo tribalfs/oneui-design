@@ -15,8 +15,8 @@ android {
         minSdk 24
         targetSdk 34
 
-        versionCode 17
-        versionName "1.2.7-beta1"
+        versionCode 18
+        versionName "1.2.7-beta2"
 
         vectorDrawables.useSupportLibrary = true
     }
@@ -28,7 +28,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
