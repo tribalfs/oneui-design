@@ -22,7 +22,7 @@ android {
 }
 
 dependencies {
-    api("androidx.annotation:annotation:1.8.0")
+    api("androidx.annotation:annotation:1.8.2")
 
     implementation("sesl.androidx.appcompat:appcompat:1.7.0+1.0.34-sesl6+rev4")
     implementation("sesl.androidx.indexscroll:indexscroll:1.0.3+1.0.3-sesl6+rev2")
