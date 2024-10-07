@@ -24,8 +24,9 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/drawer_item_icon"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:alpha=".75"
                 android:layout_gravity="center"
                 android:scaleType="fitXY"
                 app:tint="@color/oui_primary_text_color" />
@@ -43,7 +44,7 @@
                 android:id="@+id/drawer_item_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
+                android:textSize="17sp"
                 android:textColor="@color/oui_primary_text_color"
                 android:singleLine="true"
                 android:ellipsize="end" />
