@@ -154,6 +154,7 @@ public class AboutActivity extends AppCompatActivity
 
         mBottomContent.aboutBottomDevYann.setOnClickListener(this);
         mBottomContent.aboutBottomDevMesa.setOnClickListener(this);
+        mBottomContent.aboutBottomDevTribalfs.setOnClickListener(this);
 
         mBottomContent.aboutBottomOssApache.setOnClickListener(this);
         mBottomContent.aboutBottomOssMit.setOnClickListener(this);
@@ -173,6 +174,8 @@ public class AboutActivity extends AppCompatActivity
         mBottomContent.aboutBottomRelativeJetpack.setEnabled(enabled);
         mBottomContent.aboutBottomRelativeMaterial.setEnabled(enabled);
         mBottomContent.aboutBottomRelativeOuip.setEnabled(enabled);
+        mBottomContent.aboutBottomDevTribalfs.setEnabled(enabled);
+
     }
 
     @Override
@@ -187,7 +190,7 @@ public class AboutActivity extends AppCompatActivity
             } else if (v.getId() == mBottomContent.aboutBottomDevYann.getId()) {
                 url = "https://github.com/Yanndroid";
             } else if (v.getId() == mBottomContent.aboutBottomDevMesa.getId()) {
-                url = "https://github.com/BlackMesa123";
+                url = "https://github.com/salvogiangri";
             } else if (v.getId() == mBottomContent.aboutBottomOssApache.getId()) {
                 url = "https://www.apache.org/licenses/LICENSE-2.0.txt";
             } else if (v.getId() == mBottomContent.aboutBottomOssMit.getId()) {
@@ -198,6 +201,8 @@ public class AboutActivity extends AppCompatActivity
                 url = "https://material.io/develop/android";
             } else if (v.getId() == mBottomContent.aboutBottomRelativeOuip.getId()) {
                 url = "https://github.com/OneUIProject";
+            } else if (v.getId() == mBottomContent.aboutBottomDevTribalfs.getId()) {
+                url = "https://github.com/tribalfs";
             }
 
             if (url != null) {

@@ -34,8 +34,16 @@
                 android:id="@+id/about_bottom_dev_mesa"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:IconDrawable="@drawable/about_page_avatar_mesa"
-                app:TitleText="BlackMesa123"
+                app:IconDrawable="@drawable/about_page_avatar_salvo"
+                app:TitleText="Salvo Giangreco"
+                app:isDividerViewVisible="true" />
+
+            <dev.oneuiproject.oneuiexample.ui.widget.CardView
+                android:id="@+id/about_bottom_dev_tribalfs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:IconDrawable="@drawable/about_page_avatar_tribalfs"
+                app:TitleText="Tribalfs"
                 app:isDividerViewVisible="true" />
 
         </dev.oneuiproject.oneui.widget.RoundLinearLayout>
