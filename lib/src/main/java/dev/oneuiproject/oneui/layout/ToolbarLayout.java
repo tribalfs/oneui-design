@@ -1,5 +1,7 @@
 package dev.oneuiproject.oneui.layout;
 
+import static dev.oneuiproject.oneui.utils.internal.ToolbarLayoutUtils.setSideMarginParams;
+
 import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
@@ -52,6 +54,7 @@ import java.util.Locale;
 
 import dev.oneuiproject.oneui.design.R;
 import dev.oneuiproject.oneui.utils.internal.ToolbarLayoutUtils;
+import dev.oneuiproject.oneui.utils.internal.ToolbarLayoutUtils.SideMarginParams;
 import dev.oneuiproject.oneui.view.internal.NavigationBadgeIcon;
 
 /**
@@ -111,6 +114,8 @@ public class ToolbarLayout extends LinearLayout {
     private CoordinatorLayout mCoordinatorLayout;
     protected FrameLayout mMainContainer;
     private FrameLayout mFooterContainer;
+    private LinearLayout mFooterParent;
+    private LinearLayout mBottomRoundedCorner;
     private BottomNavigationView mBottomActionModeBar;
 
     private SearchView mSearchView;
@@ -215,6 +220,8 @@ public class ToolbarLayout extends LinearLayout {
         mMainContainer = findViewById(R.id.toolbarlayout_main_container);
         mFooterContainer = findViewById(R.id.toolbarlayout_footer_container);
         mBottomActionModeBar = findViewById(R.id.toolbarlayout_bottom_nav_view);
+        mFooterParent = findViewById(R.id.toolbarlayout_footer_content);
+        mBottomRoundedCorner = findViewById(R.id.toolbarlayout_bottom_corners);
 
         if (!isInEditMode()) {
             mActivity.setSupportActionBar(mMainToolbar);
@@ -298,17 +305,24 @@ public class ToolbarLayout extends LinearLayout {
         return null;
     }
 
+    private final Runnable sideMarginUpdater = new Runnable() {
+        @Override
+        public void run() {
+            SideMarginParams sideMarginParams = ToolbarLayoutUtils.getSideMarginParams(mActivity);
+            setSideMarginParams(mMainContainer, sideMarginParams);
+            setSideMarginParams(mBottomRoundedCorner, sideMarginParams);
+            setSideMarginParams(mFooterParent, sideMarginParams);
+            requestLayout();
+        }
+    };
+
     private void refreshLayout(Configuration newConfig) {
         if (!isInEditMode())
             ToolbarLayoutUtils
                     .hideStatusBarForLandscape(mActivity, newConfig.orientation);
 
-        ToolbarLayoutUtils.updateListBothSideMargin(mActivity,
-                mMainContainer);
-        ToolbarLayoutUtils.updateListBothSideMargin(mActivity,
-                findViewById(R.id.toolbarlayout_bottom_corners));
-        ToolbarLayoutUtils.updateListBothSideMargin(mActivity,
-                findViewById(R.id.toolbarlayout_footer_content));
+        removeCallbacks(sideMarginUpdater);
+        postDelayed(sideMarginUpdater, 40);
 
         final boolean isLandscape
                 = newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE;

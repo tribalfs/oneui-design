@@ -140,11 +140,9 @@ public class ToolbarLayoutUtils {
             activity.findViewById(android.R.id.content).post(new Runnable() {
                 @Override
                 public void run() {
-                    if (activity.getResources().getConfiguration()
-                            .screenWidthDp >= 589) {
-                        layout.getLayoutParams().width = MATCH_PARENT;
-                    }
-                    setHorizontalMargin(layout, getSideMargin(activity));
+                    SideMarginParams sideMarginParams = getSideMarginParams(activity);
+                    setSideMarginParams(layout, sideMarginParams);
+                    layout.requestLayout();
                 }
             });
         }
@@ -153,7 +151,8 @@ public class ToolbarLayoutUtils {
     /**
      * @hide
      */
-    private static void setHorizontalMargin(@NonNull ViewGroup layout, int margin) {
+    @RestrictTo(LIBRARY)
+    public static void setHorizontalMargin(@NonNull ViewGroup layout, int margin) {
         ViewGroup.MarginLayoutParams lp
                 = (ViewGroup.MarginLayoutParams) layout.getLayoutParams();
         if (lp != null) {
@@ -164,13 +163,49 @@ public class ToolbarLayoutUtils {
         }
     }
 
+    @RestrictTo(LIBRARY)
+    public static SideMarginParams getSideMarginParams(@NonNull Activity activity) {
+        final int width = activity.findViewById(android.R.id.content).getWidth();
+        Configuration config = activity.getResources().getConfiguration();
+        return new SideMarginParams(
+                (int) (width * getMarginRatio(config.screenWidthDp, config.screenHeightDp)),
+                activity.getResources().getConfiguration().screenWidthDp >= 589);
+    }
+
     /**
      * @hide
      */
-    private static int getSideMargin(@NonNull Activity activity) {
-        final int width = activity.findViewById(android.R.id.content).getWidth();
-        Configuration config = activity.getResources().getConfiguration();
-        return (int) (width * getMarginRatio(config.screenWidthDp, config.screenHeightDp));
+    @RestrictTo(LIBRARY)
+    public static class SideMarginParams{
+        public int sideMargin;
+        public boolean matchParent;
+        public SideMarginParams(
+                int sideMargin,
+                boolean matchParent
+        ) {
+            this.sideMargin = sideMargin;
+            this.matchParent = matchParent;
+        }
+    }
+
+    /**
+     * @hide
+     */
+    @RestrictTo(LIBRARY)
+    public static void setSideMarginParams(@NonNull ViewGroup layout, SideMarginParams smp) {
+        ViewGroup.MarginLayoutParams lp
+                = (ViewGroup.MarginLayoutParams) layout.getLayoutParams();
+        if (lp != null) {
+            lp.leftMargin = smp.sideMargin;
+            lp.rightMargin = smp.sideMargin;
+        } else {
+            layout.setPadding(smp.sideMargin, layout.getPaddingTop(), smp.sideMargin, layout.getPaddingBottom());
+        }
+        if (smp.matchParent){
+            lp.width = MATCH_PARENT;
+        }
+        layout.setLayoutParams(lp);
+
     }
 
     /**
