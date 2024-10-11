@@ -14,15 +14,34 @@ buildscript {
 
 
 /**
- * Note: You have to create a "github.properties" file inside your project folder containing the following:
+ * Note: To configure GitHub credentials, you have to generate an access token with at least
+ * `read:packages` scope at https://github.com/settings/tokens/new and then
+ * add it to any of the following:
+ * <ul>
+ *      <li>Add `githubUsername` and `githubAccessToken` to Global Gradle Properties</li>
+ *      <li>Set `GITHUB_USERNAME` and `GITHUB_ACCESS_TOKEN` in your environment variables</li>
+ *      <li>Create a `github.properties` file in your project folder with the following content:</li>
+ * </ul>
  *
  * <pre>
- *   gp_username="YOUR_GITHUB_USERNAME"
- *   gp_access_token="YOUR_GITHUB_ACCESS_TOKEN"
+ *   githubUsername=&lt;YOUR_GITHUB_USERNAME&gt;
+ *   githubAccessToken=&lt;YOUR_GITHUB_ACCESS_TOKEN&gt;
  * </pre>
  */
-Properties githubProperties = new Properties()
-githubProperties.load(new FileInputStream(rootProject.file("github.properties")))
+def githubProperties = new Properties().with {
+    def file = this.rootProject?.file("github.properties")
+    if (file?.exists()) file.withInputStream { load(it) }
+    it
+}
+def githubUsername = githubProperties.getProperty("githubUsername") // github.properties file
+        ?: rootProject.findProperty('githubUsername') // Global Gradle Properties
+        ?: System.getenv("GITHUB_USERNAME") // Environment variable
+        ?: { throw new GradleException('GitHub username not found') }()
+
+def githubAccessToken = githubProperties.getProperty("githubAccessToken") // github.properties file
+        ?: rootProject.findProperty('githubAccessToken') // Global Gradle Properties
+        ?: System.getenv("GITHUB_ACCESS_TOKEN") // Environment variable
+        ?: { throw new GradleException('GitHub access token not found') }()
 
 
 allprojects {
@@ -34,15 +53,15 @@ allprojects {
         maven {
             url = uri("https://maven.pkg.github.com/tribalfs/sesl-androidx")
             credentials {
-                username = githubProperties.getProperty("gp_username")
-                password = githubProperties.getProperty("gp_access_token")
+                username = githubUsername
+                password = githubAccessToken
             }
         }
         maven {
             url = uri("https://maven.pkg.github.com/tribalfs/sesl-material-components-android")
             credentials {
-                username = githubProperties.getProperty("gp_username")
-                password = githubProperties.getProperty("gp_access_token")
+                username = githubUsername
+                password = githubAccessToken
             }
         }
     }
