@@ -1,5 +1,7 @@
 package dev.oneuiproject.oneui.layout;
 
+import static android.os.Build.VERSION.SDK_INT;
+
 import static dev.oneuiproject.oneui.utils.internal.ToolbarLayoutUtils.setSideMarginParams;
 
 import android.annotation.SuppressLint;
@@ -8,8 +10,8 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Insets;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
@@ -20,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.view.animation.PathInterpolator;
 import android.widget.CompoundButton;
@@ -34,23 +37,17 @@ import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.appcompat.view.menu.SeslMenuItem;
-import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.os.LocaleListCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-
-import java.text.NumberFormat;
-import java.util.Locale;
 
 import dev.oneuiproject.oneui.design.R;
 import dev.oneuiproject.oneui.utils.internal.ToolbarLayoutUtils;
@@ -128,6 +125,8 @@ public class ToolbarLayout extends LinearLayout {
     private boolean mIsSearchMode = false;
     private boolean mIsActionMode = false;
 
+    protected boolean mHandleInsets;
+
     /**
      * Callback for the Toolbar's SearchMode.
      * Notification that the {@link SearchView}'s text has been edited or it's visibility changed.
@@ -185,6 +184,9 @@ public class ToolbarLayout extends LinearLayout {
             mTitleExpanded
                     = mTitleCollapsed = a.getString(R.styleable.ToolbarLayout_title);
             mSubtitleExpanded = a.getString(R.styleable.ToolbarLayout_subtitle);
+            if (SDK_INT >= 30 && !getFitsSystemWindows()) {
+                mHandleInsets = a.getBoolean(R.styleable.ToolbarLayout_handleInsets, true);
+            }
         } finally {
             a.recycle();
         }
@@ -998,6 +1000,31 @@ public class ToolbarLayout extends LinearLayout {
     //
     // others
     //
+
+    protected final boolean handleInsets(){
+        return mHandleInsets;
+    }
+
+    @SuppressLint("NewApi")
+    @Override
+    public WindowInsets onApplyWindowInsets(WindowInsets insets) {
+        if (mHandleInsets){
+            Insets systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            setPadding(
+                    systemBarsInsets.left,
+                    systemBarsInsets.top,
+                    systemBarsInsets.right,
+                    Math.max(
+                            systemBarsInsets.bottom,
+                            insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+                    )
+            );
+            return insets;
+        }else{
+            return super.onApplyWindowInsets(insets);
+        }
+    }
+
     public static class ToolbarLayoutParams extends LayoutParams {
         public int layout_location;
 

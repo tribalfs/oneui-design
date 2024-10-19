@@ -3,14 +3,17 @@ package dev.oneuiproject.oneui.layout;
 import static androidx.drawerlayout.widget.DrawerLayout.LOCK_MODE_LOCKED_CLOSED;
 import static androidx.drawerlayout.widget.DrawerLayout.LOCK_MODE_UNLOCKED;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.Insets;
 import android.graphics.Outline;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -20,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
 import android.view.Window;
+import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -30,10 +34,10 @@ import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.TooltipCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -80,7 +84,7 @@ public class DrawerLayout extends ToolbarLayout {
     private TextView mHeaderBadge;
     private FrameLayout mDrawerContainer;
     private float scrimAlpha;
-    private int systemBarsColor;
+    private int systemBarsColor = -1;
 
     public DrawerLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -135,11 +139,13 @@ public class DrawerLayout extends ToolbarLayout {
         mDrawer.setScrimColor(scrimColor);
         scrimAlpha = ((scrimColor >> 24) & 0xFF)/255f;
 
-        TypedValue sbTypedValue = new TypedValue();
-        if (mContext.getTheme().resolveAttribute(androidx.appcompat.R.attr.roundedCornerColor, sbTypedValue, true)) {
-            systemBarsColor = sbTypedValue.data;
-        } else {
-            systemBarsColor = ContextCompat.getColor(mContext, R.color.oui_round_and_bgcolor);
+        if (Build.VERSION.SDK_INT < 35) {
+            TypedValue sbTypedValue = new TypedValue();
+            if (mContext.getTheme().resolveAttribute(androidx.appcompat.R.attr.roundedCornerColor, sbTypedValue, true)) {
+                systemBarsColor = sbTypedValue.data;
+            } else {
+                systemBarsColor = ContextCompat.getColor(mContext, R.color.oui_round_and_bgcolor);
+            }
         }
 
         mDrawer.setDrawerElevation(0);
@@ -261,12 +267,9 @@ public class DrawerLayout extends ToolbarLayout {
     /**
      * Show a margin at the top of the drawer panel. Some Apps from Samsung do have this.
      */
+    @Deprecated
     public void showDrawerTopMargin(boolean show) {
-        MarginLayoutParams lp = (MarginLayoutParams) mDrawerContent.getLayoutParams();
-        lp.topMargin = show
-                ? getResources().getDimensionPixelSize(R.dimen.oui_drawerlayout_drawer_top_margin)
-                : 0;
-        mDrawerContent.setLayoutParams(lp);
+
     }
 
     /**
@@ -428,11 +431,13 @@ public class DrawerLayout extends ToolbarLayout {
             if (translationView != null) translationView.setTranslationX(slideX);
             else mToolbarContent.setTranslationX(slideX);
 
-            float[] hsv = new float[3];
-            Color.colorToHSV(systemBarsColor, hsv);
-            hsv[2] *= 1f - (slideOffset * scrimAlpha);
-            window.setStatusBarColor(Color.HSVToColor(hsv));
-            window.setNavigationBarColor(Color.HSVToColor(hsv));
+            if (systemBarsColor != -1) {
+                float[] hsv = new float[3];
+                Color.colorToHSV(systemBarsColor, hsv);
+                hsv[2] *= 1f - (slideOffset * scrimAlpha);
+                window.setStatusBarColor(Color.HSVToColor(hsv));
+                window.setNavigationBarColor(Color.HSVToColor(hsv));
+            }
         }
 
         @Override
@@ -445,6 +450,32 @@ public class DrawerLayout extends ToolbarLayout {
         public void onDrawerClosed(View drawerView) {
             super.onDrawerClosed(drawerView);
             sIsDrawerOpened = false;
+        }
+    }
+
+    @SuppressLint("NewApi")
+    @Override
+    public WindowInsets onApplyWindowInsets(WindowInsets insets) {
+        if (handleInsets()){
+            Insets systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            final int topInset = systemBarsInsets.top;
+            final int bottomInset = Math.max(
+                    systemBarsInsets.bottom,
+                    insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+            );
+            mToolbarContent.setPadding(
+                    systemBarsInsets.left,
+                    topInset,
+                    systemBarsInsets.right,
+                    bottomInset
+            );
+            MarginLayoutParams lp = (MarginLayoutParams) mDrawerContent.getLayoutParams();
+            lp.topMargin = topInset + getResources().getDimensionPixelSize(R.dimen.oui_drawerlayout_drawer_top_margin);
+            lp.bottomMargin = bottomInset;
+            mDrawerContent.setLayoutParams(lp);
+            return insets;
+        }else{
+            return super.onApplyWindowInsets(insets);
         }
     }
 }

@@ -37,7 +37,7 @@
     <dimen name="oui_n_badge_text_size">11.0dip</dimen>
 
     <!-- DrawerLayout -->
-    <dimen name="oui_drawerlayout_drawer_top_margin">16.0dip</dimen>
+    <dimen name="oui_drawerlayout_drawer_top_margin">@dimen/sesl_action_bar_top_padding</dimen>
 
     <!-- HorizontalRadioPreference -->
     <dimen name="oui_horizontalradiopref_padding_start_end">8.0dip</dimen>
