@@ -42,7 +42,6 @@ import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.os.LocaleListCompat;
-import androidx.core.view.ViewCompat;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -94,7 +93,7 @@ public class ToolbarLayout extends LinearLayout {
             if (mIsActionMode) dismissActionMode();
         }
     };
-    private AppBarOffsetListener mActionModeTitleFadeListener = new AppBarOffsetListener();
+    private final AppBarOffsetListener mActionModeTitleFadeListener = new AppBarOffsetListener();
 
     protected int mLayout;
     protected boolean mExpandable;
@@ -431,7 +430,7 @@ public class ToolbarLayout extends LinearLayout {
      * Programmatically expand or collapse the Toolbar.
      */
     public void setExpanded(boolean expanded) {
-        setExpanded(expanded, ViewCompat.isLaidOut(mAppBarLayout));
+        setExpanded(expanded, mAppBarLayout.isLaidOut());
     }
 
     /**
