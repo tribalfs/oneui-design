@@ -28,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.IdRes;
 import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
@@ -629,7 +630,7 @@ public class ToolbarLayout extends LinearLayout {
     }
 
     /**
-     * Sets the icon the a back icon, the tooltip to 'Navigate up' and calls {@link AppCompatActivity#onBackPressed()} when clicked.
+     * Sets the icon the a back icon, the tooltip to 'Navigate up' and calls {@link OnBackPressedDispatcher#onBackPressed()} when clicked.
      *
      * @see #setNavigationButtonIcon(Drawable)
      * @see #setNavigationButtonTooltip(CharSequence)
@@ -638,7 +639,7 @@ public class ToolbarLayout extends LinearLayout {
     public void setNavigationButtonAsBack() {
         if (!isInEditMode()) {
             mActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            setNavigationButtonOnClickListener(v -> mActivity.onBackPressed());
+            setNavigationButtonOnClickListener(v -> mActivity.getOnBackPressedDispatcher().onBackPressed());
         }
     }
 

@@ -63,7 +63,7 @@ public class DrawerLayout extends ToolbarLayout {
                 return;
             }
             this.setEnabled(false);
-            mActivity.onBackPressed();
+            mActivity.getOnBackPressedDispatcher().onBackPressed();
             this.setEnabled(true);
         }
     };
