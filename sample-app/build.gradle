@@ -5,7 +5,7 @@ plugins {
 
 
 android {
-    compileSdk 34
+    compileSdk 35
     namespace "com.sec.sesl.tester"
 
     defaultConfig {
@@ -13,7 +13,7 @@ android {
         applicationId "com.sec.sesl.tester"
 
         minSdk 24
-        targetSdk 34
+        targetSdk 35
 
         versionCode 18
         versionName "1.2.7-beta2"

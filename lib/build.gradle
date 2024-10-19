@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    compileSdk 34
+    compileSdk 35
     namespace = "dev.oneuiproject.oneui.design"
     defaultConfig {
         minSdk 23
-        targetSdk 34
+        targetSdk 35
 
         vectorDrawables.useSupportLibrary = true
     }
