@@ -3,26 +3,22 @@ package dev.oneuiproject.oneuiexample.activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.TooltipCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.sec.sesl.tester.BuildConfig;
@@ -49,6 +45,17 @@ public class AboutActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         mBinding = ActivityAboutBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
+
+        if (Build.VERSION.SDK_INT >= 30 && !getWindow().getDecorView().getFitsSystemWindows()) {
+            mBinding.getRoot().setOnApplyWindowInsetsListener((v, insets) -> {
+                Insets systemBarsInsets = WindowInsetsCompat.toWindowInsetsCompat(insets)
+                        .getInsets(WindowInsetsCompat.Type.systemBars());
+                mBinding.getRoot().setPadding(systemBarsInsets.left, systemBarsInsets.top,
+                        systemBarsInsets.right, systemBarsInsets.bottom);
+                return insets;
+            });
+        }
+
         mBottomContent = mBinding.aboutBottomContent;
 
         setSupportActionBar(mBinding.aboutToolbar);
