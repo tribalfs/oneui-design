@@ -4,15 +4,15 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.sec.sesl.tester",
+  "applicationId": "com.tribalfs.oneuisample",
   "variantName": "release",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 18,
-      "versionName": "1.2.7-beta2",
+      "versionCode": 1,
+      "versionName": "0.1.0+oneui6",
       "outputFile": "sample-app-release.apk"
     }
   ],
