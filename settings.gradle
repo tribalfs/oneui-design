@@ -1,3 +1,4 @@
+rootProject.name = "oneui-design"
 include(":sample-app")
 include(":lib")
 

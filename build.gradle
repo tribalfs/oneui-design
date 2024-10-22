@@ -64,6 +64,13 @@ allprojects {
                 password = githubAccessToken
             }
         }
+        maven {
+            url = uri("https://maven.pkg.github.com/tribalfs/oneui-design")
+            credentials {
+                username = githubUsername
+                password = githubAccessToken
+            }
+        }
     }
 
     tasks.withType(Javadoc) {
@@ -75,113 +82,37 @@ allprojects {
 
 subprojects {
     afterEvaluate { project ->
-        if (!plugins.hasPlugin('maven-publish')) {
+        if (!plugins.hasPlugin("maven-publish")) {
             return
         }
 
-        group = "io.github.oneuiproject"
+        group = "io.github.tribalfs"
         version = android.defaultConfig.versionName
 
         publishing {
             publications {
                 mavenJava(MavenPublication) {
-                    group project.group
-                    artifactId POM_ARTIFACT_ID
-                    version android.defaultConfig.versionName
-
+                    artifactId = "oneui-design"
                     afterEvaluate {
                         from components.release
-                    }
-
-                    pom {
-                        name = POM_NAME
-                        description = POM_DESCRIPTION
-                        packaging = POM_PACKAGING
-                        url = POM_URL
-                        inceptionYear = POM_INCEPTION_YEAR
-
-                        licenses {
-                            license {
-                                name = POM_LICENCE_NAME
-                                url = POM_LICENCE_URL
-                                distribution = POM_LICENCE_DIST
-                            }
-                        }
-
-                        developers {
-                            developer {
-                                id = POM_DEVELOPER_ID
-                                name = POM_DEVELOPER_NAME
-                                url = POM_DEVELOPER_URL
-                            }
-                        }
-
-                        scm {
-                            url = POM_SCM_URL
-                            connection = POM_SCM_CONNECTION
-                            developerConnection = POM_SCM_DEV_CONNECTION
-                        }
                     }
                 }
             }
 
             repositories {
                 maven {
-                    name 'ossrh'
-                    url 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
-
+                    name = "GitHubPackages"
+                    url = uri("https://maven.pkg.github.com/tribalfs/oneui-design")
                     credentials {
-                        username = System.getenv("MAVEN_USERNAME")
-                        password = System.getenv("MAVEN_PASSWORD")
+                        username = githubUsername
+                        password = githubAccessToken
                     }
                 }
             }
-        }
-    }
-
-    afterEvaluate {
-        if (!plugins.hasPlugin('signing')) {
-            return
-        }
-
-        android {
-            publishing {
-                singleVariant("release") {
-                    withSourcesJar()
-                    withJavadocJar()
-                }
-            }
-        }
-
-        signing {
-            def signingKeyId = System.getenv("SIGNING_KEYID")
-            def signingKey = System.getenv("SIGNING_PRIVATE_KEY")
-            def signingPassword = System.getenv("SIGNING_PASSWORD")
-
-            useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
-            sign publishing.publications
         }
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-
-ext {
-    POM_INCEPTION_YEAR = "2022"
-    POM_PACKAGING = "aar"
-
-    POM_URL = "https://github.com/OneUIProject/oneui-design"
-    POM_SCM_URL = "https://github.com/OneUIProject/oneui-design"
-    POM_SCM_CONNECTION = "scm:git@github.com:OneUIProject/oneui-design.git"
-    POM_SCM_DEV_CONNECTION = "scm:git@github.com:OneUIProject/oneui-design.git"
-
-    POM_LICENCE_NAME = "MIT License"
-    POM_LICENCE_URL = "https://github.com/OneUIProject/oneui-design/blob/master/LICENSE"
-    POM_LICENCE_DIST = "repo"
-
-    POM_DEVELOPER_ID = "OUIProject"
-    POM_DEVELOPER_NAME = "OneUI Project"
-    POM_DEVELOPER_URL = "https://github.com/OneUIProject"
 }
