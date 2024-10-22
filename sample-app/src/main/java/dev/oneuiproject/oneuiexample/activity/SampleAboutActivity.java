@@ -23,8 +23,7 @@ public class SampleAboutActivity extends AppCompatActivity {
 
         appInfoLayout = findViewById(R.id.appInfoLayout);
 
-        appInfoLayout.addOptionalText("Extra 1");
-        appInfoLayout.addOptionalText("Extra 2");
+        appInfoLayout.addOptionalText("OneUI Design version 0.1.0+oneui6");
 
         appInfoLayout.setMainButtonClickListener(new AppInfoLayout.OnClickListener() {
             @Override
@@ -50,7 +49,7 @@ public class SampleAboutActivity extends AppCompatActivity {
     public void openGitHubPage(View v) {
         try {
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("https://github.com/OneUIProject/oneui-design"));
+            intent.setData(Uri.parse("https://github.com/tribalfs/oneui-design"));
             startActivity(intent);
         } catch (ActivityNotFoundException e) {
             Toast.makeText(

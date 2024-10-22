@@ -172,7 +172,9 @@ public class AboutActivity extends AppCompatActivity
 
         mBottomContent.aboutBottomRelativeJetpack.setOnClickListener(this);
         mBottomContent.aboutBottomRelativeMaterial.setOnClickListener(this);
-        mBottomContent.aboutBottomRelativeOuip.setOnClickListener(this);
+        mBottomContent.aboutBottomRelativeSeslAndroidx.setOnClickListener(this);
+        mBottomContent.aboutBottomRelativeSeslMaterial.setOnClickListener(this);
+        mBottomContent.aboutBottomRelativeDesign6.setOnClickListener(this);
     }
 
     private void setBottomContentEnabled(boolean enabled) {
@@ -184,8 +186,10 @@ public class AboutActivity extends AppCompatActivity
         mBottomContent.aboutBottomOssMit.setEnabled(enabled);
         mBottomContent.aboutBottomRelativeJetpack.setEnabled(enabled);
         mBottomContent.aboutBottomRelativeMaterial.setEnabled(enabled);
-        mBottomContent.aboutBottomRelativeOuip.setEnabled(enabled);
+        mBottomContent.aboutBottomRelativeSeslAndroidx.setEnabled(enabled);
+        mBottomContent.aboutBottomRelativeSeslMaterial.setEnabled(enabled);
         mBottomContent.aboutBottomDevTribalfs.setEnabled(enabled);
+        mBottomContent.aboutBottomRelativeDesign6.setEnabled(enabled);
 
     }
 
@@ -195,7 +199,7 @@ public class AboutActivity extends AppCompatActivity
         if (uptimeMillis - mLastClickTime > 600L) {
             String url = null;
             if (v.getId() == mBinding.aboutHeaderGithub.getId()) {
-                url = "https://github.com/OneUIProject/oneui-design";
+                url = "https://github.com/tribalfs/oneui-design";
             } else if (v.getId() == mBinding.aboutHeaderTelegram.getId()) {
                 url = "https://t.me/oneuiproject";
             } else if (v.getId() == mBottomContent.aboutBottomDevYann.getId()) {
@@ -210,9 +214,13 @@ public class AboutActivity extends AppCompatActivity
                 url = "https://developer.android.com/jetpack";
             } else if (v.getId() == mBottomContent.aboutBottomRelativeMaterial.getId()) {
                 url = "https://material.io/develop/android";
-            } else if (v.getId() == mBottomContent.aboutBottomRelativeOuip.getId()) {
-                url = "https://github.com/OneUIProject";
-            } else if (v.getId() == mBottomContent.aboutBottomDevTribalfs.getId()) {
+            } else if (v.getId() == mBottomContent.aboutBottomRelativeSeslAndroidx.getId()) {
+                url = "https://github.com/tribalfs/sesl-androidx";
+            } else if (v.getId() == mBottomContent.aboutBottomRelativeSeslMaterial.getId()) {
+                url = "https://github.com/tribalfs/sesl-material-components-android";
+            }else if (v.getId() == mBottomContent.aboutBottomRelativeDesign6.getId()) {
+                url = "https://github.com/tribalfs/oneui-design";
+            }else if (v.getId() == mBottomContent.aboutBottomDevTribalfs.getId()) {
                 url = "https://github.com/tribalfs";
             }
 
