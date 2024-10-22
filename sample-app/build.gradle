@@ -9,14 +9,13 @@ android {
     namespace "com.sec.sesl.tester"
 
     defaultConfig {
-        // Use Samsung internal package name to enable theming.
-        applicationId "com.sec.sesl.tester"
+        applicationId "com.tribalfs.oneuisample"
 
         minSdk 24
         targetSdk 35
 
-        versionCode 18
-        versionName "1.2.7-beta2"
+        versionCode 1
+        versionName "0.1.0+oneui6"
 
         vectorDrawables.useSupportLibrary = true
     }
