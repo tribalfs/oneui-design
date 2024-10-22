@@ -10,7 +10,9 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/OneUITheme">
+        android:enableOnBackInvokedCallback="true"
+        android:theme="@style/OneUITheme"
+        tools:ignore="UnusedAttribute">
 
         <meta-data
             android:name="SamsungBasicInteraction"
