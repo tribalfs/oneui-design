@@ -58,19 +58,7 @@ public class DrawerLayout extends ToolbarLayout {
 
     private NumberFormat mNumberFormat
             = NumberFormat.getInstance(Locale.getDefault());
-    private OnBackPressedCallback mOnBackPressedCallback
-            = new OnBackPressedCallback(true) {
-        @Override
-        public void handleOnBackPressed() {
-            if (mDrawer.isDrawerOpen(mDrawerContent)) {
-                mDrawer.closeDrawer(mDrawerContent, true);
-                return;
-            }
-            this.setEnabled(false);
-            mActivity.getOnBackPressedDispatcher().onBackPressed();
-            this.setEnabled(true);
-        }
-    };
+
     private final DrawerListener mDrawerListener = new DrawerListener();
 
     private boolean mIsRtl;
@@ -91,7 +79,6 @@ public class DrawerLayout extends ToolbarLayout {
         initDrawer();
 
         if (!isInEditMode()) {
-            mActivity.getOnBackPressedDispatcher().addCallback(mOnBackPressedCallback);
             ViewUtils.semSetRoundedCorners(mActivity.getWindow().getDecorView(), ViewUtils.SEM_ROUNDED_CORNER_NONE);
         }
     }
