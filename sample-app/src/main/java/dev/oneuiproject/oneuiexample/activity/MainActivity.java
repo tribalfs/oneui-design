@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuCompat;
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity
         initFragmentList();
         initDrawer();
         initFragments();
+        initOnBackPressed();
 
         mBinding.drawerLayout.post(() -> {
             TipPopup tipPopup = new TipPopup(mBinding.drawerLayout.getToolbar().getChildAt(0), TipPopup.MODE_TRANSLUCENT);
@@ -93,16 +95,15 @@ public class MainActivity extends AppCompatActivity
         fragments.add(new IconsFragment());
     }
 
-    @Override
-    public void onBackPressed() {
-        // Fix O memory leak
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O
-                && isTaskRoot()
-                && mFragmentManager.getBackStackEntryCount() == 0) {
-            finishAfterTransition();
-        } else {
-            super.onBackPressed();
+    private OnBackPressedCallback mBackPressedCallback = new OnBackPressedCallback(false) {
+        @Override
+        public void handleOnBackPressed() {
+            onDrawerItemSelected(0);
         }
+    };
+
+    private void initOnBackPressed() {
+        getOnBackPressedDispatcher().addCallback(this, mBackPressedCallback);
     }
 
     @Override
@@ -181,6 +182,7 @@ public class MainActivity extends AppCompatActivity
         }
         mBinding.drawerLayout.setDrawerOpen(false, true);
 
+        mBackPressedCallback.setEnabled(position != 0);
         return true;
     }
 }

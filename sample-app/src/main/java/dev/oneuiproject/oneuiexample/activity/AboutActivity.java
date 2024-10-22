@@ -1,5 +1,6 @@
 package dev.oneuiproject.oneuiexample.activity;
 
+import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -14,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.TooltipCompat;
@@ -61,25 +63,26 @@ public class AboutActivity extends AppCompatActivity
         setSupportActionBar(mBinding.aboutToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        mBinding.aboutToolbar.setNavigationOnClickListener(v -> onBackPressed());
+        mBinding.aboutToolbar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
 
         resetAppBar(getResources().getConfiguration());
         initContent();
+        initOnBackPressed();
     }
 
-    @Override
-    public void onBackPressed() {
-        if (mEnableBackToHeader && mBinding.aboutAppBar.seslIsCollapsed()) {
+
+    private OnBackPressedCallback mBackPressedCallback = new OnBackPressedCallback(false) {
+        @Override
+        public void handleOnBackPressed() {
             mBinding.aboutAppBar.setExpanded(true);
-        } else {
-            // Fix O memory leak
-            if (Build.VERSION.SDK_INT
-                    == Build.VERSION_CODES.O && isTaskRoot()) {
-                finishAfterTransition();
-            } else {
-                super.onBackPressed();
-            }
         }
+    };
+
+    private void initOnBackPressed() {
+        getOnBackPressedDispatcher().addCallback(this, mBackPressedCallback);
+        mBackPressedCallback.setEnabled(mBinding.aboutAppBar.seslIsCollapsed()
+                && getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE
+                && !isInMultiWindowMode());
     }
 
     @Override
@@ -114,6 +117,7 @@ public class AboutActivity extends AppCompatActivity
         return Build.VERSION.SDK_INT >= 24 && super.isInMultiWindowMode();
     }
 
+    @SuppressLint("RestrictedApi")
     private void resetAppBar(Configuration config) {
         ToolbarLayoutUtils.hideStatusBarForLandscape(this, config.orientation);
         ToolbarLayoutUtils.updateListBothSideMargin(this,
@@ -122,15 +126,15 @@ public class AboutActivity extends AppCompatActivity
         if (config.orientation != Configuration.ORIENTATION_LANDSCAPE
                 && !isInMultiWindowMode()) {
             mBinding.aboutAppBar.seslSetCustomHeightProportion(true, 0.5f);
-            mEnableBackToHeader = true;
             mBinding.aboutAppBar.addOnOffsetChangedListener(mAppBarListener);
             mBinding.aboutAppBar.setExpanded(true, false);
+            mBackPressedCallback.setEnabled(true);
             mBinding.aboutSwipeUpContainer.setVisibility(View.VISIBLE);
             ViewGroup.LayoutParams lp = mBinding.aboutSwipeUpContainer.getLayoutParams();
             lp.height = getResources().getDisplayMetrics().heightPixels / 2;
         } else {
             mBinding.aboutAppBar.setExpanded(false, false);
-            mEnableBackToHeader = false;
+            mBackPressedCallback.setEnabled(false);
             mBinding.aboutAppBar.seslSetCustomHeightProportion(true, 0);
             mBinding.aboutAppBar.removeOnOffsetChangedListener(mAppBarListener);
             mBinding.aboutBottomContainer.setAlpha(1f);
@@ -263,6 +267,8 @@ public class AboutActivity extends AppCompatActivity
             }
 
             mBinding.aboutBottomContainer.setAlpha(bottomAlpha / 255);
+
+            mBackPressedCallback.setEnabled(appBarLayout.getTotalScrollRange() + verticalOffset == 0);
         }
     }
 }
