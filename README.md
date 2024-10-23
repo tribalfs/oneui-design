@@ -1,6 +1,6 @@
 ## OneUI6 Design Lib and sample app
 
-This design lib is intended to complement and and integrate with both [SESL6 Android Jetpack Modules](https://github.com/tribalfs/sesl-androidx?tab=readme-ov-file#sesloneui-android-jetpack-unofficial) 
+This design lib is intended to complement and integrate with both [SESL6 Android Jetpack Modules](https://github.com/tribalfs/sesl-androidx?tab=readme-ov-file#sesloneui-android-jetpack-unofficial) 
 and [SESL6 Material Components for Android](https://github.com/tribalfs/sesl-material-components-android?tab=readme-ov-file#sesloneui-material-components-for-android-unofficial).
 
 ## Usage
@@ -26,7 +26,7 @@ repositories {
 dependencies {
   //sesl and other dependencies
   
-  implementation("io.github.tribalfs:oneui-design:<latest_version>")
+  implementation("io.github.tribalfs:oneui-design:0.1.0+oneui6")
 }
 ```
 

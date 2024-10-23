@@ -80,19 +80,29 @@ allprojects {
     }
 }
 
+def groupId = "io.github.tribalfs"
+def artifact = "oneui-design"
+
 subprojects {
     afterEvaluate { project ->
         if (!plugins.hasPlugin("maven-publish")) {
             return
         }
 
-        group = "io.github.tribalfs"
+        group = groupId
         version = android.defaultConfig.versionName
+
+        def readmeFile = file("${rootProject.projectDir}/README.md")
+        def readmeContent = new String(readmeFile.bytes)
+        def newVersionString = "$groupId:$artifact:$version"
+        def pattern = ~/io\.github\.tribalfs:oneui-design:\S+oneui\d/
+        new File(readmeFile.path).text = readmeContent.replaceAll(pattern, newVersionString)
+        println "Updated README.md with version: $newVersionString"
 
         publishing {
             publications {
                 mavenJava(MavenPublication) {
-                    artifactId = "oneui-design"
+                    artifactId = artifact
                     afterEvaluate {
                         from components.release
                     }
@@ -115,4 +125,15 @@ subprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+task updateReadme {
+    doLast {
+        def readmeFile = file('README.md')
+        def content = readmeFile.text
+        def newVersionString = "io.github.tribalfs:oneui-design:$versionNumber"
+        def updatedContent = content.replaceAll(/io\.github\.tribalfs:oneui-design:\S+/, newVersionString)
+        readmeFile.text = updatedContent
+        println "Updated README.md with version: $newVersionString"
+    }
 }
