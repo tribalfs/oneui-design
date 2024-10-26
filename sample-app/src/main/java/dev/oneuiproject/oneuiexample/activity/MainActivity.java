@@ -12,18 +12,21 @@ import android.view.MenuItem;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.SeslMenuItem;
 import androidx.core.view.MenuCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.sec.sesl.tester.R;
 import com.sec.sesl.tester.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import dev.oneuiproject.oneui.layout.ToolbarLayout.Badge;
 import dev.oneuiproject.oneui.utils.ActivityUtils;
 import dev.oneuiproject.oneui.widget.TipPopup;
 import dev.oneuiproject.oneuiexample.base.FragmentInfo;
@@ -124,9 +127,22 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        mBinding.drawerLayout.setMenuItemBadge(R.id.menu_add, new Badge.Numeric(1));
+        mBinding.drawerLayout.setMenuItemBadge(R.id.menu_about_app, new Badge.Dot());
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_about_app) {
             startActivity(new Intent(this, AboutActivity.class));
+            return true;
+        }
+        if (item.getItemId() == R.id.menu_add) {
+            Snackbar.make(mBinding.getRoot(), "Add menu clicked!", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("Dismiss", v -> mBinding.drawerLayout.setMenuItemBadge((SeslMenuItem) item, new Badge.None()))
+                    .show();
             return true;
         }
         return false;
@@ -146,6 +162,7 @@ public class MainActivity extends AppCompatActivity
         mBinding.drawerListView.setItemAnimator(null);
         mBinding.drawerListView.setHasFixedSize(true);
         mBinding.drawerListView.seslSetLastRoundedCorner(false);
+        mBinding.drawerLayout.setButtonBadges(new Badge.Dot(), new Badge.Dot());
     }
 
     private void initFragments() {

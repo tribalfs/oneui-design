@@ -4,6 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="AppCompatResource">
 
+
+    <item
+        android:id="@+id/menu_add"
+        android:title="Add"
+        android:icon="@drawable/ic_oui_add"
+        android:visible="true"
+        app:iconTint="?actionMenuTextColor"
+        app:showAsAction="always" />
+
     <item
         android:id="@+id/menu_apppicker_system"
         android:title="Show system apps"
