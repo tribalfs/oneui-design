@@ -13,7 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sec.sesl.tester.R;
 
-import dev.oneuiproject.oneuiexample.utils.TypefaceUtilsKt;
+import dev.oneuiproject.oneui.utils.TypefaceUtilsKt;
+
 
 public class DrawerListViewHolder extends RecyclerView.ViewHolder {
     private final boolean mIsSeparator;

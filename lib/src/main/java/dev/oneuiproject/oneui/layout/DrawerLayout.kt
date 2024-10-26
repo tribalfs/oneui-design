@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package dev.oneuiproject.oneui.layout
 
 import android.annotation.SuppressLint
@@ -35,10 +37,12 @@ import androidx.core.view.updateLayoutParams
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener
 import dev.oneuiproject.oneui.design.R
+import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.utils.ViewUtils
-import java.text.NumberFormat
-import java.util.Locale
+import dev.oneuiproject.oneui.utils.badgeCountToText
 import kotlin.math.max
+import androidx.appcompat.R as appcompatR
+import dev.oneuiproject.oneui.layout.DrawerLayout as OuiDrawerLayout
 
 /**
  * Custom DrawerLayout extending [ToolbarLayout]. Looks and behaves the same as the one in Apps from Samsung.
@@ -112,7 +116,7 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
         if (Build.VERSION.SDK_INT < 35) {
             val sbTypedValue = TypedValue()
             systemBarsColor = if (context.theme.resolveAttribute(
-                    androidx.appcompat.R.attr.roundedCornerColor,
+                    appcompatR.attr.roundedCornerColor,
                     sbTypedValue,
                     true
                 )
@@ -308,45 +312,64 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
      * Set the badges of the navigation button and drawer button.
      * The drawer button is the button in the top right corner of the drawer panel.
      * The badge is small orange circle in the top right of the icon which contains text.
-     * It can either be a 'N' or a number up to 99.
      *
-     * @param navigationIcon [.N_BADGE] to show a 'N', 0 to hide the badge or any number up to 99.
-     * @param drawerIcon     [.N_BADGE] to show a 'N', 0 to hide the badge or any number up to 99.
+     * @param navigationBadge The [badge][dev.oneuiproject.oneui.layout.ToolbarLayout.Badge] to set for navigation button.
+     * @param drawerBadge The [badge][dev.oneuiproject.oneui.layout.ToolbarLayout.Badge] to set for drawer button.
      * @see ToolbarLayout.setNavigationButtonBadge
      */
-    fun setButtonBadges(navigationIcon: Int, drawerIcon: Int) {
-        setNavigationButtonBadge(navigationIcon)
-        setDrawerButtonBadge(drawerIcon)
+    fun setButtonBadges(navigationBadge: Badge, drawerBadge: Badge) {
+        setNavigationButtonBadge(navigationBadge)
+        setDrawerButtonBadge(drawerBadge)
     }
 
     /**
      * Set the badge of the drawer button.
      * The drawer button is the button in the top right corner of the drawer panel.
-     * The badge is small orange circle in the top right of the icon which contains text.
-     * It can either be a 'N' or a number up to 99.
+     * The badge is small orange circle in the top right of the icon.
      *
-     * @param badgeCount [N_BADGE] to show a 'N', 0 to hide the badge or any number up to 99.
+     * @param badge The [badge][dev.oneuiproject.oneui.layout.ToolbarLayout.Badge] to set for drawer button.
      */
-    fun setDrawerButtonBadge(badgeCount: Int) {
-        val count = badgeCount.coerceAtMost(99)
+    fun setDrawerButtonBadge(badge: Badge) {
         if (mHeaderBadge != null) {
-            if (count > 0) {
-                val mNumberFormat: NumberFormat = NumberFormat.getInstance(Locale.getDefault())
-                val badgeText = mNumberFormat.format(count.toLong())
-                mHeaderBadge!!.text = badgeText
+            when (badge) {
+                is Badge.Dot -> {
+                    mHeaderBadge!!.text = ""
+                    val res = resources
+                    mHeaderBadge!!.updateLayoutParams<MarginLayoutParams> {
+                        res.getDimension(appcompatR.dimen.sesl_menu_item_badge_size).toInt().let {
+                            width = it
+                            height = it
+                        }
+                        8.dpToPx(res).let {
+                            marginEnd = it
+                            topMargin = it
+                        }
+                    }
+                    mHeaderBadge!!.visibility = VISIBLE
+                }
 
-                val lp = mHeaderBadge!!.layoutParams
-                lp.width = (resources.getDimension(R.dimen.oui_n_badge_default_width) +
-                        (badgeText.length.toFloat() * resources.getDimension(R.dimen.oui_n_badge_additional_width))).toInt()
-                lp.height = resources.getDimensionPixelSize(R.dimen.oui_n_badge_view_size)
-                mHeaderBadge!!.layoutParams = lp
+                is Badge.None -> {
+                    mHeaderBadge!!.visibility = GONE
+                }
 
-                mHeaderBadge!!.visibility = VISIBLE
-            } else if (count == N_BADGE) {
-                mHeaderBadge!!.text = resources.getString(R.string.oui_new_badge_text)
-                mHeaderBadge!!.visibility = VISIBLE
-            } else {
-                mHeaderBadge!!.visibility = GONE
+                is Badge.Numeric -> {
+                    val badgeText = badge.count.badgeCountToText()!!
+                    mHeaderBadge!!.text = badgeText
+                    mHeaderBadge!!.updateLayoutParams<MarginLayoutParams> {
+                        val res = resources
+                        val defaultWidth: Float =
+                            res.getDimension(appcompatR.dimen.sesl_badge_default_width)
+                        val additionalWidth: Float =
+                            res.getDimension(appcompatR.dimen.sesl_badge_additional_width)
+                        width = (defaultWidth + badgeText.length * additionalWidth).toInt()
+                        height = (defaultWidth + additionalWidth).toInt()
+                        6.dpToPx(res).let {
+                            marginEnd = it
+                            topMargin = it
+                        }
+                    }
+                    mHeaderBadge!!.visibility = VISIBLE
+                }
             }
         } else {
             Log.e(
@@ -482,4 +505,36 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
         private var sIsDrawerOpened = false
 
     }
+}
+
+/**
+ * Set the badge of the drawer button.
+ * The drawer button is the button in the top right corner of the drawer panel.
+ * The badge is small orange circle in the top right of the icon.
+ *
+ * @param badge
+ */
+inline fun OuiDrawerLayout.setDrawerButtonBadge(badge: Badge) {
+    setDrawerButtonBadge(
+        when (badge) {
+            is Badge.NUMERIC -> ToolbarLayout.Badge.Numeric(badge.count)
+            is Badge.DOT -> ToolbarLayout.Badge.Dot()
+            is Badge.NONE -> ToolbarLayout.Badge.None()
+        }
+    )
+}
+
+
+/**
+ * Set the badges of the navigation button and drawer button.
+ * The drawer button is the button in the top right corner of the drawer panel.
+ * The badge is small orange circle in the top right of the icon which contains text.
+ *
+ * @param navigationBadge
+ * @param drawerBadge
+ */
+inline fun OuiDrawerLayout.setButtonBadges(navigationBadge: Badge, drawerBadge: Badge) {
+    setNavigationBadge(navigationBadge)
+    setDrawerButtonBadge(drawerBadge)
+
 }

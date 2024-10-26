@@ -49,14 +49,14 @@
                 android:layout_width="@dimen/oui_n_badge_view_size"
                 android:layout_height="@dimen/oui_n_badge_view_size"
                 android:layout_marginTop="6dp"
-                android:layout_marginEnd="7dp"
+                android:layout_marginEnd="6dp"
                 android:layout_alignTop="@id/drawerlayout_header_button"
                 android:layout_alignEnd="@id/drawerlayout_header_button"
                 android:gravity="center"
                 android:background="@drawable/sesl_noti_badge"
                 android:text="@string/oui_new_badge_text"
-                android:textColor="@color/oui_n_badge_text_color"
-                android:textSize="@dimen/oui_n_badge_text_size"
+                android:textColor="@color/sesl_menu_badge_text_color"
+                android:textSize="@dimen/sesl_menu_item_badge_text_size"
                 android:maxLines="1"
                 android:visibility="gone" />
 

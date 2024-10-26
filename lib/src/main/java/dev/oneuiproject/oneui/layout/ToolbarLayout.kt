@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package dev.oneuiproject.oneui.layout
 
 import android.annotation.SuppressLint
@@ -6,6 +8,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.content.res.Configuration
+import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.os.Build.VERSION
@@ -27,6 +30,7 @@ import android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
+import androidx.annotation.IntRange
 import androidx.annotation.MenuRes
 import androidx.annotation.RestrictTo
 import androidx.appcompat.app.AppCompatActivity
@@ -42,13 +46,13 @@ import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import dev.oneuiproject.oneui.design.R
-import dev.oneuiproject.oneui.layout.ToolbarLayout.Badge.Dot
-import dev.oneuiproject.oneui.layout.ToolbarLayout.Badge.Numeric
+import dev.oneuiproject.oneui.utils.BADGE_LIMIT_NUMBER
+import dev.oneuiproject.oneui.utils.badgeCountToText
 import dev.oneuiproject.oneui.utils.internal.ToolbarLayoutUtils
 import dev.oneuiproject.oneui.view.internal.NavigationBadgeIcon
 import kotlin.math.abs
 import kotlin.math.max
-import androidx.appcompat.R as appCompatR
+import androidx.appcompat.R as appcompatR
 
 /**
  * Custom collapsing Appbar like in any App from Samsung. Includes a [SearchView] and Samsung's ActionMode.
@@ -298,14 +302,13 @@ open class ToolbarLayout @JvmOverloads constructor(
         if (!isInEditMode) ToolbarLayoutUtils
             .hideStatusBarForLandscape(this.activity!!, newConfig.orientation)
 
-        val isLandscape = newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE
+        val isLandscape = newConfig.orientation == ORIENTATION_LANDSCAPE
 
         isExpanded = !isLandscape and mExpanded
 
         if (mNavigationBadgeIcon != null) {
             val badgeIcon = mNavigationBadgeIcon!!
                 .getDrawable(1) as NavigationBadgeIcon
-            badgeIcon.setOrientation(isLandscape)
         }
     }
 
@@ -315,7 +318,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             mAppBarLayout.seslSetCustomHeightProportion(false, 0f)
         } else {
             mAppBarLayout.seslSetCustomHeight(context.resources
-                .getDimensionPixelSize(appCompatR.dimen.sesl_action_bar_height_with_padding))
+                .getDimensionPixelSize(appcompatR.dimen.sesl_action_bar_height_with_padding))
         }
     }
 
@@ -469,7 +472,8 @@ open class ToolbarLayout @JvmOverloads constructor(
             }
         }
 
-    @Deprecated("Use {@link #setMenuItemBadge(int, Badge)}")
+    @Deprecated("Use setMenuItemBadge(Int, Badge) instead.",
+        replaceWith = ReplaceWith("setMenuItemBadge(id, badge)"))
     fun setMenuItemBadge(@IdRes id: Int, text: String?) {
     }
 
@@ -486,9 +490,9 @@ open class ToolbarLayout @JvmOverloads constructor(
         val item = mMainToolbar.menu.findItem(id)
         if (item is SeslMenuItem) {
             when (badge) {
-                is Numeric -> (item as SeslMenuItem).badgeText = badge.count.toString()
-                is Dot -> (item as SeslMenuItem).badgeText = ""
-                else -> (item as SeslMenuItem).badgeText = null
+                is Badge.Numeric -> (item as SeslMenuItem).badgeText = badge.count.toString()
+                is Badge.Dot-> (item as SeslMenuItem).badgeText = ""
+                is Badge.None -> (item as SeslMenuItem).badgeText = null
             }
         }
     }
@@ -516,15 +520,9 @@ open class ToolbarLayout @JvmOverloads constructor(
      */
     fun setNavigationButtonVisible(visible: Boolean) {
         if (mNavigationBadgeIcon != null) {
-            mMainToolbar.navigationIcon = if (visible)
-                mNavigationBadgeIcon
-            else
-                null
+            mMainToolbar.navigationIcon = if (visible) mNavigationBadgeIcon else null
         } else if (mNavigationIcon != null) {
-            mMainToolbar.navigationIcon = if (visible)
-                mNavigationIcon
-            else
-                null
+            mMainToolbar.navigationIcon = if (visible) mNavigationIcon else null
         } else {
             this.activity!!.supportActionBar!!.setDisplayHomeAsUpEnabled(visible)
         }
@@ -533,42 +531,24 @@ open class ToolbarLayout @JvmOverloads constructor(
     /**
      * Add a badge to the navigation button.
      * The badge is small orange circle in the top right of the icon which contains text.
-     * It can either be a 'N' or a number up to 99.
      *
-     * @param count [.N_BADGE] to show a 'N', 0 to hide the badge or any number up to 99.
+     * @param badge The [Badge] to be displayed.
      */
-    fun setNavigationButtonBadge(count: Int) {
+    fun setNavigationButtonBadge(badge: Badge) {
         if (mNavigationIcon != null) {
-            if (count != 0) {
-                val badgeIcon: NavigationBadgeIcon
-                if (mNavigationBadgeIcon == null) {
-                    badgeIcon = NavigationBadgeIcon(context)
-                    mNavigationBadgeIcon = LayerDrawable(
-                        arrayOf(mNavigationIcon!!, badgeIcon)
-                    )
-                } else {
-                    badgeIcon = mNavigationBadgeIcon!!
-                        .getDrawable(1) as NavigationBadgeIcon
+            when(badge){
+                is Badge.Dot, is Badge.Numeric -> {
+                    val badgeIcon = NavigationBadgeIcon(context)
+                    mNavigationBadgeIcon = LayerDrawable(arrayOf(mNavigationIcon!!, badgeIcon))
+                    badgeIcon.setBadge(badge)
+                    mMainToolbar.navigationIcon = mNavigationBadgeIcon
                 }
-
-                badgeIcon.setOrientation(
-                    resources.configuration
-                        .orientation == Configuration.ORIENTATION_LANDSCAPE
-                )
-
-                if (count == N_BADGE) {
-                    badgeIcon.setText(context.resources
-                        .getString(R.string.oui_new_badge_text))
-                } else {
-                    badgeIcon.setText(if (count > 99) "99" else count.toString())
+                is Badge.None -> {
+                    mNavigationBadgeIcon = null
+                    mMainToolbar.navigationIcon = mNavigationIcon
                 }
-
-                mNavigationBadgeIcon!!.invalidateSelf()
-                mMainToolbar.navigationIcon = mNavigationBadgeIcon
-            } else {
-                mNavigationBadgeIcon = null
-                mMainToolbar.navigationIcon = mNavigationIcon
             }
+
         } else Log.d(
             TAG, "setNavigationButtonBadge: no navigation icon" +
                     " has been set"
@@ -621,7 +601,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         animatedVisibility(mSearchToolbar, VISIBLE)
         mFooterContainer!!.visibility = GONE
 
-        mCollapsingToolbarLayout.title = resources.getString(appCompatR.string.sesl_searchview_description_search)
+        mCollapsingToolbarLayout.title = resources.getString(appcompatR.string.sesl_searchview_description_search)
         mCollapsingToolbarLayout.seslSetSubtitle(null)
         setExpanded(expanded = false, animate = true)
 
@@ -741,7 +721,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     private fun updateActionModeMenuVisibility(config: Configuration) {
         if (isActionMode) {
             if (mSelectedItemsCount > 0) {
-                if (switchActionModeMenu && config.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                if (switchActionModeMenu && config.orientation == ORIENTATION_LANDSCAPE) {
                     mBottomActionModeBar!!.visibility = GONE
                     mActionModeToolbar.menu.setGroupVisible(AMT_GROUP_MENU_ID, true)
                 } else {
@@ -780,11 +760,11 @@ open class ToolbarLayout @JvmOverloads constructor(
     /**
      * Set the menu resource for the ActionMode's [BottomNavigationView]
      */
-    @Deprecated("Use {@link #setActionModeMenu(int)}")
+    @Deprecated("Use setActionModeMenu() instead.",
+        ReplaceWith("setActionModeMenu(menuRes)"))
     fun setActionModeBottomMenu(@MenuRes menuRes: Int) {
         mBottomActionModeBar!!.inflateMenu(menuRes)
     }
-
 
     /**
      * Set the menu resource for the ActionMode's [BottomNavigationView].
@@ -903,7 +883,8 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @param count number of selected items in the list
      * @param total number of total items in the list
      */
-    @Deprecated("use {@link #setActionModeAllSelector(int, Boolean, Boolean)}")
+    @Deprecated("Use setActionModeAllSelector() instead.",
+        ReplaceWith("setActionModeAllSelector(count, enabled, checked)"))
     fun setActionModeCount(count: Int, total: Int) {
         mSelectedItemsCount = count
         val title = if (count > 0)
@@ -1013,11 +994,43 @@ open class ToolbarLayout @JvmOverloads constructor(
 
         @RestrictTo(RestrictTo.Scope.LIBRARY)
         internal const val AMT_GROUP_MENU_ID: Int = 9999
-        const val N_BADGE: Int = -1
         private const val MAIN_CONTENT = 0
         private const val APPBAR_HEADER = 1
         private const val FOOTER = 2
         private const val ROOT = 3
 
     }
+}
+
+
+/**
+ * Type-safe way to set badge. Select either [Badge.NUMERIC], [Badge.DOT] or [Badge.NONE]
+ */
+sealed class Badge{
+    /**
+     * @param count Set to any positive integer up to [BADGE_LIMIT_NUMBER].
+     * Values <= 0 will be ignored.
+     */
+    data class NUMERIC(@IntRange(from = 1, to = BADGE_LIMIT_NUMBER.toLong())
+                       @JvmField val count: Int): Badge()
+    data object DOT: Badge()
+    data object NONE: Badge()
+
+    fun toBadgeText(): String? =
+        when(this){
+            is NUMERIC -> count.badgeCountToText()
+            DOT -> ""
+            NONE -> null
+        }
+
+}
+
+inline fun <T:ToolbarLayout>T.setNavigationBadge(badge: Badge){
+    setNavigationButtonBadge(
+        when (badge) {
+            is Badge.NUMERIC -> ToolbarLayout.Badge.Numeric(badge.count)
+            is Badge.DOT -> ToolbarLayout.Badge.Dot()
+            is Badge.NONE -> ToolbarLayout.Badge.None()
+        }
+    )
 }

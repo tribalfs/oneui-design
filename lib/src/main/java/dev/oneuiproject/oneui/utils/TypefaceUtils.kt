@@ -1,4 +1,4 @@
-package dev.oneuiproject.oneuiexample.utils
+package dev.oneuiproject.oneui.utils
 
 import android.graphics.Typeface
 import android.os.Build

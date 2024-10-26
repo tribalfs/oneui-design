@@ -44,10 +44,6 @@
     <color name="oui_grid_menu_dialog_item_ripple_color">#1a000000</color>
     <color name="oui_grid_menu_dialog_item_icon_text_color">#ff252525</color>
 
-    <!-- ToolbarLayout -->
-    <color name="oui_n_badge_background_color">#ffef5e16</color>
-    <color name="oui_n_badge_text_color">@color/sesl_white</color>
-
     <!-- DrawerLayout -->
     <color name="oui_drawerlayout_drawer_dim_color">#33000000</color>
     <color name="oui_drawerlayout_header_icon_color">#ff676768</color>
