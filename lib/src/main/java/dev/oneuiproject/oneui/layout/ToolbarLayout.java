@@ -319,12 +319,12 @@ public class ToolbarLayout extends LinearLayout {
     };
 
     private void refreshLayout(Configuration newConfig) {
+        removeCallbacks(sideMarginUpdater);
+        postDelayed(sideMarginUpdater, 40);
+
         if (!isInEditMode())
             ToolbarLayoutUtils
                     .hideStatusBarForLandscape(mActivity, newConfig.orientation);
-
-        removeCallbacks(sideMarginUpdater);
-        postDelayed(sideMarginUpdater, 40);
 
         final boolean isLandscape
                 = newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE;
