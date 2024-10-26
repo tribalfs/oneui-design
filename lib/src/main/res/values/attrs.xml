@@ -130,4 +130,15 @@
         <!-- Allow the thumb to be draggable seamlessly-->
         <attr name="seamless" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="QRImageView">
+        <attr name="qrContent" format="string" />
+        <attr name="qrSize" format="dimension"/>
+        <attr name="qrRoundedBorder" format="boolean"/>
+        <attr name="qrIcon" format="reference" />
+        <attr name="qrBackgroundColor" format="color" />
+        <attr name="qrForegroundColor" format="color" />
+        <attr name="qrTintBorder" format="boolean"/>
+        <attr name="qrTintAnchor" format="boolean"/>
+    </declare-styleable>
 </resources>
