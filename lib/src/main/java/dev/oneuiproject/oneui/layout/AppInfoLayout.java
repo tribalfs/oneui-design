@@ -89,9 +89,9 @@ public class AppInfoLayout extends ToolbarLayout {
         super(context, attrs);
         setNavigationButtonAsBack();
         if (!isInEditMode()) {
-            mActivity.setSupportActionBar(null);
+            getActivity().setSupportActionBar(null);
         }
-        LayoutInflater.from(mContext)
+        LayoutInflater.from(context)
                 .inflate(R.layout.oui_layout_app_info, mMainContainer, true);
         mAILContainer = findViewById(R.id.app_info_lower_layout);
         mAppNameTextView = findViewById(R.id.app_info_name);
@@ -129,14 +129,14 @@ public class AppInfoLayout extends ToolbarLayout {
         super.initLayoutAttrs(attrs);
         mTitleExpanded = mTitleCollapsed = null;
 
-        TypedArray a = mContext.getTheme().obtainStyledAttributes(attrs, R.styleable.ToolbarLayout, 0, 0);
+        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ToolbarLayout, 0, 0);
         try {
             mExpanded = a.getBoolean(R.styleable.ToolbarLayout_expanded, false);
             mAppName = a.getString(R.styleable.ToolbarLayout_title);
         } finally {
             a.recycle();
         }
-        if (mAppName == null) mAppName = mContext.getString(R.string.app_name);
+        if (mAppName == null) mAppName = context.getString(R.string.app_name);
     }
 
     private void setLayoutMargins() {
@@ -153,11 +153,11 @@ public class AppInfoLayout extends ToolbarLayout {
     private void setVersionText() {
         String version = "unknown";
         if ((!isInEditMode())) try {
-            version = mContext.getPackageManager().getPackageInfo(
-                    mContext.getApplicationContext().getPackageName(), 0).versionName;
+            version = context.getPackageManager().getPackageInfo(
+                    context.getApplicationContext().getPackageName(), 0).versionName;
         } catch (PackageManager.NameNotFoundException ignored) {
         }
-        mVersionTextView.setText(mContext.getString(R.string.version_info, version));
+        mVersionTextView.setText(context.getString(R.string.version_info, version));
     }
 
     /**
@@ -173,7 +173,7 @@ public class AppInfoLayout extends ToolbarLayout {
         if (mAILContainer == null) {
             super.addView(child, index, params);
         } else {
-            if (((ToolbarLayoutParams) params).layout_location == MAIN_CONTENT) {
+            if (((ToolbarLayoutParams) params).getLayoutLocation() == MAIN_CONTENT) {
                 mAILContainer.addView(child, params);
                 if (child instanceof Button) initButtonWidth((Button) child);
             } else {
@@ -203,21 +203,21 @@ public class AppInfoLayout extends ToolbarLayout {
                 mProgressBar.setVisibility(GONE);
                 mUpdateNotice.setVisibility(VISIBLE);
                 mUpdateButton.setVisibility(VISIBLE);
-                mUpdateNotice.setText(mContext.getText(R.string.new_version_is_available));
-                mUpdateButton.setText(mContext.getText(R.string.update));
+                mUpdateNotice.setText(context.getText(R.string.new_version_is_available));
+                mUpdateButton.setText(context.getText(R.string.update));
                 break;
             case NO_UPDATE:
                 mProgressBar.setVisibility(GONE);
                 mUpdateNotice.setVisibility(VISIBLE);
                 mUpdateButton.setVisibility(GONE);
-                mUpdateNotice.setText(mContext.getText(R.string.latest_version));
+                mUpdateNotice.setText(context.getText(R.string.latest_version));
                 break;
             case NO_CONNECTION:
                 mProgressBar.setVisibility(GONE);
                 mUpdateNotice.setVisibility(VISIBLE);
                 mUpdateButton.setVisibility(VISIBLE);
-                mUpdateNotice.setText(mContext.getText(R.string.cant_check_for_updates_phone));
-                mUpdateButton.setText(mContext.getText(R.string.retry));
+                mUpdateNotice.setText(context.getText(R.string.cant_check_for_updates_phone));
+                mUpdateButton.setText(context.getText(R.string.retry));
                 break;
         }
     }
@@ -245,10 +245,10 @@ public class AppInfoLayout extends ToolbarLayout {
      */
     public TextView addOptionalText(CharSequence text) {
         LinearLayout parent = findViewById(R.id.app_info_upper_layout);
-        TextView optionalText = new TextView(mContext);
+        TextView optionalText = new TextView(context);
         optionalText.setText(text);
         optionalText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        optionalText.setTextColor(mContext.getColor(R.color.oui_appinfolayout_info_text_color));
+        optionalText.setTextColor(context.getColor(R.color.oui_appinfolayout_info_text_color));
         optionalText.setTextAlignment(TEXT_ALIGNMENT_CENTER);
         optionalText.setLayoutParams(mVersionTextView.getLayoutParams());
         parent.addView(optionalText, parent.indexOfChild(mProgressBar));
@@ -260,9 +260,9 @@ public class AppInfoLayout extends ToolbarLayout {
      */
     private void openSettingsAppInfo() {
         Intent intent = new Intent("android.settings.APPLICATION_DETAILS_SETTINGS",
-                Uri.fromParts("package", mContext.getPackageName(), null));
+                Uri.fromParts("package", context.getPackageName(), null));
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        mContext.startActivity(intent);
+        context.startActivity(intent);
     }
 
     /**

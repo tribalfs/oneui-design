@@ -24,7 +24,6 @@ import android.widget.TextView
 import android.window.OnBackInvokedCallback
 import android.window.OnBackInvokedDispatcher
 import androidx.annotation.Dimension
-import androidx.annotation.IntRange
 import androidx.annotation.Px
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageButton
@@ -64,7 +63,7 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
 
         if (!isInEditMode) {
             ViewUtils.semSetRoundedCorners(
-                mActivity.window.decorView,
+                activity!!.window.decorView,
                 ViewUtils.SEM_ROUNDED_CORNER_NONE
             )
         }
@@ -72,7 +71,7 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
 
     override fun initLayoutAttrs(attrs: AttributeSet?) {
         super.initLayoutAttrs(attrs)
-        mContext.theme.obtainStyledAttributes(
+        context.theme.obtainStyledAttributes(
             attrs, R.styleable.ToolbarLayout, 0, 0).use {
             mLayout = it.getResourceId(
                 R.styleable.ToolbarLayout_android_layout,
@@ -85,15 +84,15 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
         if (mLayout != R.layout.oui_layout_drawerlayout) {
             Log.w(TAG, "Inflating custom $TAG")
         }
-        LayoutInflater.from(mContext)
+        LayoutInflater.from(context)
             .inflate(mLayout, this, true)
     }
 
     private fun initDrawer() {
-        setNavigationButtonIcon(ContextCompat.getDrawable(mContext, R.drawable.oui_ic_ab_drawer))
+        setNavigationButtonIcon(ContextCompat.getDrawable(context, R.drawable.oui_ic_ab_drawer))
         setNavigationButtonTooltip(resources.getText(R.string.oui_navigation_drawer))
 
-        val scrimColor = mContext.getColor(R.color.oui_drawerlayout_drawer_dim_color)
+        val scrimColor = context.getColor(R.color.oui_drawerlayout_drawer_dim_color)
 
         mDrawer = findViewById<DrawerLayout?>(R.id.drawerlayout_drawer).apply {
             setScrimColor(scrimColor)
@@ -112,7 +111,7 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
 
         if (Build.VERSION.SDK_INT < 35) {
             val sbTypedValue = TypedValue()
-            systemBarsColor = if (mContext.theme.resolveAttribute(
+            systemBarsColor = if (context.theme.resolveAttribute(
                     androidx.appcompat.R.attr.roundedCornerColor,
                     sbTypedValue,
                     true
@@ -120,7 +119,7 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
             ) {
                 sbTypedValue.data
             } else {
-                ContextCompat.getColor(mContext, R.color.oui_round_and_bgcolor)
+                ContextCompat.getColor(context, R.color.oui_round_and_bgcolor)
             }
         }
 
@@ -149,7 +148,7 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
         if (mToolbarContent == null || mDrawerContainer == null) {
             super.addView(child, index, params)
         } else {
-            when ((params as ToolbarLayoutParams).layout_location) {
+            when ((params as ToolbarLayoutParams).layoutLocation) {
                 DRAWER_HEADER -> {
                     mDrawerContent.removeView(mHeaderView)
                     mHeaderButton = null
@@ -185,7 +184,7 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
     }
 
     private fun setDrawerWidth() {
-        val wm = mContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val display = wm.defaultDisplay
         val size = Point()
         display.getSize(size)
@@ -263,7 +262,7 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
         if (mHeaderButton != null) {
             mHeaderButton!!.setImageDrawable(icon)
             mHeaderButton!!.imageTintList = ColorStateList.valueOf(
-                mContext.getColor(R.color.oui_drawerlayout_header_icon_color)
+                context.getColor(R.color.oui_drawerlayout_header_icon_color)
             )
             mHeaderView.visibility =
                 if (icon != null) VISIBLE else GONE
@@ -326,7 +325,7 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
      * The badge is small orange circle in the top right of the icon which contains text.
      * It can either be a 'N' or a number up to 99.
      *
-     * @param count [N_BADGE] to show a 'N', 0 to hide the badge or any number up to 99.
+     * @param badgeCount [N_BADGE] to show a 'N', 0 to hide the badge or any number up to 99.
      */
     fun setDrawerButtonBadge(badgeCount: Int) {
         val count = badgeCount.coerceAtMost(99)
@@ -392,7 +391,6 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
             ignoreBackGesture(slideOffset > 0 && slideOffset < 1)
 
             val translationView = findViewById<View>(R.id.drawer_custom_translation)
-            val window = mActivity.window
 
             val slideX = drawerView.width * slideOffset * if (isRtl()) -1f else 1f
             if (translationView != null) translationView.translationX = slideX
@@ -402,10 +400,12 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
                 val hsv = FloatArray(3)
                 Color.colorToHSV(systemBarsColor, hsv)
                 hsv[2] *= 1f - (slideOffset * scrimAlpha)
-                @Suppress("DEPRECATION")
-                window.statusBarColor = Color.HSVToColor(hsv)
-                @Suppress("DEPRECATION")
-                window.navigationBarColor = Color.HSVToColor(hsv)
+                activity!!.window.apply {
+                    @Suppress("DEPRECATION")
+                    statusBarColor = Color.HSVToColor(hsv)
+                    @Suppress("DEPRECATION")
+                    navigationBarColor = Color.HSVToColor(hsv)
+                }
             }
         }
 

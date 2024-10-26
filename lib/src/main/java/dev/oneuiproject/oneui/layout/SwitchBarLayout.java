@@ -27,7 +27,7 @@ public class SwitchBarLayout extends ToolbarLayout {
     public SwitchBarLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        LayoutInflater.from(mContext)
+        LayoutInflater.from(context)
                 .inflate(R.layout.oui_layout_switchbarlayout, mMainContainer, true);
         mSwitchBar = findViewById(R.id.switchbarlayout_switchbar);
         mSBLContainer = findViewById(R.id.switchbarlayout_container);
@@ -38,7 +38,7 @@ public class SwitchBarLayout extends ToolbarLayout {
         if (mSBLContainer == null) {
             super.addView(child, index, params);
         } else {
-            if (((ToolbarLayoutParams) params).layout_location == MAIN_CONTENT) {
+            if (((ToolbarLayoutParams) params).getLayoutLocation() == MAIN_CONTENT) {
                 mSBLContainer.addView(child, params);
             } else {
                 super.addView(child, index, params);
