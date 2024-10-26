@@ -1,5 +1,6 @@
 package dev.oneuiproject.oneui.layout;
 
+import static android.window.OnBackInvokedDispatcher.PRIORITY_OVERLAY;
 import static androidx.drawerlayout.widget.DrawerLayout.LOCK_MODE_LOCKED_CLOSED;
 import static androidx.drawerlayout.widget.DrawerLayout.LOCK_MODE_UNLOCKED;
 
@@ -28,12 +29,13 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.window.OnBackInvokedCallback;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.TooltipCompat;
 import androidx.core.content.ContextCompat;
@@ -406,9 +408,12 @@ public class DrawerLayout extends ToolbarLayout {
 
     private class DrawerListener
             extends androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener {
+
         @Override
         public void onDrawerSlide(View drawerView, float slideOffset) {
             super.onDrawerSlide(drawerView, slideOffset);
+
+            ignoreBackGesture(slideOffset > 0 && slideOffset < 1);
 
             View translationView = findViewById(R.id.drawer_custom_translation);
             Window window = mActivity.getWindow();
@@ -431,12 +436,42 @@ public class DrawerLayout extends ToolbarLayout {
         public void onDrawerOpened(View drawerView) {
             super.onDrawerOpened(drawerView);
             sIsDrawerOpened = true;
+            ignoreBackGesture(false);
         }
 
         @Override
         public void onDrawerClosed(View drawerView) {
             super.onDrawerClosed(drawerView);
             sIsDrawerOpened = false;
+            ignoreBackGesture(false);
+        }
+
+        @RequiresApi(33)
+        private OnBackInvokedCallback dummyCallback = null;
+
+        private void ignoreBackGesture(Boolean ignore) {
+            if (Build.VERSION.SDK_INT >= 33) {
+                if (ignore) {
+                    if (dummyCallback == null) {
+                        dummyCallback = new DummyCallback();
+                        findOnBackInvokedDispatcher().registerOnBackInvokedCallback(PRIORITY_OVERLAY, dummyCallback);
+                    }
+                }else{
+                    if (dummyCallback != null) {
+                        findOnBackInvokedDispatcher().unregisterOnBackInvokedCallback(dummyCallback);
+                        dummyCallback = null;
+                    }
+                }
+            }
+        }
+
+        @RequiresApi(33)
+        private static class DummyCallback implements OnBackInvokedCallback {
+            public DummyCallback() {
+            }
+
+            @Override
+            public void onBackInvoked() {}
         }
     }
 
