@@ -71,35 +71,13 @@ public class PreferenceUtils {
         }
     }
 
+    @Deprecated
     public void applyThemeRoundedCornerColor(@NonNull PreferenceFragmentCompat preferenceFragment){
-        TypedValue typedValue = new TypedValue();
-        if (preferenceFragment.getContext().getTheme().resolveAttribute(androidx.appcompat.R.attr.roundedCornerColor, typedValue, true)) {
-            int roundColor = typedValue.data;
-            setPreferenceRoundedCornerColor(preferenceFragment, roundColor);
-        }
+        //Not anymore needed
     }
 
+    @Deprecated
     public void setPreferenceRoundedCornerColor(@NonNull PreferenceFragmentCompat preferenceFragment, @ColorInt int color){
-        try {
-            Field[] fieldList = PreferenceFragmentCompat.class.getDeclaredFields();
-            for (Field f : fieldList) {
-                Class<?> fieldType = f.getType();
-                if (fieldType.getSimpleName().equals(SeslRoundedCorner.class.getSimpleName())) {
-                    f.setAccessible(true);
-                    SeslRoundedCorner roundedCorner = (SeslRoundedCorner) f.get(preferenceFragment);
-                    if (roundedCorner != null) {
-                        roundedCorner.setRoundedCornerColor(SeslRoundedCorner.ROUNDED_CORNER_ALL, color);
-                    }
-                } else if (fieldType.getSimpleName().equals(SeslSubheaderRoundedCorner.class.getSimpleName())) {
-                    f.setAccessible(true);
-                    SeslSubheaderRoundedCorner subheaderRoundedCorner = (SeslSubheaderRoundedCorner) f.get(preferenceFragment);
-                    if (subheaderRoundedCorner != null) {
-                        subheaderRoundedCorner.setRoundedCornerColor(SeslSubheaderRoundedCorner.ROUNDED_CORNER_ALL, color);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            Log.e(TAG, Log.getStackTraceString(e));
-        }
+        //Not anymore needed
     }
 }
