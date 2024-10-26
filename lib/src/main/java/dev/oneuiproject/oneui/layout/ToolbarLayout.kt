@@ -480,6 +480,22 @@ open class ToolbarLayout @JvmOverloads constructor(
     /**
      * Sets the badge of a Toolbar MenuItem.
      *
+     * Important: Requires sesl.androidx.appcompat:1.7.0+1.0.34-sesl6+rev0 or higher
+     *
+     * @param menuItem The menuItem to set the badge
+     * @param badge The [Badge] to be set.
+     */
+    fun setMenuItemBadge(menuItem: SeslMenuItem, badge: Badge) {
+        when (badge) {
+            is Badge.Numeric -> menuItem.badgeText = badge.count.toString()
+            is Badge.Dot-> menuItem.badgeText = ""
+            is Badge.None -> menuItem.badgeText = null
+        }
+    }
+
+    /**
+     * Sets the badge of a Toolbar MenuItem.
+     * This should be invoked after the MenuItem is inflated.
      *
      * Important: Requires sesl.androidx.appcompat:1.7.0+1.0.34-sesl6+rev0 or higher
      *
@@ -489,11 +505,10 @@ open class ToolbarLayout @JvmOverloads constructor(
     fun setMenuItemBadge(@IdRes id: Int, badge: Badge) {
         val item = mMainToolbar.menu.findItem(id)
         if (item is SeslMenuItem) {
-            when (badge) {
-                is Badge.Numeric -> (item as SeslMenuItem).badgeText = badge.count.toString()
-                is Badge.Dot-> (item as SeslMenuItem).badgeText = ""
-                is Badge.None -> (item as SeslMenuItem).badgeText = null
-            }
+            setMenuItemBadge(item, badge)
+        }else{
+            Log.e(TAG, "setMenuItemBadge: MenuItem with id $id not found. " +
+                    "Ensure that it's already instantiated.")
         }
     }
 
