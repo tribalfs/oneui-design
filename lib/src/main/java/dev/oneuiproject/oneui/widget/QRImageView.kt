@@ -41,7 +41,6 @@ class QRImageView @JvmOverloads constructor(
                         roundedFrame(roundedBorder)
                         setBackgroundColor(bgColor)
                         setForegroundColor(fgColor, tintAnchor, tintBorder)
-                        generate()
                     }
 
                 setImageBitmap(
