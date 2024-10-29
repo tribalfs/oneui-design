@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             app:qrContent="https://github.com/tribalfs/sesl-material-components-android"
-            app:qrRoundedBorder="false"/>
+            app:qrRoundedFrame="false"/>
 
         <dev.oneuiproject.oneui.widget.QRImageView
             android:id="@+id/qr_image_3"
@@ -41,8 +41,8 @@
             app:qrContent="https://github.com/tribalfs/oneui-design"
             app:qrForegroundColor="#666999"
             app:qrTintAnchor="true"
-            app:qrTintBorder="true"
-            app:qrRoundedBorder="true"/>
+            app:qrTintFrame="true"
+            app:qrRoundedFrame="true"/>
 
         <dev.oneuiproject.oneui.widget.QRImageView
             android:id="@+id/qr_image_4"

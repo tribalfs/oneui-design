@@ -46,7 +46,7 @@ class QREncoder(private val mContext: Context, private val mContent: String) {
      */
     fun setSize(@Px size: Int) = apply { this.mSize = size }
 
-    @Deprecated("Use roundedBorder() instead.", ReplaceWith("roundedFrame(apply)"))
+    @Deprecated("Use roundedFrame() instead.", ReplaceWith("roundedFrame(apply)"))
     fun setFrame(frame: Boolean) = apply { this.mFrame = frame }
 
     /**

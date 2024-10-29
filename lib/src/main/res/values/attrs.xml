@@ -134,11 +134,11 @@
     <declare-styleable name="QRImageView">
         <attr name="qrContent" format="string" />
         <attr name="qrSize" format="dimension"/>
-        <attr name="qrRoundedBorder" format="boolean"/>
+        <attr name="qrRoundedFrame" format="boolean"/>
         <attr name="qrIcon" format="reference" />
         <attr name="qrBackgroundColor" format="color" />
         <attr name="qrForegroundColor" format="color" />
-        <attr name="qrTintBorder" format="boolean"/>
+        <attr name="qrTintFrame" format="boolean"/>
         <attr name="qrTintAnchor" format="boolean"/>
     </declare-styleable>
 </resources>

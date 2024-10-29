@@ -27,24 +27,24 @@ class QRImageView @JvmOverloads constructor(
                 val bgColor = a.getColor(R.styleable.QRImageView_qrBackgroundColor, Color.parseColor("#fcfcfc"))
                 val fgColor = a.getColor(R.styleable.QRImageView_qrForegroundColor, Color.BLACK)
                 val icon = a.getDrawable(R.styleable.QRImageView_qrIcon)
-                val roundedBorder = a.getBoolean(R.styleable.QRImageView_qrRoundedBorder, true)
+                val roundedFrame = a.getBoolean(R.styleable.QRImageView_qrRoundedFrame, true)
                 val size = a.getDimensionPixelSize(R.styleable.QRImageView_qrSize, -1)
                 val tintAnchor = a.getBoolean(R.styleable.QRImageView_qrTintAnchor, false)
-                val tintBorder = a.getBoolean(R.styleable.QRImageView_qrTintBorder, false)
+                val tintFrame = a.getBoolean(R.styleable.QRImageView_qrTintFrame, false)
 
-                val builder = QREncoder(context, content ?: "")
+                val qrEncoder = QREncoder(context, content ?: "")
                     .apply {
                         if (size != -1) {
                             setSize(size)
                         }
                         setIcon(icon)
-                        roundedFrame(roundedBorder)
+                        roundedFrame(roundedFrame)
                         setBackgroundColor(bgColor)
-                        setForegroundColor(fgColor, tintAnchor, tintBorder)
+                        setForegroundColor(fgColor, tintAnchor, tintFrame)
                     }
 
                 setImageBitmap(
-                    builder.generate()
+                    qrEncoder.generate()
                 )
             }
         }
