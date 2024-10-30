@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void handleOnBackPressed() {
             onDrawerItemSelected(0);
+            ((DrawerListAdapter)mBinding.drawerListView.getAdapter()).setSelectedItem(0);
         }
     };
 
