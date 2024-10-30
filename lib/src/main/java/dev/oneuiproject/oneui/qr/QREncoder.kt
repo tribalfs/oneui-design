@@ -21,16 +21,16 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import com.google.zxing.qrcode.encoder.ByteMatrix
 import com.google.zxing.qrcode.encoder.Encoder
 import dev.oneuiproject.oneui.design.R
-import dev.oneuiproject.oneui.ktx.dpToPx
+import dev.oneuiproject.oneui.ktx.dpToPxFactor
 import java.util.Hashtable
 
 class QREncoder(private val mContext: Context, private val mContent: String) {
 
-    private val dpToPx = 1.dpToPx(mContext.resources)
+    private val dpToPx = mContext.dpToPxFactor
 
-    private var mSize: Int = 200 * dpToPx
+    private var mSize = (200 * dpToPx).toInt()
     private var mIcon: Drawable? = null
-    private val mIconSize: Int = 40 * dpToPx
+    private val mIconSize = (40 * dpToPx).toInt()
     private var mFrame = true
 
     private var mFGColor = Color.BLACK
@@ -128,9 +128,9 @@ class QREncoder(private val mContext: Context, private val mContent: String) {
         val canvas = Canvas(qrcode)
         val paint = paint
         paint.color = mFGColor
-        val width = ((qrcode.width * 1.0) / byteMatrix.width).toFloat()
-        val radius = (0.382 * width.toDouble()).toFloat()
-        val offset = (width.toDouble() / 2.0).toFloat()
+        val width = (qrcode.width * 1.0f) / byteMatrix.width
+        val radius = 0.382f * width
+        val offset = width / 2.0f
         for (i in 0 until byteMatrix.height) {
             for (i2 in 0 until byteMatrix.width) {
                 if (byteMatrix[i2, i].toInt() == 1) {
@@ -146,23 +146,23 @@ class QREncoder(private val mContext: Context, private val mContent: String) {
         val height = qrcode.height
 
         val anchorWidth =
-            (getAnchorWidth(byteMatrix) * (((width * 1.0) / byteMatrix.width).toFloat())).toInt()
+            (getAnchorWidth(byteMatrix) * (((width * 1.0f) / byteMatrix.width)))
         val paint = paint
         val canvas = Canvas(qrcode)
-        canvas.drawRect(RectF(0.0f, 0.0f, anchorWidth.toFloat(), anchorWidth.toFloat()), paint)
+        canvas.drawRect(RectF(0.0f, 0.0f, anchorWidth, anchorWidth), paint)
         canvas.drawRect(
             RectF(
-                (width - anchorWidth).toFloat(),
+                (width - anchorWidth),
                 0.0f,
                 width.toFloat(),
-                anchorWidth.toFloat()
+                anchorWidth
             ), paint
         )
         canvas.drawRect(
             RectF(
                 0.0f,
-                (height - anchorWidth).toFloat(),
-                anchorWidth.toFloat(),
+                (height - anchorWidth),
+                anchorWidth,
                 height.toFloat()
             ), paint
         )
@@ -174,39 +174,37 @@ class QREncoder(private val mContext: Context, private val mContent: String) {
             anchorTint.setColorFilter(PorterDuffColorFilter(mFGColor, PorterDuff.Mode.SRC_IN))
         }
 
-        val scaleBitmap = getScaleBitmap(anchor, (anchorWidth.toFloat()) / anchor.width)
+        val scaleBitmap = getScaleBitmap(anchor, (anchorWidth) / anchor.width)
         canvas.drawBitmap(scaleBitmap, 0.0f, 0.0f, anchorTint)
-        canvas.drawBitmap(scaleBitmap, (width - anchorWidth).toFloat(), 0.0f, anchorTint)
-        canvas.drawBitmap(scaleBitmap, 0.0f, (height - anchorWidth).toFloat(), anchorTint)
+        canvas.drawBitmap(scaleBitmap, (width - anchorWidth), 0.0f, anchorTint)
+        canvas.drawBitmap(scaleBitmap, 0.0f, (height - anchorWidth), anchorTint)
         scaleBitmap.recycle()
         anchor.recycle()
     }
 
     private fun getAnchorWidth(byteMatrix: ByteMatrix): Int {
         var i = 0
-        var i2 = 0
-        while (i2 < byteMatrix.width && byteMatrix[i2, 0].toInt() == 1) {
+        while (i < byteMatrix.width && byteMatrix[i, 0].toInt() == 1) {
             i++
-            i2++
         }
         return i
     }
 
-private fun drawIcon(qrCode: Bitmap) {
+    private fun drawIcon(qrCode: Bitmap) {
         val height = mIconSize
         val width = mIconSize
 
         val iconTop = (qrCode.height / 2) - (height / 2)
         val iconLeft = (qrCode.width / 2) - (width / 2)
-        val iconRadius = 20 * dpToPx
-        val iconPadding = 5 * dpToPx
+        val iconRadius = (20f * dpToPx).toInt()
+        val iconPadding = (5f * dpToPx).toInt()
         val canvas = Canvas(qrCode)
         val paint = paint
         val rectF = RectF(
-            (iconLeft - iconPadding).toFloat(),
-            (iconTop - iconPadding).toFloat(),
-            (width + iconLeft + iconPadding).toFloat(),
-            (height + iconTop + iconPadding).toFloat()
+            ((iconLeft - iconPadding).toFloat()),
+            ((iconTop - iconPadding).toFloat()),
+            ((width + iconLeft + iconPadding).toFloat()),
+            ((height + iconTop + iconPadding).toFloat())
         )
         canvas.drawRoundRect(rectF, iconRadius.toFloat(), iconRadius.toFloat(), paint)
         mIcon!!.setBounds(iconLeft, iconTop, iconLeft + width, iconTop + height)
@@ -214,8 +212,8 @@ private fun drawIcon(qrCode: Bitmap) {
     }
 
     private fun addFrame(qrcode: Bitmap): Bitmap {
-        val border = 12 * dpToPx
-        val radius= 32 * dpToPx
+        val border = (12 * dpToPx).toInt()
+        val radius= (32 * dpToPx).toInt()
 
         val newWidth = qrcode.width + border * 2
         val newHeight = qrcode.height + border * 2
