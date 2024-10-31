@@ -64,11 +64,29 @@ open class ToolbarLayout @JvmOverloads constructor(
     @JvmField protected var context: Context,
     attrs: AttributeSet? = null) : LinearLayout(context, attrs) {
 
+    @Deprecated("Use the `ActionModeListener` parameter when calling StartActionMode() instead.")
     interface ActionModeCallback {
         fun onShow(toolbarLayout: ToolbarLayout?)
         fun onDismiss(toolbarLayout: ToolbarLayout?)
     }
 
+    interface ActionModeListener {
+        /** Called at the start of [startActionMode].
+         * @param menu The [Menu] to be used for action menu items.
+         * Inflate the menu items for this action mode session using this menu.
+         * @see onMenuItemClicked */
+        fun onInflateActionMenu(menu: Menu)
+
+        /** Called when the current action mode session is ended.*/
+        fun onEndActionMode()
+
+        /** Called when an action mode menu item is clicked.
+         * @see onInflateActionMenu*/
+        fun onMenuItemClicked(item: MenuItem): Boolean
+
+        /** Called when the 'All' selector is clicked. This will not be triggered with [setActionModeAllSelector].*/
+        fun onSelectAll(isChecked: Boolean)
+    }
 
     var activity: AppCompatActivity? = null
         get() {
@@ -88,10 +106,12 @@ open class ToolbarLayout @JvmOverloads constructor(
 
 
     private var mAMTMenuShowAlwaysMax = 2
-    private var switchActionModeMenu = false
     private var mSelectedItemsCount = 0
 
+    @Deprecated("Replaced with mActionModeCallBack")
     private var mActionModeCallback: ActionModeCallback? = null
+    private var mActionModeListener: ActionModeListener? = null
+    private var mActionModeMenuRes: Int = 0
 
     private val mOnBackPressedCallback = object : OnBackPressedCallback(false) {
         override fun handleOnBackPressed() {
@@ -142,6 +162,8 @@ open class ToolbarLayout @JvmOverloads constructor(
     private var mSearchToolbar: Toolbar? = null
     private lateinit var mSearchView: SearchView
     private var mSearchModeListener: SearchModeListener? = null
+    @Deprecated("Replaced with mActionModeCallBack")
+    private var mOnSelectAllListener: CompoundButton.OnCheckedChangeListener? = null
 
     /**
      * Check if SearchMode is enabled(=the [SearchView] in the Toolbar is visible).
@@ -598,7 +620,7 @@ open class ToolbarLayout @JvmOverloads constructor(
      */
     open fun showSearchMode() {
         isSearchMode = true
-        if (isActionMode) dismissActionMode()
+        if (isActionMode) endActionMode()
         ensureSearchModeViews()
         mOnBackPressedCallback.isEnabled = true
         animatedVisibility(mMainToolbar, GONE)
@@ -670,6 +692,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     /**
      * Set the [SearchModeListener] for the Toolbar's SearchMode.
      */
+    @Deprecated("TODO")
     fun setSearchModeListener(listener: SearchModeListener?) {
         mSearchModeListener = listener
     }
@@ -689,7 +712,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         mAMTMenuShowAlwaysMax = max
     }
 
-
+    @Deprecated("Use the `ActionModeListener` param when calling StartActionMode() instead.")
     fun setOnActionModeListener(callback: ActionModeCallback?) {
         mActionModeCallback = callback
     }
@@ -699,31 +722,24 @@ open class ToolbarLayout @JvmOverloads constructor(
     // Action Mode methods
     //
     /**
-     * Show the Toolbar's ActionMode. This will show a 'All' Checkbox instead of the navigation button,
-     * temporarily replace the Toolbar's title with a counter ('x selected')
-     * and show a [BottomNavigationView] in the footer.
-     * The ActionMode is useful when the user can select items in a list.
+     * Starts an Action Mode session. This shows the Toolbar's ActionMode with a toggleable 'All' Checkbox
+     * and a counter ('x selected') that temporarily replaces the Toolbar's title.
      *
-     * @see .setActionModeCount
-     * @see .setActionModeCheckboxListener
-     * @see .setActionModeMenu
-     * @see .setActionModeMenuListener
-     * @see .setActionModeToolbarMenu
-     * @see .setActionModeToolbarMenuListener
-     * @see .setActionModeBottomMenu
-     * @see .setActionModeBottomMenuListener
+     * @param listener The [ActionModeListener] to be invoke for this action mode.
+     *
+     * @see [endActionMode]
      */
-    open fun showActionMode() {
+    open fun startActionMode(listener: ActionModeListener){
+        Log.d(TAG, "startActionMode")
         ensureActionModeViews()
         isActionMode = true
+        mActionModeListener = listener
         if (isSearchMode) dismissSearchMode()
-        mOnBackPressedCallback.isEnabled = true
+
         animatedVisibility(mMainToolbar, GONE)
         animatedVisibility(mActionModeToolbar!!, VISIBLE)
         mFooterContainer!!.visibility = GONE
-        mBottomActionModeBar!!.visibility = VISIBLE
-
-        // setActionModeCount(0, -1);
+        setupActionModeMenu()
         mAppBarLayout.addOnOffsetChangedListener(
             AppBarOffsetListener().also {
                 mActionModeTitleFadeListener = it
@@ -734,8 +750,111 @@ open class ToolbarLayout @JvmOverloads constructor(
 
         updateActionModeMenuVisibility(context.resources.configuration)
 
-        if (mActionModeCallback != null) {
-            mActionModeCallback!!.onShow(this)
+        setupAllSelectorOnClickListener()
+        mOnBackPressedCallback.isEnabled = true
+    }
+
+
+    /**
+     * Ends the current ActionMode.
+     *
+     * @see startActionMode
+     */
+    open fun endActionMode() {
+        if (!isActionMode) return
+        isActionMode = false
+        animatedVisibility(mActionModeToolbar!!, GONE)
+        animatedVisibility(mMainToolbar, VISIBLE)
+        mFooterContainer!!.visibility = VISIBLE
+        mBottomActionModeBar.visibility = GONE
+        setTitle(mTitleExpanded, mTitleCollapsed)
+        mCollapsingToolbarLayout.seslSetSubtitle(mSubtitleExpanded)
+        mMainToolbar.subtitle = mSubtitleCollapsed
+        mActionModeListener!!.onEndActionMode()
+        mAppBarLayout.removeOnOffsetChangedListener(mActionModeTitleFadeListener)
+        mActionModeSelectAll.setOnClickListener(null)
+        setActionModeMenuListenerInternal(null)
+        mActionModeTitleFadeListener = null
+        mActionModeListener = null
+        updateObpCallbackState()
+    }
+
+    /**
+     * Show the Toolbar's ActionMode. This will show a 'All' Checkbox instead of the navigation button,
+     * temporarily replace the Toolbar's title with a counter ('x selected')
+     * and show a [BottomNavigationView] in the footer.
+     * The ActionMode is useful when the user can select items in a list.
+     */
+    @Deprecated("Use startActionMode() instead.", ReplaceWith("startActionMode(callback)"))
+    open fun showActionMode() {
+        startActionMode(
+            object : ActionModeListener {
+                override fun onInflateActionMenu(menu: Menu) {
+                    if (mActionModeMenuRes != 0) {
+                        activity!!.menuInflater.inflate(mActionModeMenuRes, menu)
+                    }
+                    mActionModeCallback?.onShow(this@ToolbarLayout)
+                }
+                override fun onEndActionMode() {
+                    mActionModeCallback?.onDismiss(this@ToolbarLayout)
+                }
+
+                override fun onMenuItemClicked(item: MenuItem): Boolean = false
+                override fun onSelectAll(isChecked: Boolean) {
+                    mOnSelectAllListener?.onCheckedChanged(mActionModeCheckBox, isChecked)
+                }
+            }
+        )
+    }
+
+    private inline fun setupAllSelectorOnClickListener() {
+        mActionModeSelectAll.setOnClickListener {
+            mActionModeCheckBox.apply {
+                isChecked = !isChecked
+                mActionModeListener!!.onSelectAll(isChecked)
+            }
+        }
+    }
+
+    private inline fun setupActionModeMenu() {
+        mBottomActionModeBar!!.menu.apply {
+            clear()
+            mActionModeListener!!.onInflateActionMenu(this)
+        }
+        val amToolbarMenu = mActionModeToolbar!!.menu.apply { removeGroup(AMT_GROUP_MENU_ID) }
+        val amBottomMenu = mBottomActionModeBar.menu
+        val size = amBottomMenu.size()
+        var menuItemsAdded = 0
+        for (a in 0 until size) {
+            val ambMenuItem = amBottomMenu.getItem(a)
+            if (ambMenuItem.isVisible) {
+                menuItemsAdded++
+                val amtMenuItem = amToolbarMenu.add(
+                    AMT_GROUP_MENU_ID,
+                    ambMenuItem.itemId,
+                    Menu.NONE,
+                    ambMenuItem.title
+                )
+                if (menuItemsAdded <= mAMTMenuShowAlwaysMax) {
+                    amtMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+                }
+            }
+        }
+        setActionModeMenuListenerInternal {
+            mActionModeListener?.onMenuItemClicked(it) ?: false
+        }
+    }
+
+    private fun setActionModeMenuListenerInternal(listener: NavigationBarView.OnItemSelectedListener?) {
+        mBottomActionModeBar.setOnItemSelectedListener(listener)
+        if (listener != null) {
+            mActionModeToolbar!!.setOnMenuItemClickListener { item: MenuItem ->
+                listener.onNavigationItemSelected(
+                    mActionModeToolbar!!.menu.findItem(item.itemId)
+                )
+            }
+        }else{
+            mActionModeToolbar!!.setOnMenuItemClickListener(null)
         }
     }
 
@@ -755,7 +874,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     private fun updateActionModeMenuVisibility(config: Configuration) {
         if (isActionMode) {
             if (mSelectedItemsCount > 0) {
-                if (switchActionModeMenu && config.orientation == ORIENTATION_LANDSCAPE) {
+                if (config.orientation == ORIENTATION_LANDSCAPE) {
                     mBottomActionModeBar.visibility = GONE
                     mActionModeToolbar!!.menu.setGroupVisible(AMT_GROUP_MENU_ID, true)
                 } else {
@@ -769,36 +888,23 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
     }
 
-
     /**
      * Dismiss the ActionMode.
      *
-     * @see .showActionMode
+     * @see endActionMode
      */
+    @Deprecated("Use endActionMode() instead.", ReplaceWith("endActionMode()"))
     open fun dismissActionMode() {
-        if (!isActionMode) return
-        mOnBackPressedCallback.isEnabled = false
-        animatedVisibility(mActionModeToolbar!!, GONE)
-        animatedVisibility(mMainToolbar, VISIBLE)
-        mFooterContainer!!.visibility = VISIBLE
-        mBottomActionModeBar!!.visibility = GONE
-        setTitle(mTitleExpanded, mTitleCollapsed)
-        mAppBarLayout.removeOnOffsetChangedListener(mActionModeTitleFadeListener)
-        mCollapsingToolbarLayout.seslSetSubtitle(mSubtitleExpanded)
-        mMainToolbar.subtitle = mSubtitleCollapsed
-        isActionMode = false
-        setActionModeAllSelector(0, enabled = true, checked = false)
-        mActionModeTitleFadeListener = null
-        mActionModeCallback?.onDismiss(this)
+        endActionMode()
     }
 
     /**
      * Set the menu resource for the ActionMode's [BottomNavigationView]
      */
-    @Deprecated("Use setActionModeMenu() instead.",
-        ReplaceWith("setActionModeMenu(menuRes)"))
+    @Deprecated("Use the ActionModeListener#onInflateActionMenu() callback when calling StartActionMode() instead.",
+        ReplaceWith(""))
     fun setActionModeBottomMenu(@MenuRes menuRes: Int) {
-        mBottomActionModeBar!!.inflateMenu(menuRes)
+        setActionModeMenu(menuRes)
     }
 
     /**
@@ -806,33 +912,14 @@ open class ToolbarLayout @JvmOverloads constructor(
      * On landscape orientation where ActionMode's [BottomNavigationView] will be hidden,
      * the visible items from this menu resource we be shown to ActionMode's [Toolbar] [Menu]
      */
+    @Deprecated("Use the ActionModeListener#onInflateActionMenu() callback when calling StartActionMode() instead.",
+        ReplaceWith(""))
     fun setActionModeMenu(@MenuRes menuRes: Int) {
-        ensureActionModeViews()
-        actionModeBottomMenu.clear()
-        actionModeToolbarMenu.removeGroup(AMT_GROUP_MENU_ID)
-        mBottomActionModeBar!!.inflateMenu(menuRes)
-        val amToolbarMenu = mActionModeToolbar!!.menu.apply { removeGroup(AMT_GROUP_MENU_ID) }
-        val amBottomMenu = mBottomActionModeBar!!.menu
-        val size = amBottomMenu.size()
-        var menuItemsAdded = 0
-        for (a in 0 until size) {
-            val ambMenuItem = amBottomMenu.getItem(a)
-            if (ambMenuItem.isVisible) {
-                menuItemsAdded++
-                val amtMenuItem = amToolbarMenu.add(
-                    AMT_GROUP_MENU_ID,
-                    ambMenuItem.itemId,
-                    Menu.NONE,
-                    ambMenuItem.title
-                )
-                if (menuItemsAdded <= mAMTMenuShowAlwaysMax) {
-                    amtMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-                }
-            }
-        }
-        switchActionModeMenu = true
+        mActionModeMenuRes = menuRes
     }
 
+    @Deprecated("Access this with ActionModeListener#onInflateActionMenu() callback when calling StartActionMode() instead.",
+        ReplaceWith(""))
     val actionModeBottomMenu: Menu
         /**
          * Returns the [Menu] of the ActionMode's [BottomNavigationView].
@@ -847,31 +934,30 @@ open class ToolbarLayout @JvmOverloads constructor(
      * On landscape orientation, the same listener will be invoke for ActionMode's [Toolbar] [MenuItem]s
      * which are copied from ActionMode's [BottomNavigationView]
      */
+    @Deprecated("Use the ActionModeListener#onMenuItemClicked() callback when calling StartActionMode() instead.",
+        ReplaceWith(""))
     fun setActionModeMenuListener(listener: NavigationBarView.OnItemSelectedListener) {
-        mBottomActionModeBar!!.setOnItemSelectedListener(listener)
-        mActionModeToolbar!!.setOnMenuItemClickListener { item: MenuItem ->
-            listener.onNavigationItemSelected(
-                mActionModeToolbar!!.menu.findItem(item.itemId)
-            )
-        }
+        ensureActionModeViews()
+        setActionModeMenuListenerInternal(listener)
     }
 
     /**
      * Set the menu resource for the ActionMode's [Toolbar].
      */
+    @Deprecated("This is now no op.")
     fun setActionModeToolbarMenu(@MenuRes menuRes: Int) {
-        ensureActionModeViews()
-        mActionModeToolbar!!.inflateMenu(menuRes)
+        //no op
     }
 
     /**
      * Set the listener for the ActionMode's [Toolbar].
      */
+    @Deprecated("This is now no op.")
     fun setActionModeToolbarMenuListener(listener: Toolbar.OnMenuItemClickListener?) {
-        ensureActionModeViews()
-        mActionModeToolbar!!.setOnMenuItemClickListener(listener)
+        //no op
     }
 
+    @Deprecated("Use the ActionModeListener#onInflateActionMenu() callback when calling StartActionMode() instead.")
     val actionModeToolbarMenu: Menu
         /**
          * Returns the [Menu] of the ActionMode's [Toolbar].
@@ -901,6 +987,11 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @param checked
      */
     fun setActionModeAllSelector(count: Int, enabled: Boolean, checked: Boolean?) {
+        if (!isActionMode) {
+            Log.w(TAG, "'setActionModeAllSelector' called with action mode not started.")
+            return
+        }
+        ensureActionModeViews()
         if (mSelectedItemsCount != count) {
             mSelectedItemsCount = count
             val title = if (count > 0) {
@@ -930,23 +1021,16 @@ open class ToolbarLayout @JvmOverloads constructor(
     @Deprecated("Use setActionModeAllSelector() instead.",
         ReplaceWith("setActionModeAllSelector(count, enabled, checked)"))
     fun setActionModeCount(count: Int, total: Int) {
-        mSelectedItemsCount = count
-        val title = if (count > 0)
-            resources.getString(R.string.oui_action_mode_n_selected, count)
-        else
-            resources.getString(R.string.oui_action_mode_select_items)
-
-        mCollapsingToolbarLayout.title = title
-        mActionModeTitleTextView!!.text = title
-        updateActionModeMenuVisibility(context.resources.configuration)
-        mActionModeCheckBox.isChecked = count == total
+        setActionModeAllSelector(count, true, count == total)
     }
 
     /**
      * Set the listener for the 'All' Checkbox of the ActionMode.
      */
+    @Deprecated("Use ActionModeListener#onSelectAll() callback when calling StartActionMode() instead.",
+        ReplaceWith(""))
     fun setActionModeCheckboxListener(listener: CompoundButton.OnCheckedChangeListener?) {
-        mActionModeCheckBox.setOnCheckedChangeListener(listener)
+        mOnSelectAllListener = listener
     }
 
     //
@@ -1045,7 +1129,6 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     }
 }
-
 
 /**
  * Type-safe way to set badge. Select either [Badge.NUMERIC], [Badge.DOT] or [Badge.NONE]

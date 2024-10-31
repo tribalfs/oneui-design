@@ -210,13 +210,28 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
         }
     }
 
+    @Deprecated(
+        "Use startActionMode() instead.",
+        replaceWith = ReplaceWith("startActionMode(callback)")
+    )
     override fun showActionMode() {
         lockDrawerIfAvailable(true)
         super.showActionMode()
     }
 
+    @Deprecated("Use endActionMode() instead.", replaceWith = ReplaceWith("endActionMode()"))
     override fun dismissActionMode() {
         super.dismissActionMode()
+        lockDrawerIfAvailable(false)
+    }
+
+    override fun startActionMode(listener: ActionModeListener){
+        lockDrawerIfAvailable(true)
+        super.startActionMode(listener)
+    }
+
+    override fun endActionMode() {
+        super.endActionMode()
         lockDrawerIfAvailable(false)
     }
 
