@@ -21,13 +21,19 @@
 
             <include layout="@layout/oui_view_toolbar_main" />
 
-            <include
-                layout="@layout/oui_view_toolbar_search"
-                android:visibility="gone" />
+            <ViewStub
+                android:id="@+id/viewstub_oui_view_toolbar_search"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_gravity="bottom"
+                android:layout="@layout/oui_view_toolbar_search" />
 
-            <include
-                layout="@layout/oui_view_toolbar_action_mode"
-                android:visibility="gone" />
+            <ViewStub
+                android:id="@+id/viewstub_oui_view_toolbar_action_mode"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_gravity="bottom"
+                android:layout="@layout/oui_view_toolbar_action_mode" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 

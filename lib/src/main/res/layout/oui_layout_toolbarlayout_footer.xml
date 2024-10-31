@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/toolbarlayout_footer_content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
+    tools:viewBindingIgnore="true"
     android:orientation="vertical">
 
     <FrameLayout
@@ -12,12 +14,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/toolbarlayout_bottom_nav_view"
+    <ViewStub
+        android:id="@+id/viewstub_tbl_actionmode_bottom_menu"
+        android:inflatedId="@+id/tbl_actionmode_bottom_menu"
+        android:layout="@layout/oui_layout_tbl_actionmode_bottom_menu"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:animateLayoutChanges="true"
-        android:visibility="gone" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

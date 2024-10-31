@@ -19,6 +19,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewStub
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.view.animation.PathInterpolator
@@ -41,11 +42,13 @@ import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.res.use
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import dev.oneuiproject.oneui.design.R
+import dev.oneuiproject.oneui.ktx.setSearchableInfoFrom
 import dev.oneuiproject.oneui.utils.BADGE_LIMIT_NUMBER
 import dev.oneuiproject.oneui.utils.badgeCountToText
 import dev.oneuiproject.oneui.utils.internal.ToolbarLayoutUtils
@@ -97,7 +100,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
     }
 
-    private val mActionModeTitleFadeListener = AppBarOffsetListener()
+    private var mActionModeTitleFadeListener: AppBarOffsetListener? = null
 
     @JvmField
     protected var mLayout: Int = 0
@@ -123,20 +126,21 @@ open class ToolbarLayout @JvmOverloads constructor(
     private lateinit var mAppBarLayout: AppBarLayout
     private lateinit var mCollapsingToolbarLayout: CollapsingToolbarLayout
     private lateinit var mMainToolbar: Toolbar
-    private lateinit var mSearchToolbar: Toolbar
-    private lateinit var mActionModeToolbar: Toolbar
+
     private lateinit var mCoordinatorLayout: CoordinatorLayout
 
-    private var mFooterContainer: FrameLayout? = null
-    private var mFooterParent: LinearLayout? = null
-    private var mBottomRoundedCorner: LinearLayout? = null
-    private var mBottomActionModeBar: BottomNavigationView? = null
-
-    private lateinit var mSearchView: SearchView
+    private var mActionModeToolbar: Toolbar? = null
     private lateinit var mActionModeSelectAll: LinearLayout
     private lateinit var mActionModeCheckBox: AppCompatCheckBox
-    private var mActionModeTitleTextView: TextView? = null
+    private lateinit var mActionModeTitleTextView: TextView
 
+    private var mFooterContainer: FrameLayout? = null
+    private lateinit var mFooterParent: LinearLayout
+    private lateinit var mBottomRoundedCorner: LinearLayout
+    private lateinit var mBottomActionModeBar: BottomNavigationView
+
+    private var mSearchToolbar: Toolbar? = null
+    private lateinit var mSearchView: SearchView
     private var mSearchModeListener: SearchModeListener? = null
 
     /**
@@ -200,35 +204,19 @@ open class ToolbarLayout @JvmOverloads constructor(
         mAppBarLayout = mCoordinatorLayout.findViewById(R.id.toolbarlayout_app_bar)
         mCollapsingToolbarLayout = mAppBarLayout.findViewById(R.id.toolbarlayout_collapsing_toolbar)
         mMainToolbar = mCollapsingToolbarLayout.findViewById(R.id.toolbarlayout_main_toolbar)
-        mSearchToolbar = mCollapsingToolbarLayout.findViewById(R.id.toolbarlayout_search_toolbar)
-        mActionModeToolbar = mCollapsingToolbarLayout.findViewById(R.id.toolbarlayout_action_mode_toolbar)
-
-        mSearchView = mSearchToolbar.findViewById(R.id.toolbarlayout_search_view)
-        mActionModeSelectAll = mActionModeToolbar.findViewById(R.id.toolbarlayout_selectall)
-        mActionModeCheckBox = mActionModeSelectAll.findViewById(R.id.toolbarlayout_selectall_checkbox)
-        mActionModeTitleTextView = mActionModeToolbar.findViewById(R.id.toolbar_layout_action_mode_title)
-
-        mActionModeSelectAll.setOnClickListener { mActionModeCheckBox.setChecked(!mActionModeCheckBox.isChecked) }
 
         mMainContainer = findViewById(R.id.toolbarlayout_main_container)
         mFooterContainer = findViewById(R.id.toolbarlayout_footer_container)
-        mBottomActionModeBar = findViewById(R.id.toolbarlayout_bottom_nav_view)
         mFooterParent = findViewById(R.id.toolbarlayout_footer_content)
         mBottomRoundedCorner = findViewById(R.id.toolbarlayout_bottom_corners)
 
-        if (!isInEditMode) {
-            this.activity!!.setSupportActionBar(mMainToolbar)
-            this.activity!!.supportActionBar!!.setDisplayHomeAsUpEnabled(false)
-            this.activity!!.supportActionBar!!.setDisplayShowTitleEnabled(false)
-
-            mSearchView.setSearchableInfo(
-                (context.getSystemService(Context.SEARCH_SERVICE) as SearchManager)
-                    .getSearchableInfo(this.activity!!.componentName)
-            )
+        activity?.apply {
+            setSupportActionBar(mMainToolbar)
+            supportActionBar!!.apply {
+                setDisplayHomeAsUpEnabled(false)
+                setDisplayShowTitleEnabled(false)
+            }
         }
-
-        mSearchView.seslSetUpButtonVisibility(VISIBLE)
-        mSearchView.seslSetOnUpButtonClickListener { dismissSearchMode() }
 
         setNavigationButtonIcon(mNavigationIcon)
         setTitle(mTitleExpanded, mTitleCollapsed)
@@ -273,8 +261,8 @@ open class ToolbarLayout @JvmOverloads constructor(
     private val sideMarginUpdater = Runnable {
         val sideMarginParams = ToolbarLayoutUtils.getSideMarginParams(this.activity!!)
         ToolbarLayoutUtils.setSideMarginParams(mMainContainer!!, sideMarginParams)
-        ToolbarLayoutUtils.setSideMarginParams(mBottomRoundedCorner!!, sideMarginParams)
-        ToolbarLayoutUtils.setSideMarginParams(mFooterParent!!, sideMarginParams)
+        ToolbarLayoutUtils.setSideMarginParams(mBottomRoundedCorner, sideMarginParams)
+        ToolbarLayoutUtils.setSideMarginParams(mFooterParent, sideMarginParams)
         requestLayout()
     }
 
@@ -611,9 +599,10 @@ open class ToolbarLayout @JvmOverloads constructor(
     open fun showSearchMode() {
         isSearchMode = true
         if (isActionMode) dismissActionMode()
+        ensureSearchModeViews()
         mOnBackPressedCallback.isEnabled = true
         animatedVisibility(mMainToolbar, GONE)
-        animatedVisibility(mSearchToolbar, VISIBLE)
+        animatedVisibility(mSearchToolbar!!, VISIBLE)
         mFooterContainer!!.visibility = GONE
 
         mCollapsingToolbarLayout.title = resources.getString(appcompatR.string.sesl_searchview_description_search)
@@ -651,7 +640,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         isSearchMode = false
         mOnBackPressedCallback.isEnabled = false
         mSearchView.setQuery("", false)
-        animatedVisibility(mSearchToolbar, GONE)
+        animatedVisibility(mSearchToolbar!!, GONE)
         animatedVisibility(mMainToolbar, VISIBLE)
         mFooterContainer!!.visibility = VISIBLE
 
@@ -659,11 +648,24 @@ open class ToolbarLayout @JvmOverloads constructor(
         mCollapsingToolbarLayout.seslSetSubtitle(mSubtitleExpanded)
     }
 
+    private fun ensureSearchModeViews(){
+        if (mSearchToolbar == null){
+            mSearchToolbar = mCollapsingToolbarLayout.findViewById<ViewStub>(R.id.viewstub_oui_view_toolbar_search).inflate() as Toolbar
+            mSearchView = mSearchToolbar!!.findViewById(R.id.toolbarlayout_search_view)
+            mSearchView.seslSetUpButtonVisibility(VISIBLE)
+            mSearchView.seslSetOnUpButtonClickListener { dismissSearchMode() }
+            activity?.let { mSearchView.setSearchableInfoFrom(it) }
+        }
+    }
+
     val searchView: SearchView
         /**
          * Returns the [SearchView] of the Toolbar.
          */
-        get() = mSearchView
+        get() {
+            ensureSearchModeViews()
+            return mSearchView
+        }
 
     /**
      * Set the [SearchModeListener] for the Toolbar's SearchMode.
@@ -712,16 +714,21 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @see .setActionModeBottomMenuListener
      */
     open fun showActionMode() {
+        ensureActionModeViews()
         isActionMode = true
         if (isSearchMode) dismissSearchMode()
         mOnBackPressedCallback.isEnabled = true
         animatedVisibility(mMainToolbar, GONE)
-        animatedVisibility(mActionModeToolbar, VISIBLE)
+        animatedVisibility(mActionModeToolbar!!, VISIBLE)
         mFooterContainer!!.visibility = GONE
         mBottomActionModeBar!!.visibility = VISIBLE
 
         // setActionModeCount(0, -1);
-        mAppBarLayout.addOnOffsetChangedListener(mActionModeTitleFadeListener)
+        mAppBarLayout.addOnOffsetChangedListener(
+            AppBarOffsetListener().also {
+                mActionModeTitleFadeListener = it
+            }
+        )
         mCollapsingToolbarLayout.seslSetSubtitle(null)
         mMainToolbar.setSubtitle(null)
 
@@ -732,20 +739,32 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
     }
 
+    private fun ensureActionModeViews(){
+        if (mActionModeToolbar == null){
+            mActionModeToolbar = (mCollapsingToolbarLayout.findViewById<ViewStub>(R.id.viewstub_oui_view_toolbar_action_mode)
+                .inflate() as Toolbar).also {
+                mActionModeSelectAll = it.findViewById(R.id.toolbarlayout_selectall)
+                mActionModeTitleTextView = it.findViewById(R.id.toolbar_layout_action_mode_title)
+            }
+            mActionModeCheckBox = mActionModeSelectAll.findViewById(R.id.toolbarlayout_selectall_checkbox)
+            mActionModeSelectAll.setOnClickListener { mActionModeCheckBox.setChecked(!mActionModeCheckBox.isChecked) }
+            mBottomActionModeBar = findViewById<ViewStub>(R.id.viewstub_tbl_actionmode_bottom_menu).inflate() as BottomNavigationView
+        }
+    }
 
     private fun updateActionModeMenuVisibility(config: Configuration) {
         if (isActionMode) {
             if (mSelectedItemsCount > 0) {
                 if (switchActionModeMenu && config.orientation == ORIENTATION_LANDSCAPE) {
-                    mBottomActionModeBar!!.visibility = GONE
-                    mActionModeToolbar.menu.setGroupVisible(AMT_GROUP_MENU_ID, true)
+                    mBottomActionModeBar.visibility = GONE
+                    mActionModeToolbar!!.menu.setGroupVisible(AMT_GROUP_MENU_ID, true)
                 } else {
-                    mBottomActionModeBar!!.visibility = VISIBLE
-                    mActionModeToolbar.menu.setGroupVisible(AMT_GROUP_MENU_ID, false)
+                    mBottomActionModeBar.visibility = VISIBLE
+                    mActionModeToolbar!!.menu.setGroupVisible(AMT_GROUP_MENU_ID, false)
                 }
             } else {
-                mBottomActionModeBar!!.visibility = GONE
-                mActionModeToolbar.menu.setGroupVisible(AMT_GROUP_MENU_ID, false)
+                mBottomActionModeBar.visibility = GONE
+                mActionModeToolbar!!.menu.setGroupVisible(AMT_GROUP_MENU_ID, false)
             }
         }
     }
@@ -757,9 +776,9 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @see .showActionMode
      */
     open fun dismissActionMode() {
-        isActionMode = false
+        if (!isActionMode) return
         mOnBackPressedCallback.isEnabled = false
-        animatedVisibility(mActionModeToolbar, GONE)
+        animatedVisibility(mActionModeToolbar!!, GONE)
         animatedVisibility(mMainToolbar, VISIBLE)
         mFooterContainer!!.visibility = VISIBLE
         mBottomActionModeBar!!.visibility = GONE
@@ -767,9 +786,10 @@ open class ToolbarLayout @JvmOverloads constructor(
         mAppBarLayout.removeOnOffsetChangedListener(mActionModeTitleFadeListener)
         mCollapsingToolbarLayout.seslSetSubtitle(mSubtitleExpanded)
         mMainToolbar.subtitle = mSubtitleCollapsed
+        isActionMode = false
         setActionModeAllSelector(0, enabled = true, checked = false)
+        mActionModeTitleFadeListener = null
         mActionModeCallback?.onDismiss(this)
-
     }
 
     /**
@@ -787,10 +807,11 @@ open class ToolbarLayout @JvmOverloads constructor(
      * the visible items from this menu resource we be shown to ActionMode's [Toolbar] [Menu]
      */
     fun setActionModeMenu(@MenuRes menuRes: Int) {
+        ensureActionModeViews()
         actionModeBottomMenu.clear()
         actionModeToolbarMenu.removeGroup(AMT_GROUP_MENU_ID)
         mBottomActionModeBar!!.inflateMenu(menuRes)
-        val amToolbarMenu = mActionModeToolbar.menu.apply { removeGroup(AMT_GROUP_MENU_ID) }
+        val amToolbarMenu = mActionModeToolbar!!.menu.apply { removeGroup(AMT_GROUP_MENU_ID) }
         val amBottomMenu = mBottomActionModeBar!!.menu
         val size = amBottomMenu.size()
         var menuItemsAdded = 0
@@ -816,7 +837,10 @@ open class ToolbarLayout @JvmOverloads constructor(
         /**
          * Returns the [Menu] of the ActionMode's [BottomNavigationView].
          */
-        get() = mBottomActionModeBar!!.menu
+        get() {
+            ensureActionModeViews()
+            return mBottomActionModeBar.menu
+        }
 
     /**
      * Set the listener for the ActionMode's [BottomNavigationView].
@@ -825,9 +849,9 @@ open class ToolbarLayout @JvmOverloads constructor(
      */
     fun setActionModeMenuListener(listener: NavigationBarView.OnItemSelectedListener) {
         mBottomActionModeBar!!.setOnItemSelectedListener(listener)
-        mActionModeToolbar.setOnMenuItemClickListener { item: MenuItem ->
+        mActionModeToolbar!!.setOnMenuItemClickListener { item: MenuItem ->
             listener.onNavigationItemSelected(
-                mActionModeToolbar.menu.findItem(item.itemId)
+                mActionModeToolbar!!.menu.findItem(item.itemId)
             )
         }
     }
@@ -836,14 +860,16 @@ open class ToolbarLayout @JvmOverloads constructor(
      * Set the menu resource for the ActionMode's [Toolbar].
      */
     fun setActionModeToolbarMenu(@MenuRes menuRes: Int) {
-        mActionModeToolbar.inflateMenu(menuRes)
+        ensureActionModeViews()
+        mActionModeToolbar!!.inflateMenu(menuRes)
     }
 
     /**
      * Set the listener for the ActionMode's [Toolbar].
      */
     fun setActionModeToolbarMenuListener(listener: Toolbar.OnMenuItemClickListener?) {
-        mActionModeToolbar.setOnMenuItemClickListener(listener)
+        ensureActionModeViews()
+        mActionModeToolbar!!.setOnMenuItemClickListener(listener)
     }
 
     val actionModeToolbarMenu: Menu
@@ -851,7 +877,10 @@ open class ToolbarLayout @JvmOverloads constructor(
          * Returns the [Menu] of the ActionMode's [Toolbar].
          *
          */
-        get() = mActionModeToolbar.menu
+        get(){
+            ensureActionModeViews()
+            return mActionModeToolbar!!.menu
+        }
 
     /**
      * Set the ActionMode's count and  checkbox enabled state.
@@ -880,7 +909,7 @@ open class ToolbarLayout @JvmOverloads constructor(
                 resources.getString(R.string.oui_action_mode_select_items)
             }
             mCollapsingToolbarLayout.title = title
-            mActionModeTitleTextView!!.text = title
+            mActionModeTitleTextView.text = title
             updateActionModeMenuVisibility(context.resources.configuration)
         }
         if (checked != null && checked != mActionModeCheckBox.isChecked) {
@@ -979,16 +1008,16 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     private inner class AppBarOffsetListener : AppBarLayout.OnOffsetChangedListener {
         override fun onOffsetChanged(layout: AppBarLayout, verticalOffset: Int) {
-            if (mActionModeToolbar.visibility == VISIBLE) {
+            if (mActionModeToolbar!!.isVisible) {
                 val layoutPosition = abs(mAppBarLayout.top)
                 val collapsingTblHeight = mCollapsingToolbarLayout.height
                 val alphaRange = collapsingTblHeight * 0.17999999f
                 val toolbarTitleAlphaStart = collapsingTblHeight * 0.35f
 
                 if (mAppBarLayout.seslIsCollapsed()) {
-                    mActionModeTitleTextView!!.alpha = 1.0f
+                    mActionModeTitleTextView.alpha = 1.0f
                 } else {
-                    mActionModeTitleTextView!!.alpha =  (150.0f / alphaRange
+                    mActionModeTitleTextView.alpha =  (150.0f / alphaRange
                             * (layoutPosition - toolbarTitleAlphaStart) / 255f).coerceIn(0f, 1f)
                 }
             }

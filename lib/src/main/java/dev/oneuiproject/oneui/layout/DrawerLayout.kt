@@ -206,7 +206,7 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
         }
 
         mDrawerContent.updateLayoutParams<MarginLayoutParams> {
-            width = (displayWidth.toDouble() * widthRate).toInt()
+            width = (displayWidth * widthRate).toInt()
         }
     }
 
@@ -244,10 +244,7 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
      * Set a custom radius for the drawer panel's edges.
      */
     fun setDrawerCornerRadius(@Dimension dp: Float) {
-        val px = TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics
-        ).toInt()
-        setDrawerCornerRadius(px)
+        setDrawerCornerRadius(dp.dpToPx(resources))
     }
 
     /**
