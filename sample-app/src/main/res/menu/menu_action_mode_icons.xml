@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:ignore="AppCompatResource">
+
+    <item
+        android:id="@+id/icons_am_menu1"
+        android:icon="@drawable/ic_oui_pin_outline"
+        android:title="Menu 1"
+        app:iconTint="?actionMenuTextColor"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/icons_am_menu2"
+        android:icon="@drawable/ic_oui_share_outline"
+        android:title="Menu 2"
+        app:iconTint="?actionMenuTextColor"
+        app:showAsAction="always" />
+
+</menu>
