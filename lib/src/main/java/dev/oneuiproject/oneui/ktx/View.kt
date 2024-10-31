@@ -1,6 +1,8 @@
 package dev.oneuiproject.oneui.ktx
 
 import android.view.View
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 
 /**
  * Convenience method to register [View.addOnAttachStateChangeListener]
@@ -23,3 +25,8 @@ inline fun View.doOnAttachedStateChanged(
     )
     onChanged(this, isAttachedToWindow)
 }
+
+inline val View.isSoftKeyboardShowing
+    get() = ViewCompat.getRootWindowInsets(this)?.isVisible(
+        WindowInsetsCompat.Type.ime()
+    ) == true

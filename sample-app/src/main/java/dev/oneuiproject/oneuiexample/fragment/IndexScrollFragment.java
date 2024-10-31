@@ -23,8 +23,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.util.SeslRoundedCorner;
 import androidx.appcompat.util.SeslSubheaderRoundedCorner;
 import androidx.appcompat.view.menu.SeslMenuItem;
+import androidx.core.view.MenuProvider;
 import androidx.indexscroll.widget.SeslCursorIndexer;
 import androidx.indexscroll.widget.SeslIndexScrollView;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -54,7 +56,6 @@ public class IndexScrollFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -66,40 +67,41 @@ public class IndexScrollFragment extends BaseFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-
-        MenuItem textModeItem = menu.findItem(R.id.menu_indexscroll_text);
-        textModeItem.setVisible(true);
-        if (mIsTextModeEnabled) {
-            textModeItem.setTitle("Hide letters");
-        } else {
-            textModeItem.setTitle("Show letters");
+    public void onHiddenChanged(boolean hidden) {
+        if (!hidden) {
+            requireActivity().addMenuProvider(menuProvider, getViewLifecycleOwner(), Lifecycle.State.STARTED);
+        }else{
+            requireActivity().removeMenuProvider(menuProvider);
         }
-        ((SeslMenuItem) textModeItem)
-                .setBadgeText(getString(dev.oneuiproject.oneui.design.R.string.oui_new_badge_text));
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.menu_indexscroll_text) {
-            ((SeslMenuItem) item)
-                    .setBadgeText(null);
+    private MenuProvider menuProvider = new MenuProvider() {
+        @Override
+        public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+            menuInflater.inflate(R.menu.menu_indexscroll, menu);
 
-            mIsTextModeEnabled = !mIsTextModeEnabled;
-            if (mIsTextModeEnabled) {
-                item.setTitle("Hide letters");
-            } else {
-                item.setTitle("Show letters");
+            MenuItem menuItem = menu.findItem(R.id.menu_indexscroll_text);
+            ((SeslMenuItem) menuItem).setBadgeText("1");
+        }
+
+        @Override
+        public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+            if (menuItem.getItemId() == R.id.menu_indexscroll_text) {
+                mIsTextModeEnabled = !mIsTextModeEnabled;
+                if (mIsTextModeEnabled) {
+                    menuItem.setTitle("Hide letters");
+                } else {
+                    menuItem.setTitle("Show letters");
+                }
+                ((SeslMenuItem) menuItem).setBadgeText(null);
+                mIndexScrollView.setIndexBarTextMode(mIsTextModeEnabled);
+                mIndexScrollView.invalidate();
+                return true;
             }
-
-            mIndexScrollView.setIndexBarTextMode(mIsTextModeEnabled);
-            mIndexScrollView.invalidate();
-            return true;
+            return false;
         }
+    };
 
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {

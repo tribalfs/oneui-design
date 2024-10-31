@@ -120,34 +120,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
-        getMenuInflater().inflate(R.menu.sample3_menu_main, menu);
-        MenuCompat.setGroupDividerEnabled(menu, true);
-        return true;
-    }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        mBinding.drawerLayout.setMenuItemBadge(R.id.menu_add, new Badge.Numeric(1));
-        mBinding.drawerLayout.setMenuItemBadge(R.id.menu_about_app, new Badge.Dot());
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_about_app) {
-            startActivity(new Intent(this, AboutActivity.class));
-            return true;
-        }
-        if (item.getItemId() == R.id.menu_add) {
-            Snackbar.make(mBinding.getRoot(), "Add menu clicked!", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("Dismiss", v -> mBinding.drawerLayout.setMenuItemBadge((SeslMenuItem) item, new Badge.None()))
-                    .show();
-            return true;
-        }
-        return false;
-    }
 
     private void initDrawer() {
         mBinding.drawerLayout.setDrawerButtonIcon(getDrawable(dev.oneuiproject.oneui.R.drawable.ic_oui_info_outline));

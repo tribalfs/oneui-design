@@ -48,7 +48,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import dev.oneuiproject.oneui.delegates.OnBackPressedDelegate
 import dev.oneuiproject.oneui.design.R
+import dev.oneuiproject.oneui.ktx.isSoftKeyboardShowing
 import dev.oneuiproject.oneui.ktx.setSearchableInfoFrom
+import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.CLEAR_CLOSE
+import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.CLEAR_DISMISS
+import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.DISMISS
 import dev.oneuiproject.oneui.utils.BADGE_LIMIT_NUMBER
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil
 import dev.oneuiproject.oneui.utils.MenuSynchronizer
@@ -91,6 +95,35 @@ open class ToolbarLayout @JvmOverloads constructor(
         fun onSelectAll(isChecked: Boolean)
     }
 
+    /**
+     * @see DISMISS
+     * @see CLEAR_CLOSE
+     * @see CLEAR_DISMISS
+     */
+    enum class SearchModeOnBackBehavior {
+        /**
+         * Search mode behavior where swipe gesture or back button press
+         * ends search mode without closing the activity.
+         * Intended to be used when implementing search mode in a fragment of a multi-fragment activity
+         * @see startSearchMode
+         * @see endSearchMode
+         */
+        DISMISS,
+
+        /**
+         * Similar to [DISMISS] but checks for open soft keyboard and/or non-empty input query first before proceeding.
+         * @see startSearchMode
+         * @see endSearchMode
+         */
+        CLEAR_DISMISS,
+
+        /**
+         * Similar to [CLEAR_DISMISS] but closes the activity instead of just ending search mode.
+         * Intended to be  used on a dedicated search activity.
+         */
+        CLEAR_CLOSE
+    }
+
     var activity: AppCompatActivity? = null
         get() {
             if (field == null) {
@@ -115,14 +148,48 @@ open class ToolbarLayout @JvmOverloads constructor(
     private var mActionModeMenuRes: Int = 0
 
     private val mObpDelegate: OnBackPressedDelegate by lazy {OnBackPressedDelegate(activity!!)}
+
     private fun updateObpCallbackState() {
         mObpDelegate.stopListening(this)
-        if (isSearchMode || isActionMode) {
-            mObpDelegate.startListening(this, {
-                if (isSearchMode) dismissSearchMode()
-                if (isActionMode) endActionMode()
-            })
+
+        val enable = when {
+            isActionMode -> true
+            isSearchMode -> {
+                when (searchModeOBPBehavior) {
+                    DISMISS -> searchView.isSoftKeyboardShowing
+                    CLEAR_DISMISS -> true
+                    CLEAR_CLOSE -> searchView.query.isNotEmpty() || searchView.isSoftKeyboardShowing
+                }
+            }
+            else -> false
         }
+        if (enable.not()) return
+
+        mObpDelegate.startListening(this, {
+            when {
+                isActionMode -> endActionMode()
+                isSearchMode -> {
+                    when (searchModeOBPBehavior) {
+                        DISMISS -> endSearchMode()
+                        CLEAR_CLOSE -> {
+                            if (searchView.isSoftKeyboardShowing) {
+                                searchView.clearFocus()
+                            } else {
+                                searchView.setQuery("", true)
+                            }
+                        }
+                        CLEAR_DISMISS -> {
+                            if (searchView.isSoftKeyboardShowing) {
+                                searchView.clearFocus()
+                            } else if (searchView.query.isNotEmpty()) {
+                                searchView.setQuery("", true)
+                            } else endSearchMode()
+
+                        }
+                    }
+                }
+            }
+        })
     }
 
     private var mActionModeTitleFadeListener: AppBarOffsetListener? = null
@@ -167,6 +234,8 @@ open class ToolbarLayout @JvmOverloads constructor(
     private var mSearchToolbar: Toolbar? = null
     private lateinit var mSearchView: SearchView
     private var mSearchModeListener: SearchModeListener? = null
+    @JvmField
+    protected var searchModeOBPBehavior = DISMISS
     @Deprecated("Replaced with mActionModeCallBack")
     private var mOnSelectAllListener: CompoundButton.OnCheckedChangeListener? = null
 
@@ -190,8 +259,8 @@ open class ToolbarLayout @JvmOverloads constructor(
      * Callback for the Toolbar's SearchMode.
      * Notification that the [SearchView]'s text has been edited or it's visibility changed.
      *
-     * @see .showSearchMode
-     * @see .dismissSearchMode
+     * @see startSearchMode
+     * @see endSearchMode
      */
     interface SearchModeListener {
         fun onQueryTextSubmit(query: String?): Boolean
@@ -200,7 +269,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     }
 
     protected open fun initLayoutAttrs(attrs: AttributeSet?) {
-         context.theme.obtainStyledAttributes(attrs, R.styleable.ToolbarLayout, 0, 0).use {
+        context.theme.obtainStyledAttributes(attrs, R.styleable.ToolbarLayout, 0, 0).use {
             mLayout = it.getResourceId(R.styleable.ToolbarLayout_android_layout, R.layout.oui_layout_toolbarlayout_appbar)
             mExpandable = it.getBoolean(R.styleable.ToolbarLayout_expandable, true)
             mExpanded = it.getBoolean(R.styleable.ToolbarLayout_expanded, mExpandable)
@@ -610,59 +679,94 @@ open class ToolbarLayout @JvmOverloads constructor(
     // Search Mode methods
     //
     /**
-     * Show the [SearchView] in the Toolbar.
-     * To enable the voice input icon in the SearchView, please refer to the project wiki.
-     * TODO: link to the wiki on how to use the voice input feature.
+     * Shows the [SearchView] widget in the Toolbar.
+     *
+     * @param listener [SearchModeListener] to apply.
+     * @param searchModeOnBackBehavior (optional) [SearchModeOnBackBehavior] to apply.
+     * Defaults to [CLEAR_DISMISS] when not set.
+     *
+     * @see [endSearchMode]
      */
-    open fun showSearchMode() {
-        isSearchMode = true
-        if (isActionMode) endActionMode()
+    open fun startSearchMode(listener: SearchModeListener,
+                             searchModeOnBackBehavior: SearchModeOnBackBehavior = CLEAR_DISMISS) {
         ensureSearchModeViews()
+        isSearchMode = true
+        mSearchModeListener = listener
+        if (isActionMode) endActionMode()
+        searchModeOBPBehavior = searchModeOnBackBehavior
         animatedVisibility(mMainToolbar, GONE)
         animatedVisibility(mSearchToolbar!!, VISIBLE)
         mFooterContainer!!.visibility = GONE
-
+        setExpanded(expanded = false, animate = true)
+        setupSearchModeListener()
+        mSearchView.isIconified = false
         mCollapsingToolbarLayout.title = resources.getString(appcompatR.string.sesl_searchview_description_search)
         mCollapsingToolbarLayout.seslSetSubtitle(null)
-        setExpanded(expanded = false, animate = true)
-
-        mSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                return if (mSearchModeListener != null){
-                    mSearchModeListener!!.onQueryTextSubmit(query)
-                } else false
-            }
-
-            override fun onQueryTextChange(newText: String): Boolean {
-                return if (mSearchModeListener != null){
-                    mSearchModeListener!!.onQueryTextSubmit(newText)
-                } else false
-            }
-        })
-        mSearchView.isIconified = false
-        if (mSearchModeListener != null) mSearchModeListener!!.onSearchModeToggle(mSearchView, true)
         updateObpCallbackState()
+        mSearchModeListener!!.onSearchModeToggle(mSearchView, true)
+    }
+
+    private inline fun setupSearchModeListener() {
+        mSearchView.setOnQueryTextListener(
+            object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    return mSearchModeListener?.onQueryTextSubmit(query) == true
+                }
+
+                override fun onQueryTextChange(newText: String): Boolean {
+                    updateObpCallbackState()
+                    return mSearchModeListener?.onQueryTextChange(newText) == true
+                }
+            })
     }
 
     /**
      * Dismiss the [SearchView] in the Toolbar.
      *
-     * @see .showSearchMode
+     * @see startSearchMode
      */
-    open fun dismissSearchMode() {
-        if (mSearchModeListener != null) mSearchModeListener!!.onSearchModeToggle(
-            mSearchView,
-            false
-        )
+    open fun endSearchMode() {
         isSearchMode = false
         mSearchView.setQuery("", false)
         animatedVisibility(mSearchToolbar!!, GONE)
         animatedVisibility(mMainToolbar, VISIBLE)
-        mFooterContainer!!.visibility = VISIBLE
-
         setTitle(mTitleExpanded, mTitleCollapsed)
         mCollapsingToolbarLayout.seslSetSubtitle(mSubtitleExpanded)
+        mFooterContainer!!.visibility = VISIBLE
         updateObpCallbackState()
+        mSearchView.apply {
+            setQuery("", false)
+            setOnQueryTextListener(null)
+        }
+        mSearchView.apply {
+            setQuery("", false)
+            setOnQueryTextListener(null)
+        }
+        mSearchModeListener!!.onSearchModeToggle(mSearchView, false)
+        mSearchModeListener = null
+    }
+
+    /**
+     * Show the [SearchView] in the Toolbar.
+     * To enable the voice input icon in the SearchView, please refer to the project wiki.
+     * TODO: link to the wiki on how to use the voice input feature.
+     */
+    @Deprecated("Replaced by startSearchMode().", ReplaceWith("startSearchMode(listener)"))
+    open fun showSearchMode() {
+        mSearchModeListener?.let{ startSearchMode(it)}
+            ?: Log.e(TAG, "Can't start search mode without setting the listener.")
+    }
+
+    /**
+     * Dismiss the [SearchView] in the Toolbar.
+     *
+     * @see showSearchMode
+     * @see startSearchMode
+     * @see endSearchMode
+     */
+    @Deprecated("Replaced by endSearchMode().", ReplaceWith("endSearchMode()"))
+    open fun dismissSearchMode() {
+        endSearchMode()
     }
 
     private fun ensureSearchModeViews(){
@@ -687,7 +791,8 @@ open class ToolbarLayout @JvmOverloads constructor(
     /**
      * Set the [SearchModeListener] for the Toolbar's SearchMode.
      */
-    @Deprecated("TODO")
+    @Deprecated("Set it as parameter when calling startSearchMode().",
+        ReplaceWith("startSearchMode(listener)"))
     fun setSearchModeListener(listener: SearchModeListener?) {
         mSearchModeListener = listener
     }
@@ -702,16 +807,15 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
     }
 
-
+    @Deprecated("This is now a no op.")
     fun setActionModeToolbarShowAlwaysMax(max: Int) {
-        mAMTMenuShowAlwaysMax = max
+        //no op
     }
 
     @Deprecated("Use the `ActionModeListener` param when calling StartActionMode() instead.")
     fun setOnActionModeListener(callback: ActionModeCallback?) {
         mActionModeCallback = callback
     }
-
 
     //
     // Action Mode methods

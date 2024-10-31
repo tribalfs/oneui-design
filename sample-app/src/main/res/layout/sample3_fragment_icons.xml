@@ -1,7 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/oui_background_color"
-    tools:viewBindingIgnore="true" />
+    android:layout_width="match_parent"
+    android:transitionGroup="true">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/sample3_view_icon_listview_item"
+        android:background="?android:colorBackground"
+        android:clipToPadding="false"
+        tools:visibility="visible" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsvNoItem"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tvNoItem"
+            android:textSize="16sp"
+            android:textColor="?actionMenuTextColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            tools:ignore="TextContrastCheck"
+            android:text="No item found."
+            />
+    </androidx.core.widget.NestedScrollView>
+</FrameLayout>

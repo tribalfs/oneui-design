@@ -235,11 +235,16 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
         lockDrawerIfAvailable(false)
     }
 
+    @Deprecated(
+        "Replaced by startSearchMode().",
+        replaceWith = ReplaceWith("startSearchMode(listener)")
+    )
     override fun showSearchMode() {
         lockDrawerIfAvailable(true)
         super.showSearchMode()
     }
 
+    @Deprecated("Replaced by endSearchMode().", replaceWith = ReplaceWith("endSearchMode()"))
     override fun dismissSearchMode() {
         super.dismissSearchMode()
         lockDrawerIfAvailable(false)
