@@ -1,16 +1,7 @@
 package dev.oneuiproject.oneuiexample.fragment;
 
-import android.graphics.Color;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.sec.sesl.tester.R;
 
-import dev.oneuiproject.oneui.qr.QREncoder;
 import dev.oneuiproject.oneuiexample.base.BaseFragment;
 
 public class QRCodeFragment extends BaseFragment {

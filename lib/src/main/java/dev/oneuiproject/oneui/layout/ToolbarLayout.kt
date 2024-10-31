@@ -313,11 +313,6 @@ open class ToolbarLayout @JvmOverloads constructor(
         val isLandscape = newConfig.orientation == ORIENTATION_LANDSCAPE
 
         isExpanded = !isLandscape and mExpanded
-
-        if (mNavigationBadgeIcon != null) {
-            val badgeIcon = mNavigationBadgeIcon!!
-                .getDrawable(1) as NavigationBadgeIcon
-        }
     }
 
     private fun resetAppBar() {
