@@ -1,4 +1,4 @@
-package dev.oneuiproject.oneuiexample.fragment;
+package dev.oneuiproject.oneuiexample.ui.fragment;
 
 import android.os.Bundle;
 import android.view.View;
@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SeslProgressBar;
 
 import com.sec.sesl.tester.R;
-import dev.oneuiproject.oneuiexample.base.BaseFragment;
+import dev.oneuiproject.oneuiexample.ui.core.base.BaseFragment;
 
 public class ProgressBarFragment extends BaseFragment {
 

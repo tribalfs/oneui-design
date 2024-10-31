@@ -1,4 +1,4 @@
-package dev.oneuiproject.oneuiexample.fragment;
+package dev.oneuiproject.oneuiexample.ui.fragment;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -37,7 +37,7 @@ import java.util.List;
 
 import dev.oneuiproject.oneui.utils.IndexScrollUtils;
 import dev.oneuiproject.oneui.widget.Separator;
-import dev.oneuiproject.oneuiexample.base.BaseFragment;
+import dev.oneuiproject.oneuiexample.ui.core.base.BaseFragment;
 
 public class IndexScrollFragment extends BaseFragment {
     private int mCurrentSectionIndex = 0;

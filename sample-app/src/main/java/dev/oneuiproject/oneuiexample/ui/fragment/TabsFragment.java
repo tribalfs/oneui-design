@@ -1,12 +1,10 @@
-package dev.oneuiproject.oneuiexample.fragment;
+package dev.oneuiproject.oneuiexample.ui.fragment;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SwitchCompat;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -14,7 +12,7 @@ import com.sec.sesl.tester.R;
 
 import dev.oneuiproject.oneui.dialog.GridMenuDialog;
 import dev.oneuiproject.oneui.utils.TabLayoutUtils;
-import dev.oneuiproject.oneuiexample.base.BaseFragment;
+import dev.oneuiproject.oneuiexample.ui.core.base.BaseFragment;
 
 public class TabsFragment extends BaseFragment {
     private TabLayout mSubTabs;

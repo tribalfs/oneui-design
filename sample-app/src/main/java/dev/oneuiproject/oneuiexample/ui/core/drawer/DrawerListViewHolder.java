@@ -1,4 +1,4 @@
-package dev.oneuiproject.oneuiexample.ui.drawer;
+package dev.oneuiproject.oneuiexample.ui.core.drawer;
 
 import android.graphics.Typeface;
 import android.text.TextUtils;

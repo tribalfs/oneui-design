@@ -1,4 +1,4 @@
-package dev.oneuiproject.oneuiexample.base;
+package dev.oneuiproject.oneuiexample.ui.core.base;
 
 import android.content.Context;
 import android.os.Bundle;

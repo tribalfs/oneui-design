@@ -1,8 +1,8 @@
-package dev.oneuiproject.oneuiexample.fragment;
+package dev.oneuiproject.oneuiexample.ui.fragment;
 
 import com.sec.sesl.tester.R;
 
-import dev.oneuiproject.oneuiexample.base.BaseFragment;
+import dev.oneuiproject.oneuiexample.ui.core.base.BaseFragment;
 
 public class QRCodeFragment extends BaseFragment {
 

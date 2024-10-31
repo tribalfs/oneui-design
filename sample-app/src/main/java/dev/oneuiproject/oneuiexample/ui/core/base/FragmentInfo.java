@@ -1,4 +1,4 @@
-package dev.oneuiproject.oneuiexample.base;
+package dev.oneuiproject.oneuiexample.ui.core.base;
 
 public interface FragmentInfo {
     int getLayoutResId();

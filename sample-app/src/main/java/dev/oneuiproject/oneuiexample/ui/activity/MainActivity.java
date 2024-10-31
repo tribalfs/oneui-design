@@ -1,4 +1,4 @@
-package dev.oneuiproject.oneuiexample.activity;
+package dev.oneuiproject.oneuiexample.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -26,22 +26,23 @@ import com.sec.sesl.tester.databinding.ActivityMainBinding;
 import java.util.ArrayList;
 import java.util.List;
 
+import dev.oneuiproject.oneui.layout.DrawerLayout;
 import dev.oneuiproject.oneui.layout.ToolbarLayout.Badge;
 import dev.oneuiproject.oneui.utils.ActivityUtils;
 import dev.oneuiproject.oneui.widget.TipPopup;
-import dev.oneuiproject.oneuiexample.base.FragmentInfo;
-import dev.oneuiproject.oneuiexample.fragment.AppPickerFragment;
-import dev.oneuiproject.oneuiexample.fragment.IconsFragment;
-import dev.oneuiproject.oneuiexample.fragment.IndexScrollFragment;
-import dev.oneuiproject.oneuiexample.fragment.PickersFragment;
-import dev.oneuiproject.oneuiexample.fragment.PreferencesFragment;
-import dev.oneuiproject.oneuiexample.fragment.ProgressBarFragment;
-import dev.oneuiproject.oneuiexample.fragment.QRCodeFragment;
-import dev.oneuiproject.oneuiexample.fragment.SeekBarFragment;
-import dev.oneuiproject.oneuiexample.fragment.SwipeRefreshFragment;
-import dev.oneuiproject.oneuiexample.fragment.TabsFragment;
-import dev.oneuiproject.oneuiexample.fragment.WidgetsFragment;
-import dev.oneuiproject.oneuiexample.ui.drawer.DrawerListAdapter;
+import dev.oneuiproject.oneuiexample.ui.core.base.FragmentInfo;
+import dev.oneuiproject.oneuiexample.ui.fragment.AppPickerFragment;
+import dev.oneuiproject.oneuiexample.ui.fragment.icons.IconsFragment;
+import dev.oneuiproject.oneuiexample.ui.fragment.IndexScrollFragment;
+import dev.oneuiproject.oneuiexample.ui.fragment.PickersFragment;
+import dev.oneuiproject.oneuiexample.ui.fragment.PreferencesFragment;
+import dev.oneuiproject.oneuiexample.ui.fragment.ProgressBarFragment;
+import dev.oneuiproject.oneuiexample.ui.fragment.QRCodeFragment;
+import dev.oneuiproject.oneuiexample.ui.fragment.SeekBarFragment;
+import dev.oneuiproject.oneuiexample.ui.fragment.SwipeRefreshFragment;
+import dev.oneuiproject.oneuiexample.ui.fragment.TabsFragment;
+import dev.oneuiproject.oneuiexample.ui.fragment.WidgetsFragment;
+import dev.oneuiproject.oneuiexample.ui.core.drawer.DrawerListAdapter;
 import dev.oneuiproject.oneuiexample.utils.DarkModeUtils;
 
 public class MainActivity extends AppCompatActivity
@@ -174,6 +175,11 @@ public class MainActivity extends AppCompatActivity
         mBinding.drawerLayout.setDrawerOpen(false, true);
 
         mBackPressedCallback.setEnabled(position != 0);
+
         return true;
+    }
+
+    public DrawerLayout getDrawerLayout() {
+        return mBinding.drawerLayout;
     }
 }

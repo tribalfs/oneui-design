@@ -1,4 +1,4 @@
-package dev.oneuiproject.oneuiexample.ui.drawer;
+package dev.oneuiproject.oneuiexample.ui.core.drawer;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,7 +14,7 @@ import com.sec.sesl.tester.R;
 
 import java.util.List;
 
-import dev.oneuiproject.oneuiexample.base.FragmentInfo;
+import dev.oneuiproject.oneuiexample.ui.core.base.FragmentInfo;
 
 public class DrawerListAdapter extends RecyclerView.Adapter<DrawerListViewHolder> {
     private Context mContext;

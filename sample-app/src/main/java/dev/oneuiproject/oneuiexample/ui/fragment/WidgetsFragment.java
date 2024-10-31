@@ -1,4 +1,4 @@
-package dev.oneuiproject.oneuiexample.fragment;
+package dev.oneuiproject.oneuiexample.ui.fragment;
 
 import android.app.SearchManager;
 import android.content.ComponentName;
@@ -17,8 +17,8 @@ import com.sec.sesl.tester.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import dev.oneuiproject.oneuiexample.activity.MainActivity;
-import dev.oneuiproject.oneuiexample.base.BaseFragment;
+import dev.oneuiproject.oneuiexample.ui.activity.MainActivity;
+import dev.oneuiproject.oneuiexample.ui.core.base.BaseFragment;
 
 public class WidgetsFragment extends BaseFragment
         implements View.OnClickListener {

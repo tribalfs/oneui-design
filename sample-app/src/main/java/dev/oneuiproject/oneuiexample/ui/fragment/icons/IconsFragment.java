@@ -1,4 +1,4 @@
-package dev.oneuiproject.oneuiexample.fragment.icons;
+package dev.oneuiproject.oneuiexample.ui.fragment.icons;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -20,10 +20,10 @@ import com.sec.sesl.tester.R;
 import dev.oneuiproject.oneui.layout.DrawerLayout;
 import dev.oneuiproject.oneui.layout.ToolbarLayout;
 import dev.oneuiproject.oneui.widget.Toast;
-import dev.oneuiproject.oneuiexample.activity.MainActivity;
-import dev.oneuiproject.oneuiexample.base.BaseFragment;
+import dev.oneuiproject.oneuiexample.ui.activity.MainActivity;
+import dev.oneuiproject.oneuiexample.ui.core.base.BaseFragment;
 import dev.oneuiproject.oneuiexample.data.IconsRepo;
-import dev.oneuiproject.oneuiexample.fragment.icons.adapter.ImageAdapter;
+import dev.oneuiproject.oneuiexample.ui.fragment.icons.adapter.ImageAdapter;
 import dev.oneuiproject.oneuiexample.ui.core.ItemDecoration;
 
 public class IconsFragment extends BaseFragment {

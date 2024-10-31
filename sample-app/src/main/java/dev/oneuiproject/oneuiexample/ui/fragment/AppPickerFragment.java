@@ -1,4 +1,4 @@
-package dev.oneuiproject.oneuiexample.fragment;
+package dev.oneuiproject.oneuiexample.ui.fragment;
 
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Set;
 
 import dev.oneuiproject.oneui.widget.Toast;
-import dev.oneuiproject.oneuiexample.base.BaseFragment;
+import dev.oneuiproject.oneuiexample.ui.core.base.BaseFragment;
 
 public class AppPickerFragment extends BaseFragment
         implements AppPickerView.OnBindListener, AdapterView.OnItemSelectedListener {
@@ -135,7 +135,7 @@ public class AppPickerFragment extends BaseFragment
 
         ArrayAdapter<String> adapter
                 = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, categories);
-        adapter.setDropDownViewResource(androidx.constraintlayout.widget.R.layout.support_simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
 
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);

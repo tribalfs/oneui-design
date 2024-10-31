@@ -1,4 +1,4 @@
-package dev.oneuiproject.oneuiexample.fragment;
+package dev.oneuiproject.oneuiexample.ui.fragment;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -31,7 +31,7 @@ import java.util.List;
 
 import dev.oneuiproject.oneui.dialog.StartEndTimePickerDialog;
 import dev.oneuiproject.oneui.widget.Toast;
-import dev.oneuiproject.oneuiexample.base.BaseFragment;
+import dev.oneuiproject.oneuiexample.ui.core.base.BaseFragment;
 
 public class PickersFragment extends BaseFragment
         implements AdapterView.OnItemSelectedListener, SeslColorPickerDialog.OnColorSetListener {

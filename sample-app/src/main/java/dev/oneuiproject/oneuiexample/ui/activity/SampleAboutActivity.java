@@ -1,4 +1,4 @@
-package dev.oneuiproject.oneuiexample.activity;
+package dev.oneuiproject.oneuiexample.ui.activity;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;

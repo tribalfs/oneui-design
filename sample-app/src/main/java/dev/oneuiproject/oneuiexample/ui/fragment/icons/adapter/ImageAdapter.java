@@ -1,4 +1,4 @@
-package dev.oneuiproject.oneuiexample.fragment.icons.adapter;
+package dev.oneuiproject.oneuiexample.ui.fragment.icons.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sec.sesl.tester.R;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 

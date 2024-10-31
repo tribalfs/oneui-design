@@ -1,4 +1,4 @@
-package dev.oneuiproject.oneuiexample.fragment;
+package dev.oneuiproject.oneuiexample.ui.fragment;
 
 import android.os.Bundle;
 import android.view.View;
@@ -6,14 +6,11 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SeslSeekBar;
-import androidx.fragment.app.FragmentActivity;
 
 import com.sec.sesl.tester.R;
 
-import dev.oneuiproject.oneui.layout.DrawerLayout;
 import dev.oneuiproject.oneui.utils.SeekBarUtils;
-import dev.oneuiproject.oneui.widget.HapticSeekBar;
-import dev.oneuiproject.oneuiexample.base.BaseFragment;
+import dev.oneuiproject.oneuiexample.ui.core.base.BaseFragment;
 
 public class SeekBarFragment extends BaseFragment {
 

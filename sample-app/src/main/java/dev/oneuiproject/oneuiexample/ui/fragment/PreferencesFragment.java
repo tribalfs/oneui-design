@@ -1,4 +1,4 @@
-package dev.oneuiproject.oneuiexample.fragment;
+package dev.oneuiproject.oneuiexample.ui.fragment;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -25,7 +25,7 @@ import dev.oneuiproject.oneui.preference.TipsCardPreference;
 import dev.oneuiproject.oneui.preference.internal.PreferenceRelatedCard;
 import dev.oneuiproject.oneui.utils.PreferenceUtils;
 import dev.oneuiproject.oneui.widget.Toast;
-import dev.oneuiproject.oneuiexample.base.FragmentInfo;
+import dev.oneuiproject.oneuiexample.ui.core.base.FragmentInfo;
 import dev.oneuiproject.oneuiexample.utils.DarkModeUtils;
 
 public class PreferencesFragment extends PreferenceFragmentCompat
