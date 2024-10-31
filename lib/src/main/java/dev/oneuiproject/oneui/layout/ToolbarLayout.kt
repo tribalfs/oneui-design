@@ -50,6 +50,9 @@ import dev.oneuiproject.oneui.delegates.OnBackPressedDelegate
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.setSearchableInfoFrom
 import dev.oneuiproject.oneui.utils.BADGE_LIMIT_NUMBER
+import dev.oneuiproject.oneui.utils.DeviceLayoutUtil
+import dev.oneuiproject.oneui.utils.MenuSynchronizer
+import dev.oneuiproject.oneui.utils.MenuSynchronizer.State
 import dev.oneuiproject.oneui.utils.badgeCountToText
 import dev.oneuiproject.oneui.utils.internal.ToolbarLayoutUtils
 import dev.oneuiproject.oneui.view.internal.NavigationBadgeIcon
@@ -104,8 +107,6 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
         private set
 
-
-    private var mAMTMenuShowAlwaysMax = 2
     private var mSelectedItemsCount = 0
 
     @Deprecated("Replaced with mActionModeCallBack")
@@ -168,6 +169,8 @@ open class ToolbarLayout @JvmOverloads constructor(
     private var mSearchModeListener: SearchModeListener? = null
     @Deprecated("Replaced with mActionModeCallBack")
     private var mOnSelectAllListener: CompoundButton.OnCheckedChangeListener? = null
+
+    private var mMenuSynchronizer: MenuSynchronizer? = null
 
     /**
      * Check if SearchMode is enabled(=the [SearchView] in the Toolbar is visible).
@@ -281,7 +284,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         super.onConfigurationChanged(newConfig)
         refreshLayout(newConfig)
         resetAppBar()
-        updateActionModeMenuVisibility(newConfig)
+        syncActionModeMenu()
     }
 
     private val sideMarginUpdater = Runnable {
@@ -740,7 +743,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         mCollapsingToolbarLayout.seslSetSubtitle(null)
         mMainToolbar.setSubtitle(null)
 
-        updateActionModeMenuVisibility(context.resources.configuration)
+        syncActionModeMenuInternal()
 
         setupAllSelectorOnClickListener()
         updateObpCallbackState()
@@ -763,11 +766,13 @@ open class ToolbarLayout @JvmOverloads constructor(
         mCollapsingToolbarLayout.seslSetSubtitle(mSubtitleExpanded)
         mMainToolbar.subtitle = mSubtitleCollapsed
         mActionModeListener!!.onEndActionMode()
+        mMenuSynchronizer!!.clear()
         mAppBarLayout.removeOnOffsetChangedListener(mActionModeTitleFadeListener)
         mActionModeSelectAll.setOnClickListener(null)
         setActionModeMenuListenerInternal(null)
         mActionModeTitleFadeListener = null
         mActionModeListener = null
+        mMenuSynchronizer = null
         updateObpCallbackState()
     }
 
@@ -809,32 +814,18 @@ open class ToolbarLayout @JvmOverloads constructor(
     }
 
     private inline fun setupActionModeMenu() {
-        mBottomActionModeBar!!.menu.apply {
+        mBottomActionModeBar.menu.apply {
             clear()
             mActionModeListener!!.onInflateActionMenu(this)
         }
-        val amToolbarMenu = mActionModeToolbar!!.menu.apply { removeGroup(AMT_GROUP_MENU_ID) }
-        val amBottomMenu = mBottomActionModeBar.menu
-        val size = amBottomMenu.size()
-        var menuItemsAdded = 0
-        for (a in 0 until size) {
-            val ambMenuItem = amBottomMenu.getItem(a)
-            if (ambMenuItem.isVisible) {
-                menuItemsAdded++
-                val amtMenuItem = amToolbarMenu.add(
-                    AMT_GROUP_MENU_ID,
-                    ambMenuItem.itemId,
-                    Menu.NONE,
-                    ambMenuItem.title
-                )
-                if (menuItemsAdded <= mAMTMenuShowAlwaysMax) {
-                    amtMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-                }
-            }
-        }
-        setActionModeMenuListenerInternal {
-            mActionModeListener?.onMenuItemClicked(it) ?: false
-        }
+        mMenuSynchronizer = MenuSynchronizer(
+            mBottomActionModeBar,
+            mActionModeToolbar!!,
+            onMenuItemClick = {
+                mActionModeListener!!.onMenuItemClicked(it)
+            },
+            null
+        )
     }
 
     private fun setActionModeMenuListenerInternal(listener: NavigationBarView.OnItemSelectedListener?) {
@@ -850,6 +841,25 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
     }
 
+    private inline fun syncActionModeMenu() {
+        if (!isActionMode) return
+        syncActionModeMenuInternal()
+    }
+
+    private fun syncActionModeMenuInternal() {
+        if (mSelectedItemsCount > 0) {
+            val isActionModePortrait = DeviceLayoutUtil.isPortrait(resources.configuration)
+                    || DeviceLayoutUtil.isTabletLayoutOrDesktop(context)
+            if (isActionModePortrait) {
+                mMenuSynchronizer!!.updateState(State.PORTRAIT)
+            } else {
+                mMenuSynchronizer!!.updateState(State.LANDSCAPE)
+            }
+        } else {
+            mMenuSynchronizer!!.updateState(State.HIDDEN)
+        }
+    }
+
     private fun ensureActionModeViews(){
         if (mActionModeToolbar == null){
             mActionModeToolbar = (mCollapsingToolbarLayout.findViewById<ViewStub>(R.id.viewstub_oui_view_toolbar_action_mode)
@@ -860,23 +870,6 @@ open class ToolbarLayout @JvmOverloads constructor(
             mActionModeCheckBox = mActionModeSelectAll.findViewById(R.id.toolbarlayout_selectall_checkbox)
             mActionModeSelectAll.setOnClickListener { mActionModeCheckBox.setChecked(!mActionModeCheckBox.isChecked) }
             mBottomActionModeBar = findViewById<ViewStub>(R.id.viewstub_tbl_actionmode_bottom_menu).inflate() as BottomNavigationView
-        }
-    }
-
-    private fun updateActionModeMenuVisibility(config: Configuration) {
-        if (isActionMode) {
-            if (mSelectedItemsCount > 0) {
-                if (config.orientation == ORIENTATION_LANDSCAPE) {
-                    mBottomActionModeBar.visibility = GONE
-                    mActionModeToolbar!!.menu.setGroupVisible(AMT_GROUP_MENU_ID, true)
-                } else {
-                    mBottomActionModeBar.visibility = VISIBLE
-                    mActionModeToolbar!!.menu.setGroupVisible(AMT_GROUP_MENU_ID, false)
-                }
-            } else {
-                mBottomActionModeBar.visibility = GONE
-                mActionModeToolbar!!.menu.setGroupVisible(AMT_GROUP_MENU_ID, false)
-            }
         }
     }
 
@@ -984,8 +977,12 @@ open class ToolbarLayout @JvmOverloads constructor(
             return
         }
         ensureActionModeViews()
+        if (checked != null) {
+            mActionModeCheckBox.isChecked = checked
+        }
         if (mSelectedItemsCount != count) {
             mSelectedItemsCount = count
+            syncActionModeMenu()
             val title = if (count > 0) {
                 resources.getString(R.string.oui_action_mode_n_selected, count)
             } else {
@@ -993,14 +990,9 @@ open class ToolbarLayout @JvmOverloads constructor(
             }
             mCollapsingToolbarLayout.title = title
             mActionModeTitleTextView.text = title
-            updateActionModeMenuVisibility(context.resources.configuration)
         }
-        if (checked != null && checked != mActionModeCheckBox.isChecked) {
-            mActionModeCheckBox.isChecked = checked
-        }
-        if (enabled != mActionModeSelectAll.isEnabled) {
-            mActionModeSelectAll.isEnabled = enabled
-        }
+
+        mActionModeSelectAll.isEnabled = enabled
     }
 
     /**
