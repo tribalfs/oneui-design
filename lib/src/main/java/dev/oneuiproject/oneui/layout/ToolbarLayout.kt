@@ -29,7 +29,6 @@ import android.widget.LinearLayout
 import android.widget.LinearLayout.LayoutParams.MATCH_PARENT
 import android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
 import android.widget.TextView
-import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
 import androidx.annotation.IntRange
 import androidx.annotation.MenuRes
@@ -47,6 +46,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
+import dev.oneuiproject.oneui.delegates.OnBackPressedDelegate
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.setSearchableInfoFrom
 import dev.oneuiproject.oneui.utils.BADGE_LIMIT_NUMBER
@@ -113,10 +113,14 @@ open class ToolbarLayout @JvmOverloads constructor(
     private var mActionModeListener: ActionModeListener? = null
     private var mActionModeMenuRes: Int = 0
 
-    private val mOnBackPressedCallback = object : OnBackPressedCallback(false) {
-        override fun handleOnBackPressed() {
-            if (isSearchMode) dismissSearchMode()
-            if (isActionMode) dismissActionMode()
+    private val mObpDelegate: OnBackPressedDelegate by lazy {OnBackPressedDelegate(activity!!)}
+    private fun updateObpCallbackState() {
+        mObpDelegate.stopListening(this)
+        if (isSearchMode || isActionMode) {
+            mObpDelegate.startListening(this, {
+                if (isSearchMode) dismissSearchMode()
+                if (isActionMode) endActionMode()
+            })
         }
     }
 
@@ -294,13 +298,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         initLayoutAttrs(attrs)
         inflateChildren()
         initAppBar()
-
-        if (!isInEditMode) {
-            this.activity!!.apply {
-                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-                onBackPressedDispatcher.addCallback(mOnBackPressedCallback)
-            }
-        }
+        this.activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
 
         refreshLayout(resources.configuration)
     }
@@ -622,7 +620,6 @@ open class ToolbarLayout @JvmOverloads constructor(
         isSearchMode = true
         if (isActionMode) endActionMode()
         ensureSearchModeViews()
-        mOnBackPressedCallback.isEnabled = true
         animatedVisibility(mMainToolbar, GONE)
         animatedVisibility(mSearchToolbar!!, VISIBLE)
         mFooterContainer!!.visibility = GONE
@@ -645,8 +642,8 @@ open class ToolbarLayout @JvmOverloads constructor(
             }
         })
         mSearchView.isIconified = false
-
         if (mSearchModeListener != null) mSearchModeListener!!.onSearchModeToggle(mSearchView, true)
+        updateObpCallbackState()
     }
 
     /**
@@ -660,7 +657,6 @@ open class ToolbarLayout @JvmOverloads constructor(
             false
         )
         isSearchMode = false
-        mOnBackPressedCallback.isEnabled = false
         mSearchView.setQuery("", false)
         animatedVisibility(mSearchToolbar!!, GONE)
         animatedVisibility(mMainToolbar, VISIBLE)
@@ -668,6 +664,7 @@ open class ToolbarLayout @JvmOverloads constructor(
 
         setTitle(mTitleExpanded, mTitleCollapsed)
         mCollapsingToolbarLayout.seslSetSubtitle(mSubtitleExpanded)
+        updateObpCallbackState()
     }
 
     private fun ensureSearchModeViews(){
@@ -751,7 +748,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         updateActionModeMenuVisibility(context.resources.configuration)
 
         setupAllSelectorOnClickListener()
-        mOnBackPressedCallback.isEnabled = true
+        updateObpCallbackState()
     }
 
 
