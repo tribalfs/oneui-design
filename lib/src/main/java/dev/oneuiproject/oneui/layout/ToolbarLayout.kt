@@ -1249,3 +1249,14 @@ inline fun <T:ToolbarLayout>T.setNavigationBadge(badge: Badge){
         }
     )
 }
+
+inline fun <T:ToolbarLayout>T.setMenuItemBadge(menuItem: SeslMenuItem, badge: Badge){
+    setMenuItemBadge(
+        menuItem,
+        when (badge) {
+            is Badge.NUMERIC -> ToolbarLayout.Badge.Numeric(badge.count)
+            is Badge.DOT -> ToolbarLayout.Badge.Dot()
+            is Badge.NONE -> ToolbarLayout.Badge.None()
+        }
+    )
+}
