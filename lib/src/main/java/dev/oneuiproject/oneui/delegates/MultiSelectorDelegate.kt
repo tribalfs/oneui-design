@@ -56,7 +56,9 @@ import dev.oneuiproject.oneui.ktx.doOnLongPressMultiSelection
  *        iconsAdapter = IconsAdapter(requireContext())
  *
  *        //configure the selection delegate with recyclerview
- *        iconsAdapter.configure(binding.recyclerView, Payload.SELECTION_MODE)
+ *        iconsAdapter.configure(binding.recyclerView, Payload.SELECTION_MODE){ ass ->
+ *              toolbarLayout.updateAllSelector(ass.totalSelected, ass.isEnabled, ass.isChecked)
+ *        }
  *
  *    }
  *
@@ -79,7 +81,7 @@ class MultiSelectorDelegate<T>(
     private var sessionMin = NO_POSITION
     private var getSelectionId: ((position: Int) -> T?)? = null
     private var currentAllSelectionState: AllSelectorState = AllSelectorState()
-    private var onAllSelectedStateChanged: (selectionId: AllSelectorState) -> Unit = {}
+    private var onAllSelectorStateChanged: (selectionId: AllSelectorState) -> Unit = {}
 
     override var isActionMode: Boolean = false
         private set
@@ -89,7 +91,7 @@ class MultiSelectorDelegate<T>(
         recyclerView: RecyclerView,
         selectionChangePayload: Any?,
         selectionId: ((position: Int) -> T?)?,
-        onAllSelectedStateChanged: ((selectionId: AllSelectorState) -> Unit),
+        onAllSelectorStateChanged: ((allSelectorState: AllSelectorState) -> Unit),
     ) {
         val adapter = recyclerView.adapter
             ?: throw IllegalStateException("RecyclerView must have an attached adapter")
@@ -105,7 +107,7 @@ class MultiSelectorDelegate<T>(
         this.adapter = adapter
         this.getSelectionId = selectionId
         this.selectionPayload = selectionChangePayload
-        this.onAllSelectedStateChanged = onAllSelectedStateChanged
+        this.onAllSelectorStateChanged = onAllSelectorStateChanged
 
         recyclerView.apply {
             doOnLongPressMultiSelection(
@@ -224,7 +226,7 @@ class MultiSelectorDelegate<T>(
         getActionModeAllSelectorState().let {
             if (it != currentAllSelectionState){
                 currentAllSelectionState = it
-                onAllSelectedStateChanged.invoke(it)
+                onAllSelectorStateChanged.invoke(it)
             }
         }
     }
@@ -259,13 +261,14 @@ interface MultiSelector<T> {
      * @param recyclerView The `RecyclerView` to configure. A [RecyclerView.Adapter] must already be attached.
      * @param selectionChangePayload (Optional) Change payload for more efficient updating of selected items.
      * @param selectionId (Optional) Lambda to be invoked to get the item id used for selection.
+     * @param onAllSelectorStateChanged  (Optional) Lambda to be invoked to [AllSelectorState] changes.
      * If not set (or `null`), adapter must set [RecyclerView.Adapter.hasStableIds] to true and implement [RecyclerView.Adapter.getItemId]
      */
     fun configure(
         recyclerView: RecyclerView,
         selectionChangePayload: Any? = null,
         selectionId: ((position: Int) -> T?)? = null,
-        onAllSelectedStateChanged: ((selectionId: AllSelectorState) -> Unit)
+        onAllSelectorStateChanged: ((allSelectorState: AllSelectorState) -> Unit)
     )
 
     /**
