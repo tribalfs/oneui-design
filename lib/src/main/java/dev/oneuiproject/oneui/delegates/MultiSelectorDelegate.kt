@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.collection.ScatterSet
 import androidx.collection.mutableScatterSetOf
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ItemAnimator
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import dev.oneuiproject.oneui.ktx.MultiSelectionState
 import dev.oneuiproject.oneui.ktx.MultiSelectionState.ENDED
@@ -78,7 +77,6 @@ class MultiSelectorDelegate<T>(
     private var lastPosition: Int = NO_POSITION
     private var sessionMax = NO_POSITION
     private var sessionMin = NO_POSITION
-    private var restoreItemAnimator: ItemAnimator? = null
     private var getSelectionId: ((position: Int) -> T?)? = null
     private var currentAllSelectionState: AllSelectorState = AllSelectorState()
     private var onAllSelectedStateChanged: (selectionId: AllSelectorState) -> Unit = {}

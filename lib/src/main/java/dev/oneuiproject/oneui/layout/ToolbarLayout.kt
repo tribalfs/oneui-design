@@ -687,6 +687,7 @@ open class ToolbarLayout @JvmOverloads constructor(
      *
      * @see [endSearchMode]
      */
+    @JvmOverloads
     open fun startSearchMode(listener: SearchModeListener,
                              searchModeOnBackBehavior: SearchModeOnBackBehavior = CLEAR_DISMISS) {
         ensureSearchModeViews()
@@ -828,7 +829,8 @@ open class ToolbarLayout @JvmOverloads constructor(
      *
      * @see [endActionMode]
      */
-    open fun startActionMode(listener: ActionModeListener){
+    @JvmOverloads
+    open fun startActionMode(listener: ActionModeListener, keepSearchMode: Boolean = false){
         Log.d(TAG, "startActionMode")
         ensureActionModeViews()
         isActionMode = true
@@ -840,10 +842,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         mFooterContainer!!.visibility = GONE
         setupActionModeMenu()
         mAppBarLayout.addOnOffsetChangedListener(
-            AppBarOffsetListener().also {
-                mActionModeTitleFadeListener = it
-            }
-        )
+            AppBarOffsetListener().also { mActionModeTitleFadeListener = it })
         mCollapsingToolbarLayout.seslSetSubtitle(null)
         mMainToolbar.setSubtitle(null)
 

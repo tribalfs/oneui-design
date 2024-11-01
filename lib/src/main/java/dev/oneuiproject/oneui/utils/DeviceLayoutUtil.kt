@@ -13,10 +13,8 @@ import androidx.reflect.content.res.SeslConfigurationReflector
 object DeviceLayoutUtil {
     private var sIsDexMode: Boolean? = null
 
-    @JvmStatic
     inline fun isPortrait(configuration: Configuration) = configuration.orientation == ORIENTATION_PORTRAIT
 
-    @JvmStatic
     inline fun isTabletLayoutOrDesktop(context: Context): Boolean {
         val resources = context.resources
         return isDeskTopMode(resources) || isTabletLayout(resources)
@@ -26,6 +24,5 @@ object DeviceLayoutUtil {
     fun isDeskTopMode(resources: Resources) =  sIsDexMode
         ?: SeslConfigurationReflector.isDexEnabled(resources.configuration).also { sIsDexMode = it }
 
-    @JvmStatic
     inline fun isTabletLayout(resources: Resources) = resources.configuration.smallestScreenWidthDp >= 600
 }

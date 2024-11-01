@@ -48,9 +48,8 @@ class OnBackPressedDelegate(activity: ComponentActivity){
             }
         }
 
-        open fun createOnBackInvokedCallback(cb: () -> Unit): OnBackInvokedCallback {
-            return OnBackInvokedCallback { cb() }
-        }
+        open fun createOnBackInvokedCallback(cb: () -> Unit) = OnBackInvokedCallback { cb() }
+
     }
 
     private class PreApi33BackCallbackDelegate(private val activity: ComponentActivity) : BackCallbackDelegate {

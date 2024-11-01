@@ -24,7 +24,7 @@ import dev.oneuiproject.oneui.utils.MenuSynchronizer.State
  * @param copyIcon Boolean flag to determine whether to copy icons from BottomNavigationView to Toolbar.
  * By default, it's true when there are more than one item in BottomNavigationView and `maxActionItems` is greater than 1..
  */
-class MenuSynchronizer(
+class MenuSynchronizer @JvmOverloads constructor(
     private val bottomNavView: BottomNavigationView,
     private val toolbar: Toolbar,
     onMenuItemClick: (menuItem: MenuItem) -> Boolean,
