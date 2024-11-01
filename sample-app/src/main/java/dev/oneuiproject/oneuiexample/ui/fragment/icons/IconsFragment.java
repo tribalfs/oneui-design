@@ -3,10 +3,12 @@ package dev.oneuiproject.oneuiexample.ui.fragment.icons;
 import static dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.CLEAR_DISMISS;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,10 +43,10 @@ public class IconsFragment extends BaseFragment {
     private boolean tipPopupShown = false;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         drawerLayout = ((MainActivity)getActivity()).getDrawerLayout();
         adapter = new IconsAdapter(getContext());
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
@@ -101,11 +103,11 @@ public class IconsFragment extends BaseFragment {
     }
 
     private void setupSelection(RecyclerView iconListView, IconsAdapter adapter){
-        adapter.configure(
+            adapter.configure(
                 iconListView,
                 null,
                 adapter::getItem,
-                ass -> {drawerLayout.setActionModeAllSelector(ass.totalSelected, ass.isEnabled, ass.isChecked); return null;}
+                ass -> {drawerLayout.updateAllSelector(ass.totalSelected, ass.isEnabled, ass.isChecked); return null;}
         );
     }
 

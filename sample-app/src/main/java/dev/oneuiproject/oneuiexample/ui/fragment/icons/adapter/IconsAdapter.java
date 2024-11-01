@@ -150,10 +150,11 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.ViewHolder>
 
     // MultiSelector interface methods (delegate implementation)
     @Override
-    public void configure(@NonNull RecyclerView recyclerView, @Nullable Object selectionChangePayload,
+    public void configure(@NonNull RecyclerView recyclerView,
+                          @Nullable Object selectionChangePayload,
                           @Nullable Function1<? super Integer, ? extends Integer> selectionId,
-                          @NonNull Function1<? super AllSelectorState, Unit> onAllSelectedStateChanged) {
-        mSelectionDelegate.configure(recyclerView, selectionChangePayload, selectionId, onAllSelectedStateChanged);
+                          @NonNull Function1<? super AllSelectorState, Unit> allSelectorState) {
+        mSelectionDelegate.configure(recyclerView, selectionChangePayload, selectionId, allSelectorState);
     }
 
     @Override

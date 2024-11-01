@@ -8,7 +8,7 @@
         android:id="@+id/menu_about_app"
         android:title="About"
         android:icon="@drawable/ic_oui_android"
-        app:tint="?actionMenuTextColor"
+        app:iconTint="?actionMenuTextColor"
         app:showAsAction="always" />
 
 </menu>
