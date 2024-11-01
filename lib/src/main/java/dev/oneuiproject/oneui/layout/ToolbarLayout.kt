@@ -103,7 +103,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     enum class SearchModeOnBackBehavior {
         /**
          * Search mode behavior where swipe gesture or back button press
-         * ends search mode without closing the activity.
+         * ends search mode and then unregisters it's onBackPressed callback.
          * Intended to be used when implementing search mode in a fragment of a multi-fragment activity
          * @see startSearchMode
          * @see endSearchMode
@@ -111,14 +111,14 @@ open class ToolbarLayout @JvmOverloads constructor(
         DISMISS,
 
         /**
-         * Similar to [DISMISS] but checks for open soft keyboard and/or non-empty input query first before proceeding.
+         * Similar to [DISMISS] but clears the non-empty input query first.
          * @see startSearchMode
          * @see endSearchMode
          */
         CLEAR_DISMISS,
 
         /**
-         * Similar to [CLEAR_DISMISS] but closes the activity instead of just ending search mode.
+         * Similar to [CLEAR_DISMISS] but it unregisters it's onBackPressed callback without ending the search mode.
          * Intended to be  used on a dedicated search activity.
          */
         CLEAR_CLOSE
@@ -156,8 +156,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             isActionMode -> true
             isSearchMode -> {
                 when (searchModeOBPBehavior) {
-                    DISMISS -> searchView.isSoftKeyboardShowing
-                    CLEAR_DISMISS -> true
+                    DISMISS, CLEAR_DISMISS -> true
                     CLEAR_CLOSE -> searchView.query.isNotEmpty() || searchView.isSoftKeyboardShowing
                 }
             }
@@ -177,6 +176,7 @@ open class ToolbarLayout @JvmOverloads constructor(
                             } else {
                                 searchView.setQuery("", true)
                             }
+                            updateObpCallbackState()
                         }
                         CLEAR_DISMISS -> {
                             if (searchView.isSoftKeyboardShowing) {
@@ -235,7 +235,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     private lateinit var mSearchView: SearchView
     private var mSearchModeListener: SearchModeListener? = null
     @JvmField
-    protected var searchModeOBPBehavior = DISMISS
+    protected var searchModeOBPBehavior = CLEAR_DISMISS
     @Deprecated("Replaced with mActionModeCallBack")
     private var mOnSelectAllListener: CompoundButton.OnCheckedChangeListener? = null
 
@@ -728,12 +728,12 @@ open class ToolbarLayout @JvmOverloads constructor(
      */
     open fun endSearchMode() {
         isSearchMode = false
-        mSearchView.setQuery("", false)
-        animatedVisibility(mSearchToolbar!!, GONE)
+        mSearchToolbar!!.visibility = GONE
         animatedVisibility(mMainToolbar, VISIBLE)
         setTitle(mTitleExpanded, mTitleCollapsed)
         mCollapsingToolbarLayout.seslSetSubtitle(mSubtitleExpanded)
         mFooterContainer!!.visibility = VISIBLE
+        mSearchView.setQuery("", false)
         updateObpCallbackState()
         mSearchView.apply {
             setQuery("", false)
@@ -832,8 +832,8 @@ open class ToolbarLayout @JvmOverloads constructor(
     @JvmOverloads
     open fun startActionMode(listener: ActionModeListener, keepSearchMode: Boolean = false){
         Log.d(TAG, "startActionMode")
-        ensureActionModeViews()
         isActionMode = true
+        ensureActionModeViews()
         mActionModeListener = listener
         if (isSearchMode) dismissSearchMode()
 
