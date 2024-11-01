@@ -19,6 +19,8 @@ import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.SeslProgressBar;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.apppickerview.widget.AppPickerView;
+import androidx.core.view.MenuProvider;
+import androidx.lifecycle.Lifecycle;
 
 import com.sec.sesl.tester.R;
 
@@ -67,42 +69,13 @@ public class AppPickerFragment extends BaseFragment
             fillListView();
             mListInitialized = true;
         }
-    }
-
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-
-        MenuItem systemAppsItem = menu.findItem(R.id.menu_apppicker_system);
-        systemAppsItem.setVisible(true);
-        if (mShowSystemApps) {
-            systemAppsItem.setTitle("Hide system apps");
-        } else {
-            systemAppsItem.setTitle("Show system apps");
+        if (!hidden) {
+            requireActivity().addMenuProvider(menuProvider, getViewLifecycleOwner(), Lifecycle.State.STARTED);
+        }else{
+            requireActivity().removeMenuProvider(menuProvider);
         }
-        ((SeslMenuItem) systemAppsItem)
-                .setBadgeText(getString(dev.oneuiproject.oneui.design.R.string.oui_new_badge_text));
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.menu_apppicker_system) {
-            ((SeslMenuItem) item)
-                    .setBadgeText(null);
-
-            mShowSystemApps = !mShowSystemApps;
-            if (mShowSystemApps) {
-                item.setTitle("Hide system apps");
-            } else {
-                item.setTitle("Show system apps");
-            }
-
-            refreshListView();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public int getLayoutResId() {
@@ -140,6 +113,33 @@ public class AppPickerFragment extends BaseFragment
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
     }
+
+
+    private MenuProvider menuProvider = new MenuProvider() {
+        @Override
+        public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+            menuInflater.inflate(R.menu.menu_apppicker, menu);
+
+            MenuItem menuItem = menu.findItem(R.id.menu_apppicker_system);
+            ((SeslMenuItem) menuItem).setBadgeText("");
+        }
+
+        @Override
+        public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+            if (menuItem.getItemId() == R.id.menu_apppicker_system) {
+                mShowSystemApps = !mShowSystemApps;
+                if (mShowSystemApps) {
+                    menuItem.setTitle("Hide system apps");
+                } else {
+                    menuItem.setTitle("Show system apps");
+                }
+
+                refreshListView();
+                return true;
+            }
+            return false;
+        }
+    };
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

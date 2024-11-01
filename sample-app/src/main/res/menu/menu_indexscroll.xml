@@ -13,25 +13,10 @@
         app:iconTint="?actionMenuTextColor"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/menu_apppicker_system"
-        android:title="Show system apps"
-        android:visible="false"
-        app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_indexscroll_text"
         android:title="Show letters"
-        android:visible="false"
         app:showAsAction="never" />
-
-    <group android:id="@+id/menu_drawer">
-
-        <item
-            android:id="@+id/menu_about_app"
-            android:title="About OneUI Sample"
-            app:showAsAction="never" />
-
-    </group>
 
 </menu>

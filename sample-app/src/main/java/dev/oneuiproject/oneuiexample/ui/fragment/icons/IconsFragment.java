@@ -1,22 +1,28 @@
 package dev.oneuiproject.oneuiexample.ui.fragment.icons;
 
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
+import static dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.CLEAR_DISMISS;
+
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.view.menu.SeslMenuItem;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuProvider;
+import androidx.core.widget.NestedScrollView;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver;
 
 import com.sec.sesl.tester.R;
 
+import dev.oneuiproject.oneui.delegates.AppBarAwareYTranslator;
+import dev.oneuiproject.oneui.delegates.ViewYTranslator;
 import dev.oneuiproject.oneui.layout.DrawerLayout;
 import dev.oneuiproject.oneui.layout.ToolbarLayout;
 import dev.oneuiproject.oneui.widget.Toast;
@@ -28,16 +34,33 @@ import dev.oneuiproject.oneuiexample.ui.core.ItemDecoration;
 
 public class IconsFragment extends BaseFragment {
 
-    public IconsFragment() {
-        super();
+    private DrawerLayout drawerLayout;
+    private ImageAdapter adapter;
+    AdapterDataObserver observer;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        drawerLayout = ((MainActivity)getActivity()).getDrawerLayout();
+        adapter = new ImageAdapter(getContext());
     }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        if (!hidden) {
+            adapter.registerAdapterDataObserver(observer);
+            requireActivity().addMenuProvider(menuProvider, getViewLifecycleOwner(), Lifecycle.State.STARTED);
+        }else{
+            adapter.unregisterAdapterDataObserver(observer);
+            requireActivity().removeMenuProvider(menuProvider);
+        }
+    }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        RecyclerView iconListView = (RecyclerView) getView();
-        ImageAdapter adapter = new ImageAdapter(getContext());
+        RecyclerView iconListView = getView().findViewById(R.id.recyclerView);
 
         setupRecyclerView(iconListView, adapter);
         setupSelection(iconListView, adapter);
@@ -57,12 +80,26 @@ public class IconsFragment extends BaseFragment {
         iconListView.seslSetFastScrollerEnabled(true);
         iconListView.seslSetGoToTopEnabled(true);
         iconListView.seslSetSmoothScrollEnabled(true);
+
+        observer = new AdapterDataObserver() {
+            RecyclerView iconListView = getView().findViewById(R.id.recyclerView);
+            NestedScrollView notItemView = getView().findViewById(R.id.nsvNoItem);
+            @Override
+            public void onChanged() {
+                if(adapter.getItemCount() > 0){
+                    iconListView.setVisibility(View.VISIBLE);
+                    notItemView.setVisibility(View.GONE);
+                }else{
+                    iconListView.setVisibility(View.GONE);
+                    notItemView.setVisibility(View.VISIBLE);
+                }
+            }
+        };
     }
 
     private void setupSelection(RecyclerView iconListView, ImageAdapter adapter){
-        DrawerLayout drawerLayout = ((MainActivity)getActivity()).getDrawerLayout();
         adapter.configure(
-                (RecyclerView) getView(),
+                iconListView,
                 null,
                 adapter::getItem,
                 ass -> {drawerLayout.setActionModeAllSelector(ass.totalSelected, ass.isEnabled, ass.isChecked); return null;}
@@ -94,7 +131,6 @@ public class IconsFragment extends BaseFragment {
     private void launchActionMode(ImageAdapter adapter) {
         adapter.onToggleActionMode(true, null);
 
-        DrawerLayout drawerLayout = ((MainActivity)getActivity()).getDrawerLayout();
         drawerLayout.startActionMode(new ToolbarLayout.ActionModeListener() {
             @Override
             public void onInflateActionMenu(@NonNull Menu menu) {
@@ -123,7 +159,33 @@ public class IconsFragment extends BaseFragment {
         });
     }
 
+    private void launchSearchMode(){
+        RecyclerView iconListView = getView().findViewById(R.id.recyclerView);
+        NestedScrollView notItemView = getView().findViewById(R.id.nsvNoItem);
+        ImageAdapter adapter = (ImageAdapter) iconListView.getAdapter();
 
+        final ViewYTranslator translatorDelegate = new AppBarAwareYTranslator();
+        translatorDelegate.translateYWithAppBar(notItemView, drawerLayout.getAppBarLayout(), requireActivity());
+
+        drawerLayout.startSearchMode(new ToolbarLayout.SearchModeListener() {
+            @Override
+            public boolean onQueryTextSubmit(@Nullable String query) {
+                adapter.filter(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(@Nullable String newText) {
+                adapter.filter(newText);
+                return true;
+            }
+
+            @Override
+            public void onSearchModeToggle(@NonNull SearchView searchView, boolean visible) {
+
+            }
+        }, CLEAR_DISMISS);
+    }
 
     private void toast(String msg) {
         Toast.makeText(mContext,  msg, Toast.LENGTH_SHORT).show();
@@ -143,5 +205,24 @@ public class IconsFragment extends BaseFragment {
     public CharSequence getTitle() {
         return "Icons";
     }
+
+    private MenuProvider menuProvider = new MenuProvider() {
+        @Override
+        public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+            menuInflater.inflate(R.menu.menu_icons, menu);
+
+            MenuItem searchItem = menu.findItem(R.id.menu_icons_search);
+            drawerLayout.setMenuItemBadge((SeslMenuItem) searchItem, new ToolbarLayout.Badge.Dot());
+        }
+
+        @Override
+        public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+            if (menuItem.getItemId() == R.id.menu_icons_search) {
+                launchSearchMode();
+                return true;
+            }
+            return false;
+        }
+    };
 
 }
