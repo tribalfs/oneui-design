@@ -238,6 +238,7 @@ public class IconsFragment extends BaseFragment {
         public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
             if (menuItem.getItemId() == R.id.menu_icons_search) {
                 launchSearchMode();
+                drawerLayout.setMenuItemBadge((SeslMenuItem) menuItem, new ToolbarLayout.Badge.None());
                 return true;
             }
             return false;

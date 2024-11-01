@@ -117,11 +117,13 @@ public class MainActivity extends AppCompatActivity
     private void initDrawer() {
         mBinding.drawerLayout.setDrawerButtonIcon(getDrawable(dev.oneuiproject.oneui.R.drawable.ic_oui_info_outline));
         mBinding.drawerLayout.setDrawerButtonTooltip("About page");
-        mBinding.drawerLayout.setDrawerButtonOnClickListener(v ->
-                ActivityUtils.startPopOverActivity(this,
-                        new Intent(MainActivity.this, SampleAboutActivity.class),
-                        null,
-                        ActivityUtils.POP_OVER_POSITION_TOP | ActivityUtils.POP_OVER_POSITION_CENTER_HORIZONTAL));
+        mBinding.drawerLayout.setDrawerButtonOnClickListener(v -> {
+                    ActivityUtils.startPopOverActivity(this,
+                            new Intent(MainActivity.this, SampleAboutActivity.class),
+                            null,
+                            ActivityUtils.POP_OVER_POSITION_TOP | ActivityUtils.POP_OVER_POSITION_CENTER_HORIZONTAL);
+                    mBinding.drawerLayout.setDrawerButtonBadge(new Badge.None());
+                });
 
         mBinding.drawerListView.setLayoutManager(new LinearLayoutManager(this));
         mBinding.drawerListView.setAdapter(new DrawerListAdapter(this, fragments, this));
@@ -129,6 +131,12 @@ public class MainActivity extends AppCompatActivity
         mBinding.drawerListView.setHasFixedSize(true);
         mBinding.drawerListView.seslSetLastRoundedCorner(false);
         mBinding.drawerLayout.setButtonBadges(new Badge.Dot(), new Badge.Dot());
+        mBinding.drawerLayout.setDrawerStateListener((state) -> {
+            if (state == DrawerLayout.DrawerState.OPEN) {
+                mBinding.drawerLayout.setNavigationButtonBadge(new Badge.None());
+            }
+            return null;
+        });
     }
 
     private void initFragments() {
