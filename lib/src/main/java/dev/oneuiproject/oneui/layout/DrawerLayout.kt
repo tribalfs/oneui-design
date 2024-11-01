@@ -52,6 +52,15 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
 
     private val mDrawerListener: DrawerListener = DrawerListener()
 
+    enum class DrawerState{
+        OPEN,
+        CLOSE,
+        SLIDING
+    }
+    private var mDrawerStateListener: ((state: DrawerState)-> Unit)? = null
+    private var mCurrentState: DrawerState? = null
+    private var mSlideOffset = 0f
+
     private lateinit var mDrawer: DrawerLayout
     private var mToolbarContent: LinearLayout? = null
     private lateinit var mDrawerContent: LinearLayout
@@ -409,6 +418,29 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
         }
     }
 
+    /**
+     * Set callback to be invoked when the drawer state changes.
+     *
+     * @param listener lambda to be invoked with the new [DrawerState]
+     */
+    fun setDrawerStateListener(listener: ((state: DrawerState)-> Unit)?){
+        mDrawerStateListener = listener
+        mCurrentState = null
+        dispatchDrawerStateChange()
+    }
+
+    private fun dispatchDrawerStateChange(){
+        val newState = when (mSlideOffset) {
+            1f -> DrawerState.OPEN
+            0f -> DrawerState.CLOSE
+            else -> DrawerState.SLIDING
+        }
+        if (newState != mCurrentState){
+            mCurrentState = newState
+            mDrawerStateListener?.invoke(newState)
+        }
+    }
+
     private inner class DrawerOutlineProvider(@param:Px private val mCornerRadius: Int) :
         ViewOutlineProvider() {
         override fun getOutline(view: View, outline: Outline) {
@@ -447,18 +479,27 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
                     navigationBarColor = Color.HSVToColor(hsv)
                 }
             }
+
+            if (slideOffset > 0f && slideOffset < 1f) {
+                mSlideOffset = slideOffset
+                dispatchDrawerStateChange()
+            }
         }
 
         override fun onDrawerOpened(drawerView: View) {
             super.onDrawerOpened(drawerView)
             sIsDrawerOpened = true
+            mSlideOffset = 1f
             ignoreBackGesture(false)
+            dispatchDrawerStateChange()
         }
 
         override fun onDrawerClosed(drawerView: View) {
             super.onDrawerClosed(drawerView)
             sIsDrawerOpened = false
+            mSlideOffset = 0f
             ignoreBackGesture(false)
+            dispatchDrawerStateChange()
         }
 
         @RequiresApi(33)
