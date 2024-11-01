@@ -100,8 +100,7 @@ class SectionIndexerDelegate<T>(private val context: Context,
 interface SemSectionIndexer<T>: SectionIndexer{
     /**
      * Updates the section indexer with a new or modified list of data items. This method should
-     * be called every time the data set is updated, and it should be invoked before submitting
-     * the new data to the RecyclerView adapter or an AsyncListDiffer.
+     * be called every time the data set is updated.
      *
      * @param list The updated list of data items for the adapter.
      * @param useAlphabeticIndex Whether to generate index characters automatically using
