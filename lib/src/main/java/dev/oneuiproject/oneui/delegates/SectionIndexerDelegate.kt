@@ -14,12 +14,33 @@ import java.util.Locale
 
 
 /**
- * Delegate class for implementing [SectionIndexer] in RecyclerView.Adapter instance
+ * Delegate class for implementing [SemSectionIndexer] in RecyclerView.Adapter instance
  * that accepts generic type of list items.
  *
  * @param context
  * @param labelExtractor lambda function to be invoked to get the item's label.
  * This should directly return index chars for api level <24.
+ * Example usage:
+ *```
+ * class IconsAdapter (
+ *    private val context: Context
+ * ) : RecyclerView.Adapter<IconsAdapter.ViewHolder>(),
+ *     SemSectionIndexer<Int> by SectionIndexerDelegate(
+ *           mContext,
+ *           labelExtractor = {iconId -> getLabel(mContext, iconId)}){
+ *
+ *
+ *   fun submitList(list: List<Icon>) {
+ *       asyncListDiffer.submitList(list)
+ *       //submit the same list to the delegate everytime a
+ *       //new list is submitted to the adapter.
+ *       updateSections(list, false)
+ *   }
+ *
+ *   //rest of the adapter's implementations
+ * }
+ *
+ * ```
  */
 class SectionIndexerDelegate<T>(private val context: Context,
                                 private val labelExtractor: (T) -> CharSequence
