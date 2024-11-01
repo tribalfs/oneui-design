@@ -80,6 +80,7 @@ public class IconsFragment extends BaseFragment {
         iconListView.seslSetFastScrollerEnabled(true);
         iconListView.seslSetGoToTopEnabled(true);
         iconListView.seslSetSmoothScrollEnabled(true);
+        iconListView.seslSetIndexTipEnabled(true);
 
         observer = new AdapterDataObserver() {
             RecyclerView iconListView = getView().findViewById(R.id.recyclerView);
