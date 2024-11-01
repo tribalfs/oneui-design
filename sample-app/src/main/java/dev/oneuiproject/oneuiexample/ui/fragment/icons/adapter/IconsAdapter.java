@@ -22,19 +22,22 @@ import java.util.List;
 import dev.oneuiproject.oneui.delegates.AllSelectorState;
 import dev.oneuiproject.oneui.delegates.MultiSelector;
 import dev.oneuiproject.oneui.delegates.MultiSelectorDelegate;
+import dev.oneuiproject.oneui.delegates.SectionIndexerDelegate;
 import dev.oneuiproject.oneui.utils.SearchHighlighter;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 
-public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.ViewHolder> implements SectionIndexer, MultiSelector<Integer> {
-    private final List<String> mSections = new ArrayList<>();
-    private final List<Integer> mPositionForSection = new ArrayList<>();
-    private final List<Integer> mSectionForPosition = new ArrayList<>();
+public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.ViewHolder>
+        implements SectionIndexer, MultiSelector<Integer> {
+
     private final List<Integer> mIconsId = new ArrayList<>();
     private final List<Integer> filteredIconsId = new ArrayList<>();  // For filtered data
     private final Context mContext;
+
     private final MultiSelectorDelegate<Integer> mSelectionDelegate = new MultiSelectorDelegate<>();
-    private SearchHighlighter highlighter = new SearchHighlighter();
+    private final SectionIndexerDelegate<Integer> indexerDelegate;
+
+    private final SearchHighlighter highlighter = new SearchHighlighter();
     private String query = "";
 
     public interface OnItemClickListener {
@@ -46,7 +49,16 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.ViewHolder> 
 
     public IconsAdapter(Context context) {
         mContext = context;
+        indexerDelegate = new SectionIndexerDelegate<>(context, this::getIndexerLabel);
+    }
 
+    private String getIndexerLabel(Integer iconId) {
+        char firstChar = mContext.getResources().getResourceEntryName(iconId)
+                .replace("ic_oui_", "").charAt(0);
+        if (Character.isDigit(firstChar)) {
+            return "#";
+        }
+        return Character.toString(firstChar).toUpperCase();
     }
 
     public void submitList(List<Integer> list) {
@@ -55,7 +67,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.ViewHolder> 
         filteredIconsId.clear();
         filteredIconsId.addAll(list);  // Initialize filtered list with all items
         notifyDataSetChanged();
-        updateSections();
+        indexerDelegate.updateSections(list, false);
         updateSelectableIds(filteredIconsId);
     }
 
@@ -77,26 +89,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.ViewHolder> 
             }
         }
         notifyDataSetChanged();
-    }
-
-    private void updateSections() {
-        mSections.clear();
-        mPositionForSection.clear();
-        mSectionForPosition.clear();
-        for (int i = 0; i < filteredIconsId.size(); i++) {
-            String letter = mContext.getResources().getResourceEntryName(filteredIconsId.get(i))
-                    .replace("ic_oui_", "").substring(0, 1).toUpperCase();
-
-            if (Character.isDigit(letter.charAt(0))) {
-                letter = "#";
-            }
-
-            if (i == 0 || !mSections.get(mSections.size() - 1).equals(letter)) {
-                mSections.add(letter);
-                mPositionForSection.add(i);
-            }
-            mSectionForPosition.add(mSections.size() - 1);
-        }
+        indexerDelegate.updateSections(filteredIconsId, false);
     }
 
     public int getItem(int position) {
@@ -142,17 +135,17 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.ViewHolder> 
     // Implement SectionIndexer methods
     @Override
     public Object[] getSections() {
-        return mSections.toArray();
+        return indexerDelegate.getSections();
     }
 
     @Override
     public int getPositionForSection(int sectionIndex) {
-        return mPositionForSection.get(sectionIndex);
+        return indexerDelegate.getPositionForSection(sectionIndex);
     }
 
     @Override
     public int getSectionForPosition(int position) {
-        return mSectionForPosition.get(position);
+        return indexerDelegate.getSectionForPosition(position);
     }
 
     // MultiSelector interface methods (delegate implementation)
