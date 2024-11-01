@@ -26,7 +26,7 @@ import dev.oneuiproject.oneui.utils.SearchHighlighter;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 
-public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> implements SectionIndexer, MultiSelector<Integer> {
+public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.ViewHolder> implements SectionIndexer, MultiSelector<Integer> {
     private final List<String> mSections = new ArrayList<>();
     private final List<Integer> mPositionForSection = new ArrayList<>();
     private final List<Integer> mSectionForPosition = new ArrayList<>();
@@ -44,7 +44,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
 
     public OnItemClickListener onItemClickListener = null;
 
-    public ImageAdapter(Context context) {
+    public IconsAdapter(Context context) {
         mContext = context;
 
     }
@@ -110,7 +110,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
 
     @NonNull
     @Override
-    public ImageAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public IconsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(R.layout.sample3_view_icon_listview_item, parent, false);
         ViewHolder vh = new ViewHolder(view);

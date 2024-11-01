@@ -29,20 +29,20 @@ import dev.oneuiproject.oneui.widget.Toast;
 import dev.oneuiproject.oneuiexample.ui.activity.MainActivity;
 import dev.oneuiproject.oneuiexample.ui.core.base.BaseFragment;
 import dev.oneuiproject.oneuiexample.data.IconsRepo;
-import dev.oneuiproject.oneuiexample.ui.fragment.icons.adapter.ImageAdapter;
+import dev.oneuiproject.oneuiexample.ui.fragment.icons.adapter.IconsAdapter;
 import dev.oneuiproject.oneuiexample.ui.core.ItemDecoration;
 
 public class IconsFragment extends BaseFragment {
 
     private DrawerLayout drawerLayout;
-    private ImageAdapter adapter;
+    private IconsAdapter adapter;
     AdapterDataObserver observer;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         drawerLayout = ((MainActivity)getActivity()).getDrawerLayout();
-        adapter = new ImageAdapter(getContext());
+        adapter = new IconsAdapter(getContext());
     }
 
     @Override
@@ -70,7 +70,7 @@ public class IconsFragment extends BaseFragment {
         adapter.submitList(iconsRepo.getIcons());
     }
 
-    private void setupRecyclerView(RecyclerView iconListView, ImageAdapter adapter){
+    private void setupRecyclerView(RecyclerView iconListView, IconsAdapter adapter){
         iconListView.setItemAnimator(null);
         iconListView.setAdapter(adapter);
         iconListView.addItemDecoration(new ItemDecoration(requireContext()));
@@ -97,7 +97,7 @@ public class IconsFragment extends BaseFragment {
         };
     }
 
-    private void setupSelection(RecyclerView iconListView, ImageAdapter adapter){
+    private void setupSelection(RecyclerView iconListView, IconsAdapter adapter){
         adapter.configure(
                 iconListView,
                 null,
@@ -106,8 +106,8 @@ public class IconsFragment extends BaseFragment {
         );
     }
 
-    private void setupAdapterClickListeners(RecyclerView iconListView, ImageAdapter adapter){
-        adapter.onItemClickListener = new ImageAdapter.OnItemClickListener() {
+    private void setupAdapterClickListeners(RecyclerView iconListView, IconsAdapter adapter){
+        adapter.onItemClickListener = new IconsAdapter.OnItemClickListener() {
 
             @Override
             public void onItemClick(Integer iconId, int position) {
@@ -128,7 +128,7 @@ public class IconsFragment extends BaseFragment {
         };
     }
 
-    private void launchActionMode(ImageAdapter adapter) {
+    private void launchActionMode(IconsAdapter adapter) {
         adapter.onToggleActionMode(true, null);
 
         drawerLayout.startActionMode(new ToolbarLayout.ActionModeListener() {
@@ -162,7 +162,7 @@ public class IconsFragment extends BaseFragment {
     private void launchSearchMode(){
         RecyclerView iconListView = getView().findViewById(R.id.recyclerView);
         NestedScrollView notItemView = getView().findViewById(R.id.nsvNoItem);
-        ImageAdapter adapter = (ImageAdapter) iconListView.getAdapter();
+        IconsAdapter adapter = (IconsAdapter) iconListView.getAdapter();
 
         final ViewYTranslator translatorDelegate = new AppBarAwareYTranslator();
         translatorDelegate.translateYWithAppBar(notItemView, drawerLayout.getAppBarLayout(), requireActivity());
