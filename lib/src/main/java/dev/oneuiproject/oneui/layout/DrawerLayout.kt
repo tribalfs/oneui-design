@@ -234,13 +234,14 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
         lockDrawerIfAvailable(false)
     }
 
-    override fun startActionMode(listener: ActionModeListener){
+    override fun startActionMode(listener: ActionModeListener, keepSearchMode: Boolean){
         lockDrawerIfAvailable(true)
-        super.startActionMode(listener)
+        super.startActionMode(listener, keepSearchMode)
     }
 
     override fun endActionMode() {
         super.endActionMode()
+        if (isSearchMode) return
         lockDrawerIfAvailable(false)
     }
 

@@ -835,8 +835,13 @@ open class ToolbarLayout @JvmOverloads constructor(
         isActionMode = true
         ensureActionModeViews()
         mActionModeListener = listener
-        if (isSearchMode) dismissSearchMode()
-
+        if (isSearchMode) {
+            if (keepSearchMode) {
+                animatedVisibility(mSearchToolbar!!, GONE)
+            }else{
+                endSearchMode()
+            }
+        }
         animatedVisibility(mMainToolbar, GONE)
         animatedVisibility(mActionModeToolbar!!, VISIBLE)
         mFooterContainer!!.visibility = GONE
@@ -862,12 +867,19 @@ open class ToolbarLayout @JvmOverloads constructor(
         if (!isActionMode) return
         isActionMode = false
         animatedVisibility(mActionModeToolbar!!, GONE)
-        animatedVisibility(mMainToolbar, VISIBLE)
-        mFooterContainer!!.visibility = VISIBLE
+        if (isSearchMode) {
+            //return to search mode interface
+            animatedVisibility(mSearchToolbar!!, VISIBLE)
+            mCollapsingToolbarLayout.title = resources.getString(appcompatR.string.sesl_searchview_description_search)
+            mCollapsingToolbarLayout.seslSetSubtitle(null)
+        }else{
+            animatedVisibility(mMainToolbar, VISIBLE)
+            mFooterContainer!!.visibility = VISIBLE
+            setTitle(mTitleExpanded, mTitleCollapsed)
+            mCollapsingToolbarLayout.seslSetSubtitle(mSubtitleExpanded)
+            mMainToolbar.subtitle = mSubtitleCollapsed
+        }
         mBottomActionModeBar.visibility = GONE
-        setTitle(mTitleExpanded, mTitleCollapsed)
-        mCollapsingToolbarLayout.seslSetSubtitle(mSubtitleExpanded)
-        mMainToolbar.subtitle = mSubtitleCollapsed
         mActionModeListener!!.onEndActionMode()
         mMenuSynchronizer!!.clear()
         mAppBarLayout.removeOnOffsetChangedListener(mActionModeTitleFadeListener)
