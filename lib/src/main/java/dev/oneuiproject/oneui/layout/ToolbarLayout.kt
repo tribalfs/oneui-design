@@ -42,10 +42,13 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.res.use
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
+import dev.oneuiproject.oneui.delegates.AllSelectorState
 import dev.oneuiproject.oneui.delegates.OnBackPressedDelegate
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.isSoftKeyboardShowing
@@ -60,6 +63,10 @@ import dev.oneuiproject.oneui.utils.MenuSynchronizer.State
 import dev.oneuiproject.oneui.utils.badgeCountToText
 import dev.oneuiproject.oneui.utils.internal.ToolbarLayoutUtils
 import dev.oneuiproject.oneui.view.internal.NavigationBadgeIcon
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.max
 import androidx.appcompat.R as appcompatR
@@ -821,18 +828,25 @@ open class ToolbarLayout @JvmOverloads constructor(
     //
     // Action Mode methods
     //
+    private var updateAllSelectorJob: Job? = null
+
     /**
      * Starts an Action Mode session. This shows the Toolbar's ActionMode with a toggleable 'All' Checkbox
      * and a counter ('x selected') that temporarily replaces the Toolbar's title.
      *
      * @param listener The [ActionModeListener] to be invoke for this action mode.
+     * @param keepSearchMode (Optional) Set to `true` to keep active search mode and
+     * restore it's interface when this ActionMode is ended. This is set `false` by default.
      *
      * @see [endActionMode]
      */
     @JvmOverloads
-    open fun startActionMode(listener: ActionModeListener, keepSearchMode: Boolean = false){
+    open fun startActionMode(listener: ActionModeListener,
+                             keepSearchMode: Boolean = false,
+                             allSelectorStateFlow: StateFlow<AllSelectorState>? = null){
         Log.d(TAG, "startActionMode")
         isActionMode = true
+        updateAllSelectorJob?.cancel()
         ensureActionModeViews()
         mActionModeListener = listener
         if (isSearchMode) {
@@ -846,6 +860,14 @@ open class ToolbarLayout @JvmOverloads constructor(
         animatedVisibility(mActionModeToolbar!!, VISIBLE)
         mFooterContainer!!.visibility = GONE
         setupActionModeMenu()
+        allSelectorStateFlow?.let {
+            updateAllSelectorJob = activity!!.lifecycleScope.launch {
+                it.flowWithLifecycle(activity!!.lifecycle)
+                    .collectLatest {
+                        updateAllSelectorInternal(it.totalSelected, it.isEnabled, it.isChecked)
+                    }
+            }
+        }
         mAppBarLayout.addOnOffsetChangedListener(
             AppBarOffsetListener().also { mActionModeTitleFadeListener = it })
         mCollapsingToolbarLayout.seslSetSubtitle(null)
@@ -865,6 +887,7 @@ open class ToolbarLayout @JvmOverloads constructor(
      */
     open fun endActionMode() {
         if (!isActionMode) return
+        updateAllSelectorJob?.cancel()
         isActionMode = false
         animatedVisibility(mActionModeToolbar!!, GONE)
         if (isSearchMode) {
@@ -888,6 +911,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         mActionModeTitleFadeListener = null
         mActionModeListener = null
         mMenuSynchronizer = null
+        updateAllSelectorJob = null
         updateObpCallbackState()
     }
 
@@ -1080,15 +1104,33 @@ open class ToolbarLayout @JvmOverloads constructor(
     }
 
     /**
-     * Set the ActionMode's count and Select all checkBox's enabled state and check state
+     * Update action mode's 'All' selector state
+     *
+     * @param count Number of selected items
+     * @param enabled To enable/disable clicking the 'All' selector.
+     * @param checked (Optional) check all selector toggle. When not provided or `null` is set,
+     * it will keep the current checked state
+     */
+    @JvmOverloads
+    fun updateAllSelector(count: Int, enabled: Boolean, checked: Boolean? = null) {
+        if (updateAllSelectorJob != null){
+            Log.w(TAG, "'updateAllSelector' ignored because `startActionMode` " +
+                    " is provided as param for  startActionMode().")
+            return
+        }
+        updateAllSelectorInternal(count, enabled, checked)
+    }
+
+    /**
+     * Updates the ActionMode's count and Select all checkBox's enabled state and check state
      *
      * @param count number of selected items in the list
      * @param enabled enable or disable click
      * @param checked
      */
-    fun setActionModeAllSelector(count: Int, enabled: Boolean, checked: Boolean?) {
+    private fun updateAllSelectorInternal(count: Int, enabled: Boolean, checked: Boolean?) {
         if (!isActionMode) {
-            Log.w(TAG, "'setActionModeAllSelector' called with action mode not started.")
+            Log.w(TAG, "'updateAllSelector' called with action mode not started.")
             return
         }
         ensureActionModeViews()
@@ -1108,6 +1150,18 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
 
         mActionModeSelectAll.isEnabled = enabled
+    }
+
+    /**
+     * Set the ActionMode's count and Select all checkBox's enabled state and check state
+     *
+     * @param count number of selected items in the list
+     * @param enabled enable or disable click
+     * @param checked
+     */
+    @Deprecated("Use updateAllSelector() instead.", ReplaceWith("updateAllSelector(count, enabled, checked)"))
+    fun setActionModeAllSelector(count: Int, enabled: Boolean, checked: Boolean?) {
+        updateAllSelectorInternal(count, enabled, checked)
     }
 
     /**
@@ -1228,6 +1282,11 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     }
 }
+
+
+////////////////////////////////////////////////////////////////
+//         Kotlin consumables
+////////////////////////////////////////////////////////////////
 
 /**
  * Type-safe way to set badge. Select either [Badge.NUMERIC], [Badge.DOT] or [Badge.NONE]

@@ -36,10 +36,12 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener
+import dev.oneuiproject.oneui.delegates.AllSelectorState
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.utils.ViewUtils
 import dev.oneuiproject.oneui.utils.badgeCountToText
+import kotlinx.coroutines.flow.StateFlow
 import kotlin.math.max
 import androidx.appcompat.R as appcompatR
 import dev.oneuiproject.oneui.layout.DrawerLayout as OuiDrawerLayout
@@ -234,9 +236,13 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
         lockDrawerIfAvailable(false)
     }
 
-    override fun startActionMode(listener: ActionModeListener, keepSearchMode: Boolean){
+    override fun startActionMode(
+        listener: ActionModeListener,
+        keepSearchMode: Boolean,
+        allSelectorStateFlow: StateFlow<AllSelectorState>?
+    ) {
         lockDrawerIfAvailable(true)
-        super.startActionMode(listener, keepSearchMode)
+        super.startActionMode(listener, keepSearchMode, allSelectorStateFlow)
     }
 
     override fun endActionMode() {
