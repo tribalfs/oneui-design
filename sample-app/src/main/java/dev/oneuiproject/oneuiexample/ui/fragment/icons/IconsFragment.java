@@ -25,6 +25,7 @@ import dev.oneuiproject.oneui.delegates.AppBarAwareYTranslator;
 import dev.oneuiproject.oneui.delegates.ViewYTranslator;
 import dev.oneuiproject.oneui.layout.DrawerLayout;
 import dev.oneuiproject.oneui.layout.ToolbarLayout;
+import dev.oneuiproject.oneui.widget.TipPopup;
 import dev.oneuiproject.oneui.widget.Toast;
 import dev.oneuiproject.oneuiexample.ui.activity.MainActivity;
 import dev.oneuiproject.oneuiexample.ui.core.base.BaseFragment;
@@ -36,7 +37,8 @@ public class IconsFragment extends BaseFragment {
 
     private DrawerLayout drawerLayout;
     private IconsAdapter adapter;
-    AdapterDataObserver observer;
+    private AdapterDataObserver observer;
+    private boolean tipPopupShown = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,12 +52,12 @@ public class IconsFragment extends BaseFragment {
         if (!hidden) {
             adapter.registerAdapterDataObserver(observer);
             requireActivity().addMenuProvider(menuProvider, getViewLifecycleOwner(), Lifecycle.State.STARTED);
+            showTipPopup();
         }else{
             adapter.unregisterAdapterDataObserver(observer);
             requireActivity().removeMenuProvider(menuProvider);
         }
     }
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -190,6 +192,22 @@ public class IconsFragment extends BaseFragment {
 
     private void toast(String msg) {
         Toast.makeText(mContext,  msg, Toast.LENGTH_SHORT).show();
+    }
+
+    private void showTipPopup(){
+        if (!tipPopupShown) {
+            RecyclerView iconListView = getView().findViewById(R.id.recyclerView);
+            iconListView.postDelayed(() -> {
+                View anchor = iconListView.getLayoutManager().findViewByPosition(0);
+                if (anchor != null) {
+                    TipPopup tipPopup = new TipPopup(anchor, TipPopup.MODE_TRANSLUCENT);
+                    tipPopup.setMessage("Long-press item to trigger multi-selection.");
+                    tipPopup.setAction("Close", view -> tipPopupShown = true);
+                    tipPopup.setExpanded(true);
+                    tipPopup.show(TipPopup.DIRECTION_DEFAULT);
+                }
+            }, 500);
+        }
     }
 
     @Override

@@ -61,15 +61,6 @@ public class MainActivity extends AppCompatActivity
         initDrawer();
         initFragments();
         initOnBackPressed();
-
-        mBinding.drawerLayout.post(() -> {
-            TipPopup tipPopup = new TipPopup(mBinding.drawerLayout.getToolbar().getChildAt(0), TipPopup.MODE_TRANSLUCENT);
-            tipPopup.setMessage("I'm Mr. Mee6, look at me!");
-            tipPopup.setAction("Close", view -> {
-            });
-            //tipPopup.setExpanded(true);
-            tipPopup.show(TipPopup.DIRECTION_BOTTOM_RIGHT);
-        });
     }
 
     @Override
