@@ -1,4 +1,4 @@
-package dev.oneuiproject.oneuiexample.ui.fragment;
+package dev.oneuiproject.oneuiexample.ui.fragment.contacts;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -39,7 +39,7 @@ import dev.oneuiproject.oneui.utils.IndexScrollUtils;
 import dev.oneuiproject.oneui.widget.Separator;
 import dev.oneuiproject.oneuiexample.ui.core.base.BaseFragment;
 
-public class IndexScrollFragment extends BaseFragment {
+public class Contacts extends BaseFragment {
     private int mCurrentSectionIndex = 0;
     private RecyclerView mListView;
     private SeslIndexScrollView mIndexScrollView;
@@ -118,7 +118,7 @@ public class IndexScrollFragment extends BaseFragment {
 
     @Override
     public int getLayoutResId() {
-        return R.layout.sample3_fragment_indexscroll;
+        return R.layout.fragment_contacts;
     }
 
     @Override
@@ -134,7 +134,7 @@ public class IndexScrollFragment extends BaseFragment {
     private void initListView(@NonNull View view) {
         mListView = view.findViewById(R.id.indexscroll_list);
         mListView.setLayoutManager(new LinearLayoutManager(mContext));
-        mListView.setAdapter(new IndexAdapter());
+        mListView.setAdapter(new ContactsAdapter());
         mListView.addItemDecoration(new ItemDecoration(mContext));
         mListView.setItemAnimator(null);
         mListView.seslSetFillBottomEnabled(true);
@@ -209,13 +209,13 @@ public class IndexScrollFragment extends BaseFragment {
         });
     }
 
-    public class IndexAdapter extends RecyclerView.Adapter<IndexAdapter.ViewHolder>
+    public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder>
             implements SectionIndexer {
         List<String> mSections = new ArrayList<>();
         List<Integer> mPositionForSection = new ArrayList<>();
         List<Integer> mSectionForPosition = new ArrayList<>();
 
-        IndexAdapter() {
+        ContactsAdapter() {
             mSections.add("");
             mPositionForSection.add(0);
             mSectionForPosition.add(0);
@@ -242,19 +242,19 @@ public class IndexScrollFragment extends BaseFragment {
 
         @NonNull
         @Override
-        public IndexAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public ContactsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             if (viewType == 0) {
                 LayoutInflater inflater = LayoutInflater.from(mContext);
                 View view = inflater.inflate(
                         R.layout.sample3_view_indexscroll_listview_item, parent, false);
-                return new IndexAdapter.ViewHolder(view, false);
+                return new ContactsAdapter.ViewHolder(view, false);
             } else {
-                return new IndexAdapter.ViewHolder(new Separator(mContext), true);
+                return new ContactsAdapter.ViewHolder(new Separator(mContext), true);
             }
         }
 
         @Override
-        public void onBindViewHolder(IndexAdapter.ViewHolder holder, final int position) {
+        public void onBindViewHolder(ContactsAdapter.ViewHolder holder, final int position) {
             if (holder.isSeparator) {
                 holder.textView.setLayoutParams(new LayoutParams(
                         LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
@@ -326,8 +326,8 @@ public class IndexScrollFragment extends BaseFragment {
 
             for (int i = 0; i < parent.getChildCount(); i++) {
                 View child = parent.getChildAt(i);
-                IndexAdapter.ViewHolder holder
-                        = (IndexAdapter.ViewHolder) mListView.getChildViewHolder(child);
+                ContactsAdapter.ViewHolder holder
+                        = (ContactsAdapter.ViewHolder) mListView.getChildViewHolder(child);
                 if (!holder.isSeparator) {
                     final int top = child.getBottom()
                             + ((ViewGroup.MarginLayoutParams) child.getLayoutParams()).bottomMargin;
@@ -343,8 +343,8 @@ public class IndexScrollFragment extends BaseFragment {
         public void seslOnDispatchDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
             for (int i = 0; i < parent.getChildCount(); i++) {
                 View child = parent.getChildAt(i);
-                IndexAdapter.ViewHolder holder
-                        = (IndexAdapter.ViewHolder) mListView.getChildViewHolder(child);
+                ContactsAdapter.ViewHolder holder
+                        = (ContactsAdapter.ViewHolder) mListView.getChildViewHolder(child);
                 if (holder.isSeparator) {
                     mRoundedCorner.drawRoundedCorner(child, c);
                 }

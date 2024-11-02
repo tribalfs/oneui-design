@@ -32,8 +32,7 @@ import dev.oneuiproject.oneui.utils.ActivityUtils;
 import dev.oneuiproject.oneui.widget.TipPopup;
 import dev.oneuiproject.oneuiexample.ui.core.base.FragmentInfo;
 import dev.oneuiproject.oneuiexample.ui.fragment.AppPickerFragment;
-import dev.oneuiproject.oneuiexample.ui.fragment.icons.IconsFragment;
-import dev.oneuiproject.oneuiexample.ui.fragment.IndexScrollFragment;
+import dev.oneuiproject.oneuiexample.ui.fragment.contacts.Contacts;
 import dev.oneuiproject.oneuiexample.ui.fragment.PickersFragment;
 import dev.oneuiproject.oneuiexample.ui.fragment.PreferencesFragment;
 import dev.oneuiproject.oneuiexample.ui.fragment.ProgressBarFragment;
@@ -83,7 +82,7 @@ public class MainActivity extends AppCompatActivity
         fragments.add(new TabsFragment());
         fragments.add(null);
         fragments.add(new AppPickerFragment());
-        fragments.add(new IndexScrollFragment());
+        fragments.add(new Contacts());
         fragments.add(new PickersFragment());
         fragments.add(null);
         fragments.add(new QRCodeFragment());
