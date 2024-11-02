@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:clickable="true"
+    tools:viewBindingIgnore="true"
+    android:foreground="?attr/listChoiceBackgroundIndicator">
+
+    <LinearLayout
+        android:paddingStart="?listPreferredItemPaddingStart"
+        android:paddingEnd="?listPreferredItemPaddingEnd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/contact_item_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:clickable="false"
+            android:focusable="false"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:layout_marginEnd="8dp"
+            tools:visibility="visible"/>
+
+        <ImageView
+            android:id="@+id/contact_item_icon"
+            android:layout_width="36.0dip"
+            android:layout_height="36.0dip"
+            android:gravity="center"
+            android:layout_gravity="center"
+            tools:background="@drawable/ic_oui_contact"
+            android:scaleType="fitXY" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginStart="20dp"
+            android:paddingVertical="14.0dip"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/contact_item_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:maxLines="1"
+                tools:text="Name"
+                android:ellipsize="end" />
+
+            <TextView
+                android:id="@+id/contact_item_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="?android:textColorSecondary"
+                tools:text="+639177777777777"
+                android:maxLines="1"
+                tools:visibility="visible"
+                android:ellipsize="end" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>

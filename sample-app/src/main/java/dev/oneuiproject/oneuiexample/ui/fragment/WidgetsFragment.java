@@ -59,9 +59,6 @@ public class WidgetsFragment extends BaseFragment
         searchView.seslSetUpButtonVisibility(View.VISIBLE);
         searchView.seslSetOnUpButtonClickListener(this);
 
-        if (!isHidden()){
-            requireActivity().addMenuProvider(menuProvider, getViewLifecycleOwner(), Lifecycle.State.STARTED);
-        }
     }
 
     @Override
@@ -83,34 +80,5 @@ public class WidgetsFragment extends BaseFragment
     public void onClick(View v) {
         // no-op
     }
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        if (!hidden) {
-            requireActivity().addMenuProvider(menuProvider, getViewLifecycleOwner(), Lifecycle.State.STARTED);
-        }else{
-            requireActivity().removeMenuProvider(menuProvider);
-        }
-    }
-
-    private MenuProvider menuProvider = new MenuProvider() {
-        @Override
-        public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-            menuInflater.inflate(R.menu.menu_widgets, menu);
-
-            DrawerLayout drawerLayout = ((MainActivity)getActivity()).getDrawerLayout();
-            MenuItem searchItem = menu.findItem(R.id.menu_about_app);
-            drawerLayout.setMenuItemBadge((SeslMenuItem) searchItem, new ToolbarLayout.Badge.Dot());
-        }
-
-        @Override
-        public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-            if (menuItem.getItemId() == R.id.menu_about_app) {
-                startActivity(new Intent(requireActivity(), AboutActivity.class));
-                return true;
-            }
-            return false;
-        }
-    };
 
 }

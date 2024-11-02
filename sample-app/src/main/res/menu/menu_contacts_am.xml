@@ -5,10 +5,16 @@
     tools:ignore="AppCompatResource">
 
     <item
-        android:id="@+id/menu_about_app"
-        android:title="About"
-        android:icon="@drawable/ic_oui_android"
+        android:id="@+id/menu_contacts_am_share"
+        android:title="Share"
+        android:icon="@drawable/ic_oui_share"
         app:iconTint="?actionMenuTextColor"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/menu_contacts_am_delete"
+        android:title="Delete"
+        android:icon="@drawable/ic_oui_delete"
+        app:iconTint="?actionMenuTextColor"
+        app:showAsAction="always" />
 </menu>

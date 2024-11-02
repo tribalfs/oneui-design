@@ -1,6 +1,8 @@
 package dev.oneuiproject.oneui.ktx
 
+import android.os.Build
 import android.view.View
+import android.widget.SectionIndexer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 
@@ -53,5 +55,38 @@ inline fun RecyclerView.doOnLongPressMultiSelection (
 enum class MultiSelectionState{
     STARTED,
     ENDED
+}
+
+
+/**
+ * Syntactic sugar equivalent to calling:
+ *
+ * ```
+ * RecyclerView.apply{
+ *     seslSetFillBottomEnabled(true)
+ *     seslSetLastRoundedCorner(true)
+ *     seslSetFastScrollerEnabled(true)
+ *     seslSetGoToTopEnabled(true)
+ *     seslSetSmoothScrollEnabled(true)
+ *     seslSetIndexTipEnabled(true)
+ * }
+ * ```
+ */
+inline fun RecyclerView.enableCoreSeslFeatures(
+    fillBottom:Boolean = true,
+    lastRoundedCorner:Boolean = true,
+    fastScrollerEnabled:Boolean = true,
+    goToTopEnabled:Boolean = true,
+    smoothScrollEnabled:Boolean = true,
+    indexTipEnabled: Boolean = adapter is SectionIndexer
+){
+    if (fillBottom) seslSetFillBottomEnabled(true)
+    if (lastRoundedCorner) seslSetLastRoundedCorner(true)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && fastScrollerEnabled) {
+        seslSetFastScrollerEnabled(true)
+    }
+    if (goToTopEnabled) seslSetGoToTopEnabled(true)
+    if (smoothScrollEnabled) seslSetSmoothScrollEnabled(true)
+    if (indexTipEnabled) seslSetIndexTipEnabled(true)
 }
 

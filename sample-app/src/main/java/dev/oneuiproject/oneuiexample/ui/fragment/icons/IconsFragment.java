@@ -1,7 +1,7 @@
 package dev.oneuiproject.oneuiexample.ui.fragment.icons;
 
 import static dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.CLEAR_DISMISS;
-import static dev.oneuiproject.oneuiexample.ui.core.ToastKt.toast;
+import static dev.oneuiproject.oneuiexample.ui.core.ktx.ToastKt.toast;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -29,7 +29,6 @@ import dev.oneuiproject.oneui.delegates.ViewYTranslator;
 import dev.oneuiproject.oneui.layout.DrawerLayout;
 import dev.oneuiproject.oneui.layout.ToolbarLayout;
 import dev.oneuiproject.oneui.widget.TipPopup;
-import dev.oneuiproject.oneui.widget.Toast;
 import dev.oneuiproject.oneuiexample.ui.activity.MainActivity;
 import dev.oneuiproject.oneuiexample.ui.core.base.BaseFragment;
 import dev.oneuiproject.oneuiexample.data.IconsRepo;
@@ -188,7 +187,9 @@ public class IconsFragment extends BaseFragment {
 
             @Override
             public void onSearchModeToggle(@NonNull SearchView searchView, boolean visible) {
-
+                if (visible) {
+                    searchView.setQueryHint( "Search icons");
+                }
             }
         }, CLEAR_DISMISS);
     }

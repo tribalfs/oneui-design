@@ -18,4 +18,21 @@
         android:layout_height="match_parent"
         android:visibility="gone" />
 
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsvNoItem"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tvNoItem"
+            android:textSize="16sp"
+            android:textColor="?actionMenuTextColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            tools:text="No item"
+            />
+    </androidx.core.widget.NestedScrollView>
 </FrameLayout>
