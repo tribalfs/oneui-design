@@ -1,6 +1,7 @@
 package dev.oneuiproject.oneuiexample.ui.fragment.icons;
 
 import static dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.CLEAR_DISMISS;
+import static dev.oneuiproject.oneuiexample.ui.core.ToastKt.toast;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -119,7 +120,7 @@ public class IconsFragment extends BaseFragment {
                 if (adapter.isActionMode()) {
                     adapter.onToggleItem(iconId, position);
                 }else {
-                    toast(getResources().getResourceEntryName(iconId) + " clicked!");
+                    toast(IconsFragment.this, getResources().getResourceEntryName(iconId) + " clicked!");
                 }
             }
 
@@ -151,7 +152,7 @@ public class IconsFragment extends BaseFragment {
             public boolean onMenuItemClicked(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.icons_am_menu1
                         || item.getItemId() == R.id.icons_am_menu2) {
-                    toast(item.getTitle().toString());
+                    toast(IconsFragment.this, item.getTitle().toString());
                     return true;
                 }
                 return false;
@@ -192,9 +193,6 @@ public class IconsFragment extends BaseFragment {
         }, CLEAR_DISMISS);
     }
 
-    private void toast(String msg) {
-        Toast.makeText(mContext,  msg, Toast.LENGTH_SHORT).show();
-    }
 
     private void showTipPopup(){
         if (!tipPopupShown) {
