@@ -1330,3 +1330,121 @@ inline fun <T:ToolbarLayout>T.setMenuItemBadge(menuItem: SeslMenuItem, badge: Ba
         }
     )
 }
+
+/**
+ * Starts the search mode for this [ToolbarLayout].
+ *
+ * This method sets up the search mode with the specified behaviors and callbacks.
+ * It handles dismissing the soft keyboard when the query is submitted.
+ *
+ * @param onBackBehavior Defines the [behavior][ToolbarLayout.SearchModeOnBackBehavior] when the back button is pressed during search mode.
+ * @param onQuery Lambda function to be invoked when the query text changes or is submitted.
+ *               Return true if the query has been handled, false otherwise.
+ * @param onStart Lambda function to be invoked when search mode starts.
+ * @param onEnd Lambda function to be invoked when search mode ends.
+ *
+ * Example usage:
+ * ```
+ * toolbarLayout.startSearchMode(
+ *     ToolbarLayout.SearchModeOnBackBehavior.CLEAR_SEARCH,
+ *     { query, isSubmit ->
+ *         // Handle query change or submission
+ *         true // Return true to indicate the query is handled
+ *     },
+ *     onStart = { searchView ->
+ *         // Perform actions when search mode starts
+ *     },
+ *     onEnd = { searchView ->
+ *         // Perform actions when search mode ends
+ *     }
+ * )
+ * ```
+ * @see ToolbarLayout.endSearchMode
+ */
+inline fun <T:ToolbarLayout>T.startSearchMode(
+    onBackBehavior: ToolbarLayout.SearchModeOnBackBehavior,
+    crossinline onQuery: (query: String, isSubmit: Boolean) -> Boolean,
+    crossinline onStart: (searchView: SearchView) -> Unit = {},
+    crossinline onEnd: (searchView: SearchView) -> Unit = {}
+) {
+    startSearchMode(
+        object : ToolbarLayout.SearchModeListener {
+            override fun onQueryTextSubmit(query: String?) =
+                onQuery(query ?: "", true).also { searchView.clearFocus() }
+
+            override fun onQueryTextChange(newText: String?) = onQuery(newText ?: "", false)
+
+
+            override fun onSearchModeToggle(searchView: SearchView, visible: Boolean) {
+                if (visible) {
+                    onStart.invoke(searchView)
+                }else{
+                    onEnd.invoke(searchView)
+                }
+            }
+        },
+        onBackBehavior
+    )
+}
+
+/**
+ * Starts the action mode for this [ToolbarLayout].
+ *
+ * This method sets up the action mode with the specified callbacks and options.
+ *
+ * @param onInflateMenu Lambda function to be invoked after action mode starts to inflate the menu.
+ * Perform menu inflation within this lambda.
+ *
+ * @param onEnd Lambda function to be invoked when action mode ends.
+ *
+ * @param onSelectMenuItem Lambda function to be invoked when an action menu item is selected.
+ * Return true if the item click is handled, false otherwise.
+ *
+ * @param onSelectAll Lambda function to be invoked when the `All` selector is clicked.
+ * This will not be triggered with [ToolbarLayout.updateAllSelector].
+ *
+ * @param allSelectorStateFlow (Optional) StateFlow of [AllSelectorState] that updates the `All` selector state and count.
+ *
+ * Example usage:
+ * ```
+ * toolbarLayout.startActionMode(
+ *     onInflateMenu = { menu ->
+ *         // Inflate menu items here
+ *         menuInflater.inflate(R.menu.action_menu, menu)
+ *     },
+ *     onEnd = {
+ *         // Perform actions when action mode ends
+ *     },
+ *     onSelectMenuItem = { item ->
+ *         // Handle action item click
+ *         true // Return true to indicate the item click is handled
+ *     },
+ *     onSelectAll = { isChecked ->
+ *         // Handle "All" selector click
+ *     },
+ *     allSelectorStateFlow = viewModel.allSelectorStateFlow
+ * )
+ * ```
+ *
+ * @see ToolbarLayout.endActionMode
+ */
+inline fun <T:ToolbarLayout>T.startActionMode(
+    crossinline onInflateMenu: (menu: Menu) -> Unit,
+    crossinline onEnd: () -> Unit,
+    crossinline onSelectMenuItem: (item: MenuItem) -> Boolean,
+    crossinline onSelectAll: (Boolean) -> Unit,
+    keepSearchMode: Boolean = false,
+    allSelectorStateFlow: StateFlow<AllSelectorState>? = null
+) {
+    startActionMode(
+        object : ToolbarLayout.ActionModeListener {
+            override fun onInflateActionMenu(menu: Menu) = onInflateMenu(menu)
+            override fun onEndActionMode() = onEnd()
+            override fun onMenuItemClicked(item: MenuItem) = onSelectMenuItem(item)
+            override fun onSelectAll(isChecked: Boolean) = onSelectAll.invoke(isChecked)
+
+        },
+        keepSearchMode,
+        allSelectorStateFlow
+    )
+}
