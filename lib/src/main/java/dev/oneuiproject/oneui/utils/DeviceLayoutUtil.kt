@@ -25,4 +25,17 @@ object DeviceLayoutUtil {
         ?: SeslConfigurationReflector.isDexEnabled(resources.configuration).also { sIsDexMode = it }
 
     inline fun isTabletLayout(resources: Resources) = resources.configuration.smallestScreenWidthDp >= 600
+
+    @SuppressLint("InternalInsetResource", "DiscouragedApi")
+    fun getNavigationBarHeight(resources: Resources): Int {
+        val identifier: Int = resources.getIdentifier(
+            "navigation_bar_height",
+            "dimen",
+            "android"
+        )
+        if (identifier > 0){
+            return resources.getDimensionPixelSize(identifier)
+        }
+        return 0
+    }
 }
