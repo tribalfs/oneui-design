@@ -26,6 +26,7 @@ import dev.oneuiproject.oneui.widget.AutoHideIndexScrollView
 import dev.oneuiproject.oneuiexample.data.ContactsRepo
 import dev.oneuiproject.oneuiexample.ui.core.base.BaseFragment
 import dev.oneuiproject.oneuiexample.ui.fragment.contacts.adapter.ContactsAdapter
+import dev.oneuiproject.oneuiexample.ui.fragment.contacts.util.ContactsListItemDecoration
 
 class ContactsFragment : BaseFragment() {
     private var mCurrentSectionIndex = 0
@@ -94,7 +95,7 @@ class ContactsFragment : BaseFragment() {
         mContactsListRv = view.findViewById<RecyclerView?>(R.id.contacts_list).apply {
             setLayoutManager(LinearLayoutManager(mContext))
             setAdapter(contactsAdapter.apply { submitList(contactsList) })
-            addItemDecoration(ItemDecoration(mContext))
+            addItemDecoration(ContactsListItemDecoration(mContext))
             setItemAnimator(null)
             seslSetFillBottomEnabled(true)
             seslSetLastRoundedCorner(true)
@@ -120,60 +121,6 @@ class ContactsFragment : BaseFragment() {
         indexer.setGroupItemsCount(1)
         indexer.setMiscItemsCount(3)
         setIndexer(indexer)
-    }
-
-    private inner class ItemDecoration(context: Context) : RecyclerView.ItemDecoration() {
-        private val mDivider: Drawable?
-        private val mRoundedCorner: SeslSubheaderRoundedCorner
-
-        init {
-            val outValue = TypedValue()
-            context.theme.resolveAttribute(androidx.appcompat.R.attr.isLightTheme, outValue, true)
-
-            mDivider = context.getDrawable(
-                if (outValue.data == 0)
-                    androidx.appcompat.R.drawable.sesl_list_divider_dark
-                else
-                    androidx.appcompat.R.drawable.sesl_list_divider_light
-            )
-
-            mRoundedCorner = SeslSubheaderRoundedCorner(mContext)
-            mRoundedCorner.roundedCorners = SeslRoundedCorner.ROUNDED_CORNER_ALL
-        }
-
-        override fun onDraw(
-            c: Canvas, parent: RecyclerView,
-            state: RecyclerView.State
-        ) {
-            super.onDraw(c, parent, state)
-
-            for (i in 0 until parent.childCount) {
-                val child = parent.getChildAt(i)
-                val holder = mContactsListRv!!.getChildViewHolder(child) as ContactsAdapter.ViewHolder
-                if (!holder.isSeparator) {
-                    val top = (child.bottom
-                            + (child.layoutParams as MarginLayoutParams).bottomMargin)
-                    val bottom = mDivider!!.intrinsicHeight + top
-
-                    mDivider.setBounds(parent.left, top, parent.right, bottom)
-                    mDivider.draw(c)
-                }
-            }
-        }
-
-        override fun seslOnDispatchDraw(
-            c: Canvas,
-            parent: RecyclerView,
-            state: RecyclerView.State
-        ) {
-            for (i in 0 until parent.childCount) {
-                val child = parent.getChildAt(i)
-                val holder = mContactsListRv!!.getChildViewHolder(child) as ContactsAdapter.ViewHolder
-                if (holder.isSeparator) {
-                    mRoundedCorner.drawRoundedCorner(child, c)
-                }
-            }
-        }
     }
 
 }
