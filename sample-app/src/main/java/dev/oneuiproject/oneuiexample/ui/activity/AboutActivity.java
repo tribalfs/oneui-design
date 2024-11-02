@@ -28,6 +28,7 @@ import com.sec.sesl.tester.R;
 import com.sec.sesl.tester.databinding.ActivityAboutBinding;
 import com.sec.sesl.tester.databinding.ActivityAboutContentBinding;
 
+import dev.oneuiproject.oneui.utils.DeviceLayoutUtil;
 import dev.oneuiproject.oneui.utils.ViewUtils;
 import dev.oneuiproject.oneui.utils.internal.ToolbarLayoutUtils;
 import dev.oneuiproject.oneui.widget.Toast;
@@ -124,7 +125,7 @@ public class AboutActivity extends AppCompatActivity
                 mBinding.aboutBottomContainer);
 
         if (config.orientation != Configuration.ORIENTATION_LANDSCAPE
-                && !isInMultiWindowMode()) {
+                && !isInMultiWindowMode() || DeviceLayoutUtil.INSTANCE.isTabletLayoutOrDesktop(this)) {
             mBinding.aboutAppBar.seslSetCustomHeightProportion(true, 0.5f);
             mBinding.aboutAppBar.addOnOffsetChangedListener(mAppBarListener);
             mBinding.aboutAppBar.setExpanded(true, false);
