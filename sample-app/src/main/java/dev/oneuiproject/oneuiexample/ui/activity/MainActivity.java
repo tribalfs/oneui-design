@@ -6,20 +6,15 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.SeslMenuItem;
-import androidx.core.view.MenuCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.sec.sesl.tester.R;
 import com.sec.sesl.tester.databinding.ActivityMainBinding;
 
@@ -29,7 +24,6 @@ import java.util.List;
 import dev.oneuiproject.oneui.layout.DrawerLayout;
 import dev.oneuiproject.oneui.layout.ToolbarLayout.Badge;
 import dev.oneuiproject.oneui.utils.ActivityUtils;
-import dev.oneuiproject.oneui.widget.TipPopup;
 import dev.oneuiproject.oneuiexample.ui.core.base.FragmentInfo;
 import dev.oneuiproject.oneuiexample.ui.fragment.AppPickerFragment;
 import dev.oneuiproject.oneuiexample.ui.fragment.contacts.ContactsFragment;
