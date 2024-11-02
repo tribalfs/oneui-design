@@ -27,7 +27,7 @@ import dev.oneuiproject.oneui.preference.internal.PreferenceRelatedCard;
 import dev.oneuiproject.oneui.utils.PreferenceUtils;
 import dev.oneuiproject.oneui.widget.Toast;
 import dev.oneuiproject.oneuiexample.ui.activity.SampleAboutActivity;
-import dev.oneuiproject.oneuiexample.utils.DarkModeUtils;
+import dev.oneuiproject.oneuiexample.ui.core.DarkModeUtils;
 
 public class PreferencesFragment extends PreferenceFragmentCompat
         implements Preference.OnPreferenceClickListener,

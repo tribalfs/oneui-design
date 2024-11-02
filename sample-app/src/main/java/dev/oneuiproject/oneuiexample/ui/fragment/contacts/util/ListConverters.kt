@@ -2,7 +2,7 @@ package dev.oneuiproject.oneuiexample.ui.fragment.contacts.util
 
 import androidx.core.text.isDigitsOnly
 import dev.oneuiproject.oneuiexample.data.Contact
-import dev.oneuiproject.oneuiexample.ui.core.containsTokenOf
+import dev.oneuiproject.oneuiexample.ui.core.ktx.containsTokenOf
 import dev.oneuiproject.oneuiexample.ui.fragment.contacts.model.ContactsListItemUiModel
 
 fun List<ContactsListItemUiModel>.toStringsList(): List<String> {

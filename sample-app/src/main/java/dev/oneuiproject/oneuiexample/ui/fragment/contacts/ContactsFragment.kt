@@ -8,7 +8,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.widget.SeslProgressBar
-import androidx.core.os.HandlerCompat.postDelayed
 import androidx.core.view.MenuProvider
 import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
@@ -40,7 +39,7 @@ import dev.oneuiproject.oneuiexample.ui.activity.AboutActivity
 import dev.oneuiproject.oneuiexample.ui.activity.MainActivity
 import dev.oneuiproject.oneuiexample.ui.core.base.BaseFragment
 import dev.oneuiproject.oneuiexample.ui.core.ktx.launchAndRepeatWithViewLifecycle
-import dev.oneuiproject.oneuiexample.ui.core.toast
+import dev.oneuiproject.oneuiexample.ui.core.ktx.toast
 import dev.oneuiproject.oneuiexample.ui.fragment.contacts.adapter.ContactsAdapter
 import dev.oneuiproject.oneuiexample.ui.fragment.contacts.model.ContactsListItemUiModel
 import dev.oneuiproject.oneuiexample.ui.fragment.contacts.util.ContactsListItemDecoration
@@ -67,6 +66,13 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
         configureSwipeRefresh()
         observeUIState()
         showTipPopup()
+        if (!isHidden) {
+            requireActivity().addMenuProvider(
+                menuProvider,
+                viewLifecycleOwner,
+                Lifecycle.State.STARTED
+            )
+        }
     }
 
 

@@ -1,4 +1,4 @@
-package dev.oneuiproject.oneuiexample.utils;
+package dev.oneuiproject.oneuiexample.ui.core;
 
 import android.app.UiModeManager;
 import android.content.Context;

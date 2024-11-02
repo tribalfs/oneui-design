@@ -1,4 +1,4 @@
-package dev.oneuiproject.oneuiexample.ui.core
+package dev.oneuiproject.oneuiexample.ui.core.ktx
 
 import android.content.Context
 import androidx.fragment.app.Fragment

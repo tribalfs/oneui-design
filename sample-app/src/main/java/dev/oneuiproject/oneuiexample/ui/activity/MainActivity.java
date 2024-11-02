@@ -35,7 +35,7 @@ import dev.oneuiproject.oneuiexample.ui.fragment.TabsFragment;
 import dev.oneuiproject.oneuiexample.ui.fragment.WidgetsFragment;
 import dev.oneuiproject.oneuiexample.ui.core.drawer.DrawerListAdapter;
 import dev.oneuiproject.oneuiexample.ui.fragment.icons.IconsFragment;
-import dev.oneuiproject.oneuiexample.utils.DarkModeUtils;
+import dev.oneuiproject.oneuiexample.ui.core.DarkModeUtils;
 
 public class MainActivity extends AppCompatActivity
         implements DrawerListAdapter.DrawerListener {
@@ -66,18 +66,19 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initFragmentList() {
+        fragments.add(new ContactsFragment());
+        fragments.add(null);
         fragments.add(new WidgetsFragment());
         fragments.add(new ProgressBarFragment());
         fragments.add(new SeekBarFragment());
-        fragments.add(null);
         fragments.add(new TabsFragment());
         fragments.add(null);
-        fragments.add(new AppPickerFragment());
-        fragments.add(new ContactsFragment());
         fragments.add(new PickersFragment());
-        fragments.add(null);
         fragments.add(new QRCodeFragment());
         fragments.add(new IconsFragment());
+        fragments.add(null);
+        fragments.add(new AppPickerFragment());
+
     }
 
     private OnBackPressedCallback mBackPressedCallback = new OnBackPressedCallback(false) {
