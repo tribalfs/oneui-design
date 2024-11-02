@@ -61,6 +61,10 @@
         <activity
             android:name="dev.oneuiproject.oneuiexample.ui.activity.SampleAboutActivity" />
 
+        <activity
+            android:name="dev.oneuiproject.oneuiexample.ui.activity.PreferenceActivity"
+            android:configChanges="orientation|screenLayout|screenSize|smallestScreenSize" />
+
     </application>
 
 </manifest>

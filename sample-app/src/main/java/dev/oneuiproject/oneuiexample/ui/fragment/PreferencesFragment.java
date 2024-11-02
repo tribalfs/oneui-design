@@ -1,6 +1,7 @@
 package dev.oneuiproject.oneuiexample.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -25,11 +26,11 @@ import dev.oneuiproject.oneui.preference.TipsCardPreference;
 import dev.oneuiproject.oneui.preference.internal.PreferenceRelatedCard;
 import dev.oneuiproject.oneui.utils.PreferenceUtils;
 import dev.oneuiproject.oneui.widget.Toast;
-import dev.oneuiproject.oneuiexample.ui.core.base.FragmentInfo;
+import dev.oneuiproject.oneuiexample.ui.activity.SampleAboutActivity;
 import dev.oneuiproject.oneuiexample.utils.DarkModeUtils;
 
 public class PreferencesFragment extends PreferenceFragmentCompat
-        implements FragmentInfo, Preference.OnPreferenceClickListener,
+        implements Preference.OnPreferenceClickListener,
         Preference.OnPreferenceChangeListener {
     private Context mContext;
     private PreferenceRelatedCard mRelativeLinkCard;
@@ -64,26 +65,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat
         super.onResume();
     }
 
-    @Override
-    public int getLayoutResId() {
-        return -1;
-    }
-
-    @Override
-    public int getIconResId() {
-        return dev.oneuiproject.oneui.R.drawable.ic_oui_settings_outline;
-    }
-
-    @Override
-    public CharSequence getTitle() {
-        return "Preferences";
-    }
-
-    @Override
-    public boolean isAppBarEnabled() {
-        return true;
-    }
-
     private void initPreferences() {
         TipsCardPreference tips = findPreference("tip");
         tips.addButton("Button", v -> Toast.makeText(mContext, "onClick", Toast.LENGTH_SHORT).show());
@@ -116,12 +97,18 @@ public class PreferencesFragment extends PreferenceFragmentCompat
         key5.seslSetSummaryColor(getColoredSummaryColor(true));
         ListPreference key6 = findPreference("key6");
         key6.seslSetSummaryColor(getColoredSummaryColor(true));
+
+        findPreference("about").setOnPreferenceClickListener(this);
     }
 
     @Override
     public boolean onPreferenceClick(Preference preference) {
         if (preference.getKey().equals("key2")) {
             Toast.makeText(mContext, "onPreferenceClick", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        if (preference.getKey().equals("about")) {
+             startActivity(new Intent(requireActivity(), SampleAboutActivity.class));
             return true;
         }
         return false;

@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity
         fragments.add(new ProgressBarFragment());
         fragments.add(new SeekBarFragment());
         fragments.add(new SwipeRefreshFragment());
-        fragments.add(new PreferencesFragment());
         fragments.add(null);
         fragments.add(new TabsFragment());
         fragments.add(null);
@@ -109,11 +108,11 @@ public class MainActivity extends AppCompatActivity
 
 
     private void initDrawer() {
-        mBinding.drawerLayout.setDrawerButtonIcon(getDrawable(dev.oneuiproject.oneui.R.drawable.ic_oui_info_outline));
-        mBinding.drawerLayout.setDrawerButtonTooltip("About page");
+        mBinding.drawerLayout.setDrawerButtonIcon(getDrawable(dev.oneuiproject.oneui.R.drawable.ic_oui_settings_outline));
+        mBinding.drawerLayout.setDrawerButtonTooltip("Preferences");
         mBinding.drawerLayout.setDrawerButtonOnClickListener(v -> {
                     ActivityUtils.startPopOverActivity(this,
-                            new Intent(MainActivity.this, SampleAboutActivity.class),
+                            new Intent(MainActivity.this, PreferenceActivity.class),
                             null,
                             ActivityUtils.POP_OVER_POSITION_TOP | ActivityUtils.POP_OVER_POSITION_CENTER_HORIZONTAL);
                     mBinding.drawerLayout.setDrawerButtonBadge(new Badge.None());

@@ -136,4 +136,9 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory>
+        <Preference
+            android:key="about"
+            android:title="About Sample App" />
+    </PreferenceCategory>
 </PreferenceScreen>
