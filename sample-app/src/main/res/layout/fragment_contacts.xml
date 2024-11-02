@@ -12,7 +12,7 @@
         android:scrollbars="none"
         android:background="@color/oui_background_color" />
 
-    <androidx.indexscroll.widget.SeslIndexScrollView
+    <dev.oneuiproject.oneui.widget.AutoHideIndexScrollView
         android:id="@+id/indexscroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
