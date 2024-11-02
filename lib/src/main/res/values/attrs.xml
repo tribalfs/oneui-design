@@ -141,4 +141,11 @@
         <attr name="qrTintFrame" format="boolean"/>
         <attr name="qrTintAnchor" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="AutoHideIndexScrollView">
+        <attr name="groupItems" format="integer" />
+        <attr name="otherItems" format="integer" />
+        <attr name="textMode" format="boolean" />
+        <attr name="autoHide" format="boolean" />
+    </declare-styleable>
 </resources>
