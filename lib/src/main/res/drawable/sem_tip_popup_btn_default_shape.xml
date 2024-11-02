@@ -4,9 +4,12 @@
     android:insetTop="@dimen/sem_tip_popup_button_inset_vertical"
     android:insetRight="@dimen/sem_tip_popup_button_inset_horizontal"
     android:insetBottom="@dimen/sem_tip_popup_button_inset_vertical">
+    <!--Note: android:tint was originally set to ?colorButtonNormal
+    but has a very low contrast vs the text color when device is
+    in default color palette. -->
     <shape
         android:shape="rectangle"
-        android:tint="?colorButtonNormal">
+        android:tint="#4DE9E9EC">
         <corners android:radius="@dimen/sesl_button_corner_radius" />
         <solid android:color="@android:color/white" />
         <padding
