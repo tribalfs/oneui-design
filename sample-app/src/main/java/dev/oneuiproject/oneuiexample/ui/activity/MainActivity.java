@@ -32,7 +32,7 @@ import dev.oneuiproject.oneui.utils.ActivityUtils;
 import dev.oneuiproject.oneui.widget.TipPopup;
 import dev.oneuiproject.oneuiexample.ui.core.base.FragmentInfo;
 import dev.oneuiproject.oneuiexample.ui.fragment.AppPickerFragment;
-import dev.oneuiproject.oneuiexample.ui.fragment.contacts.Contacts;
+import dev.oneuiproject.oneuiexample.ui.fragment.contacts.ContactsFragment;
 import dev.oneuiproject.oneuiexample.ui.fragment.PickersFragment;
 import dev.oneuiproject.oneuiexample.ui.fragment.PreferencesFragment;
 import dev.oneuiproject.oneuiexample.ui.fragment.ProgressBarFragment;
@@ -42,6 +42,7 @@ import dev.oneuiproject.oneuiexample.ui.fragment.SwipeRefreshFragment;
 import dev.oneuiproject.oneuiexample.ui.fragment.TabsFragment;
 import dev.oneuiproject.oneuiexample.ui.fragment.WidgetsFragment;
 import dev.oneuiproject.oneuiexample.ui.core.drawer.DrawerListAdapter;
+import dev.oneuiproject.oneuiexample.ui.fragment.icons.IconsFragment;
 import dev.oneuiproject.oneuiexample.utils.DarkModeUtils;
 
 public class MainActivity extends AppCompatActivity
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity
         fragments.add(new TabsFragment());
         fragments.add(null);
         fragments.add(new AppPickerFragment());
-        fragments.add(new Contacts());
+        fragments.add(new ContactsFragment());
         fragments.add(new PickersFragment());
         fragments.add(null);
         fragments.add(new QRCodeFragment());
