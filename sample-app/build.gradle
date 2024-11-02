@@ -18,6 +18,8 @@ android {
         versionName sample_version_name
 
         vectorDrawables.useSupportLibrary = true
+
+        buildConfigField "String", "ONEUI_DESIGN_VERSION", "\"${lib_version}\""
     }
 
     buildFeatures {

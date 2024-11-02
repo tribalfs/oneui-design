@@ -8,6 +8,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.sec.sesl.tester.BuildConfig;
 import com.sec.sesl.tester.R;
 
 import dev.oneuiproject.oneui.layout.AppInfoLayout;
@@ -23,7 +24,7 @@ public class SampleAboutActivity extends AppCompatActivity {
 
         appInfoLayout = findViewById(R.id.appInfoLayout);
 
-        appInfoLayout.addOptionalText("OneUI Design version 0.1.0+oneui6");
+        appInfoLayout.addOptionalText("OneUI Design version " + BuildConfig.ONEUI_DESIGN_VERSION);
 
         appInfoLayout.setMainButtonClickListener(new AppInfoLayout.OnClickListener() {
             @Override
