@@ -7,13 +7,18 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.widget.SeslProgressBar
+import androidx.core.os.HandlerCompat.postDelayed
 import androidx.core.view.MenuProvider
+import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.sec.sesl.tester.R
 import dev.oneuiproject.oneui.delegates.AppBarAwareYTranslator
 import dev.oneuiproject.oneui.delegates.ViewYTranslator
@@ -27,6 +32,9 @@ import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.CLEA
 import dev.oneuiproject.oneui.layout.startActionMode
 import dev.oneuiproject.oneui.layout.startSearchMode
 import dev.oneuiproject.oneui.widget.AutoHideIndexScrollView
+import dev.oneuiproject.oneui.widget.TipPopup
+import dev.oneuiproject.oneui.widget.TipPopup.Direction
+import dev.oneuiproject.oneui.widget.TipPopup.Mode
 import dev.oneuiproject.oneuiexample.data.ContactsRepo
 import dev.oneuiproject.oneuiexample.ui.activity.AboutActivity
 import dev.oneuiproject.oneuiexample.ui.activity.MainActivity
@@ -37,6 +45,7 @@ import dev.oneuiproject.oneuiexample.ui.fragment.contacts.adapter.ContactsAdapte
 import dev.oneuiproject.oneuiexample.ui.fragment.contacts.model.ContactsListItemUiModel
 import dev.oneuiproject.oneuiexample.ui.fragment.contacts.util.ContactsListItemDecoration
 import dev.oneuiproject.oneuiexample.ui.fragment.contacts.util.updateIndexer
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -47,13 +56,17 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
     private lateinit var contactsViewModel: ContactsViewModel
     private lateinit var nsvNoItem: NestedScrollView
     private lateinit var tvNoItem: TextView
-
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private lateinit var horizontalProgress: SeslProgressBar
+    private var tipPopupShown = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews(view)
-        initRecyclerView()
+        configureRecyclerView()
+        configureSwipeRefresh()
         observeUIState()
+        showTipPopup()
     }
 
 
@@ -62,10 +75,12 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
         mContactsListRv = view.findViewById(R.id.contacts_list)
         nsvNoItem = view.findViewById(R.id.nsvNoItem)
         tvNoItem = view.findViewById(R.id.tvNoItem)
+        swipeRefreshLayout = view.findViewById(R.id.swiperefresh_view)
+        horizontalProgress = view.findViewById(R.id.horizontal_pb)
     }
 
 
-    private fun initRecyclerView() {
+    private fun configureRecyclerView() {
         mContactsListRv.apply {
             setLayoutManager(LinearLayoutManager(mContext))
             setAdapter(ContactsAdapter(mContext).also {
@@ -86,6 +101,22 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
         mIndexScrollView.attachToRecyclerView(mContactsListRv)
 
         tvNoItem.translateYWithAppBar((requireActivity() as MainActivity).drawerLayout.appBarLayout, this)
+    }
+
+    private fun configureSwipeRefresh() {
+        swipeRefreshLayout.apply {
+            seslSetRefreshOnce(true)
+            setProgressViewOffset(true, 130, 131)
+            setOnRefreshListener {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    delay(1_200)
+                    isRefreshing = false
+                    horizontalProgress.isVisible = true
+                    delay(10_000)
+                    horizontalProgress.isVisible = false
+                }
+            }
+        }
     }
 
 
@@ -273,6 +304,24 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
         )
     }
 
+    private fun showTipPopup() {
+        if (!tipPopupShown) {
+            mContactsListRv.doOnLayout {
+                mContactsListRv.postDelayed({
+                    val anchor = mContactsListRv.layoutManager!!.findViewByPosition(0)
+                    if (anchor != null) {
+                        val tipPopup = TipPopup(anchor, Mode.TRANSLUCENT)
+                        tipPopup.setMessage("Long-press item to trigger multi-selection.")
+                        tipPopup.setAction(
+                            "Close"
+                        ) { tipPopupShown = true }
+                        tipPopup.setExpanded(true)
+                        tipPopup.show(Direction.DEFAULT)
+                    }
+                }, 500)
+            }
+        }
+    }
 
     override fun onHiddenChanged(hidden: Boolean) {
         if (!hidden) {
