@@ -210,7 +210,7 @@ public class AboutActivity extends AppCompatActivity
             } else if (v.getId() == mBottomContent.aboutBottomOssApache.getId()) {
                 url = "https://www.apache.org/licenses/LICENSE-2.0.txt";
             } else if (v.getId() == mBottomContent.aboutBottomOssMit.getId()) {
-                url = "https://raw.githubusercontent.com/tribalfs/oneui-design/refs/heads/sample_setup_sesl6/LICENSE";
+                url = "https://raw.githubusercontent.com/tribalfs/oneui-design/refs/heads/oneui6/LICENSE";
             } else if (v.getId() == mBottomContent.aboutBottomRelativeJetpack.getId()) {
                 url = "https://developer.android.com/jetpack";
             } else if (v.getId() == mBottomContent.aboutBottomRelativeMaterial.getId()) {
