@@ -18,4 +18,5 @@ internal fun SeslIndexScrollView.updateIndexer(items: List<ContactsListItemUiMod
                 setMiscItemsCount(3)
             }
         )
+        postInvalidate()
     }

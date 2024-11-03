@@ -211,9 +211,7 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
         drawerLayout.startActionMode(
             onInflateMenu = {menu ->
                 contactsAdapter.onToggleActionMode(true, initialSelected)
-                menu.apply {
-                    requireActivity().menuInflater.inflate(R.menu.menu_contacts_am, this)
-                }
+                requireActivity().menuInflater.inflate(R.menu.menu_contacts_am, menu)
             },
             onEnd = { contactsAdapter.onToggleActionMode(false) },
             onSelectMenuItem = {
