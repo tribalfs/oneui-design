@@ -78,7 +78,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     @JvmField protected var context: Context,
     attrs: AttributeSet? = null) : LinearLayout(context, attrs) {
 
-    @Deprecated("Use the `ActionModeListener` parameter when calling StartActionMode() instead.")
+    @Deprecated("Use the `ActionModeListener` parameter when calling startActionMode() instead.")
     interface ActionModeCallback {
         fun onShow(toolbarLayout: ToolbarLayout?)
         fun onDismiss(toolbarLayout: ToolbarLayout?)
@@ -820,7 +820,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         //no op
     }
 
-    @Deprecated("Use the `ActionModeListener` param when calling StartActionMode() instead.")
+    @Deprecated("Use the `ActionModeListener` param when calling startActionMode() instead.")
     fun setOnActionModeListener(callback: ActionModeCallback?) {
         mActionModeCallback = callback
     }
@@ -1025,7 +1025,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     /**
      * Set the menu resource for the ActionMode's [BottomNavigationView]
      */
-    @Deprecated("Use the ActionModeListener#onInflateActionMenu() callback when calling StartActionMode() instead.",
+    @Deprecated("Use the ActionModeListener#onInflateActionMenu() callback when calling startActionMode() instead.",
         ReplaceWith(""))
     fun setActionModeBottomMenu(@MenuRes menuRes: Int) {
         setActionModeMenu(menuRes)
@@ -1036,13 +1036,13 @@ open class ToolbarLayout @JvmOverloads constructor(
      * On landscape orientation where ActionMode's [BottomNavigationView] will be hidden,
      * the visible items from this menu resource we be shown to ActionMode's [Toolbar] [Menu]
      */
-    @Deprecated("Use the ActionModeListener#onInflateActionMenu() callback when calling StartActionMode() instead.",
+    @Deprecated("Use the ActionModeListener#onInflateActionMenu() callback when calling startActionMode() instead.",
         ReplaceWith(""))
     fun setActionModeMenu(@MenuRes menuRes: Int) {
         mActionModeMenuRes = menuRes
     }
 
-    @Deprecated("Access this with ActionModeListener#onInflateActionMenu() callback when calling StartActionMode() instead.",
+    @Deprecated("Access this with ActionModeListener#onInflateActionMenu() callback when calling startActionMode() instead.",
         ReplaceWith(""))
     val actionModeBottomMenu: Menu
         /**
@@ -1058,7 +1058,7 @@ open class ToolbarLayout @JvmOverloads constructor(
      * On landscape orientation, the same listener will be invoke for ActionMode's [Toolbar] [MenuItem]s
      * which are copied from ActionMode's [BottomNavigationView]
      */
-    @Deprecated("Use the ActionModeListener#onMenuItemClicked() callback when calling StartActionMode() instead.",
+    @Deprecated("Use the ActionModeListener#onMenuItemClicked() callback when calling startActionMode() instead.",
         ReplaceWith(""))
     fun setActionModeMenuListener(listener: NavigationBarView.OnItemSelectedListener) {
         ensureActionModeViews()
@@ -1081,7 +1081,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         //no op
     }
 
-    @Deprecated("Use the ActionModeListener#onInflateActionMenu() callback when calling StartActionMode() instead.")
+    @Deprecated("Use the ActionModeListener#onInflateActionMenu() callback when calling startActionMode() instead.")
     val actionModeToolbarMenu: Menu
         /**
          * Returns the [Menu] of the ActionMode's [Toolbar].
@@ -1180,7 +1180,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     /**
      * Set the listener for the 'All' Checkbox of the ActionMode.
      */
-    @Deprecated("Use ActionModeListener#onSelectAll() callback when calling StartActionMode() instead.",
+    @Deprecated("Use ActionModeListener#onSelectAll() callback when calling startActionMode() instead.",
         ReplaceWith(""))
     fun setActionModeCheckboxListener(listener: CompoundButton.OnCheckedChangeListener?) {
         mOnSelectAllListener = listener
