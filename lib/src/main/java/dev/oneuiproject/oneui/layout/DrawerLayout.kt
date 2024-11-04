@@ -512,7 +512,7 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
         @RequiresApi(33)
         private var dummyCallback: OnBackInvokedCallback? = null
 
-        fun ignoreBackGesture(ignore: Boolean) {
+        private fun ignoreBackGesture(ignore: Boolean) {
             if (Build.VERSION.SDK_INT >= 33) {
                 if (ignore) {
                     if (dummyCallback == null) {
