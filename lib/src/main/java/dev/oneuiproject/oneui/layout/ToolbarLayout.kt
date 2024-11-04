@@ -1385,9 +1385,9 @@ inline fun <T:ToolbarLayout>T.startSearchMode(
  * Starts the action mode for this [ToolbarLayout].
  *
  * This method sets up the action mode with the specified callbacks and options.
- *
- * @param onInflateMenu Lambda function to be invoked after action mode starts to inflate the menu.
- * Perform menu inflation within this lambda.
+ **
+ * @param onInflateMenu Lambda function called at the start of [startActionMode].
+ * Inflate the menu items for this action mode session using this menu.
  *
  * @param onEnd Lambda function to be invoked when action mode ends.
  *

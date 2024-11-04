@@ -20,8 +20,8 @@ inline fun Animation.setListener(
 /**
  * Add an action which will be invoked when the animation has ended.
  *
- * @return the [Animator.AnimatorListener] added to the Animator
- * @see Animator.end
+ * @return the [Animation.AnimationListener] added to the Animator
+ * @see Animation.hasEnded
  */
 inline fun Animation.doOnEnd(
     crossinline action: (animation: Animation) -> Unit
@@ -30,8 +30,8 @@ inline fun Animation.doOnEnd(
 /**
  * Add an action which will be invoked when the animation is started.
  *
- * @return the [Animator.AnimatorListener] added to the Animator
- * @see Animator.start
+ * @return the [Animation.AnimationListener] added to the Animator
+ * @see Animation.start
  */
 inline fun Animation.doOnStart(
     crossinline action: (animation: Animation) -> Unit

@@ -272,7 +272,7 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
     /**
      * Show a margin at the top of the drawer panel. Some Apps from Samsung do have this.
      */
-    @Deprecated("")
+    @Deprecated("This is now no op.")
     fun showDrawerTopMargin(show: Boolean) {
     }
 
@@ -571,6 +571,11 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
 
     }
 }
+
+
+////////////////////////////////////////////////////////////////
+//         Kotlin consumables
+////////////////////////////////////////////////////////////////
 
 /**
  * Set the badge of the drawer button.

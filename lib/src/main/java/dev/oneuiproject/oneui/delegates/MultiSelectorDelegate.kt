@@ -285,7 +285,7 @@ interface MultiSelector<T> {
      * This also updates `isActionMode` property value.
      *
      * @param isActionMode Whether action mode is turned on `true` or not `false`.
-     * @param initialSelectedIds (Optional) Array of stable ids of initially selected items if [isActionMode] is true
+     * @param initialSelectedIds (Optional) Array of selection ids of initially selected items if [isActionMode] is true
      */
     fun onToggleActionMode(isActionMode: Boolean, initialSelectedIds: Array<T>? = null)
 
