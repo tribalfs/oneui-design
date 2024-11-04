@@ -1,6 +1,7 @@
 package dev.oneuiproject.oneuiexample.ui.fragment.contacts
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -15,6 +16,8 @@ import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ItemTouchHelper.END
+import androidx.recyclerview.widget.ItemTouchHelper.START
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -22,6 +25,7 @@ import com.sec.sesl.tester.R
 import dev.oneuiproject.oneui.delegates.AppBarAwareYTranslator
 import dev.oneuiproject.oneui.delegates.ViewYTranslator
 import dev.oneuiproject.oneui.ktx.clearBadge
+import dev.oneuiproject.oneui.ktx.configureItemSwipeAnimator
 import dev.oneuiproject.oneui.ktx.enableCoreSeslFeatures
 import dev.oneuiproject.oneui.ktx.setBadge
 import dev.oneuiproject.oneui.layout.Badge
@@ -64,6 +68,7 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
         initViews(view)
         configureRecyclerView()
         configureSwipeRefresh()
+        configureItemSwipeAnimator()
         observeUIState()
         showTipPopup()
         if (!isHidden) {
@@ -203,6 +208,35 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
             if (!isActionMode) launchActionMode()
             mContactsListRv.seslStartLongPressMultiSelection()
         }
+    }
+
+    private fun configureItemSwipeAnimator() {
+        mContactsListRv.configureItemSwipeAnimator(
+            leftToRightLabel = "Call",
+            rightToLeftLabel = "Message",
+            leftToRightColor = Color.parseColor("#11a85f"),
+            rightToLeftColor = Color.parseColor("#31a5f3"),
+            leftToRightDrawableRes = dev.oneuiproject.oneui.R.drawable.ic_oui_wifi_call,
+            rightToLeftDrawableRes = dev.oneuiproject.oneui.R.drawable.ic_oui_message,
+            isLeftSwipeEnabled = {viewHolder ->
+                viewHolder.itemViewType == ContactsListItemUiModel.ContactItem.VIEW_TYPE
+                        && !contactsAdapter.isActionMode
+            },
+            isRightSwipeEnabled = {viewHolder ->
+                viewHolder.itemViewType == ContactsListItemUiModel.ContactItem.VIEW_TYPE
+                        && !contactsAdapter.isActionMode
+            },
+            onSwiped = { position, swipeDirection, _ ->
+                val contact = (contactsAdapter.getItemByPosition(position) as ContactsListItemUiModel.ContactItem).contact
+                if (swipeDirection == START) {
+                    toast("Messaging ${(contact.name)}... ")
+                }
+                if (swipeDirection == END) {
+                    toast("Calling ${(contact.name)}... ")
+                }
+                true
+            }
+        )
     }
 
 
