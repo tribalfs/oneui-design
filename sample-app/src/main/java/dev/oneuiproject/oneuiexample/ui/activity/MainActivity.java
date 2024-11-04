@@ -159,8 +159,10 @@ public class MainActivity extends AppCompatActivity
                 mBinding.drawerLayout.setExpandable(true);
                 mBinding.drawerLayout.setExpanded(false, false);
             }
-            mBinding.drawerLayout.setTitle(getString(R.string.app_name), ((FragmentInfo) newFragment).getTitle());
-            mBinding.drawerLayout.setExpandedSubtitle(((FragmentInfo) newFragment).getTitle());
+            mBinding.drawerLayout.setTitle(((FragmentInfo) newFragment).getTitle());
+            if (newFragment instanceof ContactsFragment) {
+                mBinding.drawerLayout.setExpandedSubtitle("Pull down to refresh");
+            }
         }
         mBinding.drawerLayout.setDrawerOpen(false, true);
 
