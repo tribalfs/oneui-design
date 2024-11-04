@@ -171,7 +171,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
         if (enable.not()) return
 
-        mObpDelegate.startListening(this, {
+        mObpDelegate.startListening(this) {
             when {
                 isActionMode -> endActionMode()
                 isSearchMode -> {
@@ -191,12 +191,11 @@ open class ToolbarLayout @JvmOverloads constructor(
                             } else if (searchView.query.isNotEmpty()) {
                                 searchView.setQuery("", true)
                             } else endSearchMode()
-
                         }
                     }
                 }
             }
-        })
+        }
     }
 
     private var mActionModeTitleFadeListener: AppBarOffsetListener? = null
@@ -740,16 +739,11 @@ open class ToolbarLayout @JvmOverloads constructor(
         setTitle(mTitleExpanded, mTitleCollapsed)
         mCollapsingToolbarLayout.seslSetSubtitle(mSubtitleExpanded)
         mFooterContainer!!.visibility = VISIBLE
-        mSearchView.setQuery("", false)
+        mSearchView.apply {
+            setQuery("", false)
+            setOnQueryTextListener(null)
+        }
         updateObpCallbackState()
-        mSearchView.apply {
-            setQuery("", false)
-            setOnQueryTextListener(null)
-        }
-        mSearchView.apply {
-            setQuery("", false)
-            setOnQueryTextListener(null)
-        }
         mSearchModeListener!!.onSearchModeToggle(mSearchView, false)
         mSearchModeListener = null
     }
