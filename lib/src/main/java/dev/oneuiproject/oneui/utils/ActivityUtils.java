@@ -28,8 +28,10 @@ public class ActivityUtils {
     }
 
     public static void startPopOverActivity(Context context, Intent intent, Bundle options, int position) {
-        PopOverConfig config = new PopOverConfig(360, 570, position, new Point());
-        startPopOverActivity(context, intent, options, config, config);
+        PopOverConfig configPortrait = new PopOverConfig(360, 731, position, new Point());
+        PopOverConfig configLandScape = new PopOverConfig(360,
+                DeviceLayoutUtil.isTabletCategoryOrBuild(context) ? 731 : 570, position, new Point());
+        startPopOverActivity(context, intent, options, configPortrait, configLandScape);
     }
 
     public static void startPopOverActivity(Context context, Intent intent, Bundle options, PopOverConfig portrait, PopOverConfig landscape) {
