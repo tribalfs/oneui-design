@@ -184,10 +184,14 @@ open class ToolbarLayout @JvmOverloads constructor(
                         CLEAR_CLOSE -> {
                             if (searchView.isSoftKeyboardShowing) {
                                 searchView.clearFocus()
+                                //Add delay to account for the keyboard's hiding animation
+                                //so we can use the appropriate `isSoftKeyboardShowing` result
+                                //in updateObpCallbackState().
+                                postDelayed({ updateObpCallbackState() }, 400)
                             } else {
                                 searchView.setQuery("", true)
+                                updateObpCallbackState()
                             }
-                            updateObpCallbackState()
                         }
                         CLEAR_DISMISS -> {
                             if (searchView.isSoftKeyboardShowing) {
