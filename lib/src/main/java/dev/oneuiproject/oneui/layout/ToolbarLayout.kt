@@ -176,7 +176,11 @@ open class ToolbarLayout @JvmOverloads constructor(
                 isActionMode -> endActionMode()
                 isSearchMode -> {
                     when (searchModeOBPBehavior) {
-                        DISMISS -> endSearchMode()
+                        DISMISS -> {
+                            if (searchView.isSoftKeyboardShowing) {
+                                searchView.clearFocus()
+                            } else endSearchMode()
+                        }
                         CLEAR_CLOSE -> {
                             if (searchView.isSoftKeyboardShowing) {
                                 searchView.clearFocus()
