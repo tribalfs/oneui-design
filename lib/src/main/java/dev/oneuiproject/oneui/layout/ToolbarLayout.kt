@@ -743,13 +743,16 @@ open class ToolbarLayout @JvmOverloads constructor(
         setTitle(mTitleExpanded, mTitleCollapsed)
         mCollapsingToolbarLayout.seslSetSubtitle(mSubtitleExpanded)
         mFooterContainer!!.visibility = VISIBLE
+        mSearchModeListener!!.onSearchModeToggle(mSearchView, false)
+        // We are clearing the listener first. We don't want to trigger
+        // SearchModeListener.onQueryTextChange callback
+        // when clearing the SearchView's input field
+        mSearchModeListener = null
         mSearchView.apply {
-            setQuery("", false)
             setOnQueryTextListener(null)
+            setQuery("", false)
         }
         updateObpCallbackState()
-        mSearchModeListener!!.onSearchModeToggle(mSearchView, false)
-        mSearchModeListener = null
     }
 
     /**
