@@ -338,7 +338,7 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
             onStart = {
                 searchView.queryHint = "Search contact"
             },
-            onEnd = {}
+            onEnd = { contactsViewModel.setQuery("") }
         )
     }
 

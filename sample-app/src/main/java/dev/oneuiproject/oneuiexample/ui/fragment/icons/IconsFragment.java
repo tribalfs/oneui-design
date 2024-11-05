@@ -189,6 +189,8 @@ public class IconsFragment extends BaseFragment {
             public void onSearchModeToggle(@NonNull SearchView searchView, boolean visible) {
                 if (visible) {
                     searchView.setQueryHint( "Search icons");
+                }else{
+                    adapter.filter("");
                 }
             }
         }, CLEAR_DISMISS);
