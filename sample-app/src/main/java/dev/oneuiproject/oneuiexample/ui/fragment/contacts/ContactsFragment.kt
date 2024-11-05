@@ -346,10 +346,10 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
         if (!tipPopupShown) {
             mContactsListRv.doOnLayout {
                 mContactsListRv.postDelayed({
-                    val anchor = mContactsListRv.layoutManager!!.findViewByPosition(0)
+                    val anchor = mContactsListRv.layoutManager!!.findViewByPosition(2)
                     if (anchor != null) {
                         val tipPopup = TipPopup(anchor, Mode.TRANSLUCENT)
-                        tipPopup.setMessage("Long-press item to trigger multi-selection.")
+                        tipPopup.setMessage("Long-press item to trigger multi-selection.\nSwipe left to call, swipe right to message.")
                         tipPopup.setAction(
                             "Close"
                         ) { tipPopupShown = true }
