@@ -1,6 +1,6 @@
 package dev.oneuiproject.oneuiexample.ui.fragment.icons;
 
-import static dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.CLEAR_DISMISS;
+import static dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.DISMISS;
 import static dev.oneuiproject.oneuiexample.ui.core.ktx.ToastKt.toast;
 
 import android.os.Bundle;
@@ -193,7 +193,7 @@ public class IconsFragment extends BaseFragment {
                     adapter.filter("");
                 }
             }
-        }, CLEAR_DISMISS);
+        }, DISMISS);
     }
 
 
