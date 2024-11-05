@@ -173,11 +173,11 @@ class TipPopup @JvmOverloads constructor(parentView: View, mode: Mode = Mode.NOR
         HINT
     }
 
-    interface OnDismissListener {
+    fun interface OnDismissListener {
         fun onDismiss()
     }
 
-    interface OnStateChangeListener {
+    fun interface OnStateChangeListener {
         fun onStateChanged(i: State)
     }
 
@@ -188,8 +188,8 @@ class TipPopup @JvmOverloads constructor(parentView: View, mode: Mode = Mode.NOR
     init {
         debugLog("mDisplayMetrics = $mDisplayMetrics")
 
-        mContext.obtainStyledAttributes(null as AttributeSet?, R.styleable.SemTipPopup).use {
-            mBackgroundColor = it.getColor(R.styleable.SemTipPopup_semTipPopupBackgroundColor, Color.BLACK)
+        mContext.obtainStyledAttributes(null as AttributeSet?, R.styleable.TipPopup).use {
+            mBackgroundColor = it.getColor(R.styleable.TipPopup_tipPopupBackgroundColor, Color.BLACK)
         }
 
         initInterpolator()
@@ -387,7 +387,7 @@ class TipPopup @JvmOverloads constructor(parentView: View, mode: Mode = Mode.NOR
     }
 
     val isShowing: Boolean
-        get() = mBubblePopup?.isShowing ?: mBalloonPopup?.isShowing ?: false
+        get() = mBubblePopup?.isShowing == true || mBalloonPopup?.isShowing == true
 
     fun dismiss(withAnimation: Boolean) {
         val tipWindow = mBubblePopup

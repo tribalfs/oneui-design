@@ -149,8 +149,7 @@
         <attr name="autoHide" format="boolean" />
     </declare-styleable>
 
-    <declare-styleable name="SemTipPopup">
-        <attr name="semTipPopupBackgroundColor" format="reference|color" />
-        <attr name="semTipPopupTextColor" format="reference|color" />
+    <declare-styleable name="TipPopup">
+        <attr name="tipPopupBackgroundColor" format="reference|color" />
     </declare-styleable>
 </resources>
