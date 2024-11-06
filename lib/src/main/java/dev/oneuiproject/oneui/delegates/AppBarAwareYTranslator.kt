@@ -18,9 +18,10 @@ import java.lang.ref.WeakReference
  *                       ViewYTranslator by AppBarAwareYTranslator() {
  *
  *    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
- *        // Configure the translation
+ *        // Configure the translation for single view
  *        binding.noItemView.translateYWithAppBar(appBarLayout, viewLifecycleOwner)
- *
+ *        // or for multiple views
+ *        translateYWithAppBar(setOf(binding.noItemView, binding.progressBar), appBarLayout, viewLifecycleOwner)
  *    }
  *
  * }
@@ -30,12 +31,20 @@ class AppBarAwareYTranslator: ViewYTranslator, AppBarLayout.OnOffsetChangedListe
     DefaultLifecycleObserver {
 
     private lateinit var mAppBarLayout: AppBarLayout
-    private lateinit var mTranslationView: View
+    private var mTranslationViews: MutableSet<View>? = null
     private var lifecycleOwnerWR: WeakReference<LifecycleOwner>? = null
 
-    override fun View.translateYWithAppBar(appBarLayout: AppBarLayout, lifecycleOwner: LifecycleOwner) {
+    override fun translateYWithAppBar(
+        translatingViews: Set<View>,
+        appBarLayout: AppBarLayout,
+        lifecycleOwner: LifecycleOwner
+    ) {
         mAppBarLayout = appBarLayout
-        mTranslationView = this
+        if (mTranslationViews == null){
+            mTranslationViews = mutableSetOf()
+        }
+        mTranslationViews!!.addAll(translatingViews)
+
 
         val currentLifeCycleOwner = lifecycleOwnerWR?.get()
         if (currentLifeCycleOwner == lifecycleOwner) return
@@ -43,20 +52,29 @@ class AppBarAwareYTranslator: ViewYTranslator, AppBarLayout.OnOffsetChangedListe
         currentLifeCycleOwner?.lifecycle?.removeObserver(this@AppBarAwareYTranslator)
         lifecycleOwnerWR = WeakReference(lifecycleOwner)
 
-        doOnAttachedStateChanged { _, isAttached ->
-            lifecycleOwnerWR?.get()?.lifecycle?.apply {
-                if (isAttached) {
-                    addObserver(this@AppBarAwareYTranslator)
-                }else{
-                    removeObserver(this@AppBarAwareYTranslator)
+        for (v in mTranslationViews!!) {
+            v.doOnAttachedStateChanged { _, isAttached ->
+                lifecycleOwnerWR?.get()?.lifecycle?.apply {
+                    if (isAttached) {
+                        addObserver(this@AppBarAwareYTranslator)
+                    } else {
+                        removeObserver(this@AppBarAwareYTranslator)
+                    }
                 }
             }
         }
     }
 
+    override fun View.translateYWithAppBar(appBarLayout: AppBarLayout, lifecycleOwner: LifecycleOwner) {
+        this@AppBarAwareYTranslator.translateYWithAppBar(
+            setOf(this), appBarLayout = appBarLayout, lifecycleOwner = lifecycleOwner)
+    }
+
     override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
-        if (mTranslationView.isVisible) {
-            mTranslationView.translationY = (verticalOffset + appBarLayout.totalScrollRange)/-2f
+        for (v in mTranslationViews!!) {
+            if (v.isVisible) {
+                v.translationY = (verticalOffset + appBarLayout.totalScrollRange) / -2f
+            }
         }
     }
 
@@ -82,4 +100,6 @@ interface ViewYTranslator{
      * @param lifecycleOwner The LifecycleOwner that controls the observer lifecycle.
      */
     fun View.translateYWithAppBar(appBarLayout: AppBarLayout, lifecycleOwner: LifecycleOwner)
+
+    fun translateYWithAppBar(translatingViews: Set<View>, appBarLayout: AppBarLayout, lifecycleOwner: LifecycleOwner)
 }
