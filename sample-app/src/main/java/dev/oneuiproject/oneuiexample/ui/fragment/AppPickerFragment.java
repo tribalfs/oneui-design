@@ -1,358 +1,368 @@
-package dev.oneuiproject.oneuiexample.ui.fragment;
+package dev.oneuiproject.oneuiexample.ui.fragment
 
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.RadioButton;
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.CompoundButton
+import androidx.appcompat.view.menu.SeslMenuItem
+import androidx.appcompat.widget.AppCompatSpinner
+import androidx.appcompat.widget.SeslProgressBar
+import androidx.apppickerview.widget.AppPickerView
+import androidx.apppickerview.widget.AppPickerView.OnBindListener
+import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
+import com.sec.sesl.tester.R
+import dev.oneuiproject.oneui.widget.Toast
+import dev.oneuiproject.oneuiexample.ui.core.base.BaseFragment
+import java.util.Collections
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.view.menu.SeslMenuItem;
-import androidx.appcompat.widget.AppCompatSpinner;
-import androidx.appcompat.widget.SeslProgressBar;
-import androidx.appcompat.widget.SwitchCompat;
-import androidx.apppickerview.widget.AppPickerView;
-import androidx.core.view.MenuProvider;
-import androidx.lifecycle.Lifecycle;
+class AppPickerFragment : BaseFragment(), OnBindListener, AdapterView.OnItemSelectedListener {
+    private var mListInitialized = false
+    private var mListType = AppPickerView.TYPE_LIST
+    private var mShowSystemApps = false
 
-import com.sec.sesl.tester.R;
+    private val mItems: MutableList<Boolean> = ArrayList()
+    private var mIsAllAppsSelected = false
+    private var mCheckedPosition = 0
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+    private var mAppPickerView: AppPickerView? = null
+    private var mProgress: SeslProgressBar? = null
 
-import dev.oneuiproject.oneui.widget.Toast;
-import dev.oneuiproject.oneuiexample.ui.core.base.BaseFragment;
-
-public class AppPickerFragment extends BaseFragment
-        implements AppPickerView.OnBindListener, AdapterView.OnItemSelectedListener {
-    private boolean mListInitialized = false;
-    private int mListType = AppPickerView.TYPE_LIST;
-    private boolean mShowSystemApps = false;
-
-    private final List<Boolean> mItems = new ArrayList<>();
-    private boolean mIsAllAppsSelected = false;
-    private int mCheckedPosition = 0;
-
-    private AppPickerView mAppPickerView;
-    private SeslProgressBar mProgress;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mProgress = view.findViewById(R.id.apppicker_progress);
-        mAppPickerView = view.findViewById(R.id.apppicker_list);
-        mAppPickerView.setItemAnimator(null);
-        mAppPickerView.seslSetSmoothScrollEnabled(true);
-        initSpinner(view);
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mProgress = view.findViewById(R.id.apppicker_progress)
+        mAppPickerView = view.findViewById(R.id.apppicker_list)
+        mAppPickerView.setItemAnimator(null)
+        mAppPickerView.seslSetSmoothScrollEnabled(true)
+        initSpinner(view)
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
         if (!hidden && !mListInitialized) {
-            fillListView();
-            mListInitialized = true;
+            fillListView()
+            mListInitialized = true
         }
         if (!hidden) {
-            requireActivity().addMenuProvider(menuProvider, getViewLifecycleOwner(), Lifecycle.State.STARTED);
-        }else{
-            requireActivity().removeMenuProvider(menuProvider);
+            requireActivity().addMenuProvider(
+                menuProvider,
+                viewLifecycleOwner,
+                Lifecycle.State.STARTED
+            )
+        } else {
+            requireActivity().removeMenuProvider(menuProvider)
         }
     }
 
 
-    @Override
-    public int getLayoutResId() {
-        return R.layout.sample3_fragment_apppicker;
+    override fun getLayoutResId(): Int {
+        return R.layout.sample3_fragment_apppicker
     }
 
-    @Override
-    public int getIconResId() {
-        return dev.oneuiproject.oneui.R.drawable.ic_oui_all_apps;
+    override fun getIconResId(): Int {
+        return dev.oneuiproject.oneui.R.drawable.ic_oui_all_apps
     }
 
-    @Override
-    public CharSequence getTitle() {
-        return "AppPickerView";
+    override fun getTitle(): CharSequence {
+        return "AppPickerView"
     }
 
-    private void initSpinner(@NonNull View view) {
-        AppCompatSpinner spinner = view.findViewById(R.id.apppicker_spinner);
+    private fun initSpinner(view: View) {
+        val spinner = view.findViewById<AppCompatSpinner>(R.id.apppicker_spinner)
 
-        List<String> categories = new ArrayList<>();
-        categories.add("List");
-        categories.add("List, Action Button");
-        categories.add("List, CheckBox");
-        categories.add("List, CheckBox, All apps");
-        categories.add("List, RadioButton");
-        categories.add("List, Switch");
-        categories.add("List, Switch, All apps");
-        categories.add("Grid");
-        categories.add("Grid, CheckBox");
+        val categories: MutableList<String> = ArrayList()
+        categories.add("List")
+        categories.add("List, Action Button")
+        categories.add("List, CheckBox")
+        categories.add("List, CheckBox, All apps")
+        categories.add("List, RadioButton")
+        categories.add("List, Switch")
+        categories.add("List, Switch, All apps")
+        categories.add("Grid")
+        categories.add("Grid, CheckBox")
 
-        ArrayAdapter<String> adapter
-                = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, categories);
-        adapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+        val adapter = ArrayAdapter(mContext, android.R.layout.simple_spinner_item, categories)
+        adapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item)
 
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(this);
+        spinner.adapter = adapter
+        spinner.onItemSelectedListener = this
     }
 
 
-    private MenuProvider menuProvider = new MenuProvider() {
-        @Override
-        public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-            menuInflater.inflate(R.menu.menu_apppicker, menu);
+    private val menuProvider: MenuProvider = object : MenuProvider {
+        override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+            menuInflater.inflate(R.menu.menu_apppicker, menu)
 
-            MenuItem menuItem = menu.findItem(R.id.menu_apppicker_system);
-            ((SeslMenuItem) menuItem).setBadgeText("");
+            val menuItem = menu.findItem(R.id.menu_apppicker_system)
+            (menuItem as SeslMenuItem).badgeText = ""
         }
 
-        @Override
-        public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-            if (menuItem.getItemId() == R.id.menu_apppicker_system) {
-                mShowSystemApps = !mShowSystemApps;
+        override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+            if (menuItem.itemId == R.id.menu_apppicker_system) {
+                mShowSystemApps = !mShowSystemApps
                 if (mShowSystemApps) {
-                    menuItem.setTitle("Hide system apps");
+                    menuItem.setTitle("Hide system apps")
                 } else {
-                    menuItem.setTitle("Show system apps");
+                    menuItem.setTitle("Show system apps")
                 }
 
-                refreshListView();
-                return true;
+                refreshListView()
+                return true
             }
-            return false;
+            return false
         }
-    };
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        mListType = position;
-        fillListView();
     }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) { }
+    override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
+        mListType = position
+        fillListView()
+    }
 
-    private void fillListView() {
-        mIsAllAppsSelected = false;
-        showProgressCircle(true);
-        new Thread() {
-            @Override
-            public void run() {
+    override fun onNothingSelected(parent: AdapterView<*>?) {}
+
+    private fun fillListView() {
+        mIsAllAppsSelected = false
+        showProgressCircle(true)
+        object : Thread() {
+            override fun run() {
                 if (!mListInitialized) {
                     try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ignored) { }
+                        sleep(1000)
+                    } catch (ignored: InterruptedException) {
+                    }
                 }
-                requireActivity().runOnUiThread(() -> {
-                    ArrayList<String> installedAppSet
-                            = new ArrayList<>(getInstalledPackageNameUnmodifiableSet());
-
-                    if (mAppPickerView.getItemDecorationCount() > 0) {
-                        for (int i = 0; i < mAppPickerView.getItemDecorationCount(); i++) {
-                            mAppPickerView.removeItemDecorationAt(i);
+                requireActivity().runOnUiThread {
+                    val installedAppSet
+                            : ArrayList<String> =
+                        ArrayList<String>(this.installedPackageNameUnmodifiableSet)
+                    if (mAppPickerView!!.itemDecorationCount > 0) {
+                        for (i in 0 until mAppPickerView!!.itemDecorationCount) {
+                            mAppPickerView!!.removeItemDecorationAt(i)
                         }
                     }
 
-                    mAppPickerView.setAppPickerView(mListType,
-                            installedAppSet, AppPickerView.ORDER_ASCENDING_IGNORE_CASE);
-                    mAppPickerView.setOnBindListener(AppPickerFragment.this);
+                    mAppPickerView!!.setAppPickerView(
+                        mListType,
+                        installedAppSet, AppPickerView.ORDER_ASCENDING_IGNORE_CASE
+                    )
+                    mAppPickerView!!.setOnBindListener(this@AppPickerFragment)
 
-                    mItems.clear();
+                    mItems.clear()
                     if (mListType == AppPickerView.TYPE_LIST_CHECKBOX_WITH_ALL_APPS
-                            || mListType == AppPickerView.TYPE_LIST_SWITCH_WITH_ALL_APPS) {
-                        mItems.add(Boolean.FALSE);
+                        || mListType == AppPickerView.TYPE_LIST_SWITCH_WITH_ALL_APPS
+                    ) {
+                        mItems.add(java.lang.Boolean.FALSE)
                     }
-                    for (String app : installedAppSet) {
-                        mItems.add(Boolean.FALSE);
+                    for (app in installedAppSet) {
+                        mItems.add(java.lang.Boolean.FALSE)
                     }
-
-                    showProgressCircle(false);
-                });
+                    showProgressCircle(false)
+                }
             }
-        }.start();
+        }.start()
     }
 
-    private void refreshListView() {
-        showProgressCircle(true);
-        new Thread() {
-            @Override
-            public void run() {
-                requireActivity().runOnUiThread(() -> {
-                    ArrayList<String> installedAppSet
-                            = new ArrayList<>(getInstalledPackageNameUnmodifiableSet());
-                    mAppPickerView.resetPackages(installedAppSet);
+    private fun refreshListView() {
+        showProgressCircle(true)
+        object : Thread() {
+            override fun run() {
+                requireActivity().runOnUiThread {
+                    val installedAppSet
+                            : ArrayList<String> =
+                        ArrayList<String>(this.installedPackageNameUnmodifiableSet)
+                    mAppPickerView!!.resetPackages(installedAppSet)
 
-                    mItems.clear();
+                    mItems.clear()
                     if (mListType == AppPickerView.TYPE_LIST_CHECKBOX_WITH_ALL_APPS
-                            || mListType == AppPickerView.TYPE_LIST_SWITCH_WITH_ALL_APPS) {
-                        mItems.add(Boolean.FALSE);
+                        || mListType == AppPickerView.TYPE_LIST_SWITCH_WITH_ALL_APPS
+                    ) {
+                        mItems.add(java.lang.Boolean.FALSE)
                     }
-                    for (String app : installedAppSet) {
-                        mItems.add(Boolean.FALSE);
+                    for (app in installedAppSet) {
+                        mItems.add(java.lang.Boolean.FALSE)
                     }
-
-                    showProgressCircle(false);
-                });
+                    showProgressCircle(false)
+                }
             }
-        }.start();
+        }.start()
     }
 
-    @Override
-    public void onBindViewHolder(AppPickerView.ViewHolder holder,
-                                 int position, String packageName) {
-        switch (mListType) {
-            case AppPickerView.TYPE_LIST: {
-                holder.getItem().setOnClickListener(view -> { });
-            } break;
+    override fun onBindViewHolder(
+        holder: AppPickerView.ViewHolder,
+        position: Int, packageName: String
+    ) {
+        when (mListType) {
+            AppPickerView.TYPE_LIST -> {
+                holder.item.setOnClickListener { view: View? -> }
+            }
 
-            case AppPickerView.TYPE_LIST_ACTION_BUTTON: {
-                holder.getActionButton().setOnClickListener(view
-                        -> Toast.makeText(mContext, "onClick", Toast.LENGTH_SHORT).show());
-            } break;
-
-            case AppPickerView.TYPE_LIST_CHECKBOX: {
-                CheckBox checkBox = holder.getCheckBox();
-                checkBox.setChecked(mItems.get(position));
-                checkBox.setOnCheckedChangeListener((buttonView, isChecked)
-                        -> mItems.set(position, isChecked));
-            } break;
-
-            case AppPickerView.TYPE_LIST_CHECKBOX_WITH_ALL_APPS: {
-                CheckBox checkBox = holder.getCheckBox();
-                if (position == 0) {
-                    holder.getAppLabel().setText("All apps");
-                    checkBox.setChecked(mIsAllAppsSelected);
-                    checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                        if (mIsAllAppsSelected != isChecked) {
-                            mIsAllAppsSelected = isChecked;
-                            for (int i = 0; i < mItems.size(); i++){
-                                mItems.set(i, mIsAllAppsSelected);
-                            }
-                            mAppPickerView.refreshUI();
-                        }
-                    });
-                } else {
-                    checkBox.setChecked(mItems.get(position));
-                    checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                        mItems.set(position, isChecked);
-                        checkAllAppsToggle();
-                    });
-                }
-            } break;
-
-            case AppPickerView.TYPE_LIST_RADIOBUTTON: {
-                RadioButton radioButton = holder.getRadioButton();
-                radioButton.setChecked(mItems.get(position));
-                holder.getRadioButton().setOnCheckedChangeListener((buttonView, isChecked) -> {
-                    if (isChecked) {
-                        if (mCheckedPosition != position) {
-                            mItems.set(mCheckedPosition, false);
-                            mAppPickerView.refreshUI(mCheckedPosition);
-                        };
-                        mItems.set(position, true);
-                        mCheckedPosition = position;
+            AppPickerView.TYPE_LIST_ACTION_BUTTON -> {
+                holder.actionButton!!
+                    .setOnClickListener { view: View? ->
+                        Toast.makeText(
+                            mContext,
+                            "onClick",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
-                });
-            } break;
+            }
 
-            case AppPickerView.TYPE_LIST_SWITCH: {
-                SwitchCompat switchWidget = holder.getSwitch();
-                switchWidget.setChecked(mItems.get(position));
-                switchWidget.setOnCheckedChangeListener((buttonView, isChecked)
-                        -> mItems.set(position, isChecked));
-            } break;
-
-            case AppPickerView.TYPE_LIST_SWITCH_WITH_ALL_APPS: {
-                SwitchCompat switchWidget = holder.getSwitch();
-                if (position == 0) {
-                    holder.getAppLabel().setText("All apps");
-                    switchWidget.setChecked(mIsAllAppsSelected);
-                    switchWidget.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                        if (mIsAllAppsSelected != isChecked) {
-                            mIsAllAppsSelected = isChecked;
-                            for (int i = 0; i < mItems.size(); i++){
-                                mItems.set(i, mIsAllAppsSelected);
-                            }
-                            mAppPickerView.refreshUI();
-                        }
-                    });
-                } else {
-                    switchWidget.setChecked(mItems.get(position));
-                    switchWidget.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                        mItems.set(position, isChecked);
-                        checkAllAppsToggle();
-                    });
+            AppPickerView.TYPE_LIST_CHECKBOX -> {
+                val checkBox = holder.checkBox
+                checkBox!!.isChecked = mItems[position]
+                checkBox.setOnCheckedChangeListener { buttonView: CompoundButton?, isChecked: Boolean ->
+                    mItems[position] =
+                        isChecked
                 }
-            } break;
+            }
 
-            case AppPickerView.TYPE_GRID: {
-                holder.getItem().setOnClickListener(view -> { });
-            } break;
+            AppPickerView.TYPE_LIST_CHECKBOX_WITH_ALL_APPS -> {
+                val checkBox = holder.checkBox
+                if (position == 0) {
+                    holder.appLabel.text = "All apps"
+                    checkBox!!.isChecked = mIsAllAppsSelected
+                    checkBox.setOnCheckedChangeListener { buttonView: CompoundButton?, isChecked: Boolean ->
+                        if (mIsAllAppsSelected != isChecked) {
+                            mIsAllAppsSelected = isChecked
+                            var i = 0
+                            while (i < mItems.size) {
+                                mItems[i] = mIsAllAppsSelected
+                                i++
+                            }
+                            mAppPickerView!!.refreshUI()
+                        }
+                    }
+                } else {
+                    checkBox!!.isChecked = mItems[position]
+                    checkBox.setOnCheckedChangeListener { buttonView: CompoundButton?, isChecked: Boolean ->
+                        mItems[position] =
+                            isChecked
+                        checkAllAppsToggle()
+                    }
+                }
+            }
 
-            case AppPickerView.TYPE_GRID_CHECKBOX: {
-                CheckBox checkBox = holder.getCheckBox();
-                checkBox.setChecked(mItems.get(position));
-                checkBox.setOnCheckedChangeListener((buttonView, isChecked)
-                        -> mItems.set(position, isChecked));
-                holder.getItem().setOnClickListener(view
-                        -> checkBox.setChecked(!checkBox.isChecked()));
-            } break;
+            AppPickerView.TYPE_LIST_RADIOBUTTON -> {
+                val radioButton = holder.radioButton
+                radioButton!!.isChecked = mItems[position]
+                holder.radioButton!!
+                    .setOnCheckedChangeListener { buttonView: CompoundButton?, isChecked: Boolean ->
+                        if (isChecked) {
+                            if (mCheckedPosition != position) {
+                                mItems[mCheckedPosition] = false
+                                mAppPickerView!!.refreshUI(mCheckedPosition)
+                            }
+
+                            mItems[position] = true
+                            mCheckedPosition = position
+                        }
+                    }
+            }
+
+            AppPickerView.TYPE_LIST_SWITCH -> {
+                val switchWidget = holder.switch
+                switchWidget!!.isChecked = mItems[position]
+                switchWidget.setOnCheckedChangeListener { buttonView: CompoundButton?, isChecked: Boolean ->
+                    mItems[position] =
+                        isChecked
+                }
+            }
+
+            AppPickerView.TYPE_LIST_SWITCH_WITH_ALL_APPS -> {
+                val switchWidget = holder.switch
+                if (position == 0) {
+                    holder.appLabel.text = "All apps"
+                    switchWidget!!.isChecked = mIsAllAppsSelected
+                    switchWidget.setOnCheckedChangeListener { buttonView: CompoundButton?, isChecked: Boolean ->
+                        if (mIsAllAppsSelected != isChecked) {
+                            mIsAllAppsSelected = isChecked
+                            var i = 0
+                            while (i < mItems.size) {
+                                mItems[i] = mIsAllAppsSelected
+                                i++
+                            }
+                            mAppPickerView!!.refreshUI()
+                        }
+                    }
+                } else {
+                    switchWidget!!.isChecked = mItems[position]
+                    switchWidget.setOnCheckedChangeListener { buttonView: CompoundButton?, isChecked: Boolean ->
+                        mItems[position] =
+                            isChecked
+                        checkAllAppsToggle()
+                    }
+                }
+            }
+
+            AppPickerView.TYPE_GRID -> {
+                holder.item.setOnClickListener { view: View? -> }
+            }
+
+            AppPickerView.TYPE_GRID_CHECKBOX -> {
+                val checkBox = holder.checkBox
+                checkBox!!.isChecked = mItems[position]
+                checkBox.setOnCheckedChangeListener { buttonView: CompoundButton?, isChecked: Boolean ->
+                    mItems[position] =
+                        isChecked
+                }
+                holder.item.setOnClickListener { view: View? ->
+                    checkBox.isChecked =
+                        !checkBox.isChecked
+                }
+            }
         }
     }
 
-    private void checkAllAppsToggle() {
-        mIsAllAppsSelected = true;
-        for (boolean selected : mItems) {
+    private fun checkAllAppsToggle() {
+        mIsAllAppsSelected = true
+        for (selected in mItems) {
             if (!selected) {
-                mIsAllAppsSelected = false;
-                break;
+                mIsAllAppsSelected = false
+                break
             }
         }
-        mAppPickerView.refreshUI(0);
+        mAppPickerView!!.refreshUI(0)
     }
 
-    private void showProgressCircle(boolean show) {
-        mProgress.setVisibility(show ? View.VISIBLE : View.GONE);
-        mAppPickerView.setVisibility(show ? View.GONE : View.VISIBLE);
+    private fun showProgressCircle(show: Boolean) {
+        mProgress!!.visibility = if (show) View.VISIBLE else View.GONE
+        mAppPickerView!!.visibility =
+            if (show) View.GONE else View.VISIBLE
     }
 
-    private Set<String> getInstalledPackageNameUnmodifiableSet() {
-        HashSet<String> set = new HashSet<>();
-        for (ApplicationInfo appInfo : getInstalledAppList()) {
-            set.add(appInfo.packageName);
-        }
-        return Collections.unmodifiableSet(set);
-    }
-
-    private List<ApplicationInfo> getInstalledAppList() {
-        ArrayList<ApplicationInfo> list = new ArrayList<>();
-        List<ApplicationInfo> apps = mContext.getPackageManager()
-                .getInstalledApplications(PackageManager.GET_META_DATA);
-        for (ApplicationInfo appInfo : apps) {
-            if ((appInfo.flags & (ApplicationInfo.FLAG_UPDATED_SYSTEM_APP
-                    | ApplicationInfo.FLAG_SYSTEM)) > 0 && !mShowSystemApps) {
-                continue;
+    private val installedPackageNameUnmodifiableSet: Set<String>
+        get() {
+            val set = HashSet<String>()
+            for (appInfo in installedAppList) {
+                set.add(appInfo.packageName)
             }
-            list.add(appInfo);
+            return Collections.unmodifiableSet(set)
         }
-        return list;
-    }
+
+    private val installedAppList: List<ApplicationInfo>
+        get() {
+            val list = ArrayList<ApplicationInfo>()
+            val apps = mContext.packageManager
+                .getInstalledApplications(PackageManager.GET_META_DATA)
+            for (appInfo in apps) {
+                if ((appInfo.flags and (ApplicationInfo.FLAG_UPDATED_SYSTEM_APP
+                            or ApplicationInfo.FLAG_SYSTEM)) > 0 && !mShowSystemApps
+                ) {
+                    continue
+                }
+                list.add(appInfo)
+            }
+            return list
+        }
 }
