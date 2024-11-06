@@ -44,9 +44,10 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
     private var mHideWhenExpandedListener: AppBarOffsetListener? = null
     private var mAutoHide: Boolean = true
 
+    private var mSetVisibility: Int? = null
 
     init{
-        isVisible = isInEditMode
+        mSetVisibility = visibility
         context.obtainStyledAttributes(attrs, R.styleable.AutoHideIndexScrollView).use {
             setIndexer(
                 SeslCursorIndexer(
@@ -72,7 +73,7 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
                 if (!mIsIndexBarPressed && mAutoHide) hideMeDelayed()
             } else {
                 mIsRVScrolling = true
-                showMeAndHideFabDelayed()
+                showMeDelayed()
             }
         }
     }
@@ -80,7 +81,7 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
     private val showMeRunnable = Runnable { showMe() }
 
     private fun showMe(){
-        if (mHideWhenExpandedListener?.isAppBarExpanding == true) return
+        if (mHideWhenExpandedListener?.isAppBarExpanding == true || mSetVisibility != VISIBLE) return
         animateVisibility(true)
     }
 
@@ -94,7 +95,7 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
         postDelayed(hideMeRunnable, 1200)
     }
 
-    private fun showMeAndHideFabDelayed(){
+    private fun showMeDelayed(){
         removeCallbacks(hideMeRunnable)
         removeCallbacks(showMeRunnable)
         postDelayed(showMeRunnable, 200)
@@ -155,16 +156,18 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
             )
             if (mAutoHide) {
                 if (mIsRVScrolling && mHideWhenExpandedListener?.isAppBarCollapsed != false){
-                    showMeAndHideFabDelayed()
+                    showMeDelayed()
                 } else {
                     removeCallbacks(showMeRunnable)
                     removeCallbacks(hideMeRunnable)
-                    this@AutoHideIndexScrollView.isVisible = false
+                    animateVisibility(false)
                 }
             }else{
                 removeCallbacks(showMeRunnable)
                 removeCallbacks(hideMeRunnable)
-                this@AutoHideIndexScrollView.isVisible = true
+                if (mSetVisibility == VISIBLE) {
+                    animateVisibility(true)
+                }
             }
         }
     }
@@ -204,12 +207,12 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
                 interpolator = SeslAnimationUtils.SINE_IN_OUT_80
                 doOnStart {
                     alpha = 0f
-                    isVisible = true
+                    super.setVisibility(VISIBLE)
                 }
             } else {
                 alpha(0f)
                 duration = 300
-                doOnEnd { isVisible = false }
+                doOnEnd { super.setVisibility(GONE) }
             }
             start()
         }
@@ -287,5 +290,10 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
                 }
             }
         }
+    }
+
+    override fun setVisibility(visibility: Int) {
+        super.setVisibility(visibility)
+        mSetVisibility = visibility
     }
 }
