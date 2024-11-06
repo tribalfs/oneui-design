@@ -58,7 +58,7 @@ dependencies {
 </ThemeMetaData>
 ```
 
-<a href="https://github.com/tribalfs/oneui-design-sampleapp/raw/sample_setup_sesl6/sample-app/release/sample-app-release.apk">Download Sample APK</a>
+<a href="https://github.com/tribalfs/oneui-design/raw/oneui6/sample-app/release/sample-app-release.apk">Download Sample APK</a>
 
 ### Credits
 - [Google](https://developer.android.com/jetpack) for their Jetpack and Material Components libraries.
