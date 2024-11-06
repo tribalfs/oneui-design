@@ -29,6 +29,10 @@ public class HorizontalRadioViewContainer extends LinearLayout {
         super.dispatchDraw(canvas);
 
         if (mIsDividerEnabled) {
+            //Custom
+            int visibleChildCount = getVisibleChildCount();
+            if (visibleChildCount == 0) return;
+
             Drawable divider = getContext().getDrawable(R.drawable.oui_divider_vertical);
 
             int marginTop = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
@@ -37,10 +41,10 @@ public class HorizontalRadioViewContainer extends LinearLayout {
                     61.f, getContext().getResources().getDisplayMetrics()));
             int width = Math.round(getContext().getResources().getDimension(androidx.appcompat.R.dimen.sesl_list_divider_height));
 
-            for (int i = 0; i < getChildCount() - 1; i++) {
+            for (int i = 0; i < visibleChildCount - 1; i++) {
                 divider.setBounds(0, 0, width, height);
                 canvas.save();
-                canvas.translate((float) Math.round((((float) getWidth()) / ((float) getChildCount())) * ((float) i + 1)), (float) marginTop);
+                canvas.translate((float) Math.round((((float) getWidth()) / ((float) visibleChildCount)) * ((float) i + 1)), (float) marginTop);
                 divider.draw(canvas);
                 canvas.restore();
             }
@@ -49,5 +53,16 @@ public class HorizontalRadioViewContainer extends LinearLayout {
 
     public void setDividerEnabled(boolean enabled) {
         mIsDividerEnabled = enabled;
+    }
+
+    //Custom
+    private int getVisibleChildCount(){
+        int visibleChildCount = 0;
+        for (int i = 0; i < getChildCount(); i++) {
+            if (getChildAt(i).getVisibility() != GONE) {
+                visibleChildCount++;
+            }
+        }
+        return visibleChildCount;
     }
 }
