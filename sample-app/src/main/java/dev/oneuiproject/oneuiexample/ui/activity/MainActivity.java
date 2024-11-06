@@ -25,7 +25,7 @@ import dev.oneuiproject.oneui.layout.DrawerLayout;
 import dev.oneuiproject.oneui.layout.ToolbarLayout.Badge;
 import dev.oneuiproject.oneui.utils.ActivityUtils;
 import dev.oneuiproject.oneuiexample.ui.core.base.FragmentInfo;
-import dev.oneuiproject.oneuiexample.ui.fragment.AppPickerFragment;
+import dev.oneuiproject.oneuiexample.ui.fragment.apppicker.AppPickerFragment;
 import dev.oneuiproject.oneuiexample.ui.fragment.contacts.ContactsFragment;
 import dev.oneuiproject.oneuiexample.ui.fragment.PickersFragment;
 import dev.oneuiproject.oneuiexample.ui.fragment.ProgressBarFragment;

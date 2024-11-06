@@ -5,6 +5,13 @@
     tools:ignore="AppCompatResource">
 
     <item
+        android:id="@+id/menu_apppicker_search"
+        android:title="Search apps"
+        android:icon="@drawable/ic_oui_search"
+        app:iconTint="?actionMenuTextColor"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/menu_apppicker_system"
         android:title="Show system apps"
         app:showAsAction="never" />
