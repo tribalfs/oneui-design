@@ -30,7 +30,7 @@ class QREncoder(private val mContext: Context, private val mContent: String) {
 
     private var mSize = (200 * dpToPx).toInt()
     private var mIcon: Drawable? = null
-    private val mIconSize = (40 * dpToPx).toInt()
+    private val mIconSize = (48 * dpToPx).toInt()
     private var mFrame = true
 
     private var mFGColor = Color.BLACK
@@ -196,7 +196,7 @@ class QREncoder(private val mContext: Context, private val mContent: String) {
 
         val iconTop = (qrCode.height / 2) - (height / 2)
         val iconLeft = (qrCode.width / 2) - (width / 2)
-        val iconRadius = (20f * dpToPx).toInt()
+        val iconRadius = mIconSize/2
         val iconPadding = (5f * dpToPx).toInt()
         val canvas = Canvas(qrCode)
         val paint = paint
