@@ -167,4 +167,6 @@
         <!-- Set to true to make top divider extend to cover the icon. False by default-->
         <attr name="fullWidthDivider" format="boolean" />
     </declare-styleable>
+
+    <attr name="bottomNavigationTextStyle" format="reference"/>
 </resources>

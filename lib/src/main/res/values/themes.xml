@@ -22,6 +22,8 @@
         <item name="seekBarPreferenceProStyle">@style/OneUI.SeekBarPreferencePro</item>
 
         <item name="floatingActionButtonStyle">@style/OneUI.FloatingActionButton</item>
+
+        <item name="bottomNavigationTextStyle">@style/Widget.Design.Light.BottomNavigationView.Text</item>
     </style>
 
 </resources>
