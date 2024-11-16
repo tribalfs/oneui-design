@@ -162,4 +162,16 @@
         <item name="android:layout_marginStart">?listPreferredItemPaddingStart</item>
         <item name="android:layout_marginEnd">?listPreferredItemPaddingEnd</item>
     </style>
+
+    <!--FloatingActionButton-->
+    <style name="OneUI.FloatingActionButton" parent="@style/Widget.Design.FloatingActionButton">
+        <item name="hoveredFocusedTranslationZ">6dp</item>
+        <item name="pressedTranslationZ">6dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:tint">?android:colorPrimary</item>
+        <item name="backgroundTint">?android:colorBackground</item>
+        <item name="borderWidth">0dp</item>
+        <item name="elevation">6dp</item>
+    </style>
 </resources>
