@@ -912,6 +912,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         mMenuSynchronizer!!.clear()
         mAppBarLayout.removeOnOffsetChangedListener(mActionModeTitleFadeListener)
         mActionModeSelectAll.setOnClickListener(null)
+        mActionModeCheckBox.isChecked = false
         setActionModeMenuListenerInternal(null)
         mActionModeTitleFadeListener = null
         mActionModeListener = null
