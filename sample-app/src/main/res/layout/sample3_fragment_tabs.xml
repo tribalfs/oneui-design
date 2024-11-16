@@ -44,7 +44,7 @@
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/tabs_bottomnav_text"
-                style="@style/BottomNavViewTextMode"
+                style="?bottomNavigationTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/oui_background_color"

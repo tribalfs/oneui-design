@@ -3,6 +3,4 @@
 
     <style name="DatePickerTheme" parent="@style/Widget.AppCompat.Light.DatePicker" />
 
-    <style name="BottomNavViewTextMode" parent="Widget.Design.Light.BottomNavigationView.Text" />
-
 </resources>
