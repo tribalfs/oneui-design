@@ -152,4 +152,19 @@
     <declare-styleable name="TipPopup">
         <attr name="tipPopupBackgroundColor" format="reference|color" />
     </declare-styleable>
+
+    <declare-styleable name="CardItemView">
+        <attr name="android:enabled"/>
+        <attr name="icon" />
+        <attr name="iconTint"/>
+        <attr name="title" />
+        <attr name="titleMaxLines" format="integer" />
+        <attr name="summary"/>
+        <attr name="summaryMaxLines" format="integer" />
+        <!-- If set to true summary will be themed with active color-->
+        <attr name="userUpdatable" format="boolean" />
+        <attr name="showTopDivider" format="boolean" />
+        <!-- Set to true to make top divider extend to cover the icon. False by default-->
+        <attr name="fullWidthDivider" format="boolean" />
+    </declare-styleable>
 </resources>

@@ -154,4 +154,12 @@
         <item name="android:src">@drawable/oui_preference_seekbar_pro_minus</item>
     </style>
 
+    <!-- List Divider-->
+    <style name="OneUI.ListDividerStyle" >
+        <item name="android:background">?attr/listDividerColor</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/sesl_list_divider_height</item>
+        <item name="android:layout_marginStart">?listPreferredItemPaddingStart</item>
+        <item name="android:layout_marginEnd">?listPreferredItemPaddingEnd</item>
+    </style>
 </resources>

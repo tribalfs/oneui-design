@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="LinearLayout"
+    tools:viewBindingIgnore="true">
+
+    <View
+        android:id="@+id/cardview_divider"
+        style="@style/OneUI.ListDividerStyle"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/cardview_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/listPreferredItemHeightSmall"
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+        android:gravity="center_vertical"
+        android:background="?attr/listChoiceBackgroundIndicator"
+        android:baselineAligned="false">
+
+        <ViewStub
+            android:id="@+id/viewstub_icon_frame"
+            android:inflatedId="@+id/tbl_icon_frame"
+            android:layout="@layout/widget_card_item_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingEnd="@dimen/cardview_icon_margin_end"
+            android:gravity="start|center"/>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingVertical="14dp">
+
+            <RelativeLayout
+                android:id="@+id/title_frame"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/cardview_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="5"
+                    android:paddingEnd="10dp"
+                    android:textAlignment="viewStart"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    tools:text="Title"/>
+
+                <ViewStub
+                    android:id="@+id/viewstub_badge_frame"
+                    android:inflatedId="@+id/badge_frame"
+                    android:layout="@layout/widget_card_item_badge"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_alignEnd="@id/cardview_title"
+                    android:gravity="center"
+                    android:orientation="vertical"/>
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/cardview_summary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/title_frame"
+                android:layout_alignStart="@id/title_frame"
+                android:paddingEnd="12.0dip"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textAlignment="viewStart"
+                android:maxLines="10"
+                android:visibility="gone"
+                tools:text="Summary"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</merge>
+
+

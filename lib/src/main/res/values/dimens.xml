@@ -62,4 +62,9 @@
     <dimen name="sem_tip_popup_scale_margin">10dp</dimen>
     <dimen name="sem_tip_popup_side_margin">10dp</dimen>
 
+    <!--CardItemView-->
+    <dimen name="cardview_icon_divider_margin_end">24dp</dimen>
+    <dimen name="cardview_icon_size">38dp</dimen>
+    <dimen name="cardview_icon_margin_vertical">8dp</dimen>
+    <dimen name="cardview_icon_margin_end">16dp</dimen>
 </resources>
