@@ -9,15 +9,7 @@ import android.widget.ImageButton
 import androidx.apppickerview.widget.AbsAdapter
 import androidx.apppickerview.widget.AppPickerView
 import androidx.collection.mutableScatterSetOf
-import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import dev.oneuiproject.oneui.design.R
-import dev.oneuiproject.oneui.ktx.MultiSelectionState
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
@@ -165,7 +157,6 @@ class AppPickerDelegate : AppPickerOp, AppPickerView.OnBindListener{
                         }
                     }
                 }
-                updateAllSelectorState()
             }
 
         }
@@ -224,99 +215,6 @@ class AppPickerDelegate : AppPickerOp, AppPickerView.OnBindListener{
                 isChecked = !isChecked
             }
         }
-    }
-
-    private var firstPosition: Int = NO_POSITION
-    private var lastPosition: Int = NO_POSITION
-    private var sessionMax = NO_POSITION
-    private var sessionMin = NO_POSITION
-    private var allSelectedStateFlowUpdaterJob: Job? = null
-
-    private val _allSelectedStateFlow = MutableStateFlow(AllSelectorState())
-    /**
-     * StateFlow holding the latest [AllSelectorState]. This can be subscribed for updating
-     * UI components outside [AppPickerView]
-     */
-    val allSelectedStateFlow = _allSelectedStateFlow.asStateFlow()
-
-    @SuppressLint("RestrictedApi")
-    private fun onStateChanged(state: MultiSelectionState, position: Int) {
-        when (state) {
-            MultiSelectionState.STARTED -> {
-                firstPosition = position
-                lastPosition = position
-                sessionMax = position
-                sessionMin = position
-                val packageName = getAbsAdapter().getAppInfo(position).packageName
-                if (mSelectedItems.add(packageName)) {
-                    mAppPickerView.adapter!!.notifyItemChanged(position)
-                    updateAllSelectorState()
-                }
-            }
-
-            MultiSelectionState.ENDED -> {
-                firstPosition = NO_POSITION
-                lastPosition = NO_POSITION
-                sessionMax = NO_POSITION
-                sessionMin = NO_POSITION
-            }
-        }
-    }
-
-
-    @SuppressLint("RestrictedApi")
-    private inline fun onSelectItem(position: Int) {
-        //Note: Avoid using minOf()/maxOf() with 4 or more params -
-        //https://www.romainguy.dev/posts/2024/micro-optimizations-in-kotlin-3/
-        sessionMax = maxOf(lastPosition, firstPosition, sessionMax)
-        sessionMin = minOf(firstPosition, lastPosition, sessionMin)
-
-        lastPosition = position
-
-        val absAdapter = getAbsAdapter()
-        val packageName = absAdapter.getAppInfo(position).packageName
-
-        if (position in sessionMin..sessionMax) {
-            if (!mSelectedItems.remove(packageName)) {
-                mSelectedItems.add(packageName)
-            }
-            mAppPickerView.adapter!!.notifyItemChanged(position)
-            if (AppPickerView.ALL_APPS_STRING == absAdapter.getAppInfo(0).packageName) {
-                mAppPickerView.refreshUI(0)
-            }
-            updateAllSelectorState()
-        } else {
-            if (mSelectedItems.add(packageName)) {
-                mAppPickerView.adapter!!.notifyItemChanged(position)
-                if (AppPickerView.ALL_APPS_STRING == absAdapter.getAppInfo(0).packageName) {
-                    mAppPickerView.refreshUI(0)
-                }
-                updateAllSelectorState()
-            }
-        }
-    }
-
-    private fun updateAllSelectorState(){
-        val toJoin = allSelectedStateFlowUpdaterJob?.apply { cancel() }
-        allSelectedStateFlowUpdaterJob = CoroutineScope(Dispatchers.Main).launch {
-            toJoin?.join()// Don't let two copies of this run concurrently
-            _allSelectedStateFlow.value = getActionModeAllSelectorState()
-        }
-    }
-
-    private fun getActionModeAllSelectorState(): AllSelectorState {
-        val currentList = mGetCurrentList()
-        val currentDataSetCount = currentList.size
-        val isEnabled = currentDataSetCount > 0
-        val selectedIds = mSelectedItems
-        val allSelected = if (currentDataSetCount == 0) null else {
-            selectedIds.count { it in currentList } >= currentDataSetCount
-        }
-        return AllSelectorState(
-            selectedIds.size,
-            isChecked = allSelected,
-            isEnabled = isEnabled
-        )
     }
 }
 
