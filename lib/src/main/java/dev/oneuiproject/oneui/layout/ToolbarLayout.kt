@@ -29,6 +29,7 @@ import android.widget.LinearLayout
 import android.widget.LinearLayout.LayoutParams.MATCH_PARENT
 import android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
 import android.widget.TextView
+import androidx.annotation.CallSuper
 import androidx.annotation.IdRes
 import androidx.annotation.IntRange
 import androidx.annotation.MenuRes
@@ -156,10 +157,18 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     private val mObpDelegate: OnBackPressedDelegate by lazy {OnBackPressedDelegate(activity!!)}
 
-    private fun updateObpCallbackState() {
+    internal fun updateObpCallbackState() {
         mObpDelegate.stopListening(this)
+        if (getUpdatedOnBackCallbackState().not()) return
+        mObpDelegate.startListening(this) { handleBackInvoked() }
+    }
 
-        val enable = when {
+    /**
+     * return true if on back callback should be registered.
+     */
+    @CallSuper
+    protected open fun getUpdatedOnBackCallbackState(): Boolean {
+        return when {
             isActionMode -> true
             isSearchMode -> {
                 when (searchModeOBPBehavior) {
@@ -169,37 +178,37 @@ open class ToolbarLayout @JvmOverloads constructor(
             }
             else -> false
         }
-        if (enable.not()) return
+    }
 
-        mObpDelegate.startListening(this) {
-            when {
-                isActionMode -> endActionMode()
-                isSearchMode -> {
-                    when (searchModeOBPBehavior) {
-                        DISMISS -> {
-                            if (searchView.isSoftKeyboardShowing) {
-                                searchView.clearFocus()
-                            } else endSearchMode()
+    @CallSuper
+    protected open fun handleBackInvoked(){
+        when {
+            isActionMode -> endActionMode()
+            isSearchMode -> {
+                when (searchModeOBPBehavior) {
+                    DISMISS -> {
+                        if (searchView.isSoftKeyboardShowing) {
+                            searchView.clearFocus()
+                        } else endSearchMode()
+                    }
+                    CLEAR_CLOSE -> {
+                        if (searchView.isSoftKeyboardShowing) {
+                            searchView.clearFocus()
+                            //Add delay to account for the keyboard's hiding animation
+                            //so we can use the appropriate `isSoftKeyboardShowing` result
+                            //in updateObpCallbackState().
+                            postDelayed({ updateObpCallbackState() }, 400)
+                        } else {
+                            searchView.setQuery("", true)
+                            updateObpCallbackState()
                         }
-                        CLEAR_CLOSE -> {
-                            if (searchView.isSoftKeyboardShowing) {
-                                searchView.clearFocus()
-                                //Add delay to account for the keyboard's hiding animation
-                                //so we can use the appropriate `isSoftKeyboardShowing` result
-                                //in updateObpCallbackState().
-                                postDelayed({ updateObpCallbackState() }, 400)
-                            } else {
-                                searchView.setQuery("", true)
-                                updateObpCallbackState()
-                            }
-                        }
-                        CLEAR_DISMISS -> {
-                            if (searchView.isSoftKeyboardShowing) {
-                                searchView.clearFocus()
-                            } else if (searchView.query.isNotEmpty()) {
-                                searchView.setQuery("", true)
-                            } else endSearchMode()
-                        }
+                    }
+                    CLEAR_DISMISS -> {
+                        if (searchView.isSoftKeyboardShowing) {
+                            searchView.clearFocus()
+                        } else if (searchView.query.isNotEmpty()) {
+                            searchView.setQuery("", true)
+                        } else endSearchMode()
                     }
                 }
             }
