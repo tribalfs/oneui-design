@@ -23,11 +23,8 @@ import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.window.OnBackInvokedCallback
-import android.window.OnBackInvokedDispatcher
 import androidx.annotation.Dimension
 import androidx.annotation.Px
-import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.content.ContextCompat
@@ -444,7 +441,21 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
         }
         if (newState != mCurrentState){
             mCurrentState = newState
+            updateObpCallbackState()
             mDrawerStateListener?.invoke(newState)
+        }
+    }
+
+    override fun getUpdatedOnBackCallbackState(): Boolean{
+        return mCurrentState != DrawerState.CLOSE
+                || super.getUpdatedOnBackCallbackState()
+    }
+
+    override fun handleBackInvoked() {
+        if (mCurrentState != DrawerState.CLOSE) {
+            setDrawerOpen(false, animate = true)
+        }else {
+            super.handleBackInvoked()
         }
     }
 
@@ -467,8 +478,6 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
         override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
             super.onDrawerSlide(drawerView, slideOffset)
 
-            ignoreBackGesture(slideOffset > 0 && slideOffset < 1)
-
             val translationView = findViewById<View>(R.id.drawer_custom_translation)
 
             val slideX = drawerView.width * slideOffset * if (isRtl()) -1f else 1f
@@ -487,17 +496,14 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
                 }
             }
 
-            if (slideOffset > 0f && slideOffset < 1f) {
-                mSlideOffset = slideOffset
-                dispatchDrawerStateChange()
-            }
+            mSlideOffset = slideOffset
+            dispatchDrawerStateChange()
         }
 
         override fun onDrawerOpened(drawerView: View) {
             super.onDrawerOpened(drawerView)
             sIsDrawerOpened = true
             mSlideOffset = 1f
-            ignoreBackGesture(false)
             dispatchDrawerStateChange()
         }
 
@@ -505,35 +511,7 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
             super.onDrawerClosed(drawerView)
             sIsDrawerOpened = false
             mSlideOffset = 0f
-            ignoreBackGesture(false)
             dispatchDrawerStateChange()
-        }
-
-        @RequiresApi(33)
-        private var dummyCallback: OnBackInvokedCallback? = null
-
-        private fun ignoreBackGesture(ignore: Boolean) {
-            if (Build.VERSION.SDK_INT >= 33) {
-                if (ignore) {
-                    if (dummyCallback == null) {
-                        dummyCallback = DummyCallback()
-                        findOnBackInvokedDispatcher()!!.registerOnBackInvokedCallback(
-                            OnBackInvokedDispatcher.PRIORITY_OVERLAY,
-                            dummyCallback!!
-                        )
-                    }
-                } else {
-                    if (dummyCallback != null) {
-                        findOnBackInvokedDispatcher()!!.unregisterOnBackInvokedCallback(dummyCallback!!)
-                        dummyCallback = null
-                    }
-                }
-            }
-        }
-
-        @RequiresApi(33)
-        private inner class DummyCallback : OnBackInvokedCallback {
-            override fun onBackInvoked() = Unit
         }
     }
 
