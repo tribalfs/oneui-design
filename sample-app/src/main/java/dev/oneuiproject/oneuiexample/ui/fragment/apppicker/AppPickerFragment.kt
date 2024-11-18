@@ -26,7 +26,6 @@ import dev.oneuiproject.oneui.ktx.setBadge
 import dev.oneuiproject.oneui.ktx.setEntries
 import dev.oneuiproject.oneui.layout.Badge
 import dev.oneuiproject.oneui.layout.ToolbarLayout
-import dev.oneuiproject.oneui.layout.startActionMode
 import dev.oneuiproject.oneui.layout.startSearchMode
 import dev.oneuiproject.oneuiexample.data.AppsRepo
 import dev.oneuiproject.oneuiexample.ui.activity.MainActivity
@@ -95,7 +94,8 @@ class AppPickerFragment : BaseFragment(),
                 .collectLatest {
                     showProgressBar(it.isLoading)
                     refreshAppList()
-                    menuProvider.showSystemItemTitle = if (!it.showSystem) "Show system apps" else "Hide system apps"
+                    menuProvider.showSystemItemTitle =
+                        getString(if (!it.showSystem) R.string.show_system_apps else R.string.hide_system_apps)
                 }
         }
     }
@@ -106,7 +106,7 @@ class AppPickerFragment : BaseFragment(),
 
     private fun initSpinner() {
         binding.apppickerSpinner.setEntries(
-            ListTypes.entries.map { it.description }
+            ListTypes.entries.map { getString(it.description) }
         ){pos, _ ->
             pos?.let{ setListType(ListTypes.entries[it].type)}
         }
@@ -133,7 +133,7 @@ class AppPickerFragment : BaseFragment(),
     private val menuProvider = object : MenuProvider {
         private var menu: Menu? = null
         private var mShowSystemItemBadge: Badge = Badge.NONE
-        var showSystemItemTitle: String = "Show system apps"
+        var showSystemItemTitle: String = ""
 
         override fun onPrepareMenu(menu: Menu) {
             menu.findItem(R.id.menu_apppicker_system)?.title = showSystemItemTitle
