@@ -148,7 +148,6 @@ class AppPickerFragment : BaseFragment(),
         override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
             return when (menuItem.itemId) {
                 R.id.menu_apppicker_system -> {
-                    (menuItem as SeslMenuItem).badgeText = null
                     appsViewModel.toggleShowSystem()
                     menuItem.clearBadge()
                     return true
@@ -157,6 +156,7 @@ class AppPickerFragment : BaseFragment(),
                     toolbarLayout!!.apply {
                         startSearchMode(
                             onStart = {
+                                searchView.queryHint = "Search app"
                                 if (!isSoftKeyboardShowing){
                                     val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                                     imm.showSoftInput(searchView, 0)
