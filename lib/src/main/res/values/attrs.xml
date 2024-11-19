@@ -95,6 +95,12 @@
         <attr name="handleInsets" format="boolean"/>
     </declare-styleable>
 
+    <declare-styleable name="DrawerLayout">
+        <!--Enable or disable drawer's predictive back animation.
+        This applies only to api34+. This is set to false by default.-->
+        <attr name="drawerBackAnimation" format="boolean" />
+    </declare-styleable>
+
     <declare-styleable name="ToolbarLayoutParams">
         <!--The location of the ToolbarLayout children views.-->
         <attr name="layout_location">

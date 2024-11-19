@@ -35,6 +35,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener
 import dev.oneuiproject.oneui.delegates.AllSelectorState
+import dev.oneuiproject.oneui.layout.internal.DrawerBackAnimationDelegate
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.utils.ViewUtils
@@ -71,6 +72,9 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
     private var scrimAlpha = 0f
     private var systemBarsColor = -1
 
+    private var mDrawerBackAnimationDelegate: DrawerBackAnimationDelegate? = null
+    private var enableDrawerBackAnimation: Boolean = false
+
     init {
         initDrawer()
 
@@ -80,9 +84,20 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
                 ViewUtils.SEM_ROUNDED_CORNER_NONE
             )
         }
+        if (enableDrawerBackAnimation) {
+            mDrawerBackAnimationDelegate = DrawerBackAnimationDelegate(mDrawerContent, mToolbarContent!!)
+        }
     }
 
     override fun getDefaultLayoutResource(): Int  = R.layout.oui_layout_drawerlayout
+
+    override fun initLayoutAttrs(attrs: AttributeSet?) {
+        super.initLayoutAttrs(attrs)
+        context.theme.obtainStyledAttributes(
+            attrs, R.styleable.DrawerLayout, 0, 0).use {
+            enableDrawerBackAnimation = it.getBoolean(R.styleable.DrawerLayout_drawerBackAnimation, false)
+        }
+    }
 
     override fun inflateChildren() {
         if (mLayout != R.layout.oui_layout_drawerlayout) {
@@ -131,9 +146,7 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
         setDrawerCornerRadius(DEFAULT_DRAWER_RADIUS)
 
         setNavigationButtonOnClickListener {
-            mDrawer.openDrawer(
-                mDrawerContent
-            )
+            mDrawer.openDrawer(mDrawerContent)
         }
 
         if (!isInEditMode) {
@@ -433,7 +446,9 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
         }
         if (newState != mCurrentState){
             mCurrentState = newState
-            updateObpCallbackState()
+            if (mDrawerBackAnimationDelegate?.isBackEventStarted() != true) {
+                updateObpCallbackState()
+            }
             mDrawerStateListener?.invoke(newState)
         }
     }
@@ -443,24 +458,40 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
                 || super.getUpdatedOnBackCallbackState()
     }
 
+    private val shouldAnimateDrawer: Boolean
+        get() = enableDrawerBackAnimation && mCurrentState != DrawerState.CLOSE
+
     override fun startBackProgress(backEvent: BackEventCompat) {
-        //TODO
+        if (shouldAnimateDrawer) {
+            mDrawerBackAnimationDelegate!!.startBackProgress(backEvent)
+        }
     }
 
     override fun updateBackProgress(backEvent: BackEventCompat) {
-        //TODO
+        if (mDrawerBackAnimationDelegate?.isBackEventStarted() == true) {
+            mDrawerBackAnimationDelegate!!.updateBackProgress(backEvent)
+        }
     }
 
     override fun handleBackInvoked() {
         if (mCurrentState != DrawerState.CLOSE) {
-            setDrawerOpen(false, animate = true)
+            mDrawer.closeDrawer(mDrawerContent, true)
+            if (mDrawerBackAnimationDelegate?.isBackEventStarted() == true){
+                mDrawerBackAnimationDelegate?.onHandleBackInvoked()
+            }
         }else {
             super.handleBackInvoked()
         }
     }
 
     override fun cancelBackProgress() {
-        //TODO
+        if (mDrawerBackAnimationDelegate?.isBackEventStarted() == true) {
+            if (mCurrentState != DrawerState.OPEN){
+                mDrawer.openDrawer(mDrawerContent, true)
+            }
+            mDrawerBackAnimationDelegate!!.cancelBackProgress()
+            updateObpCallbackState()
+        }
     }
 
     private inner class DrawerOutlineProvider(@param:Px private val mCornerRadius: Int) :

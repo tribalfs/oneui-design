@@ -48,6 +48,7 @@ dependencies {
     implementation("sesl.androidx.preference:preference:1.2.1+1.0.4-sesl6+rev3")
     implementation("sesl.com.google.android.material:material:1.12.0+1.0.23-sesl6+rev1")
     implementation("sesl.androidx.apppickerview:apppickerview:1.0.1+1.0.1-sesl6+rev3")
+    implementation("sesl.androidx.drawerlayout:drawerlayout:1.2.0+1.0.1-sesl6+rev2")
 
     implementation("com.google.zxing:core:3.5.3")
 }
