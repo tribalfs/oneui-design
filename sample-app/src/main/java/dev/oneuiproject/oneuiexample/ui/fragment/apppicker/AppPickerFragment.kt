@@ -150,7 +150,7 @@ class AppPickerFragment : BaseFragment(),
                 R.id.menu_apppicker_system -> {
                     appsViewModel.toggleShowSystem()
                     menuItem.clearBadge()
-                    return true
+                    true
                 }
                 R.id.menu_apppicker_search -> {
                     toolbarLayout!!.apply {
@@ -172,7 +172,7 @@ class AppPickerFragment : BaseFragment(),
                             onBackBehavior = ToolbarLayout.SearchModeOnBackBehavior.CLEAR_DISMISS
                         )
                     }
-                    return true
+                    true
                 }
                 else -> false
             }
