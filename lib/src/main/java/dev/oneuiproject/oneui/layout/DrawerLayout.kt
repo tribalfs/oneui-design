@@ -23,6 +23,7 @@ import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.BackEventCompat
 import androidx.annotation.Dimension
 import androidx.annotation.Px
 import androidx.appcompat.widget.AppCompatImageButton
@@ -451,12 +452,24 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
                 || super.getUpdatedOnBackCallbackState()
     }
 
+    override fun startBackProgress(backEvent: BackEventCompat) {
+        //TODO
+    }
+
+    override fun updateBackProgress(backEvent: BackEventCompat) {
+        //TODO
+    }
+
     override fun handleBackInvoked() {
         if (mCurrentState != DrawerState.CLOSE) {
             setDrawerOpen(false, animate = true)
         }else {
             super.handleBackInvoked()
         }
+    }
+
+    override fun cancelBackProgress() {
+        //TODO
     }
 
     private inner class DrawerOutlineProvider(@param:Px private val mCornerRadius: Int) :

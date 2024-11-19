@@ -29,6 +29,7 @@ import android.widget.LinearLayout
 import android.widget.LinearLayout.LayoutParams.MATCH_PARENT
 import android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
 import android.widget.TextView
+import androidx.activity.BackEventCompat
 import androidx.annotation.CallSuper
 import androidx.annotation.IdRes
 import androidx.annotation.IntRange
@@ -50,6 +51,7 @@ import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import dev.oneuiproject.oneui.delegates.AllSelectorState
+import dev.oneuiproject.oneui.delegates.BackHandler
 import dev.oneuiproject.oneui.delegates.OnBackPressedDelegate
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.isSoftKeyboardShowing
@@ -77,7 +79,7 @@ import androidx.appcompat.R as appcompatR
  */
 open class ToolbarLayout @JvmOverloads constructor(
     @JvmField protected var context: Context,
-    attrs: AttributeSet? = null) : LinearLayout(context, attrs) {
+    attrs: AttributeSet? = null) : LinearLayout(context, attrs), BackHandler {
 
     @Deprecated("Use the `ActionModeListener` parameter when calling startActionMode() instead.")
     interface ActionModeCallback {
@@ -160,7 +162,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     internal fun updateObpCallbackState() {
         mObpDelegate.stopListening(this)
         if (getUpdatedOnBackCallbackState().not()) return
-        mObpDelegate.startListening(this) { handleBackInvoked() }
+        mObpDelegate.startListening(this, this)
     }
 
     /**
@@ -180,8 +182,12 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
     }
 
+    override fun startBackProgress(backEvent: BackEventCompat) {}//no op
+
+    override fun updateBackProgress(backEvent: BackEventCompat) {} //no op
+
     @CallSuper
-    protected open fun handleBackInvoked(){
+    override fun handleBackInvoked(){
         when {
             isActionMode -> endActionMode()
             isSearchMode -> {
@@ -214,6 +220,8 @@ open class ToolbarLayout @JvmOverloads constructor(
             }
         }
     }
+
+    override fun cancelBackProgress() {}//no op
 
     private var mActionModeTitleFadeListener: AppBarOffsetListener? = null
 

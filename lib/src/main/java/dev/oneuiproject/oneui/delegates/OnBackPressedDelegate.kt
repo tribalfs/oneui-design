@@ -2,8 +2,11 @@ package dev.oneuiproject.oneui.delegates
 
 import android.os.Build
 import android.view.View
+import android.window.BackEvent
+import android.window.OnBackAnimationCallback
 import android.window.OnBackInvokedCallback
 import android.window.OnBackInvokedDispatcher.PRIORITY_OVERLAY
+import androidx.activity.BackEventCompat
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
@@ -11,33 +14,53 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.RestrictTo
 
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+interface BackHandler{
+    fun startBackProgress(backEvent: BackEventCompat)
+    fun updateBackProgress(backEvent: BackEventCompat)
+    fun handleBackInvoked()
+    fun cancelBackProgress()
+}
+
+@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 class OnBackPressedDelegate(activity: ComponentActivity){
 
     private interface BackCallbackDelegate {
-        fun startListening(view: View, cb: () -> Unit)
+        fun startListening(view: View, listener: BackHandler)
         fun stopListening(view: View)
     }
 
     private val onBackPressedDelegate by lazy {  createBackPressedDelegate(activity) }
 
-    fun startListening(view: View, cb: () -> Unit) {
-        onBackPressedDelegate.startListening(view, cb)
+    fun startListening(view: View, listener: BackHandler) {
+        onBackPressedDelegate.startListening(view, listener)
     }
 
     fun stopListening(view: View) {
         onBackPressedDelegate.stopListening(view)
     }
-    
+
+    @RequiresApi(34)
+    private open class Api34BackCallbackDelegate : Api33BackCallbackDelegate() {
+        override fun createOnBackInvokedCallback(listener: BackHandler) : OnBackInvokedCallback {
+            return object : OnBackAnimationCallback {
+                override fun onBackStarted(backEvent: BackEvent) = listener.startBackProgress(BackEventCompat(backEvent))
+                override fun onBackProgressed(backEvent: BackEvent) = listener.updateBackProgress(BackEventCompat(backEvent))
+                override fun onBackInvoked()  = listener.handleBackInvoked()
+                override fun onBackCancelled()  = listener.cancelBackProgress()
+            }
+        }
+    }
+
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private open class Api33BackCallbackDelegate : BackCallbackDelegate {
         private var obiCallback: OnBackInvokedCallback? = null
 
         val isListening: Boolean get() = obiCallback != null
 
-        override fun startListening(view: View, cb: () -> Unit) {
+        override fun startListening(view: View, listener: BackHandler) {
             if (isListening) return
             val onBackInvokedDispatcher = view.findOnBackInvokedDispatcher() ?: return
-            obiCallback = createOnBackInvokedCallback(cb)
+            obiCallback = createOnBackInvokedCallback(listener)
             onBackInvokedDispatcher.registerOnBackInvokedCallback(PRIORITY_OVERLAY, obiCallback!!)
         }
 
@@ -48,7 +71,8 @@ class OnBackPressedDelegate(activity: ComponentActivity){
             }
         }
 
-        open fun createOnBackInvokedCallback(cb: () -> Unit) = OnBackInvokedCallback { cb() }
+        open fun createOnBackInvokedCallback(listener: BackHandler) =
+            OnBackInvokedCallback { listener.handleBackInvoked()}
 
     }
 
@@ -58,9 +82,9 @@ class OnBackPressedDelegate(activity: ComponentActivity){
 
         val isListening: Boolean get() = obpCallback?.isEnabled == true
 
-        override fun startListening(view: View, cb: () -> Unit) {
+        override fun startListening(view: View, listener: BackHandler) {
             if (obpCallback == null) {
-                obpCallback = obpDispatcher.addCallback(activity, true) { cb() }
+                obpCallback = obpDispatcher.addCallback(activity, true) { listener.handleBackInvoked() }
             }
             obpCallback!!.isEnabled = true
         }
@@ -75,7 +99,9 @@ class OnBackPressedDelegate(activity: ComponentActivity){
 
     companion object {
         private fun createBackPressedDelegate(activity: ComponentActivity): BackCallbackDelegate {
-             return if (Build.VERSION.SDK_INT >= 33) {
+            return if (Build.VERSION.SDK_INT >= 34) {
+                Api34BackCallbackDelegate()
+            } else if (Build.VERSION.SDK_INT == 33) {
                 Api33BackCallbackDelegate()
             } else {
                 PreApi33BackCallbackDelegate(activity)
