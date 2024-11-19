@@ -82,16 +82,7 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
         }
     }
 
-    override fun initLayoutAttrs(attrs: AttributeSet?) {
-        super.initLayoutAttrs(attrs)
-        context.theme.obtainStyledAttributes(
-            attrs, R.styleable.ToolbarLayout, 0, 0).use {
-            mLayout = it.getResourceId(
-                R.styleable.ToolbarLayout_android_layout,
-                R.layout.oui_layout_drawerlayout
-            )
-        }
-    }
+    override fun getDefaultLayoutResource(): Int  = R.layout.oui_layout_drawerlayout
 
     override fun inflateChildren() {
         if (mLayout != R.layout.oui_layout_drawerlayout) {

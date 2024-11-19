@@ -299,9 +299,11 @@ open class ToolbarLayout @JvmOverloads constructor(
         fun onSearchModeToggle(searchView: SearchView, visible: Boolean)
     }
 
+    protected open fun getDefaultLayoutResource(): Int  = R.layout.oui_layout_toolbarlayout_appbar
+
     protected open fun initLayoutAttrs(attrs: AttributeSet?) {
         context.theme.obtainStyledAttributes(attrs, R.styleable.ToolbarLayout, 0, 0).use {
-            mLayout = it.getResourceId(R.styleable.ToolbarLayout_android_layout, R.layout.oui_layout_toolbarlayout_appbar)
+            mLayout = it.getResourceId(R.styleable.ToolbarLayout_android_layout, getDefaultLayoutResource())
             mExpandable = it.getBoolean(R.styleable.ToolbarLayout_expandable, true)
             mExpanded = it.getBoolean(R.styleable.ToolbarLayout_expanded, mExpandable)
             mNavigationIcon = it.getDrawable(R.styleable.ToolbarLayout_navigationIcon)
