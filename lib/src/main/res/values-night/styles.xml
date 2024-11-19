@@ -5,4 +5,9 @@
         <item name="android:background">@drawable/oui_btn_transparent</item>
     </style>
 
+    <style name="OneUI.ThemeOverlay.AlertDialog" parent="@style/ThemeOverlay.AppCompat.Dialog.Alert">
+        <!--Ensure this is enabled. Calling context's theme might have this disabled -->
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
 </resources>

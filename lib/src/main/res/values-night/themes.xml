@@ -24,6 +24,8 @@
         <item name="floatingActionButtonStyle">@style/OneUI.FloatingActionButton</item>
 
         <item name="bottomNavigationTextStyle">@style/Widget.Design.BottomNavigationView.Text</item>
+
+        <item name="alertDialogTheme">@style/OneUI.ThemeOverlay.AlertDialog</item>
     </style>
 
 </resources>
