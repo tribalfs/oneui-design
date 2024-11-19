@@ -796,7 +796,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             mSearchToolbar = mCollapsingToolbarLayout.findViewById<ViewStub>(R.id.viewstub_oui_view_toolbar_search).inflate() as Toolbar
             mSearchView = mSearchToolbar!!.findViewById(R.id.toolbarlayout_search_view)
             mSearchView.seslSetUpButtonVisibility(VISIBLE)
-            mSearchView.seslSetOnUpButtonClickListener { dismissSearchMode() }
+            mSearchView.seslSetOnUpButtonClickListener { endSearchMode() }
             activity?.let { mSearchView.setSearchableInfoFrom(it) }
         }
     }
