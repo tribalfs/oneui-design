@@ -55,4 +55,6 @@
     <!-- HorizontalRadioPreference -->
     <color name="oui_horizontalradiopref_text_unselected_color">#ffa8a9a9</color>
 
+    <!--BottomSheet-->
+    <color name="bottomsheet_bg_color">@color/sesl_dialog_window_background_color_material_dark</color>
 </resources>

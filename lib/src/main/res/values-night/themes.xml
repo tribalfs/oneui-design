@@ -26,6 +26,9 @@
         <item name="bottomNavigationTextStyle">@style/Widget.Design.BottomNavigationView.Text</item>
 
         <item name="alertDialogTheme">@style/OneUI.ThemeOverlay.AlertDialog</item>
+
+        <item name="bottomSheetDialogTheme">@style/OneUI.BottomSheetDialog</item>
+        <item name="bottomSheetDragHandleStyle">@style/OneUI.BottomSheet.DragHandle</item>
     </style>
 
 </resources>

@@ -179,4 +179,35 @@
         <!--Ensure this is enabled. Calling context's theme might have this disabled. -->
         <item name="android:backgroundDimEnabled">true</item>
     </style>
+
+    <style name="OneUI.BottomSheetDialog.Light" parent="@style/Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/OneUI.BottomSheetStyle</item>
+        <item name="android:backgroundDimAmount">.32</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="OneUI.BottomSheetDialog" parent="@style/Theme.Design.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/OneUI.BottomSheetStyle</item>
+        <item name="android:backgroundDimAmount">.32</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <!--    <item format="float" name="container_opacity" type="dimen">0.35</item>-->
+
+    <style name="OneUI.BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bottomsheet_bg</item>
+        <item name="android:maxWidth">520dp</item>->
+    </style>
+
+    <style name="OneUI.BottomSheet.DragHandle" parent="">
+        <item name="srcCompat">@drawable/bottomsheet_drag_handle</item>
+        <item name="android:scaleType">center</item>
+        <item name="android:contentDescription">@string/bottomsheet_drag_handle_content_description</item>
+        <item name="android:minWidth">@dimen/mtrl_min_touch_target_size</item>
+        <item name="android:minHeight">@dimen/mtrl_min_touch_target_size</item>
+        <item name="android:paddingBottom">@dimen/m3_bottom_sheet_drag_handle_bottom_padding</item>
+        <item name="android:alpha">0.85</item>
+        <item name="tint">?colorControlNormal</item>
+    </style>
+
 </resources>
