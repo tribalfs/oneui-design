@@ -38,6 +38,7 @@ import dev.oneuiproject.oneui.delegates.AllSelectorState
 import dev.oneuiproject.oneui.layout.internal.DrawerBackAnimationDelegate
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.dpToPx
+import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
 import dev.oneuiproject.oneui.utils.ViewUtils
 import dev.oneuiproject.oneui.utils.badgeCountToText
 import kotlinx.coroutines.flow.StateFlow
@@ -129,17 +130,8 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
         scrimAlpha = ((scrimColor shr 24) and 0xFF) / 255f
 
         if (Build.VERSION.SDK_INT < 35) {
-            val sbTypedValue = TypedValue()
-            systemBarsColor = if (context.theme.resolveAttribute(
-                    appcompatR.attr.roundedCornerColor,
-                    sbTypedValue,
-                    true
-                )
-            ) {
-                sbTypedValue.data
-            } else {
-                ContextCompat.getColor(context, R.color.oui_round_and_bgcolor)
-            }
+            systemBarsColor = context.getThemeAttributeValue(appcompatR.attr.roundedCornerColor)?.data
+                ?: ContextCompat.getColor(context, R.color.oui_round_and_bgcolor)
         }
 
         setDrawerWidth()
