@@ -178,4 +178,17 @@
     </declare-styleable>
 
     <attr name="bottomNavigationTextStyle" format="reference"/>
+
+    <!--SelectableLinearLayout - designed for actionMode-->
+    <declare-styleable name="SelectableLinearLayout">
+        <attr name="checkMode">
+            <enum name="checkBox" value="0" />
+            <enum name="overlayCircle" value="1" />
+        </attr>
+        <!-- Spacing for checkBox checkMode  -->
+        <attr name="checkableButtonSpacing"  format="dimension" />
+        <!-- Image to draw check overlay for overlayCircle or  overlaySquircle -->
+        <attr name="targetImage" format="reference"/>
+        <attr name="selectedHighlightColor" format="color" />
+    </declare-styleable>
 </resources>

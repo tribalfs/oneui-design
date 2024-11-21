@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android" android:ordering="together">
+    <objectAnimator
+        android:propertyName="pathData"
+        android:duration="110"
+        android:valueFrom="M 11.332 29.625 L 11.346 29.627 C 10.467 28.745 9.042 28.745 8.163 29.621 C 7.281 30.5 7.277 31.925 8.156 32.804 L 8.16 32.807 C 10.28 34.354 13.128 31.928 11.341 29.625"
+        android:valueTo="M 30 49 L 11.346 29.627 C 10.467 28.745 9.042 28.745 8.163 29.621 C 7.281 30.5 7.277 31.925 8.156 32.804 L 27.13 51.834 C 29 53 31 51 30 49"
+        android:valueType="pathType"
+        android:interpolator="@android:anim/linear_interpolator"/>
+
+    <objectAnimator
+        android:propertyName="pathData"
+        android:startOffset="110"
+        android:duration="180"
+        android:valueFrom="M 41.521 42.126 C 41.278 41.715 39.839 41.092 39.071 41.624 L 31.381 48.658 C 31.186 48.846 30.964 48.875 30.846 48.875 C 30.733 48.875 30.508 48.846 30.317 48.658 L 11.346 29.627 C 10.467 28.745 9.042 28.745 8.163 29.621 C 7.281 30.5 7.277 31.925 8.156 32.804 L 27.13 51.834 C 28.123 52.83 29.443 53.375 30.846 53.375 C 32.254 53.375 33.575 52.83 34.565 51.834 L 42.22 44.18 C 42.347 43.227 41.993 42.446 41.521 42.126"
+        android:valueTo="M 63.839 19.285 C 62.96 18.406 61.533 18.409 60.657 19.288 L 31.381 48.658 C 31.186 48.846 30.964 48.875 30.846 48.875 C 30.733 48.875 30.508 48.846 30.317 48.658 L 11.346 29.627 C 10.467 28.745 9.042 28.745 8.163 29.621 C 7.281 30.5 7.277 31.925 8.156 32.804 L 27.13 51.834 C 28.123 52.83 29.443 53.375 30.846 53.375 C 32.254 53.375 33.575 52.83 34.565 51.834 L 63.845 22.467 C 64.724 21.585 64.718 20.161 63.839 19.285"
+        android:valueType="pathType"
+        android:interpolator="@android:anim/decelerate_interpolator"/>
+</set>

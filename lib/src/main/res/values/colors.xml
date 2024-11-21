@@ -67,4 +67,6 @@
 
     <!--BottomSheet-->
     <color name="bottomsheet_bg_color">@color/sesl_gray_L2</color>
+
+    <color name="animated_check_bgcolor">@color/sesl_primary_color_light</color>
 </resources>

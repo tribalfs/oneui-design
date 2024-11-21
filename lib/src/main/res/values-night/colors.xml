@@ -57,4 +57,6 @@
 
     <!--BottomSheet-->
     <color name="bottomsheet_bg_color">@color/sesl_dialog_window_background_color_material_dark</color>
+
+    <color name="animated_check_bgcolor">@color/sesl_primary_color_dark</color>
 </resources>
