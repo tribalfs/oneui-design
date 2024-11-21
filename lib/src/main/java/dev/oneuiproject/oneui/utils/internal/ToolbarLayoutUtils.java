@@ -65,7 +65,7 @@ public class ToolbarLayoutUtils {
         if (!activity.isDestroyed() && !activity.isFinishing()) {
             activity.findViewById(android.R.id.content).post(() -> {
                 SideMarginParams sideMarginParams = getSideMarginParams(activity);
-                setSideMarginParams(layout, sideMarginParams);
+                setSideMarginParams(layout, sideMarginParams, 0, 0);
                 layout.requestLayout();
             });
         }
@@ -100,20 +100,24 @@ public class ToolbarLayoutUtils {
      * @hide
      */
     @RestrictTo(LIBRARY)
-    public static void setSideMarginParams(@NonNull ViewGroup layout, SideMarginParams smp) {
+    public static void setSideMarginParams(@NonNull View layout, SideMarginParams smp,
+                                           Integer additionalLeft,
+                                           Integer additionalRight) {
         ViewGroup.MarginLayoutParams lp
                 = (ViewGroup.MarginLayoutParams) layout.getLayoutParams();
         if (lp != null) {
-            lp.leftMargin = smp.sideMargin;
-            lp.rightMargin = smp.sideMargin;
+            lp.leftMargin = smp.sideMargin + additionalLeft;
+            lp.rightMargin = smp.sideMargin + additionalRight;
         } else {
-            layout.setPadding(smp.sideMargin, layout.getPaddingTop(), smp.sideMargin, layout.getPaddingBottom());
+            layout.setPadding(smp.sideMargin + additionalLeft,
+                    layout.getPaddingTop(),
+                    smp.sideMargin + additionalRight,
+                    layout.getPaddingBottom());
         }
         if (smp.matchParent){
             lp.width = MATCH_PARENT;
         }
         layout.setLayoutParams(lp);
-
     }
 
     /**

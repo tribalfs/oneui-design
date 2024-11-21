@@ -43,6 +43,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.res.use
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -354,6 +355,14 @@ open class ToolbarLayout @JvmOverloads constructor(
         setExpandedSubtitle(mSubtitleExpanded)
     }
 
+
+    private data class IntrinsicMargin(
+        val left: Int,
+        val right: Int
+    )
+
+    private var boundedRootChildMargins: Map<Int, IntrinsicMargin>? = null
+
     override fun addView(child: View, index: Int, params: ViewGroup.LayoutParams) {
         if (mMainContainer == null || mFooterContainer == null) {
             super.addView(child, index, params)
@@ -363,7 +372,17 @@ open class ToolbarLayout @JvmOverloads constructor(
                 APPBAR_HEADER -> setCustomTitleView(child,
                     CollapsingToolbarLayout.LayoutParams(params))
                 FOOTER -> mFooterContainer!!.addView(child, params)
-                ROOT -> mCoordinatorLayout.addView(child, cllpWrapper(params as LayoutParams))
+                ROOT, ROOT_BOUNDED -> {
+                    if (params.layoutLocation == ROOT_BOUNDED){
+                        val margins = IntrinsicMargin(params.leftMargin, params.rightMargin)
+                        if (boundedRootChildMargins == null){
+                            boundedRootChildMargins = mapOf(child.id to margins)
+                        }else{
+                            boundedRootChildMargins!!.plus(child.id to margins)
+                        }
+                    }
+                    mCoordinatorLayout.addView(child, cllpWrapper(params as LayoutParams))
+                }
                 else -> mMainContainer!!.addView(child, params)
             }
         }
@@ -391,10 +410,16 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     private val sideMarginUpdater = Runnable {
         val sideMarginParams = ToolbarLayoutUtils.getSideMarginParams(this.activity!!)
-        ToolbarLayoutUtils.setSideMarginParams(mMainContainer!!, sideMarginParams)
-        ToolbarLayoutUtils.setSideMarginParams(mBottomRoundedCorner, sideMarginParams)
-        ToolbarLayoutUtils.setSideMarginParams(mFooterParent, sideMarginParams)
-        requestLayout()
+        for (child in mCoordinatorLayout.children){
+            if (child == mMainContainer || child == mBottomRoundedCorner || child == mFooterContainer) {
+                ToolbarLayoutUtils.setSideMarginParams(child, sideMarginParams, 0, 0)
+                continue
+            }
+            boundedRootChildMargins?.get(child.id)?.let {
+                ToolbarLayoutUtils.setSideMarginParams(child, sideMarginParams, it.left, it.right)
+            }
+        }
+        mCoordinatorLayout.requestLayout()
     }
 
     init {
@@ -1304,7 +1329,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         private const val APPBAR_HEADER = 1
         private const val FOOTER = 2
         private const val ROOT = 3
-
+        private const val ROOT_BOUNDED = 6
     }
 }
 

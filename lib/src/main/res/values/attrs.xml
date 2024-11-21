@@ -110,6 +110,9 @@
             <enum name="root" value="3" />
             <enum name="drawer_header" value="4" />
             <enum name="drawer_panel" value="5" />
+            <!--This is similar to root but will be bounded
+             within the side margin like the main_content.-->
+            <enum name="root_bounded" value="6" />
         </attr>
     </declare-styleable>
 
