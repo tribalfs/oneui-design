@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.content.res.Resources
+import androidx.annotation.RestrictTo
 import androidx.reflect.content.res.SeslConfigurationReflector
 import dev.oneuiproject.oneui.utils.internal.getSystemProp
 
@@ -51,5 +52,30 @@ object DeviceLayoutUtil {
             }
         }
         return sIsTabBuildOrCategory!!
+    }
+
+    @JvmStatic
+    inline fun isTabletBuildOrIsDeskTopMode(context: Context): Boolean {
+        return isTabletCategoryOrBuild(context) || isDeskTopMode(context.resources)
+    }
+
+    @JvmStatic
+    @JvmOverloads
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    fun isScreenWidthLarge(
+        context: Context,
+        thresholdWidthPx: Int = 420
+    ): Boolean {
+        val smallestScreenWidthDp = context.resources
+            .configuration.smallestScreenWidthDp
+        val scaledScreenWidthPx =
+            (smallestScreenWidthDp * getDensityScaleFactor(context)).toInt()
+        return scaledScreenWidthPx > thresholdWidthPx
+    }
+
+    private fun getDensityScaleFactor(context: Context): Float {
+        val metrics = context.resources.displayMetrics
+        val config = context.resources.configuration
+        return config.densityDpi / metrics.densityDpi.toFloat()
     }
 }
