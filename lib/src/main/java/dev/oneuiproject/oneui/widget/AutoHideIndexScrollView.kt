@@ -13,7 +13,6 @@ import android.util.AttributeSet
 import androidx.appcompat.animation.SeslAnimationUtils
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.res.use
-import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.indexscroll.widget.SeslCursorIndexer
 import androidx.indexscroll.widget.SeslIndexScrollView
@@ -41,7 +40,6 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
     @Volatile
     private var mIsRVScrolling = false
     private var mRecyclerView: RecyclerView? = null
-    private var mFab: ScrollAwareFloatingActionButton? = null
     private var mAppBarLayout: AppBarLayout? = null
     private var mHideWhenExpandedListener: AppBarOffsetListener? = null
     private var mAutoHide: Boolean = true
@@ -72,51 +70,35 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
             super.onScrollStateChanged(recyclerView, newState)
             if (newState == SCROLL_STATE_IDLE) {
                 mIsRVScrolling = false
-                if (!mIsIndexBarPressed && mAutoHide) hideMeShowFabDelayed()
+                if (!mIsIndexBarPressed && mAutoHide) hideMeDelayed()
             } else {
                 mIsRVScrolling = true
-                showMeAndHideFabDelayed()
+                showMeDelayed()
             }
         }
     }
 
-    private fun hideMeAndShowFab(){
-        mFab?.apply { if (!mIsRVScrolling && !mIsIndexBarPressed) show() }
-        animateVisibility( false)
-    }
+    private val showMeRunnable = Runnable { showMe() }
 
-    private fun showMeAndHideFab(){
-        mFab?.hide()
-        if (mHideWhenExpandedListener?.isAppBarExpanding == true ||  mSetVisibility != VISIBLE) return
+    private fun showMe(){
+        if (mHideWhenExpandedListener?.isAppBarExpanding == true || mSetVisibility != VISIBLE) return
         animateVisibility(true)
     }
 
-    private val hideMeAndShowFabRunnable = Runnable {
-        hideMeAndShowFab()
+    private val hideMeRunnable = Runnable { hideMe() }
+
+    private fun hideMe() = animateVisibility( false)
+
+    private fun hideMeDelayed(){
+        removeCallbacks(showMeRunnable)
+        removeCallbacks(hideMeRunnable)
+        postDelayed(hideMeRunnable, 1200)
     }
 
-    private val showMeAndHideFabRunnable = Runnable {
-        showMeAndHideFab()
-    }
-
-    private fun hideMeShowFabDelayed(){
-        removeCallbacks(showMeAndHideFabRunnable)
-        removeCallbacks(hideMeAndShowFabRunnable)
-        postDelayed(hideMeAndShowFabRunnable, 1200)
-    }
-
-    private fun showMeAndHideFabDelayed(){
-        removeCallbacks(hideMeAndShowFabRunnable)
-        removeCallbacks(showMeAndHideFabRunnable)
-        postDelayed(showMeAndHideFabRunnable, 200)
-    }
-
-
-    fun attachScrollAwareFAB(fab: ScrollAwareFloatingActionButton){
-        this.mFab = fab
-        if (!mIsIndexBarPressed && !mIsRVScrolling){
-            fab.show()
-        }
+    private fun showMeDelayed(){
+        removeCallbacks(hideMeRunnable)
+        removeCallbacks(showMeRunnable)
+        postDelayed(showMeRunnable, 200)
     }
 
     override fun attachToRecyclerView(recyclerView: RecyclerView?) {
@@ -161,32 +143,31 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
 
                     override fun onPressed(v: Float) {
                         mIsIndexBarPressed = true
-                        if (mAutoHide) removeCallbacks(hideMeAndShowFabRunnable)
-                        mFab?.hide()
+                        if (mAutoHide) removeCallbacks(hideMeRunnable)
                     }
 
                     override fun onReleased(v: Float) {
                         mIsIndexBarPressed = false
                         if (mAutoHide && mRecyclerView!!.scrollState == SCROLL_STATE_IDLE) {
-                            hideMeShowFabDelayed()
+                            hideMeDelayed()
                         }
                     }
                 }
             )
             if (mAutoHide) {
                 if (mIsRVScrolling && mHideWhenExpandedListener?.isAppBarCollapsed != false){
-                    showMeAndHideFabDelayed()
+                    showMeDelayed()
                 } else {
-                    removeCallbacks(showMeAndHideFabRunnable)
-                    removeCallbacks(hideMeAndShowFabRunnable)
-                    this@AutoHideIndexScrollView.isGone = true
-                    mFab?.show()
+                    removeCallbacks(showMeRunnable)
+                    removeCallbacks(hideMeRunnable)
+                    animateVisibility(false)
                 }
             }else{
-                removeCallbacks(showMeAndHideFabRunnable)
-                removeCallbacks(hideMeAndShowFabRunnable)
-                this@AutoHideIndexScrollView.isVisible = true
-                mFab?.show()
+                removeCallbacks(showMeRunnable)
+                removeCallbacks(hideMeRunnable)
+                if (mSetVisibility == VISIBLE) {
+                    animateVisibility(true)
+                }
             }
         }
     }
@@ -194,7 +175,7 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         if (mAutoHide) {
-            removeCallbacks(hideMeAndShowFabRunnable)
+            removeCallbacks(hideMeRunnable)
             setOnIndexBarEventListener(null)
             mRecyclerView?.removeOnScrollListener(rvScrollListener)
         }
@@ -249,18 +230,18 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
         if (autoHide) {
             mRecyclerView?.addOnScrollListener(rvScrollListener)
             if (mIsIndexBarPressed || mIsRVScrolling) {
-                removeCallbacks(hideMeAndShowFabRunnable)
-                removeCallbacks(showMeAndHideFabRunnable)
-                showMeAndHideFab()
+                removeCallbacks(hideMeRunnable)
+                removeCallbacks(showMeRunnable)
+                showMe()
             }else{
-                removeCallbacks(hideMeAndShowFabRunnable)
-                removeCallbacks(showMeAndHideFabRunnable)
-                hideMeAndShowFab()
+                removeCallbacks(hideMeRunnable)
+                removeCallbacks(showMeRunnable)
+                hideMe()
             }
         } else {
             mRecyclerView?.removeOnScrollListener(rvScrollListener)
-            removeCallbacks(hideMeAndShowFabRunnable)
-            removeCallbacks(showMeAndHideFabRunnable)
+            removeCallbacks(hideMeRunnable)
+            removeCallbacks(showMeRunnable)
             animateVisibility(true)
         }
     }
@@ -295,15 +276,14 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
             isAppBarCollapsed =  totalScrollRange + verticalOffset == 0
 
             if (isAppBarExpanding) {
-                removeCallbacks(hideMeAndShowFabRunnable)
-                mFab?.show()
+                removeCallbacks(hideMeRunnable)
                 if (this@AutoHideIndexScrollView.isVisible && !mIsIndexBarPressed) {
                     animateVisibility( false)
                 }
             }else if (isAppBarCollapsed){
                 if (mAutoHide) {
                     if (mIsRVScrolling) {
-                        postDelayed(showMeAndHideFabRunnable, 400)
+                        postDelayed(showMeRunnable, 400)
                     }
                 }else if (!this@AutoHideIndexScrollView.isVisible){
                     animateVisibility(true)
