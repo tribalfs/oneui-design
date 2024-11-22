@@ -170,7 +170,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:tint">?android:colorPrimary</item>
-        <item name="backgroundTint">?android:colorBackground</item>
+        <item name="backgroundTint">@color/fab_bg_tint_color</item>
         <item name="borderWidth">0dp</item>
         <item name="elevation">6dp</item>
     </style>
