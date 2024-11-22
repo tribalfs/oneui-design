@@ -26,6 +26,7 @@ import dev.oneuiproject.oneui.delegates.AppBarAwareYTranslator
 import dev.oneuiproject.oneui.delegates.ViewYTranslator
 import dev.oneuiproject.oneui.ktx.clearBadge
 import dev.oneuiproject.oneui.ktx.configureItemSwipeAnimator
+import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.ktx.enableCoreSeslFeatures
 import dev.oneuiproject.oneui.ktx.setBadge
 import dev.oneuiproject.oneui.layout.Badge
@@ -35,6 +36,7 @@ import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.CLEA
 import dev.oneuiproject.oneui.layout.startActionMode
 import dev.oneuiproject.oneui.layout.startSearchMode
 import dev.oneuiproject.oneui.widget.AutoHideIndexScrollView
+import dev.oneuiproject.oneui.widget.ScrollAwareFloatingActionButton
 import dev.oneuiproject.oneui.widget.TipPopup
 import dev.oneuiproject.oneui.widget.TipPopup.Direction
 import dev.oneuiproject.oneui.widget.TipPopup.Mode
@@ -61,6 +63,7 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
     private lateinit var tvNoItem: TextView
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var horizontalProgress: SeslProgressBar
+    private lateinit var fab: ScrollAwareFloatingActionButton
     private var tipPopupShown = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -88,6 +91,7 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
         tvNoItem = view.findViewById(R.id.tvNoItem)
         swipeRefreshLayout = view.findViewById(R.id.swiperefresh_view)
         horizontalProgress = view.findViewById(R.id.horizontal_pb)
+        fab = view.findViewById(R.id.fab)
     }
 
 
@@ -109,7 +113,12 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
             onAllSelectorStateChanged = { contactsViewModel.allSelectorStateFlow.value = it }
         )
 
-        mIndexScrollView.attachToRecyclerView(mContactsListRv)
+        fab.hideOnScroll(mContactsListRv, mIndexScrollView /*optional*/)
+
+        mIndexScrollView.apply {
+            setIndexScrollMargin(0, 78.dpToPx(resources))
+            attachToRecyclerView(mContactsListRv)
+        }
 
         tvNoItem.translateYWithAppBar((requireActivity() as MainActivity).drawerLayout.appBarLayout, this)
     }

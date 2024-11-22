@@ -24,6 +24,7 @@ import dev.oneuiproject.oneui.delegates.MultiSelector;
 import dev.oneuiproject.oneui.delegates.MultiSelectorDelegate;
 import dev.oneuiproject.oneui.delegates.SectionIndexerDelegate;
 import dev.oneuiproject.oneui.utils.SearchHighlighter;
+import dev.oneuiproject.oneui.widget.SelectableLinearLayout;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 
@@ -128,8 +129,10 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.ViewHolder>
         Integer iconId = filteredIconsId.get(position);
         holder.imageView.setImageResource(iconId);
         holder.textView.setText(highlighter.invoke(mContext.getResources().getResourceEntryName(iconId), query));
-        holder.checkBox.setVisibility(isActionMode() ? View.VISIBLE : View.GONE);
-        holder.checkBox.setChecked(isSelected(iconId));
+        if (holder.itemView instanceof SelectableLinearLayout){
+            ((SelectableLinearLayout) holder.itemView).setSelectionMode(isActionMode());
+            holder.itemView.setSelected(isSelected(iconId));
+        }
     }
 
     // Implement SectionIndexer methods
@@ -197,13 +200,10 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.ViewHolder>
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView textView;
-        CheckBox checkBox;
 
         ViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.icon_list_item_icon);
-            textView = itemView.findViewById(R.id.icon_list_item_text);
-            checkBox = itemView.findViewById(R.id.icon_list_item_checkbox);
-        }
+            textView = itemView.findViewById(R.id.icon_list_item_text);}
     }
 }

@@ -20,6 +20,7 @@ import dev.oneuiproject.oneui.delegates.MultiSelectorDelegate
 import dev.oneuiproject.oneui.delegates.SectionIndexerDelegate
 import dev.oneuiproject.oneui.delegates.SemSectionIndexer
 import dev.oneuiproject.oneui.utils.SearchHighlighter
+import dev.oneuiproject.oneui.widget.SelectableLinearLayout
 import dev.oneuiproject.oneui.widget.Separator
 import dev.oneuiproject.oneuiexample.ui.fragment.contacts.model.ContactsListItemUiModel
 import dev.oneuiproject.oneuiexample.ui.fragment.contacts.model.ContactsListItemUiModel.ContactItem
@@ -133,7 +134,7 @@ class ContactsAdapter (
             val item = currentList[position]
             for (payload in payloads.toSet()) {
                 when(payload){
-                    Payload.SELECTION_MODE -> holder.bindActionMode(getItemId(position))
+                    Payload.SELECTION_MODE -> holder.bindActionModeAnimate(getItemId(position))
                     Payload.HIGHLIGHT -> {
                         when (item){
                             is ContactItem -> holder.bindNameContact(item.contact.name, item.contact.number)
@@ -167,13 +168,13 @@ class ContactsAdapter (
         var nameView: TextView
         private var imageView: ImageView? = null
         private var numberView: TextView? = null
-        private var checkBox: CheckBox? = null
+        private var selectableLinearLayout: SelectableLinearLayout? = null
 
         init {
             if (isSeparator) {
                 nameView = itemView as TextView
             } else {
-                checkBox = itemView.findViewById(R.id.contact_item_checkbox)!!
+                selectableLinearLayout = itemView.findViewById(R.id.selectable_layout)!!
                 nameView = itemView.findViewById(R.id.contact_item_name)
                 imageView = itemView.findViewById(R.id.contact_item_icon)
                 numberView = itemView.findViewById(R.id.contact_item_number)
@@ -198,9 +199,16 @@ class ContactsAdapter (
         }
 
         fun bindActionMode(itemId: Long){
-            checkBox?.apply {
-                isVisible = isActionMode
-                isChecked = isSelected(itemId)
+            selectableLinearLayout?.apply {
+                isSelectionMode = isActionMode
+                setSelected(isSelected(itemId))
+            }
+        }
+
+        fun bindActionModeAnimate(itemId: Long){
+            selectableLinearLayout?.apply {
+                isSelectionMode = isActionMode
+                setSelectedAnimate(isSelected(itemId))
             }
         }
     }

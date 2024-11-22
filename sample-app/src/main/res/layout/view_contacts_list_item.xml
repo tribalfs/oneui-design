@@ -1,33 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:focusable="true"
     android:clickable="true"
     tools:viewBindingIgnore="true"
     android:foreground="?attr/listChoiceBackgroundIndicator">
 
-    <LinearLayout
+    <dev.oneuiproject.oneui.widget.SelectableLinearLayout
+        android:id="@+id/selectable_layout"
         android:paddingStart="?listPreferredItemPaddingStart"
         android:paddingEnd="?listPreferredItemPaddingEnd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
-        android:orientation="horizontal">
-
-        <CheckBox
-            android:id="@+id/contact_item_checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:clickable="false"
-            android:focusable="false"
-            android:visibility="gone"
-            android:layout_gravity="center"
-            android:layout_marginEnd="8dp"
-            tools:visibility="visible"/>
+        android:orientation="horizontal"
+        app:targetImage="@+id/contact_item_icon"
+        app:checkMode="overlayCircle"
+        app:selectedHighlightColor="?colorControlHighlight">
 
         <ImageView
             android:id="@+id/contact_item_icon"
@@ -68,5 +60,5 @@
 
         </LinearLayout>
 
-    </LinearLayout>
+    </dev.oneuiproject.oneui.widget.SelectableLinearLayout>
 </FrameLayout>

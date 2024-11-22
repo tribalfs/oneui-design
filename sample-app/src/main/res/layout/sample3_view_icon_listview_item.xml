@@ -1,24 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<dev.oneuiproject.oneui.widget.SelectableLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="?android:listPreferredItemHeight"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:animateLayoutChanges="true"
     android:background="?listChoiceBackgroundIndicator"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingStart="?android:listPreferredItemPaddingStart"
+    app:checkMode="checkBox"
     android:paddingEnd="?android:listPreferredItemPaddingEnd">
-
-    <CheckBox
-        android:id="@+id/icon_list_item_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="?android:listPreferredItemPaddingStart"
-        android:background="@null"
-        android:clickable="false"
-        android:focusable="false"
-        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/icon_list_item_icon"
@@ -27,7 +19,6 @@
         android:gravity="center"
         android:scaleType="fitXY"
         tools:ignore="ContentDescription" />
-
 
     <TextView
         android:id="@+id/icon_list_item_text"
@@ -41,4 +32,4 @@
         android:textAppearance="?textAppearanceListItem" />
 
 
-</LinearLayout>
+</dev.oneuiproject.oneui.widget.SelectableLinearLayout>
