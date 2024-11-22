@@ -25,6 +25,7 @@ import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.doOnEnd
 import dev.oneuiproject.oneui.ktx.doOnStart
 import dev.oneuiproject.oneui.ktx.ifEmpty
+import java.lang.ref.WeakReference
 import java.util.Locale
 
 /**
@@ -43,6 +44,7 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
     private var mAppBarLayout: AppBarLayout? = null
     private var mHideWhenExpandedListener: AppBarOffsetListener? = null
     private var mAutoHide: Boolean = true
+    private var indexEventListeners: MutableSet<WeakReference<OnIndexBarEventListener>>? = null
 
     private var mSetVisibility: Int? = null
 
@@ -153,7 +155,7 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
     }
 
     private fun setupEventListener(layoutManager: LinearLayoutManager) {
-        setOnIndexBarEventListener(
+        super.setOnIndexBarEventListener(
             object : OnIndexBarEventListener {
                 override fun onIndexChanged(sectionIndex: Int) {
                     if (mRecyclerView!!.scrollState != SCROLL_STATE_IDLE) {
@@ -186,11 +188,35 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
         )
     }
 
+    @Deprecated("Use addOnIndexEventListener() and removeOnIndexEventListener() instead",
+        ReplaceWith("addOnIndexEventListener(listener)"))
+    override fun setOnIndexBarEventListener(iOnIndexBarEventListener: OnIndexBarEventListener?) {
+        if (iOnIndexBarEventListener != null) {
+            addOnIndexEventListener(iOnIndexBarEventListener)
+        }
+    }
+
+    fun addOnIndexEventListener(listener: OnIndexBarEventListener){
+        if (indexEventListeners == null) {
+            indexEventListeners = mutableSetOf(WeakReference(listener))
+            return
+        }
+        indexEventListeners?.add(WeakReference(listener))
+    }
+
+    fun removeOnIndexEventListener(listener: OnIndexBarEventListener){
+        indexEventListeners?.forEach {
+            if (it.get() == listener) {
+                indexEventListeners?.remove(it)
+            }
+        }
+    }
+
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         if (mAutoHide) {
             removeCallbacks(hideMeRunnable)
-            setOnIndexBarEventListener(null)
+            super.setOnIndexBarEventListener(null)
             mRecyclerView?.removeOnScrollListener(rvScrollListener)
         }
         mAppBarLayout?.removeOnOffsetChangedListener(mHideWhenExpandedListener)
