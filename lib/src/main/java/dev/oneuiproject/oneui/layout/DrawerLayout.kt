@@ -13,7 +13,6 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.AttributeSet
 import android.util.Log
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,10 +56,12 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
     enum class DrawerState{
         OPEN,
         CLOSE,
-        SLIDING
+        CLOSING,
+        OPENING
     }
     private var mDrawerStateListener: ((state: DrawerState)-> Unit)? = null
-    private var mCurrentState: DrawerState? = null
+    @Volatile
+    private var mCurrentState: DrawerState = DrawerState.CLOSE
     private var mSlideOffset = 0f
 
     private lateinit var mDrawer: DrawerLayout
@@ -85,7 +86,7 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
                 ViewUtils.SEM_ROUNDED_CORNER_NONE
             )
         }
-        if (enableDrawerBackAnimation) {
+        if (enableDrawerBackAnimation && Build.VERSION.SDK_INT >= 34) {
             mDrawerBackAnimationDelegate = DrawerBackAnimationDelegate(mDrawerContent, mToolbarContent!!)
         }
     }
@@ -426,16 +427,23 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
      */
     fun setDrawerStateListener(listener: ((state: DrawerState)-> Unit)?){
         mDrawerStateListener = listener
-        mCurrentState = null
         dispatchDrawerStateChange()
     }
 
     private fun dispatchDrawerStateChange(){
-        val newState = when (mSlideOffset) {
-            1f -> DrawerState.OPEN
-            0f -> DrawerState.CLOSE
-            else -> DrawerState.SLIDING
-        }
+        val newState =
+            when (mSlideOffset) {
+                1f -> DrawerState.OPEN
+                0f -> DrawerState.CLOSE
+                else -> {
+                    when (mCurrentState) {
+                        DrawerState.OPEN -> DrawerState.CLOSING
+                        DrawerState.CLOSE -> DrawerState.OPENING
+                        else -> mCurrentState
+                    }
+                }
+            }
+
         if (newState != mCurrentState){
             mCurrentState = newState
             if (mDrawerBackAnimationDelegate?.isBackEventStarted() != true) {
@@ -445,13 +453,13 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
         }
     }
 
-    override fun getUpdatedOnBackCallbackState(): Boolean{
-        return mCurrentState != DrawerState.CLOSE
-                || super.getUpdatedOnBackCallbackState()
-    }
+    private inline val isDrawerOpenOrOpening: Boolean
+        get() = mCurrentState == DrawerState.OPEN || mCurrentState == DrawerState.OPENING
+
+    override fun getUpdatedOnBackCallbackState(): Boolean = isDrawerOpenOrOpening || super.getUpdatedOnBackCallbackState()
 
     private val shouldAnimateDrawer: Boolean
-        get() = enableDrawerBackAnimation && mCurrentState != DrawerState.CLOSE
+        get() = enableDrawerBackAnimation && isDrawerOpenOrOpening
 
     override fun startBackProgress(backEvent: BackEventCompat) {
         if (shouldAnimateDrawer) {
@@ -466,11 +474,10 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
     }
 
     override fun handleBackInvoked() {
-        if (mCurrentState != DrawerState.CLOSE) {
+        if ((mDrawerBackAnimationDelegate != null
+                    && mDrawerBackAnimationDelegate!!.isBackEventStarted()) || isDrawerOpenOrOpening) {
             mDrawer.closeDrawer(mDrawerContent, true)
-            if (mDrawerBackAnimationDelegate?.isBackEventStarted() == true){
-                mDrawerBackAnimationDelegate?.onHandleBackInvoked()
-            }
+            mDrawerBackAnimationDelegate?.onHandleBackInvoked()
         }else {
             super.handleBackInvoked()
         }
@@ -478,9 +485,6 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
 
     override fun cancelBackProgress() {
         if (mDrawerBackAnimationDelegate?.isBackEventStarted() == true) {
-            if (mCurrentState != DrawerState.OPEN){
-                mDrawer.openDrawer(mDrawerContent, true)
-            }
             mDrawerBackAnimationDelegate!!.cancelBackProgress()
             updateObpCallbackState()
         }
