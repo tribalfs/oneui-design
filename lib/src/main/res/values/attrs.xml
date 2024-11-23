@@ -10,13 +10,19 @@
         <flag name="bottom_right" value="0x00000008" />
     </attr>
 
-    <!-- Custom Views -->
-    <declare-styleable name="RoundFrameLayout">
-        <attr name="roundedCorners" />
-    </declare-styleable>
+    <attr name="edgeInsetTop" type="dimension" />
+    <attr name="edgeInsetRight" type="dimension" />
+    <attr name="edgeInsetLeft" type="dimension" />
+    <attr name="edgeInsetBottom" type="dimension" />
 
-    <declare-styleable name="RoundLinearLayout">
+    <declare-styleable name="RoundedCornerView">
         <attr name="roundedCorners" />
+        <attr name="roundedCornerColor" />
+        <attr name="edgeInsetTop" />
+        <attr name="edgeInsetRight" />
+        <attr name="edgeInsetLeft" />
+        <attr name="edgeInsetBottom" />
+        <attr name="drawOverEdge" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="RelatedCard">
