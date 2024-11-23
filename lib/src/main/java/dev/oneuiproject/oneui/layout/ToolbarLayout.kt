@@ -1149,6 +1149,7 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @param count number of selected items in the list
      * @param enabled enabled click
      */
+    @Deprecated("Use updateAllSelector() instead.", ReplaceWith("updateAllSelector(count, enabled, checked)"))
     fun setActionModeAllSelector(count: Int, enabled: Boolean) {
         setActionModeAllSelector(count, enabled, null)
     }
