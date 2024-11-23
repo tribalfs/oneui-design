@@ -3,6 +3,7 @@ package dev.oneuiproject.oneui.preference;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
@@ -342,10 +343,18 @@ public class HorizontalRadioPreference extends Preference {
             }
 
             var5.setSelected(var14);
-            var5.setTypeface(Typeface.create("sec-roboto-light", var14 ? 1 : 0));
+            if (Build.VERSION.SDK_INT >= 34)  {
+                var5.setTypeface(Typeface.create(Typeface.create("sec", 0), var14 ? 600 : 400, false));
+            } else {
+                var5.setTypeface(Typeface.create("sec-roboto-light", var14 ? 1 : 0));
+            }
             if (var4 != null) {
                 var4.setSelected(var14);
-                var4.setTypeface(Typeface.create("sec-roboto-light", var14 ? 1 : 0));
+                if (Build.VERSION.SDK_INT >= 34)  {
+                    var4.setTypeface(Typeface.create(Typeface.create("sec", 0), var14 ? 600 : 400, false));
+                } else {
+                    var4.setTypeface(Typeface.create("sec-roboto-light", var14 ? 1 : 0));
+                }
             }
 
             if (this.mIsColorFilterEnabled && var6 != null) {
