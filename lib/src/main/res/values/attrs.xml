@@ -181,14 +181,19 @@
 
     <!--SelectableLinearLayout - designed for actionMode-->
     <declare-styleable name="SelectableLinearLayout">
+        <!-- This attribute determines the selection mode appearance:
+                - "checkBox" mode (value="0") displays a CheckBox widget when in selection mode.
+                - "overlayCircle" mode (value="1") displays a drawable overlay on the specified "targetImage".
+                The selection state can be toggled using the setSelected and setSelectedAnimate methods. -->
         <attr name="checkMode">
             <enum name="checkBox" value="0" />
             <enum name="overlayCircle" value="1" />
         </attr>
-        <!-- Spacing for checkBox checkMode  -->
+        <!-- Spacing for checkBox mode  -->
         <attr name="checkableButtonSpacing"  format="dimension" />
-        <!-- Image to draw check overlay for overlayCircle or  overlaySquircle -->
+        <!-- Reference to the image used for the check overlay in overlayCircle mode.-->
         <attr name="targetImage" format="reference"/>
+        <!-- This defines the color used to highlight the selected state. -->
         <attr name="selectedHighlightColor" format="color" />
     </declare-styleable>
 </resources>

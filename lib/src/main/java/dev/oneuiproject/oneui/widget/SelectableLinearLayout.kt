@@ -120,7 +120,8 @@ class SelectableLinearLayout @JvmOverloads constructor(
 
 
     /**
-     * Use to toggle selected selected indicator and highlight on this view.
+     * Use to toggle selected state indicators on this view
+     * @see setSelectedAnimate
      */
     @SuppressLint("NewApi")
     override fun setSelected(isSelected: Boolean) {
@@ -133,8 +134,8 @@ class SelectableLinearLayout @JvmOverloads constructor(
     }
 
     /**
-     * Use to toggle selected selected indicator and highlight on this view
-     * with animation.
+     * Same as [setSelected] but
+     * will animate the check drawable when `checkMode` is set to `overlayCircle`.
      */
     @SuppressLint("NewApi")
     fun setSelectedAnimate(isSelected: Boolean){
