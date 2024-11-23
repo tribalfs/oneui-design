@@ -447,7 +447,7 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
         if (newState != mCurrentState){
             mCurrentState = newState
             if (mDrawerBackAnimationDelegate?.isBackEventStarted() != true) {
-                updateObpCallbackState()
+                updateOnBackCallbackState()
             }
             mDrawerStateListener?.invoke(newState)
         }
@@ -486,7 +486,7 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
     override fun cancelBackProgress() {
         if (mDrawerBackAnimationDelegate?.isBackEventStarted() == true) {
             mDrawerBackAnimationDelegate!!.cancelBackProgress()
-            updateObpCallbackState()
+            updateOnBackCallbackState()
         }
     }
 

@@ -160,7 +160,7 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     private val mObpDelegate: OnBackPressedDelegate by lazy {OnBackPressedDelegate(activity!!)}
 
-    internal fun updateObpCallbackState() {
+    internal fun updateOnBackCallbackState() {
         mObpDelegate.stopListening(this)
         if (getUpdatedOnBackCallbackState().not()) return
         mObpDelegate.startListening(this, this)
@@ -204,10 +204,10 @@ open class ToolbarLayout @JvmOverloads constructor(
                             //Add delay to account for the keyboard's hiding animation
                             //so we can use the appropriate `isSoftKeyboardShowing` result
                             //in updateObpCallbackState().
-                            postDelayed({ updateObpCallbackState() }, 400)
+                            postDelayed({ updateOnBackCallbackState() }, 400)
                         } else {
                             searchView.setQuery("", true)
-                            updateObpCallbackState()
+                            updateOnBackCallbackState()
                         }
                     }
                     CLEAR_DISMISS -> {
@@ -761,7 +761,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         mSearchView.isIconified = false
         mCollapsingToolbarLayout.title = resources.getString(appcompatR.string.sesl_searchview_description_search)
         mCollapsingToolbarLayout.seslSetSubtitle(null)
-        updateObpCallbackState()
+        updateOnBackCallbackState()
         mSearchModeListener!!.onSearchModeToggle(mSearchView, true)
     }
 
@@ -773,7 +773,7 @@ open class ToolbarLayout @JvmOverloads constructor(
                 }
 
                 override fun onQueryTextChange(newText: String): Boolean {
-                    updateObpCallbackState()
+                    updateOnBackCallbackState()
                     return mSearchModeListener?.onQueryTextChange(newText) == true
                 }
             })
@@ -800,7 +800,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             setOnQueryTextListener(null)
             setQuery("", false)
         }
-        updateObpCallbackState()
+        updateOnBackCallbackState()
     }
 
     /**
@@ -925,7 +925,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         syncActionModeMenuInternal()
 
         setupAllSelectorOnClickListener()
-        updateObpCallbackState()
+        updateOnBackCallbackState()
     }
 
 
@@ -962,7 +962,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         mActionModeListener = null
         mMenuSynchronizer = null
         updateAllSelectorJob = null
-        updateObpCallbackState()
+        updateOnBackCallbackState()
     }
 
     /**
