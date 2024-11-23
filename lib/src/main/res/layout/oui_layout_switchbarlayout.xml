@@ -11,7 +11,7 @@
         android:layout_height="@dimen/sesl_switchbar_height"
         android:layout_marginBottom="20.0dip" />
 
-    <dev.oneuiproject.oneui.widget.RoundFrameLayout
+    <dev.oneuiproject.oneui.widget.RoundedFrameLayout
         android:id="@+id/switchbarlayout_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
