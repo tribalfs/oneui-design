@@ -53,7 +53,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import dev.oneuiproject.oneui.delegates.AllSelectorState
 import dev.oneuiproject.oneui.delegates.BackHandler
-import dev.oneuiproject.oneui.delegates.OnBackPressedDelegate
+import dev.oneuiproject.oneui.delegates.OnBackCallbackDelegateCompat
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.isSoftKeyboardShowing
 import dev.oneuiproject.oneui.ktx.setSearchableInfoFrom
@@ -158,12 +158,14 @@ open class ToolbarLayout @JvmOverloads constructor(
     private var mActionModeListener: ActionModeListener? = null
     private var mActionModeMenuRes: Int = 0
 
-    private val mObpDelegate: OnBackPressedDelegate by lazy {OnBackPressedDelegate(activity!!)}
+    private val onBackCallbackDelegate: OnBackCallbackDelegateCompat by lazy {
+        OnBackCallbackDelegateCompat(activity!!, this, this)
+    }
 
     internal fun updateOnBackCallbackState() {
-        mObpDelegate.stopListening(this)
+        onBackCallbackDelegate.stopListening()
         if (getUpdatedOnBackCallbackState().not()) return
-        mObpDelegate.startListening(this, this)
+        onBackCallbackDelegate.startListening(true)
     }
 
     /**
