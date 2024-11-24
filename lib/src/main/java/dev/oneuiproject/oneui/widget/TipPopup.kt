@@ -41,7 +41,6 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
-import androidx.appcompat.animation.SeslAnimationUtils
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
 import androidx.core.os.ConfigurationCompat
@@ -53,8 +52,11 @@ import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.doOnEnd
 import dev.oneuiproject.oneui.ktx.setListener
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil
-import dev.oneuiproject.oneui.utils.internal.PathInterpolator
-import dev.oneuiproject.oneui.utils.internal.createSeslElasticInterpolator
+import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory
+import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type.ELASTIC_50
+import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type.ELASTIC_CUSTOM
+import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type.SINE_IN_OUT_33
+import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type.SINE_IN_OUT_70
 import dev.oneuiproject.oneui.widget.TipPopup.Direction.BOTTOM_LEFT
 import dev.oneuiproject.oneui.widget.TipPopup.Direction.BOTTOM_RIGHT
 import dev.oneuiproject.oneui.widget.TipPopup.Direction.DEFAULT
@@ -263,16 +265,16 @@ class TipPopup @JvmOverloads constructor(parentView: View, mode: Mode = Mode.NOR
     @SuppressLint("PrivateResource", "RestrictedApi")
     private fun initInterpolator() {
         if (INTERPOLATOR_SINE_IN_OUT_33 == null) {
-            INTERPOLATOR_SINE_IN_OUT_33 = PathInterpolator.create(PathInterpolator.Type.TYPE_SINE_IN_OUT_33)
+            INTERPOLATOR_SINE_IN_OUT_33 = CachedInterpolatorFactory.getOrCreate(SINE_IN_OUT_33)
         }
         if (INTERPOLATOR_SINE_IN_OUT_70 == null) {
-            INTERPOLATOR_SINE_IN_OUT_70 = SeslAnimationUtils.SINE_IN_OUT_70
+            INTERPOLATOR_SINE_IN_OUT_70 = CachedInterpolatorFactory.getOrCreate(SINE_IN_OUT_70)
         }
         if (INTERPOLATOR_ELASTIC_50 == null) {
-            INTERPOLATOR_ELASTIC_50 = SeslAnimationUtils.ELASTIC_50
+            INTERPOLATOR_ELASTIC_50 = CachedInterpolatorFactory.getOrCreate(ELASTIC_50)
         }
         if (INTERPOLATOR_ELASTIC_CUSTOM == null) {
-            INTERPOLATOR_ELASTIC_CUSTOM = createSeslElasticInterpolator(1.0f, 1.3f)
+            INTERPOLATOR_ELASTIC_CUSTOM =  CachedInterpolatorFactory.getOrCreate(ELASTIC_CUSTOM)
         }
     }
 

@@ -21,7 +21,8 @@ object CachedInterpolatorFactory {
         SINE_IN_OUT_90,
         STORY_END_ANIMATION,
         RELATED_NUMBER_FADE_IN,
-        ELASTIC_CUSTOM
+        ELASTIC_50,
+        ELASTIC_CUSTOM,
         OVERSHOOT
     }
 
@@ -41,6 +42,7 @@ object CachedInterpolatorFactory {
             Type.SINE_IN_OUT_70 -> SeslAnimationUtils.SINE_IN_OUT_70
             Type.SINE_IN_OUT_80 -> SeslAnimationUtils.SINE_IN_OUT_80
             Type.SINE_IN_OUT_90 -> SeslAnimationUtils.SINE_IN_OUT_90
+            Type.ELASTIC_50 ->  SeslAnimationUtils.ELASTIC_50
             Type.ELASTIC_CUSTOM ->  createSeslElasticInterpolator(1.0f, 1.3f) ?: SeslAnimationUtils.ELASTIC_40
             Type.OVERSHOOT -> OvershootInterpolator()
         }
