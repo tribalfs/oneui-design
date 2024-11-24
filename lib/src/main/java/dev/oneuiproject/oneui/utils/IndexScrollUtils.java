@@ -10,6 +10,7 @@ import androidx.indexscroll.widget.SeslIndexScrollView;
 
 import dev.oneuiproject.oneui.design.R;
 
+@Deprecated
 public class IndexScrollUtils {
     private static final String TAG = "IndexScrollUtils";
 

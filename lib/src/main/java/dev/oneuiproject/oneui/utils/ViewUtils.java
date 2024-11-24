@@ -1,5 +1,7 @@
 package dev.oneuiproject.oneui.utils;
 
+import static androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_NONE;
+
 import android.graphics.Color;
 import android.os.Build;
 import android.util.Log;
@@ -12,11 +14,17 @@ import dev.oneuiproject.oneui.utils.internal.ReflectUtils;
 
 public class ViewUtils {
     private static final String TAG = "ViewUtils";
+    @Deprecated
     public static final int SEM_ROUNDED_CORNER_NONE = 0;
+    @Deprecated
     public static final int SEM_ROUNDED_CORNER_ALL = 15;
+    @Deprecated
     public static final int SEM_ROUNDED_CORNER_TOP_LEFT = 1;
+    @Deprecated
     public static final int SEM_ROUNDED_CORNER_TOP_RIGHT = 2;
+    @Deprecated
     public static final int SEM_ROUNDED_CORNER_BOTTOM_LEFT = 4;
+    @Deprecated
     public static final int SEM_ROUNDED_CORNER_BOTTOM_RIGHT = 8;
 
     public static int semGetRoundedCorners(@NonNull View view) {
@@ -32,7 +40,7 @@ public class ViewUtils {
                     "api 28 and above");
         }
 
-        return SEM_ROUNDED_CORNER_NONE;
+        return ROUNDED_CORNER_NONE;
     }
 
     public static void semSetRoundedCorners(@NonNull View view, int corners) {

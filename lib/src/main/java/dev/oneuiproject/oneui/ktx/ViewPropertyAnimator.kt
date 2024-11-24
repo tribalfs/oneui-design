@@ -30,7 +30,7 @@ inline fun ViewPropertyAnimator.doOnEnd(
 ): Animator.AnimatorListener = setListener(onEnd = action)
 
 /**
- * Add an action which will be invoked when the animation has ended.
+ * Add an action which will be invoked when the animation has started.
  *
  * @return the [Animator.AnimatorListener] added to the Animator
  * @see Animator.start

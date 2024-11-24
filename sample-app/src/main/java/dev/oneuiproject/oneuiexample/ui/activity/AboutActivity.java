@@ -1,5 +1,8 @@
 package dev.oneuiproject.oneuiexample.ui.activity;
 
+import static androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_TOP_LEFT;
+import static androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_TOP_RIGHT;
+
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -147,9 +150,9 @@ public class AboutActivity extends AppCompatActivity
     private void initContent() {
         ViewUtils.semSetRoundedCorners(
                 mBinding.aboutBottomContent.getRoot(),
-                ViewUtils.SEM_ROUNDED_CORNER_TOP_LEFT | ViewUtils.SEM_ROUNDED_CORNER_TOP_RIGHT);
+                ROUNDED_CORNER_TOP_LEFT | ROUNDED_CORNER_TOP_RIGHT);
         ViewUtils.semSetRoundedCornerColor(mBinding.aboutBottomContent.getRoot(),
-                ViewUtils.SEM_ROUNDED_CORNER_TOP_LEFT | ViewUtils.SEM_ROUNDED_CORNER_TOP_RIGHT,
+                ROUNDED_CORNER_TOP_LEFT | ROUNDED_CORNER_TOP_RIGHT,
                 getColor(dev.oneuiproject.oneui.design.R.color.oui_round_and_bgcolor));
 
         Drawable appIcon = getDrawable(R.mipmap.ic_launcher);
