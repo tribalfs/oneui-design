@@ -63,18 +63,17 @@ class DrawerBackAnimationDelegate(private val drawerPane: View,
     }
 
     fun updateBackProgress(progress: Float, leftSwipeEdge: Boolean) {
-
-        val interpolatedProgress = interpolateProgress(progress)
-        val leftGravity: Boolean = isLeftGravity()
-
-        val swipeEdgeMatchesGravity = leftSwipeEdge == leftGravity
-
         val drawerWidth = drawerPane.width
         val drawerHeight = drawerPane.height
 
         if (drawerWidth <= 0f || drawerHeight <= 0f) {
             return
         }
+
+        val interpolatedProgress = interpolateProgress(progress)
+        val leftGravity: Boolean = isLeftGravity()
+
+        val swipeEdgeMatchesGravity = leftSwipeEdge == leftGravity
 
         val maxScaleXDeltaShrink: Float = maxScaleXDistanceShrink / drawerWidth
         val maxScaleXDeltaGrow: Float = maxScaleXDistanceGrow / drawerWidth
