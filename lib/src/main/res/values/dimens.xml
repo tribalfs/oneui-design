@@ -40,6 +40,8 @@
     <dimen name="oui_horizontalradiopref_padding_start_end">8.0dip</dimen>
     <dimen name="oui_horizontalradiopref_padding_top">18.0dip</dimen>
     <dimen name="oui_horizontalradiopref_padding_bottom">14.0dip</dimen>
+    <dimen name="oui_horizontalradiopref_divider_margin_top">24dp</dimen>
+    <dimen name="oui_horizontalradiopref_divider_margin_bottom">61dp</dimen>
 
     <!-- TipPopup -->
     <dimen name="sem_tip_popup_balloon_action_text_size">15sp</dimen>
