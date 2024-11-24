@@ -22,7 +22,6 @@ import android.view.ViewGroup
 import android.view.ViewStub
 import android.view.WindowInsets
 import android.view.WindowManager
-import android.view.animation.PathInterpolator
 import android.widget.CompoundButton
 import android.widget.FrameLayout
 import android.widget.LinearLayout
@@ -65,6 +64,8 @@ import dev.oneuiproject.oneui.utils.DeviceLayoutUtil
 import dev.oneuiproject.oneui.utils.MenuSynchronizer
 import dev.oneuiproject.oneui.utils.MenuSynchronizer.State
 import dev.oneuiproject.oneui.utils.badgeCountToText
+import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory
+import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type
 import dev.oneuiproject.oneui.utils.internal.ToolbarLayoutUtils
 import dev.oneuiproject.oneui.view.internal.NavigationBadgeIcon
 import kotlinx.coroutines.Job
@@ -908,7 +909,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             }
         }
         animatedVisibility(mMainToolbar, GONE)
-        animatedVisibility(mActionModeToolbar!!, VISIBLE)
+        showActionModeToolbarAnimate()
         mFooterContainer!!.visibility = GONE
         setupActionModeMenu()
         allSelectorStateFlow?.let {
@@ -930,6 +931,67 @@ open class ToolbarLayout @JvmOverloads constructor(
         updateOnBackCallbackState()
     }
 
+    private inline fun showActionModeToolbarAnimate(){
+        animatedVisibility(mActionModeToolbar!!, VISIBLE)
+
+        val overshoot = CachedInterpolatorFactory.getOrCreate(Type.OVERSHOOT)
+
+        mActionModeCheckBox.apply {
+            scaleX = 0f
+            scaleY = 0f
+            alpha = 0f
+            animate()
+                .withLayer()
+                .scaleX(1f)
+                .scaleY(1f)
+                .setInterpolator(overshoot)
+                .alpha(1f)
+                .setDuration(260)
+        }
+
+        mActionModeTitleTextView.apply {
+            translationX = if (isRTLayout) 80f else -80f
+            animate()
+                .withLayer()
+                .translationX(0f)
+                .setInterpolator(overshoot)
+                .setDuration(260)
+        }
+    }
+
+    @SuppressLint("VisibleForTests")
+    private inline fun showMainToolbarAnimate(){
+        animatedVisibility(mMainToolbar, VISIBLE)
+
+        val overshoot = CachedInterpolatorFactory.getOrCreate(Type.OVERSHOOT)
+        val start = if (isRTLayout) -80f else 80f
+
+        mMainToolbar.titleTextView?.apply {
+            alpha = 0f
+            translationX = start
+            animate()
+                .setStartDelay(20)
+                .withLayer()
+                .withStartAction { alpha = 1f }
+                .translationX(0f)
+                .setInterpolator(overshoot)
+                .setDuration(260)
+        }
+
+        mMainToolbar.subtitleTextView?.apply {
+            alpha = 0f
+            translationX = start
+            animate()
+                .setStartDelay(20)
+                .withLayer()
+                .withStartAction { alpha = 1f }
+                .translationX(0f)
+                .setInterpolator(overshoot)
+                .setDuration(260)
+        }
+    }
+
+    private val isRTLayout get() = layoutDirection == LAYOUT_DIRECTION_RTL
 
     /**
      * Ends the current ActionMode.
@@ -947,7 +1009,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             mCollapsingToolbarLayout.title = resources.getString(appcompatR.string.sesl_searchview_description_search)
             mCollapsingToolbarLayout.seslSetSubtitle(null)
         }else{
-            animatedVisibility(mMainToolbar, VISIBLE)
+            showMainToolbarAnimate()
             mFooterContainer!!.visibility = VISIBLE
             setTitle(mTitleExpanded, mTitleCollapsed)
             mCollapsingToolbarLayout.seslSetSubtitle(mSubtitleExpanded)
@@ -1291,7 +1353,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             .alphaBy(1.0f)
             .alpha(if (visibility == VISIBLE) 1.0f else 0.0f)
             .setDuration(200)
-            .setInterpolator(PathInterpolator(0.33f, 0.0f, 0.1f, 1.0f))
+            .setInterpolator(CachedInterpolatorFactory.getOrCreate(Type.SINE_IN_OUT_90))
             .withEndAction { view.visibility = visibility }
             .start()
     }
