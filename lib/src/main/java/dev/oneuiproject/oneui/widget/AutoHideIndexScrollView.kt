@@ -10,7 +10,6 @@ import android.database.MatrixCursor
 import android.icu.text.AlphabeticIndex
 import android.os.LocaleList
 import android.util.AttributeSet
-import androidx.appcompat.animation.SeslAnimationUtils
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.res.use
 import androidx.core.view.isVisible
@@ -25,6 +24,8 @@ import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.doOnEnd
 import dev.oneuiproject.oneui.ktx.doOnStart
 import dev.oneuiproject.oneui.ktx.ifEmpty
+import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory
+import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type.SINE_IN_OUT_80
 import java.lang.ref.WeakReference
 import java.util.Locale
 
@@ -239,19 +240,20 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
     }
 
     private fun animateVisibility(show: Boolean) {
+        if (isVisible && show) return
         animate().apply {
             cancel()
             if (show) {
                 alpha(1f)
-                duration = 350
-                interpolator = SeslAnimationUtils.SINE_IN_OUT_80
+                duration = 200
+                interpolator = CachedInterpolatorFactory.getOrCreate(SINE_IN_OUT_80)
                 doOnStart {
                     alpha = 0f
                     super.setVisibility(VISIBLE)
                 }
             } else {
                 alpha(0f)
-                duration = 300
+                duration = 150
                 doOnEnd { super.setVisibility(GONE) }
             }
             start()
