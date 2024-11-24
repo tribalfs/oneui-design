@@ -17,6 +17,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewStub
@@ -880,6 +881,21 @@ open class ToolbarLayout @JvmOverloads constructor(
     //
     // Action Mode methods
     //
+
+    //We need to track the touch state for the action mode menu visibility
+    private var isTouching = false
+
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> isTouching = true
+            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                isTouching = false
+                syncActionModeMenu()
+            }
+        }
+        return super.dispatchTouchEvent(event)
+    }
+
     private var updateAllSelectorJob: Job? = null
 
     /**
@@ -1104,9 +1120,17 @@ open class ToolbarLayout @JvmOverloads constructor(
             val isActionModePortrait = DeviceLayoutUtil.isPortrait(resources.configuration)
                     || DeviceLayoutUtil.isTabletLayoutOrDesktop(context)
             if (isActionModePortrait) {
-                mMenuSynchronizer!!.updateState(State.PORTRAIT)
+                if (!isTouching) {
+                    mMenuSynchronizer!!.updateState(State.PORTRAIT)
+                } else {
+                    mMenuSynchronizer!!.updateState(State.HIDDEN)
+                }
             } else {
-                mMenuSynchronizer!!.updateState(State.LANDSCAPE)
+                if (!isTouching) {
+                    mMenuSynchronizer!!.updateState(State.LANDSCAPE)
+                } else {
+                    mMenuSynchronizer!!.updateState(State.HIDDEN)
+                }
             }
         } else {
             mMenuSynchronizer!!.updateState(State.HIDDEN)
