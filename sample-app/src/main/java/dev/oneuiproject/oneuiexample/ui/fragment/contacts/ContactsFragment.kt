@@ -251,12 +251,17 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
 
     private fun launchActionMode(initialSelected: Array<Long>? = null) {
         val drawerLayout = (requireActivity() as MainActivity).drawerLayout
+        fab.isVisible = false
+
         drawerLayout.startActionMode(
             onInflateMenu = {menu ->
                 contactsAdapter.onToggleActionMode(true, initialSelected)
                 requireActivity().menuInflater.inflate(R.menu.menu_contacts_am, menu)
             },
-            onEnd = { contactsAdapter.onToggleActionMode(false) },
+            onEnd = {
+                contactsAdapter.onToggleActionMode(false)
+                fab.isVisible = true
+            },
             onSelectMenuItem = {
                 when (it.itemId) {
                     R.id.menu_contacts_am_share -> {
