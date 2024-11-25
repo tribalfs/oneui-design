@@ -216,17 +216,11 @@ class HorizontalRadioPreference(context: Context, attrs: AttributeSet?) :
         return SavedState(superState).apply {
             value = this@HorizontalRadioPreference.value
         }
-
     }
 
-
-    @Deprecated("Deprecated in Java",
-        ReplaceWith("value = if (restoreValue) getPersistedString(value) else defaultValue?.toString()")
-    )
-    override fun onSetInitialValue(restoreValue: Boolean, defaultValue: Any?) {
-        value = if (restoreValue) getPersistedString(value) else defaultValue?.toString()
+    override fun onSetInitialValue(defaultValue: Any?) {
+        value =  getPersistedString(defaultValue?.toString() ?: value)
     }
-
 
     override fun onRestoreInstanceState(state: Parcelable?) {
         if (state == null || state !is SavedState) {

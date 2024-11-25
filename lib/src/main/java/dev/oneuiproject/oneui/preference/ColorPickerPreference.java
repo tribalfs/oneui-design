@@ -70,9 +70,7 @@ public class ColorPickerPreference extends Preference implements Preference.OnPr
 
     @Override
     protected void onSetInitialValue(Object defaultValue) {
-        onColorSet(defaultValue == null
-                ? getPersistedInt(mValue)
-                : (Integer) defaultValue);
+        onColorSet(getPersistedInt(defaultValue != null ? (Integer) defaultValue : mValue));
     }
 
     private void init(Context context, AttributeSet attrs) {
