@@ -28,8 +28,8 @@ import java.lang.ref.WeakReference
  */
 class ScrollAwareFloatingActionButton @JvmOverloads constructor(
     context: Context,
-    attrs: AttributeSet? = null
-) : FloatingActionButton(context, attrs), AppBarLayout.OnOffsetChangedListener {
+    attrs: AttributeSet? = null) : FloatingActionButton(context, attrs),
+    AppBarLayout.OnOffsetChangedListener, RecyclerView.OnItemTouchListener {
 
     private enum class ScrollState{
         SCROLLING_UP, SCROLLING_DOWN, IDLE
@@ -155,18 +155,8 @@ class ScrollAwareFloatingActionButton @JvmOverloads constructor(
 
         recyclerView.removeOnScrollListener(scrollListener)
         recyclerView.addOnScrollListener(scrollListener)
-        recyclerView.doOnTouchEvent{
-            when (it.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    isTouchingRv = true
-                    updateState()
-                }
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    isTouchingRv = false
-                    updateState()
-                }
-            }
-        }
+        recyclerView.removeOnItemTouchListener(this)
+        recyclerView.addOnItemTouchListener(this)
 
         indexScrollViewWR?.get()?.addOnIndexEventListener(indexBarEventListener)
 
@@ -202,6 +192,7 @@ class ScrollAwareFloatingActionButton @JvmOverloads constructor(
                 seslSetFastScrollerEventListener(null)
             }
             setOnTouchListener(null)
+            removeOnItemTouchListener(this@ScrollAwareFloatingActionButton)
         }
         indexScrollViewWR?.get()?.removeOnIndexEventListener(indexBarEventListener)
         offsetYIfInsideMainContainer(false)
@@ -250,17 +241,21 @@ class ScrollAwareFloatingActionButton @JvmOverloads constructor(
         private const val TAG = "ScrollAwareFAB"
         private const val SCROLL_DELTA = 4f
     }
-}
 
-private fun RecyclerView.doOnTouchEvent(action: (MotionEvent) -> Unit ) {
-    val actionWR = WeakReference(action)
-    addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
-        override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
-            actionWR.get()?.invoke(e)
-            return false
+    override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+        when (e.action) {
+            MotionEvent.ACTION_DOWN -> {
+                isTouchingRv = true
+                updateState()
+            }
+            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                isTouchingRv = false
+                updateState()
+            }
         }
+        return false
+    }
 
-        override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
-        override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
-    })
+    override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
+    override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
 }
