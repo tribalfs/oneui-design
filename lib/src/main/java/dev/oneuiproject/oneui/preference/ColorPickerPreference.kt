@@ -125,6 +125,8 @@ class ColorPickerPreference @JvmOverloads constructor(
     private val recentColors: IntArray
         get() = ArrayList(mUsedColors).apply { reverse() }.toIntArray()
 
+    val value: Int get() = mValue
+
     override fun onSaveInstanceState(): Parcelable? {
         val superState = super.onSaveInstanceState()
         if (mColorPickerDialog == null || !mColorPickerDialog!!.isShowing) {
