@@ -55,7 +55,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getView().setBackgroundColor(mContext.getColor(dev.oneuiproject.oneui.design.R.color.oui_background_color));
         getListView().seslSetLastRoundedCorner(false);
     }
 
