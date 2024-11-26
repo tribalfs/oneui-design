@@ -624,9 +624,9 @@ open class ToolbarLayout @JvmOverloads constructor(
      */
     fun setMenuItemBadge(menuItem: SeslMenuItem, badge: Badge) {
         when (badge) {
-            is Badge.Numeric -> menuItem.badgeText = badge.count.toString()
-            is Badge.Dot-> menuItem.badgeText = ""
-            is Badge.None -> menuItem.badgeText = null
+            is Badge.NUMERIC -> menuItem.badgeText = badge.count.toString()
+            is Badge.DOT -> menuItem.badgeText = ""
+            is Badge.NONE -> menuItem.badgeText = null
         }
     }
 
@@ -689,13 +689,13 @@ open class ToolbarLayout @JvmOverloads constructor(
     fun setNavigationButtonBadge(badge: Badge) {
         if (mNavigationIcon != null) {
             when(badge){
-                is Badge.Dot, is Badge.Numeric -> {
+                is Badge.DOT, is Badge.NUMERIC -> {
                     val badgeIcon = NavigationBadgeIcon(context)
                     mNavigationBadgeIcon = LayerDrawable(arrayOf(mNavigationIcon!!, badgeIcon))
                     badgeIcon.setBadge(badge)
                     mMainToolbar.navigationIcon = mNavigationBadgeIcon
                 }
-                is Badge.None -> {
+                is Badge.NONE -> {
                     mNavigationBadgeIcon = null
                     mMainToolbar.navigationIcon = mNavigationIcon
                 }
@@ -1400,15 +1400,6 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
     }
 
-    /**
-     * Select instance of either  [Dot][Badge.Dot], [Numeric][Badge.Numeric] or [None][Badge.None]
-     */
-    abstract class Badge private constructor() {
-        class Dot : Badge()
-        class Numeric(val count: Int) : Badge()
-        class None : Badge()
-    }
-
     companion object {
         private const val TAG = "ToolbarLayout"
 
@@ -1421,11 +1412,6 @@ open class ToolbarLayout @JvmOverloads constructor(
         private const val ROOT_BOUNDED = 6
     }
 }
-
-
-////////////////////////////////////////////////////////////////
-//         Kotlin consumables
-////////////////////////////////////////////////////////////////
 
 /**
  * Type-safe way to set badge. Select either [Badge.NUMERIC], [Badge.DOT] or [Badge.NONE]
@@ -1446,29 +1432,18 @@ sealed class Badge{
             DOT -> ""
             NONE -> null
         }
-
 }
 
+@Deprecated("Use setNavigationButtonBadge()",
+    ReplaceWith("setNavigationButtonBadge(badge)"))
 inline fun <T:ToolbarLayout>T.setNavigationBadge(badge: Badge){
-    setNavigationButtonBadge(
-        when (badge) {
-            is Badge.NUMERIC -> ToolbarLayout.Badge.Numeric(badge.count)
-            is Badge.DOT -> ToolbarLayout.Badge.Dot()
-            is Badge.NONE -> ToolbarLayout.Badge.None()
-        }
-    )
+    setNavigationButtonBadge(badge)
 }
 
-inline fun <T:ToolbarLayout>T.setMenuItemBadge(menuItem: SeslMenuItem, badge: Badge){
-    setMenuItemBadge(
-        menuItem,
-        when (badge) {
-            is Badge.NUMERIC -> ToolbarLayout.Badge.Numeric(badge.count)
-            is Badge.DOT -> ToolbarLayout.Badge.Dot()
-            is Badge.NONE -> ToolbarLayout.Badge.None()
-        }
-    )
-}
+
+////////////////////////////////////////////////////////////////
+//         Kotlin consumables
+////////////////////////////////////////////////////////////////
 
 /**
  * Starts the search mode for this [ToolbarLayout].

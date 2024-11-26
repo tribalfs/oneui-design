@@ -12,7 +12,7 @@ import android.view.View.LAYOUT_DIRECTION_RTL
 import androidx.annotation.RestrictTo
 import androidx.core.content.ContextCompat
 import dev.oneuiproject.oneui.ktx.dpToPx
-import dev.oneuiproject.oneui.layout.ToolbarLayout.Badge
+import dev.oneuiproject.oneui.layout.Badge
 import dev.oneuiproject.oneui.utils.badgeCountToText
 import dev.oneuiproject.oneui.utils.getNormalFont
 import androidx.appcompat.R as appcompatR
@@ -38,7 +38,7 @@ class NavigationBadgeIcon(private val context: Context) : Drawable() {
         isAntiAlias = true
     }
 
-    private var badge: Badge = Badge.None()
+    private var badge: Badge = Badge.NONE
     private var mIsLandscape = false
     private val cornerRadius = 9f.dpToPx(context.resources).toFloat()
     private val defaultWidth = res.getDimensionPixelSize(appcompatR.dimen.sesl_badge_default_width)
@@ -49,13 +49,13 @@ class NavigationBadgeIcon(private val context: Context) : Drawable() {
         val width = bounds.width()
         val isRTL = context.resources.configuration.layoutDirection == LAYOUT_DIRECTION_RTL
 
-        if (badge is Badge.Dot) {
+        if (badge is Badge.DOT) {
             val x = (if (isRTL) DOT_BADGE_OFFSET else width - DOT_BADGE_OFFSET).toFloat()
             val y = DOT_BADGE_OFFSET
             val radius = 7f
             canvas.drawCircle(x, y, radius, mCirclePaint)
-        } else if (badge is Badge.Numeric) {
-            val mBadgeText = (badge as Badge.Numeric).count.badgeCountToText()!!
+        } else if (badge is Badge.NUMERIC) {
+            val mBadgeText = (badge as Badge.NUMERIC).count.badgeCountToText()!!
             val x = (if (isRTL) N_BADGE_OFFSET else width - N_BADGE_OFFSET).toFloat()
             val y = N_BADGE_OFFSET
 

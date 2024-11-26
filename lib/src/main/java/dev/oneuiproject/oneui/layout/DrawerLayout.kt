@@ -43,7 +43,6 @@ import dev.oneuiproject.oneui.utils.badgeCountToText
 import kotlinx.coroutines.flow.StateFlow
 import kotlin.math.max
 import androidx.appcompat.R as appcompatR
-import dev.oneuiproject.oneui.layout.DrawerLayout as OuiDrawerLayout
 
 /**
  * Custom DrawerLayout extending [ToolbarLayout]. Looks and behaves the same as the one in Apps from Samsung.
@@ -360,7 +359,7 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
     fun setDrawerButtonBadge(badge: Badge) {
         if (mHeaderBadge != null) {
             when (badge) {
-                is Badge.Dot -> {
+                is Badge.DOT -> {
                     mHeaderBadge!!.text = ""
                     val res = resources
                     mHeaderBadge!!.updateLayoutParams<MarginLayoutParams> {
@@ -376,11 +375,11 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
                     mHeaderBadge!!.visibility = VISIBLE
                 }
 
-                is Badge.None -> {
+                is Badge.NONE -> {
                     mHeaderBadge!!.visibility = GONE
                 }
 
-                is Badge.Numeric -> {
+                is Badge.NUMERIC -> {
                     val badgeText = badge.count.badgeCountToText()!!
                     mHeaderBadge!!.text = badgeText
                     mHeaderBadge!!.updateLayoutParams<MarginLayoutParams> {
@@ -579,41 +578,4 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
         private var sIsDrawerOpened = false
 
     }
-}
-
-
-////////////////////////////////////////////////////////////////
-//         Kotlin consumables
-////////////////////////////////////////////////////////////////
-
-/**
- * Set the badge of the drawer button.
- * The drawer button is the button in the top right corner of the drawer panel.
- * The badge is small orange circle in the top right of the icon.
- *
- * @param badge
- */
-inline fun OuiDrawerLayout.setDrawerButtonBadge(badge: Badge) {
-    setDrawerButtonBadge(
-        when (badge) {
-            is Badge.NUMERIC -> ToolbarLayout.Badge.Numeric(badge.count)
-            is Badge.DOT -> ToolbarLayout.Badge.Dot()
-            is Badge.NONE -> ToolbarLayout.Badge.None()
-        }
-    )
-}
-
-
-/**
- * Set the badges of the navigation button and drawer button.
- * The drawer button is the button in the top right corner of the drawer panel.
- * The badge is small orange circle in the top right of the icon which contains text.
- *
- * @param navigationBadge
- * @param drawerBadge
- */
-inline fun OuiDrawerLayout.setButtonBadges(navigationBadge: Badge, drawerBadge: Badge) {
-    setNavigationBadge(navigationBadge)
-    setDrawerButtonBadge(drawerBadge)
-
 }
