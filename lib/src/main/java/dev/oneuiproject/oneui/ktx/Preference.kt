@@ -11,18 +11,26 @@ import androidx.appcompat.R.color.sesl_secondary_text_light
 import androidx.appcompat.util.SeslMisc
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
+import androidx.preference.EditTextPreference
+import androidx.preference.ListPreference
 import androidx.preference.Preference
-import androidx.preference.SwitchPreference
+import androidx.preference.SeekBarPreference
 import androidx.preference.TwoStatePreference
 import dev.oneuiproject.oneui.design.R
+import dev.oneuiproject.oneui.preference.HorizontalRadioPreference
 import kotlin.math.min
 
 /**
  * Registers a callback to be invoked when the preference's value is changed.
  *
- * @param onChange A lambda function to be invoked when the preference's value changes.
- *                 The lambda receives the new value as its parameter.
+ * @param action A lambda function to be invoked when the preference's value changes.
+ *                 The lambda receives the new value as its parameter. It can optionally
+ *                 return a `false` boolean to prevent the preference from persisting
+ *                 the new value.
  * @return The preference to allow for chaining calls.
+ *
+ * Caution: Ensure that the type parameter matches the expected type of the preference's value.
+ * This function uses unchecked casts, so providing an incorrect type parameter may lead to runtime exceptions.
  *
  * Example usage:
  * ```
@@ -31,37 +39,99 @@ import kotlin.math.min
  * }
  * ```
  */
-inline fun <reified R : Any?> Preference.onNewValue(crossinline onChange: (newValue: R) -> Unit): Preference {
+@Deprecated(
+    message = "Please use the type-safe onNewValue() function specific to the preference type.",
+    replaceWith = ReplaceWith("onNewValue()")
+)
+inline fun <reified T : Any?> Preference.onNewValue(crossinline action: (newValue: T) -> Any): Preference {
     onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, v ->
-        if (this is TwoStatePreference) {
-            isChecked = v as Boolean
-        }
-        onChange(v as R)
-        true
+        action(v as T) as? Boolean ?: true
     }
     return this
 }
 
 /**
- * Registers a callback to be invoked when the preference's value is changed, with the ability
- * to control whether the internal state is updated.
+ * Type-safe way to register a callback to be invoked when the preference's value is changed.
  *
- * @param onChange A lambda function to be invoked when the preference's value changes.
- *                 The lambda receives the new value as its parameter and should return `true`
- *                 if the internal state should be updated, `false` otherwise.
+ * @param action A lambda function to be invoked when the preference's value changes.
+ *                 The lambda receives the new value as its parameter. It can optionally
+ *                 return a `false` boolean to prevent the preference from persisting
+ *                 the new value.
  * @return The preference to allow for chaining calls.
  *
- * Example usage:
- * ```
- * preference.onUpdateValue<String> { newValue ->
- *     // Handle the new value and return true if the internal state should be updated
- *     true
- * }
- * ```
  */
-inline fun <reified R : Any?> Preference.onUpdateValue(crossinline onChange: (newValue: R) -> Boolean): Preference {
+inline fun <R : TwoStatePreference> R.onNewValue(crossinline action: (newValue: Boolean) -> Any): R {
     onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, v ->
-        onChange(v as R)
+        action(v as Boolean) as? Boolean ?: true
+    }
+    return this
+}
+
+/**
+ * Type-safe way to register a callback to be invoked when the preference's value is changed.
+ *
+ * @param action A lambda function to be invoked when the preference's value changes.
+ *                 The lambda receives the new value as its parameter. It can optionally
+ *                 return a `false` boolean to prevent the preference from persisting
+ *                 the new value.
+ * @return The preference to allow for chaining calls.
+ *
+ */
+inline fun <R : SeekBarPreference> R.onNewValue(crossinline action: (newValue: Int) -> Any): R {
+    onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, v ->
+        action(v as Int) as? Boolean ?: true
+    }
+    return this
+}
+
+/**
+ * Type-safe way to register a callback to be invoked when the preference's value is changed.
+ *
+ * @param action A lambda function to be invoked when the preference's value changes.
+ *                 The lambda receives the new value as its parameter. It can optionally
+ *                 return a `false` boolean to prevent the preference from persisting
+ *                 the new value.
+ * @return The preference to allow for chaining calls.
+ *
+ */
+inline fun <R : EditTextPreference> R.onNewValue(crossinline action: (newValue: String) -> Any): R {
+    onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, v ->
+        action(v as String) as? Boolean ?: true
+    }
+    return this
+}
+
+/**
+ * Type-safe way to register a callback to be invoked when the preference's value is changed.
+ *
+ * @param action A lambda function to be invoked when the preference's value changes.
+ *                 The lambda receives the new value as its parameter. It can optionally
+ *                 return a `false` boolean to prevent the preference from persisting
+ *                 the new value.
+ * @return The preference to allow for chaining calls.
+ *
+ */
+inline fun <R : ListPreference> R.onNewValue(crossinline action: (newValue: String) -> Any): R {
+    onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, v ->
+        action(v as String) as? Boolean ?: true
+    }
+    return this
+}
+
+
+/**
+ * Type-safe way to register a callback to be invoked when the preference's value is changed.
+ *
+ * @param action A lambda function to be invoked when the preference's value changes.
+ *                 The lambda receives the new value as its parameter. It can optionally
+ *                 return a `false` boolean to prevent the preference from persisting
+ *                 the new value.
+ * @return The preference to allow for chaining calls.
+ */
+inline fun HorizontalRadioPreference.onNewValue(crossinline action: (newValue: String) -> Any): HorizontalRadioPreference {
+    onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, v ->
+        action(v as String) as? Boolean ?: true
+        true
     }
     return this
 }
@@ -81,43 +151,30 @@ inline fun <reified R : Any?> Preference.onUpdateValue(crossinline onChange: (ne
  * }
  * ```
  */
-inline fun <reified T : Preference> T.onClick(crossinline onClickPreference: (preference: T) -> Unit): Preference {
+inline fun <reified R : Preference> R.onClick(crossinline onClickPreference: (preference: R) -> Unit): Preference {
     setOnPreferenceClickListener { v ->
-        onClickPreference(v as T)
+        onClickPreference(v as R)
         true
     }
     return this
 }
 
 /**
- * Registers a callback to be invoked when this preference is clicked, with the ability
- * to control whether the click is handled.
+ * Updates the color of the summary text to visually indicate whether it is user-updatable.
  *
- * @param onClickPreference A lambda function to be invoked when the preference is clicked.
- *                          The lambda receives the clicked preference as its parameter and
- *                          should return `true` if the click is handled, `false` otherwise.
- * @return The preference to allow for chaining calls.
- *
- * Example usage:
- * ```
- * preference.onHandleClick { clickedPreference ->
- *     // Handle the click event and return true if handled
- *     true
- * }
- * ```
+ * @param isUpdatable A boolean flag indicating if the summary text is user-updatable.
+ *                    If true, the summary text color will be set to indicate editability.
  */
-inline fun <reified T : Preference> T.onHandleClick(crossinline onClickPreference: (preference: T) -> Boolean): Preference {
-    setOnPreferenceClickListener { v ->
-        onClickPreference(v as T)
-    }
+fun <R : Preference>R.setSummaryUpdatable(isUpdatable: Boolean): R{
+    seslSetSummaryColor(if (isUpdatable) userUpdatableSummaryColor else defaultSummaryColor)
     return this
 }
 
-
-inline fun <T : Preference>T.setUpdatableSummaryColor(isUserUpdatable: Boolean): T{
-    seslSetSummaryColor(if (isUserUpdatable) userUpdatableSummaryColor else defaultSummaryColor)
-    return this
-}
+@Deprecated(
+    message = "Use setSummaryUpdatable()",
+    replaceWith = ReplaceWith("setSummaryUpdatable(isUpdatable)")
+)
+inline fun <R : Preference>R.setUpdatableSummaryColor(isUpdatable: Boolean): R = setSummaryUpdatable(isUpdatable)
 
 inline val Preference.userUpdatableSummaryColor: ColorStateList
     get(){
@@ -142,12 +199,12 @@ inline val Preference.defaultSummaryColor: ColorStateList
         return ContextCompat.getColorStateList(context, colorResId)!!
     }
 
-inline fun <T : Preference>T.showDotBadge(show: Boolean = true): T{
+inline fun <R : Preference>R.showDotBadge(show: Boolean = true): R{
     dotVisibility = show
     return this
 }
 
-inline fun <T : Preference>T.clearBadge(): T{
+inline fun <R : Preference>R.clearBadge(): R{
     dotVisibility = false
     return this
 }
