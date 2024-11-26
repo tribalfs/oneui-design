@@ -32,6 +32,9 @@
     <!-- Custom Preferences -->
     <declare-styleable name="ColorPickerPreference">
         <attr name="showAlphaSlider" format="boolean" />
+        <!--Attribute to enable or disable the automatic saving and restoring of recent colors.
+        Default Value: true -->
+        <attr name="persistRecentColors" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="DescriptionPreference">
