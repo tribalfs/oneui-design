@@ -35,6 +35,8 @@ import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.CLEAR_DISMISS
 import dev.oneuiproject.oneui.layout.startActionMode
 import dev.oneuiproject.oneui.layout.startSearchMode
+import dev.oneuiproject.oneui.utils.ItemDecorRule
+import dev.oneuiproject.oneui.utils.SemItemDecoration
 import dev.oneuiproject.oneui.widget.AutoHideIndexScrollView
 import dev.oneuiproject.oneui.widget.ScrollAwareFloatingActionButton
 import dev.oneuiproject.oneui.widget.TipPopup
@@ -48,7 +50,6 @@ import dev.oneuiproject.oneuiexample.ui.core.ktx.launchAndRepeatWithViewLifecycl
 import dev.oneuiproject.oneuiexample.ui.core.ktx.toast
 import dev.oneuiproject.oneuiexample.ui.fragment.contacts.adapter.ContactsAdapter
 import dev.oneuiproject.oneuiexample.ui.fragment.contacts.model.ContactsListItemUiModel
-import dev.oneuiproject.oneuiexample.ui.fragment.contacts.util.ContactsListItemDecoration
 import dev.oneuiproject.oneuiexample.ui.fragment.contacts.util.updateIndexer
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -102,7 +103,19 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
                 it.setupOnClickListeners()
                 contactsAdapter = it
             })
-            addItemDecoration(ContactsListItemDecoration(mContext))
+            addItemDecoration(
+                SemItemDecoration(
+                    mContext,
+                    dividerRule = ItemDecorRule.SELECTED{
+                        it.itemViewType == ContactsListItemUiModel.ContactItem.VIEW_TYPE
+                    },
+                    subHeaderRule = ItemDecorRule.SELECTED{
+                        it.itemViewType == ContactsListItemUiModel.SeparatorItem.VIEW_TYPE
+                    }
+                ).apply {
+                    setDividerInsetStart(76.dpToPx(resources))
+                }
+            )
             setItemAnimator(null)
             enableCoreSeslFeatures(fastScrollerEnabled = false)
         }

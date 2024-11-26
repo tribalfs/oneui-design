@@ -29,6 +29,8 @@ import dev.oneuiproject.oneui.delegates.ViewYTranslator;
 import dev.oneuiproject.oneui.layout.Badge;
 import dev.oneuiproject.oneui.layout.DrawerLayout;
 import dev.oneuiproject.oneui.layout.ToolbarLayout;
+import dev.oneuiproject.oneui.utils.ItemDecorRule;
+import dev.oneuiproject.oneui.utils.SemItemDecoration;
 import dev.oneuiproject.oneui.widget.TipPopup;
 import dev.oneuiproject.oneuiexample.ui.activity.MainActivity;
 import dev.oneuiproject.oneuiexample.ui.core.base.BaseFragment;
@@ -75,9 +77,15 @@ public class IconsFragment extends BaseFragment {
     }
 
     private void setupRecyclerView(RecyclerView iconListView, IconsAdapter adapter){
+        SemItemDecoration itemDecoration = new SemItemDecoration(
+                requireContext(),
+                ItemDecorRule.ALL.INSTANCE,
+                ItemDecorRule.NONE.INSTANCE
+        );
+
         iconListView.setItemAnimator(null);
         iconListView.setAdapter(adapter);
-        iconListView.addItemDecoration(new ItemDecoration(requireContext()));
+        iconListView.addItemDecoration(itemDecoration);
         iconListView.setLayoutManager(new LinearLayoutManager(mContext));
         iconListView.seslSetFillBottomEnabled(true);
         iconListView.seslSetLastRoundedCorner(true);
@@ -234,14 +242,14 @@ public class IconsFragment extends BaseFragment {
             menuInflater.inflate(R.menu.menu_icons, menu);
 
             MenuItem searchItem = menu.findItem(R.id.menu_icons_search);
-            drawerLayout.setMenuItemBadge((SeslMenuItem) searchItem, Badge.Dot);
+            drawerLayout.setMenuItemBadge((SeslMenuItem) searchItem, Badge.DOT.INSTANCE);
         }
 
         @Override
         public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
             if (menuItem.getItemId() == R.id.menu_icons_search) {
                 launchSearchMode();
-                drawerLayout.setMenuItemBadge((SeslMenuItem) menuItem, Badge.None);
+                drawerLayout.setMenuItemBadge((SeslMenuItem) menuItem, Badge.NONE.INSTANCE);
                 return true;
             }
             return false;
