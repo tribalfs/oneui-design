@@ -1,4 +1,4 @@
-package dev.oneuiproject.oneui.view.internal
+package dev.oneuiproject.oneui.layout.internal
 
 import android.annotation.SuppressLint
 import android.content.Context

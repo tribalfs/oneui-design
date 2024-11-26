@@ -52,8 +52,8 @@ import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import dev.oneuiproject.oneui.delegates.AllSelectorState
-import dev.oneuiproject.oneui.delegates.BackHandler
-import dev.oneuiproject.oneui.delegates.OnBackCallbackDelegateCompat
+import dev.oneuiproject.oneui.layout.internal.BackHandler
+import dev.oneuiproject.oneui.layout.internal.OnBackCallbackDelegateCompat
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.isSoftKeyboardShowing
 import dev.oneuiproject.oneui.ktx.setSearchableInfoFrom
@@ -68,7 +68,7 @@ import dev.oneuiproject.oneui.utils.badgeCountToText
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type
 import dev.oneuiproject.oneui.utils.internal.ToolbarLayoutUtils
-import dev.oneuiproject.oneui.view.internal.NavigationBadgeIcon
+import dev.oneuiproject.oneui.layout.internal.NavigationBadgeIcon
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest

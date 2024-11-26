@@ -1,4 +1,4 @@
-package dev.oneuiproject.oneui.delegates
+package dev.oneuiproject.oneui.layout.internal
 
 import android.os.Build
 import android.view.View
@@ -25,7 +25,8 @@ interface BackHandler{
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 class OnBackCallbackDelegateCompat(activity: ComponentActivity,
                                    private val view: View,
-                                   private val backHandler: BackHandler){
+                                   private val backHandler: BackHandler
+){
 
     private interface BackCallbackDelegate {
         fun startListening(view: View, backHandler: BackHandler, priorityOverlay: Boolean)
@@ -99,7 +100,8 @@ class OnBackCallbackDelegateCompat(activity: ComponentActivity,
 
     }
 
-    private class PreApi33BackCallbackDelegate(private val activity: ComponentActivity) : BackCallbackDelegate {
+    private class PreApi33BackCallbackDelegate(private val activity: ComponentActivity) :
+        BackCallbackDelegate {
         private var obpCallback:  OnBackPressedCallback? = null
         private val obpDispatcher = activity.onBackPressedDispatcher
 

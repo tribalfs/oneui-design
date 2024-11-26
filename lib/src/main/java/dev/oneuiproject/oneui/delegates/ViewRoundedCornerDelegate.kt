@@ -10,7 +10,7 @@ import androidx.appcompat.util.SeslRoundedCorner
 import androidx.core.content.res.use
 import androidx.core.graphics.Insets
 import dev.oneuiproject.oneui.design.R
-import dev.oneuiproject.oneui.utils.internal.InsetRoundedCorner
+import dev.oneuiproject.oneui.widget.internal.InsetRoundedCorner
 
 class ViewRoundedCornerDelegate(
     private val context: Context,
