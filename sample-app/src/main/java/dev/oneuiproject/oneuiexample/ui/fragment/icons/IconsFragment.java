@@ -26,6 +26,7 @@ import com.sec.sesl.tester.R;
 
 import dev.oneuiproject.oneui.delegates.AppBarAwareYTranslator;
 import dev.oneuiproject.oneui.delegates.ViewYTranslator;
+import dev.oneuiproject.oneui.layout.Badge;
 import dev.oneuiproject.oneui.layout.DrawerLayout;
 import dev.oneuiproject.oneui.layout.ToolbarLayout;
 import dev.oneuiproject.oneui.widget.TipPopup;
@@ -33,7 +34,6 @@ import dev.oneuiproject.oneuiexample.ui.activity.MainActivity;
 import dev.oneuiproject.oneuiexample.ui.core.base.BaseFragment;
 import dev.oneuiproject.oneuiexample.data.IconsRepo;
 import dev.oneuiproject.oneuiexample.ui.fragment.icons.adapter.IconsAdapter;
-import dev.oneuiproject.oneuiexample.ui.core.ItemDecoration;
 
 public class IconsFragment extends BaseFragment {
 
@@ -234,14 +234,14 @@ public class IconsFragment extends BaseFragment {
             menuInflater.inflate(R.menu.menu_icons, menu);
 
             MenuItem searchItem = menu.findItem(R.id.menu_icons_search);
-            drawerLayout.setMenuItemBadge((SeslMenuItem) searchItem, new ToolbarLayout.Badge.Dot());
+            drawerLayout.setMenuItemBadge((SeslMenuItem) searchItem, Badge.Dot);
         }
 
         @Override
         public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
             if (menuItem.getItemId() == R.id.menu_icons_search) {
                 launchSearchMode();
-                drawerLayout.setMenuItemBadge((SeslMenuItem) menuItem, new ToolbarLayout.Badge.None());
+                drawerLayout.setMenuItemBadge((SeslMenuItem) menuItem, Badge.None);
                 return true;
             }
             return false;

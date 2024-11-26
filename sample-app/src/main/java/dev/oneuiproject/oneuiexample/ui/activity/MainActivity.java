@@ -21,8 +21,8 @@ import com.sec.sesl.tester.databinding.ActivityMainBinding;
 import java.util.ArrayList;
 import java.util.List;
 
+import dev.oneuiproject.oneui.layout.Badge;
 import dev.oneuiproject.oneui.layout.DrawerLayout;
-import dev.oneuiproject.oneui.layout.ToolbarLayout.Badge;
 import dev.oneuiproject.oneui.utils.ActivityUtils;
 import dev.oneuiproject.oneuiexample.ui.core.base.FragmentInfo;
 import dev.oneuiproject.oneuiexample.ui.fragment.apppicker.AppPickerFragment;
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity
                             new Intent(MainActivity.this, PreferenceActivity.class),
                             null,
                             ActivityUtils.POP_OVER_POSITION_TOP | ActivityUtils.POP_OVER_POSITION_CENTER_HORIZONTAL);
-                    mBinding.drawerLayout.setDrawerButtonBadge(new Badge.None());
+                    mBinding.drawerLayout.setDrawerButtonBadge(Badge.NONE.INSTANCE);
                 });
 
         mBinding.drawerListView.setLayoutManager(new LinearLayoutManager(this));
@@ -121,10 +121,10 @@ public class MainActivity extends AppCompatActivity
         mBinding.drawerListView.setItemAnimator(null);
         mBinding.drawerListView.setHasFixedSize(true);
         mBinding.drawerListView.seslSetLastRoundedCorner(false);
-        mBinding.drawerLayout.setButtonBadges(new Badge.Dot(), new Badge.Dot());
+        mBinding.drawerLayout.setButtonBadges(Badge.DOT.INSTANCE, Badge.DOT.INSTANCE);
         mBinding.drawerLayout.setDrawerStateListener((state) -> {
             if (state == DrawerLayout.DrawerState.OPEN) {
-                mBinding.drawerLayout.setNavigationButtonBadge(new Badge.None());
+                mBinding.drawerLayout.setNavigationButtonBadge(Badge.NONE.INSTANCE);
             }
             return null;
         });
