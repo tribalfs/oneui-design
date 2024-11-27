@@ -1,16 +1,16 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    apply from: 'manifest.gradle'
+    apply from: "manifest.gradle"
 
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://jitpack.io' }
+        maven { url = uri("https://jitpack.io") }
     }
 
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.20"
-        classpath 'com.android.tools.build:gradle:8.7.1'
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.21")
+        classpath("com.android.tools.build:gradle:8.7.2")
     }
 }
 
@@ -36,14 +36,14 @@ def githubProperties = new Properties().with {
     it
 }
 def githubUsername = githubProperties.getProperty("githubUsername") // github.properties file
-        ?: rootProject.findProperty('githubUsername') // Global Gradle Properties
+        ?: rootProject.findProperty("githubUsername") // Global Gradle Properties
         ?: System.getenv("GITHUB_USERNAME") // Environment variable
-        ?: { throw new GradleException('GitHub username not found') }()
+        ?: { throw new GradleException("GitHub username not found") }()
 
 def githubAccessToken = githubProperties.getProperty("githubAccessToken") // github.properties file
-        ?: rootProject.findProperty('githubAccessToken') // Global Gradle Properties
+        ?: rootProject.findProperty("githubAccessToken") // Global Gradle Properties
         ?: System.getenv("GITHUB_ACCESS_TOKEN") // Environment variable
-        ?: { throw new GradleException('GitHub access token not found') }()
+        ?: { throw new GradleException("GitHub access token not found") }()
 
 
 allprojects {
@@ -51,7 +51,7 @@ allprojects {
         google()
         mavenLocal()
         mavenCentral()
-        maven { url 'https://jitpack.io' }
+        maven { url = uri("https://jitpack.io") }
         maven {
             url = uri("https://maven.pkg.github.com/tribalfs/sesl-androidx")
             credentials {
@@ -75,10 +75,12 @@ allprojects {
         }
     }
 
-    tasks.withType(Javadoc) {
-        options.addStringOption('Xdoclint:none', '-quiet')
-        options.addStringOption('encoding', 'UTF-8')
-        options.addStringOption('charSet', 'UTF-8')
+    tasks.withType(Javadoc).tap {
+        configureEach {
+            options.addStringOption("Xdoclint:none", "-quiet")
+            options.addStringOption("encoding", "UTF-8")
+            options.addStringOption("charSet", "UTF-8")
+        }
     }
 }
 
@@ -125,17 +127,6 @@ subprojects {
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
-
-task updateReadme {
-    doLast {
-        def readmeFile = file('README.md')
-        def content = readmeFile.text
-        def newVersionString = "io.github.tribalfs:oneui-design:$versionNumber"
-        def updatedContent = content.replaceAll(/io\.github\.tribalfs:oneui-design:\S+/, newVersionString)
-        readmeFile.text = updatedContent
-        println "Updated README.md with version: $newVersionString"
-    }
+tasks.register("clean", Delete) {
+    delete rootProject.layout.buildDirectory
 }

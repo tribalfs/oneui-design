@@ -1,8 +1,8 @@
 plugins {
-    id 'com.android.library'
-    id 'maven-publish'
-    id 'signing'
-    id "kotlin-android"
+    id ("com.android.library")
+    id ("maven-publish")
+    id ("signing")
+    id ("kotlin-android")
 }
 
 android {
@@ -71,10 +71,4 @@ configurations.configureEach {
 
     //Exclude official material components lib
     exclude group: "com.google.android.material", module: "material"
-}
-
-ext {
-    POM_ARTIFACT_ID = "design"
-    POM_NAME = "One UI Design"
-    POM_DESCRIPTION = "One UI Design Library."
 }
