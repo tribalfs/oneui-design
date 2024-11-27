@@ -8,8 +8,12 @@ import android.content.Context
 import android.content.res.Configuration
 import android.database.MatrixCursor
 import android.icu.text.AlphabeticIndex
+import android.os.Build
 import android.os.LocaleList
 import android.util.AttributeSet
+import android.window.OnBackInvokedCallback
+import android.window.OnBackInvokedDispatcher
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.res.use
 import androidx.core.view.isVisible
@@ -48,6 +52,10 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
     private var indexEventListeners: MutableSet<WeakReference<OnIndexBarEventListener>>? = null
 
     private var mSetVisibility: Int? = null
+
+    private var mOnBackInvokedDispatcher: OnBackInvokedDispatcher? = null
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private var mDummyOnBackInvokedCallback: OnBackInvokedCallback? = null
 
     init{
         mSetVisibility = visibility
@@ -121,6 +129,11 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
 
     private fun onAttachedToWindowInternal(){
         mRecyclerView?.apply {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                mOnBackInvokedDispatcher = findOnBackInvokedDispatcher()
+                mDummyOnBackInvokedCallback = OnBackInvokedCallback { }
+            }
+
             mAppBarLayout = rootView.findViewById<AppBarLayout?>(R.id.toolbarlayout_app_bar)?.apply {
                 addOnOffsetChangedListener(
                     AppBarOffsetListener().also {
@@ -148,13 +161,12 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
             }else{
                 removeCallbacks(showMeRunnable)
                 removeCallbacks(hideMeRunnable)
-                if (mSetVisibility == VISIBLE) {
-                    animateVisibility(true)
-                }
+                animateVisibility(mSetVisibility == VISIBLE)
             }
         }
     }
 
+    @SuppressLint("NewApi")
     private fun setupEventListener(layoutManager: LinearLayoutManager) {
         super.setOnIndexBarEventListener(
             object : OnIndexBarEventListener {
@@ -170,6 +182,12 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
 
                 override fun onPressed(v: Float) {
                     mIsIndexBarPressed = true
+                    mOnBackInvokedDispatcher?.apply {
+                        registerOnBackInvokedCallback(
+                            OnBackInvokedDispatcher.PRIORITY_OVERLAY,
+                            mDummyOnBackInvokedCallback!!
+                        )
+                    }
                     if (mAutoHide) removeCallbacks(hideMeRunnable)
                     indexEventListeners?.forEach {
                         it.get()?.onPressed(v)
@@ -184,6 +202,7 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
                     indexEventListeners?.forEach {
                         it.get()?.onReleased(v)
                     }
+                    mOnBackInvokedDispatcher?.unregisterOnBackInvokedCallback(mDummyOnBackInvokedCallback!!)
                 }
             }
         )
@@ -220,6 +239,12 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
             super.setOnIndexBarEventListener(null)
             mRecyclerView?.removeOnScrollListener(rvScrollListener)
         }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            mOnBackInvokedDispatcher = null
+            mDummyOnBackInvokedCallback = null
+        }
+
         mAppBarLayout?.removeOnOffsetChangedListener(mHideWhenExpandedListener)
     }
 
@@ -259,7 +284,6 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
             start()
         }
     }
-
 
     fun setAutoHide(autoHide: Boolean){
         if (this.mAutoHide == autoHide) return
@@ -333,7 +357,7 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
     }
 
     override fun setVisibility(visibility: Int) {
-        super.setVisibility(visibility)
         mSetVisibility = visibility
+        super.setVisibility(visibility)
     }
 }
