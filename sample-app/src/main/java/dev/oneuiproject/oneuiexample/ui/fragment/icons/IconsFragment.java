@@ -211,11 +211,11 @@ public class IconsFragment extends BaseFragment {
             iconListView.postDelayed(() -> {
                 View anchor = iconListView.getLayoutManager().findViewByPosition(0);
                 if (anchor != null) {
-                    TipPopup tipPopup = new TipPopup(anchor, TipPopup.MODE_TRANSLUCENT);
+                    TipPopup tipPopup = new TipPopup(anchor, TipPopup.Mode.TRANSLUCENT);
                     tipPopup.setMessage("Long-press item to trigger multi-selection.");
                     tipPopup.setAction("Close", view -> tipPopupShown = true);
                     tipPopup.setExpanded(true);
-                    tipPopup.show(TipPopup.DIRECTION_DEFAULT);
+                    tipPopup.show(TipPopup.Direction.DEFAULT);
                 }
             }, 500);
         }
