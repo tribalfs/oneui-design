@@ -9,7 +9,7 @@
     in default color palette. -->
     <shape
         android:shape="rectangle"
-        android:tint="#4DE9E9EC">
+        android:tint="@color/sem_tip_popup_button_color">
         <corners android:radius="@dimen/sesl_button_corner_radius" />
         <solid android:color="@android:color/white" />
         <padding

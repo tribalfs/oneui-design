@@ -61,4 +61,6 @@
     <color name="animated_check_bgcolor">@color/sesl_primary_color_dark</color>
 
     <color name="fab_bg_tint_color">#ff3a3a3d</color>
+
+    <color name="sem_tip_popup_button_color">#80000000</color>
 </resources>

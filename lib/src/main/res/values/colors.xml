@@ -64,6 +64,7 @@
     <color name="sem_tip_popup_background_color">#ff474747</color>
     <color name="sem_tip_popup_text_color">#fffafafa</color>
     <color name="sem_tip_popup_text_color_translucent">#fffafafa</color>
+    <color name="sem_tip_popup_button_color">#1A000000</color>
 
     <!--BottomSheet-->
     <color name="bottomsheet_bg_color">@color/sesl_gray_L2</color>
