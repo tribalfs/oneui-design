@@ -9,8 +9,13 @@ import dev.oneuiproject.oneui.ktx.doOnAttachedStateChanged
 import java.lang.ref.WeakReference
 
 /**
- * Convenience class for centering "No items" view or the likes shown
- * when the recyclerview adapter is empty.
+ * An implementation of [ViewYTranslator] designed to center a "No items" view or similar views
+ * when the RecyclerView adapter is empty. This class translates the Y position
+ * of the provided view(s) in the opposite scroll direction of the `AppBarLayout`
+ * with a sensitivity of 50%.
+
+ * This behavior ensures that the view remains visible and centered even as the
+ * `AppBarLayout` is scrolled.
  *
  * Sample usage:
  * ```
@@ -27,8 +32,7 @@ import java.lang.ref.WeakReference
  * }
  * ```
  */
-class AppBarAwareYTranslator: ViewYTranslator, AppBarLayout.OnOffsetChangedListener,
-    DefaultLifecycleObserver {
+class AppBarAwareYTranslator: ViewYTranslator, DefaultLifecycleObserver {
 
     private lateinit var mAppBarLayout: AppBarLayout
     private var mTranslationViews: MutableSet<View>? = null
@@ -73,7 +77,7 @@ class AppBarAwareYTranslator: ViewYTranslator, AppBarLayout.OnOffsetChangedListe
     override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
         for (v in mTranslationViews!!) {
             if (v.isVisible) {
-                v.translationY = (verticalOffset + appBarLayout.totalScrollRange) / -2f
+                v.translationY = (verticalOffset + appBarLayout.totalScrollRange) * SENSITIVITY * -1f
             }
         }
     }
@@ -87,12 +91,16 @@ class AppBarAwareYTranslator: ViewYTranslator, AppBarLayout.OnOffsetChangedListe
         super.onStop(owner)
         mAppBarLayout.removeOnOffsetChangedListener(this)
     }
+
+    companion object{
+        private const val SENSITIVITY = 0.5f
+    }
 }
 
 /**
  * Interface to facilitate translating a view's Y position with an AppBarLayout.
  */
-interface ViewYTranslator{
+interface ViewYTranslator: AppBarLayout.OnOffsetChangedListener{
     /**
      * Translates the Y position of a view with the given AppBarLayout and LifecycleOwner.
      *
