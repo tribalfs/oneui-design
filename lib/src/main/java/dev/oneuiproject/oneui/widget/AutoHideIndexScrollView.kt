@@ -11,8 +11,10 @@ import android.icu.text.AlphabeticIndex
 import android.os.Build
 import android.os.LocaleList
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.window.OnBackInvokedCallback
 import android.window.OnBackInvokedDispatcher
+import android.window.OnBackInvokedDispatcher.PRIORITY_OVERLAY
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.res.use
@@ -27,6 +29,7 @@ import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.doOnEnd
 import dev.oneuiproject.oneui.ktx.doOnStart
+import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.ktx.ifEmpty
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type.SINE_IN_OUT_80
@@ -166,7 +169,6 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
         }
     }
 
-    @SuppressLint("NewApi")
     private fun setupEventListener(layoutManager: LinearLayoutManager) {
         super.setOnIndexBarEventListener(
             object : OnIndexBarEventListener {
@@ -182,12 +184,6 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
 
                 override fun onPressed(v: Float) {
                     mIsIndexBarPressed = true
-                    mOnBackInvokedDispatcher?.apply {
-                        registerOnBackInvokedCallback(
-                            OnBackInvokedDispatcher.PRIORITY_OVERLAY,
-                            mDummyOnBackInvokedCallback!!
-                        )
-                    }
                     if (mAutoHide) removeCallbacks(hideMeRunnable)
                     indexEventListeners?.forEach {
                         it.get()?.onPressed(v)
@@ -202,7 +198,6 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
                     indexEventListeners?.forEach {
                         it.get()?.onReleased(v)
                     }
-                    mOnBackInvokedDispatcher?.unregisterOnBackInvokedCallback(mDummyOnBackInvokedCallback!!)
                 }
             }
         )
@@ -252,7 +247,6 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
         super.onConfigurationChanged(newConfig)
         setIndexBarGravityInt(newConfig.layoutDirection)
     }
-
 
     private fun setIndexBarGravityInt(layoutDirection: Int) {
         setIndexBarGravity(
@@ -359,5 +353,47 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
     override fun setVisibility(visibility: Int) {
         mSetVisibility = visibility
         super.setVisibility(visibility)
+        animateVisibility(mSetVisibility == VISIBLE)
+    }
+
+    private var dumbCallbackRegistered = false
+
+    @Suppress("NewApi")
+    override fun onTouchEvent(ev: MotionEvent): Boolean {
+        when (ev.action){
+            MotionEvent.ACTION_DOWN -> {
+                mOnBackInvokedDispatcher?.apply {
+                    if (dumbCallbackRegistered || !shouldRegisterDummy(ev.x)) return@apply
+                    dumbCallbackRegistered = true
+                    registerOnBackInvokedCallback(PRIORITY_OVERLAY, mDummyOnBackInvokedCallback!!)
+                }
+            }
+            MotionEvent.ACTION_UP,
+            MotionEvent.ACTION_CANCEL -> {
+                if (dumbCallbackRegistered) {
+                    dumbCallbackRegistered = false
+                    mOnBackInvokedDispatcher?.unregisterOnBackInvokedCallback(mDummyOnBackInvokedCallback!!)
+                }
+            }
+        }
+        return super.onTouchEvent(ev)
+    }
+
+    @RequiresApi(33)
+    private fun shouldRegisterDummy(x: Float): Boolean{
+        val scrollViewWidth = resources.getDimension(androidx.indexscroll.R.dimen.sesl_indexbar_textmode_width)
+        val backGestureAllowance = 22.4f.dpToPx(resources).toFloat()
+
+        val (startX, endX) = if (layoutDirection == LAYOUT_DIRECTION_LTR) {
+            val end = width - backGestureAllowance
+            end - scrollViewWidth to end
+        } else {
+            backGestureAllowance to backGestureAllowance + scrollViewWidth
+        }
+        return (x > startX && x < endX)
+    }
+
+    companion object{
+        private const val TAG = "AutoHideIndexScrollView"
     }
 }
