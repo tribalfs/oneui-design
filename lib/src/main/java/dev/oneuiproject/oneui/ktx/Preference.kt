@@ -16,7 +16,6 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.SeekBarPreference
 import androidx.preference.TwoStatePreference
-import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.preference.HorizontalRadioPreference
 import kotlin.math.min
 
@@ -51,91 +50,345 @@ inline fun <reified T : Any?> Preference.onNewValue(crossinline action: (newValu
 }
 
 /**
- * Type-safe way to register a callback to be invoked when the preference's value is changed.
+ * Registers a callback to be invoked when this [TwoStatePreference] changes its value.
+ *
+ * This function provides a type-safe way to set an [onPreferenceChangeListener][Preference.OnPreferenceChangeListener]
+ * where the new value is provided as a [Boolean]. The listener will always return `true`, allowing the
+ * preference to persist the new value automatically.
+ *
+ * If you need to conditionally prevent the preference from persisting the new value, consider using
+ * [onNewValueConditional] instead.
  *
  * @param action A lambda function to be invoked when the preference's value changes.
- *                 The lambda receives the new value as its parameter. It can optionally
- *                 return a `false` boolean to prevent the preference from persisting
- *                 the new value.
- * @return The preference to allow for chaining calls.
+ *               The lambda receives the new value as its parameter.
+ * @return The preference instance to allow for chaining calls.
  *
+ * Example usage:
+ * ```kotlin
+ * switchPreference.onNewValue { newValue ->
+ *     // Handle the new value (Boolean)
+ *     // The preference will automatically persist the new value.
+ * }
+ * ```
  */
-inline fun <R : TwoStatePreference> R.onNewValue(crossinline action: (newValue: Boolean) -> Any): R {
+inline fun <R : TwoStatePreference> R.onNewValue(crossinline action: (newValue: Boolean) -> Unit): R {
     onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, v ->
-        action(v as Boolean) as? Boolean ?: true
-    }
-    return this
-}
-
-/**
- * Type-safe way to register a callback to be invoked when the preference's value is changed.
- *
- * @param action A lambda function to be invoked when the preference's value changes.
- *                 The lambda receives the new value as its parameter. It can optionally
- *                 return a `false` boolean to prevent the preference from persisting
- *                 the new value.
- * @return The preference to allow for chaining calls.
- *
- */
-inline fun <R : SeekBarPreference> R.onNewValue(crossinline action: (newValue: Int) -> Any): R {
-    onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, v ->
-        action(v as Int) as? Boolean ?: true
-    }
-    return this
-}
-
-/**
- * Type-safe way to register a callback to be invoked when the preference's value is changed.
- *
- * @param action A lambda function to be invoked when the preference's value changes.
- *                 The lambda receives the new value as its parameter. It can optionally
- *                 return a `false` boolean to prevent the preference from persisting
- *                 the new value.
- * @return The preference to allow for chaining calls.
- *
- */
-inline fun <R : EditTextPreference> R.onNewValue(crossinline action: (newValue: String) -> Any): R {
-    onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, v ->
-        action(v as String) as? Boolean ?: true
-    }
-    return this
-}
-
-/**
- * Type-safe way to register a callback to be invoked when the preference's value is changed.
- *
- * @param action A lambda function to be invoked when the preference's value changes.
- *                 The lambda receives the new value as its parameter. It can optionally
- *                 return a `false` boolean to prevent the preference from persisting
- *                 the new value.
- * @return The preference to allow for chaining calls.
- *
- */
-inline fun <R : ListPreference> R.onNewValue(crossinline action: (newValue: String) -> Any): R {
-    onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, v ->
-        action(v as String) as? Boolean ?: true
-    }
-    return this
-}
-
-
-/**
- * Type-safe way to register a callback to be invoked when the preference's value is changed.
- *
- * @param action A lambda function to be invoked when the preference's value changes.
- *                 The lambda receives the new value as its parameter. It can optionally
- *                 return a `false` boolean to prevent the preference from persisting
- *                 the new value.
- * @return The preference to allow for chaining calls.
- */
-inline fun HorizontalRadioPreference.onNewValue(crossinline action: (newValue: String) -> Any): HorizontalRadioPreference {
-    onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, v ->
-        action(v as String) as? Boolean ?: true
+        action(v as Boolean)
         true
     }
     return this
 }
 
+/**
+ * Registers a callback to be invoked when this [TwoStatePreference] changes its value, allowing you to
+ * conditionally control whether the new value should be persisted.
+ *
+ * This function provides a type-safe way to set an [onPreferenceChangeListener][Preference.OnPreferenceChangeListener]
+ * for a [TwoStatePreference], where the new value is supplied as a [Boolean]. The listener's return value determines whether the
+ * preference should persist the new value:
+ *
+ * - Return `true` to allow the preference to persist the new value automatically.
+ * - Return `false` to prevent the preference from persisting the new value.
+ *
+ * Use this function when you need to validate or perform checks before accepting the new value.
+ *
+ * @param action A lambda function to be invoked when the preference's value changes.
+ *               The lambda receives the new value as its parameter and should return `true` to accept
+ *               the new value or `false` to reject it.
+ * @return The preference instance to allow for chaining calls.
+ *
+ * Example usage:
+ * ```kotlin
+ * switchPreference.onNewValueConditional { newValue ->
+ *     if (isValid(newValue)) {
+ *         // Accept and persist the new value
+ *         true
+ *     } else {
+ *         // Reject the new value
+ *         false
+ *     }
+ * }
+ * ```
+ */
+inline fun <R : TwoStatePreference> R.onNewValueConditional(crossinline action: (newValue: Boolean) -> Boolean): R {
+    onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, v ->
+        action(v as Boolean)
+    }
+    return this
+}
+
+/**
+ * Registers a callback to be invoked when this [SeekBarPreference] changes its value.
+ *
+ * This function provides a type-safe way to set an [onPreferenceChangeListener][Preference.OnPreferenceChangeListener]
+ * for a [SeekBarPreference], where the new value is provided as a [Int]. The listener will always return `true`,
+ * allowing the preference to persist the new value automatically.
+ *
+ * If you need to conditionally prevent the preference from persisting the new value, consider using
+ * [onNewValueConditional] instead.
+ *
+ * @param action A lambda function to be invoked when the preference's value changes.
+ *               The lambda receives the new value as its parameter.
+ * @return The preference instance to allow for chaining calls.
+ *
+ * Example usage:
+ * ```kotlin
+ * seekbarPreference.onNewValue { newValue ->
+ *     // Handle the new value (Boolean)
+ *     // The preference will automatically persist the new value.
+ * }
+ * ```
+ */
+inline fun <R : SeekBarPreference> R.onNewValue(crossinline action: (newValue: Int) -> Unit): R {
+    onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, v ->
+        action(v as Int)
+        true
+    }
+    return this
+}
+
+/**
+ * Registers a callback to be invoked when this [SeekBarPreference] changes its value, allowing you to
+ * conditionally control whether the new value should be persisted.
+ *
+ * This function provides a type-safe way to set an [onPreferenceChangeListener][Preference.OnPreferenceChangeListener]
+ * for a [SeekBarPreference], where the new value is supplied as a [Int]. The listener's return value determines whether the
+ * preference should persist the new value:
+ *
+ * - Return `true` to allow the preference to persist the new value automatically.
+ * - Return `false` to prevent the preference from persisting the new value.
+ *
+ * Use this function when you need to validate or perform checks before accepting the new value.
+ *
+ * @param action A lambda function to be invoked when the preference's value changes.
+ *               The lambda receives the new value as its parameter and should return `true` to accept
+ *               the new value or `false` to reject it.
+ * @return The preference instance to allow for chaining calls.
+ *
+ * Example usage:
+ * ```kotlin
+ * seekbarPreference.onNewValueConditional { newValue ->
+ *     if (isValid(newValue)) {
+ *         // Accept and persist the new value
+ *         true
+ *     } else {
+ *         // Reject the new value
+ *         false
+ *     }
+ * }
+ * ```
+ */
+inline fun <R : SeekBarPreference> R.onNewValueConditional(crossinline action: (newValue: Int) -> Boolean): R {
+    onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, v ->
+        action(v as Int)
+    }
+    return this
+}
+
+/**
+ * Registers a callback to be invoked when this [EditTextPreference] changes its value.
+ *
+ * This function provides a type-safe way to set an [onPreferenceChangeListener][Preference.OnPreferenceChangeListener]
+ * for a [EditTextPreference], where the new value is provided as a [String]. The listener will always return `true`,
+ * allowing the preference to persist the new value automatically.
+ *
+ * If you need to conditionally prevent the preference from persisting the new value, consider using
+ * [onNewValueConditional] instead.
+ *
+ * @param action A lambda function to be invoked when the preference's value changes.
+ *               The lambda receives the new value as its parameter.
+ * @return The preference instance to allow for chaining calls.
+ *
+ * Example usage:
+ * ```kotlin
+ * editTextPreference.onNewValue { newValue ->
+ *     // Handle the new value (Boolean)
+ *     // The preference will automatically persist the new value.
+ * }
+ * ```
+ */
+inline fun <R : EditTextPreference> R.onNewValue(crossinline action: (newValue: String) -> Unit): R {
+    onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, v ->
+        action(v as String)
+        true
+    }
+    return this
+}
+
+/**
+ * Registers a callback to be invoked when this [EditTextPreference] changes its value, allowing you to
+ * conditionally control whether the new value should be persisted.
+ *
+ * This function provides a type-safe way to set an [onPreferenceChangeListener][Preference.OnPreferenceChangeListener]
+ * for a [EditTextPreference], where the new value is supplied as a [String]. The listener's return value determines whether the
+ * preference should persist the new value:
+ *
+ * - Return `true` to allow the preference to persist the new value automatically.
+ * - Return `false` to prevent the preference from persisting the new value.
+ *
+ * Use this function when you need to validate or perform checks before accepting the new value.
+ *
+ * @param action A lambda function to be invoked when the preference's value changes.
+ *               The lambda receives the new value as its parameter and should return `true` to accept
+ *               the new value or `false` to reject it.
+ * @return The preference instance to allow for chaining calls.
+ *
+ * Example usage:
+ * ```kotlin
+ * editTextPreference.onNewValueConditional { newValue ->
+ *     if (isValid(newValue)) {
+ *         // Accept and persist the new value
+ *         true
+ *     } else {
+ *         // Reject the new value
+ *         false
+ *     }
+ * }
+ * ```
+ */
+inline fun <R : EditTextPreference> R.onNewValueConditional(crossinline action: (newValue: String) -> Boolean): R {
+    onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, v ->
+        action(v as String)
+    }
+    return this
+}
+
+/**
+ * Registers a callback to be invoked when this [ListPreference] changes its value.
+ *
+ * This function provides a type-safe way to set an [onPreferenceChangeListener][Preference.OnPreferenceChangeListener]
+ * for a [ListPreference], where the new value is provided as a [String]. The listener will always return `true`,
+ * allowing the preference to persist the new value automatically.
+ *
+ * If you need to conditionally prevent the preference from persisting the new value, consider using
+ * [onNewValueConditional] instead.
+ *
+ * @param action A lambda function to be invoked when the preference's value changes.
+ *               The lambda receives the new value as its parameter.
+ * @return The preference instance to allow for chaining calls.
+ *
+ * Example usage:
+ * ```kotlin
+ * listPreference.onNewValue { newValue ->
+ *     // Handle the new value (Boolean)
+ *     // The preference will automatically persist the new value.
+ * }
+ * ```
+ */
+inline fun <R : ListPreference> R.onNewValue(crossinline action: (newValue: String) -> Unit): R {
+    onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, v ->
+        action(v as String)
+        true
+    }
+    return this
+}
+
+/**
+ * Registers a callback to be invoked when this [ListPreference] changes its value, allowing you to
+ * conditionally control whether the new value should be persisted.
+ *
+ * This function provides a type-safe way to set an [onPreferenceChangeListener][Preference.OnPreferenceChangeListener]
+ * for a [ListPreference], where the new value is supplied as a [String]. The listener's return value determines whether the
+ * preference should persist the new value:
+ *
+ * - Return `true` to allow the preference to persist the new value automatically.
+ * - Return `false` to prevent the preference from persisting the new value.
+ *
+ * Use this function when you need to validate or perform checks before accepting the new value.
+ *
+ * @param action A lambda function to be invoked when the preference's value changes.
+ *               The lambda receives the new value as its parameter and should return `true` to accept
+ *               the new value or `false` to reject it.
+ * @return The preference instance to allow for chaining calls.
+ *
+ * Example usage:
+ * ```kotlin
+ * listPreference.onNewValueConditional { newValue ->
+ *     if (isValid(newValue)) {
+ *         // Accept and persist the new value
+ *         true
+ *     } else {
+ *         // Reject the new value
+ *         false
+ *     }
+ * }
+ * ```
+ */
+inline fun <R : ListPreference> R.onNewValueConditional(crossinline action: (newValue: String) -> Boolean): R {
+    onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, v ->
+        action(v as String)
+    }
+    return this
+}
+
+
+/**
+ * Registers a callback to be invoked when this [HorizontalRadioPreference] changes its value.
+ *
+ * This function provides a type-safe way to set an [onPreferenceChangeListener][Preference.OnPreferenceChangeListener]
+ * for a [HorizontalRadioPreference], where the new value is provided as a [String]. The listener will always return `true`,
+ * allowing the preference to persist the new value automatically.
+ *
+ * If you need to conditionally prevent the preference from persisting the new value, consider using
+ * [onNewValueConditional] instead.
+ *
+ * @param action A lambda function to be invoked when the preference's value changes.
+ *               The lambda receives the new value as its parameter.
+ * @return The preference instance to allow for chaining calls.
+ *
+ * Example usage:
+ * ```kotlin
+ * listPreference.onNewValue { newValue ->
+ *     // Handle the new value (Boolean)
+ *     // The preference will automatically persist the new value.
+ * }
+ * ```
+ */
+inline fun HorizontalRadioPreference.onNewValue(crossinline action: (newValue: String) -> Unit): HorizontalRadioPreference {
+    onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, v ->
+        action(v as String)
+        true
+    }
+    return this
+}
+
+/**
+ * Registers a callback to be invoked when this [HorizontalRadioPreference] changes its value, allowing you to
+ * conditionally control whether the new value should be persisted.
+ *
+ * This function provides a type-safe way to set an [onPreferenceChangeListener][Preference.OnPreferenceChangeListener]
+ * for a [HorizontalRadioPreference], where the new value is supplied as a [String]. The listener's return value determines whether the
+ * preference should persist the new value:
+ *
+ * - Return `true` to allow the preference to persist the new value automatically.
+ * - Return `false` to prevent the preference from persisting the new value.
+ *
+ * Use this function when you need to validate or perform checks before accepting the new value.
+ *
+ * @param action A lambda function to be invoked when the preference's value changes.
+ *               The lambda receives the new value as its parameter and should return `true` to accept
+ *               the new value or `false` to reject it.
+ * @return The preference instance to allow for chaining calls.
+ *
+ * Example usage:
+ * ```kotlin
+ * horizontalRadioPreference.onNewValueConditional { newValue ->
+ *     if (isValid(newValue)) {
+ *         // Accept and persist the new value
+ *         true
+ *     } else {
+ *         // Reject the new value
+ *         false
+ *     }
+ * }
+ * ```
+ */
+inline fun HorizontalRadioPreference.onNewValueConditional(crossinline action: (newValue: String) -> Boolean): HorizontalRadioPreference {
+    onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, v ->
+        action(v as String)
+    }
+    return this
+}
 
 /**
  * Registers a callback to be invoked when this preference is clicked.
