@@ -185,8 +185,9 @@ class HorizontalRadioPreference(context: Context, attrs: AttributeSet?) :
             }
 
             itemLayout.setOnClickListener {
-                this.value = mValue as String
-                callChangeListener(mValue)
+                if (callChangeListener(mValue)) {
+                    this.value = mValue as String
+                }
             }
 
             var itemPadding = paddingStartEnd

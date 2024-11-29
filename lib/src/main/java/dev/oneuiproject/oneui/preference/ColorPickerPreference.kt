@@ -83,11 +83,15 @@ class ColorPickerPreference @JvmOverloads constructor(
     }
 
     override fun onColorSet(color: Int) {
+        if (!callChangeListener(color)){
+            return
+        }
+
         if (isPersistent) {
             persistInt(color)
         }
         mValue = color
-        callChangeListener(color)
+
         addRecentColor(color)
         setPreviewColor()
     }
