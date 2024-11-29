@@ -219,7 +219,7 @@ class HorizontalRadioPreference(context: Context, attrs: AttributeSet?) :
     }
 
     override fun onSetInitialValue(defaultValue: Any?) {
-        value =  getPersistedString(defaultValue?.toString() ?: value)
+        value =  getPersistedString(defaultValue?.toString())
     }
 
     override fun onRestoreInstanceState(state: Parcelable?) {

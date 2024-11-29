@@ -185,13 +185,11 @@ class ColorPickerPreference @JvmOverloads constructor(
         }
     }
 
-    private var recentColorsKey: String = "oneui:color_picker:recent_colors"
-
     private fun loadRecentColors() {
         val recentColorsStringSet = preferenceDataStore
-            ?.getStringSet(recentColorsKey, emptySet<String>())
+            ?.getStringSet(KEY_RECENT_COLORS, emptySet<String>())
             ?: PreferenceManager.getDefaultSharedPreferences(context)!!
-                .getStringSet(recentColorsKey, emptySet<String>())
+                .getStringSet(KEY_RECENT_COLORS, emptySet<String>())
 
         recentColorsStringSet?.let {
             mUsedColors.addAll(recentColorsStringSet.map { convertToColorInt(it) })
@@ -209,12 +207,14 @@ class ColorPickerPreference @JvmOverloads constructor(
     private fun saveRecentColors() {
         val recentColorsStringSet = mUsedColors.map { "#${it.toHexString()}" }.toSet()
         preferenceDataStore
-            ?.putStringSet(recentColorsKey, recentColorsStringSet)
+            ?.putStringSet(KEY_RECENT_COLORS, recentColorsStringSet)
             ?: PreferenceManager.getDefaultSharedPreferences(context)!!.edit()
-                .putStringSet(recentColorsKey, recentColorsStringSet).apply()
+                .putStringSet(KEY_RECENT_COLORS, recentColorsStringSet).apply()
     }
 
     companion object {
+        private const val KEY_RECENT_COLORS: String = "oneui:color_picker:recent_colors"
+
         @Throws(IllegalArgumentException::class)
         @ColorInt
         fun convertToColorInt(argb: String) =
