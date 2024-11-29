@@ -210,4 +210,8 @@
         <item name="tint">?colorControlNormal</item>
     </style>
 
+    <style name="OneUI.SearchHighlightedTextAppearance" parent="RobotoMedium">
+        <item name="android:textColor">?colorPrimaryDark</item>
+    </style>
+
 </resources>
