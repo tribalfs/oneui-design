@@ -39,7 +39,7 @@ class ContactsAdapter (
         setHasStableIds(true)
     }
 
-    private val stringHighlight = SearchHighlighter()
+    private val stringHighlight = SearchHighlighter(context)
 
     private val asyncListDiffer = AsyncListDiffer(this,
         object : DiffUtil.ItemCallback<ContactsListItemUiModel>() {

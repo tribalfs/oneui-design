@@ -38,7 +38,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.ViewHolder>
     private final MultiSelectorDelegate<Integer> mSelectionDelegate = new MultiSelectorDelegate<>();
     private final SectionIndexerDelegate<Integer> indexerDelegate;
 
-    private final SearchHighlighter highlighter = new SearchHighlighter();
+    private final SearchHighlighter highlighter;
     private String query = "";
 
     public interface OnItemClickListener {
@@ -50,6 +50,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.ViewHolder>
 
     public IconsAdapter(Context context) {
         mContext = context;
+        highlighter = new SearchHighlighter(mContext);
         indexerDelegate = new SectionIndexerDelegate<>(context, this::getIndexerLabel);
     }
 
