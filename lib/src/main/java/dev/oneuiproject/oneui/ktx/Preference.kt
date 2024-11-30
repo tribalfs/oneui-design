@@ -16,6 +16,7 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.SeekBarPreference
 import androidx.preference.TwoStatePreference
+import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.preference.HorizontalRadioPreference
 import kotlin.math.min
 
@@ -410,6 +411,33 @@ inline fun <reified R : Preference> R.onClick(crossinline onClickPreference: (pr
         true
     }
     return this
+}
+/**
+ * Sets a custom `summaryProvider` for this [Preference] using the provided [summary] lambda.
+ *
+ * Additionally, you can specify whether the summary text is user-updatable.
+ *
+ * @param isUserUpdatable An optional Boolean indicating if the summary text is user-updatable.
+ *                        If `true`, the summary text color will be set to indicate that it is user-updatable.
+ * @param summary A lambda function that takes this preference as input and returns a [CharSequence] to be displayed as the summary.
+ *
+ * ```kotlin
+ * // Example usage:
+ * preference1.provideSummary {
+ *     "Current value: ${it.value}"
+ * }
+
+ * preference2.provideSummary(true) {
+ *     "Current value: ${it.value}"
+ * }
+ * ```
+ * @see setSummaryUpdatable
+ */
+inline fun <R : Preference> R.provideSummary(isUserUpdatable: Boolean? = null, crossinline summary: (preference: R) -> CharSequence?) {
+    summaryProvider = Preference.SummaryProvider<R> {
+        summary.invoke(it)
+    }
+    isUserUpdatable?.let { setSummaryUpdatable(it) }
 }
 
 /**
