@@ -21,8 +21,8 @@ import dev.oneuiproject.oneui.ktx.dpToPxFactor
 
 @SuppressLint("RestrictedApi")
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-class DrawerBackAnimationDelegate(private val drawerPane: View,
-                                  private val contentPane: View) {
+class DrawerBackAnimator(private val drawerPane: View,
+                         private val contentPane: View) {
 
     companion object{
         private const val TAG = "DrawerBackAnimationDelegate"

@@ -25,6 +25,7 @@ import android.widget.TextView
 import androidx.activity.BackEventCompat
 import androidx.annotation.Dimension
 import androidx.annotation.Px
+import androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_NONE
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.content.ContextCompat
@@ -34,7 +35,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener
 import dev.oneuiproject.oneui.delegates.AllSelectorState
-import dev.oneuiproject.oneui.layout.internal.DrawerBackAnimationDelegate
+import dev.oneuiproject.oneui.layout.internal.DrawerBackAnimator
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
@@ -47,7 +48,7 @@ import androidx.appcompat.R as appcompatR
 /**
  * Custom DrawerLayout extending [ToolbarLayout]. Looks and behaves the same as the one in Apps from Samsung.
  */
-class DrawerLayout(context: Context, attrs: AttributeSet?) :
+open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     ToolbarLayout(context, attrs) {
 
     private val mDrawerListener: DrawerListener = DrawerListener()
@@ -73,7 +74,7 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
     private var scrimAlpha = 0f
     private var systemBarsColor = -1
 
-    private var mDrawerBackAnimationDelegate: DrawerBackAnimationDelegate? = null
+    private var mDrawerBackAnimator: DrawerBackAnimator? = null
     private var enableDrawerBackAnimation: Boolean = false
 
     init {
@@ -82,11 +83,11 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
         if (!isInEditMode) {
             ViewUtils.semSetRoundedCorners(
                 activity!!.window.decorView,
-                ViewUtils.SEM_ROUNDED_CORNER_NONE
+                ROUNDED_CORNER_NONE
             )
         }
         if (enableDrawerBackAnimation && Build.VERSION.SDK_INT >= 34) {
-            mDrawerBackAnimationDelegate = DrawerBackAnimationDelegate(mDrawerContent, mToolbarContent!!)
+            mDrawerBackAnimator = DrawerBackAnimator(mDrawerContent, mToolbarContent!!)
         }
     }
 
@@ -445,7 +446,7 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
 
         if (newState != mCurrentState){
             mCurrentState = newState
-            if (mDrawerBackAnimationDelegate?.isBackEventStarted() != true) {
+            if (mDrawerBackAnimator?.isBackEventStarted() != true) {
                 updateOnBackCallbackState()
             }
             mDrawerStateListener?.invoke(newState)
@@ -462,29 +463,29 @@ class DrawerLayout(context: Context, attrs: AttributeSet?) :
 
     override fun startBackProgress(backEvent: BackEventCompat) {
         if (shouldAnimateDrawer) {
-            mDrawerBackAnimationDelegate!!.startBackProgress(backEvent)
+            mDrawerBackAnimator!!.startBackProgress(backEvent)
         }
     }
 
     override fun updateBackProgress(backEvent: BackEventCompat) {
-        if (mDrawerBackAnimationDelegate?.isBackEventStarted() == true) {
-            mDrawerBackAnimationDelegate!!.updateBackProgress(backEvent)
+        if (mDrawerBackAnimator?.isBackEventStarted() == true) {
+            mDrawerBackAnimator!!.updateBackProgress(backEvent)
         }
     }
 
     override fun handleBackInvoked() {
-        if ((mDrawerBackAnimationDelegate != null
-                    && mDrawerBackAnimationDelegate!!.isBackEventStarted()) || isDrawerOpenOrOpening) {
+        if ((mDrawerBackAnimator != null
+                    && mDrawerBackAnimator!!.isBackEventStarted()) || isDrawerOpenOrOpening) {
             mDrawer.closeDrawer(mDrawerContent, true)
-            mDrawerBackAnimationDelegate?.onHandleBackInvoked()
+            mDrawerBackAnimator?.onHandleBackInvoked()
         }else {
             super.handleBackInvoked()
         }
     }
 
     override fun cancelBackProgress() {
-        if (mDrawerBackAnimationDelegate?.isBackEventStarted() == true) {
-            mDrawerBackAnimationDelegate!!.cancelBackProgress()
+        if (mDrawerBackAnimator?.isBackEventStarted() == true) {
+            mDrawerBackAnimator!!.cancelBackProgress()
             updateOnBackCallbackState()
         }
     }
