@@ -22,7 +22,6 @@ import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.activity.BackEventCompat
 import androidx.annotation.Dimension
 import androidx.annotation.Px
 import androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_NONE
@@ -35,10 +34,12 @@ import androidx.core.view.updateLayoutParams
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener
 import dev.oneuiproject.oneui.delegates.AllSelectorState
-import dev.oneuiproject.oneui.layout.internal.DrawerBackAnimator
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
+import dev.oneuiproject.oneui.layout.internal.backapi.BackHandler
+import dev.oneuiproject.oneui.layout.internal.delegate.DrawerBackAnimator
+import dev.oneuiproject.oneui.layout.internal.delegate.DrawerLayoutBackHandler
 import dev.oneuiproject.oneui.utils.ViewUtils
 import dev.oneuiproject.oneui.utils.badgeCountToText
 import kotlinx.coroutines.flow.StateFlow
@@ -74,8 +75,8 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     private var scrimAlpha = 0f
     private var systemBarsColor = -1
 
-    private var mDrawerBackAnimator: DrawerBackAnimator? = null
-    private var enableDrawerBackAnimation: Boolean = false
+    internal var enableDrawerBackAnimation: Boolean = false
+        private set
 
     init {
         initDrawer()
@@ -86,12 +87,12 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
                 ROUNDED_CORNER_NONE
             )
         }
-        if (enableDrawerBackAnimation && Build.VERSION.SDK_INT >= 34) {
-            mDrawerBackAnimator = DrawerBackAnimator(mDrawerContent, mToolbarContent!!)
-        }
     }
 
-    override fun getDefaultLayoutResource(): Int  = R.layout.oui_layout_drawerlayout
+    override val backHandler: BackHandler
+        get() = DrawerLayoutBackHandler(this@DrawerLayout, DrawerBackAnimator(mDrawerContent, mToolbarContent!!))
+
+    override fun getDefaultLayoutResource() = R.layout.oui_layout_drawerlayout
 
     override fun initLayoutAttrs(attrs: AttributeSet?) {
         super.initLayoutAttrs(attrs)
@@ -446,49 +447,20 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
 
         if (newState != mCurrentState){
             mCurrentState = newState
-            if (mDrawerBackAnimator?.isBackEventStarted() != true) {
-                updateOnBackCallbackState()
-            }
+            updateOnBackCallbackState()
             mDrawerStateListener?.invoke(newState)
         }
     }
 
-    private inline val isDrawerOpenOrOpening: Boolean
+    internal inline val isDrawerOpenOrOpening: Boolean
         get() = mCurrentState == DrawerState.OPEN || mCurrentState == DrawerState.OPENING
 
     override fun getUpdatedOnBackCallbackState(): Boolean = isDrawerOpenOrOpening || super.getUpdatedOnBackCallbackState()
 
-    private val shouldAnimateDrawer: Boolean
-        get() = enableDrawerBackAnimation && isDrawerOpenOrOpening
+    internal inline val shouldAnimateDrawer: Boolean
+        get() = enableDrawerBackAnimation && shouldCloseDrawer
 
-    override fun startBackProgress(backEvent: BackEventCompat) {
-        if (shouldAnimateDrawer) {
-            mDrawerBackAnimator!!.startBackProgress(backEvent)
-        }
-    }
-
-    override fun updateBackProgress(backEvent: BackEventCompat) {
-        if (mDrawerBackAnimator?.isBackEventStarted() == true) {
-            mDrawerBackAnimator!!.updateBackProgress(backEvent)
-        }
-    }
-
-    override fun handleBackInvoked() {
-        if ((mDrawerBackAnimator != null
-                    && mDrawerBackAnimator!!.isBackEventStarted()) || isDrawerOpenOrOpening) {
-            mDrawer.closeDrawer(mDrawerContent, true)
-            mDrawerBackAnimator?.onHandleBackInvoked()
-        }else {
-            super.handleBackInvoked()
-        }
-    }
-
-    override fun cancelBackProgress() {
-        if (mDrawerBackAnimator?.isBackEventStarted() == true) {
-            mDrawerBackAnimator!!.cancelBackProgress()
-            updateOnBackCallbackState()
-        }
-    }
+    internal open val shouldCloseDrawer: Boolean get() = isDrawerOpenOrOpening
 
     private inner class DrawerOutlineProvider(@param:Px private val mCornerRadius: Int) :
         ViewOutlineProvider() {

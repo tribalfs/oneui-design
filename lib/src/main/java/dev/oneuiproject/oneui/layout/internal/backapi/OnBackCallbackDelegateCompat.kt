@@ -1,4 +1,4 @@
-package dev.oneuiproject.oneui.layout.internal
+package dev.oneuiproject.oneui.layout.internal.backapi
 
 import android.os.Build
 import android.view.View
@@ -13,14 +13,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.annotation.RequiresApi
 import androidx.annotation.RestrictTo
-
-@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-interface BackHandler{
-    fun startBackProgress(backEvent: BackEventCompat)
-    fun updateBackProgress(backEvent: BackEventCompat)
-    fun handleBackInvoked()
-    fun cancelBackProgress()
-}
 
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 class OnBackCallbackDelegateCompat(activity: ComponentActivity,

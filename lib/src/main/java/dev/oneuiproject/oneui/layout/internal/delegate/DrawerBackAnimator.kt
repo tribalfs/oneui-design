@@ -1,4 +1,4 @@
-package dev.oneuiproject.oneui.layout.internal
+package dev.oneuiproject.oneui.layout.internal.delegate
 
 
 import android.animation.AnimatorSet
@@ -17,12 +17,13 @@ import com.google.android.material.R
 import com.google.android.material.animation.AnimationUtils
 import com.google.android.material.motion.MotionUtils
 import dev.oneuiproject.oneui.ktx.dpToPxFactor
+import dev.oneuiproject.oneui.layout.internal.backapi.BackAnimator
 
 
 @SuppressLint("RestrictedApi")
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 class DrawerBackAnimator(private val drawerPane: View,
-                         private val contentPane: View) {
+                         private val contentPane: View): BackAnimator {
 
     companion object{
         private const val TAG = "DrawerBackAnimationDelegate"
@@ -42,13 +43,14 @@ class DrawerBackAnimator(private val drawerPane: View,
         PathInterpolatorCompat.create(0f, 0f, 0f, 1f))
 
     private var startTranslationX = 0f
+    override fun isBackProgressStarted(): Boolean = this.backEvent != null
 
-    fun startBackProgress(backEvent: BackEventCompat) {
+    override fun startBackProgress(backEvent: BackEventCompat) {
         this.backEvent = backEvent
         startTranslationX = if (isRTL) -drawerPane.width.toFloat() else drawerPane.width.toFloat()
     }
 
-    fun updateBackProgress(backEvent: BackEventCompat) {
+    override fun updateBackProgress(backEvent: BackEventCompat) {
         if (this.backEvent == null) {
             Log.w(TAG, "Must call startBackProgress() before updateBackProgress()")
             this.backEvent = backEvent
@@ -62,7 +64,8 @@ class DrawerBackAnimator(private val drawerPane: View,
         updateBackProgress(finalBackEvent.progress, leftSwipeEdge)
     }
 
-    fun updateBackProgress(progress: Float, leftSwipeEdge: Boolean) {
+
+    private fun updateBackProgress(progress: Float, leftSwipeEdge: Boolean) {
         val drawerWidth = drawerPane.width
         val drawerHeight = drawerPane.height
 
@@ -115,14 +118,15 @@ class DrawerBackAnimator(private val drawerPane: View,
     private val isRTL: Boolean
         get() = drawerPane.resources.configuration.layoutDirection == LayoutDirection.RTL
 
-    fun onHandleBackInvoked() {
+
+    override fun handleBackInvoked() {
         if (this.backEvent != null) {
             this.backEvent = null
             doResetAnimation(false)
         }
     }
 
-    fun cancelBackProgress() {
+    override fun cancelBackProgress() {
         if (this.backEvent == null) {
             Log.w(TAG, "Must call startBackProgress() and updateBackProgress() before cancelBackProgress()")
             return
@@ -165,7 +169,5 @@ class DrawerBackAnimator(private val drawerPane: View,
     private fun interpolateProgress(progress: Float): Float {
         return progressInterpolator.getInterpolation(progress)
     }
-
-    fun isBackEventStarted(): Boolean = this.backEvent != null
 
 }

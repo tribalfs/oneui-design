@@ -29,7 +29,6 @@ import android.widget.LinearLayout
 import android.widget.LinearLayout.LayoutParams.MATCH_PARENT
 import android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
 import android.widget.TextView
-import androidx.activity.BackEventCompat
 import androidx.annotation.CallSuper
 import androidx.annotation.IdRes
 import androidx.annotation.IntRange
@@ -52,8 +51,8 @@ import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import dev.oneuiproject.oneui.delegates.AllSelectorState
-import dev.oneuiproject.oneui.layout.internal.BackHandler
-import dev.oneuiproject.oneui.layout.internal.OnBackCallbackDelegateCompat
+import dev.oneuiproject.oneui.layout.internal.backapi.BackHandler
+import dev.oneuiproject.oneui.layout.internal.backapi.OnBackCallbackDelegateCompat
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.isSoftKeyboardShowing
 import dev.oneuiproject.oneui.ktx.setSearchableInfoFrom
@@ -69,6 +68,7 @@ import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type
 import dev.oneuiproject.oneui.utils.internal.ToolbarLayoutUtils
 import dev.oneuiproject.oneui.layout.internal.NavigationBadgeIcon
+import dev.oneuiproject.oneui.layout.internal.delegate.ToolbarLayoutBackHandler
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -82,7 +82,7 @@ import androidx.appcompat.R as appcompatR
  */
 open class ToolbarLayout @JvmOverloads constructor(
     @JvmField protected var context: Context,
-    attrs: AttributeSet? = null) : LinearLayout(context, attrs), BackHandler {
+    attrs: AttributeSet? = null) : LinearLayout(context, attrs) {
 
     @Deprecated("Use the `ActionModeListener` parameter when calling startActionMode() instead.")
     interface ActionModeCallback {
@@ -160,8 +160,11 @@ open class ToolbarLayout @JvmOverloads constructor(
     private var mActionModeListener: ActionModeListener? = null
     private var mActionModeMenuRes: Int = 0
 
+    open val backHandler: BackHandler
+        get() = ToolbarLayoutBackHandler(this@ToolbarLayout)
+
     private val onBackCallbackDelegate: OnBackCallbackDelegateCompat by lazy {
-        OnBackCallbackDelegateCompat(activity!!, this, this)
+        OnBackCallbackDelegateCompat(activity!!, this, backHandler)
     }
 
     internal fun updateOnBackCallbackState() {
@@ -186,47 +189,6 @@ open class ToolbarLayout @JvmOverloads constructor(
             else -> false
         }
     }
-
-    override fun startBackProgress(backEvent: BackEventCompat) {}//no op
-
-    override fun updateBackProgress(backEvent: BackEventCompat) {} //no op
-
-    @CallSuper
-    override fun handleBackInvoked(){
-        when {
-            isActionMode -> endActionMode()
-            isSearchMode -> {
-                when (searchModeOBPBehavior) {
-                    DISMISS -> {
-                        if (searchView.isSoftKeyboardShowing) {
-                            searchView.clearFocus()
-                        } else endSearchMode()
-                    }
-                    CLEAR_CLOSE -> {
-                        if (searchView.isSoftKeyboardShowing) {
-                            searchView.clearFocus()
-                            //Add delay to account for the keyboard's hiding animation
-                            //so we can use the appropriate `isSoftKeyboardShowing` result
-                            //in updateObpCallbackState().
-                            postDelayed({ updateOnBackCallbackState() }, 400)
-                        } else {
-                            searchView.setQuery("", true)
-                            updateOnBackCallbackState()
-                        }
-                    }
-                    CLEAR_DISMISS -> {
-                        if (searchView.isSoftKeyboardShowing) {
-                            searchView.clearFocus()
-                        } else if (searchView.query.isNotEmpty()) {
-                            searchView.setQuery("", true)
-                        } else endSearchMode()
-                    }
-                }
-            }
-        }
-    }
-
-    override fun cancelBackProgress() {}//no op
 
     private var mActionModeTitleFadeListener: AppBarOffsetListener? = null
 
@@ -271,7 +233,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     private lateinit var mSearchView: SearchView
     private var mSearchModeListener: SearchModeListener? = null
     @JvmField
-    protected var searchModeOBPBehavior = CLEAR_DISMISS
+    internal var searchModeOBPBehavior = CLEAR_DISMISS
     @Deprecated("Replaced with mActionModeCallBack")
     private var mOnSelectAllListener: CompoundButton.OnCheckedChangeListener? = null
 
