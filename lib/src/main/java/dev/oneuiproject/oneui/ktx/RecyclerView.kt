@@ -147,12 +147,14 @@ inline fun RecyclerView.configureItemSwipeAnimator(
         colorRightToLeft = rightToLeftColor
         drawableLeftToRight = leftToRightDrawableRes?.let {
             AppCompatResources.getDrawable(context, it)?.apply {
+                mutate()
                 setTint(Color.parseColor("#CCFAFAFF"))
                 setBounds(0, 0, intrinsicWidth, intrinsicHeight)
             }
         }
         drawableRightToLeft = rightToLeftDrawableRes?.let {
             AppCompatResources.getDrawable(context, it)?.apply {
+                mutate()
                 setTint(Color.parseColor("#CCFAFAFF"))
                 setBounds(0, 0, intrinsicWidth, intrinsicHeight)
             }
