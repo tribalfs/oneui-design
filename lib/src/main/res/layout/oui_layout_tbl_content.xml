@@ -40,17 +40,18 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <dev.oneuiproject.oneui.widget.RoundedFrameLayout
-        android:id="@+id/toolbarlayout_main_container"
+        android:id="@+id/tbl_main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal|top"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:roundedCorners="top_left|top_right" />
 
     <dev.oneuiproject.oneui.widget.RoundedLinearLayout
-        android:id="@+id/toolbarlayout_bottom_corners"
+        android:id="@+id/tbl_bottom_corners"
         android:layout_width="match_parent"
         android:layout_height="26dp"
-        android:layout_gravity="bottom"
+        android:layout_gravity="bottom|center_horizontal"
         app:roundedCorners="bottom_left|bottom_right" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

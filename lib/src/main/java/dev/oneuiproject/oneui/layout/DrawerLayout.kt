@@ -19,18 +19,21 @@ import android.view.ViewOutlineProvider
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.FrameLayout
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
 import androidx.annotation.Px
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_NONE
-import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.doOnLayout
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.customview.widget.Openable
 import androidx.drawerlayout.widget.DrawerLayout
@@ -54,7 +57,7 @@ import androidx.appcompat.R as appcompatR
 open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     ToolbarLayout(context, attrs), Openable {
 
-    private val mDrawerListener: DrawerListener = DrawerListener()
+    private lateinit var mDrawerListener: DrawerListener
 
     enum class DrawerState{
         OPEN,
@@ -67,12 +70,12 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     private var mCurrentState: DrawerState = DrawerState.CLOSE
     private var mSlideOffset = 0f
 
-    private lateinit var mDrawer: DrawerLayout
-    private var mToolbarContent: LinearLayout? = null
-    private lateinit var mDrawerContent: LinearLayout
+    private lateinit var mDrawerLayout: DrawerLayout
+    private var mSlideViewPane: LinearLayout? = null
+    private lateinit var mDrawerPane: LinearLayout
     private lateinit var mHeaderView: View
-    private var mHeaderButton: AppCompatImageButton? = null
-    private var mHeaderBadge: TextView? = null
+    private var mDrawerHeaderButton: ImageButton? = null
+    private var mDrawerHeaderBadge: TextView? = null
     private var mDrawerContainer: FrameLayout? = null
     private var scrimAlpha = 0f
     private var systemBarsColor = -1
@@ -81,7 +84,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         private set
 
     init {
-        initDrawer()
+        initViews()
 
         if (!isInEditMode) {
             ViewUtils.semSetRoundedCorners(
@@ -92,7 +95,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     }
 
     override val backHandler: BackHandler
-        get() = DrawerLayoutBackHandler(this@DrawerLayout, DrawerBackAnimator(mDrawerContent, mToolbarContent!!))
+        get() = DrawerLayoutBackHandler(this@DrawerLayout, DrawerBackAnimator(mDrawerPane, mSlideViewPane!!))
 
     override fun getDefaultLayoutResource() = R.layout.oui_layout_drawerlayout
     override fun getDefaultNavigationIconResource(): Int = R.drawable.oui_ic_ab_drawer
@@ -106,30 +109,30 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     }
 
     override fun inflateChildren() {
-        if (mLayout != R.layout.oui_layout_drawerlayout) {
+        if (mLayout != getDefaultLayoutResource()) {
             Log.w(TAG, "Inflating custom $TAG")
         }
         LayoutInflater.from(context)
             .inflate(mLayout, this, true)
     }
 
-    private fun initDrawer() {
-        setNavigationButtonTooltip(resources.getText(R.string.oui_navigation_drawer))
-
+    private fun initViews() {
         val scrimColor = context.getColor(R.color.oui_drawerlayout_drawer_dim_color)
 
-        mDrawer = findViewById<DrawerLayout?>(R.id.drawerlayout_drawer).apply {
-            setScrimColor(scrimColor)
-            setDrawerElevation(0f)
-        }
-        mToolbarContent = findViewById(R.id.drawerlayout_toolbar_content)
-        mDrawerContent = findViewById(R.id.drawerlayout_drawer_content)
+        mDrawerLayout = findViewById<DrawerLayout?>(R.id.drawer_layout)
+            .apply {
+                setScrimColor(scrimColor)
+                setDrawerElevation(0f)
+            }.also {
+                mDrawerPane =  it.findViewById(R.id.drawer_panel)
+                mSlideViewPane = it.findViewById(R.id.slideable_view)
+            }
 
-        mHeaderView = mDrawerContent.findViewById(R.id.drawerlayout_default_header)
-        mHeaderButton = mHeaderView.findViewById(R.id.drawerlayout_header_button)
-        mHeaderBadge = mHeaderView.findViewById(R.id.drawerlayout_header_badge)
+        mHeaderView = mDrawerPane.findViewById(R.id.header_layout)
+        mDrawerHeaderButton = mHeaderView.findViewById(R.id.drawer_header_button)
+        mDrawerHeaderBadge = mHeaderView.findViewById(R.id.drawer_header_button_badge)
 
-        mDrawerContainer = mDrawerContent.findViewById(R.id.drawerlayout_drawer_container)
+        mDrawerContainer = mDrawerPane.findViewById(R.id.drawer_items_container)
 
         scrimAlpha = ((scrimColor shr 24) and 0xFF) / 255f
 
@@ -141,16 +144,16 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         updateDrawerWidth()
         setDrawerCornerRadius(DEFAULT_DRAWER_RADIUS)
 
-        setNavigationButtonOnClickListener {
-            mDrawer.openDrawer(mDrawerContent)
-        }
+        setNavigationButtonTooltip(resources.getText(R.string.oui_navigation_drawer))
+        setNavigationButtonOnClickListener { mDrawerLayout.openDrawer(mDrawerPane) }
 
         if (!isInEditMode) {
-            mDrawer.addDrawerListener(mDrawerListener)
+            mDrawerListener = DrawerListener(findViewById(R.id.drawer_custom_translation))
+            mDrawerLayout.addDrawerListener(mDrawerListener)
             if (sIsDrawerOpened) {
-                mDrawer.post {
+                mDrawerLayout.post {
                     mDrawerListener.onDrawerSlide(
-                        mDrawerContent, 1f
+                        mDrawerPane, 1f
                     )
                 }
             }
@@ -158,16 +161,16 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     }
 
     override fun addView(child: View, index: Int, params: ViewGroup.LayoutParams) {
-        if (mToolbarContent == null || mDrawerContainer == null) {
+        if (mSlideViewPane == null || mDrawerContainer == null) {
             super.addView(child, index, params)
         } else {
             when ((params as ToolbarLayoutParams).layoutLocation) {
                 DRAWER_HEADER -> {
-                    mDrawerContent.removeView(mHeaderView)
-                    mHeaderButton = null
-                    mHeaderBadge = null
-                    mDrawerContent.addView(child, 0, params)
-                    mHeaderView = mDrawerContent.getChildAt(0)
+                    mDrawerPane.removeView(mHeaderView)
+                    mDrawerHeaderButton = null
+                    mDrawerHeaderBadge = null
+                    mDrawerPane.addView(child, 0, params)
+                    mHeaderView = mDrawerPane.getChildAt(0)
                 }
 
                 DRAWER_PANEL -> mDrawerContainer!!.addView(child, params)
@@ -191,9 +194,9 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         doOnLayout {
             updateDrawerWidth()
             if (sIsDrawerOpened) {
-                mDrawer.post {
+                mDrawerLayout.post {
                     mDrawerListener.onDrawerSlide(
-                        mDrawerContent, 1f
+                        mDrawerPane, 1f
                     )
                 }
             }
@@ -202,14 +205,14 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
 
     private fun lockDrawerIfAvailable(lock: Boolean) {
         if (lock) {
-            mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         } else {
-            mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
         }
     }
 
     open fun isDrawerLocked(): Boolean =
-        mDrawer.getDrawerLockMode(Gravity.LEFT) != DrawerLayout.LOCK_MODE_UNLOCKED
+        mDrawerLayout.getDrawerLockMode(Gravity.LEFT) != DrawerLayout.LOCK_MODE_UNLOCKED
 
     private fun updateDrawerWidth() {
         val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
@@ -229,7 +232,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
             else -> 0.844
         }
 
-        mDrawerContent.updateLayoutParams<MarginLayoutParams> {
+        mDrawerPane.updateLayoutParams<MarginLayoutParams> {
             width = (displayWidth * widthRate).toInt()
         }
     }
@@ -314,8 +317,8 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
      * Set a custom radius for the drawer panel's edges.
      */
     fun setDrawerCornerRadius(@Px px: Int) {
-        mDrawerContent.outlineProvider = DrawerOutlineProvider(px)
-        mDrawerContent.clipToOutline = true
+        mDrawerPane.outlineProvider = DrawerOutlineProvider(px)
+        mDrawerPane.clipToOutline = true
     }
 
     /**
@@ -337,13 +340,11 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
      */
     @JvmOverloads
     open fun setHeaderButtonIcon(icon: Drawable?, @ColorInt tint: Int? = null) {
-        if (mHeaderButton != null) {
-            mHeaderButton!!.apply {
-                setImageDrawable(icon)
-                imageTintList = ColorStateList.valueOf(
-                    tint ?: context.getColor(R.color.oui_drawerlayout_header_icon_color)
-                )
-            }
+        if (mDrawerHeaderButton != null) {
+            mDrawerHeaderButton!!.setImageDrawable(icon)
+            mDrawerHeaderButton!!.imageTintList = ColorStateList.valueOf(
+                context.getColor(R.color.oui_drawerlayout_header_icon_color)
+            )
             mHeaderView.visibility =
                 if (icon != null) VISIBLE else GONE
         } else {
@@ -352,12 +353,22 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     }
 
     /**
-     * Set the tooltip of the drawer button.
-     * The drawer button is the button in the top right corner of the drawer panel.
+     * Set the tooltip of the drawer header button.
+     * The drawer header button is the button in the top right corner of the drawer panel.
      */
+    @Deprecated("Use setHeaderButtonTooltip() instead.",
+        replaceWith = ReplaceWith("setHeaderButtonTooltip(tooltipText)"))
     fun setDrawerButtonTooltip(tooltipText: CharSequence?) {
-        if (mHeaderButton != null) {
-            TooltipCompat.setTooltipText(mHeaderButton!!, tooltipText)
+        setHeaderButtonTooltip(tooltipText)
+    }
+
+    /**
+     * Set the tooltip of the drawer header button.
+     * The drawer header button is the button in the top right corner of the drawer panel.
+     */
+    open fun setHeaderButtonTooltip(tooltipText: CharSequence?) {
+        if (mDrawerHeaderButton != null) {
+            TooltipCompat.setTooltipText(mDrawerHeaderButton!!, tooltipText)
         } else {
             Log.e(
                 TAG, "setDrawerButtonTooltip: this method can be used " +
@@ -370,9 +381,19 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
      * Set the click listener of the drawer button.
      * The drawer button is the button in the top right corner of the drawer panel.
      */
+    @Deprecated("Use setHeaderButtonOnClickListener(listener) instead",
+        ReplaceWith("setHeaderButtonOnClickListener(listener)"))
     fun setDrawerButtonOnClickListener(listener: OnClickListener?) {
-        if (mHeaderButton != null) {
-            mHeaderButton!!.setOnClickListener(listener)
+        setHeaderButtonOnClickListener(listener)
+    }
+
+    /**
+     * Set the click listener of the drawer button.
+     * The drawer button is the button in the top right corner of the drawer panel.
+     */
+    open fun setHeaderButtonOnClickListener(listener: OnClickListener?) {
+        if (mDrawerHeaderButton != null) {
+            mDrawerHeaderButton!!.setOnClickListener(listener)
         } else {
             Log.e(
                 TAG, "setDrawerButtonOnClickListener: this method can be used " +
@@ -392,58 +413,30 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
      */
     fun setButtonBadges(navigationBadge: Badge, drawerBadge: Badge) {
         setNavigationButtonBadge(navigationBadge)
-        setDrawerButtonBadge(drawerBadge)
+        setHeaderButtonBadge(drawerBadge)
     }
 
     /**
      * Set the badge of the drawer button.
-     * The drawer button is the button in the top right corner of the drawer panel.
-     * The badge is small orange circle in the top right of the icon.
+     * The drawer header button is the button in the top right corner of the drawer panel.
      *
-     * @param badge The [badge][dev.oneuiproject.oneui.layout.ToolbarLayout.Badge] to set for drawer button.
+     * @param badge The [badge][dev.oneuiproject.oneui.layout.Badge] to set.
      */
+    @Deprecated("Use setHeaderButtonBadge()",
+        ReplaceWith("setHeaderButtonBadge(badge)"))
     fun setDrawerButtonBadge(badge: Badge) {
-        if (mHeaderBadge != null) {
-            when (badge) {
-                is Badge.DOT -> {
-                    mHeaderBadge!!.text = ""
-                    val res = resources
-                    mHeaderBadge!!.updateLayoutParams<MarginLayoutParams> {
-                        res.getDimension(appcompatR.dimen.sesl_menu_item_badge_size).toInt().let {
-                            width = it
-                            height = it
-                        }
-                        8.dpToPx(res).let {
-                            marginEnd = it
-                            topMargin = it
-                        }
-                    }
-                    mHeaderBadge!!.visibility = VISIBLE
-                }
+        setHeaderButtonBadge(badge)
+    }
 
-                is Badge.NONE -> {
-                    mHeaderBadge!!.visibility = GONE
-                }
-
-                is Badge.NUMERIC -> {
-                    val badgeText = badge.count.badgeCountToText()!!
-                    mHeaderBadge!!.text = badgeText
-                    mHeaderBadge!!.updateLayoutParams<MarginLayoutParams> {
-                        val res = resources
-                        val defaultWidth: Float =
-                            res.getDimension(appcompatR.dimen.sesl_badge_default_width)
-                        val additionalWidth: Float =
-                            res.getDimension(appcompatR.dimen.sesl_badge_additional_width)
-                        width = (defaultWidth + badgeText.length * additionalWidth).toInt()
-                        height = (defaultWidth + additionalWidth).toInt()
-                        6.dpToPx(res).let {
-                            marginEnd = it
-                            topMargin = it
-                        }
-                    }
-                    mHeaderBadge!!.visibility = VISIBLE
-                }
-            }
+    /**
+     * Set the badge of the drawer header button.
+     * The drawer header button is the button in the top right corner of the drawer panel.
+     *
+     * @param badge The [badge][dev.oneuiproject.oneui.layout.Badge] to setn.
+     */
+    fun setHeaderButtonBadge(badge: Badge) {
+        if (mDrawerHeaderBadge != null) {
+            updateBadgeView(mDrawerHeaderBadge!!, badge)
         } else {
             Log.e(
                 TAG, "setDrawerButtonBadge: this method can be used " +
@@ -452,7 +445,53 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         }
     }
 
-    override fun isOpen(): Boolean = mDrawer.isOpen
+    private fun updateBadgeView(badgeView: TextView, badge: Badge){
+        when(badge){
+            Badge.DOT -> {
+                val res = resources
+                val badgeSize = res.getDimensionPixelSize(appcompatR.dimen.sesl_menu_item_badge_size)
+                val badgeMargin = 8.dpToPx(res)
+                badgeView.apply {
+                    background = AppCompatResources.getDrawable(context, appcompatR.drawable.sesl_dot_badge)
+                    text = null
+                    updateLayoutParams<MarginLayoutParams> {
+                        width = badgeSize
+                        height = badgeSize
+                        marginEnd = badgeMargin
+                        topMargin = badgeMargin
+                    }
+                    isVisible = true
+                }
+            }
+            is Badge.NUMERIC -> {
+                val badgeText = badge.count.badgeCountToText()!!
+                val res = resources
+                val defaultWidth = res.getDimensionPixelSize(appcompatR.dimen.sesl_badge_default_width)
+                val additionalWidth = res.getDimensionPixelSize(appcompatR.dimen.sesl_badge_additional_width)
+                val badgeMargin = 6.dpToPx(res)
+                badgeView.apply {
+                    background = AppCompatResources.getDrawable(context, appcompatR.drawable.sesl_noti_badge)
+                    text = badgeText
+                    updateLayoutParams<MarginLayoutParams> {
+                        width = defaultWidth + additionalWidth * badgeText.length
+                        height = defaultWidth + additionalWidth
+                        marginEnd = badgeMargin
+                        topMargin = badgeMargin
+                    }
+                    isVisible = true
+                }
+            }
+            Badge.NONE -> {
+                badgeView.apply {
+                    isGone = true
+                    text = null
+                }
+            }
+
+        }
+    }
+
+    override fun isOpen(): Boolean = mDrawerLayout.isOpen
 
     override fun open() = setDrawerOpen(true, animate = true)
 
@@ -465,9 +504,9 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
      */
     fun setDrawerOpen(open: Boolean, animate: Boolean) {
         if (open) {
-            mDrawer.openDrawer(mDrawerContent, animate)
+            mDrawerLayout.openDrawer(mDrawerPane, animate)
         } else {
-            mDrawer.closeDrawer(mDrawerContent, animate)
+            mDrawerLayout.closeDrawer(mDrawerPane, animate)
         }
     }
 
@@ -505,7 +544,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     internal inline val isDrawerOpenOrOpening: Boolean
         get() = mCurrentState == DrawerState.OPEN || mCurrentState == DrawerState.OPENING
 
-    override fun getUpdatedOnBackCallbackState(): Boolean = isDrawerOpenOrOpening || super.getUpdatedOnBackCallbackState()
+    override fun getBackCallbackStateUpdate(): Boolean = shouldCloseDrawer || super.getBackCallbackStateUpdate()
 
     internal inline val shouldAnimateDrawer: Boolean
         get() = enableDrawerBackAnimation && shouldCloseDrawer
@@ -515,7 +554,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     private inner class DrawerOutlineProvider(@param:Px private val mCornerRadius: Int) :
         ViewOutlineProvider() {
         override fun getOutline(view: View, outline: Outline) {
-            val isRTL = isRtl()
+            val isRTL = isLayoutRTL
             outline.setRoundRect(
                 if (isRTL) 0 else -mCornerRadius,
                 0,
@@ -525,18 +564,25 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         }
     }
 
-    private fun isRtl() = resources.configuration.layoutDirection == LAYOUT_DIRECTION_RTL
+    protected val isLayoutRTL get() = resources.configuration.layoutDirection == LAYOUT_DIRECTION_RTL
 
-    private inner class DrawerListener : SimpleDrawerListener() {
+    @Suppress("NOTHING_TO_INLINE")
+    private inner class DrawerListener(private val translationView: View?) : SimpleDrawerListener() {
+
         override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
             super.onDrawerSlide(drawerView, slideOffset)
+            mSlideOffset = slideOffset
+            updateSlideViewTranslation(drawerView.width * slideOffset)
+            updateSystemBarsScrim(slideOffset)
+            dispatchDrawerStateChange()
+        }
 
-            val translationView = findViewById<View>(R.id.drawer_custom_translation)
+        private inline fun updateSlideViewTranslation(slideX: Float){
+            (translationView?:mSlideViewPane)!!.translationX = if (isLayoutRTL) slideX * -1f else slideX
+        }
 
-            val slideX = drawerView.width * slideOffset * if (isRtl()) -1f else 1f
-            if (translationView != null) translationView.translationX = slideX
-            else mToolbarContent!!.translationX = slideX
-
+        private inline fun updateSystemBarsScrim(slideOffset: Float){
+            //Handle system bars dim for api35-
             if (systemBarsColor != -1) {
                 val hsv = FloatArray(3)
                 Color.colorToHSV(systemBarsColor, hsv)
@@ -548,9 +594,6 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
                     navigationBarColor = Color.HSVToColor(hsv)
                 }
             }
-
-            mSlideOffset = slideOffset
-            dispatchDrawerStateChange()
         }
 
         override fun onDrawerOpened(drawerView: View) {
@@ -570,20 +613,20 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
 
     @SuppressLint("NewApi")
     override fun onApplyWindowInsets(insets: WindowInsets): WindowInsets {
-        if (handleInsets()) {
+        if (handleInsets) {
             return insets.also {
                 val systemBarsInsets = it.getInsets(WindowInsetsCompat.Type.systemBars())
                 val topInset = systemBarsInsets.top
                 val bottomInset = max(systemBarsInsets.bottom, insets.getInsets(WindowInsetsCompat.Type.ime()).bottom)
 
-                mToolbarContent!!.setPadding(
+                mSlideViewPane!!.setPadding(
                     systemBarsInsets.left,
                     topInset,
                     systemBarsInsets.right,
                     bottomInset
                 )
-                mDrawerContent.updateLayoutParams<MarginLayoutParams> {
-                    topMargin = topInset + resources.getDimensionPixelSize(R.dimen.oui_drawerlayout_drawer_top_margin)
+                mDrawerPane.updateLayoutParams<MarginLayoutParams> {
+                    topMargin = topInset + resources.getDimensionPixelSize(appcompatR.dimen.sesl_action_bar_top_padding)
                     bottomMargin = bottomInset
                 }
             }

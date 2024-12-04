@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drawerlayout_drawer"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@null">
 
     <LinearLayout
-        android:id="@+id/drawerlayout_toolbar_content"
+        android:id="@+id/slideable_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/oui_layout_toolbarlayout_appbar" />
+        <include layout="@layout/oui_layout_tbl_content" />
 
-        <include layout="@layout/oui_layout_toolbarlayout_footer" />
+        <include layout="@layout/oui_layout_tbl_footer" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/drawerlayout_drawer_content"
+        android:id="@+id/drawer_panel"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/oui_drawerlayout_drawer_top_margin"
+        android:layout_marginTop="@dimen/sesl_action_bar_top_padding"
         android:layout_gravity="start"
         android:background="@color/oui_background_color"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <RelativeLayout
-            android:id="@+id/drawerlayout_default_header"
+            android:id="@+id/header_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="8dp"
             android:visibility="gone">
 
             <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/drawerlayout_header_button"
+                android:id="@+id/drawer_header_button"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginVertical="8dp"
@@ -45,13 +45,13 @@
                 android:background="@drawable/sesl_action_bar_item_background" />
 
             <TextView
-                android:id="@+id/drawerlayout_header_badge"
+                android:id="@+id/drawer_header_button_badge"
                 android:layout_width="@dimen/oui_n_badge_view_size"
                 android:layout_height="@dimen/oui_n_badge_view_size"
                 android:layout_marginTop="6dp"
                 android:layout_marginEnd="6dp"
-                android:layout_alignTop="@id/drawerlayout_header_button"
-                android:layout_alignEnd="@id/drawerlayout_header_button"
+                android:layout_alignTop="@id/drawer_header_button"
+                android:layout_alignEnd="@id/drawer_header_button"
                 android:gravity="center"
                 android:background="@drawable/sesl_noti_badge"
                 android:text="@string/oui_new_badge_text"
@@ -63,7 +63,7 @@
         </RelativeLayout>
 
         <FrameLayout
-            android:id="@+id/drawerlayout_drawer_container"
+            android:id="@+id/drawer_items_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">

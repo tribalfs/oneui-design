@@ -170,7 +170,7 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     internal fun updateOnBackCallbackState() {
         onBackCallbackDelegate.stopListening()
-        if (getUpdatedOnBackCallbackState().not()) return
+        if (getBackCallbackStateUpdate().not()) return
         onBackCallbackDelegate.startListening(true)
     }
 
@@ -178,7 +178,7 @@ open class ToolbarLayout @JvmOverloads constructor(
      * return true if on back callback should be registered.
      */
     @CallSuper
-    protected open fun getUpdatedOnBackCallbackState(): Boolean {
+    protected open fun getBackCallbackStateUpdate(): Boolean {
         return when {
             isActionMode -> true
             isSearchMode -> {
@@ -194,23 +194,23 @@ open class ToolbarLayout @JvmOverloads constructor(
     private var mActionModeTitleFadeListener: AppBarOffsetListener? = null
 
     @JvmField
-    protected var mLayout: Int = 0
+    internal var mLayout: Int = 0
     @JvmField
-    protected var mExpandable: Boolean = false
+    internal var mExpandable: Boolean = false
     @JvmField
-    protected var mExpanded: Boolean = false
+    internal var mExpanded: Boolean = false
     @JvmField
-    protected var mTitleCollapsed: CharSequence? = null
+    internal var mTitleCollapsed: CharSequence? = null
     @JvmField
-    protected var mTitleExpanded: CharSequence? = null
+    internal var mTitleExpanded: CharSequence? = null
     @JvmField
-    protected var mMainContainer: FrameLayout? = null
+    internal var mMainContainer: FrameLayout? = null
     @JvmField
-    protected var mNavigationIcon: Drawable? = null
+    internal var mNavigationIcon: Drawable? = null
     @JvmField
-    protected var mSubtitleCollapsed: CharSequence? = null
+    internal var mSubtitleCollapsed: CharSequence? = null
     @JvmField
-    protected var mSubtitleExpanded: CharSequence? = null
+    internal var mSubtitleExpanded: CharSequence? = null
 
     private var mNavigationBadgeIcon: LayerDrawable? = null
 
@@ -225,7 +225,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     private lateinit var mActionModeCheckBox: AppCompatCheckBox
     private lateinit var mActionModeTitleTextView: TextView
 
-    private var mFooterContainer: FrameLayout? = null
+    private var mCustomFooterContainer: FrameLayout? = null
     private lateinit var mFooterParent: LinearLayout
     private lateinit var mBottomRoundedCorner: LinearLayout
     private lateinit var mBottomActionModeBar: BottomNavigationView
@@ -252,7 +252,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     var isActionMode: Boolean = false
         private set
 
-    protected var mHandleInsets: Boolean = false
+    private var mHandleInsets: Boolean = false
 
     /**
      * Callback for the Toolbar's SearchMode.
@@ -267,9 +267,10 @@ open class ToolbarLayout @JvmOverloads constructor(
         fun onSearchModeToggle(searchView: SearchView, visible: Boolean)
     }
 
-    protected open fun getDefaultLayoutResource(): Int  = R.layout.oui_layout_toolbarlayout_appbar
+    protected open fun getDefaultLayoutResource(): Int  = R.layout.oui_layout_tbl_content
     protected open fun getDefaultNavigationIconResource(): Int?  = null
 
+    @CallSuper
     protected open fun initLayoutAttrs(attrs: AttributeSet?) {
         context.theme.obtainStyledAttributes(attrs, R.styleable.ToolbarLayout, 0, 0).use {
             mLayout = it.getResourceId(R.styleable.ToolbarLayout_android_layout, getDefaultLayoutResource())
@@ -287,7 +288,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     }
 
     protected open fun inflateChildren() {
-        if (mLayout != R.layout.oui_layout_toolbarlayout_appbar) {
+        if (mLayout != getDefaultLayoutResource()) {
             Log.w(TAG, "Inflating custom $TAG")
         }
 
@@ -295,7 +296,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         inflater.inflate(mLayout, this, true)
         addView(
             inflater.inflate(
-                R.layout.oui_layout_toolbarlayout_footer, this, false
+                R.layout.oui_layout_tbl_footer, this, false
             )
         )
     }
@@ -306,10 +307,10 @@ open class ToolbarLayout @JvmOverloads constructor(
         mCollapsingToolbarLayout = mAppBarLayout.findViewById(R.id.toolbarlayout_collapsing_toolbar)
         mMainToolbar = mCollapsingToolbarLayout.findViewById(R.id.toolbarlayout_main_toolbar)
 
-        mMainContainer = findViewById(R.id.toolbarlayout_main_container)
-        mFooterContainer = findViewById(R.id.toolbarlayout_footer_container)
-        mFooterParent = findViewById(R.id.toolbarlayout_footer_content)
-        mBottomRoundedCorner = findViewById(R.id.toolbarlayout_bottom_corners)
+        mMainContainer = findViewById(R.id.tbl_main_content)
+        mCustomFooterContainer = findViewById(R.id.tbl_custom_footer_container)
+        mFooterParent = findViewById(R.id.tbl_footer_parent)
+        mBottomRoundedCorner = findViewById(R.id.tbl_bottom_corners)
 
         activity?.apply {
             setSupportActionBar(mMainToolbar)
@@ -329,14 +330,14 @@ open class ToolbarLayout @JvmOverloads constructor(
     private var boundedRootChildMargins: Map<Int, IntrinsicMargin>? = null
 
     override fun addView(child: View, index: Int, params: ViewGroup.LayoutParams) {
-        if (mMainContainer == null || mFooterContainer == null) {
+        if (mMainContainer == null || mCustomFooterContainer == null) {
             super.addView(child, index, params)
         } else {
             when ((params as ToolbarLayoutParams).layoutLocation) {
                 MAIN_CONTENT -> mMainContainer!!.addView(child, params)
                 APPBAR_HEADER -> setCustomTitleView(child,
                     CollapsingToolbarLayout.LayoutParams(params))
-                FOOTER -> mFooterContainer!!.addView(child, params)
+                FOOTER -> mCustomFooterContainer!!.addView(child, params)
                 ROOT, ROOT_BOUNDED -> {
                     if (params.layoutLocation == ROOT_BOUNDED){
                         val margins = IntrinsicMargin(params.leftMargin, params.rightMargin)
@@ -384,7 +385,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     private val sideMarginUpdater = Runnable {
         val sideMarginParams = ToolbarLayoutUtils.getSideMarginParams(this.activity!!)
         for (child in mCoordinatorLayout.children){
-            if (child == mMainContainer || child == mBottomRoundedCorner || child == mFooterContainer) {
+            if (child == mMainContainer || child == mBottomRoundedCorner || child == mCustomFooterContainer) {
                 ToolbarLayoutUtils.setSideMarginParams(child, sideMarginParams, 0, 0)
                 continue
             }
@@ -483,19 +484,13 @@ open class ToolbarLayout @JvmOverloads constructor(
         mMainToolbar.subtitle = collapsedSubtitle.also { mSubtitleCollapsed = it }
     }
 
+    /**
+     * Represents whether the Toolbar can be expanded or collapsed.
+     *
+     * @see setExpanded
+     */
     var isExpandable: Boolean
-        /**
-         * Returns if the expanding Toolbar functionality is enabled or not.
-         *
-         * @see .setExpandable
-         */
         get() = mExpandable
-        /**
-         * Enable or disable the expanding Toolbar functionality.
-         * If you simply want to programmatically expand or collapse the toolbar.
-         *
-         * @see .setExpanded
-         */
         set(expandable) {
             if (mExpandable != expandable) {
                 mExpandable = expandable
@@ -515,17 +510,13 @@ open class ToolbarLayout @JvmOverloads constructor(
         } else Log.d(TAG, "setExpanded: mExpandable is false")
     }
 
+    /**
+     * Represents the expanded state of the Toolbar.
+     *
+     * @see setExpanded
+     */
     var isExpanded: Boolean
-        /**
-         * Get the current state of the toolbar.
-         *
-         * @see .setExpanded
-         * @see .setExpanded
-         */
         get() = mExpandable && !mAppBarLayout.seslIsCollapsed()
-        /**
-         * Programmatically expand or collapse the Toolbar.
-         */
         set(expanded) {
             setExpanded(expanded, mAppBarLayout.isLaidOut)
         }
@@ -733,7 +724,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         searchModeOBPBehavior = searchModeOnBackBehavior
         animatedVisibility(mMainToolbar, GONE)
         animatedVisibility(mSearchToolbar!!, VISIBLE)
-        mFooterContainer!!.visibility = GONE
+        mCustomFooterContainer!!.visibility = GONE
         setExpanded(expanded = false, animate = true)
         setupSearchModeListener()
         mSearchView.isIconified = false
@@ -768,7 +759,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         animatedVisibility(mMainToolbar, VISIBLE)
         setTitle(mTitleExpanded, mTitleCollapsed)
         mCollapsingToolbarLayout.seslSetSubtitle(mSubtitleExpanded)
-        mFooterContainer!!.visibility = VISIBLE
+        mCustomFooterContainer!!.visibility = VISIBLE
         mSearchModeListener!!.onSearchModeToggle(mSearchView, false)
         // We are clearing the listener first. We don't want to trigger
         // SearchModeListener.onQueryTextChange callback
@@ -900,7 +891,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
         animatedVisibility(mMainToolbar, GONE)
         showActionModeToolbarAnimate()
-        mFooterContainer!!.visibility = GONE
+        mCustomFooterContainer!!.visibility = GONE
         setupActionModeMenu()
         allSelectorStateFlow?.let {
             updateAllSelectorJob = activity!!.lifecycleScope.launch {
@@ -1000,7 +991,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             mCollapsingToolbarLayout.seslSetSubtitle(null)
         }else{
             showMainToolbarAnimate()
-            mFooterContainer!!.visibility = VISIBLE
+            mCustomFooterContainer!!.visibility = VISIBLE
             setTitle(mTitleExpanded, mTitleCollapsed)
             mCollapsingToolbarLayout.seslSetSubtitle(mSubtitleExpanded)
             mMainToolbar.subtitle = mSubtitleCollapsed
@@ -1302,9 +1293,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     //
     // others
     //
-    protected fun handleInsets(): Boolean {
-        return mHandleInsets
-    }
+    protected open val handleInsets get() = mHandleInsets
 
     @SuppressLint("NewApi")
     override fun onApplyWindowInsets(insets: WindowInsets): WindowInsets {

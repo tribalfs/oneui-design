@@ -214,7 +214,7 @@ class ScrollAwareFloatingActionButton @JvmOverloads constructor(
         var toolbarLayout: ToolbarLayout? = null
         var currentParent = parent
         while (currentParent is ViewGroup) {
-            if (currentParent.id == R.id.toolbarlayout_main_container) {
+            if (currentParent.id == R.id.tbl_main_content) {
                 isInsideTBLMainContainer = true
                 if (toolbarLayout != null) break
             }
