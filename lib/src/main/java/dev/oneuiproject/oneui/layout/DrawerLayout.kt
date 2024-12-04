@@ -23,6 +23,7 @@ import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
 import androidx.annotation.Px
 import androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_NONE
@@ -319,22 +320,35 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     }
 
     /**
-     * Set the icon of the drawer button.
-     * The drawer button is the button in the top right corner of the drawer panel.
+     * Sets the icon for the drawer header button, located in the top right corner of the drawer panel.
+     *
+     * @param icon The drawable to use as the icon.
      */
-    fun setDrawerButtonIcon(icon: Drawable?) {
+    @Deprecated("Use setHeaderButtonIcon() instead.",
+        replaceWith = ReplaceWith("setHeaderButtonIcon(icon)"))
+    fun setDrawerButtonIcon(icon: Drawable?){
+        setHeaderButtonIcon(icon)
+    }
+
+    /**
+     * Sets the icon for the drawer header button, located in the top right corner of the drawer panel.
+     *
+     * @param icon The drawable to use as the icon.
+     * @param tint An optional tint to apply to the icon.
+     */
+    @JvmOverloads
+    open fun setHeaderButtonIcon(icon: Drawable?, @ColorInt tint: Int? = null) {
         if (mHeaderButton != null) {
-            mHeaderButton!!.setImageDrawable(icon)
-            mHeaderButton!!.imageTintList = ColorStateList.valueOf(
-                context.getColor(R.color.oui_drawerlayout_header_icon_color)
-            )
+            mHeaderButton!!.apply {
+                setImageDrawable(icon)
+                imageTintList = ColorStateList.valueOf(
+                    tint ?: context.getColor(R.color.oui_drawerlayout_header_icon_color)
+                )
+            }
             mHeaderView.visibility =
                 if (icon != null) VISIBLE else GONE
         } else {
-            Log.e(
-                TAG, "setDrawerButtonIcon: this method can be used " +
-                        "only with the default header view"
-            )
+            Log.e(TAG, "setHeaderButtonIcon: `drawer_header_button` id is not set in custom header view")
         }
     }
 
