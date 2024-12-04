@@ -30,6 +30,7 @@ import androidx.appcompat.widget.TooltipCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.doOnLayout
 import androidx.core.view.updateLayoutParams
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener
@@ -136,7 +137,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
                 ?: ContextCompat.getColor(context, R.color.oui_round_and_bgcolor)
         }
 
-        setDrawerWidth()
+        updateDrawerWidth()
         setDrawerCornerRadius(DEFAULT_DRAWER_RADIUS)
 
         setNavigationButtonOnClickListener {
@@ -176,12 +177,24 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        setDrawerWidth()
-        if (sIsDrawerOpened) {
-            mDrawer.post {
-                mDrawerListener.onDrawerSlide(
-                    mDrawerContent, 1f
-                )
+        if (!isAttachedToWindow) return
+        updateDrawerLayout()
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        updateDrawerLayout()
+    }
+
+    private fun updateDrawerLayout(){
+        doOnLayout {
+            updateDrawerWidth()
+            if (sIsDrawerOpened) {
+                mDrawer.post {
+                    mDrawerListener.onDrawerSlide(
+                        mDrawerContent, 1f
+                    )
+                }
             }
         }
     }
@@ -194,7 +207,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         }
     }
 
-    private fun setDrawerWidth() {
+    private fun updateDrawerWidth() {
         val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val display = wm.defaultDisplay
         val size = Point()
