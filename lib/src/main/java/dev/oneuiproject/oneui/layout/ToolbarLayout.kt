@@ -40,6 +40,7 @@ import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.children
@@ -267,6 +268,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     }
 
     protected open fun getDefaultLayoutResource(): Int  = R.layout.oui_layout_toolbarlayout_appbar
+    protected open fun getDefaultNavigationIconResource(): Int?  = null
 
     protected open fun initLayoutAttrs(attrs: AttributeSet?) {
         context.theme.obtainStyledAttributes(attrs, R.styleable.ToolbarLayout, 0, 0).use {
@@ -274,6 +276,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             mExpandable = it.getBoolean(R.styleable.ToolbarLayout_expandable, true)
             mExpanded = it.getBoolean(R.styleable.ToolbarLayout_expanded, mExpandable)
             mNavigationIcon = it.getDrawable(R.styleable.ToolbarLayout_navigationIcon)
+                ?: getDefaultNavigationIconResource()?.let {d -> ContextCompat.getDrawable(context, d) }
             mTitleCollapsed = it.getString(R.styleable.ToolbarLayout_title)
             mTitleExpanded = mTitleCollapsed
             mSubtitleExpanded = it.getString(R.styleable.ToolbarLayout_subtitle)

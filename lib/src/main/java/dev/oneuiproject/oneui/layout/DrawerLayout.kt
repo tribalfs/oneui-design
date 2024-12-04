@@ -1,5 +1,3 @@
-@file:Suppress("NOTHING_TO_INLINE")
-
 package dev.oneuiproject.oneui.layout
 
 import android.annotation.SuppressLint
@@ -96,6 +94,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         get() = DrawerLayoutBackHandler(this@DrawerLayout, DrawerBackAnimator(mDrawerContent, mToolbarContent!!))
 
     override fun getDefaultLayoutResource() = R.layout.oui_layout_drawerlayout
+    override fun getDefaultNavigationIconResource(): Int = R.drawable.oui_ic_ab_drawer
 
     override fun initLayoutAttrs(attrs: AttributeSet?) {
         super.initLayoutAttrs(attrs)
@@ -114,7 +113,6 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     }
 
     private fun initDrawer() {
-        setNavigationButtonIcon(ContextCompat.getDrawable(context, R.drawable.oui_ic_ab_drawer))
         setNavigationButtonTooltip(resources.getText(R.string.oui_navigation_drawer))
 
         val scrimColor = context.getColor(R.color.oui_drawerlayout_drawer_dim_color)
