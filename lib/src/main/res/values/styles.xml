@@ -196,7 +196,7 @@
 
     <style name="OneUI.BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/bottomsheet_bg</item>
-        <item name="android:maxWidth">520dp</item>->
+        <item name="android:maxWidth">600dp</item>->
     </style>
 
     <style name="OneUI.BottomSheet.DragHandle" parent="">
