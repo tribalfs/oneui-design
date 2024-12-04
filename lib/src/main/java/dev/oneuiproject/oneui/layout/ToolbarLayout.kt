@@ -367,13 +367,14 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     public override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        resetAppBar()
+        refreshLayout(resources.configuration)
+        syncActionModeMenu()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
+        if (!isAttachedToWindow) return
         refreshLayout(newConfig)
-        resetAppBar()
         syncActionModeMenu()
     }
 
@@ -399,19 +400,24 @@ open class ToolbarLayout @JvmOverloads constructor(
         initAppBar()
         this.activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
 
-        refreshLayout(resources.configuration)
     }
 
     private fun refreshLayout(newConfig: Configuration) {
-        removeCallbacks(sideMarginUpdater)
-        postDelayed(sideMarginUpdater, 40)
-
+        updateContentSideMargin()
         if (!isInEditMode) ToolbarLayoutUtils
             .hideStatusBarForLandscape(this.activity!!, newConfig.orientation)
 
         val isLandscape = newConfig.orientation == ORIENTATION_LANDSCAPE
 
         isExpanded = !isLandscape and mExpanded
+
+        resetAppBar()
+    }
+
+    @RestrictTo(RestrictTo.Scope.LIBRARY)
+    open fun updateContentSideMargin(){
+        removeCallbacks(sideMarginUpdater)
+        postDelayed(sideMarginUpdater, 20)
     }
 
     private fun resetAppBar() {
