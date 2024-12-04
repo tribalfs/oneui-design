@@ -275,6 +275,20 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         lockDrawerIfAvailable(false)
     }
 
+    override fun startSearchMode(
+        listener: SearchModeListener,
+        searchModeOnBackBehavior: SearchModeOnBackBehavior
+    ) {
+        lockDrawerIfAvailable(true)
+        super.startSearchMode(listener, searchModeOnBackBehavior)
+    }
+
+    override fun endSearchMode() {
+        super.endSearchMode()
+        if (isActionMode) return
+        lockDrawerIfAvailable(false)
+    }
+
     //
     // Drawer methods
     //
