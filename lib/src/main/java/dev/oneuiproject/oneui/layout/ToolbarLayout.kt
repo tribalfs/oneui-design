@@ -168,7 +168,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         OnBackCallbackDelegateCompat(activity!!, this, backHandler)
     }
 
-    internal fun updateOnBackCallbackState() {
+    internal open fun updateOnBackCallbackState() {
         onBackCallbackDelegate.stopListening()
         if (getBackCallbackStateUpdate().not()) return
         onBackCallbackDelegate.startListening(true)
@@ -399,7 +399,9 @@ open class ToolbarLayout @JvmOverloads constructor(
     init {
         orientation = VERTICAL
 
+        @Suppress("LeakingThis")
         initLayoutAttrs(attrs)
+        @Suppress("LeakingThis")
         inflateChildren()
         initAppBar()
         this.activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
@@ -621,7 +623,7 @@ open class ToolbarLayout @JvmOverloads constructor(
      * Set the navigation icon of the Toolbar.
      * Don't forget to also set a Tooltip with [.setNavigationButtonTooltip].
      */
-    fun setNavigationButtonIcon(icon: Drawable?) {
+    open fun setNavigationButtonIcon(icon: Drawable?) {
         mNavigationIcon = icon
         if (mNavigationBadgeIcon != null) {
             mNavigationBadgeIcon!!.setDrawable(0, mNavigationIcon)
@@ -651,7 +653,7 @@ open class ToolbarLayout @JvmOverloads constructor(
      *
      * @param badge The [Badge] to be displayed.
      */
-    fun setNavigationButtonBadge(badge: Badge) {
+    open fun setNavigationButtonBadge(badge: Badge) {
         if (mNavigationIcon != null) {
             when(badge){
                 is Badge.DOT, is Badge.NUMERIC -> {
@@ -675,14 +677,14 @@ open class ToolbarLayout @JvmOverloads constructor(
     /**
      * Set the Tooltip of the navigation button.
      */
-    fun setNavigationButtonTooltip(tooltipText: CharSequence?) {
+    open fun setNavigationButtonTooltip(tooltipText: CharSequence?) {
         mMainToolbar.navigationContentDescription = tooltipText
     }
 
     /**
      * Callback for the navigation button click event.
      */
-    fun setNavigationButtonOnClickListener(listener: OnClickListener?) {
+    open fun setNavigationButtonOnClickListener(listener: OnClickListener?) {
         mMainToolbar.setNavigationOnClickListener(listener)
     }
 
@@ -693,7 +695,7 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @see setNavigationButtonTooltip
      * @see android.app.ActionBar.setDisplayHomeAsUpEnabled
      */
-    fun setNavigationButtonAsBack() {
+    open fun setNavigationButtonAsBack() {
         if (!isInEditMode) {
             this.activity!!.apply {
                 supportActionBar!!.setDisplayHomeAsUpEnabled(true)

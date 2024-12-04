@@ -116,7 +116,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
             .inflate(mLayout, this, true)
     }
 
-    private fun initViews() {
+    protected open fun initViews() {
         val scrimColor = context.getColor(R.color.oui_drawerlayout_drawer_dim_color)
 
         mDrawerLayout = findViewById<DrawerLayout?>(R.id.drawer_layout)
@@ -203,7 +203,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         }
     }
 
-    private fun lockDrawerIfAvailable(lock: Boolean) {
+    internal open fun lockDrawerIfAvailable(lock: Boolean) {
         if (lock) {
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         } else {
@@ -214,7 +214,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     open fun isDrawerLocked(): Boolean =
         mDrawerLayout.getDrawerLockMode(Gravity.LEFT) != DrawerLayout.LOCK_MODE_UNLOCKED
 
-    private fun updateDrawerWidth() {
+    internal open fun updateDrawerWidth() {
         val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val display = wm.defaultDisplay
         val size = Point()
@@ -434,7 +434,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
      *
      * @param badge The [badge][dev.oneuiproject.oneui.layout.Badge] to setn.
      */
-    fun setHeaderButtonBadge(badge: Badge) {
+    open fun setHeaderButtonBadge(badge: Badge) {
         if (mDrawerHeaderBadge != null) {
             updateBadgeView(mDrawerHeaderBadge!!, badge)
         } else {
@@ -502,7 +502,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
      *
      * @param animate whether or not to animate the opening and closing
      */
-    fun setDrawerOpen(open: Boolean, animate: Boolean) {
+    open fun setDrawerOpen(open: Boolean, animate: Boolean) {
         if (open) {
             mDrawerLayout.openDrawer(mDrawerPane, animate)
         } else {
@@ -515,7 +515,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
      *
      * @param listener lambda to be invoked with the new [DrawerState]
      */
-    fun setDrawerStateListener(listener: ((state: DrawerState)-> Unit)?){
+    open fun setDrawerStateListener(listener: ((state: DrawerState)-> Unit)?){
         mDrawerStateListener = listener
         dispatchDrawerStateChange()
     }
