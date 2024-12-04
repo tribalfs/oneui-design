@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.AttributeSet
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -206,6 +207,9 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
             mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
         }
     }
+
+    open fun isDrawerLocked(): Boolean =
+        mDrawer.getDrawerLockMode(Gravity.LEFT) != DrawerLayout.LOCK_MODE_UNLOCKED
 
     private fun updateDrawerWidth() {
         val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
@@ -487,7 +491,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     internal inline val shouldAnimateDrawer: Boolean
         get() = enableDrawerBackAnimation && shouldCloseDrawer
 
-    internal open val shouldCloseDrawer: Boolean get() = isDrawerOpenOrOpening
+    internal open val shouldCloseDrawer: Boolean get() = isDrawerOpenOrOpening && !isDrawerLocked()
 
     private inner class DrawerOutlineProvider(@param:Px private val mCornerRadius: Int) :
         ViewOutlineProvider() {
