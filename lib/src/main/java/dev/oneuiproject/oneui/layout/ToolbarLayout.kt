@@ -315,10 +315,6 @@ open class ToolbarLayout @JvmOverloads constructor(
                 setDisplayShowTitleEnabled(false)
             }
         }
-
-        setNavigationButtonIcon(mNavigationIcon)
-        setTitle(mTitleExpanded, mTitleCollapsed)
-        setExpandedSubtitle(mSubtitleExpanded)
     }
 
 
@@ -360,6 +356,13 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     override fun generateLayoutParams(attrs: AttributeSet): LayoutParams {
         return ToolbarLayoutParams(context, attrs)
+    }
+
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+        setNavigationButtonIcon(mNavigationIcon)
+        setTitle(mTitleExpanded, mTitleCollapsed)
+        setExpandedSubtitle(mSubtitleExpanded)
     }
 
     public override fun onAttachedToWindow() {
