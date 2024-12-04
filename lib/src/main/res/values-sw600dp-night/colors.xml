@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="drawer_background_tablet_color" tools:ignore="MissingDefaultResource">#17171a</color>
+    <color name="drawer_background_color">@color/drawer_background_tablet_color</color>
+</resources>

@@ -65,13 +65,15 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         CLOSING,
         OPENING
     }
-    private var mDrawerStateListener: ((state: DrawerState)-> Unit)? = null
+    @JvmField
+    internal var mDrawerStateListener: ((state: DrawerState)-> Unit)? = null
     @Volatile
     private var mCurrentState: DrawerState = DrawerState.CLOSE
-    private var mSlideOffset = 0f
+    @JvmField
+    internal var mSlideOffset = 0f
 
     private lateinit var mDrawerLayout: DrawerLayout
-    private var mSlideViewPane: LinearLayout? = null
+    private var mSlideViewPane: FrameLayout? = null
     private lateinit var mDrawerPane: LinearLayout
     private lateinit var mHeaderView: View
     private var mDrawerHeaderButton: ImageButton? = null
@@ -84,6 +86,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         private set
 
     init {
+        @Suppress("LeakingThis")
         initViews()
 
         if (!isInEditMode) {
@@ -97,7 +100,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     override val backHandler: BackHandler
         get() = DrawerLayoutBackHandler(this@DrawerLayout, DrawerBackAnimator(mDrawerPane, mSlideViewPane!!))
 
-    override fun getDefaultLayoutResource() = R.layout.oui_layout_drawerlayout
+    override fun getDefaultLayoutResource() = R.layout.oui_layout_drawerlayout_main
     override fun getDefaultNavigationIconResource(): Int = R.drawable.oui_ic_ab_drawer
 
     override fun initLayoutAttrs(attrs: AttributeSet?) {
@@ -257,8 +260,8 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         keepSearchMode: Boolean,
         allSelectorStateFlow: StateFlow<AllSelectorState>?
     ) {
-        lockDrawerIfAvailable(true)
         super.startActionMode(listener, keepSearchMode, allSelectorStateFlow)
+        lockDrawerIfAvailable(true)
     }
 
     override fun endActionMode() {
@@ -286,8 +289,8 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         listener: SearchModeListener,
         searchModeOnBackBehavior: SearchModeOnBackBehavior
     ) {
-        lockDrawerIfAvailable(true)
         super.startSearchMode(listener, searchModeOnBackBehavior)
+        lockDrawerIfAvailable(true)
     }
 
     override fun endSearchMode() {
@@ -343,7 +346,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         if (mDrawerHeaderButton != null) {
             mDrawerHeaderButton!!.setImageDrawable(icon)
             mDrawerHeaderButton!!.imageTintList = ColorStateList.valueOf(
-                context.getColor(R.color.oui_drawerlayout_header_icon_color)
+                context.getColor(R.color.oui_drawerlayout_header_icon_tint)
             )
             mHeaderView.visibility =
                 if (icon != null) VISIBLE else GONE
@@ -445,7 +448,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         }
     }
 
-    private fun updateBadgeView(badgeView: TextView, badge: Badge){
+    internal fun updateBadgeView(badgeView: TextView, badge: Badge){
         when(badge){
             Badge.DOT -> {
                 val res = resources
@@ -520,7 +523,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         dispatchDrawerStateChange()
     }
 
-    private fun dispatchDrawerStateChange(){
+    internal fun dispatchDrawerStateChange(){
         val newState =
             when (mSlideOffset) {
                 1f -> DrawerState.OPEN
@@ -639,7 +642,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         private const val TAG = "DrawerLayout"
         private const val DEFAULT_DRAWER_RADIUS = 15f
         private const val DRAWER_HEADER = 4
-        private const val DRAWER_PANEL = 5
+        const val DRAWER_PANEL = 5
 
         private var sIsDrawerOpened = false
 

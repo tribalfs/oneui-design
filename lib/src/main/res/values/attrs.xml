@@ -110,6 +110,13 @@
         <attr name="drawerBackAnimation" format="boolean" />
     </declare-styleable>
 
+    <declare-styleable name="NavDrawerLayout">
+        <!--For preview purposes only. No effect on runtime-->
+        <attr name="isOpen" format="boolean"/>
+    </declare-styleable>
+
+    <attr name="drawerBackgroundColor" format="reference|color" />
+
     <declare-styleable name="ToolbarLayoutParams">
         <!--The location of the ToolbarLayout children views.-->
         <attr name="layout_location">

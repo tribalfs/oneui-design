@@ -21,3 +21,5 @@ inline fun Int.dpToPx(resources: Resources): Int = toFloat().dpToPx(resources)
 
 @Dimension(unit = Dimension.DP)
 inline fun Int.pxToDp(resources: Resources): Float = (this / resources.displayMetrics.density)
+
+inline fun Int.ifNegativeOrZero(block: () -> Int): Int = if (this <= 0) {block()} else this

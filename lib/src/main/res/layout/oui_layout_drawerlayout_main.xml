@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@null">
+
+    <FrameLayout
+        android:id="@+id/slideable_view"
+        android:layout_width="match_parent"
+        android:baselineAligned="false"
+        android:layout_height="match_parent">
+
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/oui_layout_drawerlayout_details" />
+
+    </FrameLayout>
+
+    <include
+        android:layout_gravity="start"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/sesl_action_bar_top_padding"
+        layout="@layout/oui_layout_drawer_panel" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

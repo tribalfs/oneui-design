@@ -29,6 +29,7 @@
 
         <item name="bottomSheetDialogTheme">@style/OneUI.BottomSheetDialog</item>
         <item name="bottomSheetDragHandleStyle">@style/OneUI.BottomSheet.DragHandle</item>
+        <item name="drawerBackgroundColor">@color/drawer_background_color</item>
     </style>
 
 </resources>

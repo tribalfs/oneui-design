@@ -218,7 +218,9 @@ open class ToolbarLayout @JvmOverloads constructor(
     private lateinit var mCollapsingToolbarLayout: CollapsingToolbarLayout
     private lateinit var mMainToolbar: Toolbar
 
-    private lateinit var mCoordinatorLayout: CoordinatorLayout
+    internal lateinit var mCoordinatorLayout: CoordinatorLayout
+    internal lateinit var mBottomRoundedCorner: LinearLayout
+    internal lateinit var mFooterParent: LinearLayout
 
     private var mActionModeToolbar: Toolbar? = null
     private lateinit var mActionModeSelectAll: LinearLayout
@@ -226,8 +228,6 @@ open class ToolbarLayout @JvmOverloads constructor(
     private lateinit var mActionModeTitleTextView: TextView
 
     private var mCustomFooterContainer: FrameLayout? = null
-    private lateinit var mFooterParent: LinearLayout
-    private lateinit var mBottomRoundedCorner: LinearLayout
     private lateinit var mBottomActionModeBar: BottomNavigationView
 
     private var mSearchToolbar: Toolbar? = null
@@ -756,6 +756,7 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @see startSearchMode
      */
     open fun endSearchMode() {
+        if (!isSearchMode) return
         isSearchMode = false
         mSearchToolbar!!.visibility = GONE
         animatedVisibility(mMainToolbar, VISIBLE)
