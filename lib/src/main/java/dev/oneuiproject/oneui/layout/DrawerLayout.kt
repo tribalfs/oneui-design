@@ -32,6 +32,7 @@ import androidx.core.content.res.use
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.doOnLayout
 import androidx.core.view.updateLayoutParams
+import androidx.customview.widget.Openable
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener
 import dev.oneuiproject.oneui.delegates.AllSelectorState
@@ -51,7 +52,7 @@ import androidx.appcompat.R as appcompatR
  * Custom DrawerLayout extending [ToolbarLayout]. Looks and behaves the same as the one in Apps from Samsung.
  */
 open class DrawerLayout(context: Context, attrs: AttributeSet?) :
-    ToolbarLayout(context, attrs) {
+    ToolbarLayout(context, attrs), Openable {
 
     private val mDrawerListener: DrawerListener = DrawerListener()
 
@@ -450,6 +451,12 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
             )
         }
     }
+
+    override fun isOpen(): Boolean = mDrawer.isOpen
+
+    override fun open() = setDrawerOpen(true, animate = true)
+
+    override fun close() = setDrawerOpen(false, animate = true)
 
     /**
      * Open or close the drawer panel with an optional animation.
