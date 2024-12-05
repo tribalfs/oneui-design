@@ -26,7 +26,7 @@ repositories {
 dependencies {
   //sesl and other dependencies
   
-  implementation("io.github.tribalfs:oneui-design:0.2.8+oneui6")
+  implementation("io.github.tribalfs:oneui-design:0.3.0+oneui6")
 }
 ```
 
