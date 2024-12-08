@@ -18,6 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.reflect.DeviceInfo;
 import androidx.reflect.content.res.SeslConfigurationReflector;
 
 import com.google.android.material.tabs.TabLayout;
@@ -153,7 +154,7 @@ public class MarginsTabLayout extends TabLayout {
     }
 
     private boolean isDisplayDeviceTypeSub(Configuration config) {
-        if (config == null) {
+        if (config == null || !DeviceInfo.isOneUI()) {
             return false;
         }
 

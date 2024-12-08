@@ -13,6 +13,7 @@ import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
+import androidx.reflect.DeviceInfo;
 
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil;
 
@@ -37,21 +38,24 @@ public class ToolbarLayoutUtils {
             } else {
                 lp.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
             }
-
-            ReflectUtils.genericInvokeMethod(
-                    WindowManager.LayoutParams.class,
-                    lp,
-                    "semAddExtensionFlags",
-                    1 /* WindowManager.LayoutParams.SEM_EXTENSION_FLAG_RESIZE_FULLSCREEN_WINDOW_ON_SOFT_INPUT */);
+            if (DeviceInfo.isOneUI()) {
+                ReflectUtils.genericInvokeMethod(
+                        WindowManager.LayoutParams.class,
+                        lp,
+                        "semAddExtensionFlags",
+                        1 /* WindowManager.LayoutParams.SEM_EXTENSION_FLAG_RESIZE_FULLSCREEN_WINDOW_ON_SOFT_INPUT */);
+            }
         } else {
             lp.flags &= -(WindowManager.LayoutParams.FLAG_FULLSCREEN
                     | WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON);
 
-            ReflectUtils.genericInvokeMethod(
-                    WindowManager.LayoutParams.class,
-                    lp,
-                    "semClearExtensionFlags",
-                    1 /* WindowManager.LayoutParams.SEM_EXTENSION_FLAG_RESIZE_FULLSCREEN_WINDOW_ON_SOFT_INPUT */);
+            if (DeviceInfo.isOneUI()) {
+                ReflectUtils.genericInvokeMethod(
+                        WindowManager.LayoutParams.class,
+                        lp,
+                        "semClearExtensionFlags",
+                        1 /* WindowManager.LayoutParams.SEM_EXTENSION_FLAG_RESIZE_FULLSCREEN_WINDOW_ON_SOFT_INPUT */);
+            }
         }
         activity.getWindow().setAttributes(lp);
     }

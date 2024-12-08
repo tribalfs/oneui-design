@@ -9,6 +9,7 @@ import android.view.View;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+import androidx.reflect.DeviceInfo;
 
 import dev.oneuiproject.oneui.utils.internal.ReflectUtils;
 
@@ -44,7 +45,7 @@ public class ViewUtils {
     }
 
     public static void semSetRoundedCorners(@NonNull View view, int corners) {
-        if (Build.VERSION.SDK_INT >= 28) {
+        if (DeviceInfo.isOneUI() && Build.VERSION.SDK_INT >= 28) {
             if (view != null) {
                 ReflectUtils.genericInvokeMethod(View.class,
                         view, "semSetRoundedCorners", corners);
