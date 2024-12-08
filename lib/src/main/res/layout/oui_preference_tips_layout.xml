@@ -26,7 +26,7 @@
             android:textStyle="bold"
             android:fontFamily="@string/sesl_font_family_regular" />
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <ImageView
             android:id="@+id/tips_cancel_button"
             android:layout_width="22dp"
             android:layout_height="22dp"

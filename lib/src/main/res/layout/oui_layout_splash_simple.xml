@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <ImageView
         android:id="@+id/oui_splash_image"
         android:layout_width="80dp"
         android:layout_height="80dp"
@@ -13,7 +13,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <TextView
         android:id="@+id/oui_splash_text"
         style="@style/TextAppearance.Design.CollapsingToolbar.Expanded"
         android:layout_width="wrap_content"

@@ -30,6 +30,10 @@
         <item name="bottomSheetDialogTheme">@style/OneUI.BottomSheetDialog</item>
         <item name="bottomSheetDragHandleStyle">@style/OneUI.BottomSheet.DragHandle</item>
         <item name="drawerBackgroundColor">@color/drawer_background_color</item>
+
+        <item name="android:buttonStyle">@style/Widget.AppCompat.Button</item>
+        <item name="android:spinnerStyle">@style/Widget.AppCompat.Spinner</item>
+        <item name="android:editTextStyle">@style/Widget.AppCompat.EditText</item>
     </style>
 
 </resources>

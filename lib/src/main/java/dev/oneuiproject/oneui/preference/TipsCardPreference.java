@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -29,7 +30,7 @@ public class TipsCardPreference extends Preference {
 
      private View mItemView;
      private RelativeLayout mTitleContainer;
-     private AppCompatImageView mCancelButton;
+     private ImageView mCancelButton;
      private View mEmptyBottom;
      private LinearLayout mBottomBar;
 

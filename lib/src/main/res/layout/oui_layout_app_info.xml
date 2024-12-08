@@ -59,7 +59,7 @@
             android:textColor="@color/oui_appinfolayout_info_text_color"
             android:textAlignment="center" />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <Button
             style="@style/OneUI.AppInfoButton"
             android:id="@+id/app_info_update"
             android:layout_width="wrap_content"

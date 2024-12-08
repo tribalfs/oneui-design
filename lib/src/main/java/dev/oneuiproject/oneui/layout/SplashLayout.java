@@ -7,11 +7,11 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.AppCompatTextView;
 
 import dev.oneuiproject.oneui.design.R;
 
@@ -25,10 +25,10 @@ public class SplashLayout extends LinearLayout {
     private Drawable mImage_background;
     private String mText;
     private Animation splash_anim;
-    private AppCompatTextView textView;
-    private AppCompatImageView imageview;
-    private AppCompatImageView imageview_foreground;
-    private AppCompatImageView imageview_background;
+    private TextView textView;
+    private ImageView imageview;
+    private ImageView imageview_foreground;
+    private ImageView imageview_background;
     private Drawable mImage;
 
     public SplashLayout(Context context, @Nullable AttributeSet attrs) {

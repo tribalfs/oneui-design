@@ -18,7 +18,6 @@ import android.widget.TextView;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.SeslProgressBar;
 
 import java.lang.annotation.Retention;
@@ -82,7 +81,7 @@ public class AppInfoLayout extends ToolbarLayout {
 
     private LinearLayout mAILContainer;
     private TextView mAppNameTextView, mVersionTextView, mUpdateNotice;
-    private AppCompatButton mUpdateButton;
+    private Button mUpdateButton;
     private SeslProgressBar mProgressBar;
 
     public AppInfoLayout(@NonNull Context context, @Nullable AttributeSet attrs) {

@@ -23,6 +23,7 @@ import android.view.ViewGroup
 import android.view.ViewStub
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.widget.CheckBox
 import android.widget.CompoundButton
 import android.widget.FrameLayout
 import android.widget.LinearLayout
@@ -224,7 +225,7 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     private var mActionModeToolbar: Toolbar? = null
     private lateinit var mActionModeSelectAll: LinearLayout
-    private lateinit var mActionModeCheckBox: AppCompatCheckBox
+    private lateinit var mActionModeCheckBox: CheckBox
     private lateinit var mActionModeTitleTextView: TextView
 
     private var mCustomFooterContainer: FrameLayout? = null

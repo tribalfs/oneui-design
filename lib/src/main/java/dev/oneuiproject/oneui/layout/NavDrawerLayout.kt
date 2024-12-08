@@ -24,7 +24,6 @@ import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
 import androidx.annotation.Px
 import androidx.annotation.RestrictTo
-import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.TooltipCompat
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
@@ -342,7 +341,7 @@ class NavDrawerLayout @JvmOverloads constructor(
             }
 
         if (navRailDrawerButton == null) {
-            navRailDrawerButton = mDrawerPane.findViewById<AppCompatImageButton?>(R.id.navRailDrawerButton).apply { isVisible = true }
+            navRailDrawerButton = mDrawerPane.findViewById<ImageButton?>(R.id.navRailDrawerButton).apply { isVisible = true }
             mNavRailDrawerButtonBadge = mDrawerPane.findViewById(R.id.navRailDrawerButtonBadge)
 
             setNavigationButtonOnClickListener {
