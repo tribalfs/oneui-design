@@ -102,15 +102,15 @@
         <!--Handle system insets and ime insets internally.
          By default, it is set to true when getFitsSystemWindows() is false. -->
         <attr name="handleInsets" format="boolean"/>
+        <!--Sets the toolbar navigation button to be displayed as an "back/up" affordance-->
+        <attr name="showNavButtonAsBack" format="boolean"/>
+        <attr name="showSwitchBar" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="DrawerLayout">
         <!--Enable or disable drawer's predictive back animation.
         This applies only to api34+. This is set to false by default.-->
         <attr name="drawerBackAnimation" format="boolean" />
-    </declare-styleable>
-
-    <declare-styleable name="NavDrawerLayout">
         <!--For preview purposes only. No effect on runtime-->
         <attr name="isOpen" format="boolean"/>
     </declare-styleable>

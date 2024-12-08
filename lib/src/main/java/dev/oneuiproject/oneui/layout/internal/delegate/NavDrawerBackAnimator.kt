@@ -18,12 +18,12 @@ import com.google.android.material.animation.AnimationUtils
 import com.google.android.material.motion.MotionUtils
 import dev.oneuiproject.oneui.ktx.dpToPxFactor
 import dev.oneuiproject.oneui.layout.internal.backapi.BackAnimator
+import dev.oneuiproject.oneui.layout.internal.util.DrawerLayoutInterface
 
 
 @SuppressLint("RestrictedApi")
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-class NavDrawerBackAnimator(private val drawerPane: View,
-                            private val contentPane: View): BackAnimator {
+class NavDrawerBackAnimator(drawerLayoutInterface: DrawerLayoutInterface): BackAnimator {
 
     companion object{
         private const val TAG = "DrawerBackAnimationDelegate"
@@ -31,12 +31,15 @@ class NavDrawerBackAnimator(private val drawerPane: View,
 
     }
 
+    private val drawerPane: View = drawerLayoutInterface.getDrawerPane()
+    private val contentPane: View = drawerLayoutInterface.getContentPane()
     private val dpToPx = drawerPane.context.dpToPxFactor
     private val maxScaleXDistanceShrink = 30f * dpToPx
     private val maxScaleXDistanceGrow = 30f * dpToPx
     private val maxScaleYDistance = 20f * dpToPx
 
     private var backEvent: BackEventCompat? = null
+    private var startProgress = 0f
 
     private val progressInterpolator = MotionUtils.resolveThemeInterpolator(
         drawerPane.context, R.attr.motionEasingStandardDecelerateInterpolator,
@@ -47,6 +50,7 @@ class NavDrawerBackAnimator(private val drawerPane: View,
 
     override fun startBackProgress(backEvent: BackEventCompat) {
         this.backEvent = backEvent
+        startProgress = backEvent.progress
         startTranslationX = if (isRTL) -drawerPane.width.toFloat() else drawerPane.width.toFloat()
     }
 
@@ -54,6 +58,7 @@ class NavDrawerBackAnimator(private val drawerPane: View,
         if (this.backEvent == null) {
             Log.w(TAG, "Must call startBackProgress() before updateBackProgress()")
             this.backEvent = backEvent
+            startProgress = backEvent.progress
             return
         }
 
@@ -61,7 +66,7 @@ class NavDrawerBackAnimator(private val drawerPane: View,
         this.backEvent = backEvent
 
         val leftSwipeEdge = finalBackEvent.swipeEdge == BackEventCompat.EDGE_LEFT
-        updateBackProgress(finalBackEvent.progress, leftSwipeEdge)
+        updateBackProgress(finalBackEvent.progress - startProgress, leftSwipeEdge)
     }
 
     private fun updateBackProgress(progress: Float, leftSwipeEdge: Boolean) {

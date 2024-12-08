@@ -9,39 +9,17 @@ import android.widget.FrameLayout
 import androidx.appcompat.widget.SeslSwitchBar
 import dev.oneuiproject.oneui.design.R
 
+
 /**
  * [ToolbarLayout] with a [SeslSwitchBar].
+ *
+ * This component is deprecated and will be removed in future releases.
+ *
+ * @deprecated Use `ToolbarLayout` instead, which now supports `SeslSwitchBar`.
+ * The `SeslSwitchBar` can be accessed directly through the `switchBar` field in `ToolbarLayout`.
  */
+@Deprecated("Use ToolbarLayout which now supports SeslSwitchBar that can be shown " +
+        "by setting app:showSwitchBar=\"true\"")
 class SwitchBarLayout @JvmOverloads constructor(
     context: Context,
-    attrs: AttributeSet? = null) : ToolbarLayout(context, attrs) {
-
-    /**
-     * Returns the [SeslSwitchBar] in this layout.
-     */
-    val switchBar: SeslSwitchBar
-    private val mSBLContainer: FrameLayout?
-
-    init {
-        LayoutInflater.from(context).inflate(R.layout.oui_layout_switchbarlayout, mMainContainer, true)
-        switchBar = findViewById(R.id.switchbarlayout_switchbar)
-        mSBLContainer = findViewById(R.id.switchbarlayout_container)
-    }
-
-    override fun addView(child: View, index: Int, params: ViewGroup.LayoutParams) {
-        if (mSBLContainer == null) {
-            super.addView(child, index, params)
-        } else {
-            if ((params as ToolbarLayoutParams).layoutLocation == MAIN_CONTENT) {
-                mSBLContainer.addView(child, params)
-            } else {
-                super.addView(child, index, params)
-            }
-        }
-    }
-
-    companion object {
-        private const val TAG = "SwitchBarLayout"
-        private const val MAIN_CONTENT = 0
-    }
-}
+    attrs: AttributeSet? = null) : ToolbarLayout(context, attrs)

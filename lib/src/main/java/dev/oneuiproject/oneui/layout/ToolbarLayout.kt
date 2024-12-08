@@ -5,7 +5,6 @@ package dev.oneuiproject.oneui.layout
 import android.annotation.SuppressLint
 import android.app.SearchManager
 import android.content.Context
-import android.content.ContextWrapper
 import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Configuration.ORIENTATION_LANDSCAPE
@@ -35,10 +34,9 @@ import androidx.annotation.IdRes
 import androidx.annotation.IntRange
 import androidx.annotation.MenuRes
 import androidx.annotation.RestrictTo
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.menu.SeslMenuItem
-import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.SeslSwitchBar
 import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
@@ -53,14 +51,18 @@ import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import dev.oneuiproject.oneui.delegates.AllSelectorState
-import dev.oneuiproject.oneui.layout.internal.backapi.BackHandler
-import dev.oneuiproject.oneui.layout.internal.backapi.OnBackCallbackDelegateCompat
 import dev.oneuiproject.oneui.design.R
+import dev.oneuiproject.oneui.ktx.appCompatActivity
 import dev.oneuiproject.oneui.ktx.isSoftKeyboardShowing
 import dev.oneuiproject.oneui.ktx.setSearchableInfoFrom
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.CLEAR_CLOSE
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.CLEAR_DISMISS
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.DISMISS
+import dev.oneuiproject.oneui.layout.internal.backapi.BackHandler
+import dev.oneuiproject.oneui.layout.internal.backapi.OnBackCallbackDelegateCompat
+import dev.oneuiproject.oneui.layout.internal.delegate.ToolbarLayoutBackHandler
+import dev.oneuiproject.oneui.layout.internal.delegate.ToolbarLayoutButtonsHandler
+import dev.oneuiproject.oneui.layout.internal.util.NavButtonsHandler
 import dev.oneuiproject.oneui.utils.BADGE_LIMIT_NUMBER
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil
 import dev.oneuiproject.oneui.utils.MenuSynchronizer
@@ -68,9 +70,9 @@ import dev.oneuiproject.oneui.utils.MenuSynchronizer.State
 import dev.oneuiproject.oneui.utils.badgeCountToText
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type
-import dev.oneuiproject.oneui.utils.internal.ToolbarLayoutUtils
-import dev.oneuiproject.oneui.layout.internal.NavigationBadgeIcon
-import dev.oneuiproject.oneui.layout.internal.delegate.ToolbarLayoutBackHandler
+import dev.oneuiproject.oneui.utils.internal.ToolbarLayoutUtils.getAdaptiveSideMarginParams
+import dev.oneuiproject.oneui.utils.internal.ToolbarLayoutUtils.setSideMarginParams
+import dev.oneuiproject.oneui.utils.internal.ToolbarLayoutUtils.updateStatusBarVisibility
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -84,7 +86,8 @@ import androidx.appcompat.R as appcompatR
  */
 open class ToolbarLayout @JvmOverloads constructor(
     @JvmField protected var context: Context,
-    attrs: AttributeSet? = null) : LinearLayout(context, attrs) {
+    attrs: AttributeSet? = null
+) : LinearLayout(context, attrs) {
 
     @Deprecated("Use the `ActionModeListener` parameter when calling startActionMode() instead.")
     interface ActionModeCallback {
@@ -139,21 +142,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         CLEAR_CLOSE
     }
 
-    var activity: AppCompatActivity? = null
-        get() {
-            if (field == null) {
-                var context = context
-                while (context is ContextWrapper) {
-                    if (context is AppCompatActivity) {
-                        field = context
-                        break
-                    }
-                    context = context.baseContext
-                }
-            }
-            return field
-        }
-        private set
+    val activity by lazy(LazyThreadSafetyMode.NONE) { context.appCompatActivity }
 
     private var mSelectedItemsCount = 0
 
@@ -170,9 +159,12 @@ open class ToolbarLayout @JvmOverloads constructor(
     }
 
     internal open fun updateOnBackCallbackState() {
-        onBackCallbackDelegate.stopListening()
-        if (getBackCallbackStateUpdate().not()) return
-        onBackCallbackDelegate.startListening(true)
+        if (isInEditMode) return
+        if (getBackCallbackStateUpdate()) {
+            onBackCallbackDelegate.startListening(true)
+        }else{
+            onBackCallbackDelegate.stopListening()
+        }
     }
 
     /**
@@ -188,16 +180,16 @@ open class ToolbarLayout @JvmOverloads constructor(
                     CLEAR_CLOSE -> searchView.query.isNotEmpty() || searchView.isSoftKeyboardShowing
                 }
             }
+
             else -> false
         }
     }
 
     private var mActionModeTitleFadeListener: AppBarOffsetListener? = null
 
-    @JvmField
-    internal var mLayout: Int = 0
-    @JvmField
-    internal var mExpandable: Boolean = false
+    private var mLayout: Int = 0
+
+    private var mExpandable: Boolean = false
     @JvmField
     internal var mExpanded: Boolean = false
     @JvmField
@@ -206,12 +198,10 @@ open class ToolbarLayout @JvmOverloads constructor(
     internal var mTitleExpanded: CharSequence? = null
     @JvmField
     internal var mMainContainer: FrameLayout? = null
-    @JvmField
-    internal var mNavigationIcon: Drawable? = null
-    @JvmField
-    internal var mSubtitleCollapsed: CharSequence? = null
-    @JvmField
-    internal var mSubtitleExpanded: CharSequence? = null
+    private lateinit var mMainContainerParent: LinearLayout
+    private var mNavigationIcon: Drawable? = null
+    private var mSubtitleCollapsed: CharSequence? = null
+    private var mSubtitleExpanded: CharSequence? = null
 
     private var mNavigationBadgeIcon: LayerDrawable? = null
 
@@ -219,9 +209,9 @@ open class ToolbarLayout @JvmOverloads constructor(
     private lateinit var mCollapsingToolbarLayout: CollapsingToolbarLayout
     private lateinit var mMainToolbar: Toolbar
 
-    internal lateinit var mCoordinatorLayout: CoordinatorLayout
-    internal lateinit var mBottomRoundedCorner: LinearLayout
-    internal lateinit var mFooterParent: LinearLayout
+    private lateinit var mCoordinatorLayout: CoordinatorLayout
+    private lateinit var mBottomRoundedCorner: LinearLayout
+    private lateinit var mFooterParent: LinearLayout
 
     private var mActionModeToolbar: Toolbar? = null
     private lateinit var mActionModeSelectAll: LinearLayout
@@ -241,14 +231,26 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     private var mMenuSynchronizer: MenuSynchronizer? = null
 
+    private var mShowSwitchBar = false
+
+    private var _switchBar: SeslSwitchBar? = null
+    val switchBar
+        get() = _switchBar
+            ?: (mMainContainerParent.findViewById<ViewStub>(R.id.viewstub_tbl_switchbar)
+                .inflate() as SeslSwitchBar).also { _switchBar = it }
+
     /**
-     * Check if SearchMode is enabled(=the [SearchView] in the Toolbar is visible).
+     * Check if SearchMode is currently active.
+     * @see startSearchMode
+     * @see endSearchMode
      */
     var isSearchMode: Boolean = false
         private set
 
     /**
-     * Checks if the ActionMode is enabled.
+     * Checks if the ActionMode is currently active.
+     * @see startActionMode
+     * @see endActionMode
      */
     var isActionMode: Boolean = false
         private set
@@ -256,8 +258,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     private var mHandleInsets: Boolean = false
 
     /**
-     * Callback for the Toolbar's SearchMode.
-     * Notification that the [SearchView]'s text has been edited or it's visibility changed.
+     * Listener for the search mode.
      *
      * @see startSearchMode
      * @see endSearchMode
@@ -268,60 +269,8 @@ open class ToolbarLayout @JvmOverloads constructor(
         fun onSearchModeToggle(searchView: SearchView, visible: Boolean)
     }
 
-    protected open fun getDefaultLayoutResource(): Int  = R.layout.oui_layout_tbl_content
-    protected open fun getDefaultNavigationIconResource(): Int?  = null
-
-    @CallSuper
-    protected open fun initLayoutAttrs(attrs: AttributeSet?) {
-        context.theme.obtainStyledAttributes(attrs, R.styleable.ToolbarLayout, 0, 0).use {
-            mLayout = it.getResourceId(R.styleable.ToolbarLayout_android_layout, getDefaultLayoutResource())
-            mExpandable = it.getBoolean(R.styleable.ToolbarLayout_expandable, true)
-            mExpanded = it.getBoolean(R.styleable.ToolbarLayout_expanded, mExpandable)
-            mNavigationIcon = it.getDrawable(R.styleable.ToolbarLayout_navigationIcon)
-                ?: getDefaultNavigationIconResource()?.let {d -> ContextCompat.getDrawable(context, d) }
-            mTitleCollapsed = it.getString(R.styleable.ToolbarLayout_title)
-            mTitleExpanded = mTitleCollapsed
-            mSubtitleExpanded = it.getString(R.styleable.ToolbarLayout_subtitle)
-            if (VERSION.SDK_INT >= 30 && !fitsSystemWindows) {
-                mHandleInsets = it.getBoolean(R.styleable.ToolbarLayout_handleInsets, true)
-            }
-        }
-    }
-
-    protected open fun inflateChildren() {
-        if (mLayout != getDefaultLayoutResource()) {
-            Log.w(TAG, "Inflating custom $TAG")
-        }
-
-        val inflater = LayoutInflater.from(context)
-        inflater.inflate(mLayout, this, true)
-        addView(
-            inflater.inflate(
-                R.layout.oui_layout_tbl_footer, this, false
-            )
-        )
-    }
-
-    private fun initAppBar() {
-        mCoordinatorLayout = findViewById(R.id.toolbarlayout_coordinator_layout)
-        mAppBarLayout = mCoordinatorLayout.findViewById(R.id.toolbarlayout_app_bar)
-        mCollapsingToolbarLayout = mAppBarLayout.findViewById(R.id.toolbarlayout_collapsing_toolbar)
-        mMainToolbar = mCollapsingToolbarLayout.findViewById(R.id.toolbarlayout_main_toolbar)
-
-        mMainContainer = findViewById(R.id.tbl_main_content)
-        mCustomFooterContainer = findViewById(R.id.tbl_custom_footer_container)
-        mFooterParent = findViewById(R.id.tbl_footer_parent)
-        mBottomRoundedCorner = findViewById(R.id.tbl_bottom_corners)
-
-        activity?.apply {
-            setSupportActionBar(mMainToolbar)
-            supportActionBar!!.apply {
-                setDisplayHomeAsUpEnabled(false)
-                setDisplayShowTitleEnabled(false)
-            }
-        }
-    }
-
+    protected open fun getDefaultLayoutResource(): Int = R.layout.oui_layout_tbl_main
+    protected open fun getDefaultNavigationIconResource(): Int? = null
 
     private data class IntrinsicMargin(
         val left: Int,
@@ -331,27 +280,24 @@ open class ToolbarLayout @JvmOverloads constructor(
     private var boundedRootChildMargins: Map<Int, IntrinsicMargin>? = null
 
     override fun addView(child: View, index: Int, params: ViewGroup.LayoutParams) {
-        if (mMainContainer == null || mCustomFooterContainer == null) {
-            super.addView(child, index, params)
-        } else {
-            when ((params as ToolbarLayoutParams).layoutLocation) {
-                MAIN_CONTENT -> mMainContainer!!.addView(child, params)
-                APPBAR_HEADER -> setCustomTitleView(child,
-                    CollapsingToolbarLayout.LayoutParams(params))
-                FOOTER -> mCustomFooterContainer!!.addView(child, params)
-                ROOT, ROOT_BOUNDED -> {
-                    if (params.layoutLocation == ROOT_BOUNDED){
-                        val margins = IntrinsicMargin(params.leftMargin, params.rightMargin)
-                        if (boundedRootChildMargins == null){
-                            boundedRootChildMargins = mapOf(child.id to margins)
-                        }else{
-                            boundedRootChildMargins!!.plus(child.id to margins)
-                        }
+        when ((params as ToolbarLayoutParams).layoutLocation) {
+            APPBAR_HEADER -> setCustomTitleView(
+                child,
+                CollapsingToolbarLayout.LayoutParams(params)
+            )
+            FOOTER -> mCustomFooterContainer!!.addView(child, params)
+            ROOT, ROOT_BOUNDED -> {
+                if (params.layoutLocation == ROOT_BOUNDED) {
+                    val margins = IntrinsicMargin(params.leftMargin, params.rightMargin)
+                    if (boundedRootChildMargins == null) {
+                        boundedRootChildMargins = mapOf(child.id to margins)
+                    } else {
+                        boundedRootChildMargins!!.plus(child.id to margins)
                     }
-                    mCoordinatorLayout.addView(child, cllpWrapper(params as LayoutParams))
                 }
-                else -> mMainContainer!!.addView(child, params)
+                mCoordinatorLayout.addView(child, cllpWrapper(params as LayoutParams))
             }
+            else -> mMainContainer?.addView(child, params) ?: super.addView(child, index, params)
         }
     }
 
@@ -363,77 +309,125 @@ open class ToolbarLayout @JvmOverloads constructor(
         return ToolbarLayoutParams(context, attrs)
     }
 
+    open val navButtonsHandler: NavButtonsHandler by lazy(LazyThreadSafetyMode.NONE) {
+        ToolbarLayoutButtonsHandler(mMainToolbar)
+    }
+
+    init {
+        orientation = VERTICAL
+        context.theme.obtainStyledAttributes(attrs, R.styleable.ToolbarLayout, 0, 0).use {
+            mLayout = it.getResourceId(
+                R.styleable.ToolbarLayout_android_layout,
+                getDefaultLayoutResource()
+            )
+
+            inflateChildren()
+            initViews()
+
+            mExpandable = it.getBoolean(R.styleable.ToolbarLayout_expandable, true)
+            mExpanded = it.getBoolean(R.styleable.ToolbarLayout_expanded, mExpandable)
+            _showNavAsBack = it.getBoolean(R.styleable.ToolbarLayout_showNavButtonAsBack, false)
+            mNavigationIcon = it.getDrawable(R.styleable.ToolbarLayout_navigationIcon)
+                ?: getDefaultNavigationIconResource()?.let { d ->
+                    ContextCompat.getDrawable(context, d) }
+            mTitleCollapsed = it.getString(R.styleable.ToolbarLayout_title)
+            mTitleExpanded = mTitleCollapsed
+            mSubtitleExpanded = it.getString(R.styleable.ToolbarLayout_subtitle)
+            if (VERSION.SDK_INT >= 30 && !fitsSystemWindows) {
+                mHandleInsets = it.getBoolean(R.styleable.ToolbarLayout_handleInsets, true)
+            }
+            mShowSwitchBar = it.getBoolean(R.styleable.ToolbarLayout_showSwitchBar, false)
+        }
+    }
+
+    private fun inflateChildren() {
+        if (mLayout != getDefaultLayoutResource()) {
+            Log.w(TAG, "Inflating custom layout")
+        }
+        LayoutInflater.from(context).inflate(mLayout, this, true)
+    }
+
+    private fun initViews() {
+        mCoordinatorLayout = findViewById(R.id.toolbarlayout_coordinator_layout)
+        mAppBarLayout = mCoordinatorLayout.findViewById(R.id.toolbarlayout_app_bar)
+        mCollapsingToolbarLayout = mAppBarLayout.findViewById(R.id.toolbarlayout_collapsing_toolbar)
+        mMainToolbar = mCollapsingToolbarLayout.findViewById(R.id.toolbarlayout_main_toolbar)
+
+        mMainContainerParent = mCoordinatorLayout.findViewById(R.id.tbl_main_content_parent)
+        mMainContainer = mMainContainerParent.findViewById(R.id.tbl_main_content)
+        mBottomRoundedCorner = mCoordinatorLayout.findViewById(R.id.tbl_bottom_corners)
+
+        mFooterParent = findViewById(R.id.tbl_footer_parent)
+        mCustomFooterContainer = findViewById(R.id.tbl_custom_footer_container)
+
+        activity?.apply {
+            setSupportActionBar(mMainToolbar)
+            supportActionBar!!.apply {
+                setDisplayHomeAsUpEnabled(false)
+                setDisplayShowTitleEnabled(false)
+            }
+        }
+
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+    }
+
     override fun onFinishInflate() {
         super.onFinishInflate()
+        if (mShowSwitchBar) switchBar.visibility = VISIBLE
         setNavigationButtonIcon(mNavigationIcon)
         setTitle(mTitleExpanded, mTitleCollapsed)
         setExpandedSubtitle(mSubtitleExpanded)
+        updateAppbarHeight()
     }
 
     public override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         refreshLayout(resources.configuration)
         syncActionModeMenu()
+        updateOnBackCallbackState()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         if (!isAttachedToWindow) return
         refreshLayout(newConfig)
+        updateAppbarHeight()
         syncActionModeMenu()
+        updateOnBackCallbackState()
     }
 
-    private val sideMarginUpdater = Runnable {
-        val sideMarginParams = ToolbarLayoutUtils.getSideMarginParams(this.activity!!)
-        for (child in mCoordinatorLayout.children){
-            if (child == mMainContainer || child == mBottomRoundedCorner || child == mCustomFooterContainer) {
-                ToolbarLayoutUtils.setSideMarginParams(child, sideMarginParams, 0, 0)
+    private fun refreshLayout(newConfig: Configuration) {
+        activity?.updateStatusBarVisibility()
+        val isLandscape = newConfig.orientation == ORIENTATION_LANDSCAPE
+        isExpanded = !isLandscape and mExpanded
+        updateContentSideMargin()
+    }
+
+    @RestrictTo(RestrictTo.Scope.LIBRARY)
+    protected open fun updateContentSideMargin() {
+        val sideMarginParams = context.getAdaptiveSideMarginParams()
+        mMainContainer!!.setSideMarginParams(sideMarginParams, 0, 0)
+        for (child in mCoordinatorLayout.children) {
+            if (child == _switchBar || child == mBottomRoundedCorner || child == mCustomFooterContainer) {
+                child.setSideMarginParams(sideMarginParams, 0, 0)
                 continue
             }
             boundedRootChildMargins?.get(child.id)?.let {
-                ToolbarLayoutUtils.setSideMarginParams(child, sideMarginParams, it.left, it.right)
+                child.setSideMarginParams(sideMarginParams, it.left, it.right)
             }
         }
         mCoordinatorLayout.requestLayout()
     }
 
-    init {
-        orientation = VERTICAL
-
-        @Suppress("LeakingThis")
-        initLayoutAttrs(attrs)
-        @Suppress("LeakingThis")
-        inflateChildren()
-        initAppBar()
-        this.activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-
-    }
-
-    private fun refreshLayout(newConfig: Configuration) {
-        updateContentSideMargin()
-        if (!isInEditMode) ToolbarLayoutUtils
-            .hideStatusBarForLandscape(this.activity!!, newConfig.orientation)
-
-        val isLandscape = newConfig.orientation == ORIENTATION_LANDSCAPE
-
-        isExpanded = !isLandscape and mExpanded
-
-        resetAppBar()
-    }
-
-    @RestrictTo(RestrictTo.Scope.LIBRARY)
-    open fun updateContentSideMargin(){
-        removeCallbacks(sideMarginUpdater)
-        postDelayed(sideMarginUpdater, 20)
-    }
-
-    private fun resetAppBar() {
+    private fun updateAppbarHeight() {
         mAppBarLayout.isEnabled = mExpandable
         if (mExpandable) {
             mAppBarLayout.seslSetCustomHeightProportion(false, 0f)
         } else {
-            mAppBarLayout.seslSetCustomHeight(context.resources
-                .getDimensionPixelSize(appcompatR.dimen.sesl_action_bar_height_with_padding))
+            mAppBarLayout.seslSetCustomHeight(
+                context.resources
+                    .getDimensionPixelSize(appcompatR.dimen.sesl_action_bar_height_with_padding)
+            )
         }
     }
 
@@ -446,6 +440,7 @@ open class ToolbarLayout @JvmOverloads constructor(
          */
         get() = mAppBarLayout
 
+    @get:RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     val toolbar: Toolbar
         /**
          * Returns the [Toolbar].
@@ -497,7 +492,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         set(expandable) {
             if (mExpandable != expandable) {
                 mExpandable = expandable
-                resetAppBar()
+                updateAppbarHeight()
             }
         }
 
@@ -543,7 +538,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         view: View,
         params: CollapsingToolbarLayout.LayoutParams? = null
     ) {
-        (params?: CollapsingToolbarLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)).apply {
+        (params ?: CollapsingToolbarLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)).apply {
             seslSetIsTitleCustom(true)
             mCollapsingToolbarLayout.seslSetCustomTitleView(view, this)
         }
@@ -577,8 +572,10 @@ open class ToolbarLayout @JvmOverloads constructor(
             }
         }
 
-    @Deprecated("Use setMenuItemBadge(Int, Badge) instead.",
-        replaceWith = ReplaceWith("setMenuItemBadge(id, badge)"))
+    @Deprecated(
+        "Use setMenuItemBadge(Int, Badge) instead.",
+        replaceWith = ReplaceWith("setMenuItemBadge(id, badge)")
+    )
     fun setMenuItemBadge(@IdRes id: Int, text: String?) {
     }
 
@@ -611,9 +608,11 @@ open class ToolbarLayout @JvmOverloads constructor(
         val item = mMainToolbar.menu.findItem(id)
         if (item is SeslMenuItem) {
             setMenuItemBadge(item, badge)
-        }else{
-            Log.e(TAG, "setMenuItemBadge: MenuItem with id $id not found. " +
-                    "Ensure that it's already instantiated.")
+        } else {
+            Log.e(
+                TAG, "setMenuItemBadge: MenuItem with id $id not found. " +
+                        "Ensure that it's already instantiated."
+            )
         }
     }
 
@@ -621,31 +620,20 @@ open class ToolbarLayout @JvmOverloads constructor(
     // Navigation Button methods
     //
     /**
-     * Set the navigation icon of the Toolbar.
-     * Don't forget to also set a Tooltip with [.setNavigationButtonTooltip].
+     * Set the icon on the navigation button.
+     * Don't forget to also set a tooltip description with [setNavigationButtonTooltip].
      */
-    open fun setNavigationButtonIcon(icon: Drawable?) {
-        mNavigationIcon = icon
-        if (mNavigationBadgeIcon != null) {
-            mNavigationBadgeIcon!!.setDrawable(0, mNavigationIcon)
-            mNavigationBadgeIcon!!.invalidateSelf()
-            mMainToolbar.navigationIcon = mNavigationBadgeIcon
-        } else {
-            mMainToolbar.navigationIcon = mNavigationIcon
-        }
+    fun setNavigationButtonIcon(icon: Drawable?) {
+        navButtonsHandler.setNavigationButtonIcon(icon)
     }
 
     /**
      * Change the visibility of the navigation button.
      */
+    @Deprecated("Use `showNavigationButton` property instead.",
+        replaceWith = ReplaceWith("showNavigationButton = visible"))
     fun setNavigationButtonVisible(visible: Boolean) {
-        if (mNavigationBadgeIcon != null) {
-            mMainToolbar.navigationIcon = if (visible) mNavigationBadgeIcon else null
-        } else if (mNavigationIcon != null) {
-            mMainToolbar.navigationIcon = if (visible) mNavigationIcon else null
-        } else {
-            this.activity!!.supportActionBar!!.setDisplayHomeAsUpEnabled(visible)
-        }
+        navButtonsHandler.showNavigationButton = visible
     }
 
     /**
@@ -654,56 +642,68 @@ open class ToolbarLayout @JvmOverloads constructor(
      *
      * @param badge The [Badge] to be displayed.
      */
-    open fun setNavigationButtonBadge(badge: Badge) {
-        if (mNavigationIcon != null) {
-            when(badge){
-                is Badge.DOT, is Badge.NUMERIC -> {
-                    val badgeIcon = NavigationBadgeIcon(context)
-                    mNavigationBadgeIcon = LayerDrawable(arrayOf(mNavigationIcon!!, badgeIcon))
-                    badgeIcon.setBadge(badge)
-                    mMainToolbar.navigationIcon = mNavigationBadgeIcon
-                }
-                is Badge.NONE -> {
-                    mNavigationBadgeIcon = null
-                    mMainToolbar.navigationIcon = mNavigationIcon
-                }
-            }
-
-        } else Log.d(
-            TAG, "setNavigationButtonBadge: no navigation icon" +
-                    " has been set"
-        )
+    fun setNavigationButtonBadge(badge: Badge) {
+        navButtonsHandler.setNavigationButtonBadge(badge)
     }
 
     /**
-     * Set the Tooltip of the navigation button.
+     * Set the tooltip description on the navigation button.
+     * @see setNavigationButtonIcon
      */
-    open fun setNavigationButtonTooltip(tooltipText: CharSequence?) {
-        mMainToolbar.navigationContentDescription = tooltipText
+    fun setNavigationButtonTooltip(tooltipText: CharSequence?) {
+        navButtonsHandler.setNavigationButtonTooltip(tooltipText)
     }
 
+
     /**
-     * Callback for the navigation button click event.
+     * Set the click listener for the navigation button click event.
      */
-    open fun setNavigationButtonOnClickListener(listener: OnClickListener?) {
-        mMainToolbar.setNavigationOnClickListener(listener)
+    fun setNavigationButtonOnClickListener(listener: OnClickListener?) {
+        navButtonsHandler.setNavigationButtonOnClickListener(listener)
     }
 
     /**
-     * Sets the icon the a back icon, the tooltip to 'Navigate up' and calls [OnBackPressedDispatcher.onBackPressed] when clicked.
+     * Sets the icon to a back icon, the tooltip to 'Navigate up' and calls [OnBackPressedDispatcher.onBackPressed] when clicked.
      *
      * @see setNavigationButtonIcon
      * @see setNavigationButtonTooltip
      * @see android.app.ActionBar.setDisplayHomeAsUpEnabled
      */
-    open fun setNavigationButtonAsBack() {
+    @Deprecated("Use `showNavigationButtonAsBack` property instead",
+        replaceWith = ReplaceWith("showNavigationButtonAsBack = true"))
+    fun setNavigationButtonAsBack() {
         if (!isInEditMode) {
-            this.activity!!.apply {
-                supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-                setNavigationButtonOnClickListener { onBackPressedDispatcher.onBackPressed() }
-            }
+            navButtonsHandler.showNavigationButtonAsBack = true
         }
     }
+
+    private var _showNavAsBack = false
+
+    /**
+     * Represents whether the toolbar navigation button should be displayed as an "back/up" affordance.
+     * Set this to `true` if selecting navigation button returns up by a single level in your UI
+     * rather than back to the top level or front page.
+     * - it will set the tooltip to 'Back' and calls [OnBackPressedDispatcher.onBackPressed] when clicked.
+     *
+     * @see [setNavigationButtonIcon]
+     * @see [setNavigationButtonTooltip]
+     */
+    var showNavigationButtonAsBack
+        get() = navButtonsHandler.showNavigationButtonAsBack
+        set(value) {
+            if (_showNavAsBack == value) return
+            _showNavAsBack = value
+            navButtonsHandler.showNavigationButtonAsBack = value
+        }
+
+    /**
+     * Represents the visibility of the toolbar navigation button.
+     */
+    var showNavigationButton
+        get() = navButtonsHandler.showNavigationButton
+        set(value) {
+            navButtonsHandler.showNavigationButton = value
+        }
 
     //
     // Search Mode methods
@@ -718,8 +718,10 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @see [endSearchMode]
      */
     @JvmOverloads
-    open fun startSearchMode(listener: SearchModeListener,
-                             searchModeOnBackBehavior: SearchModeOnBackBehavior = CLEAR_DISMISS) {
+    open fun startSearchMode(
+        listener: SearchModeListener,
+        searchModeOnBackBehavior: SearchModeOnBackBehavior = CLEAR_DISMISS
+    ) {
         ensureSearchModeViews()
         isSearchMode = true
         mSearchModeListener = listener
@@ -731,7 +733,8 @@ open class ToolbarLayout @JvmOverloads constructor(
         setExpanded(expanded = false, animate = true)
         setupSearchModeListener()
         mSearchView.isIconified = false
-        mCollapsingToolbarLayout.title = resources.getString(appcompatR.string.sesl_searchview_description_search)
+        mCollapsingToolbarLayout.title =
+            resources.getString(appcompatR.string.sesl_searchview_description_search)
         mCollapsingToolbarLayout.seslSetSubtitle(null)
         updateOnBackCallbackState()
         mSearchModeListener!!.onSearchModeToggle(mSearchView, true)
@@ -783,7 +786,7 @@ open class ToolbarLayout @JvmOverloads constructor(
      */
     @Deprecated("Replaced by startSearchMode().", ReplaceWith("startSearchMode(listener)"))
     open fun showSearchMode() {
-        mSearchModeListener?.let{ startSearchMode(it)}
+        mSearchModeListener?.let { startSearchMode(it) }
             ?: Log.e(TAG, "Can't start search mode without setting the listener.")
     }
 
@@ -799,9 +802,11 @@ open class ToolbarLayout @JvmOverloads constructor(
         endSearchMode()
     }
 
-    private fun ensureSearchModeViews(){
-        if (mSearchToolbar == null){
-            mSearchToolbar = mCollapsingToolbarLayout.findViewById<ViewStub>(R.id.viewstub_oui_view_toolbar_search).inflate() as Toolbar
+    private fun ensureSearchModeViews() {
+        if (mSearchToolbar == null) {
+            mSearchToolbar =
+                mCollapsingToolbarLayout.findViewById<ViewStub>(R.id.viewstub_oui_view_toolbar_search)
+                    .inflate() as Toolbar
             mSearchView = mSearchToolbar!!.findViewById(R.id.toolbarlayout_search_view)
             mSearchView.seslSetUpButtonVisibility(VISIBLE)
             mSearchView.seslSetOnUpButtonClickListener { endSearchMode() }
@@ -821,8 +826,10 @@ open class ToolbarLayout @JvmOverloads constructor(
     /**
      * Set the [SearchModeListener] for the Toolbar's SearchMode.
      */
-    @Deprecated("Set it as parameter when calling startSearchMode().",
-        ReplaceWith("startSearchMode(listener)"))
+    @Deprecated(
+        "Set it as parameter when calling startSearchMode().",
+        ReplaceWith("startSearchMode(listener)")
+    )
     fun setSearchModeListener(listener: SearchModeListener?) {
         mSearchModeListener = listener
     }
@@ -878,9 +885,11 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @see [endActionMode]
      */
     @JvmOverloads
-    open fun startActionMode(listener: ActionModeListener,
-                             keepSearchMode: Boolean = false,
-                             allSelectorStateFlow: StateFlow<AllSelectorState>? = null){
+    open fun startActionMode(
+        listener: ActionModeListener,
+        keepSearchMode: Boolean = false,
+        allSelectorStateFlow: StateFlow<AllSelectorState>? = null
+    ) {
         Log.d(TAG, "startActionMode")
         isActionMode = true
         updateAllSelectorJob?.cancel()
@@ -889,7 +898,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         if (isSearchMode) {
             if (keepSearchMode) {
                 animatedVisibility(mSearchToolbar!!, GONE)
-            }else{
+            } else {
                 endSearchMode()
             }
         }
@@ -916,7 +925,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         updateOnBackCallbackState()
     }
 
-    private inline fun showActionModeToolbarAnimate(){
+    private inline fun showActionModeToolbarAnimate() {
         animatedVisibility(mActionModeToolbar!!, VISIBLE)
 
         val overshoot = CachedInterpolatorFactory.getOrCreate(Type.OVERSHOOT)
@@ -945,7 +954,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     }
 
     @SuppressLint("VisibleForTests")
-    private inline fun showMainToolbarAnimate(){
+    private inline fun showMainToolbarAnimate() {
         animatedVisibility(mMainToolbar, VISIBLE)
 
         val overshoot = CachedInterpolatorFactory.getOrCreate(Type.OVERSHOOT)
@@ -991,9 +1000,10 @@ open class ToolbarLayout @JvmOverloads constructor(
         if (isSearchMode) {
             //return to search mode interface
             animatedVisibility(mSearchToolbar!!, VISIBLE)
-            mCollapsingToolbarLayout.title = resources.getString(appcompatR.string.sesl_searchview_description_search)
+            mCollapsingToolbarLayout.title =
+                resources.getString(appcompatR.string.sesl_searchview_description_search)
             mCollapsingToolbarLayout.seslSetSubtitle(null)
-        }else{
+        } else {
             showMainToolbarAnimate()
             mCustomFooterContainer!!.visibility = VISIBLE
             setTitle(mTitleExpanded, mTitleCollapsed)
@@ -1030,6 +1040,7 @@ open class ToolbarLayout @JvmOverloads constructor(
                     }
                     mActionModeCallback?.onShow(this@ToolbarLayout)
                 }
+
                 override fun onEndActionMode() {
                     mActionModeCallback?.onDismiss(this@ToolbarLayout)
                 }
@@ -1074,7 +1085,7 @@ open class ToolbarLayout @JvmOverloads constructor(
                     mActionModeToolbar!!.menu.findItem(item.itemId)
                 )
             }
-        }else{
+        } else {
             mActionModeToolbar!!.setOnMenuItemClickListener(null)
         }
     }
@@ -1106,16 +1117,20 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
     }
 
-    private fun ensureActionModeViews(){
-        if (mActionModeToolbar == null){
-            mActionModeToolbar = (mCollapsingToolbarLayout.findViewById<ViewStub>(R.id.viewstub_oui_view_toolbar_action_mode)
-                .inflate() as Toolbar).also {
-                mActionModeSelectAll = it.findViewById(R.id.toolbarlayout_selectall)
-                mActionModeTitleTextView = it.findViewById(R.id.toolbar_layout_action_mode_title)
-            }
-            mActionModeCheckBox = mActionModeSelectAll.findViewById(R.id.toolbarlayout_selectall_checkbox)
+    private fun ensureActionModeViews() {
+        if (mActionModeToolbar == null) {
+            mActionModeToolbar =
+                (mCollapsingToolbarLayout.findViewById<ViewStub>(R.id.viewstub_oui_view_toolbar_action_mode)
+                    .inflate() as Toolbar).also {
+                    mActionModeSelectAll = it.findViewById(R.id.toolbarlayout_selectall)
+                    mActionModeTitleTextView =
+                        it.findViewById(R.id.toolbar_layout_action_mode_title)
+                }
+            mActionModeCheckBox =
+                mActionModeSelectAll.findViewById(R.id.toolbarlayout_selectall_checkbox)
             mActionModeSelectAll.setOnClickListener { mActionModeCheckBox.setChecked(!mActionModeCheckBox.isChecked) }
-            mBottomActionModeBar = findViewById<ViewStub>(R.id.viewstub_tbl_actionmode_bottom_menu).inflate() as BottomNavigationView
+            mBottomActionModeBar =
+                findViewById<ViewStub>(R.id.viewstub_tbl_actionmode_bottom_menu).inflate() as BottomNavigationView
         }
     }
 
@@ -1132,8 +1147,10 @@ open class ToolbarLayout @JvmOverloads constructor(
     /**
      * Set the menu resource for the ActionMode's [BottomNavigationView]
      */
-    @Deprecated("Use the ActionModeListener#onInflateActionMenu() callback when calling startActionMode() instead.",
-        ReplaceWith(""))
+    @Deprecated(
+        "Use the ActionModeListener#onInflateActionMenu() callback when calling startActionMode() instead.",
+        ReplaceWith("")
+    )
     fun setActionModeBottomMenu(@MenuRes menuRes: Int) {
         setActionModeMenu(menuRes)
     }
@@ -1143,14 +1160,18 @@ open class ToolbarLayout @JvmOverloads constructor(
      * On landscape orientation where ActionMode's [BottomNavigationView] will be hidden,
      * the visible items from this menu resource we be shown to ActionMode's [Toolbar] [Menu]
      */
-    @Deprecated("Use the ActionModeListener#onInflateActionMenu() callback when calling startActionMode() instead.",
-        ReplaceWith(""))
+    @Deprecated(
+        "Use the ActionModeListener#onInflateActionMenu() callback when calling startActionMode() instead.",
+        ReplaceWith("")
+    )
     fun setActionModeMenu(@MenuRes menuRes: Int) {
         mActionModeMenuRes = menuRes
     }
 
-    @Deprecated("Access this with ActionModeListener#onInflateActionMenu() callback when calling startActionMode() instead.",
-        ReplaceWith(""))
+    @Deprecated(
+        "Access this with ActionModeListener#onInflateActionMenu() callback when calling startActionMode() instead.",
+        ReplaceWith("")
+    )
     val actionModeBottomMenu: Menu
         /**
          * Returns the [Menu] of the ActionMode's [BottomNavigationView].
@@ -1165,8 +1186,10 @@ open class ToolbarLayout @JvmOverloads constructor(
      * On landscape orientation, the same listener will be invoke for ActionMode's [Toolbar] [MenuItem]s
      * which are copied from ActionMode's [BottomNavigationView]
      */
-    @Deprecated("Use the ActionModeListener#onMenuItemClicked() callback when calling startActionMode() instead.",
-        ReplaceWith(""))
+    @Deprecated(
+        "Use the ActionModeListener#onMenuItemClicked() callback when calling startActionMode() instead.",
+        ReplaceWith("")
+    )
     fun setActionModeMenuListener(listener: NavigationBarView.OnItemSelectedListener) {
         ensureActionModeViews()
         setActionModeMenuListenerInternal(listener)
@@ -1194,7 +1217,7 @@ open class ToolbarLayout @JvmOverloads constructor(
          * Returns the [Menu] of the ActionMode's [Toolbar].
          *
          */
-        get(){
+        get() {
             ensureActionModeViews()
             return mActionModeToolbar!!.menu
         }
@@ -1206,7 +1229,10 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @param count number of selected items in the list
      * @param enabled enabled click
      */
-    @Deprecated("Use updateAllSelector() instead.", ReplaceWith("updateAllSelector(count, enabled, checked)"))
+    @Deprecated(
+        "Use updateAllSelector() instead.",
+        ReplaceWith("updateAllSelector(count, enabled, checked)")
+    )
     fun setActionModeAllSelector(count: Int, enabled: Boolean) {
         setActionModeAllSelector(count, enabled, null)
     }
@@ -1221,9 +1247,11 @@ open class ToolbarLayout @JvmOverloads constructor(
      */
     @JvmOverloads
     fun updateAllSelector(count: Int, enabled: Boolean, checked: Boolean? = null) {
-        if (updateAllSelectorJob != null){
-            Log.w(TAG, "'updateAllSelector' ignored because `startActionMode` " +
-                    " is provided as param for  startActionMode().")
+        if (updateAllSelectorJob != null) {
+            Log.w(
+                TAG, "'updateAllSelector' ignored because `startActionMode` " +
+                        " is provided as param for  startActionMode()."
+            )
             return
         }
         updateAllSelectorInternal(count, enabled, checked)
@@ -1267,7 +1295,10 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @param enabled enable or disable click
      * @param checked
      */
-    @Deprecated("Use updateAllSelector() instead.", ReplaceWith("updateAllSelector(count, enabled, checked)"))
+    @Deprecated(
+        "Use updateAllSelector() instead.",
+        ReplaceWith("updateAllSelector(count, enabled, checked)")
+    )
     fun setActionModeAllSelector(count: Int, enabled: Boolean, checked: Boolean?) {
         updateAllSelectorInternal(count, enabled, checked)
     }
@@ -1279,8 +1310,10 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @param count number of selected items in the list
      * @param total number of total items in the list
      */
-    @Deprecated("Use setActionModeAllSelector() instead.",
-        ReplaceWith("setActionModeAllSelector(count, enabled, checked)"))
+    @Deprecated(
+        "Use setActionModeAllSelector() instead.",
+        ReplaceWith("setActionModeAllSelector(count, enabled, checked)")
+    )
     fun setActionModeCount(count: Int, total: Int) {
         setActionModeAllSelector(count, true, count == total)
     }
@@ -1288,8 +1321,10 @@ open class ToolbarLayout @JvmOverloads constructor(
     /**
      * Set the listener for the 'All' Checkbox of the ActionMode.
      */
-    @Deprecated("Use ActionModeListener#onSelectAll() callback when calling startActionMode() instead.",
-        ReplaceWith(""))
+    @Deprecated(
+        "Use ActionModeListener#onSelectAll() callback when calling startActionMode() instead.",
+        ReplaceWith("")
+    )
     fun setActionModeCheckboxListener(listener: CompoundButton.OnCheckedChangeListener?) {
         mOnSelectAllListener = listener
     }
@@ -1318,8 +1353,9 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
     }
 
-    class ToolbarLayoutParams(context: Context, attrs: AttributeSet?) : LayoutParams(context, attrs) {
-        val layoutLocation =  attrs?.let {at ->
+    class ToolbarLayoutParams(context: Context, attrs: AttributeSet?) :
+        LayoutParams(context, attrs) {
+        val layoutLocation = attrs?.let { at ->
             context.obtainStyledAttributes(at, R.styleable.ToolbarLayoutParams).use {
                 it.getInteger(R.styleable.ToolbarLayoutParams_layout_location, 0)
             }
@@ -1360,7 +1396,7 @@ open class ToolbarLayout @JvmOverloads constructor(
                 if (mAppBarLayout.seslIsCollapsed()) {
                     mActionModeTitleTextView.alpha = 1.0f
                 } else {
-                    mActionModeTitleTextView.alpha =  (150.0f / alphaRange
+                    mActionModeTitleTextView.alpha = (150.0f / alphaRange
                             * (layoutPosition - toolbarTitleAlphaStart) / 255f).coerceIn(0f, 1f)
                 }
             }
@@ -1380,30 +1416,36 @@ open class ToolbarLayout @JvmOverloads constructor(
     }
 }
 
+
 /**
  * Type-safe way to set badge. Select either [Badge.NUMERIC], [Badge.DOT] or [Badge.NONE]
  */
-sealed class Badge{
+sealed class Badge {
     /**
      * @param count Set to any positive integer up to [BADGE_LIMIT_NUMBER].
      * Values <= 0 will be ignored.
      */
-    data class NUMERIC(@IntRange(from = 1, to = BADGE_LIMIT_NUMBER.toLong())
-                       @JvmField val count: Int): Badge()
-    data object DOT: Badge()
-    data object NONE: Badge()
+    data class NUMERIC(
+        @IntRange(from = 1, to = BADGE_LIMIT_NUMBER.toLong())
+        @JvmField val count: Int
+    ) : Badge()
+
+    data object DOT : Badge()
+    data object NONE : Badge()
 
     fun toBadgeText(): String? =
-        when(this){
+        when (this) {
             is NUMERIC -> count.badgeCountToText()
             DOT -> ""
             NONE -> null
         }
 }
 
-@Deprecated("Use setNavigationButtonBadge()",
-    ReplaceWith("setNavigationButtonBadge(badge)"))
-inline fun <T:ToolbarLayout>T.setNavigationBadge(badge: Badge){
+@Deprecated(
+    "Use setNavigationButtonBadge()",
+    ReplaceWith("setNavigationButtonBadge(badge)")
+)
+inline fun <T : ToolbarLayout> T.setNavigationBadge(badge: Badge) {
     setNavigationButtonBadge(badge)
 }
 
@@ -1442,7 +1484,7 @@ inline fun <T:ToolbarLayout>T.setNavigationBadge(badge: Badge){
  * ```
  * @see ToolbarLayout.endSearchMode
  */
-inline fun <T:ToolbarLayout>T.startSearchMode(
+inline fun <T : ToolbarLayout> T.startSearchMode(
     onBackBehavior: ToolbarLayout.SearchModeOnBackBehavior,
     crossinline onQuery: (query: String, isSubmit: Boolean) -> Boolean,
     crossinline onStart: (searchView: SearchView) -> Unit = {},
@@ -1459,7 +1501,7 @@ inline fun <T:ToolbarLayout>T.startSearchMode(
             override fun onSearchModeToggle(searchView: SearchView, visible: Boolean) {
                 if (visible) {
                     onStart.invoke(searchView)
-                }else{
+                } else {
                     onEnd.invoke(searchView)
                 }
             }
@@ -1509,7 +1551,7 @@ inline fun <T:ToolbarLayout>T.startSearchMode(
  *
  * @see ToolbarLayout.endActionMode
  */
-inline fun <T:ToolbarLayout>T.startActionMode(
+inline fun <T : ToolbarLayout> T.startActionMode(
     crossinline onInflateMenu: (menu: Menu) -> Unit,
     crossinline onEnd: () -> Unit,
     crossinline onSelectMenuItem: (item: MenuItem) -> Boolean,

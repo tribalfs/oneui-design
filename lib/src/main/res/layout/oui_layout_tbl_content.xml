@@ -2,9 +2,11 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/toolbarlayout_coordinator_layout"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="0dp"
-    android:layout_weight="1">
+    android:layout_weight="1"
+    tools:viewBindingIgnore="true">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/toolbarlayout_app_bar"
@@ -39,15 +41,33 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <dev.oneuiproject.oneui.widget.RoundedFrameLayout
-        android:id="@+id/tbl_main_content"
+    <LinearLayout
+        android:id="@+id/tbl_main_content_parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@null"
         android:layout_gravity="center_horizontal|top"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:roundedCorners="top_left|top_right" />
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <ViewStub
+            android:id="@+id/viewstub_tbl_switchbar"
+            android:layout="@layout/oui_layout_tbl_switchbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp" />
+
+        <dev.oneuiproject.oneui.widget.RoundedFrameLayout
+            android:id="@+id/tbl_main_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:roundedCorners="top_left|top_right"/>
+    </LinearLayout>
 
     <dev.oneuiproject.oneui.widget.RoundedLinearLayout
+        android:clickable="false"
+        android:focusableInTouchMode="false"
+        android:focusable="false"
         android:id="@+id/tbl_bottom_corners"
         android:layout_width="match_parent"
         android:layout_height="26dp"

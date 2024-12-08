@@ -86,7 +86,8 @@ public class AppInfoLayout extends ToolbarLayout {
 
     public AppInfoLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        setNavigationButtonAsBack();
+        initLayoutAttrs(attrs);
+        setShowNavigationButtonAsBack(true);
         if (!isInEditMode()) {
             getActivity().setSupportActionBar(null);
         }
@@ -123,9 +124,8 @@ public class AppInfoLayout extends ToolbarLayout {
         });
     }
 
-    @Override
-    protected void initLayoutAttrs(@Nullable AttributeSet attrs) {
-        super.initLayoutAttrs(attrs);
+
+    private void initLayoutAttrs(@Nullable AttributeSet attrs) {
         mTitleExpanded = mTitleCollapsed = null;
 
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ToolbarLayout, 0, 0);

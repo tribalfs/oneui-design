@@ -22,7 +22,7 @@
             android:focusable="true"
             android:clickable="true">
 
-            <androidx.appcompat.widget.AppCompatCheckBox
+            <CheckBox
                 android:id="@+id/toolbarlayout_selectall_checkbox"
                 android:layout_width="32dp"
                 android:layout_height="32dp"

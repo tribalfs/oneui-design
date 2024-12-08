@@ -7,8 +7,14 @@ import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.content.res.Resources
+import android.graphics.Point
+import android.os.Build
+import android.os.Build.VERSION
+import android.view.WindowInsets
+import android.view.WindowManager
 import androidx.annotation.RestrictTo
 import androidx.reflect.content.res.SeslConfigurationReflector
+import dev.oneuiproject.oneui.ktx.activity
 import dev.oneuiproject.oneui.utils.internal.getSystemProp
 
 
@@ -77,5 +83,25 @@ object DeviceLayoutUtil {
         val metrics = context.resources.displayMetrics
         val config = context.resources.configuration
         return config.densityDpi / metrics.densityDpi.toFloat()
+    }
+
+    fun getWidthExcludingSystemInsets(context: Context): Int{
+        val activity = context.activity
+        activity?.let {
+            if (VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                val metrics = it.windowManager.currentWindowMetrics
+                val windowInsets = metrics.windowInsets
+                val insets = windowInsets.getInsetsIgnoringVisibility(
+                    WindowInsets.Type.navigationBars()
+                            or WindowInsets.Type.displayCutout()
+                )
+                val insetsWidth = insets.right + insets.left
+                return metrics.bounds.width() - insetsWidth
+            }
+        }
+
+        return Point().apply {
+            @Suppress("DEPRECATION")
+            (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.getSize(this) }.x
     }
 }

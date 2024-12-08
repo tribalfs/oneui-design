@@ -34,7 +34,6 @@
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/oui_ic_ab_drawer"
             android:visibility="gone"
-            tools:visibility="visible"
             />
 
         <TextView
@@ -60,7 +59,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="HardcodedText,ImageContrastCheck"
+            tools:src="@drawable/oui_ic_ab_app_info"
+            tools:ignore="ContentDescription,HardcodedText,ImageContrastCheck"
             />
 
         <TextView

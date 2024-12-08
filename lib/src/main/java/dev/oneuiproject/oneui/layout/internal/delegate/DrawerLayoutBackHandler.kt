@@ -23,6 +23,8 @@ open class DrawerLayoutBackHandler<T: DrawerLayout>(
     override fun updateBackProgress(backEvent: BackEventCompat) {
         if (mDrawerBackAnimator.isBackProgressStarted()) {
             mDrawerBackAnimator.updateBackProgress(backEvent)
+        }else if (mDrawerLayout.shouldAnimateDrawer) {
+            mDrawerBackAnimator.startBackProgress(backEvent)
         }
     }
 
