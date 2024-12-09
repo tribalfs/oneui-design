@@ -46,8 +46,10 @@ class ColorPickerPreference @JvmOverloads constructor(
         onPreferenceClickListener = this
 
         context.obtainStyledAttributes(attrs, R.styleable.ColorPickerPreference).use {
-            mAlphaSliderEnabled = it.getBoolean(R.styleable.ColorPickerPreference_showAlphaSlider, false)
-            mPersistRecentColors = it.getBoolean(R.styleable.ColorPickerPreference_persistRecentColors, true)
+            mAlphaSliderEnabled =
+                it.getBoolean(R.styleable.ColorPickerPreference_showAlphaSlider, false)
+            mPersistRecentColors =
+                it.getBoolean(R.styleable.ColorPickerPreference_persistRecentColors, true)
         }
     }
 
@@ -62,7 +64,7 @@ class ColorPickerPreference @JvmOverloads constructor(
 
     override fun onSetInitialValue(defaultValue: Any?) {
         onColorSet(getPersistedInt(defaultValue as? Int ?: mValue))
-        if (mPersistRecentColors){
+        if (mPersistRecentColors) {
             loadRecentColors()
         }
     }
@@ -83,7 +85,7 @@ class ColorPickerPreference @JvmOverloads constructor(
     }
 
     override fun onColorSet(color: Int) {
-        if (!callChangeListener(color)){
+        if (!callChangeListener(color)) {
             return
         }
 
@@ -121,11 +123,7 @@ class ColorPickerPreference @JvmOverloads constructor(
     }
 
     private fun addRecentColor(color: Int) {
-        for (i in mUsedColors.indices.reversed()) {
-            if (mUsedColors[i] == color) {
-                mUsedColors.removeAt(i)
-            }
-        }
+        mUsedColors.removeAll { it == color }
         if (mUsedColors.size > 5) {
             mUsedColors.removeAt(0)
         }
@@ -190,34 +188,38 @@ class ColorPickerPreference @JvmOverloads constructor(
     }
 
     private fun loadRecentColors() {
-        val recentColorsStringSet = preferenceDataStore
-            ?.getStringSet(KEY_RECENT_COLORS, emptySet<String>())
+        val recentColorsString = preferenceDataStore
+            ?.getString(KEY_RECENT_COLORS, "")
             ?: PreferenceManager.getDefaultSharedPreferences(context)!!
-                .getStringSet(KEY_RECENT_COLORS, emptySet<String>())
+                .getString(KEY_RECENT_COLORS, "") ?: return
 
-        recentColorsStringSet?.let {
-            mUsedColors.addAll(recentColorsStringSet.map { convertToColorInt(it) })
+        if (recentColorsString.isEmpty()) return
+
+        mUsedColors.apply {
+            clear()
+            addAll(recentColorsString.split(":").map { convertToColorInt(it) })
         }
     }
 
     override fun onDetached() {
         super.onDetached()
-        if (mPersistRecentColors){
+        if (mPersistRecentColors) {
             saveRecentColors()
         }
     }
 
     @OptIn(ExperimentalStdlibApi::class)
     private fun saveRecentColors() {
-        val recentColorsStringSet = mUsedColors.map { "#${it.toHexString()}" }.toSet()
+        //Saving it as String instead of String set to preserve its order
+        val recentColorsStringSet = mUsedColors.joinToString(":") { "#${it.toHexString()}" }
         preferenceDataStore
-            ?.putStringSet(KEY_RECENT_COLORS, recentColorsStringSet)
+            ?.putString(KEY_RECENT_COLORS, recentColorsStringSet)
             ?: PreferenceManager.getDefaultSharedPreferences(context)!!.edit()
-                .putStringSet(KEY_RECENT_COLORS, recentColorsStringSet).apply()
+                .putString(KEY_RECENT_COLORS, recentColorsStringSet).apply()
     }
 
     companion object {
-        private const val KEY_RECENT_COLORS: String = "oneui:color_picker:recent_colors"
+        private const val KEY_RECENT_COLORS: String = "oneui:color_picker:recent5_colors"
 
         @Throws(IllegalArgumentException::class)
         @ColorInt
