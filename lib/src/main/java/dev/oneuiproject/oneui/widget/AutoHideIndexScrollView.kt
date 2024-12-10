@@ -9,7 +9,6 @@ import android.content.res.Configuration
 import android.database.MatrixCursor
 import android.icu.text.AlphabeticIndex
 import android.os.Build
-import android.os.LocaleList
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.window.OnBackInvokedCallback
@@ -30,7 +29,6 @@ import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.doOnEnd
 import dev.oneuiproject.oneui.ktx.doOnStart
 import dev.oneuiproject.oneui.ktx.dpToPx
-import dev.oneuiproject.oneui.ktx.ifEmpty
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type.SINE_IN_OUT_80
 import java.lang.ref.WeakReference
@@ -312,9 +310,8 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
             return "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z".split(",").toTypedArray()
         }
 
-        val locales = resources.configuration.locales.ifEmpty {
-            AppCompatDelegate.getApplicationLocales().unwrap() as LocaleList
-        }
+        val locales = AppCompatDelegate.getApplicationLocales()
+
         val alphabeticIndex = AlphabeticIndex<Int>(locales[0])
         for (i in 1 until locales.size()) {
             alphabeticIndex.addLabels(locales[i])

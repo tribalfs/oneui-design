@@ -14,6 +14,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.res.use
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import dev.oneuiproject.oneui.design.R
 
 /**
@@ -37,8 +38,8 @@ class SelectableLinearLayout @JvmOverloads constructor(
     private var mCheckMode: Int = 0
     private lateinit var mColorBackground: ColorDrawable
 
-    private var checkDrawable: AnimatedVectorDrawable? = null
-    private var uncheckDrawable: AnimatedVectorDrawable? = null
+    private var checkDrawable: AnimatedVectorDrawableCompat? = null
+    private var uncheckDrawable: AnimatedVectorDrawableCompat? = null
     private var imageTargetId: Int? = null
     private var imageTarget: ImageView? = null
 
@@ -79,10 +80,10 @@ class SelectableLinearLayout @JvmOverloads constructor(
                 }
                 else -> {
                     if (mCheckMode == 1) {
-                        checkDrawable = AppCompatResources.getDrawable(context,
-                            R.drawable.ic_oui_check_selected) as AnimatedVectorDrawable
-                        uncheckDrawable = AppCompatResources.getDrawable(context,
-                            R.drawable.ic_oui_check_unselected) as AnimatedVectorDrawable
+                        checkDrawable = AnimatedVectorDrawableCompat.create(context,
+                            R.drawable.ic_oui_check_selected) as AnimatedVectorDrawableCompat
+                        uncheckDrawable = AnimatedVectorDrawableCompat.create(context,
+                            R.drawable.ic_oui_check_unselected) as AnimatedVectorDrawableCompat
                     }
                     imageTargetId = it.getResourceId(R.styleable.SelectableLinearLayout_targetImage, 0)
                 }
@@ -90,7 +91,6 @@ class SelectableLinearLayout @JvmOverloads constructor(
         }
     }
 
-    @SuppressLint("NewApi")
     override fun onFinishInflate() {
         super.onFinishInflate()
         if (mCheckMode == 1) {
@@ -123,7 +123,6 @@ class SelectableLinearLayout @JvmOverloads constructor(
      * Use to toggle selected state indicators on this view
      * @see setSelectedAnimate
      */
-    @SuppressLint("NewApi")
     override fun setSelected(isSelected: Boolean) {
         when (mCheckMode){
             0 ->  mCheckBox!!.isChecked = isSelected
@@ -137,7 +136,6 @@ class SelectableLinearLayout @JvmOverloads constructor(
      * Same as [setSelected] but
      * will animate the check drawable when `checkMode` is set to `overlayCircle`.
      */
-    @SuppressLint("NewApi")
     fun setSelectedAnimate(isSelected: Boolean){
         when (mCheckMode){
             0 -> {
