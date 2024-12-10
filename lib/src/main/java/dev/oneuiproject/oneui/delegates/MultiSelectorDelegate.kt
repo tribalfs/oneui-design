@@ -82,6 +82,7 @@ class MultiSelectorDelegate<T>(
     private var getSelectionId: ((position: Int) -> T?)? = null
     private var currentAllSelectionState: AllSelectorState = AllSelectorState()
     private var onAllSelectorStateChanged: (selectionId: AllSelectorState) -> Unit = {}
+    private var restoreItemAnimator: RecyclerView.ItemAnimator? = null
 
     override var isActionMode: Boolean = false
         private set
@@ -119,8 +120,21 @@ class MultiSelectorDelegate<T>(
                 },
                 onStateChanged = {state, pos ->
                     when(state){
-                        STARTED -> if (pos != NO_POSITION) onStateChanged(STARTED, pos)
-                        ENDED -> onStateChanged(ENDED, pos)
+                        STARTED -> {
+                            //Temporarily disable item animator if any
+                            itemAnimator?.let {
+                                restoreItemAnimator = it
+                                itemAnimator = null
+                            }
+                            if (pos != NO_POSITION) onStateChanged(STARTED, pos)
+                        }
+                        ENDED -> {
+                            onStateChanged(ENDED, pos)
+                            restoreItemAnimator?.let {
+                                itemAnimator = it
+                                restoreItemAnimator = null
+                            }
+                        }
                     }
                 }
             )
