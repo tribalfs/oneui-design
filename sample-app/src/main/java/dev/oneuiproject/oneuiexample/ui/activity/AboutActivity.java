@@ -3,6 +3,9 @@ package dev.oneuiproject.oneuiexample.ui.activity;
 import static androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_TOP_LEFT;
 import static androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_TOP_RIGHT;
 
+import static dev.oneuiproject.oneui.utils.internal.ToolbarLayoutUtils.updateAdaptiveSideMargins;
+import static dev.oneuiproject.oneui.utils.internal.ToolbarLayoutUtils.updateStatusBarVisibility;
+
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -123,9 +126,8 @@ public class AboutActivity extends AppCompatActivity
 
     @SuppressLint("RestrictedApi")
     private void resetAppBar(Configuration config) {
-        ToolbarLayoutUtils.hideStatusBarForLandscape(this, config.orientation);
-        ToolbarLayoutUtils.updateListBothSideMargin(this,
-                mBinding.aboutBottomContainer);
+        updateStatusBarVisibility(this);
+        updateAdaptiveSideMargins(mBinding.aboutBottomContainer);
 
         if (config.orientation != Configuration.ORIENTATION_LANDSCAPE
                 && !isInMultiWindowMode() || DeviceLayoutUtil.INSTANCE.isTabletLayoutOrDesktop(this)) {

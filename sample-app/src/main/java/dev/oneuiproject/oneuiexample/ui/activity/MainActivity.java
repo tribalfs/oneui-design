@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -104,16 +105,15 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
     private void initDrawer() {
-        mBinding.drawerLayout.setDrawerButtonIcon(getDrawable(dev.oneuiproject.oneui.R.drawable.ic_oui_settings_outline));
-        mBinding.drawerLayout.setDrawerButtonTooltip("Preferences");
-        mBinding.drawerLayout.setDrawerButtonOnClickListener(v -> {
+        mBinding.drawerLayout.setHeaderButtonIcon(AppCompatResources.getDrawable(this, dev.oneuiproject.oneui.R.drawable.ic_oui_settings_outline));
+        mBinding.drawerLayout.setHeaderButtonTooltip("Preferences");
+        mBinding.drawerLayout.setHeaderButtonOnClickListener(v -> {
                     ActivityUtils.startPopOverActivity(this,
                             new Intent(MainActivity.this, PreferenceActivity.class),
                             null,
                             ActivityUtils.POP_OVER_POSITION_TOP | ActivityUtils.POP_OVER_POSITION_CENTER_HORIZONTAL);
-                    mBinding.drawerLayout.setDrawerButtonBadge(Badge.NONE.INSTANCE);
+                    mBinding.drawerLayout.setHeaderButtonBadge(Badge.NONE.INSTANCE);
                 });
 
         mBinding.drawerListView.setLayoutManager(new LinearLayoutManager(this));
