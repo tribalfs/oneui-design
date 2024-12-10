@@ -373,6 +373,9 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     override fun onFinishInflate() {
         super.onFinishInflate()
+        if (navButtonsHandler.showNavigationButtonAsBack != _showNavAsBack){
+            navButtonsHandler.showNavigationButtonAsBack = _showNavAsBack
+        }
         if (mShowSwitchBar) switchBar.visibility = VISIBLE
         setNavigationButtonIcon(mNavigationIcon)
         setTitle(mTitleExpanded, mTitleCollapsed)
