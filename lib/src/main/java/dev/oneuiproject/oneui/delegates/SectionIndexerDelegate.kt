@@ -3,13 +3,11 @@ package dev.oneuiproject.oneui.delegates
 import android.content.Context
 import android.icu.text.AlphabeticIndex
 import android.os.Build
-import android.os.LocaleList
 import android.widget.SectionIndexer
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.collection.MutableScatterMap
 import androidx.collection.mutableScatterMapOf
-import dev.oneuiproject.oneui.ktx.ifEmpty
 import java.util.Locale
 
 
@@ -85,9 +83,7 @@ class SectionIndexerDelegate<T>(private val context: Context,
     @RequiresApi(Build.VERSION_CODES.N)
     private fun getIndexes():  AlphabeticIndex.ImmutableIndex<Int> {
         if (cachedIndexes == null) {
-            val locales = context.resources.configuration.locales.ifEmpty {
-                    AppCompatDelegate.getApplicationLocales().unwrap() as LocaleList
-            }
+            val locales = AppCompatDelegate.getApplicationLocales()
             val alphabeticIndex = AlphabeticIndex<Int>(locales[0])
             for (i in 1 until locales.size()) {
                 alphabeticIndex.addLabels(locales[i])
