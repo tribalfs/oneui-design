@@ -238,4 +238,16 @@
         <item name="tabSelectedTextColor">@color/sesl_tablayout_selected_text_color</item>
     </style>
 
+    <style name="OneUI.StartEndTimePickerTab">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/start_end_time_picker_tab_height</item>
+        <item name="android:layout_marginTop">@dimen/start_end_time_picker_tab_margin_top</item>
+        <item name="android:layout_marginStart">@dimen/start_end_time_picker_tab_margin</item>
+        <item name="android:layout_marginEnd">@dimen/start_end_time_picker_tab_margin</item>
+    </style>
+
+    <style name="OneUI.StartEndTimePickerDialog" parent="@style/Theme.AppCompat.DayNight.Dialog.Alert">
+        <item name="android:windowLayoutInDisplayCutoutMode" tools:targetApi="o_mr1">never</item>
+    </style>
+
 </resources>
