@@ -3,8 +3,10 @@ package dev.oneuiproject.oneuiexample.ui.activity;
 import static androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_TOP_LEFT;
 import static androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_TOP_RIGHT;
 
-import static dev.oneuiproject.oneui.utils.internal.ToolbarLayoutUtils.updateAdaptiveSideMargins;
-import static dev.oneuiproject.oneui.utils.internal.ToolbarLayoutUtils.updateStatusBarVisibility;
+import static dev.oneuiproject.oneui.ktx.ViewKt.semSetRoundedCornerColor;
+import static dev.oneuiproject.oneui.ktx.ViewKt.semSetRoundedCorners;
+import static dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.updateAdaptiveSideMargins;
+import static dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.updateStatusBarVisibility;
 
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
@@ -35,8 +37,6 @@ import com.sec.sesl.tester.databinding.ActivityAboutBinding;
 import com.sec.sesl.tester.databinding.ActivityAboutContentBinding;
 
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil;
-import dev.oneuiproject.oneui.utils.ViewUtils;
-import dev.oneuiproject.oneui.utils.internal.ToolbarLayoutUtils;
 import dev.oneuiproject.oneui.widget.Toast;
 
 public class AboutActivity extends AppCompatActivity
@@ -150,10 +150,8 @@ public class AboutActivity extends AppCompatActivity
     }
 
     private void initContent() {
-        ViewUtils.semSetRoundedCorners(
-                mBinding.aboutBottomContent.getRoot(),
-                ROUNDED_CORNER_TOP_LEFT | ROUNDED_CORNER_TOP_RIGHT);
-        ViewUtils.semSetRoundedCornerColor(mBinding.aboutBottomContent.getRoot(),
+        semSetRoundedCorners(mBinding.aboutBottomContent.getRoot(), ROUNDED_CORNER_TOP_LEFT | ROUNDED_CORNER_TOP_RIGHT);
+        semSetRoundedCornerColor(mBinding.aboutBottomContent.getRoot(),
                 ROUNDED_CORNER_TOP_LEFT | ROUNDED_CORNER_TOP_RIGHT,
                 getColor(dev.oneuiproject.oneui.design.R.color.oui_round_and_bgcolor));
 

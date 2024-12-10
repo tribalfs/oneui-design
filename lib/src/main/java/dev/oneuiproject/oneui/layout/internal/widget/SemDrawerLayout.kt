@@ -35,6 +35,7 @@ import dev.oneuiproject.oneui.ktx.appCompatActivity
 import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
 import dev.oneuiproject.oneui.ktx.ifNegativeOrZero
+import dev.oneuiproject.oneui.ktx.semSetRoundedCorners
 import dev.oneuiproject.oneui.ktx.semSetToolTipText
 import dev.oneuiproject.oneui.layout.Badge
 import dev.oneuiproject.oneui.layout.DrawerLayout.DrawerState
@@ -46,7 +47,6 @@ import dev.oneuiproject.oneui.layout.internal.util.DrawerOutlineProvider
 import dev.oneuiproject.oneui.layout.internal.util.NavButtonsHandler
 import dev.oneuiproject.oneui.layout.internal.util.getDrawerStateUpdate
 import dev.oneuiproject.oneui.layout.internal.util.updateBadge
-import dev.oneuiproject.oneui.utils.ViewUtils
 import kotlin.math.max
 typealias OneUIDrawerLayout = dev.oneuiproject.oneui.layout.DrawerLayout
 
@@ -88,10 +88,7 @@ class SemDrawerLayout @JvmOverloads constructor(
         drawerElevation = 0f
 
         if (!isInEditMode) {
-            ViewUtils.semSetRoundedCorners(
-                activity!!.window.decorView,
-                ROUNDED_CORNER_NONE
-            )
+            activity!!.window.decorView.semSetRoundedCorners(ROUNDED_CORNER_NONE)
         }
     }
 
