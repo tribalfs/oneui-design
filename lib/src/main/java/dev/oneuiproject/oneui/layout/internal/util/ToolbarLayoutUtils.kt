@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package dev.oneuiproject.oneui.utils.internal
+package dev.oneuiproject.oneui.layout.internal.util
 
 import android.app.Activity
 import android.content.Context
@@ -17,6 +17,7 @@ import dev.oneuiproject.oneui.ktx.isInMultiWindowModeCompat
 import dev.oneuiproject.oneui.ktx.widthExcludingSystemInsets
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isScreenWidthLarge
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isTabletBuildOrIsDeskTopMode
+import dev.oneuiproject.oneui.utils.internal.ReflectUtils
 
 /**
  * @hide
@@ -98,7 +99,7 @@ object ToolbarLayoutUtils {
 
 
     @RestrictTo(RestrictTo.Scope.LIBRARY)
-    fun Context.getAdaptiveSideMarginParams(minSideMargin: Int = 0): SideMarginParams{
+    fun Context.getAdaptiveSideMarginParams(minSideMargin: Int = 0): SideMarginParams {
         val config = resources.configuration
         val screenWidthDp = config.screenWidthDp
         val screenHeightDp = config.screenHeightDp

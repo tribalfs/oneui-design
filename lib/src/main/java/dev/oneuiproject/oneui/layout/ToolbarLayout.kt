@@ -70,9 +70,9 @@ import dev.oneuiproject.oneui.utils.MenuSynchronizer.State
 import dev.oneuiproject.oneui.utils.badgeCountToText
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type
-import dev.oneuiproject.oneui.utils.internal.ToolbarLayoutUtils.getAdaptiveSideMarginParams
-import dev.oneuiproject.oneui.utils.internal.ToolbarLayoutUtils.setSideMarginParams
-import dev.oneuiproject.oneui.utils.internal.ToolbarLayoutUtils.updateStatusBarVisibility
+import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.getAdaptiveSideMarginParams
+import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.setSideMarginParams
+import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.updateStatusBarVisibility
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
