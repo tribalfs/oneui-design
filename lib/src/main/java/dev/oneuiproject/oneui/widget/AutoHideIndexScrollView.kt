@@ -17,7 +17,6 @@ import android.window.OnBackInvokedDispatcher.PRIORITY_OVERLAY
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.res.use
-import androidx.core.view.isVisible
 import androidx.indexscroll.widget.SeslCursorIndexer
 import androidx.indexscroll.widget.SeslIndexScrollView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,6 +30,9 @@ import dev.oneuiproject.oneui.ktx.doOnStart
 import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type.SINE_IN_OUT_80
+import dev.oneuiproject.oneui.widget.AutoHideIndexScrollView.AppBarState.COLLAPSED
+import dev.oneuiproject.oneui.widget.AutoHideIndexScrollView.AppBarState.LITTLE_EXPANDED
+import dev.oneuiproject.oneui.widget.AutoHideIndexScrollView.AppBarState.SUBSTANTIALLY_EXPANDED
 import java.lang.ref.WeakReference
 import java.util.Locale
 
@@ -52,14 +54,12 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
     private var mAutoHide: Boolean = true
     private var indexEventListeners: MutableSet<WeakReference<OnIndexBarEventListener>>? = null
 
-    private var mSetVisibility: Int? = null
-
     private var mOnBackInvokedDispatcher: OnBackInvokedDispatcher? = null
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private var mDummyOnBackInvokedCallback: OnBackInvokedCallback? = null
 
     init{
-        mSetVisibility = visibility
+        sSetVisibility = visibility
         context.obtainStyledAttributes(attrs, R.styleable.AutoHideIndexScrollView).use {
             setIndexer(
                 SeslCursorIndexer(
@@ -80,38 +80,38 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
     private val rvScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
-            if (newState == SCROLL_STATE_IDLE) {
-                mIsRVScrolling = false
-                if (!mIsIndexBarPressed && mAutoHide) hideMeDelayed()
-            } else {
-                mIsRVScrolling = true
-                showMeDelayed()
+            (newState != SCROLL_STATE_IDLE).let {
+                if (mIsRVScrolling != it){
+                    mIsRVScrolling = it
+                    updateVisibility(false, delayHide = true)
+                }
             }
         }
     }
 
-    private val showMeRunnable = Runnable { showMe() }
-
-    private fun showMe(){
-        if (mHideWhenExpandedListener?.isAppBarExpanding == true
-            || mSetVisibility != VISIBLE) return
+    private val showMeRunnable = Runnable {
+        if (mHideWhenExpandedListener?.appBarState == SUBSTANTIALLY_EXPANDED
+            || sSetVisibility != VISIBLE) return@Runnable
         animateVisibility(true)
     }
 
-    private val hideMeRunnable = Runnable { hideMe() }
-
-    private fun hideMe() = animateVisibility( false)
-
-    private fun hideMeDelayed(){
-        removeCallbacks(showMeRunnable)
-        removeCallbacks(hideMeRunnable)
-        postDelayed(hideMeRunnable, 1_500)
+    private val hideMeRunnable = Runnable {
+        animateVisibility( false)
     }
 
-    private fun showMeDelayed(){
+    private fun updateVisibility(delayShow: Boolean, delayHide: Boolean){
         removeCallbacks(hideMeRunnable)
         removeCallbacks(showMeRunnable)
-        postDelayed(showMeRunnable, 200)
+        val show = if (mAutoHide) {
+            mIsRVScrolling && mHideWhenExpandedListener?.appBarState != SUBSTANTIALLY_EXPANDED
+        }else{
+            sSetVisibility == VISIBLE && mHideWhenExpandedListener?.appBarState != SUBSTANTIALLY_EXPANDED
+        }
+        if (show) {
+            postDelayed(showMeRunnable, if (delayShow) 400 else 0)
+        }else{
+            postDelayed(hideMeRunnable, if (delayHide) 1_500 else 0)
+        }
     }
 
     override fun attachToRecyclerView(recyclerView: RecyclerView?) {
@@ -144,26 +144,10 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
             }
 
             setIndexBarGravityInt(resources.configuration.layoutDirection)
-
             addOnScrollListener(rvScrollListener)
+            setupEventListener(layoutManager as LinearLayoutManager)
 
-            val layoutManager = layoutManager as LinearLayoutManager
-
-            setupEventListener(layoutManager)
-
-            if (mAutoHide) {
-                if (mIsRVScrolling && mHideWhenExpandedListener?.isAppBarCollapsed != false){
-                    showMeDelayed()
-                } else {
-                    removeCallbacks(showMeRunnable)
-                    removeCallbacks(hideMeRunnable)
-                    animateVisibility(false)
-                }
-            }else{
-                removeCallbacks(showMeRunnable)
-                removeCallbacks(hideMeRunnable)
-                animateVisibility(mSetVisibility == VISIBLE)
-            }
+            updateVisibility(false, delayHide = false)
         }
     }
 
@@ -190,9 +174,7 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
 
                 override fun onReleased(v: Float) {
                     mIsIndexBarPressed = false
-                    if (mAutoHide && mRecyclerView!!.scrollState == SCROLL_STATE_IDLE) {
-                        hideMeDelayed()
-                    }
+                    updateVisibility(true, delayHide = true)
                     indexEventListeners?.forEach {
                         it.get()?.onReleased(v)
                     }
@@ -257,7 +239,7 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
     }
 
     private fun animateVisibility(show: Boolean) {
-        if (isVisible && show) return
+        if (isShown && show) return
         animate().apply {
             cancel()
             if (show) {
@@ -271,7 +253,10 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
             } else {
                 alpha(0f)
                 duration = 150
-                doOnEnd { super.setVisibility(GONE) }
+                doOnEnd {
+                    super.setVisibility(GONE)
+                    alpha = 1f
+                }
             }
             start()
         }
@@ -287,21 +272,10 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
         this.mAutoHide = autoHide
         if (autoHide) {
             mRecyclerView?.addOnScrollListener(rvScrollListener)
-            if (mIsIndexBarPressed || mIsRVScrolling) {
-                removeCallbacks(hideMeRunnable)
-                removeCallbacks(showMeRunnable)
-                showMe()
-            }else{
-                removeCallbacks(hideMeRunnable)
-                removeCallbacks(showMeRunnable)
-                hideMe()
-            }
         } else {
             mRecyclerView?.removeOnScrollListener(rvScrollListener)
-            removeCallbacks(hideMeRunnable)
-            removeCallbacks(showMeRunnable)
-            animateVisibility(mSetVisibility == VISIBLE)
         }
+        updateVisibility(false, delayHide = false)
     }
 
     @SuppressLint("NewApi")
@@ -311,7 +285,6 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
         }
 
         val locales = AppCompatDelegate.getApplicationLocales()
-
         val alphabeticIndex = AlphabeticIndex<Int>(locales[0])
         for (i in 1 until locales.size()) {
             alphabeticIndex.addLabels(locales[i])
@@ -320,37 +293,33 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
         return alphabeticIndex.buildImmutableIndex().toSet().map { it.toString() }.toTypedArray()
     }
 
+    private enum class AppBarState{
+        COLLAPSED,
+        LITTLE_EXPANDED,
+        SUBSTANTIALLY_EXPANDED
+    }
+
     private inner class AppBarOffsetListener : OnOffsetChangedListener {
         @Volatile
-        var isAppBarExpanding: Boolean = false
-        @Volatile
-        var isAppBarCollapsed: Boolean = true
+        var appBarState: AppBarState = COLLAPSED
 
         override fun onOffsetChanged(layout: AppBarLayout, verticalOffset: Int) {
             val totalScrollRange = layout.totalScrollRange
-
-            isAppBarExpanding = (totalScrollRange + verticalOffset) > totalScrollRange / 3
-            isAppBarCollapsed =  totalScrollRange + verticalOffset == 0
-
-            if (isAppBarExpanding) {
-                removeCallbacks(hideMeRunnable)
-                if (isVisible && !mIsIndexBarPressed) {
-                    animateVisibility( false)
-                }
-            }else if (isAppBarCollapsed){
-                if (mAutoHide) {
-                    if (mIsRVScrolling) postDelayed(showMeRunnable, 400)
-                }else if (mSetVisibility == VISIBLE && !isVisible){
-                    animateVisibility(true)
-                }
+            val newAppBarState = when{
+                (totalScrollRange + verticalOffset) > totalScrollRange / 3 -> SUBSTANTIALLY_EXPANDED
+                 totalScrollRange + verticalOffset == 0 -> COLLAPSED
+                else -> LITTLE_EXPANDED
             }
+            if (appBarState == newAppBarState) return
+            appBarState = newAppBarState
+            updateVisibility(delayShow = false, delayHide = false)
         }
     }
 
     override fun setVisibility(visibility: Int) {
-        mSetVisibility = visibility
+        sSetVisibility = visibility
         super.setVisibility(visibility)
-        animateVisibility(mSetVisibility == VISIBLE)
+        updateVisibility(false, delayHide = false)
     }
 
     private var dumbCallbackRegistered = false
@@ -391,6 +360,7 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
     }
 
     companion object{
+        private var sSetVisibility: Int = -1
         private const val TAG = "AutoHideIndexScrollView"
     }
 }
