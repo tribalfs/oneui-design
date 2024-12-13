@@ -214,4 +214,18 @@
         <item name="android:textColor">?colorPrimaryDark</item>
     </style>
 
+    <!--Note: No separate color resource was added for dark mode
+    in the framework SESL theming meta XML. Dynamic colors for both light and dark
+    modes, however, resolve to the same value. Therefore, we are using the same color resource
+    as the light theme, but we need to override the default color values for dark mode.-->
+    <style name="OneUI.TabLayoutStyle" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">@color/sesl_tablayout_selected_indicator_color</item>
+        <item name="tabSelectedTextColor">@color/sesl_tablayout_selected_text_color</item>
+    </style>
+
+    <style name="OneUI.TabLayoutStyle.Light" parent="Widget.Design.TabLayout.Light">
+        <item name="tabIndicatorColor">@color/sesl_tablayout_selected_indicator_color</item>
+        <item name="tabSelectedTextColor">@color/sesl_tablayout_selected_text_color</item>
+    </style>
+
 </resources>

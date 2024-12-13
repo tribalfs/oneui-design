@@ -71,6 +71,7 @@
     <!--BottomSheet-->
     <color name="bottomsheet_bg_color">@color/sesl_gray_L2</color>
 
+    <!--SelectableLinearLayout-->
     <color name="animated_check_bgcolor">@color/sesl_primary_color_light</color>
 
     <color name="fab_bg_tint_color">#fffcfcff</color>
