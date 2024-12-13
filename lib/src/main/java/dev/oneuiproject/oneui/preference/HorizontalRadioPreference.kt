@@ -24,8 +24,8 @@ import androidx.preference.PreferenceViewHolder
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
 import dev.oneuiproject.oneui.preference.internal.HorizontalRadioViewContainer
-import dev.oneuiproject.oneui.utils.getNormalFont
-import dev.oneuiproject.oneui.utils.getBoldFont
+import dev.oneuiproject.oneui.utils.getRegularFont
+import dev.oneuiproject.oneui.utils.getSemiBoldFont
 import kotlin.math.roundToInt
 
 class HorizontalRadioPreference(context: Context, attrs: AttributeSet?) :
@@ -302,7 +302,7 @@ class HorizontalRadioPreference(context: Context, attrs: AttributeSet?) :
                     }
                     with(itemLayout.findViewById<TextView>(R.id.icon_title)){
                         isSelected = selected
-                        typeface = if (selected) getBoldFont() else getNormalFont()
+                        typeface = if (selected) getSemiBoldFont() else getRegularFont()
                     }
 
                     itemLayout.findViewById<View>(R.id.image_frame).visibility = View.VISIBLE
@@ -310,7 +310,7 @@ class HorizontalRadioPreference(context: Context, attrs: AttributeSet?) :
                 NO_IMAGE -> {
                     itemLayout.findViewById<TextView>(R.id.title).apply {
                         isSelected = selected
-                        typeface = if (selected) getBoldFont() else getNormalFont()
+                        typeface = if (selected) getSemiBoldFont() else getRegularFont()
                     }
                     itemLayout.findViewById<TextView>(R.id.sub_title).isSelected = selected
                     itemLayout.findViewById<View>(R.id.text_frame).visibility = View.VISIBLE

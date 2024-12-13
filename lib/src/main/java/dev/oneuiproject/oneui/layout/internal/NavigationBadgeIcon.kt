@@ -14,7 +14,7 @@ import androidx.core.content.ContextCompat
 import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.layout.Badge
 import dev.oneuiproject.oneui.utils.badgeCountToText
-import dev.oneuiproject.oneui.utils.getNormalFont
+import dev.oneuiproject.oneui.utils.getRegularFont
 import androidx.appcompat.R as appcompatR
 
 /**
@@ -33,7 +33,7 @@ class NavigationBadgeIcon(private val context: Context) : Drawable() {
     private val mTextPaint = Paint().apply {
         color = ContextCompat.getColor(context, appcompatR.color.sesl_menu_badge_text_color)
         textAlign = Paint.Align.CENTER
-        setTypeface(getNormalFont())
+        setTypeface(getRegularFont())
         textSize = res.getDimensionPixelSize(appcompatR.dimen.sesl_menu_item_badge_text_size).toFloat()
         isAntiAlias = true
     }
