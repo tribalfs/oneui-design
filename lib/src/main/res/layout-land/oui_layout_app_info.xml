@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
+    tools:viewBindingIgnore="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <androidx.core.widget.NestedScrollView
@@ -17,7 +19,7 @@
             android:id="@+id/app_info_upper_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="24dp"
+            android:paddingHorizontal="24dp"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -25,47 +27,47 @@
                 android:id="@+id/app_info_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:textSize="38sp"
-                android:textColor="@color/oui_primary_text_color"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textAppearance="@style/RobotoBold"
+                android:textSize="@dimen/oui_ail_app_label_text_size"
+                tools:text="&lt;App Name&gt;" />
 
             <TextView
+                android:layout_marginTop="20dp"
                 android:id="@+id/app_info_version"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:paddingTop="2dp"
-                android:textSize="14sp"
-                android:textColor="@color/oui_appinfolayout_info_text_color"
-                android:textAlignment="center" />
-
-            <androidx.appcompat.widget.SeslProgressBar
-                android:id="@+id/app_info_progress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                tools:text="Version 1.0.0"
+                android:textAlignment="center"
+                android:textAppearance="@style/RobotoRegular"
+                android:textSize="13sp"/>
 
             <TextView
                 android:id="@+id/app_info_update_notice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="24dp"
                 android:text="@string/latest_version"
-                android:textSize="14sp"
-                android:textColor="@color/oui_appinfolayout_info_text_color"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textAppearance="@style/RobotoRegular"
+                android:textSize="13sp"
+                android:layout_marginTop="2dp"/>
+
+            <androidx.appcompat.widget.SeslProgressBar
+                android:id="@+id/app_info_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"/>
 
             <Button
-                style="@style/OneUI.AppInfoButton"
                 android:id="@+id/app_info_update"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="10dp"
-                android:backgroundTint="?attr/colorPrimary"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:text="@string/update"
-                android:textSize="18sp"
-                android:textColor="@color/oui_appinfolayout_button_primary_text" />
+                />
 
         </LinearLayout>
 
@@ -79,6 +81,7 @@
         android:scrollbars="vertical">
 
         <LinearLayout
+            android:paddingHorizontal="24dp"
             android:id="@+id/app_info_lower_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

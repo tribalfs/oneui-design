@@ -212,4 +212,13 @@
         <!-- This defines the color used to highlight the selected state. -->
         <attr name="selectedHighlightColor" format="color" />
     </declare-styleable>
+
+    <!--AppInfoLayout-->
+    <attr name="appInfoLayoutStyle" format="reference"/>
+    <declare-styleable name="AppInfoLayout">
+        <attr name="appTitleTextColor" format="color" />
+        <attr name="appInfoTextColor" format="color" />
+        <attr name="mainButtonStyle" format="reference"/>
+        <attr name="bottomButtonsStyle" format="reference"/>
+    </declare-styleable>
 </resources>

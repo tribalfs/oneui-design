@@ -51,10 +51,15 @@
     <color name="drawer_background_color">#CCFCFCFC</color>
 
     <!-- AppInfoLayout -->
-    <color name="oui_appinfolayout_info_text_color">#ff8c8c8c</color>
+    <!--Note: Samsung apps typically set dynamic colors for app label and sub texts via
+    theme meta xml but we observed that color values are set to the same value as action bar title.
+    and subheader text color, respectively. So we use the latter values to eliminate the
+    need of adding the app label and sub texts colors to the theme meta xml.    -->
+    <color name="oui_appinfolayout_app_label_text_color">@color/sesl_action_bar_text_color_title_light</color>
+    <color name="oui_appinfolayout_sub_text_color">@color/sesl_list_subheader_text_color</color>
     <color name="oui_appinfolayout_button_bg_color">#ffebebeb</color>
-    <color name="oui_appinfolayout_button_default_text">#ff252525</color>
-    <color name="oui_appinfolayout_button_primary_text">#fffafafa</color>
+    <color name="oui_appinfolayout_button_default_text_color">#ff252525</color>
+    <color name="oui_appinfolayout_button_primary_text_color">#fffafafa</color>
 
     <!-- TipsCardPreference -->
 <!--    <color name="oui_tipscardpref_bg_color">#fffcfcfc</color>-->

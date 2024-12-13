@@ -8,6 +8,7 @@
         android:id="@+id/menu_app_info"
         android:icon="@drawable/oui_ic_ab_app_info"
         android:title="@string/app_info"
+        app:iconTint="?actionMenuTextColor"
         app:showAsAction="always" />
 
 </menu>

@@ -1407,11 +1407,11 @@ open class ToolbarLayout @JvmOverloads constructor(
     }
 
     companion object {
-        private const val TAG = "ToolbarLayout"
+        protected const val TAG = "ToolbarLayout"
 
         @RestrictTo(RestrictTo.Scope.LIBRARY)
         internal const val AMT_GROUP_MENU_ID: Int = 9999
-        private const val MAIN_CONTENT = 0
+        internal const val MAIN_CONTENT = 0
         private const val APPBAR_HEADER = 1
         private const val FOOTER = 2
         private const val ROOT = 3

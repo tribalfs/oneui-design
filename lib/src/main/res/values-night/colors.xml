@@ -47,9 +47,10 @@
     <color name="drawer_background_color">#171717</color>
 
     <!-- AppInfoLayout -->
-    <color name="oui_appinfolayout_info_text_color">#ff999999</color>
+    <color name="oui_appinfolayout_app_label_text_color">@color/sesl_action_bar_text_color_title_dark</color>
+    <color name="oui_appinfolayout_sub_text_color">@color/sesl_list_subheader_text_color_dark</color>
     <color name="oui_appinfolayout_button_bg_color">#ff1f1f1f</color>
-    <color name="oui_appinfolayout_button_default_text">#fffafafa</color>
+    <color name="oui_appinfolayout_button_default_text_color">#fffafafa</color>
 
     <!-- TipsCardPreference -->
 <!--    <color name="oui_tipscardpref_bg_color">#ff252525</color>-->
