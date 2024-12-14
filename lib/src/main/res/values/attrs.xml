@@ -221,4 +221,11 @@
         <attr name="mainButtonStyle" format="reference"/>
         <attr name="bottomButtonsStyle" format="reference"/>
     </declare-styleable>
+
+    <!--OnboardingTipsItemView-->
+    <declare-styleable name="OnboardingTipsItemView">
+        <attr name="icon" />
+        <attr name="title" />
+        <attr name="summary"/>
+    </declare-styleable>
 </resources>

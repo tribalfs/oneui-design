@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- OnboardingTipsItemView -->
+    <dimen name="obs_item_text_max_width">450dp</dimen>
+    <dimen name="obs_item_text_min_width">410dp</dimen>
+</resources>

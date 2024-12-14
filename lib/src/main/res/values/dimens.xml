@@ -76,4 +76,8 @@
     <!--AppInfoLayout-->
     <dimen name="oui_ail_sub_text_size">13sp</dimen>
     <dimen name="oui_ail_app_label_text_size">34sp</dimen>
+
+    <!-- OnboardingTipsItemView -->
+    <dimen name="obs_item_text_max_width">300dp</dimen>
+    <dimen name="obs_item_text_min_width">260dp</dimen>
 </resources>
