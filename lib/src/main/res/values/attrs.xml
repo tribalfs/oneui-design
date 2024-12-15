@@ -91,10 +91,9 @@
         <attr name="android:layout" />
         <!--Enable or disable the expanding toolbar. The default is true.-->
         <attr name="expandable" format="boolean" />
-        <!--The initial state of the toolbar.-->
+        <!--The initial state of the toolbar when `expandable` is true.
+        Default is true.-->
         <attr name="expanded" format="boolean" />
-        <!--The toolbar's navigation icon. Don't forget to add a tooltip programmatically with setNavigationButtonTooltip(CharSequence).-->
-        <attr name="navigationIcon" format="reference" />
         <!--The toolbar's collapsed and expanded title.-->
         <attr name="title" format="string" />
         <!--The toolbar's expanded title.-->
@@ -102,8 +101,15 @@
         <!--Handle system insets and ime insets internally.
          By default, it is set to true when getFitsSystemWindows() is false. -->
         <attr name="handleInsets" format="boolean"/>
-        <!--Sets the toolbar navigation button to be displayed as an "back/up" affordance-->
+        <!--Sets whether the toolbar navigation button should be displayed as a 'back/up' affordance.
+         Set this to true if clicking the navigation button returns the user up by a single level in your UI;
+         the navigation button will display a back icon, set the tooltip to 'Navigate up', and
+         will invoke [OnBackPressedDispatcher.onBackPressed] when clicked.-->
         <attr name="showNavButtonAsBack" format="boolean"/>
+        <!--The toolbar's navigation icon when showNavButtonAsBack is false (default).
+        Don't forget to also set tooltip programmatically with setNavigationButtonTooltip(CharSequence).-->
+        <attr name="navigationIcon" format="reference" />
+        <!-- Set to true to show a SeslSwitchBar right below the AppBarLayout. Default is false-->
         <attr name="showSwitchBar" format="boolean"/>
     </declare-styleable>
 

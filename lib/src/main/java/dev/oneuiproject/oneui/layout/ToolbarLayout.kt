@@ -625,6 +625,9 @@ open class ToolbarLayout @JvmOverloads constructor(
     /**
      * Set the icon on the navigation button.
      * Don't forget to also set a tooltip description with [setNavigationButtonTooltip].
+     * This applies only when [showNavigationButtonAsBack] is `false` (default).
+     *
+     * @see setNavigationButtonOnClickListener
      */
     fun setNavigationButtonIcon(icon: Drawable?) {
         navButtonsHandler.setNavigationButtonIcon(icon)
@@ -632,6 +635,12 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     /**
      * Change the visibility of the navigation button.
+     * This applies only when [showNavigationButtonAsBack] is `false` (default).
+     * This is `false` by default.
+     *
+     * @see setNavigationButtonOnClickListener
+     * @see setNavigationButtonIcon
+     * @see setNavigationButtonTooltip
      */
     @Deprecated("Use `showNavigationButton` property instead.",
         replaceWith = ReplaceWith("showNavigationButton = visible"))
@@ -651,7 +660,11 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     /**
      * Set the tooltip description on the navigation button.
+     * This applies only when [showNavigationButtonAsBack] is `false` (default).
+     *
      * @see setNavigationButtonIcon
+     * @see setNavigationButtonOnClickListener
+     *
      */
     fun setNavigationButtonTooltip(tooltipText: CharSequence?) {
         navButtonsHandler.setNavigationButtonTooltip(tooltipText)
@@ -660,6 +673,10 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     /**
      * Set the click listener for the navigation button click event.
+     * This applies only when [showNavigationButtonAsBack] is `false` (default).
+     *
+     * @see setNavigationButtonTooltip
+     * @see setNavigationButtonIcon
      */
     fun setNavigationButtonOnClickListener(listener: OnClickListener?) {
         navButtonsHandler.setNavigationButtonOnClickListener(listener)
@@ -668,9 +685,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     /**
      * Sets the icon to a back icon, the tooltip to 'Navigate up' and calls [OnBackPressedDispatcher.onBackPressed] when clicked.
      *
-     * @see setNavigationButtonIcon
-     * @see setNavigationButtonTooltip
-     * @see android.app.ActionBar.setDisplayHomeAsUpEnabled
+     * @see showNavigationButtonAsBack
      */
     @Deprecated("Use `showNavigationButtonAsBack` property instead",
         replaceWith = ReplaceWith("showNavigationButtonAsBack = true"))
@@ -683,13 +698,16 @@ open class ToolbarLayout @JvmOverloads constructor(
     private var _showNavAsBack = false
 
     /**
-     * Represents whether the toolbar navigation button should be displayed as an "back/up" affordance.
-     * Set this to `true` if selecting navigation button returns up by a single level in your UI
-     * rather than back to the top level or front page.
-     * - it will set the tooltip to 'Back' and calls [OnBackPressedDispatcher.onBackPressed] when clicked.
+     * Indicates whether the toolbar navigation button should be displayed as a "back/up" affordance.
+     * Set this to `true` if clicking the navigation button returns the user up by a single level in your UI;
+     * the navigation button will display a back icon, set the tooltip to 'Navigate up', and
+     * invoke [OnBackPressedDispatcher.onBackPressed] when clicked.
      *
-     * @see [setNavigationButtonIcon]
-     * @see [setNavigationButtonTooltip]
+     * This is `false` by default.
+     *
+     * @see setNavigationButtonOnClickListener
+     * @see setNavigationButtonIcon
+     * @see setNavigationButtonTooltip
      */
     var showNavigationButtonAsBack
         get() = navButtonsHandler.showNavigationButtonAsBack
@@ -701,6 +719,12 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     /**
      * Represents the visibility of the toolbar navigation button.
+     * This applies only when [showNavigationButtonAsBack] is `false` (default).
+     * This is `false` by default.
+     *
+     * @see setNavigationButtonOnClickListener
+     * @see setNavigationButtonIcon
+     * @see setNavigationButtonTooltip
      */
     var showNavigationButton
         get() = navButtonsHandler.showNavigationButton
