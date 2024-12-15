@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewStub
 import android.widget.FrameLayout
@@ -17,6 +18,7 @@ import androidx.core.content.res.use
 import androidx.core.graphics.ColorUtils
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
+import androidx.core.view.marginStart
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import dev.oneuiproject.oneui.design.R
@@ -30,7 +32,8 @@ class CardItemView @JvmOverloads constructor(
     private lateinit var mContainerView: LinearLayout
     private lateinit var mTitleTextView: TextView
     private lateinit var mSummaryTextView: TextView
-    private lateinit var mDividerView: View
+    private var mDividerViewTop: View? = null
+    private var mDividerViewBottom: View? = null
     private var mIconImageView: ImageView? = null
     private var badgeFrame: LinearLayout? = null
 
@@ -43,10 +46,34 @@ class CardItemView @JvmOverloads constructor(
      *  Show divider on top. True by default
      */
     var showTopDivider: Boolean
-        get() = mDividerView.isVisible
+        get() = mDividerViewTop?.isVisible == true
         set(value) {
-            mDividerView.isVisible = value
+            if (value) ensureTopDivider()
+            mDividerViewTop?.isVisible = value
         }
+
+    var showBottomDivider: Boolean
+        get() = mDividerViewBottom?.isVisible == true
+        set(value) {
+            if (value) ensureBottomDivider()
+            mDividerViewBottom?.isVisible = value
+        }
+
+    private fun ensureTopDivider(){
+        if (mDividerViewTop == null){
+            mDividerViewTop = LayoutInflater.from(context)
+                .inflate(R.layout.widget_card_item_divider, this, false)
+            addView(mDividerViewTop, 0)
+        }
+    }
+
+    private fun ensureBottomDivider(){
+        if (mDividerViewBottom == null){
+            mDividerViewBottom = LayoutInflater.from(context)
+                .inflate(R.layout.widget_card_item_divider, this, false)
+            addView(mDividerViewBottom, childCount)
+        }
+    }
 
     /**
      * Show full divider width even when there's an icon.
@@ -148,9 +175,8 @@ class CardItemView @JvmOverloads constructor(
                 mSummaryTextView.setTextColor(ColorStateList(states, colors))
             }
 
-            mDividerView = findViewById(R.id.cardview_divider)
-
             showTopDivider = a.getBoolean(R.styleable.CardItemView_showTopDivider, true)
+            showBottomDivider = a.getBoolean(R.styleable.CardItemView_showBottomDivider, false)
             isEnabled = a.getBoolean(R.styleable.CardItemView_android_enabled, true)
             fullWidthDivider = a.getBoolean(R.styleable.CardItemView_fullWidthDivider, false)
 
@@ -167,16 +193,31 @@ class CardItemView @JvmOverloads constructor(
 
     private fun updateLayoutParams(){
         val hasIcon = mIconImageView?.drawable != null
-        mContainerView.updatePadding(left = if (hasIcon) containerLeftPaddingWithIcon else containerLeftPaddingNoIcon)
-        mDividerView.updateLayoutParams<LayoutParams> {
-            this.marginStart = if (!hasIcon || fullWidthDivider) dividerMarginStart else dividerMarginStartWithIcon
+
+        val newPaddingLeft = if (hasIcon) containerLeftPaddingWithIcon else containerLeftPaddingNoIcon
+        mContainerView.apply {
+            if (newPaddingLeft == paddingLeft) return@apply
+            updatePadding(left = if (hasIcon) containerLeftPaddingWithIcon else containerLeftPaddingNoIcon)
+        }
+
+        val newDividerStartMargin = if (!hasIcon || fullWidthDivider) dividerMarginStart else dividerMarginStartWithIcon
+        mDividerViewTop?.apply {
+            if (newDividerStartMargin == marginStart) return@apply
+            updateLayoutParams<LayoutParams> {
+                this.marginStart = newDividerStartMargin
+            }
+        }
+       mDividerViewBottom?.apply {
+            if (newDividerStartMargin == marginStart) return@apply
+            updateLayoutParams<LayoutParams> {
+                this.marginStart = newDividerStartMargin
+            }
         }
     }
 
     fun getIconImageView(): ImageView {
-        return mIconImageView
-            ?: (findViewById<ViewStub>(R.id.viewstub_icon_frame).inflate() as FrameLayout)
-                .findViewById<ImageView>(R.id.cardview_icon).also { mIconImageView = it }
+        ensureInflatedIconView()
+        return mIconImageView!!
     }
 
     override fun setEnabled(enabled: Boolean) {

@@ -6,11 +6,6 @@
     tools:parentTag="LinearLayout"
     tools:viewBindingIgnore="true">
 
-    <View
-        android:id="@+id/cardview_divider"
-        style="@style/OneUI.ListDividerStyle"
-        android:visibility="gone"/>
-
     <LinearLayout
         android:id="@+id/cardview_container"
         android:layout_width="match_parent"

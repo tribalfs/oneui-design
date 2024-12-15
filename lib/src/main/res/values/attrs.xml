@@ -188,7 +188,10 @@
         <attr name="summaryMaxLines" format="integer" />
         <!-- If set to true summary will be themed with active color-->
         <attr name="userUpdatable" format="boolean" />
+        <!--Show divider at the top. Default is true-->
         <attr name="showTopDivider" format="boolean" />
+        <!--Show divider at the bottom. Default is false-->
+        <attr name="showBottomDivider" format="boolean" />
         <!-- Set to true to make top divider extend to cover the icon. False by default-->
         <attr name="fullWidthDivider" format="boolean" />
     </declare-styleable>
