@@ -28,12 +28,15 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.TextViewCompat
+import dev.oneuiproject.oneui.delegates.AllSelectorState
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.dpToPx
+import dev.oneuiproject.oneui.ktx.ifNegative
 import dev.oneuiproject.oneui.layout.internal.util.getAppVersion
 import dev.oneuiproject.oneui.layout.internal.util.getApplicationName
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil
-import kotlin.math.min
+import dev.oneuiproject.oneui.widget.CardItemView
+import kotlinx.coroutines.flow.StateFlow
 
 
 /**
@@ -191,6 +194,7 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
 
     init {
         isExpanded = false
+        mShowSwitchBar = false
 
         var mainButtonStyle = 0
         var titleTextColor = 0
@@ -299,14 +303,18 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
             super.addView(child, index, params)
         } else {
             if ((params as ToolbarLayoutParams).layoutLocation == MAIN_CONTENT/*default*/) {
-                mAILContainer.addView(child, params)
-                if (child is Button) applyButtonStyle(
-                    child,
-                    bottomButtonsStyle,
-                    mAILContainer.indexOfChild(child) > 0
-                )
-            } else {
-                super.addView(child, index, params)
+                when (child) {
+                    is Button -> {
+                        mAILContainer.addView(child, params)
+                        applyButtonStyle(child, bottomButtonsStyle, mAILContainer.indexOfChild(child) > 0)
+                    }
+                    is CardItemView -> {
+                        optionalTextParent.addView(
+                            child,
+                            optionalTextParent.indexOfChild(mAILContainer).ifNegative { optionalTextParent.childCount },
+                            params)
+                    }
+                }
             }
         }
     }
@@ -419,6 +427,41 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
             mEmptyTop.layoutParams.height = (h * 0.10).toInt()
             mEmptyBottom.layoutParams.height = (h * 0.10).toInt()
         }
+    }
+
+    /**
+     * This does nothing in AppInfoLayout.
+     */
+    override fun startActionMode(
+        listener: ActionModeListener,
+        keepSearchMode: Boolean,
+        allSelectorStateFlow: StateFlow<AllSelectorState>?
+    ) {
+        //no op
+    }
+
+    /**
+     * This does nothing in AppInfoLayout.
+     */
+    override fun startSearchMode(
+        listener: SearchModeListener,
+        searchModeOnBackBehavior: SearchModeOnBackBehavior
+    ) {
+        //no op
+    }
+
+    /**
+     * This does nothing in AppInfoLayout.
+     */
+    override fun endActionMode() {
+        //no op
+    }
+
+    /**
+     * This does nothing in AppInfoLayout.
+     */
+    override fun endSearchMode() {
+        //no op
     }
 
     companion object{

@@ -23,3 +23,5 @@ inline fun Int.dpToPx(resources: Resources): Int = toFloat().dpToPx(resources)
 inline fun Int.pxToDp(resources: Resources): Float = (this / resources.displayMetrics.density)
 
 inline fun Int.ifNegativeOrZero(block: () -> Int): Int = if (this <= 0) {block()} else this
+
+inline fun Int.ifNegative(block: () -> Int): Int = if (this < 0) {block()} else this

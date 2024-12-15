@@ -230,8 +230,8 @@ open class ToolbarLayout @JvmOverloads constructor(
     private var mOnSelectAllListener: CompoundButton.OnCheckedChangeListener? = null
 
     private var mMenuSynchronizer: MenuSynchronizer? = null
-
-    private var mShowSwitchBar = false
+    @JvmField
+    internal var mShowSwitchBar = false
 
     private var _switchBar: SeslSwitchBar? = null
     val switchBar
