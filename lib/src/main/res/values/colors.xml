@@ -61,9 +61,6 @@
     <color name="oui_appinfolayout_button_default_text_color">#ff252525</color>
     <color name="oui_appinfolayout_button_primary_text_color">#fffafafa</color>
 
-    <!-- TipsCardPreference -->
-<!--    <color name="oui_tipscardpref_bg_color">#fffcfcfc</color>-->
-
     <!-- HorizontalRadioPreference -->
     <color name="oui_horizontalradiopref_text_unselected_color">#ff858585</color>
 
@@ -80,4 +77,7 @@
     <color name="animated_check_bgcolor">@color/sesl_primary_color_light</color>
 
     <color name="fab_bg_tint_color">#fffcfcff</color>
+
+    <!--BottomTipView-->
+    <color name="bottom_tip_textview_text_color">@color/sesl_list_subheader_text_color</color>
 </resources>

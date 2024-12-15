@@ -250,4 +250,21 @@
         <item name="android:windowLayoutInDisplayCutoutMode" tools:targetApi="o_mr1">never</item>
     </style>
 
+
+    <style name="OneUI.BottomToolTipTextStyle">
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Description</item>
+        <item name="android:textColor">@color/bottom_tip_textview_text_color</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:background">?attr/roundedCornerColor</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:lineSpacingExtra">4sp</item>
+        <item name="android:paddingEnd">?attr/listPreferredItemPaddingStart</item>
+        <item name="android:paddingStart">?attr/listPreferredItemPaddingStart</item>
+    </style>
+
+    <style name="OneUI.BottomToolTip.Link" parent="@style/Widget.AppCompat.TextView.ListSeparator">
+        <item name="android:minHeight">29.25dp</item>
+    </style>
+
 </resources>

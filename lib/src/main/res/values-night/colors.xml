@@ -73,4 +73,6 @@
     <color name="sesl_tablayout_selected_indicator_color" tools:override="true" tools:ignore="MissingDefaultResource">
         @color/sesl_tablayout_selected_indicator_color_dark</color>
 
+    <!--BottomTipView-->
+    <color name="bottom_tip_textview_text_color">@color/sesl_list_subheader_text_color_dark</color>
 </resources>

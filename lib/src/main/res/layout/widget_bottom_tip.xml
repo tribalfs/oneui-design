@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="?attr/roundedCornerColor"
+    android:orientation="vertical"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
+    tools:parentTag="dev.oneuiproject.oneui.widget.RoundedLinearLayout"
+    tools:viewBindingIgnore="true">
+
+    <TextView
+        style="@style/OneUI.BottomToolTipTextStyle"
+        android:id="@+id/tv_tip_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        tools:text="Tip Title"
+        android:textAppearance="@style/RobotoRegular"
+        android:textSize="@dimen/sesl_text_size_medium" />
+
+    <TextView
+        android:id="@+id/tv_tip_content"
+        style="@style/OneUI.BottomToolTipTextStyle"
+        android:layout_marginTop="@dimen/sesl_list_subheader_padding_top"
+        android:focusable="true"
+        tools:text="This is a sample tip message."
+        android:textSize="@dimen/sesl_description_text_size" />
+
+    <TextView
+        android:id="@+id/tv_tip_link"
+        style="@style/OneUI.BottomToolTip.Link"
+        android:layout_width="wrap_content"
+        android:layout_gravity="start"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
+        android:textAppearance="@style/RobotoMedium"
+        android:textColor="?colorPrimaryDark"
+        android:textSize="@dimen/sesl_description_text_size" />
+</merge>

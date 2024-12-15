@@ -231,4 +231,11 @@
         <attr name="title" />
         <attr name="summary"/>
     </declare-styleable>
+
+    <!--BottomTipView-->
+    <declare-styleable name="BottomTipView">
+        <attr name="title" />
+        <attr name="summary"/>
+        <attr name="linkText" format="string"/>
+    </declare-styleable>
 </resources>
