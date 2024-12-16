@@ -33,7 +33,6 @@ import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type.SINE
 import dev.oneuiproject.oneui.widget.AutoHideIndexScrollView.AppBarState.COLLAPSED
 import dev.oneuiproject.oneui.widget.AutoHideIndexScrollView.AppBarState.LITTLE_EXPANDED
 import dev.oneuiproject.oneui.widget.AutoHideIndexScrollView.AppBarState.SUBSTANTIALLY_EXPANDED
-import java.lang.ref.WeakReference
 import java.util.Locale
 
 /**
@@ -52,7 +51,7 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
     private var mAppBarLayout: AppBarLayout? = null
     private var mHideWhenExpandedListener: AppBarOffsetListener? = null
     private var mAutoHide: Boolean = true
-    private var indexEventListeners: MutableSet<WeakReference<OnIndexBarEventListener>>? = null
+    private var indexEventListeners: MutableSet<OnIndexBarEventListener>? = null
 
     private var mOnBackInvokedDispatcher: OnBackInvokedDispatcher? = null
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -160,7 +159,7 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
                     }
                     layoutManager.scrollToPositionWithOffset(sectionIndex, 0)
                     indexEventListeners?.forEach {
-                        it.get()?.onIndexChanged(sectionIndex)
+                        it.onIndexChanged(sectionIndex)
                     }
                 }
 
@@ -168,7 +167,7 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
                     mIsIndexBarPressed = true
                     if (mAutoHide) removeCallbacks(hideMeRunnable)
                     indexEventListeners?.forEach {
-                        it.get()?.onPressed(v)
+                        it.onPressed(v)
                     }
                 }
 
@@ -176,7 +175,7 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
                     mIsIndexBarPressed = false
                     updateVisibility(true, delayHide = true)
                     indexEventListeners?.forEach {
-                        it.get()?.onReleased(v)
+                        it.onReleased(v)
                     }
                 }
             }
@@ -193,15 +192,15 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
 
     fun addOnIndexEventListener(listener: OnIndexBarEventListener){
         if (indexEventListeners == null) {
-            indexEventListeners = mutableSetOf(WeakReference(listener))
+            indexEventListeners = mutableSetOf(listener)
             return
         }
-        indexEventListeners?.add(WeakReference(listener))
+        indexEventListeners?.add(listener)
     }
 
     fun removeOnIndexEventListener(listener: OnIndexBarEventListener){
         indexEventListeners?.forEach {
-            if (it.get() == listener) {
+            if (it == listener) {
                 indexEventListeners?.remove(it)
             }
         }
