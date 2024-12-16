@@ -80,4 +80,8 @@
 
     <!--BottomTipView-->
     <color name="bottom_tip_textview_text_color">@color/sesl_list_subheader_text_color</color>
+
+    <color name="oui_suggestion_card_close_button_bg_color">#6669696c</color>
+    <color name="oui_suggestion_card_close_button_color">#fafaff</color>
+    <color name="oui_suggestion_card_button_text_color">@color/sesl_text1_dark</color>
 </resources>

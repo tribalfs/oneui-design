@@ -52,6 +52,7 @@ dependencies {
     implementation("sesl.androidx.slidingpanelayout:slidingpanelayout:1.2.0+1.0.2-sesl6+rev3")
 
     implementation("com.google.zxing:core:3.5.3")
+    implementation("com.airbnb.android:lottie:6.5.2")
 }
 
 configurations.configureEach {

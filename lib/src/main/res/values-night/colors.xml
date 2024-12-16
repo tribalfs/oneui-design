@@ -75,4 +75,5 @@
 
     <!--BottomTipView-->
     <color name="bottom_tip_textview_text_color">@color/sesl_list_subheader_text_color_dark</color>
+
 </resources>

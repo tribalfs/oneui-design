@@ -244,4 +244,8 @@
         <attr name="summary"/>
         <attr name="linkText" format="string"/>
     </declare-styleable>
+
+    <declare-styleable name="SuggestionCardPreference">
+        <attr name="actionButtonText" format="string"/>
+    </declare-styleable>
 </resources>
