@@ -4,7 +4,6 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY;
 
 import android.content.Context;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 
 import androidx.annotation.ColorInt;
@@ -12,21 +11,23 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.util.SeslRoundedCorner;
-import androidx.appcompat.util.SeslSubheaderRoundedCorner;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.lang.reflect.Field;
-
-import dev.oneuiproject.oneui.design.R;
 import dev.oneuiproject.oneui.preference.InsetPreferenceCategory;
 import dev.oneuiproject.oneui.preference.LayoutPreference;
 import dev.oneuiproject.oneui.preference.internal.PreferenceRelatedCard;
+import dev.oneuiproject.oneui.widget.RelativeLinksCard;
 
 public class PreferenceUtils {
     private static final String TAG = "PreferenceUtils";
 
+    /**
+     * @deprecated Check-out {@link RelativeLinksCard}
+     *
+     */
+    @Deprecated
     @Nullable
     public static PreferenceRelatedCard createRelatedCard(
             @NonNull Context context) {

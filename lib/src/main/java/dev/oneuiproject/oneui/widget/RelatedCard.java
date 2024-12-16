@@ -17,6 +17,10 @@ import androidx.annotation.StringRes;
 
 import dev.oneuiproject.oneui.design.R;
 
+/**
+ * @deprecated Check-out {@link RelativeLinksCard}
+ */
+@Deprecated
 public class RelatedCard extends FrameLayout {
     private static final String TAG = "RelatedCard";
     private LinearLayout mCardViewsContainer;

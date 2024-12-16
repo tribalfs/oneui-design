@@ -3,7 +3,7 @@
 
     <style name="OneUI" />
 
-    <!-- RelatedCard -->
+    <!-- RelativeLinksCard -->
     <style name="OneUI.RelativeLinkTitleTextStyle">
         <item name="android:textSize">@dimen/oui_relative_link_title_text_size</item>
         <item name="android:textColor">@color/oui_relative_link_title_text_color</item>

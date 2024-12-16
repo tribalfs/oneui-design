@@ -17,7 +17,12 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import dev.oneuiproject.oneui.design.R;
 import dev.oneuiproject.oneui.utils.PreferenceUtils;
+import dev.oneuiproject.oneui.widget.RelativeLinksCard;
 
+/**
+ * @deprecated Check-out {@link RelativeLinksCard}
+ */
+@Deprecated
 public class PreferenceRelatedCard extends LinearLayout {
     private static final String TAG = "PreferenceRelatedCard";
     private Context mContext;

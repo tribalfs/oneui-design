@@ -29,6 +29,11 @@
         <attr name="title" />
     </declare-styleable>
 
+    <declare-styleable name="RelativeLinksCard">
+        <attr name="title" />
+        <attr name="showTopDivider"/>
+    </declare-styleable>
+
     <!-- Custom Preferences -->
     <declare-styleable name="ColorPickerPreference">
         <attr name="showAlphaSlider" format="boolean" />
