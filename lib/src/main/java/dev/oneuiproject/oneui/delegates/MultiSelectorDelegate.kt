@@ -141,11 +141,11 @@ class MultiSelectorDelegate<T>(
             initialSelectedIds?.let {
                 selectedIds.addAll(it)
             }
+            updateAllSelectorState()
         }else{
             selectedIds.clear()
         }
         adapter.notifyItemRangeChanged(0, adapter.itemCount, selectionPayload)
-        updateAllSelectorState()
     }
 
     private fun onStateChanged(state: MultiSelectionState, position: Int) {

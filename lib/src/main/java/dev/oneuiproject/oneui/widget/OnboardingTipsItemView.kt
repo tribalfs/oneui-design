@@ -64,7 +64,7 @@ class OnboardingTipsItemView @JvmOverloads constructor(
         } ?: Log.w(TAG, "Unable to resolve ?listChoiceBackgroundIndicator attribute!")
 
         orientation = HORIZONTAL
-        inflate(context, R.layout.widget_obs_tips_item, this).also {
+        inflate(context, R.layout.oui_widget_obs_tips_item, this).also {
             itemIcon = it.findViewById(R.id.tips_item_icon)
             titleTextView = it.findViewById(R.id.tips_item_title_text)
             summaryTextView = it.findViewById(R.id.tips_item_summary_text)

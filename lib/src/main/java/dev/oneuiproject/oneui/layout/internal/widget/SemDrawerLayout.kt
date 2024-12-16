@@ -1,5 +1,3 @@
-@file:Suppress("NOTHING_TO_INLINE")
-
 package dev.oneuiproject.oneui.layout.internal.widget
 
 import android.annotation.SuppressLint
@@ -7,7 +5,6 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.graphics.Color
-import android.graphics.Point
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.AttributeSet
@@ -16,7 +13,6 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsets
-import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.LinearLayout
@@ -37,6 +33,7 @@ import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
 import dev.oneuiproject.oneui.ktx.ifNegativeOrZero
 import dev.oneuiproject.oneui.ktx.semSetRoundedCorners
 import dev.oneuiproject.oneui.ktx.semSetToolTipText
+import dev.oneuiproject.oneui.ktx.widthExcludingSystemInsets
 import dev.oneuiproject.oneui.layout.Badge
 import dev.oneuiproject.oneui.layout.DrawerLayout.DrawerState
 import dev.oneuiproject.oneui.layout.internal.delegate.DrawerBackAnimator
@@ -57,7 +54,6 @@ class SemDrawerLayout @JvmOverloads constructor(
     defStyle: Int = 0
 ): DrawerLayout(context, attrs, defStyle), DrawerLayoutInterface, NavButtonsHandler {
 
-    private lateinit var mDrawerListener: DrawerListener
     private var scrimAlpha = 0f
     private var systemBarsColor = -1
 
@@ -95,7 +91,7 @@ class SemDrawerLayout @JvmOverloads constructor(
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        addDrawerListener(DrawerListener(findViewById(R.id.drawer_custom_translation)))
+        addDrawerListener(DrawerListener())
 
         mDrawerPane = findViewById(R.id.drawer_panel)
         mSlideViewPane = findViewById(R.id.slideable_view)
@@ -152,12 +148,7 @@ class SemDrawerLayout @JvmOverloads constructor(
     }
 
     private fun updateDrawerWidth() {
-        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val display = wm.defaultDisplay
-        val size = Point()
-        display.getSize(size)
-
-        val displayWidth = size.x
+        val displayWidth = context.widthExcludingSystemInsets
 
         val density = resources.displayMetrics.density
         val dpi = displayWidth.toFloat() / density
@@ -261,7 +252,7 @@ class SemDrawerLayout @JvmOverloads constructor(
         }
     }
 
-    private inner class DrawerListener(private val translationView: View?) : SimpleDrawerListener() {
+    private inner class DrawerListener() : SimpleDrawerListener() {
         override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
             super.onDrawerSlide(drawerView, slideOffset)
             dispatchDrawerStateChange(slideOffset)

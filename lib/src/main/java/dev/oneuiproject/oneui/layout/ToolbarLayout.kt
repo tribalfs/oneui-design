@@ -366,9 +366,8 @@ open class ToolbarLayout @JvmOverloads constructor(
                 setDisplayHomeAsUpEnabled(false)
                 setDisplayShowTitleEnabled(false)
             }
+            window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         }
-
-        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
     }
 
     override fun onFinishInflate() {
@@ -649,8 +648,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     }
 
     /**
-     * Add a badge to the navigation button.
-     * The badge is small orange circle in the top right of the icon which contains text.
+     * Add a [Badge] to the navigation button.
      *
      * @param badge The [Badge] to be displayed.
      */
@@ -1445,7 +1443,10 @@ open class ToolbarLayout @JvmOverloads constructor(
 
 
 /**
- * Type-safe way to set badge. Select either [Badge.NUMERIC], [Badge.DOT] or [Badge.NONE]
+ * Badge represents a notification to the user shown as an orange dot or
+ * a small text with orange background on the top right side of an anchor view.
+ *
+ * Select either [Badge.NUMERIC], [Badge.DOT] or [Badge.NONE]
  */
 sealed class Badge {
     /**

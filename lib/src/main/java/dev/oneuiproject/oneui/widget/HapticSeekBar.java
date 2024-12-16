@@ -10,6 +10,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SeslSeekBar;
 import androidx.reflect.view.SeslHapticFeedbackConstantsReflector;
 
+/**
+ * @deprecated Replaced by {@link SeekBarPlus}
+ */
+@Deprecated
 public class HapticSeekBar extends SeslSeekBar {
     private boolean mHasTickMark = false;
     private SeslSeekBar.OnSeekBarChangeListener onSeekBarChangeListener;

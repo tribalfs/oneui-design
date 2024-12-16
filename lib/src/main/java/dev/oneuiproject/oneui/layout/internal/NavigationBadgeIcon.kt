@@ -11,7 +11,7 @@ import android.graphics.drawable.Drawable
 import android.view.View.LAYOUT_DIRECTION_RTL
 import androidx.annotation.RestrictTo
 import androidx.core.content.ContextCompat
-import dev.oneuiproject.oneui.ktx.dpToPx
+import dev.oneuiproject.oneui.ktx.dpToPxFactor
 import dev.oneuiproject.oneui.layout.Badge
 import dev.oneuiproject.oneui.utils.badgeCountToText
 import dev.oneuiproject.oneui.utils.getRegularFont
@@ -40,7 +40,7 @@ class NavigationBadgeIcon(private val context: Context) : Drawable() {
 
     private var badge: Badge = Badge.NONE
     private var mIsLandscape = false
-    private val cornerRadius = 9f.dpToPx(context.resources).toFloat()
+    private val cornerRadius = 9f * context.dpToPxFactor
     private val defaultWidth = res.getDimensionPixelSize(appcompatR.dimen.sesl_badge_default_width)
     private val additionalWidth = res.getDimensionPixelSize(appcompatR.dimen.sesl_badge_additional_width)
     private val originalTextSize = res.getDimensionPixelSize(appcompatR.dimen.sesl_menu_item_badge_text_size).toFloat()

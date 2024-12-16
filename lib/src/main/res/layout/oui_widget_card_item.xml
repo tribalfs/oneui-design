@@ -20,7 +20,7 @@
         <ViewStub
             android:id="@+id/viewstub_icon_frame"
             android:inflatedId="@+id/tbl_icon_frame"
-            android:layout="@layout/widget_card_item_icon"
+            android:layout="@layout/oui_widget_card_item_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingEnd="@dimen/cardview_icon_margin_end"
@@ -52,7 +52,7 @@
                 <ViewStub
                     android:id="@+id/viewstub_badge_frame"
                     android:inflatedId="@+id/badge_frame"
-                    android:layout="@layout/widget_card_item_badge"
+                    android:layout="@layout/oui_widget_card_item_badge"
                     android:layout_width="10dp"
                     android:layout_height="10dp"
                     android:layout_alignEnd="@id/cardview_title"

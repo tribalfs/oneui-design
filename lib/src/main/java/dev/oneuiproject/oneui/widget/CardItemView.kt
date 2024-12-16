@@ -62,7 +62,7 @@ class CardItemView @JvmOverloads constructor(
     private fun ensureTopDivider(){
         if (mDividerViewTop == null){
             mDividerViewTop = LayoutInflater.from(context)
-                .inflate(R.layout.widget_card_item_divider, this, false)
+                .inflate(R.layout.oui_widget_card_item_divider, this, false)
             addView(mDividerViewTop, 0)
         }
     }
@@ -70,7 +70,7 @@ class CardItemView @JvmOverloads constructor(
     private fun ensureBottomDivider(){
         if (mDividerViewBottom == null){
             mDividerViewBottom = LayoutInflater.from(context)
-                .inflate(R.layout.widget_card_item_divider, this, false)
+                .inflate(R.layout.oui_widget_card_item_divider, this, false)
             addView(mDividerViewBottom, childCount)
         }
     }
@@ -138,7 +138,7 @@ class CardItemView @JvmOverloads constructor(
         }
 
         context.obtainStyledAttributes(attrs, R.styleable.CardItemView).use { a ->
-            inflate(context, R.layout.widget_card_item, this)
+            inflate(context, R.layout.oui_widget_card_item, this)
             mContainerView = findViewById(R.id.cardview_container)
 
             val iconDrawable = a.getDrawable(R.styleable.CardItemView_icon)

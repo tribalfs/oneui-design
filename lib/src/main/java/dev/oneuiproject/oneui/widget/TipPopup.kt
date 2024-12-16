@@ -588,8 +588,8 @@ class TipPopup @JvmOverloads constructor(parentView: View, mode: Mode = Mode.NOR
         mBalloonBg2!!.backgroundTintList = ColorStateList.valueOf(mBackgroundColor)
 
         mBorderColor?.let {
-            mBubbleBackground!!.setColorFilter(it)
-            mBalloonBubbleHint!!.setColorFilter(it)
+            mBubbleIcon!!.setColorFilter(it)
+            mBalloonBubbleIcon!!.setColorFilter(it)
         }
 
     }

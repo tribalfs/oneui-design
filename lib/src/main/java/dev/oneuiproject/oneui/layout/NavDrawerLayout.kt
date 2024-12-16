@@ -43,12 +43,12 @@ class NavDrawerLayout @JvmOverloads constructor(
 
     override val containerLayout: DrawerLayoutInterface get() =
         mSemSlidingPaneLayout
-            ?: findViewById<SemSlidingPaneLayout>(R.id.sliding_pane_layout).also { mSemSlidingPaneLayout = it }
+            ?: findViewById<SemSlidingPaneLayout>(R.id.sliding_pane_layout)?.also { mSemSlidingPaneLayout = it }
             ?: super.containerLayout
 
     override val navButtonsHandler: NavButtonsHandler get() =
         mSemSlidingPaneLayout
-            ?: findViewById<SemSlidingPaneLayout>(R.id.sliding_pane_layout).also { mSemSlidingPaneLayout = it }
+            ?: findViewById<SemSlidingPaneLayout>(R.id.sliding_pane_layout)?.also { mSemSlidingPaneLayout = it }
             ?: super.navButtonsHandler
 
     override val handleInsets get() = !isLargeScreenMode && super.handleInsets
@@ -158,8 +158,6 @@ class NavDrawerLayout @JvmOverloads constructor(
         private const val TAG = "NavDrawerLayout"
         private const val DEFAULT_DRAWER_RADIUS = 16F
         private const val DRAWER_HEADER = 4
-        private const val KEY_IS_DRAWER_OPENED = "dlkey1"
-        private const val KEY_SUPERSTATE = "dlSuperState"
     }
 
 }
