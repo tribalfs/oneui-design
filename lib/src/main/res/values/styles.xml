@@ -266,4 +266,8 @@
         <item name="android:minHeight">29.25dp</item>
     </style>
 
+    <style name="OneUI.BottomTabLayout.MoreMenuItemStyle" parent="">
+        <item name="android:background">@drawable/oui_grid_menu_dialog_item_bg</item>
+    </style>
+
 </resources>

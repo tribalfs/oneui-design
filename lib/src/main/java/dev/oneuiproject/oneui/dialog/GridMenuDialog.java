@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.IdRes;
@@ -425,14 +426,14 @@ public class GridMenuDialog extends AlertDialog {
     }
 
     private class GridListViewHolder extends RecyclerView.ViewHolder {
-        public LinearLayout itemView;
+        public RelativeLayout itemView;
         public ImageView icon;
-        private TextView mBadge;
+        private View mBadge;
         public TextView title;
 
         public GridListViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.itemView = (LinearLayout) itemView;
+            this.itemView = (RelativeLayout) itemView;
             icon = itemView.findViewById(R.id.grid_menu_item_icon);
             mBadge = itemView.findViewById(R.id.grid_menu_item_badge);
             title = itemView.findViewById(R.id.grid_menu_item_title);

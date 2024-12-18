@@ -26,9 +26,16 @@
     <dimen name="oui_tab_layout_default_padding">24.0dip</dimen>
 
     <!-- GridMenuDialog -->
-    <dimen name="oui_grid_menu_dialog_horizontal_padding">16.0dip</dimen>
+    <dimen name="oui_grid_menu_dialog_horizontal_padding">10.0dip</dimen>
     <dimen name="oui_grid_menu_dialog_vertical_padding">20.0dip</dimen>
     <dimen name="oui_grid_menu_dialog_item_gap">8.0dip</dimen>
+    <dimen name="oui_grid_menu_dialog_item_text_size">12sp</dimen>
+    <dimen name="oui_grid_menu_dialog_item_min_width">56dp</dimen>
+    <dimen name="oui_grid_menu_dialog_item_min_height">78dp</dimen>
+    <dimen name="oui_grid_menu_dialog_item_ripple_radius">12dp</dimen>
+    <dimen name="oui_grid_menu_dialog_item_badge_margin_end">-3dp</dimen>
+    <dimen name="oui_grid_menu_dialog_item_badge_margin_top">-3dp</dimen>
+    <dimen name="oui_grid_menu_dialog_item_icon_size">24dp</dimen>
 
     <!-- ToolbarLayout -->
     <dimen name="oui_n_badge_view_size">17.0dip</dimen>
