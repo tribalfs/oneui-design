@@ -3,7 +3,7 @@
 
     <color name="oui_round_and_bgcolor">@color/sesl_round_and_bgcolor_dark</color>
     <color name="oui_background_color">@color/sesl_background_color_dark</color>
-    <color name="oui_primary_text_color">#fffafafa</color>
+    <color name="oui_primary_text_color">@color/sesl_primary_text_dark</color>
 
     <color name="oui_list_divider_color">@color/sesl_list_divider_color_dark</color>
 
