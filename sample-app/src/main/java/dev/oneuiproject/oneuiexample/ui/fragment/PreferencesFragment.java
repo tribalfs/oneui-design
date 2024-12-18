@@ -28,7 +28,10 @@ import com.sec.sesl.tester.R;
 import java.util.Random;
 
 import dev.oneuiproject.oneui.preference.HorizontalRadioPreference;
+import dev.oneuiproject.oneui.preference.InsetPreferenceCategory;
+import dev.oneuiproject.oneui.preference.SuggestionCardPreference;
 import dev.oneuiproject.oneui.preference.TipsCardPreference;
+import dev.oneuiproject.oneui.preference.UpdatableWidgetPreference;
 import dev.oneuiproject.oneui.widget.RelativeLink;
 import dev.oneuiproject.oneui.widget.RelativeLinksCard;
 import dev.oneuiproject.oneui.widget.Toast;
@@ -71,8 +74,23 @@ public class PreferencesFragment extends PreferenceFragmentCompat
     }
 
     private void initPreferences() {
-        TipsCardPreference tips = findPreference("tip");
-        tips.addButton("Button", v -> Toast.makeText(mContext, "onClick", Toast.LENGTH_SHORT).show());
+        TipsCardPreference tipsCardPref = findPreference("tip");
+        tipsCardPref.addButton("Button", v -> Toast.makeText(mContext, "onClick", Toast.LENGTH_SHORT).show());
+
+        SuggestionCardPreference suggestionCardPref = findPreference("suggestion");
+        InsetPreferenceCategory suggestionInsetPref = findPreference("suggestion_inset");
+
+        suggestionCardPref.setOnClosedClickedListener((v) ->
+                getPreferenceScreen().removePreference(suggestionInsetPref));
+
+        suggestionCardPref.setActionButtonOnClickListener(v -> {
+                    suggestionCardPref.startTurnOnAnimation("Turned on");
+                    getView().postDelayed(() -> {
+                        getPreferenceScreen().removePreference(suggestionCardPref);
+                        getPreferenceScreen().removePreference(suggestionInsetPref);
+                    }, 1_500);
+                }
+        );
 
         int darkMode = DarkModeUtils.getDarkMode(mContext);
 
@@ -104,6 +122,8 @@ public class PreferencesFragment extends PreferenceFragmentCompat
         key6.seslSetSummaryColor(getColoredSummaryColor(true));
 
         findPreference("about").setOnPreferenceClickListener(this);
+
+        findPreference("updatable").setOnPreferenceClickListener(this);
     }
 
     @Override
@@ -113,7 +133,13 @@ public class PreferencesFragment extends PreferenceFragmentCompat
             return true;
         }
         if (preference.getKey().equals("about")) {
-             startActivity(new Intent(requireActivity(), SampleAboutActivity.class));
+            startActivity(new Intent(requireActivity(), SampleAboutActivity.class));
+            return true;
+        }
+        if (preference.getKey().equals("updatable")) {
+            UpdatableWidgetPreference uwp = (UpdatableWidgetPreference)preference;
+            uwp.setWidgetLayoutResource(R.layout.sample_pref_widget_progress);
+            getView().postDelayed(() -> uwp.setWidgetLayoutResource(R.layout.sample_pref_widget_check), 2_000);
             return true;
         }
         return false;

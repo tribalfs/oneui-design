@@ -176,6 +176,14 @@
         <include
             layout="@layout/relative_links_card_layout"/>
 
+        <dev.oneuiproject.oneui.widget.BottomTipView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="Tip"
+            app:summary="This is a sample bottom tip description."
+            app:linkText="More details"
+            />
+
         <Space
             android:layout_width="1dp"
             android:layout_height="8dp"/>

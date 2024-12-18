@@ -2,12 +2,22 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <dev.oneuiproject.oneui.preference.SuggestionCardPreference
+        android:key="suggestion"
+        android:title="Suggestion"
+        android:summary="Just a suggestion: you can turn me on anytime."
+        app:actionButtonText="Turn on"/>
+
+    <dev.oneuiproject.oneui.preference.InsetPreferenceCategory
+        android:key="suggestion_inset"/>
+
     <dev.oneuiproject.oneui.preference.TipsCardPreference
         android:key="tip"
         android:title="TipsCardPreference"
         android:summary="This is a test summary."/>
 
-    <PreferenceCategory />
+    <dev.oneuiproject.oneui.preference.InsetPreferenceCategory
+        android:key="tip_inset"/>
 
     <dev.oneuiproject.oneui.preference.SwitchBarPreference />
 
@@ -28,6 +38,11 @@
     </PreferenceCategory>
 
     <PreferenceCategory>
+        <dev.oneuiproject.oneui.preference.UpdatableWidgetPreference
+            android:key="updatable"
+            android:title="Updatable widget"
+            app:summary="Click me"
+            android:widgetLayout="@layout/sample_pref_widget_check"/>
 
         <SwitchPreferenceCompat
             android:key="key1"

@@ -71,6 +71,25 @@
                 android:min="0"
                 app:seslSeekBarMode="level_bar" />
 
+
+            <dev.oneuiproject.oneui.widget.SeekBarPlus
+                android:layout_marginVertical="14dp"
+                android:layout_marginHorizontal="24dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="20"
+                android:min="0"
+                app:seamless="true"/>
+
+            <dev.oneuiproject.oneui.widget.SeekBarPlus
+                android:layout_marginVertical="14dp"
+                android:layout_marginHorizontal="24dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="2"
+                android:min="0"
+                app:seamless="false"/>
+
         </dev.oneuiproject.oneui.widget.RoundLinearLayout>
 
         <dev.oneuiproject.oneui.widget.Separator
