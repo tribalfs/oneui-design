@@ -141,4 +141,8 @@
             android:key="about"
             android:title="About Sample App" />
     </PreferenceCategory>
+
+    <dev.oneuiproject.oneui.preference.InsetPreferenceCategory/>
+    <dev.oneuiproject.oneui.preference.LayoutPreference
+        android:layout="@layout/relative_links_card_layout"/>
 </PreferenceScreen>

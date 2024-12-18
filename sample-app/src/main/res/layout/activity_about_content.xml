@@ -76,7 +76,7 @@
 
     </dev.oneuiproject.oneui.widget.RoundLinearLayout>
 
-        <dev.oneuiproject.oneui.widget.RelatedCard
+        <dev.oneuiproject.oneui.widget.RelativeLinksCard
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
@@ -107,7 +107,7 @@
                 style="@style/OneUI.RelativeLinkTextViewStyle"
                 android:text="OneUI6 Design Lib" />" />
 
-        </dev.oneuiproject.oneui.widget.RelatedCard>
+        </dev.oneuiproject.oneui.widget.RelativeLinksCard>
 
     </LinearLayout>
 

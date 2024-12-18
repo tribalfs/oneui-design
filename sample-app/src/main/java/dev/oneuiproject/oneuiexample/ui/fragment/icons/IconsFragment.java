@@ -29,6 +29,7 @@ import dev.oneuiproject.oneui.delegates.ViewYTranslator;
 import dev.oneuiproject.oneui.layout.Badge;
 import dev.oneuiproject.oneui.layout.DrawerLayout;
 import dev.oneuiproject.oneui.layout.ToolbarLayout;
+import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchOnActionMode;
 import dev.oneuiproject.oneui.utils.ItemDecorRule;
 import dev.oneuiproject.oneui.utils.SemItemDecoration;
 import dev.oneuiproject.oneui.widget.TipPopup;
@@ -111,7 +112,7 @@ public class IconsFragment extends BaseFragment {
     }
 
     private void setupSelection(RecyclerView iconListView, IconsAdapter adapter){
-            adapter.configure(
+        adapter.configure(
                 iconListView,
                 null,
                 adapter::getItem,
@@ -141,67 +142,71 @@ public class IconsFragment extends BaseFragment {
         };
     }
 
+    private ToolbarLayout.SearchModeListener searchModeListener = new ToolbarLayout.SearchModeListener() {
+        @Override
+        public boolean onQueryTextSubmit(@Nullable String query) {
+            adapter.filter(query);
+            return true;
+        }
+
+        @Override
+        public boolean onQueryTextChange(@Nullable String newText) {
+            adapter.filter(newText);
+            return true;
+        }
+
+        @Override
+        public void onSearchModeToggle(@NonNull SearchView searchView, boolean visible) {
+            if (visible) {
+                searchView.setQueryHint( "Search icons");
+            }else{
+                adapter.filter("");
+            }
+        }
+    };
+
     private void launchActionMode(IconsAdapter adapter) {
+
+        drawerLayout.startActionMode(
+                new ToolbarLayout.ActionModeListener() {
+                    @Override
+                    public void onInflateActionMenu(@NonNull Menu menu) {
+                        requireActivity().getMenuInflater().inflate(R.menu.menu_action_mode_icons, menu);
+                    }
+
+                    @Override
+                    public void onEndActionMode() {
+                        adapter.onToggleActionMode(false, null);
+                    }
+
+                    @Override
+                    public boolean onMenuItemClicked(@NonNull MenuItem item) {
+                        if (item.getItemId() == R.id.icons_am_menu1
+                                || item.getItemId() == R.id.icons_am_menu2) {
+                            toast(IconsFragment.this, item.getTitle().toString());
+                            return true;
+                        }
+                        return false;
+                    }
+
+                    @Override
+                    public void onSelectAll(boolean isChecked) {
+                        adapter.onToggleSelectAll(isChecked);
+                    }
+                },
+                new SearchOnActionMode.Concurrent(searchModeListener)
+        );
+
         adapter.onToggleActionMode(true, null);
-
-        drawerLayout.startActionMode(new ToolbarLayout.ActionModeListener() {
-            @Override
-            public void onInflateActionMenu(@NonNull Menu menu) {
-                requireActivity().getMenuInflater().inflate(R.menu.menu_action_mode_icons, menu);
-            }
-
-            @Override
-            public void onEndActionMode() {
-                adapter.onToggleActionMode(false, null);
-            }
-
-            @Override
-            public boolean onMenuItemClicked(@NonNull MenuItem item) {
-                if (item.getItemId() == R.id.icons_am_menu1
-                        || item.getItemId() == R.id.icons_am_menu2) {
-                    toast(IconsFragment.this, item.getTitle().toString());
-                    return true;
-                }
-                return false;
-            }
-
-            @Override
-            public void onSelectAll(boolean isChecked) {
-                adapter.onToggleSelectAll(isChecked);
-            }
-        });
     }
 
     private void launchSearchMode(){
-        RecyclerView iconListView = getView().findViewById(R.id.recyclerView);
         NestedScrollView notItemView = getView().findViewById(R.id.nsvNoItem);
-        IconsAdapter adapter = (IconsAdapter) iconListView.getAdapter();
 
         final ViewYTranslator translatorDelegate = new AppBarAwareYTranslator();
         translatorDelegate.translateYWithAppBar(notItemView, drawerLayout.getAppBarLayout(), requireActivity());
 
-        drawerLayout.startSearchMode(new ToolbarLayout.SearchModeListener() {
-            @Override
-            public boolean onQueryTextSubmit(@Nullable String query) {
-                adapter.filter(query);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(@Nullable String newText) {
-                adapter.filter(newText);
-                return true;
-            }
-
-            @Override
-            public void onSearchModeToggle(@NonNull SearchView searchView, boolean visible) {
-                if (visible) {
-                    searchView.setQueryHint( "Search icons");
-                }else{
-                    adapter.filter("");
-                }
-            }
-        }, DISMISS);
+        drawerLayout.startSearchMode(searchModeListener, DISMISS);
     }
 
 

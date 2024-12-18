@@ -21,6 +21,7 @@ import com.sec.sesl.tester.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import dev.oneuiproject.oneui.layout.Badge;
 import dev.oneuiproject.oneui.layout.DrawerLayout;
@@ -173,5 +174,13 @@ public class MainActivity extends AppCompatActivity
 
     public DrawerLayout getDrawerLayout() {
         return mBinding.drawerLayout;
+    }
+
+    @Override
+    public void onNewIntent(Intent intent){
+        super.onNewIntent(intent);
+        if (Objects.equals(intent.getAction(), Intent.ACTION_SEARCH)) {
+            mBinding.drawerLayout.setSearchQueryFromIntent(intent);
+        }
     }
 }

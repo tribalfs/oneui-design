@@ -173,22 +173,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <dev.oneuiproject.oneui.widget.RelatedCard
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <include
+            layout="@layout/relative_links_card_layout"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Relative link 1"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Relative link 2"
-                />
-        </dev.oneuiproject.oneui.widget.RelatedCard>
         <Space
             android:layout_width="1dp"
             android:layout_height="8dp"/>

@@ -1,5 +1,8 @@
 package dev.oneuiproject.oneuiexample.ui.fragment;
 
+import static dev.oneuiproject.oneui.ktx.PreferenceFragmentCompatKt.getRelativeLinksCard;
+import static dev.oneuiproject.oneui.widget.RelativeLinksCardKt.replaceLinks;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -7,6 +10,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,10 +25,12 @@ import androidx.preference.SwitchPreferenceCompat;
 
 import com.sec.sesl.tester.R;
 
+import java.util.Random;
+
 import dev.oneuiproject.oneui.preference.HorizontalRadioPreference;
 import dev.oneuiproject.oneui.preference.TipsCardPreference;
-import dev.oneuiproject.oneui.preference.internal.PreferenceRelatedCard;
-import dev.oneuiproject.oneui.utils.PreferenceUtils;
+import dev.oneuiproject.oneui.widget.RelativeLink;
+import dev.oneuiproject.oneui.widget.RelativeLinksCard;
 import dev.oneuiproject.oneui.widget.Toast;
 import dev.oneuiproject.oneuiexample.ui.activity.SampleAboutActivity;
 import dev.oneuiproject.oneuiexample.ui.core.DarkModeUtils;
@@ -33,7 +39,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat
         implements Preference.OnPreferenceClickListener,
         Preference.OnPreferenceChangeListener {
     private Context mContext;
-    private PreferenceRelatedCard mRelativeLinkCard;
+    private RelativeLinksCard mRelativeLinksCard;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -55,13 +61,13 @@ public class PreferencesFragment extends PreferenceFragmentCompat
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getListView().seslSetLastRoundedCorner(false);
+        mRelativeLinksCard = getRelativeLinksCard(PreferencesFragment.this);
     }
 
     @Override
     public void onResume() {
-        setRelativeLinkCard();
         super.onResume();
+        replaceLinks(mRelativeLinksCard, randomRelativeLink(), randomRelativeLink(), randomRelativeLink());
     }
 
     private void initPreferences() {
@@ -180,13 +186,9 @@ public class PreferencesFragment extends PreferenceFragmentCompat
         }
     }
 
-    private void setRelativeLinkCard() {
-        if (mRelativeLinkCard == null) {
-            mRelativeLinkCard = PreferenceUtils.createRelatedCard(mContext);
-            mRelativeLinkCard.addButton("This", null)
-                    .addButton("That", null)
-                    .addButton("There", null)
-                    .show(this);
-        }
+    private RelativeLink randomRelativeLink()  {
+        return new RelativeLink(
+                "Related link " + (new Random().nextInt(20) + 1),
+                v -> Toast.makeText(mContext, ((TextView)v).getText().toString(), Toast.LENGTH_SHORT).show());
     }
 }
