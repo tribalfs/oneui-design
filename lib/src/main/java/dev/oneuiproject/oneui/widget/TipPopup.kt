@@ -1,4 +1,4 @@
-@file:Suppress("unused")
+@file:Suppress("unused", "NOTHING_TO_INLINE")
 
 package dev.oneuiproject.oneui.widget
 
@@ -26,6 +26,7 @@ import android.view.Surface
 import android.view.View
 import android.view.View.MeasureSpec.UNSPECIFIED
 import android.view.View.OnTouchListener
+import android.view.View.VISIBLE
 import android.view.WindowManager
 import android.view.accessibility.AccessibilityNodeInfo
 import android.view.accessibility.AccessibilityNodeInfo.ACTION_CLICK
@@ -41,6 +42,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
+import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
 import androidx.core.os.ConfigurationCompat
@@ -65,13 +67,15 @@ import dev.oneuiproject.oneui.widget.TipPopup.Direction.TOP_RIGHT
 import kotlin.math.ceil
 import kotlin.math.floor
 
-class TipPopup @JvmOverloads constructor(parentView: View, mode: Mode = Mode.NORMAL) {
+class TipPopup(parentView: View, mode: Mode) {
 
     @Deprecated("Use the more type-safe constructor TipPopup(parentView: View, mode: Mode)")
-    constructor(parentView: View, mode: Int = MODE_NORMAL) : this(
+    constructor(parentView: View, mode: Int) : this(
         parentView,
         if (mode == MODE_NORMAL) Mode.NORMAL else Mode.TRANSLUCENT
     )
+
+    constructor(parentView: View): this(parentView, Mode.NORMAL)
 
     private val mParentView: View = parentView
     private val mContext: Context = parentView.context
@@ -384,10 +388,19 @@ class TipPopup @JvmOverloads constructor(parentView: View, mode: Mode = Mode.NOR
         mActionClickListener = listener
     }
 
+    /**
+     * Sets whether a click on the expanded pop-up will be passed to the
+     * parent (anchor) view. Default is false.
+     *
+     * @param needToCall
+     */
     fun semCallParentViewsOnClick(needToCall: Boolean) {
         mNeedToCallParentViewsOnClick = needToCall
     }
 
+    /**
+     * Returns whether the pop-up, either as hint or expanded, is currently showing.
+     */
     val isShowing: Boolean
         get() = mBubblePopup?.isShowing == true || mBalloonPopup?.isShowing == true
 
@@ -435,6 +448,12 @@ class TipPopup @JvmOverloads constructor(parentView: View, mode: Mode = Mode.NOR
         mHintDescription = hintDescription
     }
 
+    /**
+     * Updates the pop-up's size, position and arrow position if currently showing.
+     *
+     * @param direction (Optional) The new [Direction] of the arrow.
+     * @param resetHintTimer (Optional) Defaults to false.
+     */
     @JvmOverloads
     fun update(direction: Direction = mArrowDirection, resetHintTimer: Boolean = false) {
         if (!isShowing/* || mParentView == null*/) {
@@ -473,24 +492,58 @@ class TipPopup @JvmOverloads constructor(parentView: View, mode: Mode = Mode.NOR
         }
     }
 
-    fun setMessageTextColor(color: Int) {
-        mMessageTextColor = Integer.valueOf((-16777216) or color)
+    /**
+     * Set the text color of the message.
+     *
+     * @param color The color to set. Note that the alpha channel
+     * is ignored, and the color will be applied as fully opaque.
+     */
+    fun setMessageTextColor(@ColorInt color: Int) {
+        mMessageTextColor = Color.BLACK or color
     }
 
-    fun setActionTextColor(color: Int) {
-        mActionTextColor = Integer.valueOf((-16777216) or color)
+    /**
+     * Set the text color of the action button.
+     *
+     * @param color The color to set. Note that the alpha channel
+     * is ignored, and the color will be applied as fully opaque.
+     */
+    fun setActionTextColor(@ColorInt color: Int) {
+        mActionTextColor = Color.BLACK or color
     }
 
-    fun setBackgroundColor(color: Int) {
-        mBackgroundColor = (-16777216) or color
+    /**
+     * Set the background color when on [Mode.NORMAL].
+     *
+     * @param color The color to set. Note that the alpha channel
+     * is ignored, and the color will be applied as fully opaque.
+     *
+     * @see setBackgroundColorWithAlpha
+     */
+    fun setBackgroundColor(@ColorInt color: Int) {
+        mBackgroundColor = Color.BLACK or color
     }
 
-    fun setBackgroundColorWithAlpha(color: Int) {
+    /**
+     * Set the background color when on [Mode.NORMAL].
+     *
+     * @param color The color to set including the alpha channel.
+     */
+    fun setBackgroundColorWithAlpha(@ColorInt  color: Int) {
         mBackgroundColor = color
     }
 
-    fun setBorderColor(color: Int) {
-        mBorderColor = Integer.valueOf((-16777216) or color)
+    /**
+     * **A MISNOMER**. This should be better called `setIconTint`.
+     *
+     * Set the tint color of the icon for both [State.HINT] and [State.EXPANDED]
+     * when on [Mode.NORMAL].
+     *
+     * @param color The color to set. Note that the alpha channel
+     * is ignored, and the color will be applied as fully opaque.
+     */
+    fun setBorderColor(@ColorInt  color: Int) {
+        mBorderColor = Color.BLACK or color
     }
 
     fun setOutsideTouchEnabled(enabled: Boolean) {
@@ -501,6 +554,12 @@ class TipPopup @JvmOverloads constructor(parentView: View, mode: Mode = Mode.NOR
         debugLog("outside enabled : $enabled")
     }
 
+    /**
+     * Allows the popup window to extend beyond the bounds of the screen.
+     *
+     * @param enabled Set to false if the pop-up window should be
+     * allowed to extend outside of the screen
+     */
     fun setPopupWindowClippingEnabled(enabled: Boolean) {
         mBubblePopup!!.isClippingEnabled = enabled
         mBalloonPopup!!.isClippingEnabled = enabled
@@ -553,6 +612,7 @@ class TipPopup @JvmOverloads constructor(parentView: View, mode: Mode = Mode.NOR
             mType = Type.BALLOON_SIMPLE
         } else {
             mActionView.visibility = View.VISIBLE
+            // Adjust the color for the action button text based on the given pop-up background color
             SeslTextViewReflector.semSetButtonShapeEnabled(mActionView, true, mBackgroundColor)
             mActionView.text = mActionText
             mActionView.setOnClickListener { view ->
@@ -755,7 +815,7 @@ class TipPopup @JvmOverloads constructor(parentView: View, mode: Mode = Mode.NOR
             debugLog("leftMargin[$leftMargin]")
             debugLog("rightMargin[$rightMargin] mBalloonWidth[$mBalloonWidth]")
             val horizontalContentMargin = mHorizontalTextMargin - mResources.getDimensionPixelSize(R.dimen.sem_tip_popup_button_padding_horizontal)
-            val verticalButtonPadding = if (mActionView.visibility == 0) mResources.getDimensionPixelSize(
+            val verticalButtonPadding = if (mActionView.visibility == VISIBLE) mResources.getDimensionPixelSize(
                 R.dimen.sem_tip_popup_button_padding_vertical) else 0
             val paramBalloonBubble = mBalloonBubble!!.layoutParams as FrameLayout.LayoutParams
             val paramBalloonPanel = mBalloonPanel!!.layoutParams as FrameLayout.LayoutParams
@@ -1619,4 +1679,15 @@ class TipPopup @JvmOverloads constructor(parentView: View, mode: Mode = Mode.NOR
         @Deprecated("Use Mode.TRANSLUCENT instead.")
         const val MODE_TRANSLUCENT: Int = 1
     }
+}
+
+/**
+* Set the tint color of the icon for both [TipPopup.State.HINT] and [TipPopup.State.EXPANDED]
+* when on [TipPopup.Mode.NORMAL].
+*
+* @param color The color to set. Note that the alpha channel
+* is ignored, and the color will be applied as fully opaque.
+*/
+inline fun TipPopup.setIconTint(@ColorInt color: Int){
+    setBorderColor(color)
 }
