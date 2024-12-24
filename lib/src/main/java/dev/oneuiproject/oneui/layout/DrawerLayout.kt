@@ -10,6 +10,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
 import androidx.annotation.Px
 import androidx.core.content.res.use
+import androidx.core.view.doOnLayout
 import androidx.customview.widget.Openable
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.layout.internal.backapi.BackHandler
@@ -207,7 +208,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
      *
      * @param animate whether or not to animate the opening and closing
      */
-    open fun setDrawerOpen(open: Boolean, animate: Boolean) {
+    open fun setDrawerOpen(open: Boolean, animate: Boolean)  = doOnLayout{
         if (open) {
             containerLayout.open(animate)
         } else {
