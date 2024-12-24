@@ -54,6 +54,7 @@ class SemDrawerLayout @JvmOverloads constructor(
     defStyle: Int = 0
 ): DrawerLayout(context, attrs, defStyle), DrawerLayoutInterface, NavButtonsHandler {
 
+    private val mDrawerListener = DrawerListener()
     private var scrimAlpha = 0f
     private var systemBarsColor = -1
 
@@ -91,8 +92,6 @@ class SemDrawerLayout @JvmOverloads constructor(
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        addDrawerListener(DrawerListener())
-
         mDrawerPane = findViewById(R.id.drawer_panel)
         mSlideViewPane = findViewById(R.id.slideable_view)
 
@@ -112,6 +111,8 @@ class SemDrawerLayout @JvmOverloads constructor(
         }
         mNavButtonsHandlerDelegate.showNavigationButton = true
 
+        removeDrawerListener(mDrawerListener)
+        addDrawerListener(mDrawerListener)
     }
 
     override fun onAttachedToWindow() {
@@ -252,7 +253,7 @@ class SemDrawerLayout @JvmOverloads constructor(
         }
     }
 
-    private inner class DrawerListener() : SimpleDrawerListener() {
+    private inner class DrawerListener : SimpleDrawerListener() {
         override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
             super.onDrawerSlide(drawerView, slideOffset)
             dispatchDrawerStateChange(slideOffset)
