@@ -51,6 +51,14 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <ViewStub
+            android:id="@+id/viewstub_oui_view_actionmode_searchview"
+            android:layout="@layout/oui_layout_tbl_actionmode_search"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="12dp"
+            />
+
+        <ViewStub
             android:id="@+id/viewstub_tbl_switchbar"
             android:layout="@layout/oui_layout_tbl_switchbar"
             android:layout_width="match_parent"

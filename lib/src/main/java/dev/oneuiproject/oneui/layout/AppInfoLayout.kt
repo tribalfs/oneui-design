@@ -434,7 +434,7 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
      */
     override fun startActionMode(
         listener: ActionModeListener,
-        keepSearchMode: Boolean,
+        searchOnActionMode: SearchOnActionMode,
         allSelectorStateFlow: StateFlow<AllSelectorState>?
     ) {
         //no op

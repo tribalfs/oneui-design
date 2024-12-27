@@ -25,7 +25,11 @@ open class ToolbarLayoutBackHandler(private val mToolbarLayout: ToolbarLayout
 
         with (mToolbarLayout) {
             when {
-                isActionMode -> endActionMode()
+                isActionMode -> {
+                    if (searchView.isSoftKeyboardShowing) {
+                        searchView.clearFocus()
+                    } else endActionMode()
+                }
                 isSearchMode -> {
                     when (searchModeOBPBehavior) {
                         DISMISS -> {

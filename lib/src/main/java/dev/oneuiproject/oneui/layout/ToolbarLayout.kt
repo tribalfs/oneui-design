@@ -35,6 +35,7 @@ import androidx.annotation.IntRange
 import androidx.annotation.MenuRes
 import androidx.annotation.RestrictTo
 import androidx.appcompat.view.menu.SeslMenuItem
+import androidx.appcompat.widget.ActionModeSearchView
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SeslSwitchBar
 import androidx.appcompat.widget.Toolbar
@@ -55,9 +56,11 @@ import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.appCompatActivity
 import dev.oneuiproject.oneui.ktx.isSoftKeyboardShowing
 import dev.oneuiproject.oneui.ktx.setSearchableInfoFrom
+import dev.oneuiproject.oneui.layout.ToolbarLayout.ActionModeListener
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.CLEAR_CLOSE
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.CLEAR_DISMISS
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.DISMISS
+import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchOnActionMode
 import dev.oneuiproject.oneui.layout.internal.backapi.BackHandler
 import dev.oneuiproject.oneui.layout.internal.backapi.OnBackCallbackDelegateCompat
 import dev.oneuiproject.oneui.layout.internal.delegate.ToolbarLayoutBackHandler
@@ -142,6 +145,31 @@ open class ToolbarLayout @JvmOverloads constructor(
         CLEAR_CLOSE
     }
 
+    /**
+     * @see Dismiss
+     * @see NoDismiss
+     * @see Concurrent
+     */
+    sealed interface SearchOnActionMode{
+        /**
+         * Search mode will be dismissed if active.
+         */
+        data object Dismiss: SearchOnActionMode
+
+        /**
+         * Search mode will not be dismissed if active.
+         * It will return to search interface once action mode is ended.
+         */
+        data object NoDismiss: SearchOnActionMode
+
+        /**
+         * Allow search while on action mode. This requires a separate [SearchModeListener] to be
+         * set.
+         * @param searchModeListener The [SearchModeListener] for this action mode search.
+         */
+        data class Concurrent(val searchModeListener: SearchModeListener): SearchOnActionMode
+    }
+
     val activity by lazy(LazyThreadSafetyMode.NONE) { context.appCompatActivity }
 
     private var mSelectedItemsCount = 0
@@ -217,6 +245,8 @@ open class ToolbarLayout @JvmOverloads constructor(
     private lateinit var mActionModeSelectAll: LinearLayout
     private lateinit var mActionModeCheckBox: CheckBox
     private lateinit var mActionModeTitleTextView: TextView
+    @Deprecated("Replaced with mActionModeCallBack")
+    private var mOnSelectAllListener: CompoundButton.OnCheckedChangeListener? = null
 
     private var mCustomFooterContainer: FrameLayout? = null
     private lateinit var mBottomActionModeBar: BottomNavigationView
@@ -226,8 +256,8 @@ open class ToolbarLayout @JvmOverloads constructor(
     private var mSearchModeListener: SearchModeListener? = null
     @JvmField
     internal var searchModeOBPBehavior = CLEAR_DISMISS
-    @Deprecated("Replaced with mActionModeCallBack")
-    private var mOnSelectAllListener: CompoundButton.OnCheckedChangeListener? = null
+    private var mActionModeSearchView: ActionModeSearchView? = null
+    private var searchMenuItem: MenuItem? = null
 
     private var mMenuSynchronizer: MenuSynchronizer? = null
     @JvmField
@@ -861,10 +891,40 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     /**
      * Forward the voice input result to the Toolbar.
-     * TODO: link to the wiki on how to use the voice input feature.
      */
+    @Deprecated("Use setSearchQueryFromIntent(intent) instead.",
+        ReplaceWith("setSearchQueryFromIntent(intent)"))
     fun onSearchModeVoiceInputResult(intent: Intent) {
         if (Intent.ACTION_SEARCH == intent.action) {
+            mSearchView.setQuery(intent.getStringExtra(SearchManager.QUERY), true)
+        }
+    }
+
+    /**
+     * Updates the query text of the [SearchView] with the search query extracted from the provided [Intent].
+     * This method is specifically designed to handle search intents with the action [Intent.ACTION_SEARCH],
+     * which are typically received by a search activity.
+     *
+     * @param intent The [Intent] containing the search query. It is expected to have the action [Intent.ACTION_SEARCH].
+     *               The search query should be accessible via [SearchManager.QUERY] in the intent's extras.
+     *
+     * @throws IllegalArgumentException if the intent does not contain a valid search query.
+     *
+     * Usage example:
+     * ```
+     * val searchIntent = intent
+     * if (Intent.ACTION_SEARCH == searchIntent.action) {
+     *     setSearchQueryFromIntent(searchIntent)
+     * }
+     * ```
+     */
+    fun setSearchQueryFromIntent(intent: Intent) {
+        require (Intent.ACTION_SEARCH == intent.action) {
+           "setSearchQueryFromIntent: Intent action is not ACTION_SEARCH."
+        }
+        if (mActionModeSearchView?.isVisible == true) {
+            mActionModeSearchView!!.setQuery(intent.getStringExtra(SearchManager.QUERY), true)
+        }else if (isSearchMode) {
             mSearchView.setQuery(intent.getStringExtra(SearchManager.QUERY), true)
         }
     }
@@ -898,33 +958,50 @@ open class ToolbarLayout @JvmOverloads constructor(
     }
 
     private var updateAllSelectorJob: Job? = null
+    private var mSearchOnActionMode: SearchOnActionMode? = null
 
     /**
      * Starts an Action Mode session. This shows the Toolbar's ActionMode with a toggleable 'All' Checkbox
      * and a counter ('x selected') that temporarily replaces the Toolbar's title.
      *
-     * @param listener The [ActionModeListener] to be invoke for this action mode.
-     * @param keepSearchMode (Optional) Set to `true` to keep active search mode and
-     * restore it's interface when this ActionMode is ended. This is set `false` by default.
+     * @param listener The [ActionModeListener] to be invoked for this action mode.
+     * @param searchOnActionMode (optional) The [SearchOnActionMode] option to set for this action mode.
+     * @param allSelectorStateFlow StateFlow of [AllSelectorState] that will be used to update "All" selector state and count
+     * It is set to [SearchOnActionMode.Dismiss] by default.
      *
      * @see [endActionMode]
      */
     @JvmOverloads
     open fun startActionMode(
         listener: ActionModeListener,
-        keepSearchMode: Boolean = false,
+        searchOnActionMode: SearchOnActionMode = SearchOnActionMode.Dismiss,
         allSelectorStateFlow: StateFlow<AllSelectorState>? = null
     ) {
-        Log.d(TAG, "startActionMode")
         isActionMode = true
         updateAllSelectorJob?.cancel()
         ensureActionModeViews()
         mActionModeListener = listener
-        if (isSearchMode) {
-            if (keepSearchMode) {
-                animatedVisibility(mSearchToolbar!!, GONE)
-            } else {
-                endSearchMode()
+        mSearchOnActionMode = searchOnActionMode
+        when (searchOnActionMode) {
+            SearchOnActionMode.Dismiss -> {
+                if (isSearchMode) endSearchMode()
+            }
+
+            SearchOnActionMode.NoDismiss -> {
+                if (isSearchMode) {
+                    animatedVisibility(mSearchToolbar!!, GONE)
+                }
+            }
+
+            is SearchOnActionMode.Concurrent -> {
+                setupActionModeSearch()
+                if (isSearchMode) {
+                    val query = mSearchView.query
+                    //endSearchMode()
+                    animatedVisibility(mSearchToolbar!!, GONE)
+                    showActionModeSearchView()
+                    mActionModeSearchView!!.setQuery(query, true)
+                }
             }
         }
         animatedVisibility(mMainToolbar, GONE)
@@ -1010,6 +1087,55 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
     }
 
+    private inline fun setupActionModeSearch() {
+        ensureActionModeSearchViews()
+        mActionModeToolbar!!.apply {
+            inflateMenu(R.menu.tbl_am_search_menu)
+            menu.findItem(R.id.menu_item_am_search)!!.let {
+                searchMenuItem = it.apply {
+                    setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+                    setOnMenuItemClickListener {
+                        showActionModeSearchView()
+                        true
+                    }
+                }
+                mActionModeSearchView!!.onCloseClickListener = { v ->
+                    mActionModeSearchView!!.query = ""
+                    v.isVisible = false
+                    it.isVisible = true
+                    (mSearchOnActionMode as SearchOnActionMode.Concurrent).searchModeListener
+                        .onSearchModeToggle(mActionModeSearchView!!, false)
+                }
+            }
+        }
+    }
+
+    private inline fun ensureActionModeSearchViews() {
+        if (mActionModeSearchView == null) {
+            mActionModeSearchView =
+                (mMainContainerParent.findViewById<ViewStub>(R.id.viewstub_oui_view_actionmode_searchview)
+                    .inflate() as ActionModeSearchView)
+                    .apply {
+                        setSearchableInfoFrom(activity!!)
+                    }
+        }
+    }
+
+
+    private fun showActionModeSearchView() {
+        val actionModeSearchListener =
+            (mSearchOnActionMode as SearchOnActionMode.Concurrent).searchModeListener
+        mActionModeSearchView!!.setOnQueryTextListener(
+            object: SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String) = actionModeSearchListener.onQueryTextSubmit(query)
+                override fun onQueryTextChange(newText: String) = actionModeSearchListener.onQueryTextChange(newText)
+            })
+        mActionModeSearchView!!.isVisible = true
+        searchMenuItem!!.isVisible = false
+        setExpanded(expanded = false, animate = true)
+        actionModeSearchListener.onSearchModeToggle(mActionModeSearchView!!, true)
+    }
+
     private val isRTLayout get() = layoutDirection == LAYOUT_DIRECTION_RTL
 
     /**
@@ -1035,6 +1161,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             mCollapsingToolbarLayout.seslSetSubtitle(mSubtitleExpanded)
             mMainToolbar.subtitle = mSubtitleCollapsed
         }
+        hideAndClearActionModeSearchView()
         mBottomActionModeBar.visibility = GONE
         mActionModeListener!!.onEndActionMode()
         mMenuSynchronizer!!.clear()
@@ -1046,6 +1173,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         mActionModeListener = null
         mMenuSynchronizer = null
         updateAllSelectorJob = null
+        mSearchOnActionMode = null
         updateOnBackCallbackState()
     }
 
@@ -1156,6 +1284,23 @@ open class ToolbarLayout @JvmOverloads constructor(
             mActionModeSelectAll.setOnClickListener { mActionModeCheckBox.setChecked(!mActionModeCheckBox.isChecked) }
             mBottomActionModeBar =
                 findViewById<ViewStub>(R.id.viewstub_tbl_actionmode_bottom_menu).inflate() as BottomNavigationView
+        }
+    }
+
+    private inline fun hideAndClearActionModeSearchView() {
+        mActionModeSearchView?.apply {
+            visibility = GONE
+            if (isSearchMode) {
+                mSearchView.setQuery(mActionModeSearchView!!.query, false)
+                setOnQueryTextListener(null)
+                setQuery("", false)
+            }else{
+                setQuery("", false)
+                setOnQueryTextListener(null)
+            }
+        }
+        searchMenuItem?.let {
+            if (!it.isVisible) it.isVisible = true
         }
     }
 
@@ -1478,10 +1623,6 @@ inline fun <T : ToolbarLayout> T.setNavigationBadge(badge: Badge) {
 }
 
 
-////////////////////////////////////////////////////////////////
-//         Kotlin consumables
-////////////////////////////////////////////////////////////////
-
 /**
  * Starts the search mode for this [ToolbarLayout].
  *
@@ -1554,6 +1695,9 @@ inline fun <T : ToolbarLayout> T.startSearchMode(
  * @param onSelectAll Lambda function to be invoked when the `All` selector is clicked.
  * This will not be triggered with [ToolbarLayout.updateAllSelector].
  *
+ * @param searchOnActionMode (optional) The [SearchOnActionMode] option to set for this action mode.
+ * Defaults to [SearchOnActionMode.Dismiss].
+ *
  * @param allSelectorStateFlow (Optional) StateFlow of [AllSelectorState] that updates the `All` selector state and count.
  *
  * Example usage:
@@ -1578,7 +1722,31 @@ inline fun <T : ToolbarLayout> T.startSearchMode(
  * ```
  *
  * @see ToolbarLayout.endActionMode
+ *
  */
+inline fun <T : ToolbarLayout> T.startActionMode(
+    crossinline onInflateMenu: (menu: Menu) -> Unit,
+    crossinline onEnd: () -> Unit,
+    crossinline onSelectMenuItem: (item: MenuItem) -> Boolean,
+    crossinline onSelectAll: (Boolean) -> Unit,
+    searchOnActionMode: SearchOnActionMode = SearchOnActionMode.Dismiss,
+    allSelectorStateFlow: StateFlow<AllSelectorState>? = null
+) {
+    startActionMode(
+        object : ActionModeListener {
+            override fun onInflateActionMenu(menu: Menu) = onInflateMenu(menu)
+            override fun onEndActionMode() = onEnd()
+            override fun onMenuItemClicked(item: MenuItem) = onSelectMenuItem(item)
+            override fun onSelectAll(isChecked: Boolean) = onSelectAll.invoke(isChecked)
+        },
+        searchOnActionMode,
+        allSelectorStateFlow
+    )
+}
+
+
+@Deprecated("Use startActionMode that accepts SearchOnActionMode as one of the params replacing the boolean `keepSearchMode` param.",
+    ReplaceWith("startActionMode(onInflateMenu, onEnd, onSelectMenuItem, onSelectAll, searchOnActionMode, allSelectorStateFlow)"))
 inline fun <T : ToolbarLayout> T.startActionMode(
     crossinline onInflateMenu: (menu: Menu) -> Unit,
     crossinline onEnd: () -> Unit,
@@ -1588,14 +1756,35 @@ inline fun <T : ToolbarLayout> T.startActionMode(
     allSelectorStateFlow: StateFlow<AllSelectorState>? = null
 ) {
     startActionMode(
-        object : ToolbarLayout.ActionModeListener {
+        object : ActionModeListener {
             override fun onInflateActionMenu(menu: Menu) = onInflateMenu(menu)
             override fun onEndActionMode() = onEnd()
             override fun onMenuItemClicked(item: MenuItem) = onSelectMenuItem(item)
             override fun onSelectAll(isChecked: Boolean) = onSelectAll.invoke(isChecked)
-
         },
-        keepSearchMode,
+        if (keepSearchMode) SearchOnActionMode.NoDismiss else SearchOnActionMode.Dismiss,
         allSelectorStateFlow
     )
+}
+
+
+
+/**
+ * Starts an Action Mode session. This shows the Toolbar's ActionMode with a toggleable 'All' Checkbox
+ * and a counter ('x selected') that temporarily replaces the Toolbar's title.
+ *
+ * @param listener The [ActionModeListener] to be invoke for this action mode.
+ * @param keepSearchMode (Optional) Set to `true` to keep active search mode and
+ * restore it's interface when this ActionMode is ended. This is set `false` by default.
+ *
+ * @see [ToolbarLayout.endActionMode]
+ */
+@Deprecated("Use startActionMode that accepts SearchOnActionMode as one of the params replacing the boolean `keepSearchMode` param.",
+    ReplaceWith("startActionMode(listener, searchOnActionMode, allSelectorStateFlow)"))
+inline fun <T : ToolbarLayout> T.startActionMode(
+    listener: ActionModeListener,
+    keepSearchMode: Boolean = false,
+    allSelectorStateFlow: StateFlow<AllSelectorState>? = null
+){
+    startActionMode(listener, if (keepSearchMode) SearchOnActionMode.NoDismiss else SearchOnActionMode.Dismiss , allSelectorStateFlow)
 }
