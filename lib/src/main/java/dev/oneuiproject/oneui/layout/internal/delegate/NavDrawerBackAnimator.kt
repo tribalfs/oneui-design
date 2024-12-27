@@ -34,9 +34,9 @@ class NavDrawerBackAnimator(drawerLayoutInterface: DrawerLayoutInterface): BackA
     private val drawerPane: View = drawerLayoutInterface.getDrawerPane()
     private val contentPane: View = drawerLayoutInterface.getContentPane()
     private val dpToPx = drawerPane.context.dpToPxFactor
-    private val maxScaleXDistanceShrink = 30f * dpToPx
-    private val maxScaleXDistanceGrow = 30f * dpToPx
-    private val maxScaleYDistance = 20f * dpToPx
+    private val maxScaleXDistanceShrink = 20f * dpToPx
+    private val maxScaleXDistanceGrow = 24f * dpToPx
+    private val maxScaleYDistance = 30f * dpToPx
 
     private var backEvent: BackEventCompat? = null
     private var startProgress = 0f
@@ -45,13 +45,11 @@ class NavDrawerBackAnimator(drawerLayoutInterface: DrawerLayoutInterface): BackA
         drawerPane.context, R.attr.motionEasingStandardDecelerateInterpolator,
         PathInterpolatorCompat.create(0f, 0f, 0f, 1f))
 
-    private var startTranslationX = 0f
     override fun isBackProgressStarted(): Boolean = this.backEvent != null
 
     override fun startBackProgress(backEvent: BackEventCompat) {
         this.backEvent = backEvent
         startProgress = backEvent.progress
-        startTranslationX = if (isRTL) -drawerPane.width.toFloat() else drawerPane.width.toFloat()
     }
 
     override fun updateBackProgress(backEvent: BackEventCompat) {
@@ -76,33 +74,39 @@ class NavDrawerBackAnimator(drawerLayoutInterface: DrawerLayoutInterface): BackA
         val drawerHeight = drawerPane.height
         if ( drawerHeight <= 0f) return
 
-        val leftGravity = isLeftGravity()
-        drawerPane.pivotX = if (leftGravity) 0f else drawerWidth.toFloat()
-
         val interpolatedProgress = interpolateProgress(progress)
-        val maxScaleDeltaShrink = maxScaleYDistance / drawerWidth
-
-        val targetScale = 1 - AnimationUtils.lerp(0f, maxScaleDeltaShrink, interpolatedProgress)
-
-        drawerPane.scaleX = targetScale
-        drawerPane.scaleY = targetScale
+        val leftGravity: Boolean = isLeftGravity()
 
         val swipeEdgeMatchesGravity = leftSwipeEdge == leftGravity
-        val childScaleX = if (swipeEdgeMatchesGravity) targetScale else 1f
-        val childScaleY = if (targetScale != 0f) (targetScale / targetScale * childScaleX) else 1f
+
+        val maxScaleXDeltaShrink: Float = maxScaleXDistanceShrink / drawerWidth
+        val maxScaleXDeltaGrow: Float = maxScaleXDistanceGrow / drawerWidth
+        val maxScaleYDelta: Float = maxScaleYDistance / drawerHeight
+
+        drawerPane.pivotX = (if (leftGravity) 0 else drawerWidth).toFloat()
+        val endScaleXDelta = if (swipeEdgeMatchesGravity) maxScaleXDeltaGrow else -maxScaleXDeltaShrink
+        val scaleXDelta = AnimationUtils.lerp(0f, endScaleXDelta, interpolatedProgress)
+        val scaleX = 1 + scaleXDelta
+        val scaleYDelta = AnimationUtils.lerp(0f, maxScaleYDelta, interpolatedProgress)
+        val scaleY = 1 - scaleYDelta
+
+        if (!swipeEdgeMatchesGravity) drawerPane.scaleX = scaleX
+        drawerPane.scaleY = scaleY
 
         if (drawerPane is ViewGroup) {
-            val childCount = drawerPane.childCount
-            for (i in 0 until childCount) {
-                val childView = drawerPane.getChildAt(i)
+            val viewGroup = drawerPane
+            for (i in 0 until viewGroup.childCount) {
+                val childView = viewGroup.getChildAt(i)
                 // Preserve the original aspect ratio and container alignment of the child content, and add
                 // content margins.
-                childView.pivotX = if (leftGravity) {
-                    (drawerWidth - childView.right + childView.width).toFloat()
-                } else {
-                    -childView.left.toFloat()
-                }
+                childView.pivotX = (if (leftGravity)
+                    (drawerWidth - childView.right + childView.width)
+                else
+                    -childView.left).toFloat()
                 childView.pivotY = -childView.top.toFloat()
+                val childScaleX = if (swipeEdgeMatchesGravity) 1 - scaleXDelta else 1f
+                val childScaleY = if (scaleY != 0f) (if (!swipeEdgeMatchesGravity) scaleX else 1f) / scaleY * childScaleX else 1f
+
                 childView.scaleX = childScaleX
                 childView.scaleY = childScaleY
             }

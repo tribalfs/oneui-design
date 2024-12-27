@@ -35,8 +35,8 @@ class DrawerBackAnimator(drawerLayoutInterface: DrawerLayoutInterface): BackAnim
 
     private val dpToPx = drawerPane.context.dpToPxFactor
     private val maxScaleXDistanceShrink = 35f * dpToPx
-    private val maxScaleXDistanceGrow = 35f * dpToPx
-    private val maxScaleYDistance = 24f * dpToPx
+    private val maxScaleXDistanceGrow = 30f * dpToPx
+    private val maxScaleYDistance = 26f * dpToPx
 
     private var backEvent: BackEventCompat? = null
     private var startProgress = 0f
@@ -72,11 +72,10 @@ class DrawerBackAnimator(drawerLayoutInterface: DrawerLayoutInterface): BackAnim
 
     private fun updateBackProgress(progress: Float, leftSwipeEdge: Boolean) {
         val drawerWidth = drawerPane.width
-        val drawerHeight = drawerPane.height
+        if (drawerWidth <= 0f)  return
 
-        if (drawerWidth <= 0f || drawerHeight <= 0f) {
-            return
-        }
+        val drawerHeight = drawerPane.height
+        if ( drawerHeight <= 0f) return
 
         val interpolatedProgress = interpolateProgress(progress)
         val leftGravity: Boolean = isLeftGravity()
