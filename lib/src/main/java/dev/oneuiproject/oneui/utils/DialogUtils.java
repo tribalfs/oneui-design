@@ -53,6 +53,10 @@ public class DialogUtils {
         }
     }
 
+    /**
+     * @deprecated See {@link dev.oneuiproject.oneui.ktx.ButtonKt#onClickWithProgress onClickWithProgress}
+     */
+    @Deprecated
     public static void setDialogProgressForButton(@NonNull AlertDialog dialog, int whichButton,
                                          @Nullable DialogProgressCallback callback) {
         if (dialog != null) {

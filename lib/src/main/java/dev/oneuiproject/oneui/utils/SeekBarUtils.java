@@ -14,6 +14,10 @@ import dev.oneuiproject.oneui.design.R;
 public class SeekBarUtils {
     private static final String TAG = "SeekBarUtils";
 
+    /**
+     * @deprecated Check out {@link dev.oneuiproject.oneui.ktx.SeslSeekBarKt#updateDualColorRange updateDualColorRange}.
+     */
+    @Deprecated
     public static void showOverlapPreview(@NonNull SeslSeekBar seekBar,
                                           boolean show) {
         if (seekBar != null) {
@@ -29,23 +33,23 @@ public class SeekBarUtils {
         }
     }
 
-    @SuppressLint("RestrictedApi")
-    public static void showTickMark(@NonNull SeslSeekBar seekBar,
-                                    boolean show) {
-        if (seekBar != null) {
-            Drawable d = show
-                    ? seekBar.getContext().getDrawable(R.drawable.oui_seekbar_tick_mark)
-                    : null;
-            seekBar.setTickMark(d);
-
-            ColorStateList progressColor = ColorStateList
-                    .valueOf(seekBar.getContext().getColor(show
-                            ? android.R.color.transparent
-                            : androidx.appcompat.R.color.sesl_seekbar_control_color_activated));
-            seekBar.setProgressTintList(progressColor);
-        } else {
-            Log.e(TAG, "showTickMark: seekBar is null");
-        }
-    }
+//    @SuppressLint("RestrictedApi")
+//    public static void showTickMark(@NonNull SeslSeekBar seekBar,
+//                                    boolean show) {
+//        if (seekBar != null) {
+//            Drawable d = show
+//                    ? seekBar.getContext().getDrawable(R.drawable.oui_seekbar_tick_mark)
+//                    : null;
+//            seekBar.setTickMark(d);
+//
+//            ColorStateList progressColor = ColorStateList
+//                    .valueOf(seekBar.getContext().getColor(show
+//                            ? android.R.color.transparent
+//                            : androidx.appcompat.R.color.sesl_seekbar_control_color_activated));
+//            seekBar.setProgressTintList(progressColor);
+//        } else {
+//            Log.e(TAG, "showTickMark: seekBar is null");
+//        }
+//    }
 
 }
