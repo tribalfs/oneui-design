@@ -49,7 +49,7 @@ dependencies {
     implementation("sesl.com.google.android.material:material:1.12.0+1.0.23-sesl6+rev2")
     implementation("sesl.androidx.apppickerview:apppickerview:1.0.1+1.0.1-sesl6+rev3")
     implementation("sesl.androidx.drawerlayout:drawerlayout:1.2.0+1.0.1-sesl6+rev2")
-    implementation("sesl.androidx.slidingpanelayout:slidingpanelayout:1.2.0+1.0.2-sesl6+rev3")
+    implementation("sesl.androidx.slidingpanelayout:slidingpanelayout:1.2.0+1.0.2-sesl6+rev4")
 
     implementation("com.google.zxing:core:3.5.3")
     implementation("com.airbnb.android:lottie:6.5.2")
