@@ -151,7 +151,6 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
     override fun close(animate: Boolean) {
         seslClosePane(animate)
         if (layoutDirection == LAYOUT_DIRECTION_RTL) simulateTouch()
-        Log.d(TAG, "close")
     }
 
     private fun ensureLayoutPreview() {
@@ -165,7 +164,6 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
     }
 
     internal fun setDualDetailPane(enable: Boolean) {
-        Log.d(TAG, "setDualDetailPane: $enable")
         if (enable) {
             if (mSplitDetailsPane == null) {
                 mSplitDetailsPane =
@@ -200,7 +198,7 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
         val eventTime = downTime + 10
         val location = intArrayOf(0, 0)
 
-        navRailDrawerButton!!.getLocationInWindow(location)
+        mDrawerPane.getLocationInWindow(location)
         val x = location[0].toFloat()
         val y = location[1].toFloat()
 
