@@ -966,8 +966,8 @@ open class ToolbarLayout @JvmOverloads constructor(
      *
      * @param listener The [ActionModeListener] to be invoked for this action mode.
      * @param searchOnActionMode (optional) The [SearchOnActionMode] option to set for this action mode.
-     * @param allSelectorStateFlow StateFlow of [AllSelectorState] that will be used to update "All" selector state and count
      * It is set to [SearchOnActionMode.Dismiss] by default.
+     * @param allSelectorStateFlow StateFlow of [AllSelectorState] that will be used to update "All" selector state and count
      *
      * @see [endActionMode]
      */
@@ -1025,6 +1025,29 @@ open class ToolbarLayout @JvmOverloads constructor(
 
         setupAllSelectorOnClickListener()
         updateOnBackCallbackState()
+    }
+
+    /**
+     * Starts an Action Mode session. This shows the Toolbar's ActionMode with a toggleable 'All' Checkbox
+     * and a counter ('x selected') that temporarily replaces the Toolbar's title.
+     *
+     * @param listener The [ActionModeListener] to be invoke for this action mode.
+     * @param keepSearchMode Set to `true` to keep active search mode and
+     * restore it's interface when this ActionMode is ended. This is set `false` by default.
+     * @param allSelectorStateFlow (Optional) StateFlow of [AllSelectorState] that will be used
+     * to update "All" selector state and count
+     *
+     * @see [ToolbarLayout.endActionMode]
+     */
+    @Deprecated("Use startActionMode that accepts SearchOnActionMode as one of the params replacing the boolean `keepSearchMode` param.",
+        ReplaceWith("startActionMode(listener, searchOnActionMode, allSelectorStateFlow)"))
+    @JvmOverloads
+    inline fun startActionMode(
+        listener: ActionModeListener,
+        keepSearchMode: Boolean,
+        allSelectorStateFlow: StateFlow<AllSelectorState>? = null
+    ){
+        startActionMode(listener, if (keepSearchMode) SearchOnActionMode.NoDismiss else SearchOnActionMode.Dismiss , allSelectorStateFlow)
     }
 
     private inline fun showActionModeToolbarAnimate() {
@@ -1752,7 +1775,7 @@ inline fun <T : ToolbarLayout> T.startActionMode(
     crossinline onEnd: () -> Unit,
     crossinline onSelectMenuItem: (item: MenuItem) -> Boolean,
     crossinline onSelectAll: (Boolean) -> Unit,
-    keepSearchMode: Boolean = false,
+    keepSearchMode: Boolean,
     allSelectorStateFlow: StateFlow<AllSelectorState>? = null
 ) {
     startActionMode(
@@ -1767,24 +1790,3 @@ inline fun <T : ToolbarLayout> T.startActionMode(
     )
 }
 
-
-
-/**
- * Starts an Action Mode session. This shows the Toolbar's ActionMode with a toggleable 'All' Checkbox
- * and a counter ('x selected') that temporarily replaces the Toolbar's title.
- *
- * @param listener The [ActionModeListener] to be invoke for this action mode.
- * @param keepSearchMode (Optional) Set to `true` to keep active search mode and
- * restore it's interface when this ActionMode is ended. This is set `false` by default.
- *
- * @see [ToolbarLayout.endActionMode]
- */
-@Deprecated("Use startActionMode that accepts SearchOnActionMode as one of the params replacing the boolean `keepSearchMode` param.",
-    ReplaceWith("startActionMode(listener, searchOnActionMode, allSelectorStateFlow)"))
-inline fun <T : ToolbarLayout> T.startActionMode(
-    listener: ActionModeListener,
-    keepSearchMode: Boolean = false,
-    allSelectorStateFlow: StateFlow<AllSelectorState>? = null
-){
-    startActionMode(listener, if (keepSearchMode) SearchOnActionMode.NoDismiss else SearchOnActionMode.Dismiss , allSelectorStateFlow)
-}
