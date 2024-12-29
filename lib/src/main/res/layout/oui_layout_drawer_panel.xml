@@ -34,7 +34,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/oui_ic_ab_drawer"
             android:visibility="gone"
-            />
+            app:tint="?android:textColorPrimary" />
 
         <TextView
             android:id="@+id/navRailDrawerButtonBadge"
