@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package dev.oneuiproject.oneui.widget
 
 import android.content.Context
@@ -44,7 +46,7 @@ class BottomTipView @JvmOverloads constructor(
                 R.styleable.BottomTipView
             ).use {a ->
                 a.getText(R.styleable.BottomTipView_title)?.let { setTitle(it) }
-                a.getText(R.styleable.BottomTipView_summary)?.let { setContent(it) }
+                a.getText(R.styleable.BottomTipView_summary)?.let { setSummary(it) }
                 a.getText(R.styleable.BottomTipView_linkText)?.let { setLinkText(it) }
             }
         }
@@ -55,17 +57,21 @@ class BottomTipView @JvmOverloads constructor(
         titleTextView.text = titleText
     }
 
-    fun setTitle(@StringRes titleRes: Int) {
-        setTitle(context.getString(titleRes))
+    fun setTitle(@StringRes titleRes: Int) = setTitle(context.getString(titleRes))
+
+    fun setSummary(summaryText: CharSequence?){
+        tipContentView.text = summaryText
     }
 
-    fun setContent(contentText: CharSequence?) {
-        tipContentView.text = contentText
+    fun setSummary(@StringRes summaryStringRes: Int){
+        setSummary(context.getString(summaryStringRes))
     }
 
-    fun setContent(@StringRes contentRes: Int) {
-        setContent(context.getString(contentRes))
-    }
+    @Deprecated("Use setSummary() instead", ReplaceWith("setSummary(summaryText)"))
+    inline fun setContent(contentText: CharSequence?) = setSummary(contentText)
+
+    @Deprecated("Use setSummary() instead", ReplaceWith("setSummary(summaryStringRes)"))
+    inline fun setContent(@StringRes contentRes: Int) = setSummary(context.getString(contentRes))
 
     fun setLink(linkText: CharSequence, clickListener: OnClickListener) {
         setLinkText(linkText)
