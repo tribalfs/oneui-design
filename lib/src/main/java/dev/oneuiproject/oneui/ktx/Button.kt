@@ -2,18 +2,17 @@
 
 package dev.oneuiproject.oneui.ktx
 
-import android.content.DialogInterface.BUTTON_NEGATIVE
-import android.content.DialogInterface.BUTTON_NEUTRAL
-import android.content.DialogInterface.BUTTON_POSITIVE
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-import android.view.ViewGroup.MarginLayoutParams
 import android.widget.Button
 import android.widget.FrameLayout
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.ButtonBarLayout
 import androidx.appcompat.widget.SeslProgressBar
+import androidx.core.view.isInvisible
 
 
 /**
@@ -24,47 +23,31 @@ import androidx.appcompat.widget.SeslProgressBar
 inline fun <T : Button> T.showProgress(asOverlay: Boolean = false): SeslProgressBar {
     val parentView = parent as ViewGroup
     val btnIndex = parentView.indexOfChild(this)
-    val lp = layoutParams as MarginLayoutParams
+    val btnWidth = width
+    val btnHeight = height
+
+    val context = context
+    val buttonLp = layoutParams
+
+    val frameLayout = FrameLayout(context).apply {
+        layoutParams = ViewGroup.LayoutParams(btnWidth, btnHeight)
+    }
+
+    val progressView = SeslProgressBar(context, null, android.R.attr.progressBarStyleSmall).apply {
+        layoutParams = FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
+            gravity = Gravity.CENTER
+        }
+    }
 
     parentView.removeView(this)
-    val context = context
-    val progressSize = context.resources.getDimensionPixelSize(androidx.appcompat.R.dimen.sesl_dialog_button_min_height)
-    val progressView = SeslProgressBar(context, null, android.R.attr.progressBarStyleSmall)
+    parentView.addView(frameLayout, btnIndex)
+    frameLayout.layoutParams = buttonLp
+    frameLayout.addView(this, ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT))
 
-    if (asOverlay) {
-        val frameLayout = FrameLayout(context).apply {
-            layoutParams = ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
-        }
-        progressView.apply {
-            layoutParams = FrameLayout.LayoutParams(progressSize, progressSize).apply {
-                gravity = Gravity.CENTER
-            }
-        }
-        this.isClickable = false
-        frameLayout.addView(
-            this.apply {
-                layoutParams = FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
-                    width = lp.width
-                    height = lp.height
-                    marginStart = lp.marginStart
-                    marginEnd = lp.marginEnd
-                    topMargin = lp.topMargin
-                    bottomMargin = lp.bottomMargin
-                }
-            }
-        )
-        frameLayout.addView(progressView)
-        parentView.addView(frameLayout, btnIndex)
-    }else{
-        progressView.apply {
-            layoutParams = lp.apply {
-                width = progressSize
-                height = progressSize
-                gravity = Gravity.CENTER
-            }
-        }
-        parentView.addView(progressView, btnIndex)
-    }
+    isInvisible = !asOverlay
+
+    frameLayout.addView(progressView)
+
     return progressView
 }
 
@@ -83,29 +66,22 @@ fun interface OnClickWithProgressListener {
  * @param listener The [OnClickWithProgressListener] to be invoked when this button is clicked.
  */
 @JvmOverloads
-fun <T: Button> T.onClickWithProgress(
+fun <T: Button> T.setOnClickListenerWithProgress(
     asOverlay: Boolean = false,
     listener: OnClickWithProgressListener
 ){
-    val alertDialogParent = getAlertDialogParentOrNull()
-
     setOnClickListener { v: View? ->
-        alertDialogParent?.apply {
-            setCancelable(false)
-            setCanceledOnTouchOutside(false)
-            getButton(BUTTON_POSITIVE)?.isEnabled = false
-            getButton(BUTTON_NEGATIVE)?.isEnabled = false
-            getButton(BUTTON_NEUTRAL)?.isEnabled = false
+        @Suppress("RestrictedApi")
+        (parent as? ButtonBarLayout)?.apply {
+            findViewById<Button?>(android.R.id.button1)?.isEnabled = false//Positive
+            findViewById<Button?>(android.R.id.button2)?.isEnabled = false//Negative
+            findViewById<Button?>(android.R.id.button3)?.isEnabled = false//Neutral
         }
-        val pb =  showProgress(asOverlay)
+
+        val pb = showProgress(asOverlay)
         listener.onClick(v as Button?, pb)
     }
 }
 
-private fun Button.getAlertDialogParentOrNull(): AlertDialog? {
-    var parent = parent
-    while (parent != null && parent !is AlertDialog) {
-        parent = (parent as? View)?.parent
-    }
-    return parent as? AlertDialog
-}
+
+

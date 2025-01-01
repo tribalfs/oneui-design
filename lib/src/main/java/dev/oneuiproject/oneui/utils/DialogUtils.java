@@ -54,7 +54,7 @@ public class DialogUtils {
     }
 
     /**
-     * @deprecated See {@link dev.oneuiproject.oneui.ktx.ButtonKt#onClickWithProgress onClickWithProgress}
+     * @deprecated See {@link dev.oneuiproject.oneui.ktx.ButtonKt#setOnClickListenerWithProgress setOnClickListenerWithProgress}
      */
     @Deprecated
     public static void setDialogProgressForButton(@NonNull AlertDialog dialog, int whichButton,
