@@ -61,7 +61,6 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
     private lateinit var mDrawerPane: LinearLayout
     private lateinit var mHeaderView: View
     private var mDrawerHeaderButton: ImageButton? = null
-    private var mDrawerHeaderBadge: TextView? = null
     private lateinit var mDrawerContainer: FrameLayout
     private var mNavRailSlideViewContent: LinearLayout? = null
     private lateinit var mainDetailsPane: LinearLayout
@@ -69,14 +68,15 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
     private var mDrawerItemsContainer: FrameLayout? = null
     private var mDrawerHeaderButtonBadgeView: TextView? = null
     private var mSplitDetailsPane: FrameLayout? = null
-    private var mDrawerHeaderButtonBadge: Badge = Badge.NONE
+    private var navDrawerButtonBadge: Badge = Badge.NONE
+    private var headerButtonBadge: Badge = Badge.NONE
     private lateinit var mSlideViewPane: FrameLayout
 
     @JvmField
     internal var navRailDrawerButton: ImageButton? = null
 
     @JvmField
-    internal var navRailDrawerButtonBadge: TextView? = null
+    internal var navRailDrawerButtonBadgeView: TextView? = null
 
     @Volatile
     private var mCurrentState: DrawerState = DrawerState.CLOSE
@@ -113,7 +113,7 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
                     }
                 }
 
-            navRailDrawerButtonBadge = mDrawerPane.findViewById(R.id.navRailDrawerButtonBadge)
+            navRailDrawerButtonBadgeView = mDrawerPane.findViewById(R.id.navRailDrawerButtonBadge)
 
             SeslViewReflector.semSetHoverPopupType(
                 navRailDrawerButton!!,
@@ -239,7 +239,7 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
         navRailDrawerButton = headerView.findViewById<ImageButton>(R.id.navRailDrawerButton).apply {
             isVisible = true
         }
-        navRailDrawerButtonBadge = headerView.findViewById(R.id.navRailDrawerButtonBadge)
+        navRailDrawerButtonBadgeView = headerView.findViewById(R.id.navRailDrawerButtonBadge)
 
         if (mDrawerHeaderButton == null) {
             Log.e(TAG, "`drawer_header_button` id is missing or is not an ImageButton")
@@ -307,6 +307,19 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
             mCurrentState = newState
             mDrawerStateListener?.invoke(newState)
         }
+
+        if (navDrawerButtonBadge == Badge.NONE && headerButtonBadge != Badge.NONE) {
+            updateNavBadgeScale()
+        }
+    }
+
+    private fun updateNavBadgeScale() {
+        navRailDrawerButtonBadgeView!!.apply {
+            val scale = 1f - sSlideOffset
+            scaleX = scale
+            scaleY = scale
+            alpha = scale
+        }
     }
 
     internal fun updateContentMinSidePadding(padding: Int) =
@@ -338,7 +351,21 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
         }
     }
 
-    override fun setNavigationButtonBadge(badge: Badge) = navRailDrawerButtonBadge!!.updateBadge(badge)
+    override fun setNavigationButtonBadge(badge: Badge) {
+        if (navDrawerButtonBadge == badge) return
+        navDrawerButtonBadge = badge
+        navRailDrawerButtonBadgeView!!.apply {
+            if (badge != Badge.NONE) {
+                scaleX = 1f
+                scaleY = 1f
+                alpha = 1f
+                updateBadge(badge)
+            }else if (!isOpen && headerButtonBadge != Badge.NONE){
+                updateBadge(headerButtonBadge)
+                updateNavBadgeScale()
+            }
+        }
+    }
 
     override var showNavigationButton: Boolean = true
 
@@ -371,9 +398,13 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
 
     override fun setHeaderButtonBadge(badge: Badge) {
         if (mDrawerHeaderButtonBadgeView != null) {
-            if (mDrawerHeaderButtonBadge == badge) return
-            mDrawerHeaderButtonBadge = badge
+            if (headerButtonBadge == badge) return
+            headerButtonBadge = badge
             mDrawerHeaderButtonBadgeView!!.updateBadge(badge)
+            if (navDrawerButtonBadge == Badge.NONE) {
+                navRailDrawerButtonBadgeView!!.updateBadge(badge)
+                updateNavBadgeScale()
+            }
         } else {
             Log.e(TAG, "setHeaderButtonBadge: `drawer_header_button_badge` id is not set in custom header view")
         }

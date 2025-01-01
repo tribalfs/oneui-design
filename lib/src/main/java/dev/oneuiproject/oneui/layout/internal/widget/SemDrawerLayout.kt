@@ -62,7 +62,11 @@ class SemDrawerLayout @JvmOverloads constructor(
     private lateinit var mSlideViewPane: FrameLayout
     private lateinit var mHeaderView: View
     private var mDrawerHeaderButton: ImageButton? = null
-    private var mDrawerHeaderBadge: TextView? = null
+    private var mDrawerHeaderBadgeView: TextView? = null
+
+    private var navDrawerButtonBadge: Badge = Badge.NONE
+    private var headerButtonBadge: Badge = Badge.NONE
+
     private lateinit var mDrawerItemsContainer: FrameLayout
 
     private lateinit var translationView: View
@@ -99,7 +103,7 @@ class SemDrawerLayout @JvmOverloads constructor(
         mDrawerItemsContainer = mDrawerPane.findViewById(R.id.drawer_items_container)
 
         mDrawerHeaderButton = mHeaderView.findViewById(R.id.drawer_header_button)
-        mDrawerHeaderBadge = mHeaderView.findViewById(R.id.drawer_header_button_badge)
+        mDrawerHeaderBadgeView = mHeaderView.findViewById(R.id.drawer_header_button_badge)
 
         translationView = findViewById(R.id.drawer_custom_translation) ?: mSlideViewPane
 
@@ -113,6 +117,7 @@ class SemDrawerLayout @JvmOverloads constructor(
 
         removeDrawerListener(mDrawerListener)
         addDrawerListener(mDrawerListener)
+        updateNavBadgeVisibility()
     }
 
     override fun onAttachedToWindow() {
@@ -203,7 +208,7 @@ class SemDrawerLayout @JvmOverloads constructor(
     override fun setCustomHeader(headerView: View, params: ViewGroup.LayoutParams){
         mDrawerPane.removeView(mHeaderView)
         mDrawerHeaderButton = null
-        mDrawerHeaderBadge = null
+        mDrawerHeaderBadgeView = null
         mDrawerPane.addView(headerView, 0, params)
         mHeaderView = mDrawerPane.getChildAt(0)
     }
@@ -250,6 +255,20 @@ class SemDrawerLayout @JvmOverloads constructor(
         if (newState != mCurrentState) {
             mCurrentState = newState
             mDrawerStateListener?.invoke(newState)
+
+            updateNavBadgeVisibility()
+        }
+    }
+
+    private fun updateNavBadgeVisibility() {
+        if (mCurrentState != DrawerState.CLOSE){
+            mNavButtonsHandlerDelegate.setNavigationButtonBadge(Badge.NONE)
+        }else {
+            if (navDrawerButtonBadge != Badge.NONE) {
+                mNavButtonsHandlerDelegate.setNavigationButtonBadge(navDrawerButtonBadge)
+            }else {
+                mNavButtonsHandlerDelegate.setNavigationButtonBadge(headerButtonBadge)
+            }
         }
     }
 
@@ -263,11 +282,13 @@ class SemDrawerLayout @JvmOverloads constructor(
         override fun onDrawerOpened(drawerView: View) {
             super.onDrawerOpened(drawerView)
             dispatchDrawerStateChange(1f)
+            updateNavBadgeVisibility()
         }
 
         override fun onDrawerClosed(drawerView: View) {
             super.onDrawerClosed(drawerView)
             dispatchDrawerStateChange(0f)
+            updateNavBadgeVisibility()
         }
     }
 
@@ -308,8 +329,16 @@ class SemDrawerLayout @JvmOverloads constructor(
     override fun setNavigationButtonTooltip(tooltipText: CharSequence?) =
         mNavButtonsHandlerDelegate.setNavigationButtonTooltip(tooltipText)
 
-    override fun setNavigationButtonBadge(badge: Badge) =
-        mNavButtonsHandlerDelegate.setNavigationButtonBadge(badge)
+    override fun setNavigationButtonBadge(badge: Badge) {
+        if (navDrawerButtonBadge == badge) return
+        navDrawerButtonBadge = badge
+        if (badge != Badge.NONE) {
+            mNavButtonsHandlerDelegate.setNavigationButtonBadge(badge)
+        } else if (!isOpen && headerButtonBadge != Badge.NONE){
+            mNavButtonsHandlerDelegate.setNavigationButtonBadge(headerButtonBadge)
+        }
+        updateNavBadgeVisibility()
+    }
 
     override fun setNavigationButtonIcon(icon: Drawable?) =
         mNavButtonsHandlerDelegate.setNavigationButtonIcon(icon)
@@ -340,9 +369,14 @@ class SemDrawerLayout @JvmOverloads constructor(
     }
 
     override fun setHeaderButtonBadge(badge: Badge) {
-        mDrawerHeaderBadge?.updateBadge(badge)
-            ?: Log.e(TAG, "setDrawerButtonBadge: this method can be used " +
-                    "only with the default header view")
+        if (headerButtonBadge == badge) return
+        headerButtonBadge = badge
+        mDrawerHeaderBadgeView?.apply {
+            updateBadge(badge)
+            updateNavBadgeVisibility()
+        } ?: Log.e(TAG, "setDrawerButtonBadge: this method can be used " +
+                "only with the default header view")
+
     }
 
     override fun getDrawerSlideOffset(): Float = sSlideOffset
