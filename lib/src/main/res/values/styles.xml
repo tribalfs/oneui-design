@@ -267,6 +267,7 @@
         <item name="android:background">@drawable/oui_grid_menu_dialog_item_bg</item>
     </style>
 
+    <!--SwitchItemView-->
     <declare-styleable name="SwitchItemView">
         <attr name="title"/>
         <!-- Show divider above. True by default-->

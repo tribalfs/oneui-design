@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/drawer_item_open_drawer_margin_start"
-        android:paddingEnd="@dimen/drawer_setting_icon_start_end_margin"
+        android:paddingEnd="@dimen/drawer_header_icon_start_end_margin"
         android:paddingTop="@dimen/drawer_header_icon_margin_top"
         android:paddingBottom="@dimen/drawer_header_icon_margin_bottom"
         android:minHeight="@dimen/drawer_header_height"

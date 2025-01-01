@@ -73,12 +73,6 @@
     <dimen name="cardview_icon_size">38dp</dimen>
     <dimen name="cardview_icon_margin_vertical">8dp</dimen>
     <dimen name="cardview_icon_margin_end">16dp</dimen>
-    <dimen name="drawer_item_open_drawer_margin_start">12dp</dimen>
-    <dimen name="drawer_setting_icon_start_end_margin">16dp</dimen>
-    <dimen name="drawer_header_icon_margin_top">8dp</dimen>
-    <dimen name="drawer_header_icon_margin_bottom">1dp</dimen>
-    <dimen name="drawer_header_height">56dp</dimen>
-    <dimen name="drawer_header_icon_size">48dp</dimen>
 
     <!--AppInfoLayout-->
     <dimen name="oui_ail_sub_text_size">13sp</dimen>
@@ -100,7 +94,15 @@
     <dimen name="start_end_time_picker_tab_margin_top">0dp</dimen>
     <dimen name="sec_dark_mode_time_text_margin">5dp</dimen>
 
+    <!--DrawerLayout/NavDrawerLayout-->
+    <dimen name="drawer_item_open_drawer_margin_start">12dp</dimen>
+    <dimen name="drawer_header_icon_start_end_margin">16dp</dimen>
+    <dimen name="drawer_header_icon_margin_top">8dp</dimen>
+    <dimen name="drawer_header_icon_margin_bottom">1dp</dimen>
+    <dimen name="drawer_header_height">56dp</dimen>
+    <dimen name="drawer_header_icon_size">48dp</dimen>
 
+    <!--SuggestionCardPreference-->
     <dimen name="sec_dashboard_tile_image_margin_start">20dp</dimen>
     <dimen name="sec_widget_round_button_bg_radius">22dp</dimen>
     <dimen name="sec_widget_round_button_padding_start_end">16dp</dimen>

@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Build
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.ColorInt
 import androidx.annotation.RequiresApi
 import androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_NONE
@@ -137,3 +138,27 @@ inline fun View.semSetRoundedCornerColor(
     }
 }
 
+
+inline fun <reified T: ViewGroup> View.findAncestorOfType(): T?{
+    var targetParent: T? = null
+    var parent = this.parent
+    while (parent is ViewGroup) {
+        if (parent is T) {
+            targetParent = parent
+            break
+        }
+        parent = parent.parent
+    }
+    return targetParent
+}
+
+inline fun View.isChildOf(viewGroup: ViewGroup): Boolean {
+    var parent = this.parent
+    while (parent is ViewGroup) {
+        if (parent == viewGroup) {
+            return true
+        }
+        parent = parent.parent
+    }
+    return false
+}

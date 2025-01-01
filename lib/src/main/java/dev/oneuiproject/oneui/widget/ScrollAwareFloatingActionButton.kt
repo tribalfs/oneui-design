@@ -5,14 +5,14 @@ import android.os.Build
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.indexscroll.widget.SeslIndexScrollView.OnIndexBarEventListener
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import dev.oneuiproject.oneui.design.R
+import dev.oneuiproject.oneui.ktx.findAncestorOfType
+import dev.oneuiproject.oneui.ktx.isChildOf
 import dev.oneuiproject.oneui.layout.ToolbarLayout
 import kotlinx.coroutines.Runnable
 import java.lang.ref.WeakReference
@@ -151,30 +151,30 @@ class ScrollAwareFloatingActionButton @JvmOverloads constructor(
     }
 
     private fun onAttachedToWindowInternal() {
-        val recyclerView = recyclerViewWR?.get() ?: return
+        recyclerViewWR?.get()?.apply {
+            removeOnScrollListener(scrollListener)
+            addOnScrollListener(scrollListener)
+            removeOnItemTouchListener(this@ScrollAwareFloatingActionButton)
+            addOnItemTouchListener(this@ScrollAwareFloatingActionButton)
+            if (Build.VERSION.SDK_INT >= 24) {
+                seslSetFastScrollerEventListener(
+                    object: RecyclerView.SeslFastScrollerEventListener {
+                        override fun onPressed(scrollY: Float) {
+                            fastScrollerPressed = true
+                            updateState()
+                        }
 
-        recyclerView.removeOnScrollListener(scrollListener)
-        recyclerView.addOnScrollListener(scrollListener)
-        recyclerView.removeOnItemTouchListener(this)
-        recyclerView.addOnItemTouchListener(this)
+                        override fun onReleased(scrollY: Float) {
+                            fastScrollerPressed = false
+                            updateState()
+                        }
+                    }
+                )
+            }
+        } ?: return
 
         indexScrollViewWR?.get()?.addOnIndexEventListener(indexBarEventListener)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            recyclerView.seslSetFastScrollerEventListener(
-                object : RecyclerView.SeslFastScrollerEventListener {
-                    override fun onPressed(scrollY: Float) {
-                        fastScrollerPressed = true
-                        updateState()
-                    }
-
-                    override fun onReleased(scrollY: Float) {
-                        fastScrollerPressed = false
-                        updateState()
-                    }
-                }
-            )
-        }
         updateState()
     }
 
@@ -209,22 +209,9 @@ class ScrollAwareFloatingActionButton @JvmOverloads constructor(
         }
     }
 
-    private val layoutLocationInfo: InternalLayoutInfo by lazy {
-        var isInsideTBLMainContainer = false
-        var toolbarLayout: ToolbarLayout? = null
-        var currentParent = parent
-        while (currentParent is ViewGroup) {
-            if (currentParent.id == R.id.tbl_main_content) {
-                isInsideTBLMainContainer = true
-                if (toolbarLayout != null) break
-            }
-            if (currentParent is ToolbarLayout) {
-                toolbarLayout = currentParent
-                if (isInsideTBLMainContainer) break
-            }
-            currentParent = currentParent.parent
-        }
-        InternalLayoutInfo(isInsideTBLMainContainer, toolbarLayout)
+    private val layoutLocationInfo by lazy {
+        findAncestorOfType<ToolbarLayout>()?.let { InternalLayoutInfo(this.isChildOf(it.mMainContainer!!), it) }
+            ?: InternalLayoutInfo(false)
     }
 
     override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
@@ -234,7 +221,7 @@ class ScrollAwareFloatingActionButton @JvmOverloads constructor(
 
     private data class InternalLayoutInfo(
         val isInsideTBLMainContainer: Boolean,
-        val tblParent: ToolbarLayout?
+        val tblParent: ToolbarLayout? = null
     )
 
     companion object {
