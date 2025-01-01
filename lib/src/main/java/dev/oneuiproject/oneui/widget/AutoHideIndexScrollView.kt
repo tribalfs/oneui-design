@@ -113,7 +113,7 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
         }
     }
 
-    override fun attachToRecyclerView(recyclerView: RecyclerView?) {
+    override fun attachToRecyclerView(recyclerView: RecyclerView) {
         super.attachToRecyclerView(recyclerView)
         if (mRecyclerView == recyclerView) return
         mRecyclerView = recyclerView
