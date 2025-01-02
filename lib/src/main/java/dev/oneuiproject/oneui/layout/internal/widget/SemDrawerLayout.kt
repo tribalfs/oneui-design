@@ -22,6 +22,7 @@ import androidx.annotation.Dimension
 import androidx.annotation.Px
 import androidx.annotation.RestrictTo
 import androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_NONE
+import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
@@ -77,7 +78,7 @@ class SemDrawerLayout @JvmOverloads constructor(
     private val activity by lazy(LazyThreadSafetyMode.NONE) {  context.appCompatActivity }
 
     init{
-        context.getColor(R.color.oui_drawerlayout_drawer_dim_color).let {
+        ContextCompat.getColor(context, R.color.oui_drawerlayout_drawer_dim_color).let {
             setScrimColor(it)
             scrimAlpha = ((it shr 24) and 0xFF) / 255f
         }
@@ -348,7 +349,7 @@ class SemDrawerLayout @JvmOverloads constructor(
             mDrawerHeaderButton!!.apply {
                 setImageDrawable(icon)
                 imageTintList = ColorStateList.valueOf(tint
-                    ?: context.getColor(R.color.oui_drawerlayout_header_icon_tint))
+                    ?: ContextCompat.getColor(context, R.color.oui_drawerlayout_header_icon_tint))
             }
             mHeaderView.isVisible = icon != null
         } else {

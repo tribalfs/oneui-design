@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
+import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.appCompatActivity
 import dev.oneuiproject.oneui.layout.Badge
 import dev.oneuiproject.oneui.layout.internal.NavigationBadgeIcon
@@ -16,7 +17,6 @@ import androidx.appcompat.R as appcompatR
 internal open class ToolbarLayoutButtonsHandler(private val toolbar: Toolbar):
     NavButtonsHandler {
     private var mNavDrawerButtonTooltip: CharSequence? = null
-    private var mNavigationIcon: Drawable? = null
     private var mNavigationOnClickList: View.OnClickListener? = null
     private var mNavigationBadgeIcon: LayerDrawable? = null
 
@@ -45,32 +45,26 @@ internal open class ToolbarLayoutButtonsHandler(private val toolbar: Toolbar):
         toolbar.navigationContentDescription = tooltipText
     }
 
+    private val badgeIcon by lazy(LazyThreadSafetyMode.NONE) { NavigationBadgeIcon(toolbar.context) }
+
     override fun setNavigationButtonBadge(badge: Badge) {
-        if (mNavigationIcon != null) {
-            when (badge) {
-                is Badge.DOT, is Badge.NUMERIC -> {
-                    val badgeIcon = NavigationBadgeIcon(toolbar.context)
-                    mNavigationBadgeIcon = LayerDrawable(arrayOf(mNavigationIcon!!, badgeIcon))
-                    badgeIcon.setBadge(badge)
-                }
-                is Badge.NONE -> {
-                    mNavigationBadgeIcon = null
-                }
-            }
-            updateNavButton()
-        } else Log.d(
-            TAG, "setNavigationButtonBadge: no navigation icon" +
-                    " has been set"
-        )
+        badgeIcon.setBadge(badge)
+        if (badge != Badge.NONE && mNavigationBadgeIcon == null) {
+            Log.w(TAG, "setNavigationButtonBadge: Unable to show badge, no navigation icon has been set.")
+        }
     }
 
     override fun setNavigationButtonIcon(icon: Drawable?) {
-        mNavigationIcon = icon
-        if (mNavigationBadgeIcon != null) {
-            mNavigationBadgeIcon!!.apply {
-                setDrawable(0, mNavigationIcon)
-                mNavigationBadgeIcon!!.invalidateSelf()
+        if (icon != null) {
+            if (mNavigationBadgeIcon == null) {
+                mNavigationBadgeIcon = LayerDrawable(arrayOf(icon, badgeIcon)).apply {
+                    setId(0, R.id.nav_button_icon_layer_id)
+                }
+            }else {
+                mNavigationBadgeIcon!!.setDrawableByLayerId(R.id.nav_button_icon_layer_id, icon)
             }
+        }else {
+            mNavigationBadgeIcon = null
         }
         updateNavButton()
     }
@@ -100,9 +94,8 @@ internal open class ToolbarLayoutButtonsHandler(private val toolbar: Toolbar):
         } else {
             if (showNavigationButton) {
                 toolbar.apply {
-                    val navIconToSet = mNavigationBadgeIcon ?: mNavigationIcon
-                    if (navigationIcon != navIconToSet) {
-                        navigationIcon = navIconToSet
+                    if (navigationIcon != mNavigationBadgeIcon) {
+                        navigationIcon = mNavigationBadgeIcon
                     }
                     mActivity?.apply {
                         supportActionBar?.setDisplayHomeAsUpEnabled(false)
@@ -123,7 +116,7 @@ internal open class ToolbarLayoutButtonsHandler(private val toolbar: Toolbar):
     }
 
     companion object{
-        private const val TAG = "ToolbarLayoutNabButtonsBehavior"
+        private const val TAG = "TBLButtonsHandler"
     }
 }
 

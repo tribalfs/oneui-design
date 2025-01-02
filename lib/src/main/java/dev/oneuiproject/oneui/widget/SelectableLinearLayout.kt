@@ -3,8 +3,8 @@ package dev.oneuiproject.oneui.widget
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.AnimatedVectorDrawable
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.util.AttributeSet
 import android.view.Gravity
 import android.widget.CheckBox
@@ -59,7 +59,9 @@ class SelectableLinearLayout @JvmOverloads constructor(
                 Color.parseColor("#08000000"))
             selectedHighlightColor = ColorDrawable(color)
 
-            mCheckMode = it.getInt(R.styleable.SelectableLinearLayout_checkMode, 0)
+            if (Build.VERSION.SDK_INT >= 23) {
+                mCheckMode = it.getInt(R.styleable.SelectableLinearLayout_checkMode, 0)
+            }
 
             when (mCheckMode){
                 0 ->{
@@ -97,6 +99,7 @@ class SelectableLinearLayout @JvmOverloads constructor(
             imageTarget = findViewById(imageTargetId!!)!!
             imageTargetId = null
             if (isInEditMode) {
+                @Suppress("NewApi")
                 imageTarget!!.foreground = checkDrawable
             }
         }
@@ -126,7 +129,10 @@ class SelectableLinearLayout @JvmOverloads constructor(
     override fun setSelected(isSelected: Boolean) {
         when (mCheckMode){
             0 ->  mCheckBox!!.isChecked = isSelected
-            1 -> imageTarget!!.foreground = if (isSelected) checkDrawable else null
+            1 -> {
+                @Suppress("NewApi")
+                imageTarget!!.foreground = if (isSelected) checkDrawable else null
+            }
 
         }
         background = if (isSelected) selectedHighlightColor else null
@@ -142,6 +148,7 @@ class SelectableLinearLayout @JvmOverloads constructor(
                 mCheckBox!!.isChecked = isSelected
             }
             1 -> {
+                @Suppress("NewApi")
                 if (isSelected) {
                     imageTarget!!.apply icon@ {
                         if (this@icon.foreground != checkDrawable) {

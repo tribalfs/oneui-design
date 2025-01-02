@@ -2,4 +2,6 @@
 <resources>
     <item name="drawer_custom_translation" type="id" />
     <item name="relative_links_card_preference" type="id"/>
+
+    <item name="nav_button_icon_layer_id" type="id" />
 </resources>

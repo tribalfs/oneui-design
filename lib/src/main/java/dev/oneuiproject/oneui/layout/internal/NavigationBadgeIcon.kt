@@ -74,10 +74,14 @@ class NavigationBadgeIcon(private val context: Context) : Drawable() {
         }
     }
 
-    fun setBadge(badge: Badge) {
-        if (this.badge == badge) return
+    /**
+     * @return true when badge is changed.
+     */
+    fun setBadge(badge: Badge): Boolean {
+        if (this.badge == badge) return false
         this.badge = badge
         invalidateSelf()
+        return true
     }
 
     override fun setAlpha(alpha: Int) {

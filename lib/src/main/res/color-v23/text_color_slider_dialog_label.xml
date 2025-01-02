@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:alpha=".4"
+        android:alpha="?android:attr/disabledAlpha"
         android:color="@color/oui_widget_seekbar_preference_label_text_color"
         android:state_enabled="false" />
     <item

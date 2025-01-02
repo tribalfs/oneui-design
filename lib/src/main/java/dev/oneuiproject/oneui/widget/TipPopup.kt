@@ -305,7 +305,7 @@ class TipPopup(parentView: View, mode: Mode) {
         mBubblePopup = TipWindowBubble(mBubbleView, mBubbleWidth, mBubbleHeight, false).apply {
             isTouchable = true
             isOutsideTouchable = true
-            isAttachedInDecor = false
+            if (Build.VERSION.SDK_INT >= 22) isAttachedInDecor = false
         }
     }
 
@@ -329,7 +329,7 @@ class TipPopup(parentView: View, mode: Mode) {
             isFocusable = true
             isTouchable = true
             isOutsideTouchable = true
-            isAttachedInDecor = false
+            if (Build.VERSION.SDK_INT >= 22) isAttachedInDecor = false
             setTouchInterceptor { _, event ->
                 if (mNeedToCallParentViewsOnClick && mParentView.hasOnClickListeners()
                     && (event.action == ACTION_DOWN || event.action == ACTION_OUTSIDE)) {
@@ -1557,7 +1557,7 @@ class TipPopup(parentView: View, mode: Mode) {
         }
 
         override fun dismiss() {
-            if (mIsUsingDismissAnimation && !mIsDismissing) {
+            if (Build.VERSION.SDK_INT > 22 && mIsUsingDismissAnimation && !mIsDismissing) {
                 animateViewOut()
             } else {
                 super.dismiss()

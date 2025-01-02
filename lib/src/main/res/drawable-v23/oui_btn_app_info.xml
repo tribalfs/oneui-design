@@ -23,9 +23,10 @@
 
     <item>
         <shape
-            android:shape="rectangle">
+            android:shape="rectangle"
+            android:tint="?attr/colorButtonNormal">
             <solid
-                android:color="?attr/colorButtonNormal" />
+                android:color="@color/sesl_white" />
 
             <!--Can't use ?attr:buttonCornerRadius which is set to 18dp-->
             <corners android:radius="22dp" />
