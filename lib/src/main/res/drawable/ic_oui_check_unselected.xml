@@ -4,6 +4,4 @@
     android:drawable="@drawable/ic_oui_check">
     <target android:name="check"
         android:animation="@animator/anim_unchecking" />
-    <target android:name="circle"
-        android:animation="@animator/anim_unselect_fade_out" />
 </animated-vector>

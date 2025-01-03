@@ -223,6 +223,9 @@
         <attr name="checkableButtonSpacing"  format="dimension" />
         <!-- Reference to the image used for the check overlay in overlayCircle mode.-->
         <attr name="targetImage" format="reference"/>
+        <!-- Corner radius to apply to the check overlay when in overlayCircle mode.
+        Default value is 50% of the targetImage height.-->
+        <attr name="cornerRadius"/>
         <!-- This defines the color used to highlight the selected state. -->
         <attr name="selectedHighlightColor" format="color" />
     </declare-styleable>
