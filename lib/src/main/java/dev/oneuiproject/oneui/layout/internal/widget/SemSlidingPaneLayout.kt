@@ -45,7 +45,7 @@ import dev.oneuiproject.oneui.layout.internal.util.DrawerLayoutInterface
 import dev.oneuiproject.oneui.layout.internal.util.DrawerOutlineProvider
 import dev.oneuiproject.oneui.layout.internal.util.NavButtonsHandler
 import dev.oneuiproject.oneui.layout.internal.util.getDrawerStateUpdate
-import dev.oneuiproject.oneui.layout.internal.util.updateBadge
+import dev.oneuiproject.oneui.layout.internal.util.updateBadgeView
 import kotlin.math.max
 
 @SuppressLint("RestrictedApi")
@@ -213,7 +213,6 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
 
     override fun setDrawerCornerRadius(@Dimension dp: Float) {
         setDrawerCornerRadius(dp.dpToPx(resources))
-        Log.d(TAG, "setDrawerCornerRadius")
     }
 
     /**
@@ -322,7 +321,7 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
         }
     }
 
-    internal fun updateContentMinSidePadding(padding: Int) =
+    internal fun updateContentMinSidePadding(@Px padding: Int) =
         mSlideViewPane.updatePadding(left = padding, right = padding)
 
     override var showNavigationButtonAsBack = false
@@ -359,9 +358,9 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
                 scaleX = 1f
                 scaleY = 1f
                 alpha = 1f
-                updateBadge(badge)
+                updateBadgeView(badge)
             }else if (!isOpen && headerButtonBadge != Badge.NONE){
-                updateBadge(headerButtonBadge)
+                updateBadgeView(headerButtonBadge)
                 updateNavBadgeScale()
             }
         }
@@ -400,9 +399,9 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
         if (mDrawerHeaderButtonBadgeView != null) {
             if (headerButtonBadge == badge) return
             headerButtonBadge = badge
-            mDrawerHeaderButtonBadgeView!!.updateBadge(badge)
+            mDrawerHeaderButtonBadgeView!!.updateBadgeView(badge)
             if (navDrawerButtonBadge == Badge.NONE) {
-                navRailDrawerButtonBadgeView!!.updateBadge(badge)
+                navRailDrawerButtonBadgeView!!.updateBadgeView(badge)
                 updateNavBadgeScale()
             }
         } else {

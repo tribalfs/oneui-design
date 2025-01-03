@@ -6,7 +6,7 @@ package dev.oneuiproject.oneui.layout
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
-import androidx.annotation.Dimension
+import androidx.annotation.Px
 import androidx.annotation.RestrictTo
 import androidx.customview.widget.Openable
 import dev.oneuiproject.oneui.design.R
@@ -29,8 +29,7 @@ class NavDrawerLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : OneUIDrawerLayout(context, attrs), Openable {
 
-    @Dimension
-    private var navRailContentMinSideMargin: Int = 0
+    @Px private var navRailContentMinSideMargin: Int = 0
     private var mTopSystemBarsInset: Int = 0
 
     private var mSemSlidingPaneLayout: SemSlidingPaneLayout? = null
@@ -87,7 +86,7 @@ class NavDrawerLayout @JvmOverloads constructor(
     val drawerOffset get() = containerLayout.getDrawerSlideOffset()
 
     /**Set minimum side margin for content pane when on [largeScreenMode][isLargeScreenMode]*/
-    fun setNavRailContentMinSideMargin(@Dimension minSideMargin: Int) {
+    fun setNavRailContentMinSideMargin(@Px minSideMargin: Int) {
         if (navRailContentMinSideMargin == minSideMargin) return
         navRailContentMinSideMargin = minSideMargin
         updateContentSideMargin()
@@ -108,6 +107,7 @@ class NavDrawerLayout @JvmOverloads constructor(
      * Sets whether to lock the navigation rail when action mode is active.
      * This applies only when in [largeScreenMode][isLargeScreenMode].
      *
+     * @see lockNavRailOnSearchMode
      * @see isActionMode
      */
     var lockNavRailOnActionMode = false
@@ -123,6 +123,7 @@ class NavDrawerLayout @JvmOverloads constructor(
      * Sets whether to lock the navigation rail when search mode is active.
      * This applies only when in [largeScreenMode][isLargeScreenMode].
      *
+     * @see lockNavRailOnActionMode
      * @see isSearchMode
      */
     var lockNavRailOnSearchMode = false

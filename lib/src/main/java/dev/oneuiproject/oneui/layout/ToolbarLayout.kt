@@ -55,6 +55,7 @@ import dev.oneuiproject.oneui.delegates.AllSelectorState
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.appCompatActivity
 import dev.oneuiproject.oneui.ktx.isSoftKeyboardShowing
+import dev.oneuiproject.oneui.ktx.setBadge
 import dev.oneuiproject.oneui.ktx.setSearchableInfoFrom
 import dev.oneuiproject.oneui.layout.ToolbarLayout.ActionModeListener
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.CLEAR_CLOSE
@@ -402,9 +403,7 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     override fun onFinishInflate() {
         super.onFinishInflate()
-        if (navButtonsHandler.showNavigationButtonAsBack != _showNavAsBack){
-            navButtonsHandler.showNavigationButtonAsBack = _showNavAsBack
-        }
+        navButtonsHandler.showNavigationButtonAsBack = _showNavAsBack
         if (mShowSwitchBar) switchBar.visibility = VISIBLE
         setNavigationButtonIcon(mNavigationIcon)
         setTitle(mTitleExpanded, mTitleCollapsed)
@@ -457,9 +456,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             mAppBarLayout.seslSetCustomHeightProportion(false, 0f)
         } else {
             mAppBarLayout.seslSetCustomHeight(
-                context.resources
-                    .getDimensionPixelSize(appcompatR.dimen.sesl_action_bar_height_with_padding)
-            )
+                context.resources.getDimensionPixelSize(appcompatR.dimen.sesl_action_bar_height_with_padding))
         }
     }
 
@@ -604,9 +601,8 @@ open class ToolbarLayout @JvmOverloads constructor(
             }
         }
 
-    @Deprecated(
-        "Use setMenuItemBadge(Int, Badge) instead.",
-        replaceWith = ReplaceWith("setMenuItemBadge(id, badge)")
+    @Deprecated("You can directly invoke setBadge on the MenuItem.",
+        ReplaceWith("menuItem.setBadge(badge)", "dev.oneuiproject.oneui.ktx.setBadge")
     )
     fun setMenuItemBadge(@IdRes id: Int, text: String?) {
     }
@@ -616,16 +612,13 @@ open class ToolbarLayout @JvmOverloads constructor(
      *
      * Important: Requires sesl.androidx.appcompat:1.7.0+1.0.34-sesl6+rev0 or higher
      *
-     * @param menuItem The menuItem to set the badge
+     * @param menuItem The [menuItem][SeslMenuItem] to set the badge
      * @param badge The [Badge] to be set.
      */
-    fun setMenuItemBadge(menuItem: SeslMenuItem, badge: Badge) {
-        when (badge) {
-            is Badge.NUMERIC -> menuItem.badgeText = badge.count.toString()
-            is Badge.DOT -> menuItem.badgeText = ""
-            is Badge.NONE -> menuItem.badgeText = null
-        }
-    }
+    @Deprecated("You can directly invoke setBadge on the MenuItem.",
+        ReplaceWith("menuItem.setBadge(badge)", "dev.oneuiproject.oneui.ktx.setBadge")
+    )
+    inline fun setMenuItemBadge(menuItem: SeslMenuItem, badge: Badge) = menuItem.setBadge(badge)
 
     /**
      * Sets the badge of a Toolbar MenuItem.
@@ -636,6 +629,9 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @param id    The resource ID of the MenuItem
      * @param badge The [Badge] to be displayed.
      */
+    @Deprecated("You can directly invoke setBadge on the MenuItem.",
+        ReplaceWith("menu.findItem(id).setBadge(badge)", "dev.oneuiproject.oneui.ktx.setBadge")
+    )
     fun setMenuItemBadge(@IdRes id: Int, badge: Badge) {
         val item = mMainToolbar.menu.findItem(id)
         if (item is SeslMenuItem) {
@@ -678,7 +674,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     }
 
     /**
-     * Add a [Badge] to the navigation button.
+     * Set a badge to the navigation button.
      *
      * @param badge The [Badge] to be displayed.
      */
@@ -719,7 +715,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         replaceWith = ReplaceWith("showNavigationButtonAsBack = true"))
     fun setNavigationButtonAsBack() {
         if (!isInEditMode) {
-            navButtonsHandler.showNavigationButtonAsBack = true
+            showNavigationButtonAsBack = true
         }
     }
 

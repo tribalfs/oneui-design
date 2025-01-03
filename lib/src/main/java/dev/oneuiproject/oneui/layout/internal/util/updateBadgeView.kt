@@ -11,7 +11,7 @@ import dev.oneuiproject.oneui.layout.Badge
 import dev.oneuiproject.oneui.utils.badgeCountToText
 import androidx.appcompat.R as appcompatR
 
-internal fun TextView.updateBadge(badge: Badge){
+internal fun TextView.updateBadgeView(badge: Badge){
     val res = resources
     when(badge){
         Badge.DOT -> {

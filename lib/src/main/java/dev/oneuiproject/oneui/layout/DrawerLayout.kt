@@ -120,7 +120,8 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     fun setDrawerButtonIcon(icon: Drawable?) = setHeaderButtonIcon(icon)
 
     /**
-     * Sets the icon for the drawer header button, located in the top right corner of the drawer panel.
+     * Sets the icon for the drawer header button,
+     * located at the top right corner of the drawer panel.
      *
      * @param icon The drawable to use as the icon.
      * @param tint An optional tint to apply to the icon.
@@ -141,15 +142,15 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         navButtonsHandler.setHeaderButtonTooltip(tooltipText)
 
     /**
-     * Set the tooltip of the drawer header button.
-     * The drawer header button is the button in the top right corner of the drawer panel.
+     * Set the tooltip of the drawer header button,
+     * located at the top right corner of the drawer panel.
      */
     open fun setHeaderButtonTooltip(tooltipText: CharSequence?) =
         navButtonsHandler.setHeaderButtonTooltip(tooltipText)
 
     /**
-     * Set the click listener of the drawer button.
-     * The drawer button is the button in the top right corner of the drawer panel.
+     * Set the click listener of the drawer button,
+     * located at the top right corner of the drawer panel.
      */
     @Deprecated(
         "Use setHeaderButtonOnClickListener(listener) instead",
@@ -159,28 +160,28 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         setHeaderButtonOnClickListener(listener)
 
     /**
-     * Set the click listener of the drawer button.
-     * The drawer button is the button in the top right corner of the drawer panel.
+     * Set the click listener of the drawer header button,
+     * located at the top right corner of the drawer panel.
      */
     open fun setHeaderButtonOnClickListener(listener: OnClickListener?) =
         navButtonsHandler.setHeaderButtonOnClickListener(listener)
 
     /**
-     * Set the badges of the navigation button and drawer button.
-     * The drawer button is the button in the top right corner of the drawer panel.
-     * The badge is small orange circle in the top right of the icon which contains text.
+     * Set badge to each of the navigation button and drawer header button (i.e.
+     * the button at the top right corner of the drawer panel).
      *
-     * @param navigationBadge The [badge][dev.oneuiproject.oneui.layout.ToolbarLayout.Badge] to set for navigation button.
-     * @param drawerBadge The [badge][dev.oneuiproject.oneui.layout.ToolbarLayout.Badge] to set for drawer button.
-     * @see ToolbarLayout.setNavigationButtonBadge
+     * @param navigationButtonBadge The [Badge] to set for navigation button.
+     * @param headerButtonBadge The [Badge] to set for drawer header button.
+     * @see setNavigationButtonBadge
+     * @see setHeaderButtonBadge
      */
-    fun setButtonBadges(navigationBadge: Badge, drawerBadge: Badge) {
-        setNavigationButtonBadge(navigationBadge)
-        setHeaderButtonBadge(drawerBadge)
+    fun setButtonBadges(navigationButtonBadge: Badge, headerButtonBadge: Badge) {
+        setNavigationButtonBadge(navigationButtonBadge)
+        setHeaderButtonBadge(headerButtonBadge)
     }
 
     /**
-     * Set the badge of the drawer button.
+     * Set the badge of the drawer header button.
      * The drawer header button is the button in the top right corner of the drawer panel.
      *
      * @param badge The [badge][dev.oneuiproject.oneui.layout.Badge] to set.
@@ -190,10 +191,10 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     fun setDrawerButtonBadge(badge: Badge) = setHeaderButtonBadge(badge)
 
     /**
-     * Set the badge of the drawer header button.
-     * The drawer header button is the button in the top right corner of the drawer panel.
+     * Set a badge of the drawer header button,
+     * located at the top right corner of the drawer panel.
      *
-     * @param badge The [badge][dev.oneuiproject.oneui.layout.Badge] to setn.
+     * @param badge The [Badge] to set.
      */
     open fun setHeaderButtonBadge(badge: Badge) = navButtonsHandler.setHeaderButtonBadge(badge)
 

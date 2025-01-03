@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package dev.oneuiproject.oneui.ktx
 
 import android.graphics.Color
@@ -83,6 +85,7 @@ enum class MultiSelectionState{
  * }
  * ```
  */
+@JvmOverloads
 inline fun RecyclerView.enableCoreSeslFeatures(
     fillBottom:Boolean = true,
     lastRoundedCorner:Boolean = true,

@@ -44,7 +44,7 @@ import dev.oneuiproject.oneui.layout.internal.util.DrawerLayoutInterface
 import dev.oneuiproject.oneui.layout.internal.util.DrawerOutlineProvider
 import dev.oneuiproject.oneui.layout.internal.util.NavButtonsHandler
 import dev.oneuiproject.oneui.layout.internal.util.getDrawerStateUpdate
-import dev.oneuiproject.oneui.layout.internal.util.updateBadge
+import dev.oneuiproject.oneui.layout.internal.util.updateBadgeView
 import kotlin.math.max
 typealias OneUIDrawerLayout = dev.oneuiproject.oneui.layout.DrawerLayout
 
@@ -283,13 +283,11 @@ class SemDrawerLayout @JvmOverloads constructor(
         override fun onDrawerOpened(drawerView: View) {
             super.onDrawerOpened(drawerView)
             dispatchDrawerStateChange(1f)
-            updateNavBadgeVisibility()
         }
 
         override fun onDrawerClosed(drawerView: View) {
             super.onDrawerClosed(drawerView)
             dispatchDrawerStateChange(0f)
-            updateNavBadgeVisibility()
         }
     }
 
@@ -373,7 +371,7 @@ class SemDrawerLayout @JvmOverloads constructor(
         if (headerButtonBadge == badge) return
         headerButtonBadge = badge
         mDrawerHeaderBadgeView?.apply {
-            updateBadge(badge)
+            updateBadgeView(badge)
             updateNavBadgeVisibility()
         } ?: Log.e(TAG, "setDrawerButtonBadge: this method can be used " +
                 "only with the default header view")
