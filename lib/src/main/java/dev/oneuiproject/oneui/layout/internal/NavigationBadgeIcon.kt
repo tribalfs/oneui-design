@@ -41,6 +41,7 @@ class NavigationBadgeIcon(private val context: Context) : Drawable() {
     private var badge: Badge = Badge.NONE
     private var mIsLandscape = false
     private val cornerRadius = 9f * context.dpToPxFactor
+    private val dotBadgeRadius = res.getDimensionPixelSize(appcompatR.dimen.sesl_menu_item_badge_size)/2f
     private val defaultWidth = res.getDimensionPixelSize(appcompatR.dimen.sesl_badge_default_width)
     private val additionalWidth = res.getDimensionPixelSize(appcompatR.dimen.sesl_badge_additional_width)
     private val originalTextSize = res.getDimensionPixelSize(appcompatR.dimen.sesl_menu_item_badge_text_size).toFloat()
@@ -52,8 +53,7 @@ class NavigationBadgeIcon(private val context: Context) : Drawable() {
         if (badge is Badge.DOT) {
             val x = (if (isRTL) DOT_BADGE_OFFSET else width - DOT_BADGE_OFFSET).toFloat()
             val y = DOT_BADGE_OFFSET
-            val radius = 7f
-            canvas.drawCircle(x, y, radius, mCirclePaint)
+            canvas.drawCircle(x, y, dotBadgeRadius, mCirclePaint)
         } else if (badge is Badge.NUMERIC) {
             val mBadgeText = (badge as Badge.NUMERIC).count.badgeCountToText()!!
             val x = (if (isRTL) N_BADGE_OFFSET else width - N_BADGE_OFFSET).toFloat()
