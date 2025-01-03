@@ -5,6 +5,7 @@ package dev.oneuiproject.oneui.layout
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Configuration
 import android.util.AttributeSet
 import androidx.annotation.Px
 import androidx.annotation.RestrictTo
@@ -15,7 +16,9 @@ import dev.oneuiproject.oneui.layout.internal.util.DrawerLayoutInterface
 import dev.oneuiproject.oneui.layout.internal.util.NavButtonsHandler
 import dev.oneuiproject.oneui.layout.internal.widget.SemSlidingPaneLayout
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isTabletLayout
+import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout.MarginProvider
 import dev.oneuiproject.oneui.layout.DrawerLayout as OneUIDrawerLayout
+import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout as AdaptiveCoordinatorLayout
 
 /**
  * OneUI-styled layout that implements a DrawerLayout interface on smaller devices and a Navigation Rail interface on larger devices,
@@ -30,6 +33,7 @@ class NavDrawerLayout @JvmOverloads constructor(
 ) : OneUIDrawerLayout(context, attrs), Openable {
 
     @Px private var navRailContentMinSideMargin: Int = 0
+    @Px private var navRailContentPreferredWidth: Int = DEFAULT_NAV_RAIL_DETAILS_WIDTH
     private var mTopSystemBarsInset: Int = 0
 
     private var mSemSlidingPaneLayout: SemSlidingPaneLayout? = null
@@ -85,17 +89,79 @@ class NavDrawerLayout @JvmOverloads constructor(
     /**The current slide offset of the drawer pane.*/
     val drawerOffset get() = containerLayout.getDrawerSlideOffset()
 
-    /**Set minimum side margin for content pane when on [largeScreenMode][isLargeScreenMode]*/
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        updateContentWidth()
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        if (!isAttachedToWindow) return
+        updateContentWidth()
+    }
+
+    /**
+     * Set minimum side margin for details pane when on [largeScreenMode][isLargeScreenMode].
+     *
+     * @see setAdaptiveMarginProvider
+     * @see setNavRailContentPreferredWidth
+     */
     fun setNavRailContentMinSideMargin(@Px minSideMargin: Int) {
         if (navRailContentMinSideMargin == minSideMargin) return
         navRailContentMinSideMargin = minSideMargin
-        updateContentSideMargin()
+        updateContentWidth()
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY)
-    override fun updateContentSideMargin() =
-        (containerLayout as? SemSlidingPaneLayout)?.updateContentMinSidePadding(navRailContentMinSideMargin)
-            ?: super.updateContentSideMargin()
+    private fun updateContentWidth() {
+        (containerLayout as? SemSlidingPaneLayout)?.apply {
+            updateContentMinSidePadding(navRailContentMinSideMargin)
+            if (seslGetPreferredContentPixelSize() != navRailContentPreferredWidth) {
+                seslRequestPreferredContentPixelSize(navRailContentPreferredWidth)
+            }
+        }
+    }
+
+    /**
+     * Override the preferred/maximum width of the contents in the details pane
+     * when on [largeScreenMode][isLargeScreenMode].
+     *
+     * @param preferredWidth The preferred width in pixels.
+     * Set [DEFAULT_NAV_RAIL_DETAILS_WIDTH] to restore default.
+     *
+     * @see setNavRailContentMinSideMargin
+     * @see setAdaptiveMarginProvider
+     */
+    fun setNavRailContentPreferredWidth(@Px preferredWidth: Int) {
+        if (navRailContentPreferredWidth == preferredWidth) return
+        navRailContentPreferredWidth = preferredWidth
+        (containerLayout as? SemSlidingPaneLayout)?.seslRequestPreferredContentPixelSize(preferredWidth)
+    }
+
+    /**
+     * Assigns a custom implementation of [MarginProvider] to be used
+     * for determining the side margin of the content pane when UI is not on [largeScreenMode][isLargeScreenMode]
+     * (i.e. in DrawerLayout mode).
+     *
+     * This will override the default behavior provided by
+     * [MARGIN_PROVIDER_ADP_DEFAULT][AdaptiveCoordinatorLayout.MARGIN_PROVIDER_ADP_DEFAULT].
+     *
+     *
+     * @param provider The custom [MarginProvider] implementation to use.
+     * Set [MARGIN_PROVIDER_ADP_DEFAULT][AdaptiveCoordinatorLayout.MARGIN_PROVIDER_ADP_DEFAULT] to restore default.
+     *
+     * @see [AdaptiveCoordinatorLayout.MARGIN_PROVIDER_ZERO].
+     * @see setNavRailContentPreferredWidth
+     * @see setNavRailContentMinSideMargin
+     *
+     */
+    @Suppress("RedundantOverride")
+    override fun setAdaptiveMarginProvider(provider: MarginProvider){
+        super.setAdaptiveMarginProvider(provider)
+    }
+
+    override fun getAdaptiveChildViews() =
+        if(containerLayout is SemSlidingPaneLayout) emptySet() else super.getAdaptiveChildViews()
 
     override fun updateDrawerLock() {
         (containerLayout as? SemSlidingPaneLayout)?.apply {
@@ -159,6 +225,7 @@ class NavDrawerLayout @JvmOverloads constructor(
         private const val TAG = "NavDrawerLayout"
         private const val DEFAULT_DRAWER_RADIUS = 16F
         private const val DRAWER_HEADER = 4
+        const val DEFAULT_NAV_RAIL_DETAILS_WIDTH = -1
     }
 
 }

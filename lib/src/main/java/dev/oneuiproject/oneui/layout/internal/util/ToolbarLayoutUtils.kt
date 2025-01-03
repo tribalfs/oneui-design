@@ -18,6 +18,7 @@ import dev.oneuiproject.oneui.ktx.widthExcludingSystemInsets
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isScreenWidthLarge
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isTabletBuildOrIsDeskTopMode
 import dev.oneuiproject.oneui.utils.internal.ReflectUtils
+import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout.SideMarginParams
 
 /**
  * @hide
@@ -142,12 +143,4 @@ object ToolbarLayoutUtils {
         }
     }
 
-    /**
-     * @hide
-     */
-    @RestrictTo(RestrictTo.Scope.LIBRARY)
-    class SideMarginParams(
-        var sideMargin: Int,
-        var matchParent: Boolean
-    )
 }

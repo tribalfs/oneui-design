@@ -282,9 +282,6 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
         context.startActivity(intent);
     }
 
-    override fun updateContentSideMargin() {
-        //Don't set side margin for App Info
-    }
 
     /**
      * Set a custom App Info title. The default will be your App's name.

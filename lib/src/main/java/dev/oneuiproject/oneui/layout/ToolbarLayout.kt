@@ -74,9 +74,9 @@ import dev.oneuiproject.oneui.utils.MenuSynchronizer.State
 import dev.oneuiproject.oneui.utils.badgeCountToText
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type
-import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.getAdaptiveSideMarginParams
-import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.setSideMarginParams
-import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.updateStatusBarVisibility
+import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout
+import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout.*
+import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout.Companion.MARGIN_PROVIDER_ADP_DEFAULT
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -238,7 +238,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     private lateinit var mCollapsingToolbarLayout: CollapsingToolbarLayout
     private lateinit var mMainToolbar: Toolbar
 
-    private lateinit var mCoordinatorLayout: CoordinatorLayout
+    private lateinit var mCoordinatorLayout: AdaptiveCoordinatorLayout
     private lateinit var mBottomRoundedCorner: LinearLayout
     private lateinit var mFooterParent: LinearLayout
 
@@ -303,12 +303,6 @@ open class ToolbarLayout @JvmOverloads constructor(
     protected open fun getDefaultLayoutResource(): Int = R.layout.oui_layout_tbl_main
     protected open fun getDefaultNavigationIconResource(): Int? = null
 
-    private data class IntrinsicMargin(
-        val left: Int,
-        val right: Int
-    )
-
-    private var boundedRootChildMargins: Map<Int, IntrinsicMargin>? = null
 
     override fun addView(child: View, index: Int, params: ViewGroup.LayoutParams) {
         when ((params as ToolbarLayoutParams).layoutLocation) {
@@ -318,13 +312,8 @@ open class ToolbarLayout @JvmOverloads constructor(
             )
             FOOTER -> mCustomFooterContainer!!.addView(child, params)
             ROOT, ROOT_BOUNDED -> {
-                if (params.layoutLocation == ROOT_BOUNDED) {
-                    val margins = IntrinsicMargin(params.leftMargin, params.rightMargin)
-                    if (boundedRootChildMargins == null) {
-                        boundedRootChildMargins = mapOf(child.id to margins)
-                    } else {
-                        boundedRootChildMargins!!.plus(child.id to margins)
-                    }
+                if (params.layoutLocation == ROOT) {
+                    child.setTag(R.id.tag_side_margin_excluded, true)
                 }
                 mCoordinatorLayout.addView(child, cllpWrapper(params as LayoutParams))
             }
@@ -380,7 +369,8 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     private fun initViews() {
         mCoordinatorLayout = findViewById(R.id.toolbarlayout_coordinator_layout)
-        mAppBarLayout = mCoordinatorLayout.findViewById(R.id.toolbarlayout_app_bar)
+        mAppBarLayout = mCoordinatorLayout.findViewById<AppBarLayout?>(R.id.toolbarlayout_app_bar)
+            .apply { setTag(R.id.tag_side_margin_excluded, true) }
         mCollapsingToolbarLayout = mAppBarLayout.findViewById(R.id.toolbarlayout_collapsing_toolbar)
         mMainToolbar = mCollapsingToolbarLayout.findViewById(R.id.toolbarlayout_main_toolbar)
 
@@ -403,6 +393,7 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     override fun onFinishInflate() {
         super.onFinishInflate()
+        mCoordinatorLayout.configureAdaptiveMargin(marginProviderImpl, getAdaptiveChildViews())
         navButtonsHandler.showNavigationButtonAsBack = _showNavAsBack
         if (mShowSwitchBar) switchBar.visibility = VISIBLE
         setNavigationButtonIcon(mNavigationIcon)
@@ -428,27 +419,33 @@ open class ToolbarLayout @JvmOverloads constructor(
     }
 
     private fun refreshLayout(newConfig: Configuration) {
-        activity?.updateStatusBarVisibility()
         val isLandscape = newConfig.orientation == ORIENTATION_LANDSCAPE
         isExpanded = !isLandscape and mExpanded
-        updateContentSideMargin()
     }
 
-    @RestrictTo(RestrictTo.Scope.LIBRARY)
-    protected open fun updateContentSideMargin() {
-        val sideMarginParams = context.getAdaptiveSideMarginParams()
-        mMainContainer!!.setSideMarginParams(sideMarginParams, 0, 0)
-        for (child in mCoordinatorLayout.children) {
-            if (child == _switchBar || child == mBottomRoundedCorner || child == mCustomFooterContainer) {
-                child.setSideMarginParams(sideMarginParams, 0, 0)
-                continue
-            }
-            boundedRootChildMargins?.get(child.id)?.let {
-                child.setSideMarginParams(sideMarginParams, it.left, it.right)
-            }
-        }
-        mCoordinatorLayout.requestLayout()
+    private var marginProviderImpl: MarginProvider = MARGIN_PROVIDER_ADP_DEFAULT
+
+    /**
+     * Assigns a custom implementation of [MarginProvider] to be used
+     * for determining the side margins of the main content of this [ToolbarLayout].
+     *
+     * This will override the default behavior provided by
+     * [MARGIN_PROVIDER_ADP_DEFAULT][AdaptiveCoordinatorLayout.MARGIN_PROVIDER_ADP_DEFAULT].
+     *
+     * @param provider The custom [MarginProvider] implementation to use.
+     *
+     * @see [AdaptiveCoordinatorLayout.MARGIN_PROVIDER_ZERO].
+     */
+    @CallSuper
+    open fun setAdaptiveMarginProvider(provider: MarginProvider){
+        if (marginProviderImpl == provider) return
+        marginProviderImpl = provider
+        mCoordinatorLayout.configureAdaptiveMargin(marginProviderImpl, getAdaptiveChildViews())
     }
+
+    internal open fun getAdaptiveChildViews(): Set<View> =
+         mCoordinatorLayout.children.filterNot { it.getTag(R.id.tag_side_margin_excluded) == true }.toSet()
+
 
     private fun updateAppbarHeight() {
         mAppBarLayout.isEnabled = mExpandable
@@ -1546,9 +1543,8 @@ open class ToolbarLayout @JvmOverloads constructor(
         LayoutParams(context, attrs) {
         val layoutLocation = attrs?.let { at ->
             context.obtainStyledAttributes(at, R.styleable.ToolbarLayoutParams).use {
-                it.getInteger(R.styleable.ToolbarLayoutParams_layout_location, 0)
-            }
-        } ?: 0
+                it.getInteger(R.styleable.ToolbarLayoutParams_layout_location, MAIN_CONTENT)
+            }} ?: MAIN_CONTENT
     }
 
     private fun cllpWrapper(oldLp: LayoutParams): CoordinatorLayout.LayoutParams {
