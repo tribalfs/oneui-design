@@ -1,5 +1,6 @@
 package dev.oneuiproject.oneuiexample.ui.fragment.icons;
 
+import static dev.oneuiproject.oneui.ktx.RecyclerViewKt.enableCoreSeslFeatures;
 import static dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.DISMISS;
 import static dev.oneuiproject.oneuiexample.ui.core.ktx.ToastKt.toast;
 
@@ -42,7 +43,22 @@ public class IconsFragment extends BaseFragment {
 
     private DrawerLayout drawerLayout;
     private IconsAdapter adapter;
-    private AdapterDataObserver observer;
+
+    private AdapterDataObserver observer = new AdapterDataObserver() {
+        @Override
+        public void onChanged() {
+            RecyclerView iconListView = getView().findViewById(R.id.recyclerView);
+            NestedScrollView notItemView = getView().findViewById(R.id.nsvNoItem);
+            if(adapter.getItemCount() > 0){
+                iconListView.setVisibility(View.VISIBLE);
+                notItemView.setVisibility(View.GONE);
+            }else{
+                iconListView.setVisibility(View.GONE);
+                notItemView.setVisibility(View.VISIBLE);
+            }
+        }
+    };
+
     private boolean tipPopupShown = false;
 
     @Override
@@ -55,11 +71,9 @@ public class IconsFragment extends BaseFragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         if (!hidden) {
-            adapter.registerAdapterDataObserver(observer);
             requireActivity().addMenuProvider(menuProvider, getViewLifecycleOwner(), Lifecycle.State.STARTED);
             showTipPopup();
         }else{
-            adapter.unregisterAdapterDataObserver(observer);
             requireActivity().removeMenuProvider(menuProvider);
         }
     }
@@ -75,6 +89,13 @@ public class IconsFragment extends BaseFragment {
 
         IconsRepo iconsRepo = new IconsRepo();
         adapter.submitList(iconsRepo.getIcons());
+        adapter.registerAdapterDataObserver(observer);
+    }
+
+    @Override
+    public void onDestroyView() {
+        adapter.unregisterAdapterDataObserver(observer);
+        super.onDestroyView();
     }
 
     private void setupRecyclerView(RecyclerView iconListView, IconsAdapter adapter){
@@ -88,27 +109,7 @@ public class IconsFragment extends BaseFragment {
         iconListView.setAdapter(adapter);
         iconListView.addItemDecoration(itemDecoration);
         iconListView.setLayoutManager(new LinearLayoutManager(mContext));
-        iconListView.seslSetFillBottomEnabled(true);
-        iconListView.seslSetLastRoundedCorner(true);
-        iconListView.seslSetFastScrollerEnabled(true);
-        iconListView.seslSetGoToTopEnabled(true);
-        iconListView.seslSetSmoothScrollEnabled(true);
-        iconListView.seslSetIndexTipEnabled(true);
-
-        observer = new AdapterDataObserver() {
-            RecyclerView iconListView = getView().findViewById(R.id.recyclerView);
-            NestedScrollView notItemView = getView().findViewById(R.id.nsvNoItem);
-            @Override
-            public void onChanged() {
-                if(adapter.getItemCount() > 0){
-                    iconListView.setVisibility(View.VISIBLE);
-                    notItemView.setVisibility(View.GONE);
-                }else{
-                    iconListView.setVisibility(View.GONE);
-                    notItemView.setVisibility(View.VISIBLE);
-                }
-            }
-        };
+        enableCoreSeslFeatures(iconListView);
     }
 
     private void setupSelection(RecyclerView iconListView, IconsAdapter adapter){

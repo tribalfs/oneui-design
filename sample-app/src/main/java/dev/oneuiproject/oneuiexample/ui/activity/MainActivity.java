@@ -1,11 +1,14 @@
 package dev.oneuiproject.oneuiexample.ui.activity;
 
+import static dev.oneuiproject.oneui.ktx.FloatKt.dpToPx;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -110,23 +113,20 @@ public class MainActivity extends AppCompatActivity
         mBinding.drawerLayout.setHeaderButtonIcon(AppCompatResources.getDrawable(this, dev.oneuiproject.oneui.R.drawable.ic_oui_settings_outline));
         mBinding.drawerLayout.setHeaderButtonTooltip("Preferences");
         mBinding.drawerLayout.setHeaderButtonOnClickListener(v -> {
-                    ActivityUtils.startPopOverActivity(this,
-                            new Intent(MainActivity.this, PreferenceActivity.class),
-                            null,
-                            ActivityUtils.POP_OVER_POSITION_TOP | ActivityUtils.POP_OVER_POSITION_CENTER_HORIZONTAL);
-                    mBinding.drawerLayout.setHeaderButtonBadge(Badge.NONE.INSTANCE);
-                });
+            ActivityUtils.startPopOverActivity(this,
+                    new Intent(MainActivity.this, PreferenceActivity.class),
+                    null,
+                    ActivityUtils.POP_OVER_POSITION_TOP | ActivityUtils.POP_OVER_POSITION_CENTER_HORIZONTAL);
+        });
 
         mBinding.drawerListView.setLayoutManager(new LinearLayoutManager(this));
         mBinding.drawerListView.setAdapter(new DrawerListAdapter(this, fragments, this));
         mBinding.drawerListView.setItemAnimator(null);
         mBinding.drawerListView.setHasFixedSize(true);
         mBinding.drawerListView.seslSetLastRoundedCorner(false);
-        mBinding.drawerLayout.setButtonBadges(Badge.DOT.INSTANCE, Badge.DOT.INSTANCE);
+        mBinding.drawerLayout.setHeaderButtonBadge(Badge.DOT.INSTANCE);
         mBinding.drawerLayout.setDrawerStateListener((state) -> {
-            if (state == DrawerLayout.DrawerState.OPEN) {
-                mBinding.drawerLayout.setNavigationButtonBadge(Badge.NONE.INSTANCE);
-            }
+            Log.d("MainActivity", "Drawer state changed: " + state);
             return null;
         });
     }

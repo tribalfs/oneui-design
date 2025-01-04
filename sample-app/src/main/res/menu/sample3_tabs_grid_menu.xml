@@ -29,4 +29,28 @@
         android:icon="@drawable/ic_oui_settings_outline"
         android:title="Item 7" />
 
+    <item
+        android:icon="@drawable/ic_oui_gif"
+        android:title="Item 8" />
+
+    <item
+        android:icon="@drawable/ic_oui_import"
+        android:title="Item 9" />
+
+    <item
+        android:icon="@drawable/ic_oui_location_outline"
+        android:title="Item 10" />
+
+    <item
+        android:icon="@drawable/ic_oui_advanced_call_outline"
+        android:title="Item 11" />
+
+    <item
+        android:icon="@drawable/ic_oui_brightness_outline"
+        android:title="Item 12" />
+
+    <item
+        android:icon="@drawable/ic_oui_settings_outline"
+        android:title="Item 13" />
+
 </menu>

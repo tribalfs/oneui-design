@@ -1,41 +1,38 @@
 package dev.oneuiproject.oneuiexample.ui.fragment;
 
+import static android.view.View.VISIBLE;
+
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.view.menu.SeslMenuItem;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.view.MenuProvider;
-import androidx.lifecycle.Lifecycle;
+import androidx.appcompat.widget.SeslSwitchBar;
 
 import com.sec.sesl.tester.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import dev.oneuiproject.oneui.layout.DrawerLayout;
-import dev.oneuiproject.oneui.layout.ToolbarLayout;
-import dev.oneuiproject.oneuiexample.ui.activity.AboutActivity;
 import dev.oneuiproject.oneuiexample.ui.activity.MainActivity;
 import dev.oneuiproject.oneuiexample.ui.core.base.BaseFragment;
 
 public class WidgetsFragment extends BaseFragment
         implements View.OnClickListener {
 
+    SeslSwitchBar seslSwitchBar;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        seslSwitchBar = ((MainActivity)requireActivity()).getDrawerLayout().getSwitchBar();
+
         int[] Ids = {R.id.fragment_btn_1,
                 R.id.fragment_btn_2,
                 R.id.fragment_btn_3,
@@ -56,9 +53,27 @@ public class WidgetsFragment extends BaseFragment
         SearchManager manager = (SearchManager) mContext.getSystemService(Context.SEARCH_SERVICE);
         searchView.setSearchableInfo(manager.getSearchableInfo(
                 new ComponentName(mContext, MainActivity.class)));
-        searchView.seslSetUpButtonVisibility(View.VISIBLE);
+        searchView.seslSetUpButtonVisibility(VISIBLE);
         searchView.seslSetOnUpButtonClickListener(this);
 
+    }
+
+    private SeslSwitchBar.OnSwitchChangeListener listener = (v, isChecked) ->{
+        seslSwitchBar.setProgressBarVisible(true);
+        seslSwitchBar.postDelayed(() -> seslSwitchBar.setProgressBarVisible(false), 3_000);
+    };
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        try {
+            if (!hidden) {
+                seslSwitchBar.setVisibility(VISIBLE);
+                seslSwitchBar.addOnSwitchChangeListener(listener);
+            } else {
+                seslSwitchBar.setVisibility(View.GONE);
+                seslSwitchBar.removeOnSwitchChangeListener(listener);
+            }
+        }catch (Exception ignore){}
     }
 
     @Override

@@ -88,7 +88,7 @@ class AppPickerFragment : BaseFragment(),
 
         initSpinner()
 
-        launchAndRepeatWithViewLifecycle{
+        launchAndRepeatWithViewLifecycle(Lifecycle.State.CREATED){
             appsViewModel.appPickerScreenStateFlow
                 .collectLatest {
                     showProgressBar(it.isLoading)

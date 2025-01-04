@@ -5,8 +5,7 @@ import static androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_TOP_RIGHT
 
 import static dev.oneuiproject.oneui.ktx.ViewKt.semSetRoundedCornerColor;
 import static dev.oneuiproject.oneui.ktx.ViewKt.semSetRoundedCorners;
-import static dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.updateAdaptiveSideMargins;
-import static dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.updateStatusBarVisibility;
+import static dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout.MARGIN_PROVIDER_ADP_DEFAULT;
 
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
@@ -27,6 +26,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.TooltipCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.WindowInsetsCompat;
 
@@ -41,7 +41,6 @@ import dev.oneuiproject.oneui.widget.Toast;
 
 public class AboutActivity extends AppCompatActivity
         implements View.OnClickListener {
-    private boolean mEnableBackToHeader;
     private long mLastClickTime;
 
     private ActivityAboutBinding mBinding;
@@ -54,6 +53,8 @@ public class AboutActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         mBinding = ActivityAboutBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
+        mBinding.getRoot().configureAdaptiveMargin(MARGIN_PROVIDER_ADP_DEFAULT,
+                mBinding.aboutBottomContainer);
 
         if (Build.VERSION.SDK_INT >= 30 && !getWindow().getDecorView().getFitsSystemWindows()) {
             mBinding.getRoot().setOnApplyWindowInsetsListener((v, insets) -> {
@@ -126,9 +127,6 @@ public class AboutActivity extends AppCompatActivity
 
     @SuppressLint("RestrictedApi")
     private void resetAppBar(Configuration config) {
-        updateStatusBarVisibility(this);
-        updateAdaptiveSideMargins(mBinding.aboutBottomContainer);
-
         if (config.orientation != Configuration.ORIENTATION_LANDSCAPE
                 && !isInMultiWindowMode() || DeviceLayoutUtil.INSTANCE.isTabletLayoutOrDesktop(this)) {
             mBinding.aboutAppBar.seslSetCustomHeightProportion(true, 0.5f);
@@ -153,7 +151,7 @@ public class AboutActivity extends AppCompatActivity
         semSetRoundedCorners(mBinding.aboutBottomContent.getRoot(), ROUNDED_CORNER_TOP_LEFT | ROUNDED_CORNER_TOP_RIGHT);
         semSetRoundedCornerColor(mBinding.aboutBottomContent.getRoot(),
                 ROUNDED_CORNER_TOP_LEFT | ROUNDED_CORNER_TOP_RIGHT,
-                getColor(dev.oneuiproject.oneui.design.R.color.oui_round_and_bgcolor));
+                ContextCompat.getColor(this, dev.oneuiproject.oneui.design.R.color.oui_round_and_bgcolor));
 
         Drawable appIcon = getDrawable(R.mipmap.ic_launcher);
         mBinding.aboutHeaderAppIcon.setImageDrawable(appIcon);

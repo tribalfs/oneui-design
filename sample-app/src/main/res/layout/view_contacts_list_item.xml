@@ -27,7 +27,7 @@
             android:layout_height="36.0dip"
             android:gravity="center"
             android:layout_gravity="center"
-            tools:background="@drawable/ic_oui_contact"
+            tools:src="@drawable/ic_oui_contact"
             android:scaleType="fitXY" />
 
         <LinearLayout

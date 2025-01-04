@@ -14,9 +14,9 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.SeslSwitchBar
+      <!--  <androidx.appcompat.widget.SeslSwitchBar
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content" />-->
 
         <dev.oneuiproject.oneui.widget.Separator
             android:layout_width="match_parent"

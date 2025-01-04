@@ -152,6 +152,7 @@ class ContactsAdapter (
             is GroupItem -> holder.bind(getItemId(position), item.groupName, R.drawable.indexscroll_group_icon, null)
             is ContactItem -> {
                 val imageRes = if (item.contact.name == "Tribalfs") {
+                    holder.selectableLinearLayout!!.setOverlayCornerRadius(20f)
                     R.drawable.about_page_avatar_tribalfs
                 }else {
                     R.drawable.indexscroll_item_icon
@@ -168,7 +169,7 @@ class ContactsAdapter (
         var nameView: TextView
         private var imageView: ImageView? = null
         private var numberView: TextView? = null
-        private var selectableLinearLayout: SelectableLinearLayout? = null
+        var selectableLinearLayout: SelectableLinearLayout? = null
 
         init {
             if (isSeparator) {

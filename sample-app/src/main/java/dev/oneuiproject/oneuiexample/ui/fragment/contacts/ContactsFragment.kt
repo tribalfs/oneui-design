@@ -8,6 +8,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SeslProgressBar
 import androidx.core.view.MenuProvider
 import androidx.core.view.doOnLayout
@@ -34,7 +35,6 @@ import dev.oneuiproject.oneui.layout.ToolbarLayout
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.CLEAR_DISMISS
 import dev.oneuiproject.oneui.layout.startActionMode
-import dev.oneuiproject.oneui.layout.startSearchMode
 import dev.oneuiproject.oneui.utils.ItemDecorRule
 import dev.oneuiproject.oneui.utils.SemItemDecoration
 import dev.oneuiproject.oneui.widget.AutoHideIndexScrollView
@@ -42,6 +42,7 @@ import dev.oneuiproject.oneui.widget.ScrollAwareFloatingActionButton
 import dev.oneuiproject.oneui.widget.TipPopup
 import dev.oneuiproject.oneui.widget.TipPopup.Direction
 import dev.oneuiproject.oneui.widget.TipPopup.Mode
+import dev.oneuiproject.oneuiexample.data.ActionModeSearch
 import dev.oneuiproject.oneuiexample.data.ContactsRepo
 import dev.oneuiproject.oneuiexample.ui.activity.AboutActivity
 import dev.oneuiproject.oneuiexample.ui.activity.MainActivity
@@ -50,6 +51,7 @@ import dev.oneuiproject.oneuiexample.ui.core.ktx.launchAndRepeatWithViewLifecycl
 import dev.oneuiproject.oneuiexample.ui.core.ktx.toast
 import dev.oneuiproject.oneuiexample.ui.fragment.contacts.adapter.ContactsAdapter
 import dev.oneuiproject.oneuiexample.ui.fragment.contacts.model.ContactsListItemUiModel
+import dev.oneuiproject.oneuiexample.ui.fragment.contacts.util.toSearchOnActionMode
 import dev.oneuiproject.oneuiexample.ui.fragment.contacts.util.updateIndexer
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -183,11 +185,16 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
                         }
                         menuProvider.apply {
                             autoHideMenuItemTitle = if (it.autoHideIndexScroll) {
-                                "Disable indexscroller autohide" } else "Enable indexscroller autohide"
+                                "Always show indexscroll" } else "Autohide indexscroll"
                             showLettersMenuItemTitle = if (it.isTextModeIndexScroll) {
-                                "Hide indexscroller letters" } else "Show indexscroller letters"
-                            keepSearchMenuItemTitle = if (it.keepSearchOnActionMode) {
-                                "Dismiss search on actionmode" } else "Keep search on actionmode"
+                                "Hide indexscroll letters" } else "Show indexscroll letters"
+                            keepSearchMenuItemTitle = when (it.searchOnActionMode) {
+                                ActionModeSearch.DISMISS -> "Resume search mode on action mode end"
+                                ActionModeSearch.NO_DISMISS -> "Allow search mode on action mode"
+                                ActionModeSearch.CONCURRENT -> "Dismiss search on action mode"
+                            }
+                            showCancelMenuItemTitle = if (it.actionModeShowCancel){
+                                "No cancel button on action mode" } else "Show cancel button on action mode"
                         }
                     }
             }
@@ -266,6 +273,8 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
         val drawerLayout = (requireActivity() as MainActivity).drawerLayout
         fab.isVisible = false
 
+        val contactsSettings = contactsViewModel.contactsSettingsStateFlow.value
+
         drawerLayout.startActionMode(
             onInflateMenu = {menu ->
                 contactsAdapter.onToggleActionMode(true, initialSelected)
@@ -292,7 +301,8 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
             },
             onSelectAll = { isChecked: Boolean -> contactsAdapter.onToggleSelectAll(isChecked) },
             allSelectorStateFlow = contactsViewModel.allSelectorStateFlow,
-            keepSearchMode = contactsViewModel.contactsSettingsStateFlow.value.keepSearchOnActionMode
+            searchOnActionMode = contactsSettings.searchOnActionMode.toSearchOnActionMode(searchModeListener),
+            showCancel = contactsSettings.actionModeShowCancel
         )
     }
 
@@ -300,15 +310,18 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
         private lateinit var showLettersMenuItem: MenuItem
         private lateinit var autoHideMenuItem: MenuItem
         private lateinit var keepSearchMenuItem: MenuItem
+        private lateinit var showCancelMenuItem: MenuItem
         var showLettersMenuItemTitle: String = ""
         var autoHideMenuItemTitle: String = ""
         var keepSearchMenuItemTitle: String = ""
+        var showCancelMenuItemTitle: String = ""
 
         override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
             menuInflater.inflate(R.menu.menu_contacts_list, menu)
             showLettersMenuItem = menu.findItem(R.id.menu_contacts_indexscroll_show_letters)
             autoHideMenuItem = menu.findItem(R.id.menu_contacts_indexscroll_autohide)
             keepSearchMenuItem = menu.findItem(R.id.menu_contacts_keep_search)
+            showCancelMenuItem = menu.findItem(R.id.menu_contacts_show_cancel)
 
             val menuItem = menu.findItem(R.id.menu_about_app)
             menuItem.setBadge(Badge.DOT)
@@ -318,6 +331,7 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
             showLettersMenuItem.title = showLettersMenuItemTitle
             autoHideMenuItem.title = autoHideMenuItemTitle
             keepSearchMenuItem.title = keepSearchMenuItemTitle
+            showCancelMenuItem.title = showCancelMenuItemTitle
         }
 
         override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -338,6 +352,11 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
                     true
                 }
 
+                R.id.menu_contacts_show_cancel -> {
+                    contactsViewModel.toggleShowCancel()
+                    true
+                }
+
                 R.id.menu_about_app -> {
                     startActivity(Intent(requireContext(), AboutActivity::class.java))
                     menuItem.clearBadge()
@@ -355,18 +374,30 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
         }
     }
 
-    private fun ToolbarLayout.launchSearchMode(onBackBehavior: SearchModeOnBackBehavior) {
-        startSearchMode(
-            onBackBehavior = onBackBehavior,
-            onQuery = { query, _ ->
+    private val searchModeListener by lazy{
+        object : ToolbarLayout.SearchModeListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
                 contactsViewModel.setQuery(query)
-                true
-            },
-            onStart = {
-                searchView.queryHint = "Search contact"
-            },
-            onEnd = { contactsViewModel.setQuery("") }
-        )
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                contactsViewModel.setQuery(newText)
+                return true
+            }
+
+            override fun onSearchModeToggle(searchView: SearchView, visible: Boolean) {
+                if (visible) {
+                    searchView.queryHint = "Search contact"
+                } else {
+                    contactsViewModel.setQuery("")
+                }
+            }
+        }
+    }
+
+    private fun ToolbarLayout.launchSearchMode(onBackBehavior: SearchModeOnBackBehavior) {
+        startSearchMode(searchModeListener, onBackBehavior)
     }
 
     private fun showTipPopup() {

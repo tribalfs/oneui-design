@@ -5,6 +5,9 @@
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
         tools:ignore="QueryAllPackagesPermission" />
 
+    <!--oneui-icons minSdk is 23-->
+    <uses-sdk tools:overrideLibrary="dev.oneuiproject.oneui"/>
+
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"

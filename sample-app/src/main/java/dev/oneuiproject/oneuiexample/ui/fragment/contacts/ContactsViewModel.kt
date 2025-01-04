@@ -41,7 +41,11 @@ class ContactsViewModel (
     }
 
     fun toggleKeepSearch() = viewModelScope.launch {
-        contactsRepo.setKeepSearchOnActionMode(!contactsSettingsStateFlow.value.keepSearchOnActionMode)
+        contactsRepo.toggleKeepSearch()
+    }
+
+    fun toggleShowCancel() = viewModelScope.launch {
+        contactsRepo.toggleShowCancel()
     }
 
     val contactsListStateFlow: StateFlow<ContactsUiState> = combine(

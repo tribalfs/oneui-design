@@ -8,5 +8,5 @@ fun PackageManager.getInstalledPackagesCompat(flags: Int = 0): List<PackageInfo>
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         getInstalledPackages(PackageManager.PackageInfoFlags.of(flags.toLong()))
     } else {
-        getInstalledPackages(PackageManager.GET_ACTIVITIES)
+        getInstalledPackages(0)
     }

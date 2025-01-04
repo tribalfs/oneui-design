@@ -1,5 +1,7 @@
 package dev.oneuiproject.oneuiexample.ui.fragment;
 
+import static dev.oneuiproject.oneui.ktx.SeslSeekBarKt.updateDualColorRange;
+
 import android.os.Bundle;
 import android.view.View;
 
@@ -22,8 +24,7 @@ public class SeekBarFragment extends BaseFragment {
         seekbarSeamless.setSeamless(true);
 
         SeslSeekBar seekBarOverlap = view.findViewById(R.id.fragment_seekbar_overlap);
-        seekBarOverlap.setOverlapPointForDualColor(70);
-        SeekBarUtils.showOverlapPreview(seekBarOverlap, true);
+        updateDualColorRange(seekBarOverlap, 70);
     }
 
     @Override

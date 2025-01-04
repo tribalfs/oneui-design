@@ -33,4 +33,9 @@
         android:id="@+id/menu_contacts_keep_search"
         android:title="Keep search on action mode"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_contacts_show_cancel"
+        android:title="Show cancel button on action mode"
+        app:showAsAction="never" />
 </menu>

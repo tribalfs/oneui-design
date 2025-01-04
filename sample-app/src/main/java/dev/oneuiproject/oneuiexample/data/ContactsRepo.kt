@@ -5,7 +5,9 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 
@@ -14,10 +16,17 @@ data class Contact(
     val number: String
 )
 
+enum class ActionModeSearch{
+    DISMISS,
+    NO_DISMISS,
+    CONCURRENT
+}
+
 data class ContactsSettings(
     val isTextModeIndexScroll: Boolean = false,
     val autoHideIndexScroll: Boolean = true,
-    val keepSearchOnActionMode: Boolean = true
+    val searchOnActionMode: ActionModeSearch = ActionModeSearch.DISMISS,
+    val actionModeShowCancel: Boolean = false
 )
 
 class ContactsRepo (context: Context) {
@@ -48,9 +57,19 @@ class ContactsRepo (context: Context) {
         }
     }
 
-    suspend fun setKeepSearchOnActionMode(keepSearch: Boolean){
+    suspend fun toggleKeepSearch(){
         dataStore.edit {
-            it[PREF_KEY_CONTACT_ACTIONMODE_KEEP_SEARCH] = keepSearch
+            it[PREF_KEY_CONTACT_ACTIONMODE_KEEP_SEARCH] = when(contactsSettingsFlow.first().searchOnActionMode){
+                ActionModeSearch.DISMISS -> ActionModeSearch.NO_DISMISS.ordinal
+                ActionModeSearch.NO_DISMISS -> ActionModeSearch.CONCURRENT.ordinal
+                ActionModeSearch.CONCURRENT -> ActionModeSearch.DISMISS.ordinal
+            }
+        }
+    }
+
+    suspend fun toggleShowCancel(){
+        dataStore.edit {
+            it[PREF_KEY_CONTACT_ACTIONMODE_SHOW_CANCEL] = !contactsSettingsFlow.first().actionModeShowCancel
         }
     }
 
@@ -58,14 +77,16 @@ class ContactsRepo (context: Context) {
         ContactsSettings(
             it[PREF_KEY_CONTACT_INDEXSCROLL_TEXT_MODE] ?: false,
             it[PREF_KEY_CONTACT_INDEXSCROLL_AUTO_HIDE] ?: true,
-            it[PREF_KEY_CONTACT_ACTIONMODE_KEEP_SEARCH] ?: true
+            ActionModeSearch.entries[it[PREF_KEY_CONTACT_ACTIONMODE_KEEP_SEARCH] ?: 0],
+            it[PREF_KEY_CONTACT_ACTIONMODE_SHOW_CANCEL] ?: false
         )
     }
 
     private companion object{
         val PREF_KEY_CONTACT_INDEXSCROLL_TEXT_MODE = booleanPreferencesKey("indexScrollTextMode")
         val PREF_KEY_CONTACT_INDEXSCROLL_AUTO_HIDE = booleanPreferencesKey("indexScrollAutoHide")
-        val PREF_KEY_CONTACT_ACTIONMODE_KEEP_SEARCH = booleanPreferencesKey("searchModeKeepSearch")
+        val PREF_KEY_CONTACT_ACTIONMODE_KEEP_SEARCH = intPreferencesKey("actionModeSearch")
+        val PREF_KEY_CONTACT_ACTIONMODE_SHOW_CANCEL = booleanPreferencesKey("actionModeShowCancel")
     }
 }
 
