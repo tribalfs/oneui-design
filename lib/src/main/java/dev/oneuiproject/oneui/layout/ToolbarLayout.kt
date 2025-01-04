@@ -261,6 +261,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     private var searchMenuItem: MenuItem? = null
 
     private var mMenuSynchronizer: MenuSynchronizer? = null
+    private var forcePortraitMenu: Boolean = false
     @JvmField
     internal var mShowSwitchBar = false
 
@@ -960,7 +961,11 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @param listener The [ActionModeListener] to be invoked for this action mode.
      * @param searchOnActionMode (optional) The [SearchOnActionMode] option to set for this action mode.
      * It is set to [SearchOnActionMode.Dismiss] by default.
-     * @param allSelectorStateFlow StateFlow of [AllSelectorState] that will be used to update "All" selector state and count
+     * @param allSelectorStateFlow StateFlow of [AllSelectorState] that will be used to update
+     * "All" selector state and count.
+     * @param showCancel (optional) Show a Cancel button in the toolbar menu. Setting this to true
+     * disables adaptive action mode menu (i.e. menu will always be shown as a bottom action menu.
+     * This is false by default.
      *
      * @see [endActionMode]
      */
@@ -968,7 +973,8 @@ open class ToolbarLayout @JvmOverloads constructor(
     open fun startActionMode(
         listener: ActionModeListener,
         searchOnActionMode: SearchOnActionMode = SearchOnActionMode.Dismiss,
-        allSelectorStateFlow: StateFlow<AllSelectorState>? = null
+        allSelectorStateFlow: StateFlow<AllSelectorState>? = null,
+        showCancel: Boolean = false
     ) {
         isActionMode = true
         updateAllSelectorJob?.cancel()
@@ -1000,7 +1006,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         animatedVisibility(mMainToolbar, GONE)
         showActionModeToolbarAnimate()
         mCustomFooterContainer!!.visibility = GONE
-        setupActionModeMenu()
+        setupActionModeMenu(showCancel)
         allSelectorStateFlow?.let {
             updateAllSelectorJob = activity!!.lifecycleScope.launch {
                 it.flowWithLifecycle(activity!!.lifecycle)
@@ -1106,15 +1112,15 @@ open class ToolbarLayout @JvmOverloads constructor(
     private inline fun setupActionModeSearch() {
         ensureActionModeSearchViews()
         mActionModeToolbar!!.apply {
-            inflateMenu(R.menu.tbl_am_search_menu)
-            menu.findItem(R.id.menu_item_am_search)!!.let {
-                searchMenuItem = it.apply {
-                    setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-                    setOnMenuItemClickListener {
-                        showActionModeSearchView()
-                        true
-                    }
+            inflateMenu(R.menu.tbl_am_common)
+            searchMenuItem = menu.findItem(R.id.menu_item_am_search)!!.also {
+                it.isVisible = true
+                it.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+                it.setOnMenuItemClickListener {
+                    showActionModeSearchView()
+                    true
                 }
+
                 mActionModeSearchView!!.onCloseClickListener = { v ->
                     mActionModeSearchView!!.query = ""
                     v.isVisible = false
@@ -1181,6 +1187,8 @@ open class ToolbarLayout @JvmOverloads constructor(
         hideAndClearActionModeSearchView()
         mBottomActionModeBar.visibility = GONE
         mActionModeListener!!.onEndActionMode()
+        //This clears menu including the common action mode menu
+        //items - search and cancel
         mMenuSynchronizer!!.clear()
         mAppBarLayout.removeOnOffsetChangedListener(mActionModeTitleFadeListener)
         mActionModeSelectAll.setOnClickListener(null)
@@ -1232,7 +1240,26 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
     }
 
-    private inline fun setupActionModeMenu() {
+    private inline fun setupActionModeMenu(showCancel: Boolean) {
+        forcePortraitMenu = showCancel
+
+        mActionModeToolbar!!.apply {
+            var cancelMenuItem: MenuItem? = menu.findItem(R.id.menu_item_am_cancel)
+            if (showCancel && cancelMenuItem == null) {
+                inflateMenu(R.menu.tbl_am_common)
+                cancelMenuItem = menu.findItem(R.id.menu_item_am_cancel)!!
+            }
+            cancelMenuItem?.let {
+                it.isVisible = showCancel
+                if (showCancel) {
+                    it.setOnMenuItemClickListener {
+                        endActionMode()
+                        true
+                    }
+                }
+            }
+        }
+
         mBottomActionModeBar.menu.apply {
             clear()
             mActionModeListener!!.onInflateActionMenu(this)
@@ -1267,7 +1294,7 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     private fun syncActionModeMenuInternal() {
         if (mSelectedItemsCount > 0) {
-            val isActionModePortrait = DeviceLayoutUtil.isPortrait(resources.configuration)
+            val isActionModePortrait = forcePortraitMenu || DeviceLayoutUtil.isPortrait(resources.configuration)
                     || DeviceLayoutUtil.isTabletLayoutOrDesktop(context)
             if (isActionModePortrait) {
                 if (!isTouching) {
@@ -1746,7 +1773,8 @@ inline fun <T : ToolbarLayout> T.startActionMode(
     crossinline onSelectMenuItem: (item: MenuItem) -> Boolean,
     crossinline onSelectAll: (Boolean) -> Unit,
     searchOnActionMode: SearchOnActionMode = SearchOnActionMode.Dismiss,
-    allSelectorStateFlow: StateFlow<AllSelectorState>? = null
+    allSelectorStateFlow: StateFlow<AllSelectorState>? = null,
+    showCancel: Boolean = false
 ) {
     startActionMode(
         object : ActionModeListener {
@@ -1756,7 +1784,8 @@ inline fun <T : ToolbarLayout> T.startActionMode(
             override fun onSelectAll(isChecked: Boolean) = onSelectAll.invoke(isChecked)
         },
         searchOnActionMode,
-        allSelectorStateFlow
+        allSelectorStateFlow,
+        showCancel
     )
 }
 
