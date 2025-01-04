@@ -1170,6 +1170,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             mCollapsingToolbarLayout.title =
                 resources.getString(appcompatR.string.sesl_searchview_description_search)
             mCollapsingToolbarLayout.seslSetSubtitle(null)
+            mSearchView.requestFocus()
         } else {
             showMainToolbarAnimate()
             mCustomFooterContainer!!.visibility = VISIBLE
