@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--BottomTabLayout-->
+    <integer name="more_menu_dialog_anim_from_delta">75</integer>
+    <integer name="more_menu_dialog_anim_from_delta_rtl">-75</integer>
+</resources>

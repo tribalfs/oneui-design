@@ -265,4 +265,8 @@
             <enum name="sesl_sub" value="2"/>
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="BottomTabLayout">
+        <attr name="menu" />
+    </declare-styleable>
 </resources>

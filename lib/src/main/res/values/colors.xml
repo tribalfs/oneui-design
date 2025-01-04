@@ -83,4 +83,7 @@
     <color name="oui_suggestion_card_close_button_bg_color">#6669696c</color>
     <color name="oui_suggestion_card_close_button_color">#fafaff</color>
     <color name="oui_suggestion_card_button_text_color">@color/sesl_text1_dark</color>
+
+    <!--BottomTabLayout-->
+    <color name="more_menu_list_edge_effect_color">#0d000000</color>
 </resources>

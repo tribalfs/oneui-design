@@ -263,8 +263,24 @@
         <item name="android:minHeight">29.25dp</item>
     </style>
 
+    <!--BottomTabLayout-->
     <style name="OneUI.BottomTabLayout.MoreMenuItemStyle" parent="">
         <item name="android:background">@drawable/oui_grid_menu_dialog_item_bg</item>
+    </style>
+
+    <style name="MoreMenuDialogStyle" parent="@style/Theme.AppCompat.DayNight.Dialog.Alert">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:colorEdgeEffect">@color/more_menu_list_edge_effect_color</item>
+    </style>
+
+    <style name="MoreMenuDialogSlideLeft" parent="">
+        <item name="android:windowEnterAnimation">@anim/more_menu_dialog_slide_left</item>
+        <item name="android:windowExitAnimation">@anim/more_menu_dialog_slide_left_exit</item>
+    </style>
+
+    <style name="MoreMenuDialogSlideRight" parent="">
+        <item name="android:windowEnterAnimation">@anim/more_menu_dialog_slide_right</item>
+        <item name="android:windowExitAnimation">@anim/more_menu_dialog_slide_right_exit</item>
     </style>
 
     <!--SwitchItemView-->

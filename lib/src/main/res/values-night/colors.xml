@@ -75,4 +75,6 @@
     <!--BottomTipView-->
     <color name="bottom_tip_textview_text_color">@color/sesl_list_subheader_text_color_dark</color>
 
+    <!--BottomTabLayout-->
+    <color name="more_menu_list_edge_effect_color">#0ffafafa</color>
 </resources>
