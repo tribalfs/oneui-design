@@ -94,15 +94,16 @@ internal open class ToolbarLayoutButtonsHandler(private val toolbar: Toolbar):
         } else {
             if (showNavigationButton) {
                 toolbar.apply {
-                    if (navigationIcon != mNavigationBadgeIcon) {
-                        navigationIcon = mNavigationBadgeIcon
-                    }
                     mActivity?.apply {
                         supportActionBar?.setDisplayHomeAsUpEnabled(false)
                         setNavigationOnClickListener {
                             mNavigationOnClickList?.onClick(it)
                         }
                         navigationContentDescription = mNavDrawerButtonTooltip
+                    }
+
+                    if (navigationIcon != mNavigationBadgeIcon) {
+                        navigationIcon = mNavigationBadgeIcon
                     }
                 }
             }else {
