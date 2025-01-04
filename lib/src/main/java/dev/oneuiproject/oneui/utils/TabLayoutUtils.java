@@ -14,6 +14,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import dev.oneuiproject.oneui.design.R;
 
+@Deprecated
 public class TabLayoutUtils {
     private static final String TAG = "TabLayoutUtils";
 
@@ -21,6 +22,10 @@ public class TabLayoutUtils {
         void onClick(View v);
     }
 
+    /**
+     * @deprecated Check out {@link dev.oneuiproject.oneui.ktx.TabLayoutKt#addCustomTab(TabLayout, CharSequence, int, Integer, View.OnClickListener) addCustomTab}.
+     */
+    @Deprecated()
     public static void addCustomButton(@NonNull TabLayout tabLayout, @DrawableRes int resId,
                                        @Nullable TabButtonClickListener listener) {
         if (tabLayout != null) {
@@ -30,6 +35,11 @@ public class TabLayoutUtils {
         }
     }
 
+
+    /**
+     * @deprecated Check out {@link dev.oneuiproject.oneui.ktx.TabLayoutKt#addCustomTab(TabLayout, CharSequence, int, Integer, View.OnClickListener) addCustomTab}.
+     */
+    @Deprecated()
     public static void addCustomButton(@NonNull TabLayout tabLayout, @Nullable Drawable icon,
                                 @Nullable TabButtonClickListener listener) {
         if (tabLayout != null) {
@@ -66,6 +76,10 @@ public class TabLayoutUtils {
         }
     }
 
+
+    /**
+     * @deprecated Check out {@link dev.oneuiproject.oneui.ktx.TabLayoutKt#getTabView(TabLayout, int) getTabView}.
+     */
     @Nullable
     private static ViewGroup getTabViewGroup(@NonNull TabLayout tabLayout) {
         if (tabLayout.getChildCount() <= 0) {

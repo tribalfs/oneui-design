@@ -107,4 +107,8 @@
     <dimen name="sec_widget_round_button_bg_radius">22dp</dimen>
     <dimen name="sec_widget_round_button_padding_start_end">16dp</dimen>
     <dimen name="sec_widget_round_button_padding_top_bottom">9dp</dimen>
+
+    <!-- MarginsTabLayout -->
+    <dimen name="oui_tab_layout_default_side_padding">24dp</dimen>
+    <dimen name="oui_tab_layout_default_tab_padding">8dp</dimen>
 </resources>
