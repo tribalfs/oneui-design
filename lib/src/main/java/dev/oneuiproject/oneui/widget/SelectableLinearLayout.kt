@@ -12,6 +12,7 @@ import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.annotation.Px
+import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.core.content.res.use
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -56,7 +57,7 @@ class SelectableLinearLayout @JvmOverloads constructor(
                 0 ->{
                     val spacing = it.getDimensionPixelSize(
                         R.styleable.SelectableLinearLayout_checkableButtonSpacing, 14)
-                    mCheckBox = CheckBox(context).apply {
+                    mCheckBox = AppCompatCheckBox(context).apply {
                         layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
                             gravity = Gravity.CENTER
                             marginEnd = spacing

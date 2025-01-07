@@ -50,16 +50,21 @@ class SelectableAnimatedDrawable : AnimatedStateListDrawableCompat() {
         theme: Resources.Theme?
     ) {
         selectedColor = ColorUtils.setAlphaComponent(ContextCompat.getColor(context,
-            context.getThemeAttributeValue(androidx.appcompat.R.attr.colorPrimaryDark)!!.resourceId), (.8f * 255).toInt())
+            context.getThemeAttributeValue(androidx.appcompat.R.attr.colorPrimary)!!.resourceId), (.8f * 255).toInt())
         super.inflate(context, resources, parser, attrs, theme)
     }
 
     private val shapeBounds = RectF()
 
     override fun draw(canvas: Canvas) {
-        (callback as? ImageView)?.drawable?.let { shapeBounds.set(it.bounds) }
-        val radiusPx = if (radius == -1f) shapeBounds.height()/2f else radius
-        canvas.drawRoundRect(shapeBounds, radiusPx, radiusPx, backgroundPaint!!)
+        (callback as? ImageView)?.let { imageView ->
+            imageView.drawable?.let { drawable ->
+                val drawableBounds = RectF(drawable.bounds)
+                imageView.imageMatrix.mapRect(shapeBounds, drawableBounds)
+                val radiusPx = if (radius == -1f) shapeBounds.height()/2f else radius
+                canvas.drawRoundRect(shapeBounds, radiusPx, radiusPx, backgroundPaint!!)
+            }
+        }
         super.draw(canvas)
     }
 
