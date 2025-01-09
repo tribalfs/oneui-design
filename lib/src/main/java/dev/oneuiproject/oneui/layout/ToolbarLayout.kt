@@ -401,8 +401,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         navButtonsHandler.showNavigationButtonAsBack = _showNavAsBack
         if (mShowSwitchBar) switchBar.visibility = VISIBLE
         setNavigationButtonIcon(mNavigationIcon)
-        setTitle(mTitleExpanded, mTitleCollapsed)
-        setExpandedSubtitle(mSubtitleExpanded)
+        applyCachedTitles()
         updateAppbarHeight()
     }
 
@@ -498,23 +497,89 @@ open class ToolbarLayout @JvmOverloads constructor(
         expandedTitle: CharSequence?,
         collapsedTitle: CharSequence?
     ) {
-        mMainToolbar.title = collapsedTitle.also { mTitleCollapsed = it }
-        mCollapsingToolbarLayout.title = expandedTitle.also { mTitleExpanded = it }
+        this.collapsedTitle = collapsedTitle
+        this.expandedTitle = expandedTitle
     }
 
     /**
-     * Set the subtitle of the [CollapsingToolbarLayout].
+     * The title for the expanded Toolbar.
+     *
+     * @see setCustomTitleView
+     * @see collapsedTitle
+     * */
+    var expandedTitle: CharSequence?
+        get() = mTitleExpanded
+        set(value) {
+            if (mTitleExpanded == value) return
+            mCollapsingToolbarLayout.title = value.also { mTitleExpanded = it }
+        }
+
+    /**
+     * The title for the expanded Toolbar.
+     *
+     * @see expandedTitle
+     * */
+    var collapsedTitle: CharSequence?
+        get() = mTitleCollapsed
+        set(value) {
+            if (mTitleCollapsed == value) return
+            mMainToolbar.title = value.also { mTitleCollapsed = it }
+        }
+
+    /**
+     * Set the subtitle of both the collapsed and expanded Toolbar.
+     * The expanded title might not be visible in landscape or on devices with small dpi.
+     *
+     * @see expandedSubtitle
+     * @see collapsedSubtitle
+     */
+    fun setSubtitle(subtitle: CharSequence?){
+        this.expandedSubtitle = subtitle
+        this.collapsedSubtitle = subtitle
+    }
+
+    /**
+     * The subtitle of the expanded [CollapsingToolbarLayout].
      * This might not be visible in landscape or on devices with small dpi.
+     *
+     * @see collapsedSubtitle
      */
-    fun setExpandedSubtitle(expandedSubtitle: CharSequence?) {
-        mCollapsingToolbarLayout.seslSetSubtitle(expandedSubtitle.also { mSubtitleExpanded = it })
-    }
+    var expandedSubtitle: CharSequence?
+        get() = mSubtitleExpanded
+        set(value) {
+            if (mSubtitleExpanded == value) return
+            mCollapsingToolbarLayout.seslSetSubtitle(value.also { mSubtitleExpanded = it })
+        }
 
     /**
-     * Set the subtitle of the collapsed Toolbar.
+     * The subtitle of the collapsed [CollapsingToolbarLayout].
+     *
+     * @see expandedSubtitle
      */
-    fun setCollapsedSubtitle(collapsedSubtitle: CharSequence?) {
-        mMainToolbar.subtitle = collapsedSubtitle.also { mSubtitleCollapsed = it }
+    var collapsedSubtitle: CharSequence?
+        get() = mSubtitleCollapsed
+        set(value) {
+            if (mSubtitleCollapsed == value) return
+            mMainToolbar.subtitle = value.also { mSubtitleCollapsed = it }
+        }
+
+    @RestrictTo(RestrictTo.Scope.LIBRARY)
+    fun setTitlesNoCache(expandedTitle: CharSequence?,
+                         collapsedTitle: CharSequence?,
+                         expandedSubTitle: CharSequence?,
+                         collapsedSubtitle: CharSequence?){
+        mMainToolbar.title = collapsedTitle
+        mCollapsingToolbarLayout.title = expandedTitle
+        mMainToolbar.subtitle = collapsedSubtitle
+        mCollapsingToolbarLayout.seslSetSubtitle(expandedSubTitle)
+    }
+
+    @RestrictTo(RestrictTo.Scope.LIBRARY)
+    fun applyCachedTitles(){
+        mMainToolbar.title = mTitleCollapsed
+        mCollapsingToolbarLayout.title = mTitleExpanded
+        mMainToolbar.subtitle = mSubtitleCollapsed
+        mCollapsingToolbarLayout.seslSetSubtitle(mSubtitleExpanded)
     }
 
     /**
@@ -534,6 +599,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     /**
      * Programmatically expand or collapse the Toolbar with an optional animation.
      *
+     * @see isExpanded
      * @param animate whether or not to animate the expanding or collapsing.
      */
     fun setExpanded(expanded: Boolean, animate: Boolean) {
@@ -554,28 +620,17 @@ open class ToolbarLayout @JvmOverloads constructor(
             setExpanded(expanded, mAppBarLayout.isLaidOut)
         }
 
-    /**
-     * Replace the title of the expanded Toolbar with a custom View.
-     * This might not be visible in landscape or on devices with small dpi.
-     * This is similar to setting [R.styleable.ToolbarLayoutParams_layout_location]
-     * to [R.attr.layout_location#appbar_header]
-     *
-     */
-    fun setCustomTitleView(view: View) {
-        setCustomTitleView(
-            view,
-            CollapsingToolbarLayout.LayoutParams(view.layoutParams)
-        )
-    }
 
     /**
      * Replace the title of the expanded Toolbar with a custom View including LayoutParams.
      * This might not be visible in landscape or on devices with small dpi.
+     * This is similar to setting [R.styleable.ToolbarLayoutParams_layout_location]
+     * to [R.attr.layout_location#appbar_header]
+     *
+     * @see customSubtitleView
      */
-    fun setCustomTitleView(
-        view: View,
-        params: CollapsingToolbarLayout.LayoutParams? = null
-    ) {
+    @JvmOverloads
+    fun setCustomTitleView(view: View, params: CollapsingToolbarLayout.LayoutParams? = null) {
         (params ?: CollapsingToolbarLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)).apply {
             seslSetIsTitleCustom(true)
             mCollapsingToolbarLayout.seslSetCustomTitleView(view, this)
@@ -586,9 +641,22 @@ open class ToolbarLayout @JvmOverloads constructor(
      * The custom View that replaces the title of the expanded Toolbar.
      * This might not be visible in landscape or on devices with small dpi.
      */
-    fun setCustomSubtitle(view: View) {
-        mCollapsingToolbarLayout.seslSetCustomSubtitle(view)
+    fun getCustomTitleView(): View? {
+        return mCollapsingToolbarLayout.children.find {
+            (it.layoutParams as? CollapsingToolbarLayout.LayoutParams)?.seslIsTitleCustom() == true
+        }
     }
+
+    /**
+     * The custom View that replaces the subtitle of the expanded Toolbar.
+     * This might not be visible in landscape or on devices with small dpi.
+     */
+    var customSubtitleView: View?
+        get() = mCollapsingToolbarLayout.seslGetCustomSubtitle()
+        set(value) {
+            if (value == mCollapsingToolbarLayout.seslGetCustomSubtitle()) return
+            mCollapsingToolbarLayout.seslSetCustomSubtitle(value)
+        }
 
     var isImmersiveScroll: Boolean
         /**
@@ -813,11 +881,15 @@ open class ToolbarLayout @JvmOverloads constructor(
     open fun endSearchMode() {
         if (!isSearchMode) return
         isSearchMode = false
+
+        //Restore toolbar titles
+        applyCachedTitles()
+
+        //Restore views visibility
         mSearchToolbar!!.visibility = GONE
         animatedVisibility(mMainToolbar, VISIBLE)
-        setTitle(mTitleExpanded, mTitleCollapsed)
-        mCollapsingToolbarLayout.seslSetSubtitle(mSubtitleExpanded)
         mCustomFooterContainer!!.visibility = VISIBLE
+
         mSearchModeListener!!.onSearchModeToggle(mSearchView, false)
         // We are clearing the listener first. We don't want to trigger
         // SearchModeListener.onQueryTextChange callback
@@ -833,7 +905,6 @@ open class ToolbarLayout @JvmOverloads constructor(
     /**
      * Show the [SearchView] in the Toolbar.
      * To enable the voice input icon in the SearchView, please refer to the project wiki.
-     * TODO: link to the wiki on how to use the voice input feature.
      */
     @Deprecated("Replaced by startSearchMode().", ReplaceWith("startSearchMode(listener)"),
         level = DeprecationLevel.ERROR)
@@ -860,7 +931,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             mSearchToolbar =
                 mCollapsingToolbarLayout.findViewById<ViewStub>(R.id.viewstub_oui_view_toolbar_search)
                     .inflate() as Toolbar
-            mSearchView = mSearchToolbar!!.findViewById(R.id.toolbarlayout_search_view)
+            mSearchView = mSearchToolbar!!.findViewById<SearchView?>(R.id.toolbarlayout_search_view)
             mSearchView.seslSetUpButtonVisibility(VISIBLE)
             mSearchView.seslSetOnUpButtonClickListener { endSearchMode() }
             activity?.let { mSearchView.setSearchableInfoFrom(it) }
@@ -1015,7 +1086,9 @@ open class ToolbarLayout @JvmOverloads constructor(
 
         mCollapsingToolbarLayout.seslSetSubtitle(null)
         mMainToolbar.setSubtitle(null)
+
         syncActionModeMenuInternal()
+
         setupAllSelectorOnClickListener()
         updateOnBackCallbackState()
     }
@@ -1176,9 +1249,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         } else {
             showMainToolbarAnimate()
             mCustomFooterContainer!!.visibility = VISIBLE
-            setTitle(mTitleExpanded, mTitleCollapsed)
-            mCollapsingToolbarLayout.seslSetSubtitle(mSubtitleExpanded)
-            mMainToolbar.subtitle = mSubtitleCollapsed
+            applyCachedTitles()
         }
         hideAndClearActionModeSearchView()
         mBottomActionModeBar.visibility = GONE
