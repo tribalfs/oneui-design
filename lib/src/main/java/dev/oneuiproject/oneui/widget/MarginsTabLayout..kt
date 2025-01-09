@@ -5,93 +5,189 @@ package dev.oneuiproject.oneui.widget
 import android.content.Context
 import android.content.res.Configuration
 import android.util.AttributeSet
-import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
+import android.view.ViewGroup
+import android.view.ViewTreeObserver
+import androidx.annotation.CallSuper
 import androidx.core.content.res.use
+import androidx.core.view.updateLayoutParams
 import com.google.android.material.tabs.TabLayout
 import dev.oneuiproject.oneui.design.R
-import dev.oneuiproject.oneui.ktx.appCompatActivity
+import dev.oneuiproject.oneui.ktx.getTabView
+import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isDisplayTypeSub
+import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isLandscape
 
+/**
+ * An extension of [TabLayout] that dynamically adjusts its width to fit the parent
+ * by setting appropriate side margins. It ensures that the selected tab is always
+ * visible by automatically scrolling to it.
+ *
+ * This class provides a mechanism to customize the tab dimensions through the
+ * [setCustomTabDimen] method, allowing for flexible layout adjustments.
+ */
 open class MarginsTabLayout @JvmOverloads constructor(
     mContext: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = com.google.android.material.R.attr.tabStyle
 ) : TabLayout(mContext, attrs, defStyleAttr) {
 
-    private var isSubTabStyle = false
+    @JvmField
+    internal var tabDimens: TabDimen? = null
+    @JvmField
+    internal var tabTextWidthsList: ArrayList<Float> = arrayListOf()
+    @JvmField
+    internal val defaultTabPadding = context.resources.getDimension(R.dimen.oui_tab_layout_default_tab_padding)
 
     @JvmField
-    internal var mRemeasure = false
+    internal var sideMargin: Int = 0
+    @JvmField
+    internal var containerWidth: Int? = null
 
-    val activity: AppCompatActivity by lazy(LazyThreadSafetyMode.NONE) { context.appCompatActivity!! }
+    @JvmField
+    internal var depthStyle = DEPTH_TYPE_MAIN
 
-    var sideMargin: Int = resources.getDimension(R.dimen.oui_tab_layout_default_side_padding).toInt()
-        set(value) {
-            if (field == value) return
-            field = value
-            if (applySideMargin) {
-                updateMargin()
-            }else{
-                Log.w(TAG, "setSideMargin called without applyMargin set to true")
-            }
-        }
+    @JvmField
+    internal var mRecalculateTextWidths = false
 
-    var applySideMargin = false
-        set(value) {
-            if (field == value) return
-            field = value
-            updateMargin()
-        }
+    private val globalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener { invalidateTabLayoutInternal() }
 
     init{
         context.obtainStyledAttributes(attrs, R.styleable.MarginsTabLayout).use{
-            sideMargin = it.getDimensionPixelSize(R.styleable.MarginsTabLayout_sideMargin, sideMargin)
-            applySideMargin = it.getBoolean(R.styleable.MarginsTabLayout_applySideMargin, true)
-            val mDepthStyle = it.getInteger(R.styleable.MarginsTabLayout_seslDepthStyle, 1 /*DEPTH_TYPE_MAIN*/)
-            if (mDepthStyle == 2 /*SubTab*/){
-                seslSetSubTabStyle()
-            }
+            depthStyle = it.getInteger(R.styleable.MarginsTabLayout_seslDepthStyle, DEPTH_TYPE_MAIN)
         }
     }
 
-    override fun seslSetSubTabStyle() {
-        if (isSubTabStyle) return
-        super.seslSetSubTabStyle()
-        isSubTabStyle = true
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+        if (depthStyle == DEPTH_TYPE_SUB){
+            super.seslSetSubTabStyle()
+        }
+        invalidateTabLayoutInternal()
     }
 
+    override fun seslSetSubTabStyle() {
+        if (depthStyle == DEPTH_TYPE_SUB) return
+        super.seslSetSubTabStyle()
+        depthStyle = DEPTH_TYPE_SUB
+    }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        invalidateTabLayout()
+        viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
+        invalidateTabLayoutInternal()
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        viewTreeObserver.removeOnGlobalLayoutListener(globalLayoutListener)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        mRemeasure = true
-        invalidateTabLayout()
+        invalidateTabLayoutInternal()
     }
 
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, h, oldw, oldh)
-        mRemeasure = true
-        invalidateTabLayout()
+    override fun addTab(tab: Tab, position: Int, setSelected: Boolean) {
+        mRecalculateTextWidths = true
+        super.addTab(tab, position, setSelected)
     }
 
-    open fun invalidateTabLayout() = updateMargin()
+    override fun removeTab(tab: Tab) {
+        mRecalculateTextWidths = true
+        super.removeTab(tab)
+    }
 
-    private fun updateMargin() {
-        val layoutParams = layoutParams as? MarginLayoutParams ?: return
-        val marginToApply = if (applySideMargin) sideMargin else 0
-        if (layoutParams.marginStart != marginToApply || layoutParams.marginEnd != marginToApply) {
-            layoutParams.marginStart = marginToApply
-            layoutParams.marginEnd = marginToApply
-            setLayoutParams(layoutParams)
+    private fun recalculateTextWidths() {
+        tabTextWidthsList.clear()
+        for (i in 0 until tabCount) {
+            val tab = getTabAt(i)
+            val viewGroup = getTabView(i) as? ViewGroup
+            if (tab != null && viewGroup != null) {
+                val textView = tab.seslGetTextView()
+                val subTextView = tab.seslGetSubTextView()
+                val tabTextWidth = textView?.paint?.measureText(textView.getText().toString())
+                    ?.coerceAtLeast(subTextView?.paint?.measureText(textView.getText().toString()) ?: 0f)
+                    ?: 0f
+                tabTextWidthsList.add(tabTextWidth)
+            }
         }
     }
 
+    private fun invalidateTabLayoutInternal() = post {
+        val parentWidth = with(parent as ViewGroup) { width - paddingStart - paddingEnd }
+        if (parentWidth != 0 && containerWidth != parentWidth) {
+            containerWidth = parentWidth
+            if (tabDimens == null) {
+                tabDimens = TabDimenDefault(defaultTabPadding)
+            }
+            invalidateTabLayout()
+        }
+    }
+
+    @CallSuper
+    internal open fun invalidateTabLayout(){
+        if (mRecalculateTextWidths || isInEditMode) {
+            recalculateTextWidths()
+            mRecalculateTextWidths = false
+        }
+        sideMargin = tabDimens!!.getSideMargin(this, containerWidth!!, getTabTextWidthsSum()).toInt()
+        updateLayoutParams()
+        setScrollPosition(selectedTabPosition, 0.0f, true)
+    }
+
+
+    open fun updateLayoutParams() {
+        updateLayoutParams<MarginLayoutParams> {
+            marginStart = sideMargin
+            marginEnd = sideMargin
+        }
+    }
+
+    internal fun getTabTextWidthsSum(): Float {
+        var widthSum = 0f
+        val tabTextWidthsList = tabTextWidthsList
+        for (width in tabTextWidthsList) {
+            widthSum += width
+        }
+        return widthSum
+    }
+
+    open fun setCustomTabDimen(tabDimenImpl: TabDimen){
+        tabDimens = tabDimenImpl
+        invalidateTabLayoutInternal()
+    }
+
+    fun interface TabDimen{
+        fun getSideMargin(tabLayout: TabLayout, containerWidthPixels: Int, totalTabTextsWidth: Float): Float
+    }
+
+    class TabDimenDefault(val defaultTabPadding: Float): TabDimen{
+        override fun getSideMargin(tabLayout: TabLayout, containerWidthPixels: Int, totalTabTextsWidth: Float): Float {
+
+            val res = tabLayout.resources
+            val configuration = res.configuration
+
+            val tabLayoutPaddingMin = res.getDimension(R.dimen.oui_tab_layout_default_side_margin)
+
+            if (isLandscape(configuration) && isDisplayTypeSub(configuration)) {
+                return tabLayoutPaddingMin / 2f
+            }
+
+            if (configuration.smallestScreenWidthDp <= 480) {
+                return tabLayoutPaddingMin
+            }
+
+            val tabLayoutPaddingMax = containerWidthPixels * 0.125f
+            val totalTabPaddings = defaultTabPadding * tabLayout.tabCount * 2
+
+            return ((containerWidthPixels - totalTabTextsWidth - totalTabPaddings) / 2f)
+                .coerceIn(tabLayoutPaddingMin, tabLayoutPaddingMax)
+        }
+    }
 
     companion object{
+        private const val DEPTH_TYPE_MAIN = 1
+        private const val DEPTH_TYPE_SUB = 2
+
         private const val TAG = "MarginsTabLayout"
     }
 

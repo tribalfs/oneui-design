@@ -15,18 +15,13 @@ import android.view.MenuItem
 import android.view.PointerIcon
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED
 import android.view.accessibility.AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUS_CLEARED
 import android.view.accessibility.AccessibilityNodeInfo
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.TextView
 import androidx.annotation.MenuRes
-import androidx.annotation.RequiresApi
-import androidx.annotation.RestrictTo
 import androidx.appcompat.view.SupportMenuInflater
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuItemImpl
@@ -38,16 +33,13 @@ import androidx.customview.view.AbsSavedState
 import com.google.android.material.tabs.TabLayout
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.dialog.GridMenuDialog
+import dev.oneuiproject.oneui.dialog.internal.toGridDialogItem
 import dev.oneuiproject.oneui.ktx.addCustomTab
 import dev.oneuiproject.oneui.ktx.addTab
-import dev.oneuiproject.oneui.ktx.getTabView//import dev.oneuiproject.oneui.ktx.isNumericValue
+import dev.oneuiproject.oneui.ktx.getTabView
 import dev.oneuiproject.oneui.ktx.isNumericValue
 import dev.oneuiproject.oneui.ktx.setListener
-import dev.oneuiproject.oneui.dialog.internal.toGridDialogItem
-import dev.oneuiproject.oneui.ktx.windowWidthNetOfInsets
 import dev.oneuiproject.oneui.layout.Badge
-import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isDisplayTypeSub
-import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isLandscape
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type.SINE_IN_OUT_90
 import com.google.android.material.R as materialR
@@ -60,20 +52,17 @@ class BottomTabLayout(
 
     private var mSlideDownAnim: Animation? = null
     private var mSlideUpAnim: Animation? = null
-    private lateinit var mTextViews: ArrayList<TextView?>
 
     private var gridMenuDialog: GridMenuDialog? = null
     private var onMenuItemClicked: ((menuItem: MenuItem) -> Unit)? = null
 
-    private lateinit var mTabDimens: TabDimens
-    private var mTabTextPadding: Float = resources.getDimension(R.dimen.oui_tab_layout_default_tab_padding)
-
-    private var isPopulatingTabs = true
-    private var tblMatchParent = true
+    private var isPopulatingTabs = false
     private var mOverFLowItems: ArrayList<MenuItemImpl>? = null
 
     init {
         isFocusable = false
+        tabMode = if (isInEditMode) MODE_FIXED else MODE_SCROLLABLE
+        tabGravity = GRAVITY_FILL
         context.theme
             .obtainStyledAttributes(attrs, R.styleable.BottomTabLayout, 0, 0).use { a ->
                 if (a.hasValue(R.styleable.BottomTabLayout_menu)) {
@@ -96,6 +85,54 @@ class BottomTabLayout(
                 updateTabs()
             }
         }
+    }
+
+    override fun invalidateTabLayout(){
+        if (isPopulatingTabs) return
+        if (mRecalculateTextWidths) {
+            updatePointerAndDescription()
+        }
+        super.invalidateTabLayout()
+    }
+
+    private fun updatePointerAndDescription() {
+        val systemIcon = if (Build.VERSION.SDK_INT >= 24) {
+            PointerIcon.getSystemIcon(context, 1000)
+        } else null
+
+        val tabCount = tabCount
+        for (i in 0 until tabCount) {
+            val tab = getTabAt(i)
+            val viewGroup = getTabView(i) as? ViewGroup
+            if (tab != null && viewGroup != null) {
+                val textView = tab.seslGetTextView()
+                viewGroup.contentDescription = textView?.text
+                systemIcon?.let {
+                    @SuppressLint("NewApi")
+                    viewGroup.pointerIcon = it
+                }
+            }
+        }
+    }
+
+    override fun updateLayoutParams() {
+        super.updateLayoutParams()
+        updateTabWidths()
+    }
+
+    private fun updateTabWidths() {
+        val availableForTabPaddings = containerWidth!! - getTabTextWidthsSum() - (sideMargin * 2)
+        val tabPadding = (availableForTabPaddings/(tabCount * 2)).coerceAtLeast(defaultTabPadding)
+
+        for (i in 0 until tabCount) {
+            val tabView = getTabView(i)!!
+            val tabWidth =   (tabPadding * 2f + tabTextWidthsList[i]).toInt()
+
+            tabView.minimumWidth = tabWidth
+            (tabView as? ViewGroup)?.getChildAt(0)?.minimumWidth = tabWidth
+            //tabView.requestLayout()
+        }
+        requestLayout()
     }
 
     private lateinit var bottomTabLayoutMenu: BottomTabLayoutMenu
@@ -163,10 +200,10 @@ class BottomTabLayout(
         }
 
         isPopulatingTabs = false
-        mRemeasure = true
+        mRecalculateTextWidths = true
 
         if (isAttachedToWindow){
-            invalidateTabLayout()
+            doOnLayout { invalidateTabLayout() }
         }
     }
 
@@ -192,115 +229,6 @@ class BottomTabLayout(
     }
 
     private fun hasOverflowItems(): Boolean = mOverFLowItems?.isNotEmpty() == true
-
-    override fun invalidateTabLayout() {
-        if (isPopulatingTabs) return
-        doOnLayout {
-            post {
-                Log.d(TAG, "invalidateTabLayout remeasure: $mRemeasure")
-                if (mRemeasure) {
-                    remeasureDimens()
-                    mRemeasure = false
-                }
-                updateSideInsetsAndTabMode()
-                setScrollPosition(selectedTabPosition, 0.0f, true)
-            }
-        }
-    }
-
-    private fun remeasureDimens() {
-        Log.d(TAG, "remeasureDimens")
-
-        tblMatchParent = (layoutParams as? MarginLayoutParams)?.width == MATCH_PARENT
-        val containerWidth = if (tblMatchParent){
-            (parent as ViewGroup).width
-        }else{
-            context.windowWidthNetOfInsets
-        }
-
-        mTabDimens = TabDimens(mTabTextPadding, containerWidth)
-
-        mTextViews = arrayListOf()
-        val systemIcon = if (Build.VERSION.SDK_INT >= 24) {
-            PointerIcon.getSystemIcon(context, 1000)
-        } else null
-        val tabCount = tabCount
-        for (i in 0 until tabCount) {
-            val tab = getTabAt(i)
-            val viewGroup = getTabView(i) as? ViewGroup
-            if (tab != null && viewGroup != null) {
-                val textView = tab.seslGetTextView()
-                mTextViews.add(textView)
-                viewGroup.contentDescription = textView?.text
-                systemIcon?.let {
-                    viewGroup.pointerIcon = it
-                }
-            }
-        }
-    }
-
-
-    private fun updateSideInsetsAndTabMode() {
-        val tabTextWidthsList = arrayListOf<Float>()
-
-        val tabCount = tabCount
-        var tabTextWidthSum = 0.0f
-        for (i in 0 until tabCount) {
-            val tabTextView = mTextViews[i]
-            val tabTextWidth = tabTextView?.paint?.measureText(tabTextView.getText().toString()) ?: 0f
-            tabTextWidthsList.add(tabTextWidth)
-            tabTextWidthSum += tabTextWidth
-        }
-
-        val calculatedTabLayoutPadding = mTabDimens.calculateTabLayoutPadding(
-            context,
-            tabTextWidthSum,
-            if (applySideMargin) sideMargin.toFloat() else 0f
-        ).toInt()
-
-        val maxTotalTabPaddings = mTabDimens.screenWidthPixels - (calculatedTabLayoutPadding * 2f)
-
-        val tabModeToSet: Int
-        if (mTabDimens.mTabTextPaddingSum + tabTextWidthSum < maxTotalTabPaddings) {
-
-            tabModeToSet = MODE_FIXED
-
-            val tabPadding = ((maxTotalTabPaddings - tabTextWidthSum) / 2f + mTabTextPadding).coerceAtLeast(0f)
-            val lastTabPaddingAdj = maxTotalTabPaddings - tabTextWidthSum - (8 * tabPadding)
-
-            for (i in 0 until tabCount) {
-                val tabView = getTabView(i)!!
-                val tabWidth = if (lastTabPaddingAdj != 0.0f && i == 3/*last tab*/) {
-                    (tabPadding * 2f + tabTextWidthsList[i] + lastTabPaddingAdj).toInt()
-                } else {
-                    (tabPadding * 2f + tabTextWidthsList[i]).toInt()
-                }
-                tabView.minimumWidth = tabWidth
-                (tabView as? ViewGroup)?.getChildAt(0)?.minimumWidth = tabWidth
-            }
-        } else {
-            //Total tab paddings exceeds maxTotalPaddings
-            //so will make it scrollable
-            tabModeToSet = MODE_SCROLLABLE
-
-            for (i in 0 until tabCount) {
-                val tabView = getTabView(i)!!
-                val tabWidth = ((mTabTextPadding * 2f) + tabTextWidthsList[i]).toInt()
-                tabView.minimumWidth = tabWidth
-                (tabView as? ViewGroup)?.getChildAt(0)?.minimumWidth = tabWidth
-            }
-        }
-
-        (layoutParams as? MarginLayoutParams)?.let {
-            it.width = if (tblMatchParent) MATCH_PARENT else WRAP_CONTENT
-            Log.d(TAG, "Update side insets to $calculatedTabLayoutPadding")
-            it.setMargins(calculatedTabLayoutPadding, 0, calculatedTabLayoutPadding, 0)
-            layoutParams = it
-        } ?: Log.e(TAG, "layoutParams is null")
-
-        Log.d(TAG, "Update tabMode to ${if (tabModeToSet == MODE_FIXED) "MODE_FIXED" else "MODE_SCROLLABLE"}")
-        tabMode = tabModeToSet
-    }
 
     private fun createGridMenuDialog(menu: ArrayList<MenuItemImpl>) =
         GridMenuDialog(context).apply {
@@ -579,35 +507,6 @@ class BottomTabLayout(
                     override fun createFromParcel(parcel: Parcel): SavedState = SavedState(parcel, null)
                     override fun newArray(size: Int): Array<SavedState?> = arrayOfNulls(size)
                 }
-        }
-    }
-
-    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    @RequiresApi(Build.VERSION_CODES.R)
-    private class TabDimens(
-        tabTextPadding: Float,
-        var screenWidthPixels: Int
-    ) {
-        companion object {
-            private const val PADDING_COUNT = 8
-        }
-
-        var mTabTextPaddingSum: Float = tabTextPadding * PADDING_COUNT
-
-        fun calculateTabLayoutPadding(context: Context, tabTextWidthSum: Float, tabLayoutPaddingMin: Float): Float {
-            val configuration = context.resources.configuration
-
-            if (isLandscape(configuration) && isDisplayTypeSub(configuration)) {
-                return tabLayoutPaddingMin / 2
-            }
-
-            if (configuration.screenWidthDp <= 480) {
-                return tabLayoutPaddingMin
-            }
-
-            val tabLayoutPaddingMax: Float = screenWidthPixels * 0.125f
-
-            return ((screenWidthPixels - tabTextWidthSum - mTabTextPaddingSum) / 2).coerceIn(tabLayoutPaddingMin, tabLayoutPaddingMax)
         }
     }
 

@@ -273,8 +273,6 @@
     </declare-styleable>
 
     <declare-styleable name="MarginsTabLayout">
-        <attr name="applySideMargin" format="boolean" />
-        <attr name="sideMargin" format="dimension"/>
         <attr name="seslDepthStyle">
             <enum name="sesl_main" value="1"/>
             <enum name="sesl_sub" value="2"/>
