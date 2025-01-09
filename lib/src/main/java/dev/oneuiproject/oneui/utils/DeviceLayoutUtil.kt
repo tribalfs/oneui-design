@@ -15,7 +15,6 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.annotation.RestrictTo
 import androidx.reflect.content.res.SeslConfigurationReflector
-import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.activity
 import dev.oneuiproject.oneui.utils.internal.getSystemProp
 
@@ -24,9 +23,10 @@ object DeviceLayoutUtil {
     private var sIsDexMode: Boolean? = null
     private var sIsTabBuildOrCategory: Boolean? = null
 
-    inline fun isPortrait(configuration: Configuration) = configuration.orientation == ORIENTATION_PORTRAIT
+    inline fun isPortrait(config: Configuration) = config.orientation == ORIENTATION_PORTRAIT
 
-    inline fun isInMultiWindowModeCompat(context: Context) =  VERSION.SDK_INT >= 24 && (context.activity?.isInMultiWindowMode ?: false)
+    inline fun isInMultiWindowModeCompat(context: Context) =
+        VERSION.SDK_INT >= 24 && (context.activity?.isInMultiWindowMode ?: false)
 
     @JvmStatic
     inline fun isLandscape(configuration: Configuration) = configuration.orientation == ORIENTATION_LANDSCAPE
@@ -66,12 +66,16 @@ object DeviceLayoutUtil {
 
     inline fun isTabletStyle(context: Context) = !isFlipCoverScreen(context) && isTabletLayoutOrDesktop(context)
 
+    /**
+     * Sub-display like on samsung flip phone cover screens
+     */
     fun isDisplayTypeSub(config: Configuration): Boolean =
         getDisplayDeviceType(config) == 5/*Configuration.SEM_DISPLAY_DEVICE_TYPE_SUB*/
 
     private fun getDisplayDeviceType(config: Configuration): Int? {
         return try {
-            val field =   @Suppress("PrivateApi") Configuration::class.java.getDeclaredField("semDisplayDeviceType")
+            val field = @Suppress("PrivateApi")
+            Configuration::class.java.getDeclaredField("semDisplayDeviceType")
             field.isAccessible = true
             val displayDeviceType = field[config]
             displayDeviceType as? Int?
@@ -148,29 +152,49 @@ object DeviceLayoutUtil {
         return config.densityDpi / metrics.densityDpi.toFloat()
     }
 
-    fun getWidthExcludingSystemInsets(context: Context): Int{
+    /**
+     * On API 30 and above, it retrieves the width of the `activity window` when called with an activity context,
+     * excluding insets for navigation bars and display cutout on.
+     *
+     * On API 29 and below or if called with a non-activity context, it returns the width of the `entire display`,
+     * minus the height of system decorations on API 29 and below.
+     *
+     * @param context The context from which to retrieve the window width.
+     * @return The width in pixels, adjusted for insets if applicable.
+     */
+    fun getWindowWidthNet(context: Context): Int {
         val activity = context.activity
         activity?.let {
-            if (VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (VERSION.SDK_INT >= 30) {
                 val metrics = it.windowManager.currentWindowMetrics
                 val windowInsets = metrics.windowInsets
                 val insets = windowInsets.getInsetsIgnoringVisibility(
-                    WindowInsets.Type.navigationBars()
-                            or WindowInsets.Type.displayCutout()
+                    WindowInsets.Type.navigationBars() or WindowInsets.Type.displayCutout()
                 )
                 val insetsWidth = insets.right + insets.left
                 return metrics.bounds.width() - insetsWidth
             }
         }
-
+        
         return Point().apply {
             @Suppress("DEPRECATION")
-            (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.getSize(this) }.x
+            (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.getSize(this)
+        }.x
     }
 
+    /**
+     * Retrieves the height of the `app window' when called with an activity context.
+     *
+     * If called with a non-activity context, it returns the height of the `entire display`
+     * (minus system decoration height on api29-)
+     *
+     * @param context The context from which to retrieve the window height.
+     * @return The height in pixels.
+     */
     fun getWindowHeight(context: Context): Int {
         return Point().apply {
             @Suppress("DEPRECATION")
-            (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.getSize(this) }.y
+            (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.getSize(this)
+        }.y
     }
 }

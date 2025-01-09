@@ -34,17 +34,17 @@ import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
 import dev.oneuiproject.oneui.ktx.ifNegativeOrZero
 import dev.oneuiproject.oneui.ktx.semSetRoundedCorners
 import dev.oneuiproject.oneui.ktx.semSetToolTipText
-import dev.oneuiproject.oneui.ktx.widthExcludingSystemInsets
+import dev.oneuiproject.oneui.ktx.windowWidthNetOfInsets
 import dev.oneuiproject.oneui.layout.Badge
 import dev.oneuiproject.oneui.layout.DrawerLayout.DrawerState
 import dev.oneuiproject.oneui.layout.internal.delegate.DrawerBackAnimator
 import dev.oneuiproject.oneui.layout.internal.delegate.DrawerLayoutBackHandler
 import dev.oneuiproject.oneui.layout.internal.delegate.ToolbarLayoutButtonsHandler
 import dev.oneuiproject.oneui.layout.internal.util.DrawerLayoutInterface
+import dev.oneuiproject.oneui.layout.internal.util.DrawerLayoutUtils.getDrawerStateUpdate
+import dev.oneuiproject.oneui.layout.internal.util.DrawerLayoutUtils.updateBadgeView
 import dev.oneuiproject.oneui.layout.internal.util.DrawerOutlineProvider
 import dev.oneuiproject.oneui.layout.internal.util.NavButtonsHandler
-import dev.oneuiproject.oneui.layout.internal.util.getDrawerStateUpdate
-import dev.oneuiproject.oneui.layout.internal.util.updateBadgeView
 import kotlin.math.max
 typealias OneUIDrawerLayout = dev.oneuiproject.oneui.layout.DrawerLayout
 
@@ -155,7 +155,7 @@ class SemDrawerLayout @JvmOverloads constructor(
     }
 
     private fun updateDrawerWidth() {
-        val displayWidth = context.widthExcludingSystemInsets
+        val displayWidth = context.windowWidthNetOfInsets
 
         val density = resources.displayMetrics.density
         val dpi = displayWidth.toFloat() / density
@@ -343,16 +343,13 @@ class SemDrawerLayout @JvmOverloads constructor(
         mNavButtonsHandlerDelegate.setNavigationButtonIcon(icon)
 
     override fun setHeaderButtonIcon(icon: Drawable?, @ColorInt tint: Int?) {
-        if (mDrawerHeaderButton != null) {
-            mDrawerHeaderButton!!.apply {
-                setImageDrawable(icon)
-                imageTintList = ColorStateList.valueOf(tint
-                    ?: ContextCompat.getColor(context, R.color.oui_drawerlayout_header_icon_tint))
-            }
+        mDrawerHeaderButton?.apply {
+            setImageDrawable(icon)
+            imageTintList = ColorStateList.valueOf(tint
+                ?: ContextCompat.getColor(context, R.color.oui_drawerlayout_header_icon_tint))
             mHeaderView.isVisible = icon != null
-        } else {
-            Log.e(TAG, "setHeaderButtonIcon: `drawer_header_button` id is not set in custom header view")
-        }
+        } ?: Log.e(TAG, "setHeaderButtonIcon: this method can be used " +
+                "only with the default header view")
     }
 
     override fun setHeaderButtonTooltip(tooltipText: CharSequence?) {

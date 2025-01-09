@@ -23,6 +23,7 @@ import java.util.Calendar.YEAR
  * }
  * ```
  */
+@JvmName("initDatePicker")
 inline fun SeslDatePicker.init(initialValue: Calendar, crossinline onDateSelected: (Calendar) -> Unit = {}) {
     init(
         initialValue.get(YEAR),
@@ -47,6 +48,7 @@ inline fun SeslDatePicker.init(initialValue: Calendar, crossinline onDateSelecte
  * seslDatePicker.update(currentDate)
  * ```
  */
+@JvmName("updateDate")
 inline fun SeslDatePicker.update(calendar: Calendar) {
     updateDate(calendar.get(YEAR), calendar.get(MONTH), calendar.get(DAY_OF_MONTH))
 }

@@ -1,6 +1,5 @@
 package dev.oneuiproject.oneui.ktx
 
-
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -26,6 +25,7 @@ import android.widget.Spinner
  * }
  * ```
  */
+@JvmName("onSpinnerItemSelected")
 inline fun <T : Spinner> T.onItemSelected(
     crossinline onSelect: (position: Int?, id: Long?) -> Unit
 ): T {
@@ -41,7 +41,7 @@ inline fun <T : Spinner> T.onItemSelected(
     return this
 }
 
-
+@JvmName("setupSpinner")
 inline fun <T : Spinner> T.setEntries(
     entries: List<Any>,
     crossinline onSelect: (position: Int?, id: Long?) -> Unit

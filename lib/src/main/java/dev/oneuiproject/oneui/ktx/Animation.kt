@@ -1,6 +1,5 @@
 package dev.oneuiproject.oneui.ktx
 
-import android.animation.Animator
 import android.view.animation.Animation
 
 inline fun Animation.setListener(

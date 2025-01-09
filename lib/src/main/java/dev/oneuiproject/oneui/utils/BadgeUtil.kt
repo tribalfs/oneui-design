@@ -1,9 +1,10 @@
 @file:Suppress("NOTHING_TO_INLINE")
+@file:JvmName("BadgeUtil")
 
 package dev.oneuiproject.oneui.utils
 
 import androidx.annotation.RestrictTo
-import androidx.core.text.isDigitsOnly
+import dev.oneuiproject.oneui.layout.Badge
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -19,10 +20,13 @@ inline fun Int.badgeCountToText(): String?{
 }
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-inline fun String.badgeTextToCount(): Int{
-    return if (this.isDigitsOnly()) {
-        this.toInt()
-    }else 0
+inline fun String.badgeTextToCount() = this.toIntOrNull() ?: 0
+
+@RestrictTo(RestrictTo.Scope.LIBRARY)
+inline fun String?.toBadge(): Badge {
+    return this?.badgeTextToCount()?.let {
+        if (it > 0) Badge.NUMERIC(it) else Badge.DOT
+    } ?: Badge.NONE
 }
 
 const val BADGE_LIMIT_NUMBER = 99

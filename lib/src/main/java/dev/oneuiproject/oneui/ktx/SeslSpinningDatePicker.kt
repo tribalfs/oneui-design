@@ -13,7 +13,11 @@ import java.util.Calendar.YEAR
  * @param initialValue [Calendar] instance to get the initial date to show.
  * @param onDateSelected Lambda to be invoked for the result containing the [Calendar] instance with the updated year, month and day of month.
  */
-inline fun SeslSpinningDatePicker.init(initialValue: Calendar, crossinline onDateSelected: (Calendar) -> Unit = {}){
+@JvmName("initDatePicker")
+inline fun SeslSpinningDatePicker.init(
+    initialValue: Calendar,
+    crossinline onDateSelected: (Calendar) -> Unit = {}
+){
     init(
         initialValue.get(YEAR),
         initialValue.get(MONTH),

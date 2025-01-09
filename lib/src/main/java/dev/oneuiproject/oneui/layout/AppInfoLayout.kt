@@ -108,8 +108,8 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
     private var bottomButtonsStyle: Int = 0
     private val optionalTextParent: LinearLayout
 
-
-    @Deprecated("Use the type-safe `updateState`.")
+    @Deprecated("Use the type-safe `updateState`.",
+        level = DeprecationLevel.WARNING)
     inline var status: Int
         get() {
             return when (updateStatus){
@@ -194,7 +194,6 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
 
     init {
         isExpanded = false
-        mShowSwitchBar = false
 
         var mainButtonStyle = 0
         var titleTextColor = 0
@@ -233,7 +232,7 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
         showNavigationButtonAsBack = true
         activity?.setSupportActionBar(null)
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-        LayoutInflater.from(context).inflate(R.layout.oui_layout_app_info, mMainContainer, true)
+        LayoutInflater.from(context).inflate(R.layout.oui_layout_app_info, mainContainer, true)
         mAILContainer = findViewById(R.id.app_info_lower_layout)
         mAppNameTextView = findViewById(R.id.app_info_name)
         mVersionTextView = findViewById(R.id.app_info_version)
@@ -429,6 +428,7 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
     /**
      * This does nothing in AppInfoLayout.
      */
+    @Deprecated("Unsupported operation.", level = DeprecationLevel.ERROR)
     override fun startActionMode(
         listener: ActionModeListener,
         searchOnActionMode: SearchOnActionMode,
@@ -441,6 +441,7 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
     /**
      * This does nothing in AppInfoLayout.
      */
+    @Deprecated("Unsupported operation.", level = DeprecationLevel.ERROR)
     override fun startSearchMode(
         listener: SearchModeListener,
         searchModeOnBackBehavior: SearchModeOnBackBehavior
@@ -451,6 +452,7 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
     /**
      * This does nothing in AppInfoLayout.
      */
+    @Deprecated("Unsupported operation.", level = DeprecationLevel.ERROR)
     override fun endActionMode() {
         //no op
     }
@@ -458,9 +460,14 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
     /**
      * This does nothing in AppInfoLayout.
      */
+    @Deprecated("Unsupported operation.", level = DeprecationLevel.ERROR)
     override fun endSearchMode() {
         //no op
     }
+
+    @Deprecated("Unsupported operation.", level = DeprecationLevel.ERROR)
+    override val switchBar get() =
+        throw UnsupportedOperationException("AppInfoLayout has no switchbar.")
 
     companion object{
         /**

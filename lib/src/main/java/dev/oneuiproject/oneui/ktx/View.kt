@@ -1,7 +1,6 @@
 @file:Suppress("unused", "NOTHING_TO_INLINE")
 package dev.oneuiproject.oneui.ktx
 
-import android.graphics.Color
 import android.os.Build
 import android.util.Log
 import android.view.View
@@ -20,23 +19,15 @@ import dev.oneuiproject.oneui.utils.internal.ReflectUtils.genericInvokeMethod
  * Convenience method to register [View.addOnAttachStateChangeListener]
  *
  * @param onChanged
+ * @return [View.OnAttachStateChangeListener] created and registered with this view.
  */
 inline fun View.doOnAttachedStateChanged(
     crossinline onChanged: (view: View, isAttached: Boolean) -> Unit
-) {
-    addOnAttachStateChangeListener(
-        object : View.OnAttachStateChangeListener {
-            override fun onViewAttachedToWindow(view: View) {
-                onChanged(view,true)
-            }
-
-            override fun onViewDetachedFromWindow(view: View) {
-                onChanged(view,false)
-            }
-        }
-    )
-    onChanged(this, isAttachedToWindow)
-}
+) =
+    object : View.OnAttachStateChangeListener {
+        override fun onViewAttachedToWindow(view: View) = onChanged(view,true)
+        override fun onViewDetachedFromWindow(view: View) = onChanged(view,false)
+    }.also { addOnAttachStateChangeListener(it) }
 
 inline val View.isSoftKeyboardShowing
     get() = ViewCompat.getRootWindowInsets(this)?.isVisible(
@@ -106,23 +97,6 @@ inline fun View.semSetRoundedCorners( corners: Int) {
 /**
  * This method only works on OneUI with api 28 and above
  */
-inline fun View.semGetRoundedCornerColor(corner: Int): Int {
-    if (DeviceInfo.isOneUI() && Build.VERSION.SDK_INT >= 28) {
-        return genericInvokeMethod(
-            View::class.java,
-            this, "semGetRoundedCornerColor", corner
-        ) as Int
-    } else {
-        Log.w("View-ktx", "semGetRoundedCornerColor method is available only on OneUI with " +
-                "api 28 and above"
-        )
-    }
-    return Color.WHITE
-}
-
-/**
- * This method only works on OneUI with api 28 and above
- */
 inline fun View.semSetRoundedCornerColor(
     corners: Int, @ColorInt color: Int
 ) {
@@ -152,10 +126,11 @@ inline fun <reified T: ViewGroup> View.findAncestorOfType(): T?{
     return targetParent
 }
 
-inline fun View.isChildOf(viewGroup: ViewGroup): Boolean {
+@JvmName("isViewDescendant")
+inline fun View.isDescendantOf(parentView: ViewGroup): Boolean {
     var parent = this.parent
     while (parent is ViewGroup) {
-        if (parent == viewGroup) {
+        if (parent == parentView) {
             return true
         }
         parent = parent.parent

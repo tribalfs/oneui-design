@@ -1,8 +1,14 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package dev.oneuiproject.oneui.ktx
 
 import java.util.StringTokenizer
 
-inline fun <T: CharSequence>T.containsTokenOf(query: String): Boolean{
+/**
+ * Checks if this [CharSequence] contains all tokens of the given [query].
+ */
+@JvmName("containsAllTokens")
+inline fun <T: CharSequence>T.containsAllTokensOf(query: String): Boolean{
     val tokenizer = StringTokenizer(query)
     while (tokenizer.hasMoreTokens()) {
         if (!this.contains(tokenizer.nextToken(),true)) {
@@ -11,6 +17,12 @@ inline fun <T: CharSequence>T.containsTokenOf(query: String): Boolean{
     }
     return true
 }
+
+/**
+ * Checks if this [CharSequence] contains all tokens of the given [query].
+ */
+@Deprecated("This is a misnomer of containsAllTokensOf", ReplaceWith("containsAllTokensOf(query)"))
+inline fun <T: CharSequence>T.containsTokenOf(query: String) = containsAllTokensOf(query)
 
 
 inline fun <T: CharSequence>T.isNumericValue(): Boolean {

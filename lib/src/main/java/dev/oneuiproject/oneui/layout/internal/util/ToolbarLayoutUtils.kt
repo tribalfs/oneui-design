@@ -14,29 +14,21 @@ import androidx.core.view.updateLayoutParams
 import androidx.reflect.DeviceInfo
 import dev.oneuiproject.oneui.ktx.activity
 import dev.oneuiproject.oneui.ktx.isInMultiWindowModeCompat
-import dev.oneuiproject.oneui.ktx.widthExcludingSystemInsets
+import dev.oneuiproject.oneui.ktx.windowWidthNetOfInsets
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isScreenWidthLarge
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isTabletBuildOrIsDeskTopMode
 import dev.oneuiproject.oneui.utils.internal.ReflectUtils
 import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout.SideMarginParams
 
-/**
- * @hide
- */
-@RestrictTo(RestrictTo.Scope.LIBRARY)
-object ToolbarLayoutUtils {
+internal object ToolbarLayoutUtils {
 
     @JvmStatic
-    @RestrictTo(RestrictTo.Scope.LIBRARY)
-    @Deprecated("Use Activity.updateStatusBarVisibility() instead",
-        ReplaceWith("activity.updateStatusBarVisibility()"))
+    @Deprecated(
+        "Replace CoordinatorLayout with AdaptiveCoordinatorLayout that " +
+                "extends CoordinatorLayout and implements this behavior instead.")
     fun hideStatusBarForLandscape(activity: Activity, orientation: Int) =
         activity.updateStatusBarVisibility()
 
-    /**
-     * @hide
-     */
-    @JvmStatic
     @RestrictTo(RestrictTo.Scope.LIBRARY)
     fun Activity.updateStatusBarVisibility() {
         if (isTabletBuildOrIsDeskTopMode(this)) return
@@ -74,73 +66,5 @@ object ToolbarLayoutUtils {
         window.attributes = lp
     }
 
-    /**
-     * @hide
-     */
-    @JvmStatic
-    @RestrictTo(RestrictTo.Scope.LIBRARY)
-    @Deprecated("Use View.updateAdaptiveSideMargins() instead",
-        ReplaceWith("View.updateAdaptiveSideMargins()"))
-    inline fun updateListBothSideMargin(activity: Activity, layout: ViewGroup) {
-        layout.updateAdaptiveSideMargins(activity)
-    }
-
-    @JvmStatic
-    @RestrictTo(RestrictTo.Scope.LIBRARY)
-    @JvmOverloads
-    inline fun View.updateAdaptiveSideMargins(activity: Activity? = null) {
-        (activity ?: context.activity)?.apply {
-            findViewById<View>(android.R.id.content).post {
-                val sideMarginParams = getAdaptiveSideMarginParams()
-                setSideMarginParams(sideMarginParams, 0, 0)
-                requestLayout()
-            }
-        }
-    }
-
-
-    @RestrictTo(RestrictTo.Scope.LIBRARY)
-    fun Context.getAdaptiveSideMarginParams(minSideMargin: Int = 0): SideMarginParams {
-        val config = resources.configuration
-        val screenWidthDp = config.screenWidthDp
-        val screenHeightDp = config.screenHeightDp
-        val widthXInsets = widthExcludingSystemInsets
-        val marginRatio = when {
-            (screenWidthDp < 589) -> 0.0f
-            (screenHeightDp > 411 && screenWidthDp <= 959) -> 0.05f
-            (screenWidthDp >= 960 && screenHeightDp <= 1919) -> 0.125f
-            (screenWidthDp >= 1920) -> 0.25f
-            else -> 0.0f
-        }
-        return SideMarginParams(
-            maxOf((widthXInsets * marginRatio).toInt(), minSideMargin),
-            screenWidthDp >= 589
-        )
-    }
-
-    /**
-     * @hide
-     */
-    @RestrictTo(RestrictTo.Scope.LIBRARY)
-    fun View.setSideMarginParams(
-        smp: SideMarginParams,
-        additionalLeft: Int,
-        additionalRight: Int
-    ) {
-        (layoutParams as? MarginLayoutParams)?.let {
-            updateLayoutParams<MarginLayoutParams> {
-                if (smp.matchParent) width = ViewGroup.LayoutParams.MATCH_PARENT
-                leftMargin = smp.sideMargin + additionalLeft
-                rightMargin = smp.sideMargin + additionalRight
-            }
-        } ?: run {
-            setPadding(
-                smp.sideMargin + additionalLeft,
-                paddingTop,
-                smp.sideMargin + additionalRight,
-                paddingBottom
-            )
-        }
-    }
 
 }

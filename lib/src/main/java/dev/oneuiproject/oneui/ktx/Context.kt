@@ -1,5 +1,4 @@
 @file:Suppress("NOTHING_TO_INLINE")
-
 package dev.oneuiproject.oneui.ktx
 
 import android.annotation.SuppressLint
@@ -9,8 +8,9 @@ import android.content.ContextWrapper
 import android.util.TypedValue
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.util.SeslMisc
-import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.getWidthExcludingSystemInsets
+import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.getWindowWidthNet
 
+@get:JvmName("getDpToPxFactor")
 inline val Context.dpToPxFactor get() = resources.displayMetrics.density
 
 inline fun Context.getThemeAttributeValue(attr: Int): TypedValue? =
@@ -45,4 +45,13 @@ val Context.appCompatActivity: AppCompatActivity?
         return null
     }
 
-inline val Context.widthExcludingSystemInsets: Int get() = getWidthExcludingSystemInsets(this)
+/**
+ * Retrieves the width of the activity window when called with an activity context,
+ * excluding insets for navigation bars and display cutouts.
+ *
+ * If called with a non-activity context, it returns the width of the entire display,
+ * minus the height of system decorations on API 29 and below.
+ *
+ * @return The width in pixels, adjusted for insets if applicable.
+ */
+inline val Context.windowWidthNetOfInsets: Int get() = getWindowWidthNet(this)

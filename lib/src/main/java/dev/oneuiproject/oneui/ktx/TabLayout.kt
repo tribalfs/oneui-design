@@ -2,7 +2,6 @@
 
 package dev.oneuiproject.oneui.ktx
 
-import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.MotionEvent
@@ -42,10 +41,11 @@ inline fun <T: TabLayout>T.selectTabAt(index: Int, updateIndicator: Boolean = tr
  *            }
  * ```
  */
+@JvmOverloads
 inline fun <T: TabLayout>T.addTab(
     @StringRes tabTitleRes: Int?,
-    @DrawableRes tabIconRes: Int?,
-    listener: View.OnClickListener?
+    @DrawableRes tabIconRes: Int? = null,
+    listener: View.OnClickListener? = null
 ): TabLayout.Tab {
     return addTab(
         tabTitle = tabTitleRes?.let {context!!.getString(it) },
@@ -75,9 +75,10 @@ inline fun <T: TabLayout>T.addTab(
  * }
  * ```
  */
+@JvmOverloads
 inline fun <T: TabLayout>T.addTab(
     tabTitle: CharSequence?,
-    tabIcon: Drawable?,
+    tabIcon: Drawable? = null,
     listener: View.OnClickListener? = null,
 ): TabLayout.Tab {
     return newTab().apply {

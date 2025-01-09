@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dev.oneuiproject.oneui.ktx.findAncestorOfType
-import dev.oneuiproject.oneui.ktx.isChildOf
+import dev.oneuiproject.oneui.ktx.isDescendantOf
 import dev.oneuiproject.oneui.layout.ToolbarLayout
 import kotlinx.coroutines.Runnable
 import java.lang.ref.WeakReference
@@ -210,8 +210,9 @@ class ScrollAwareFloatingActionButton @JvmOverloads constructor(
     }
 
     private val layoutLocationInfo by lazy {
-        findAncestorOfType<ToolbarLayout>()?.let { InternalLayoutInfo(this.isChildOf(it.mMainContainer!!), it) }
-            ?: InternalLayoutInfo(false)
+        findAncestorOfType<ToolbarLayout>()?.let {
+            InternalLayoutInfo(this.isDescendantOf(it.mainContainer), it)
+        } ?: InternalLayoutInfo(false)
     }
 
     override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {

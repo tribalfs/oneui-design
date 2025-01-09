@@ -92,7 +92,8 @@ open class MarginsTabLayout @JvmOverloads constructor(
 
 
     companion object{
-        private const val TAG = "MarginsTabLayout" }
+        private const val TAG = "MarginsTabLayout"
+    }
 
 
 }

@@ -35,9 +35,11 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.tabs.TabLayout.LAYOUT_DIRECTION_RTL
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.activity
-import dev.oneuiproject.oneui.ktx.findWithIndex
 import dev.oneuiproject.oneui.dialog.internal.toGridDialogItem
-import dev.oneuiproject.oneui.ktx.widthExcludingSystemInsets
+import dev.oneuiproject.oneui.ktx.findWithIndex
+import dev.oneuiproject.oneui.ktx.windowWidthNetOfInsets
+import dev.oneuiproject.oneui.layout.Badge
+import dev.oneuiproject.oneui.layout.internal.util.DrawerLayoutUtils.updateBadgeView
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.getWindowHeight
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isDeskTopMode
@@ -128,7 +130,7 @@ class GridMenuDialog @JvmOverloads constructor(
             window!!.apply {
                 attributes = windowLp.apply wlp@{
                     this@wlp.y = 0
-                    this@wlp.width = context.widthExcludingSystemInsets
+                    this@wlp.width = context.windowWidthNetOfInsets
                 }
                 setGravity(81)
             }
@@ -224,7 +226,7 @@ class GridMenuDialog @JvmOverloads constructor(
         val gridItemHorizontalPadding = resources.getDimensionPixelSize(R.dimen.more_menu_griditem_padding_horizontal)
         val minGridItemWidth = resources.getDimensionPixelOffset(R.dimen.more_menu_grid_item_min_width)
 
-        val maxColumns = ((context.widthExcludingSystemInsets - (horizontalPadding * 2)) /
+        val maxColumns = ((context.windowWidthNetOfInsets - (horizontalPadding * 2)) /
                 ((gridItemHorizontalPadding * 2) + minGridItemWidth)).coerceAtLeast(1)
 
         // Determine the final column count based on landscape mode
@@ -258,32 +260,23 @@ class GridMenuDialog @JvmOverloads constructor(
                 }
             }
         }
-        updateAllItems()
+        notifyDataSetChanged()
     }
 
-
-    fun addItems(gridItems: List<GridItem>) {
+    fun updateItems(gridItems: List<GridItem>) {
         this.mGridItems.clear()
         this.mGridItems.addAll(gridItems)
-        updateAllItems()
+        notifyDataSetChanged()
     }
 
     fun addItem(gridItem: GridItem) {
         mGridItems.add(gridItem)
-        updateAllItems()
+        notifyDataSetChanged()
     }
 
     fun addItem(index: Int, gridItem: GridItem) {
         mGridItems.add(index, gridItem)
-        updateAllItems()
-    }
-
-    fun getItem(index: Int): GridItem? {
-        val menuList = this.mGridItems
-        if (index < 0 || index >= menuList.size) {
-            return null
-        }
-        return menuList[index]
+        notifyDataSetChanged()
     }
 
     fun findItem(itemId: Int): GridItem? {
@@ -294,22 +287,15 @@ class GridMenuDialog @JvmOverloads constructor(
         }
     }
 
-    /**
-     * @hide
-     */
-    @RestrictTo(RestrictTo.Scope.LIBRARY)
-    internal fun isShowingBadge() = mGridItems.count { it.showBadge } > 0
-
-
     fun removeItem(index: Int) {
         mGridItems.removeAt(index)
-        updateAllItems()
+        notifyDataSetChanged()
     }
 
     fun removeItemWithId(@IdRes id: Int) {
         findItem(id)?.let {
             mGridItems.remove(it)
-            updateAllItems()
+            notifyDataSetChanged()
         } ?: Log.e(
             TAG, "removeItemWithId: couldn't find item with id 0x"
                     + Integer.toHexString(id)
@@ -323,29 +309,21 @@ class GridMenuDialog @JvmOverloads constructor(
         }
     }
 
-    fun setShowBadge(itemId: Int, show: Boolean) {
+    /**
+     * @hide
+     */
+    @RestrictTo(RestrictTo.Scope.LIBRARY)
+    internal fun isShowingBadge() = mGridItems.count { it.badge != Badge.NONE } > 0
+
+    fun setBadge(itemId: Int, badge: Badge) {
         mGridItems.findWithIndex({ it.itemId == itemId }) { index, item ->
-            mGridItems[index] = item.copy(showBadge = show)
+            mGridItems[index] = item.copy(badge = badge)
             mAdapter.notifyItemChanged(index)
         }
     }
 
-    fun updateItem(index: Int) = mAdapter.notifyItemChanged(index)
-
-    fun updateItemWithId(itemId: Int) {
-        mGridItems.indexOfFirst { it.itemId == itemId }.let {
-            if (it != -1) {
-                mAdapter.notifyItemChanged(it)
-            } else {
-                Log.e(
-                    TAG,
-                    "updateItemWithId: couldn't find item with id 0x${Integer.toHexString(itemId)}"
-                )
-            }
-        }
-    }
-
-    private fun updateAllItems() = mAdapter.notifyItemRangeChanged(0, mGridItems.size)
+    @SuppressLint("NotifyDataSetChanged")
+    private fun notifyDataSetChanged() = mAdapter.notifyDataSetChanged()
 
     private inner class GridListAdapter : RecyclerView.Adapter<GridListViewHolder>() {
         @SuppressLint("InflateParams")
@@ -357,9 +335,9 @@ class GridMenuDialog @JvmOverloads constructor(
             return GridListViewHolder(view).apply {
                 itemView.setOnClickListener {
                     val gridItem = mGridItems[bindingAdapterPosition]
-                    val result = onClickMenuItem?.onClick (gridItem) ?: false
+                    val result = onClickMenuItem?.onClick(gridItem) ?: false
                     if (result) {
-                        dismiss()
+                        parent.postDelayed({ dismiss()}, 240)
                     }
                 }
             }
@@ -367,11 +345,13 @@ class GridMenuDialog @JvmOverloads constructor(
 
         override fun onBindViewHolder(holder: GridListViewHolder, position: Int) {
             val gridItem = mGridItems[position]
-            holder.iconView.setImageDrawable(gridItem.icon)
-            holder.titleView.text = gridItem.title
-            holder.showBadge(gridItem.showBadge)
-            holder.setEnabled(gridItem.isEnabled)
-            holder.setTooltipText(gridItem.tooltipText)
+            holder.apply {
+                iconView.setImageDrawable(gridItem.icon)
+                titleView.text = gridItem.title
+                setBadge(gridItem.badge)
+                setEnabled(gridItem.isEnabled)
+                setTooltipText(gridItem.tooltipText)
+            }
         }
 
         override fun getItemCount(): Int {
@@ -379,15 +359,12 @@ class GridMenuDialog @JvmOverloads constructor(
         }
     }
 
-    private inner class GridListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private class GridListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val iconView: ImageView = itemView.findViewById(R.id.grid_menu_item_icon)
         val titleView: TextView = itemView.findViewById(R.id.grid_menu_item_title)
+        private val mBadgeView: TextView = itemView.findViewById(R.id.grid_menu_item_badge)
 
-        private val mBadgeView: ImageView? = itemView.findViewById(R.id.grid_menu_item_badge)
-
-        fun showBadge(show: Boolean) {
-            mBadgeView?.isVisible = show
-        }
+        fun setBadge(badge: Badge) = mBadgeView.updateBadgeView(badge, -12)
 
         fun setEnabled(enabled: Boolean) {
             itemView.apply {
@@ -413,7 +390,7 @@ class GridMenuDialog @JvmOverloads constructor(
         val tooltipText: CharSequence? = null,
         val isEnabled: Boolean = true,
         val isVisible: Boolean = true,
-        val showBadge: Boolean = false
+        val badge: Badge = Badge.NONE
     )
 
     companion object {

@@ -129,16 +129,31 @@
     <attr name="drawerBackgroundColor" format="reference|color" />
 
     <declare-styleable name="ToolbarLayoutParams">
-        <!--The location of the ToolbarLayout children views.-->
+        <!--The location of the ToolbarLayout children views.
+        This defaults to main_content if not provided.-->
         <attr name="layout_location">
+            <!--Represents the primary content of the layout.
+            This view will have adaptive margins applied,
+            which are managed by the layout.-->
             <enum name="main_content" value="0" />
+            <!--Sets this view as the custom title view for the expanded AppBarLayout.
+            This is equivalent to invoking the `setCustomTitleView` method.-->
             <enum name="appbar_header" value="1" />
+            <!--Adds the view to the bottom of the layout.
+            Ensures it does not overlap with other content.
+            This view will also have adaptive margins applied.-->
             <enum name="footer" value="2" />
+            <!--Adds the view as a direct child of the CoordinatorLayout.
+            Typically overlaps with the `main_content` view.-->
             <enum name="root" value="3" />
+            <!--Sets the view as a custom header row within the drawer panel.
+            Serves as the topmost element in the drawer.-->
             <enum name="drawer_header" value="4" />
+            <!--Adds the view to inside the drawer panel
+             below the `drawer_header`. -->
             <enum name="drawer_panel" value="5" />
-            <!--This is similar to root but will be bounded
-             within the side margin like the main_content.-->
+            <!--Similar to `root`, but constrained within same side margins
+             applied to `main_content`.-->
             <enum name="root_bounded" value="6" />
         </attr>
     </declare-styleable>

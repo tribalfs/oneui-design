@@ -16,7 +16,6 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.SeekBarPreference
 import androidx.preference.TwoStatePreference
-import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.preference.HorizontalRadioPreference
 import kotlin.math.min
 

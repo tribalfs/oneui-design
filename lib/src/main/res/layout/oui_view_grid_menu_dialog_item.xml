@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:focusable="true"
     android:clickable="true"
@@ -38,21 +39,25 @@
                     android:focusable="false"
                     android:clickable="false"
                     android:layout_width="@dimen/oui_grid_menu_dialog_item_icon_size"
-                    android:layout_height="@dimen/oui_grid_menu_dialog_item_icon_size"/>
+                    android:layout_height="@dimen/oui_grid_menu_dialog_item_icon_size"
+                    tools:src="@drawable/oui_ic_ab_app_info"/>
 
             </LinearLayout>
-            <ImageView
+            <TextView
                 android:id="@+id/grid_menu_item_badge"
                 android:focusable="false"
                 android:clickable="false"
                 android:layout_width="6dp"
                 android:layout_height="6dp"
+                android:textAlignment="center"
                 android:layout_marginTop="@dimen/oui_grid_menu_dialog_item_badge_margin_top"
                 android:layout_alignTop="@+id/icon_container"
                 android:layout_marginEnd="@dimen/oui_grid_menu_dialog_item_badge_margin_end"
                 android:layout_alignEnd="@+id/icon_container"
-                android:src="@drawable/sesl_dot_badge"
-                android:visibility="gone"/>
+                android:textColor="@color/sesl_menu_badge_text_color"
+                android:textSize="@dimen/sesl_menu_item_badge_text_size"
+                android:visibility="gone"
+                tools:visibility="visible"/>
         </RelativeLayout>
         <TextView
             android:textSize="@dimen/oui_grid_menu_dialog_item_text_size"
@@ -67,6 +72,7 @@
             android:layout_below="@+id/top_container"
             android:layout_centerHorizontal="true"
             android:importantForAccessibility="no"
-            style="@style/RobotoRegular"/>
+            style="@style/RobotoRegular"
+            tools:text="Title"/>
     </RelativeLayout>
 </RelativeLayout>

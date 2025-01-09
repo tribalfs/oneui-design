@@ -42,10 +42,10 @@ import dev.oneuiproject.oneui.layout.DrawerLayout.DrawerState
 import dev.oneuiproject.oneui.layout.internal.delegate.DrawerLayoutBackHandler
 import dev.oneuiproject.oneui.layout.internal.delegate.NavDrawerBackAnimator
 import dev.oneuiproject.oneui.layout.internal.util.DrawerLayoutInterface
+import dev.oneuiproject.oneui.layout.internal.util.DrawerLayoutUtils.getDrawerStateUpdate
+import dev.oneuiproject.oneui.layout.internal.util.DrawerLayoutUtils.updateBadgeView
 import dev.oneuiproject.oneui.layout.internal.util.DrawerOutlineProvider
 import dev.oneuiproject.oneui.layout.internal.util.NavButtonsHandler
-import dev.oneuiproject.oneui.layout.internal.util.getDrawerStateUpdate
-import dev.oneuiproject.oneui.layout.internal.util.updateBadgeView
 import kotlin.math.max
 
 @SuppressLint("RestrictedApi")

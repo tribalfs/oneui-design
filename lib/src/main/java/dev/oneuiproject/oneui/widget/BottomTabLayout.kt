@@ -44,7 +44,7 @@ import dev.oneuiproject.oneui.ktx.getTabView//import dev.oneuiproject.oneui.ktx.
 import dev.oneuiproject.oneui.ktx.isNumericValue
 import dev.oneuiproject.oneui.ktx.setListener
 import dev.oneuiproject.oneui.dialog.internal.toGridDialogItem
-import dev.oneuiproject.oneui.ktx.widthExcludingSystemInsets
+import dev.oneuiproject.oneui.ktx.windowWidthNetOfInsets
 import dev.oneuiproject.oneui.layout.Badge
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isDisplayTypeSub
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isLandscape
@@ -117,8 +117,6 @@ class BottomTabLayout(
 
 
     private fun updateTabs() {
-        Log.d(TAG, "updateTabs")
-
         val tabItems = ArrayList<MenuItemImpl>()
         val overflowItems = ArrayList<MenuItemImpl>()
 
@@ -142,7 +140,6 @@ class BottomTabLayout(
     private fun populateTabs(
         mBottomMenuItems: ArrayList<MenuItemImpl>
     ) {
-        Log.d(TAG, "populateTabs")
         isPopulatingTabs = true
         removeAllTabs()
 
@@ -157,7 +154,7 @@ class BottomTabLayout(
         if (hasOverflowItems()) {
             addCustomTab(
                 tabTitleRes =/* if (showMoreText)materialR.string.sesl_more_item_label else*/ null,
-                tabIconRes = R.drawable.ic_oui_drawer,
+                tabIconRes = R.drawable.oui_ic_ab_drawer,
                 listener = { createAndShowGridDialog() }
             ).apply{
                 tabIconTint = ContextCompat.getColorStateList(context, R.color.sesl_tablayout_selected_indicator_color)
@@ -218,7 +215,7 @@ class BottomTabLayout(
         val containerWidth = if (tblMatchParent){
             (parent as ViewGroup).width
         }else{
-            context.widthExcludingSystemInsets
+            context.windowWidthNetOfInsets
         }
 
         mTabDimens = TabDimens(mTabTextPadding, containerWidth)
@@ -308,7 +305,7 @@ class BottomTabLayout(
     private fun createGridMenuDialog(menu: ArrayList<MenuItemImpl>) =
         GridMenuDialog(context).apply {
             create()
-            addItems(menu.map { it.toGridDialogItem() })
+            updateItems(menu.map { it.toGridDialogItem() })
             setOnItemClickListener{item: GridMenuDialog.GridItem ->
                 onMenuItemClicked?.apply {
                     this@BottomTabLayout.bottomTabLayoutMenu.findItem(item.itemId)?.let {
@@ -333,7 +330,6 @@ class BottomTabLayout(
     @SuppressLint("ClickableViewAccessibility")
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        Log.d(TAG, "onAttachedToWindow")
         //Block touch on parent
         (parent as View).setOnTouchListener { _, _ -> true }
     }
@@ -342,7 +338,6 @@ class BottomTabLayout(
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         (parent as View).setOnTouchListener(null)
-        Log.d(TAG, "onDetachedFromWindow, isGridDialogShowing: ${gridMenuDialog?.isShowing == true}")
         //Dismiss to prevent activity window from leaking
         gridMenuDialog?.dismiss()
     }
@@ -514,7 +509,7 @@ class BottomTabLayout(
             return
         }
         gridMenuDialog?.apply {
-            setShowBadge(itemId, badge !is Badge.NONE)
+            setBadge(itemId, badge)
             seslShowDotBadge(tabCount - 1, gridMenuDialog!!.isShowingBadge())
             return
         }

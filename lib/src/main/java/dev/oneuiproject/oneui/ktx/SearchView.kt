@@ -20,6 +20,7 @@ import androidx.appcompat.widget.SearchView
  * searchView.setSearchableInfoFrom(this)
  * ```
  */
+@JvmName("setupSearchableInfo")
 fun SearchView.setSearchableInfoFrom(activity: Activity){
     val searchableInfo = (activity.getSystemService(Context.SEARCH_SERVICE) as SearchManager)
         .getSearchableInfo(activity.componentName)

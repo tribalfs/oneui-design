@@ -138,9 +138,9 @@ inline fun RecyclerView.configureItemSwipeAnimator(
     crossinline onCleared: () -> Unit = {},
     crossinline isLeftSwipeEnabled: (viewHolder: ViewHolder) -> Boolean = { true },
     crossinline isRightSwipeEnabled:(viewHolder: ViewHolder) -> Boolean = { true }
-) {
-    val context = context
+) : ItemTouchHelper{
 
+    val context = context
     val swipeConfiguration = SwipeConfiguration().apply sc@{
         textLeftToRight = leftToRightLabel
         textRightToLeft = rightToLeftLabel
@@ -191,11 +191,13 @@ inline fun RecyclerView.configureItemSwipeAnimator(
 
     }
 
-    ItemTouchHelper(
+    return ItemTouchHelper(
         SwipeItemCallbackDelegate(
             seslSwipeListAnimator,
             swipeActionListener
         )
-    ).attachToRecyclerView(this)
+    ).apply {
+        attachToRecyclerView(this@configureItemSwipeAnimator)
+    }
 }
 

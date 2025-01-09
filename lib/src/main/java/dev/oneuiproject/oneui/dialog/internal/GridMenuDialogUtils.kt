@@ -7,6 +7,7 @@ import androidx.annotation.RestrictTo
 import androidx.appcompat.view.menu.MenuItemImpl
 import androidx.core.view.MenuItemCompat
 import dev.oneuiproject.oneui.dialog.GridMenuDialog
+import dev.oneuiproject.oneui.utils.toBadge
 
 @SuppressLint("RestrictedApi")
 @RestrictTo(RestrictTo.Scope.LIBRARY)
@@ -18,6 +19,6 @@ inline fun MenuItemImpl.toGridDialogItem(): GridMenuDialog.GridItem{
        tooltipText = MenuItemCompat.getTooltipText(this),
        isEnabled = this.isEnabled,
        isVisible = this.isVisible,
-       showBadge = this.badgeText != null
+       badge = this.badgeText.toBadge()
    )
 }

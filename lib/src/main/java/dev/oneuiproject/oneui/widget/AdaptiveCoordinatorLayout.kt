@@ -1,4 +1,4 @@
-@file:Suppress("unused")
+@file:Suppress("unused", "NOTHING_TO_INLINE")
 
 package dev.oneuiproject.oneui.widget
 
@@ -12,8 +12,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.updateLayoutParams
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.appCompatActivity
-import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.getAdaptiveSideMarginParams
-import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.setSideMarginParams
+import dev.oneuiproject.oneui.ktx.windowWidthNetOfInsets
 import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.updateStatusBarVisibility
 
 /**
@@ -65,7 +64,7 @@ open class AdaptiveCoordinatorLayout @JvmOverloads constructor(
      * @param provider The custom [MarginProvider] implementation to use.
      * @param childView The childView to apply the side margins to.
      */
-    fun configureAdaptiveMargin(provider: MarginProvider?, childView: View) {
+   inline fun configureAdaptiveMargin(provider: MarginProvider?, childView: View) {
         configureAdaptiveMargin(provider, setOf(childView))
     }
 
@@ -102,7 +101,6 @@ open class AdaptiveCoordinatorLayout @JvmOverloads constructor(
         updateContentSideMargin()
     }
 
-
     private fun updateContentSideMargin() {
         val adaptiveViews = adaptiveMarginViews?.also { if (it.isEmpty()) return } ?: return
         val sideMarginParams = marginProviderImpl?.getSideMarginParams(context) ?: return
@@ -114,11 +112,48 @@ open class AdaptiveCoordinatorLayout @JvmOverloads constructor(
         post{ requestLayout() }
     }
 
+    private inline fun View.setSideMarginParams(
+        smp: SideMarginParams,
+        additionalLeft: Int,
+        additionalRight: Int
+    ) {
+        (layoutParams as? MarginLayoutParams)?.let {
+            updateLayoutParams<MarginLayoutParams> {
+                if (smp.matchParent) width = ViewGroup.LayoutParams.MATCH_PARENT
+                leftMargin = smp.sideMargin + additionalLeft
+                rightMargin = smp.sideMargin + additionalRight
+            }
+        } ?: run {
+            setPadding(
+                smp.sideMargin + additionalLeft,
+                paddingTop,
+                smp.sideMargin + additionalRight,
+                paddingBottom
+            )
+        }
+    }
+
     companion object{
         private const val TAG = "ADPCoordinatorLayout"
 
         @JvmField
-        val MARGIN_PROVIDER_ADP_DEFAULT = MarginProvider { context -> context.getAdaptiveSideMarginParams() }
+        val MARGIN_PROVIDER_ADP_DEFAULT = MarginProvider { context ->
+            val config = context.resources.configuration
+            val screenWidthDp = config.screenWidthDp
+            val screenHeightDp = config.screenHeightDp
+            val widthXInsets = context.windowWidthNetOfInsets
+            val marginRatio = when {
+                (screenWidthDp < 589) -> 0.0f
+                (screenHeightDp > 411 && screenWidthDp <= 959) -> 0.05f
+                (screenWidthDp >= 960 && screenHeightDp <= 1919) -> 0.125f
+                (screenWidthDp >= 1920) -> 0.25f
+                else -> 0.0f
+            }
+            SideMarginParams(
+                maxOf((widthXInsets * marginRatio).toInt()),
+                screenWidthDp >= 589
+            )
+        }
 
         @JvmField
         val MARGIN_PROVIDER_ZERO = MarginProvider { _ -> SideMarginParams(0, true) }

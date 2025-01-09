@@ -318,8 +318,7 @@ class SeekBarPreferencePro @JvmOverloads constructor(
     companion object{
         private const val TAG = "SeekBarPreferencePro"
 
-        @SuppressLint("RestrictedApi")
-        private val HAPTIC_CONSTANT_CURSOR_MOVE: Int = SeslHapticFeedbackConstantsReflector.semGetVibrationIndex(41)
+        private val HAPTIC_CONSTANT_CURSOR_MOVE by lazy { SeslHapticFeedbackConstantsReflector.semGetVibrationIndex(41) }
 
         private const val MSG_DELETE = 1
         private const val MSG_ADD = 2

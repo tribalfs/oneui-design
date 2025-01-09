@@ -54,6 +54,7 @@ import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.doOnEnd
 import dev.oneuiproject.oneui.ktx.setListener
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil
+import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isDeskTopMode
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type.ELASTIC_50
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type.ELASTIC_CUSTOM
@@ -1135,7 +1136,7 @@ class TipPopup(parentView: View, mode: Mode) {
             )
         }
 
-        mBalloonX = if (SeslConfigurationReflector.isDexEnabled(mContext.resources.configuration)) {
+        mBalloonX = if (isDeskTopMode(mContext.resources)) {
             val windowLocation = IntArray(2)
             val windowWidthInDexMode = mParentView.rootView.run {
                 getLocationOnScreen(windowLocation)

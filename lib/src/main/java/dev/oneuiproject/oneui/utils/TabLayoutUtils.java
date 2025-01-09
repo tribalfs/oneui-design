@@ -1,8 +1,6 @@
 package dev.oneuiproject.oneui.utils;
 
 import android.graphics.drawable.Drawable;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -12,94 +10,49 @@ import androidx.annotation.Nullable;
 
 import com.google.android.material.tabs.TabLayout;
 
-import dev.oneuiproject.oneui.design.R;
+import dev.oneuiproject.oneui.ktx.TabLayoutKt;
 
 @Deprecated
 public class TabLayoutUtils {
-    private static final String TAG = "TabLayoutUtils";
 
     public interface TabButtonClickListener {
         void onClick(View v);
     }
 
     /**
-     * @deprecated Check out {@link dev.oneuiproject.oneui.ktx.TabLayoutKt#addCustomTab(TabLayout, CharSequence, int, Integer, View.OnClickListener) addCustomTab}.
+     * @deprecated Check out {@link dev.oneuiproject.oneui.ktx.TabLayoutKt#addCustomTab(TabLayout, Integer, Integer, View.OnClickListener) TabLayoutKt.addCustomTab}.
      */
     @Deprecated()
     public static void addCustomButton(@NonNull TabLayout tabLayout, @DrawableRes int resId,
                                        @Nullable TabButtonClickListener listener) {
-        if (tabLayout != null) {
-            addCustomButton(tabLayout, tabLayout.getContext().getDrawable(resId), listener);
-        } else {
-            Log.e(TAG, "addCustomButton: tabLayout is null");
-        }
+        TabLayoutKt.addCustomTab(tabLayout, null, resId, v -> listener.onClick(v));
     }
 
 
     /**
-     * @deprecated Check out {@link dev.oneuiproject.oneui.ktx.TabLayoutKt#addCustomTab(TabLayout, CharSequence, int, Integer, View.OnClickListener) addCustomTab}.
+     * @deprecated Check out {@link dev.oneuiproject.oneui.ktx.TabLayoutKt#addCustomTab(TabLayout, CharSequence, Drawable, View.OnClickListener)} TabLayoutKt.addCustomTab}.
      */
     @Deprecated()
     public static void addCustomButton(@NonNull TabLayout tabLayout, @Nullable Drawable icon,
                                 @Nullable TabButtonClickListener listener) {
-        if (tabLayout != null) {
-            TabLayout.Tab tab = tabLayout.newTab().setIcon(icon);
-            tabLayout.addTab(tab);
-
-            View tabView = getTabView(tabLayout, tab.getPosition());
-            tabView.setBackground(tabLayout.getContext()
-                    .getDrawable(R.drawable.oui_tab_layout_custom_button_background));
-            tabView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    final int action = event.getAction();
-                    switch (action) {
-                        case MotionEvent.ACTION_DOWN:
-                            v.setPressed(true);
-                            break;
-                        case MotionEvent.ACTION_UP:
-                            v.setPressed(false);
-                            if (listener != null) {
-                                listener.onClick(v);
-                            }
-                            break;
-                        case MotionEvent.ACTION_CANCEL:
-                            v.setPressed(false);
-                            break;
-                    }
-
-                    return true;
-                }
-            });
-        } else {
-            Log.e(TAG, "addCustomButton: tabLayout is null");
-        }
+        TabLayoutKt.addCustomTab(tabLayout, null, icon, v -> listener.onClick(v));
     }
 
 
     /**
-     * @deprecated Check out {@link dev.oneuiproject.oneui.ktx.TabLayoutKt#getTabView(TabLayout, int) getTabView}.
+     * @deprecated Check out {@link dev.oneuiproject.oneui.ktx.TabLayoutKt#getTabViewGroup(TabLayout) TabLayoutKt.getTabView}.
      */
     @Nullable
     private static ViewGroup getTabViewGroup(@NonNull TabLayout tabLayout) {
-        if (tabLayout.getChildCount() <= 0) {
-            return null;
-        }
-
-        View view = tabLayout.getChildAt(0);
-        if (view != null && view instanceof ViewGroup) {
-            return (ViewGroup) view;
-        }
-        return null;
+       return TabLayoutKt.getTabViewGroup(tabLayout);
     }
 
+    /**
+     * @deprecated Check out {@link dev.oneuiproject.oneui.ktx.TabLayoutKt#getTabView(TabLayout, int) TabLayoutKt.getTabView}.
+     */
     @Nullable
     private static View getTabView(@NonNull TabLayout tabLayout, int position) {
-        ViewGroup viewGroup = getTabViewGroup(tabLayout);
-        if (viewGroup != null && viewGroup.getChildCount() > position) {
-            return viewGroup.getChildAt(position);
-        }
-        return null;
+        return TabLayoutKt.getTabView(tabLayout, position);
     }
 
 }
