@@ -11,6 +11,9 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.content.res.AppCompatResources
 import com.google.android.material.tabs.TabLayout
+import dev.oneuiproject.oneui.design.R
+import dev.oneuiproject.oneui.layout.Badge
+import dev.oneuiproject.oneui.utils.badgeCountToText
 
 /**
  * Selects the tab at the specified index.
@@ -149,6 +152,7 @@ inline fun <T: TabLayout>T.addCustomTab(
     }
 
     getTabView(newTab.position)!!.apply {
+        background = AppCompatResources.getDrawable(context, R.drawable.oui_tab_layout_custom_button_background)
         setOnTouchListener { v, event ->
             val selectedTabPos = selectedTabPosition
             when (event.action) {
@@ -203,4 +207,27 @@ inline fun <T: TabLayout>T.getTabView(position: Int): View? {
         viewGroup.getChildAt(position)
     } else null
 }
+
+@JvmName("setTabBadge")
+inline fun <T: TabLayout>T.setBadge(tabIndex: Int, badge: Badge){
+    when (badge){
+        Badge.DOT -> seslShowDotBadge(tabIndex, true)
+        Badge.NONE -> {
+            seslShowDotBadge(tabIndex, false)
+            seslShowBadge(tabIndex, false, null)
+        }
+        is Badge.NUMERIC -> seslShowBadge(tabIndex, true, badge.count.badgeCountToText())
+    }
+}
+
+@JvmName("clearTabBadge")
+inline fun <T: TabLayout>T.clearBadge(tabIndex: Int) = setBadge(tabIndex, Badge.NONE)
+
+
+@JvmName("setTabBadge")
+inline fun <T: TabLayout.Tab>T.setBadge(badge: Badge) =parent?.setBadge(position, badge)
+
+@JvmName("clearTabBadge")
+inline fun <T: TabLayout.Tab>T.clearBadge() = parent?.clearBadge(position)
+
 
