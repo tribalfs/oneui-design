@@ -39,6 +39,7 @@ import androidx.appcompat.widget.ActionModeSearchView
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SeslSwitchBar
 import androidx.appcompat.widget.Toolbar
+import androidx.appcompat.widget.applyThemeColors
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
@@ -931,17 +932,22 @@ open class ToolbarLayout @JvmOverloads constructor(
             mSearchToolbar =
                 mCollapsingToolbarLayout.findViewById<ViewStub>(R.id.viewstub_oui_view_toolbar_search)
                     .inflate() as Toolbar
-            mSearchView = mSearchToolbar!!.findViewById<SearchView?>(R.id.toolbarlayout_search_view)
-            mSearchView.seslSetUpButtonVisibility(VISIBLE)
-            mSearchView.seslSetOnUpButtonClickListener { endSearchMode() }
+            mSearchView = mSearchToolbar!!.findViewById<SearchView?>(R.id.toolbarlayout_search_view).apply {
+                applyThemeColors()
+                seslSetUpButtonVisibility(VISIBLE)
+                seslSetOnUpButtonClickListener { endSearchMode() }
+            }
             activity?.let { mSearchView.setSearchableInfoFrom(it) }
         }
     }
 
-    val searchView: SearchView
-        /**
-         * Returns the [SearchView] of the Toolbar.
-         */
+    /**
+     * The [SearchView] for [search mode][startSearchMode].
+     *
+     * Note: Apps should access this view using [SearchModeListener] callback
+     * to prevent premature inflation.
+     */
+    internal val searchView: SearchView
         get() {
             ensureSearchModeViews()
             return mSearchView
@@ -1448,19 +1454,6 @@ open class ToolbarLayout @JvmOverloads constructor(
         mActionModeMenuRes = menuRes
     }
 
-    @Deprecated(
-        "Access this with ActionModeListener#onInflateActionMenu() callback when calling startActionMode() instead.",
-        ReplaceWith("")
-    )
-    val actionModeBottomMenu: Menu
-        /**
-         * Returns the [Menu] of the ActionMode's [BottomNavigationView].
-         */
-        get() {
-            ensureActionModeViews()
-            return mBottomActionModeBar.menu
-        }
-
     /**
      * Set the listener for the ActionMode's [BottomNavigationView].
      * On landscape orientation, the same listener will be invoke for ActionMode's [Toolbar] [MenuItem]s
@@ -1489,18 +1482,6 @@ open class ToolbarLayout @JvmOverloads constructor(
     fun setActionModeToolbarMenuListener(listener: Toolbar.OnMenuItemClickListener?) {
         //no op
     }
-
-    @Deprecated("Use the ActionModeListener#onInflateActionMenu() callback when calling startActionMode() instead.",
-        level = DeprecationLevel.HIDDEN)
-    val actionModeToolbarMenu: Menu
-        /**
-         * Returns the [Menu] of the ActionMode's [Toolbar].
-         *
-         */
-        get() {
-            ensureActionModeViews()
-            return mActionModeToolbar!!.menu
-        }
 
     /**
      * Set the ActionMode's count and  checkbox enabled state.
@@ -1767,14 +1748,16 @@ inline fun <T : ToolbarLayout> T.startSearchMode(
 ) {
     startSearchMode(
         object : ToolbarLayout.SearchModeListener {
-            override fun onQueryTextSubmit(query: String?) =
-                onQuery(query ?: "", true).also { searchView.clearFocus() }
+            private var searchView: SearchView? = null
+
+            override fun onQueryTextSubmit(query: String?) = onQuery(query ?: "", true)
+                .also { if (!query.isNullOrEmpty()) searchView?.clearFocus() }
 
             override fun onQueryTextChange(newText: String?) = onQuery(newText ?: "", false)
 
-
             override fun onSearchModeToggle(searchView: SearchView, visible: Boolean) {
                 if (visible) {
+                    this.searchView = searchView
                     onStart.invoke(searchView)
                 } else {
                     onEnd.invoke(searchView)
