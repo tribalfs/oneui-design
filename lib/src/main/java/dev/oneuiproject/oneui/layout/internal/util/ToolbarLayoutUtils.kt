@@ -3,10 +3,15 @@
 package dev.oneuiproject.oneui.layout.internal.util
 
 import android.app.Activity
-import android.content.res.Configuration
+import android.content.res.Configuration.ORIENTATION_LANDSCAPE
+import android.os.Build
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.WindowInsets.Type
+import android.view.WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+import android.view.WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON
+import android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
+import androidx.annotation.RequiresApi
 import androidx.annotation.RestrictTo
 import dev.oneuiproject.oneui.ktx.isInMultiWindowModeCompat
 import dev.oneuiproject.oneui.ktx.semAddExtensionFlags
@@ -25,27 +30,50 @@ internal object ToolbarLayoutUtils {
         activity.updateStatusBarVisibility()
 
     @RestrictTo(RestrictTo.Scope.LIBRARY)
-    fun Activity.updateStatusBarVisibility() {
+    inline fun Activity.updateStatusBarVisibility() {
         if (isTabletBuildOrIsDeskTopMode(this)) return
+        if (Build.VERSION.SDK_INT >= 30){
+            updateStatusBarVisibilityApi30()
+        }else {
+            updateStatusBarVisibilityApi21()
+        }
+    }
 
-        val lp = window.attributes
-        val config = resources.configuration
-        if (config.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            if (isInMultiWindowModeCompat || isScreenWidthLarge(this)) {
-                lp.flags = lp.flags and -(WindowManager.LayoutParams.FLAG_FULLSCREEN
-                        or WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON)
+    @RequiresApi(30)
+    private fun Activity.updateStatusBarVisibilityApi30() {
+        val orientation = resources.configuration.orientation
+        if (orientation == ORIENTATION_LANDSCAPE) {
+            if (isInMultiWindowModeCompat || isScreenWidthLarge(this, 420)) {
+                window.insetsController?.show(Type.statusBars())
+                window.clearFlags(FLAG_ALLOW_LOCK_WHILE_SCREEN_ON)
             } else {
-                lp.flags = lp.flags or WindowManager.LayoutParams.FLAG_FULLSCREEN
+                window.insetsController?.apply {
+                    hide(Type.statusBars())
+                    systemBarsBehavior =  BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+                }
             }
-            window.attributes = lp
             window.semAddExtensionFlags(FLAG_RESIZE_FULLSCREEN_WINDOW_ON_SOFT_INPUT)
         } else {
-            lp.flags = lp.flags and -(WindowManager.LayoutParams.FLAG_FULLSCREEN
-                    or WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON)
-            window.attributes = lp
+            window.insetsController?.show(Type.statusBars())
+            window.clearFlags(FLAG_ALLOW_LOCK_WHILE_SCREEN_ON)
             window.semClearExtensionFlags(FLAG_RESIZE_FULLSCREEN_WINDOW_ON_SOFT_INPUT)
         }
     }
 
+    @Suppress("DEPRECATION")
+    private fun Activity.updateStatusBarVisibilityApi21() {
+        val orientation = resources.configuration.orientation
+        if (orientation == ORIENTATION_LANDSCAPE) {
+            if (isInMultiWindowModeCompat || isScreenWidthLarge(this, 420)) {
+                window.clearFlags(FLAG_FULLSCREEN or FLAG_ALLOW_LOCK_WHILE_SCREEN_ON)
+            } else {
+                window.addFlags(FLAG_FULLSCREEN)
+            }
+            window.semAddExtensionFlags(FLAG_RESIZE_FULLSCREEN_WINDOW_ON_SOFT_INPUT)
+        } else {
+            window.clearFlags(FLAG_FULLSCREEN or FLAG_ALLOW_LOCK_WHILE_SCREEN_ON)
+            window.semClearExtensionFlags(FLAG_RESIZE_FULLSCREEN_WINDOW_ON_SOFT_INPUT)
+        }
+    }
 
 }
