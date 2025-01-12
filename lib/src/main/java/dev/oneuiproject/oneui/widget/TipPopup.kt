@@ -48,10 +48,9 @@ import androidx.core.content.res.use
 import androidx.core.os.ConfigurationCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
-import androidx.reflect.content.res.SeslConfigurationReflector
-import androidx.reflect.widget.SeslTextViewReflector
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.doOnEnd
+import dev.oneuiproject.oneui.ktx.semSetButtonShapeEnabled
 import dev.oneuiproject.oneui.ktx.setListener
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isDeskTopMode
@@ -613,8 +612,7 @@ class TipPopup(parentView: View, mode: Mode) {
             mType = Type.BALLOON_SIMPLE
         } else {
             mActionView.visibility = View.VISIBLE
-            // Adjust the color for the action button text based on the given pop-up background color
-            SeslTextViewReflector.semSetButtonShapeEnabled(mActionView, true, mBackgroundColor)
+            mActionView.semSetButtonShapeEnabled(true, mBackgroundColor)
             mActionView.text = mActionText
             mActionView.setOnClickListener { view ->
                 mActionClickListener?.onClick(view)

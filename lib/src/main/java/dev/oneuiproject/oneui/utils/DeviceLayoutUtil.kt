@@ -60,6 +60,7 @@ object DeviceLayoutUtil {
 
     @SuppressLint("RestrictedApi")
     fun isDeskTopMode(resources: Resources) =  sIsDexMode
+        //private method
         ?: SeslConfigurationReflector.isDexEnabled(resources.configuration).also { sIsDexMode = it }
 
     inline fun isTabletLayout(resources: Resources) = resources.configuration.smallestScreenWidthDp >= 600

@@ -53,6 +53,9 @@ dependencies {
 
     implementation("com.google.zxing:core:3.5.3")
     implementation("com.airbnb.android:lottie:6.5.2")
+
+    implementation("dev.rikka.tools.refine:runtime:4.4.0")
+    compileOnly project(":stub")
 }
 
 configurations.configureEach {

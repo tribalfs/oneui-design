@@ -1,18 +1,21 @@
 @file:Suppress("unused", "NOTHING_TO_INLINE")
 package dev.oneuiproject.oneui.ktx
 
+import android.animation.LayoutTransition
+import android.animation.LayoutTransition.APPEARING
+import android.animation.LayoutTransition.CHANGE_APPEARING
 import android.os.Build
 import android.util.Log
+import android.view.SemView
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.ColorInt
-import androidx.annotation.RequiresApi
 import androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_NONE
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.reflect.DeviceInfo
-import dev.oneuiproject.oneui.utils.internal.ReflectUtils.genericInvokeMethod
+import dev.rikka.tools.refine.Refine
 
 
 /**
@@ -62,15 +65,15 @@ inline fun View.semSetToolTipText(toolTipText: CharSequence?) {
 /**
  * This method only works on OneUI with api 28 and above
  */
-@RequiresApi(Build.VERSION_CODES.P)
 inline fun View.semGetRoundedCorners(): Int {
-    if (DeviceInfo.isOneUI()) {
-        return genericInvokeMethod(
-            View::class.java,
-            this, "semGetRoundedCorners"
-        ) as Int
+    if (Build.VERSION.SDK_INT >= 28 && DeviceInfo.isOneUI()) {
+        try {
+            return Refine.unsafeCast<SemView>(this).semGetRoundedCorners()
+        } catch (e: Exception){
+            Log.e(this::class.simpleName, "semGetRoundedCorners invocation error: ${e.message}")
+        }
     } else {
-        Log.w("View-ktx", "semGetRoundedCorners method is available only on OneUI with " +
+        Log.w(this::class.simpleName, "semGetRoundedCorners method is available only on OneUI with " +
                 "api 28 and above"
         )
     }
@@ -80,14 +83,18 @@ inline fun View.semGetRoundedCorners(): Int {
 /**
  * This method only works on OneUI with api 28 and above
  */
-inline fun View.semSetRoundedCorners( corners: Int) {
-    if (DeviceInfo.isOneUI() && Build.VERSION.SDK_INT >= 28) {
-        genericInvokeMethod(
-            View::class.java,
-            this, "semSetRoundedCorners", corners
-        )
+@JvmOverloads
+inline fun View.semSetRoundedCorners(corners: Int, radius: Int? = null) {
+    if (Build.VERSION.SDK_INT >= 28 && DeviceInfo.isOneUI()) {
+        try {
+            radius?.let {
+                Refine.unsafeCast<SemView>(this).semSetRoundedCorners(corners, it)
+            } ?: Refine.unsafeCast<SemView>(this).semSetRoundedCorners(corners)
+        } catch (e: Exception){
+            Log.e(this::class.simpleName, "semSetRoundedCorners invocation error: ${e.message}")
+        }
     } else {
-        Log.w("View-ktx", "semSetRoundedCorners method is available only on OneUI with " +
+        Log.w(this::class.simpleName, "semSetRoundedCorners method is available only on OneUI with " +
                 "api 28 and above"
         )
     }
@@ -101,12 +108,13 @@ inline fun View.semSetRoundedCornerColor(
     corners: Int, @ColorInt color: Int
 ) {
     if (DeviceInfo.isOneUI() && Build.VERSION.SDK_INT >= 28) {
-        genericInvokeMethod(
-            View::class.java,
-            this, "semSetRoundedCornerColor", corners, color
-        )
+        try {
+            return Refine.unsafeCast<SemView>(this).semSetRoundedCornerColor(corners, color)
+        } catch (e: Exception){
+            Log.e(this::class.simpleName, "semSetRoundedCornerColor invocation error: ${e.message}")
+        }
     } else {
-        Log.w("View-ktx", "semSetRoundedCornerColor method is available only on OneUI with " +
+        Log.w(this::class.simpleName, "semSetRoundedCornerColor method is available only on OneUI with " +
                 "api 28 and above"
         )
     }
