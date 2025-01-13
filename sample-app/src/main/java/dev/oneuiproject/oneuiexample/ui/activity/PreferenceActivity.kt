@@ -15,7 +15,7 @@ class PreferenceActivity : AppCompatActivity() {
         binding = ActivityPreferencesBinding.inflate(layoutInflater).apply {
             setContentView(root)
             toolbarLayout.setTitle("Preferences")
-            toolbarLayout.setNavigationButtonAsBack()
+            toolbarLayout.showNavigationButtonAsBack = true
         }
 
         if (savedInstanceState == null) {
