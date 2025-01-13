@@ -76,7 +76,7 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
         configureSwipeRefresh()
         configureItemSwipeAnimator()
         observeUIState()
-        showTipPopup()
+        // showTipPopup()
         if (!isHidden) {
             requireActivity().addMenuProvider(
                 menuProvider,
@@ -378,7 +378,7 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
         object : ToolbarLayout.SearchModeListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 contactsViewModel.setQuery(query)
-                return true
+                return !query.isNullOrEmpty()
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
@@ -436,4 +436,6 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
     override fun getIconResId(): Int = dev.oneuiproject.oneui.R.drawable.ic_oui_contact_outline
 
     override fun getTitle(): CharSequence = "Contacts"
+
+    override fun getSubtitle(): CharSequence = "Pull down to refresh"
 }

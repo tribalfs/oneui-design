@@ -155,10 +155,10 @@ class AppPickerFragment : BaseFragment(),
                     toolbarLayout!!.apply {
                         startSearchMode(
                             onStart = {
-                                searchView.queryHint = "Search app"
+                                it.queryHint = "Search app"
                                 if (!isSoftKeyboardShowing){
                                     val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                                    imm.showSoftInput(searchView, 0)
+                                    imm.showSoftInput(it, 0)
                                 }
                             },
                             onQuery = { query, _ ->

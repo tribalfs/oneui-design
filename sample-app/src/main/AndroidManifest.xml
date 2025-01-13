@@ -38,7 +38,7 @@
 
         <activity
             android:name="dev.oneuiproject.oneuiexample.ui.activity.MainActivity"
-            android:configChanges="orientation|screenLayout|screenSize|smallestScreenSize"
+            android:configChanges="orientation|screenLayout|screenSize"
             android:launchMode="singleTop"
             android:exported="true">
 

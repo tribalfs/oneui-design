@@ -11,7 +11,6 @@ import androidx.appcompat.widget.SeslSeekBar;
 
 import com.sec.sesl.tester.R;
 
-import dev.oneuiproject.oneui.utils.SeekBarUtils;
 import dev.oneuiproject.oneuiexample.ui.core.base.BaseFragment;
 
 public class SeekBarFragment extends BaseFragment {

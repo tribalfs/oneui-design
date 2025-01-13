@@ -1,8 +1,13 @@
 package dev.oneuiproject.oneuiexample.ui.core.drawer;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+
+import static dev.oneuiproject.oneui.ktx.FloatKt.dpToPx;
+
 import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
@@ -57,6 +62,41 @@ public class DrawerListViewHolder extends RecyclerView.ViewHolder {
             mTitleView.setTypeface(selected ? mSelectedTypeface : mNormalTypeface);
             mTitleView.setEllipsize(selected ?
                     TextUtils.TruncateAt.MARQUEE : TextUtils.TruncateAt.END);
+        }
+    }
+
+    public void applyOffset(Float offset){
+        if (!mIsSeparator) {
+            mTitleView.setAlpha(offset);
+            if (offset == 0f) {
+                itemView.post(() -> {
+                    ViewGroup.LayoutParams lp = itemView.getLayoutParams();
+                    lp.width = dpToPx(54f, itemView.getResources());
+                    itemView.setLayoutParams(lp);
+                });
+            } else {
+                itemView.post(() -> {
+                    ViewGroup.LayoutParams lp = itemView.getLayoutParams();
+                    if (lp.width == MATCH_PARENT) return;
+                    lp.width = MATCH_PARENT;
+                    itemView.setLayoutParams(lp);
+                });
+            }
+        }else{
+            if (offset == 0f) {
+                itemView.post(() -> {
+                    ViewGroup.LayoutParams lp = itemView.getLayoutParams();
+                    lp.width = dpToPx(27f, itemView.getResources());
+                    itemView.setLayoutParams(lp);
+                });
+            } else {
+                itemView.post(() -> {
+                    ViewGroup.LayoutParams lp = itemView.getLayoutParams();
+                    if (lp.width == MATCH_PARENT) return;
+                    lp.width = MATCH_PARENT;
+                    itemView.setLayoutParams(lp);
+                });
+            }
         }
     }
 }

@@ -21,6 +21,7 @@ public class DrawerListAdapter extends RecyclerView.Adapter<DrawerListViewHolder
     private List<Fragment> mFragments;
     private DrawerListener mListener;
     private int mSelectedPos;
+    private float offsetApplied = 1f;
 
     public interface DrawerListener {
         boolean onDrawerItemSelected(int position);
@@ -31,6 +32,12 @@ public class DrawerListAdapter extends RecyclerView.Adapter<DrawerListViewHolder
         mContext = context;
         mFragments = fragments;
         mListener = listener;
+    }
+
+    public void setOffset(float offset){
+        if (offsetApplied == offset)return;
+        offsetApplied = offset;
+        notifyItemRangeChanged(0, getItemCount());
     }
 
     @NonNull
@@ -53,6 +60,7 @@ public class DrawerListAdapter extends RecyclerView.Adapter<DrawerListViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull DrawerListViewHolder holder, int position) {
+        holder.applyOffset(offsetApplied);
         if (!holder.isSeparator()) {
             Fragment fragment = mFragments.get(position);
             if (fragment instanceof FragmentInfo) {

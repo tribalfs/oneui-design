@@ -34,4 +34,19 @@ public abstract class BaseFragment extends Fragment
     public boolean isAppBarEnabled() {
         return true;
     }
+
+    @Override
+    public  CharSequence getSubtitle() {
+        return null;
+    }
+
+    @Override
+    public  boolean isImmersiveScroll() {
+        return false;
+    }
+
+    @Override
+    public  boolean showBottomTab() {
+        return false;
+    }
 }

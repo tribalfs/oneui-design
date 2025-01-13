@@ -26,7 +26,7 @@ public class TabsFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         initSubTabs(view);
         initBNV(view);
-        //initMainTabs(view);
+//        initMainTabs(view);
     }
 
     @Override
@@ -44,32 +44,49 @@ public class TabsFragment extends BaseFragment {
         return "Navigation";
     }
 
+    @Override
+    public CharSequence getSubtitle() {
+        return "Immersive scroll";
+    }
+
+    @Override
+    public boolean showBottomTab() {
+        return true;
+    }
+
+    @Override
+    public boolean isImmersiveScroll() {
+        return true;
+    }
+
     private void initSubTabs(@NonNull View view) {
         mSubTabs = view.findViewById(R.id.tabs_subtab);
         //mSubTabs.seslSetSubTabStyle();//Already set in xml
-        mSubTabs.addTab(mSubTabs.newTab().setText("Tab 4"));
-        mSubTabs.addTab(mSubTabs.newTab().setText("Tab 5"));
-        mSubTabs.addTab(mSubTabs.newTab().setText("Tab 6"));
+        mSubTabs.addTab(mSubTabs.newTab().setText("Subtab 4"));
+        mSubTabs.addTab(mSubTabs.newTab().setText("Subtab 5"));
+        mSubTabs.addTab(mSubTabs.newTab().setText("Subtab 6"));
+        mSubTabs.addTab(mSubTabs.newTab().setText("Subtab 7"));
+        mSubTabs.addTab(mSubTabs.newTab().setText("Subtab 8"));
     }
 
     private void initBNV(@NonNull View view) {
         mBottomNavView = view.findViewById(R.id.tabs_bottomnav);
-        mBottomNavViewText = view.findViewById(R.id.tabs_bottomnav_text);
         mBottomNavView.seslSetGroupDividerEnabled(true);
     }
 
-   /* private void initMainTabs(@NonNull View view) {
-        mTabs = view.findViewById(R.id.tabs_tabs);
-        mTabs.addTab(mTabs.newTab().setText("Tab 1"));
-        mTabs.addTab(mTabs.newTab().setText("Tab 2"));
-        mTabs.addTab(mTabs.newTab().setText("Tab 3"));
+//    private void initMainTabs(@NonNull View view) {
+//        mTabs = view.findViewById(R.id.tabs_tabs);
+//        mTabs.addTab(mTabs.newTab().setText("Tab 1"));
+//        mTabs.addTab(mTabs.newTab().setText("Tab 2"));
+//        mTabs.addTab(mTabs.newTab().setText("Tab 3"));
+//
+//        GridMenuDialog gridMenuDialog = new GridMenuDialog(mContext);
+//        gridMenuDialog.inflateMenu(R.menu.sample3_tabs_grid_menu);
+//        gridMenuDialog.setOnItemClickListener(item -> true);
+//
+//        addCustomTab(mTabs, null, dev.oneuiproject.oneui.R.drawable.ic_oui_drawer,
+//                v -> gridMenuDialog.show());
+//    }
 
-        GridMenuDialog gridMenuDialog = new GridMenuDialog(mContext);
-        gridMenuDialog.inflateMenu(R.menu.sample3_tabs_grid_menu);
-        gridMenuDialog.setOnItemClickListener(item -> true);
-
-        addCustomTab(mTabs, null, dev.oneuiproject.oneui.R.drawable.ic_oui_drawer,
-                v -> gridMenuDialog.show());
-    }*/
 
 }

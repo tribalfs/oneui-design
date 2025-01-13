@@ -1,14 +1,11 @@
 package dev.oneuiproject.oneuiexample.ui.activity;
 
-import static dev.oneuiproject.oneui.ktx.FloatKt.dpToPx;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -47,6 +44,7 @@ public class MainActivity extends AppCompatActivity
     private ActivityMainBinding mBinding;
     private FragmentManager mFragmentManager;
     private final List<Fragment> fragments = new ArrayList<>();
+    DrawerListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +107,16 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    private final Runnable offsetRunner = new Runnable() {
+        @Override
+        public void run() {
+            adapter.setOffset(mBinding.drawerLayout.getDrawerOffset());
+            mBinding.drawerLayout.postDelayed(this, 10);
+        }
+    };
+
     private void initDrawer() {
+        adapter = new DrawerListAdapter(this, fragments, this);
         mBinding.drawerLayout.setHeaderButtonIcon(AppCompatResources.getDrawable(this, dev.oneuiproject.oneui.R.drawable.ic_oui_settings_outline));
         mBinding.drawerLayout.setHeaderButtonTooltip("Preferences");
         mBinding.drawerLayout.setHeaderButtonOnClickListener(v -> {
@@ -120,15 +127,32 @@ public class MainActivity extends AppCompatActivity
         });
 
         mBinding.drawerListView.setLayoutManager(new LinearLayoutManager(this));
-        mBinding.drawerListView.setAdapter(new DrawerListAdapter(this, fragments, this));
+        mBinding.drawerListView.setAdapter(adapter);
         mBinding.drawerListView.setItemAnimator(null);
         mBinding.drawerListView.setHasFixedSize(true);
         mBinding.drawerListView.seslSetLastRoundedCorner(false);
+
         mBinding.drawerLayout.setHeaderButtonBadge(Badge.DOT.INSTANCE);
+        mBinding.drawerLayout.setNavRailContentMinSideMargin(10);
+
         mBinding.drawerLayout.setDrawerStateListener((state) -> {
-            Log.d("MainActivity", "Drawer state changed: " + state);
+            if (!mBinding.drawerLayout.isLargeScreenMode()) return null;
+            mBinding.drawerLayout.removeCallbacks(offsetRunner);
+            switch (state) {
+                case OPEN:
+                    adapter.setOffset(1f);
+                    break;
+                case CLOSE:
+                    adapter.setOffset(0f);
+                    break;
+                case CLOSING, OPENING:
+                    mBinding.drawerLayout.post(offsetRunner);
+                    break;
+            }
             return null;
         });
+        adapter.setOffset(mBinding.drawerLayout.isLargeScreenMode()
+                ? mBinding.drawerLayout.getDrawerOffset() : 1);
     }
 
     private void initFragments() {
@@ -161,11 +185,25 @@ public class MainActivity extends AppCompatActivity
                 mBinding.drawerLayout.setExpanded(false, false);
             }
             mBinding.drawerLayout.setTitle(((FragmentInfo) newFragment).getTitle());
-            if (newFragment instanceof ContactsFragment) {
-                mBinding.drawerLayout.setExpandedSubtitle("Pull down to refresh");
+            mBinding.drawerLayout.setExpandedSubtitle(((FragmentInfo) newFragment).getSubtitle());
+            if (((FragmentInfo) newFragment).showBottomTab()) {
+                mBinding.bottomTab.show();
+            }else{
+                mBinding.bottomTab.hide();
             }
+            mBinding.drawerLayout.setImmersiveScroll(((FragmentInfo) newFragment).isImmersiveScroll());
         }
-        mBinding.drawerLayout.setDrawerOpen(false, true);
+
+        if (mBinding.drawerLayout.isLargeScreenMode()) {
+            if (mBinding.drawerLayout.isActionMode()) {
+                mBinding.drawerLayout.endActionMode();
+            }
+            if (mBinding.drawerLayout.isSearchMode()) {
+                mBinding.drawerLayout.endSearchMode();
+            }
+        }else{
+            mBinding.drawerLayout.setDrawerOpen(false, true);
+        }
 
         mBackPressedCallback.setEnabled(position != 0);
 

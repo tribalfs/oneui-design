@@ -8,4 +8,11 @@ public interface FragmentInfo {
     CharSequence getTitle();
 
     boolean isAppBarEnabled();
+
+    CharSequence getSubtitle();
+
+    boolean isImmersiveScroll();
+
+    boolean showBottomTab();
+
 }
