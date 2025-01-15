@@ -105,8 +105,12 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     interface ActionModeListener {
         /** Called at the start of [startActionMode].
+         * These object references passed in the parameter should be used
+         * during the lifetime of this action mode.
+         *
          * @param menu The [Menu] to be used for action menu items.
          * Inflate the menu items for this action mode session using this menu.
+         *
          * @see onMenuItemClicked */
         fun onInflateActionMenu(menu: Menu)
 
@@ -464,18 +468,12 @@ open class ToolbarLayout @JvmOverloads constructor(
     //
     // AppBar methods
     //
-    val appBarLayout: AppBarLayout
-        /**
-         * Returns the [AppBarLayout].
-         */
-        get() = mAppBarLayout
+    /**@return the [AppBarLayout].*/
+    val appBarLayout: AppBarLayout get() = mAppBarLayout
 
+    /**@return the main [Toolbar].*/
     @get:RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    val toolbar: Toolbar
-        /**
-         * Returns the [Toolbar].
-         */
-        get() = mMainToolbar
+    val toolbar: Toolbar get() = mMainToolbar
 
     /**
      * Set the title of both the collapsed and expanded Toolbar.
@@ -493,6 +491,8 @@ open class ToolbarLayout @JvmOverloads constructor(
      * The expanded title might not be visible in landscape or on devices with small dpi.
      *
      * @see setCustomTitleView
+     * @see expandedTitle
+     * @see collapsedTitle
      */
     fun setTitle(
         expandedTitle: CharSequence?,
@@ -507,7 +507,7 @@ open class ToolbarLayout @JvmOverloads constructor(
      *
      * @see setCustomTitleView
      * @see collapsedTitle
-     * */
+     */
     var expandedTitle: CharSequence?
         get() = mTitleExpanded
         set(value) {
@@ -516,10 +516,10 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
 
     /**
-     * The title for the expanded Toolbar.
+     * The title for the collapsed Toolbar.
      *
      * @see expandedTitle
-     * */
+     */
     var collapsedTitle: CharSequence?
         get() = mTitleCollapsed
         set(value) {
@@ -540,7 +540,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     }
 
     /**
-     * The subtitle of the expanded [CollapsingToolbarLayout].
+     * The subtitle of the expanded Toolbar.
      * This might not be visible in landscape or on devices with small dpi.
      *
      * @see collapsedSubtitle
@@ -553,7 +553,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
 
     /**
-     * The subtitle of the collapsed [CollapsingToolbarLayout].
+     * The subtitle of the collapsed Toolbar.
      *
      * @see expandedSubtitle
      */
@@ -1509,8 +1509,8 @@ open class ToolbarLayout @JvmOverloads constructor(
     fun updateAllSelector(count: Int, enabled: Boolean, checked: Boolean? = null) {
         if (updateAllSelectorJob != null) {
             Log.w(
-                TAG, "'updateAllSelector' ignored because `startActionMode` " +
-                        " is provided as param for  startActionMode()."
+                TAG, "'updateAllSelector' ignored because param `allSelectorStateFlow` " +
+                        " is already provided on startActionMode()."
             )
             return
         }
