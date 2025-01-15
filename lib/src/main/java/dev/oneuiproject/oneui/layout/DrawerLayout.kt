@@ -100,9 +100,6 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     //
     // Drawer methods
     //
-    /**Show a margin at the top of the drawer panel. Some Apps from Samsung do have this.*/
-    @Deprecated("This is now no op.")
-    fun showDrawerTopMargin(show: Boolean) {}
 
     /**Set a custom radius for the drawer panel's edges.*/
     fun setDrawerCornerRadius(@Dimension dp: Float) = containerLayout.setDrawerCornerRadius(dp)
@@ -110,14 +107,6 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     /**Set a custom radius for the drawer panel's edges.*/
     fun setDrawerCornerRadius(@Px px: Int) = containerLayout.setDrawerCornerRadius(px)
 
-    /**
-     * Sets the icon for the drawer header button, located in the top right corner of the drawer panel.
-     *
-     * @param icon The drawable to use as the icon.
-     */
-    @Deprecated("Use setHeaderButtonIcon() instead.",
-        replaceWith = ReplaceWith("setHeaderButtonIcon(icon)"))
-    fun setDrawerButtonIcon(icon: Drawable?) = setHeaderButtonIcon(icon)
 
     /**
      * Sets the icon for the drawer header button,
@@ -130,16 +119,6 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     open fun setHeaderButtonIcon(icon: Drawable?, @ColorInt tint: Int? = null) =
         navButtonsHandler.setHeaderButtonIcon(icon, tint)
 
-    /**
-     * Set the tooltip of the drawer header button.
-     * The drawer header button is the button in the top right corner of the drawer panel.
-     */
-    @Deprecated(
-        "Use setHeaderButtonTooltip() instead.",
-        replaceWith = ReplaceWith("setHeaderButtonTooltip(tooltipText)")
-    )
-    fun setDrawerButtonTooltip(tooltipText: CharSequence?) =
-        navButtonsHandler.setHeaderButtonTooltip(tooltipText)
 
     /**
      * Set the tooltip of the drawer header button,
@@ -148,16 +127,6 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     open fun setHeaderButtonTooltip(tooltipText: CharSequence?) =
         navButtonsHandler.setHeaderButtonTooltip(tooltipText)
 
-    /**
-     * Set the click listener of the drawer button,
-     * located at the top right corner of the drawer panel.
-     */
-    @Deprecated(
-        "Use setHeaderButtonOnClickListener(listener) instead",
-        ReplaceWith("setHeaderButtonOnClickListener(listener)")
-    )
-    fun setDrawerButtonOnClickListener(listener: OnClickListener?) =
-        setHeaderButtonOnClickListener(listener)
 
     /**
      * Set the click listener of the drawer header button,
@@ -179,16 +148,6 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         setNavigationButtonBadge(navigationButtonBadge)
         setHeaderButtonBadge(headerButtonBadge)
     }
-
-    /**
-     * Set the badge of the drawer header button.
-     * The drawer header button is the button in the top right corner of the drawer panel.
-     *
-     * @param badge The [badge][dev.oneuiproject.oneui.layout.Badge] to set.
-     */
-    @Deprecated("Use setHeaderButtonBadge()",
-        ReplaceWith("setHeaderButtonBadge(badge)"))
-    fun setDrawerButtonBadge(badge: Badge) = setHeaderButtonBadge(badge)
 
     /**
      * Set a badge of the drawer header button,

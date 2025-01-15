@@ -23,18 +23,14 @@ import android.view.ViewStub
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.CheckBox
-import android.widget.CompoundButton
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.LinearLayout.LayoutParams.MATCH_PARENT
 import android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
 import android.widget.TextView
 import androidx.annotation.CallSuper
-import androidx.annotation.IdRes
 import androidx.annotation.IntRange
-import androidx.annotation.MenuRes
 import androidx.annotation.RestrictTo
-import androidx.appcompat.view.menu.SeslMenuItem
 import androidx.appcompat.widget.ActionModeSearchView
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SeslSwitchBar
@@ -51,12 +47,10 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationBarView
 import dev.oneuiproject.oneui.delegates.AllSelectorState
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.appCompatActivity
 import dev.oneuiproject.oneui.ktx.isSoftKeyboardShowing
-import dev.oneuiproject.oneui.ktx.setBadge
 import dev.oneuiproject.oneui.ktx.setSearchableInfoFrom
 import dev.oneuiproject.oneui.layout.ToolbarLayout.ActionModeListener
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.CLEAR_CLOSE
@@ -97,12 +91,6 @@ open class ToolbarLayout @JvmOverloads constructor(
     attrs: AttributeSet? = null
 ) : LinearLayout(context, attrs) {
 
-    @Deprecated("Use the `ActionModeListener` parameter when calling startActionMode() instead.")
-    interface ActionModeCallback {
-        fun onShow(toolbarLayout: ToolbarLayout?)
-        fun onDismiss(toolbarLayout: ToolbarLayout?)
-    }
-
     interface ActionModeListener {
         /** Called at the start of [startActionMode].
          * These object references passed in the parameter should be used
@@ -121,7 +109,7 @@ open class ToolbarLayout @JvmOverloads constructor(
          * @see onInflateActionMenu*/
         fun onMenuItemClicked(item: MenuItem): Boolean
 
-        /** Called when the 'All' selector is clicked. This will not be triggered with [setActionModeAllSelector].*/
+        /** Called when the 'All' selector is clicked. This will not be triggered with [updateAllSelector].*/
         fun onSelectAll(isChecked: Boolean)
     }
 
@@ -183,8 +171,6 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     private var mSelectedItemsCount = 0
 
-    @Deprecated("Replaced with mActionModeCallBack")
-    private var mActionModeCallback: ActionModeCallback? = null
     private var mActionModeListener: ActionModeListener? = null
     private var mActionModeMenuRes: Int = 0
 
@@ -254,8 +240,6 @@ open class ToolbarLayout @JvmOverloads constructor(
     private lateinit var mActionModeSelectAll: LinearLayout
     private lateinit var mActionModeCheckBox: CheckBox
     private lateinit var mActionModeTitleTextView: TextView
-    @Deprecated("Replaced with mActionModeCallBack")
-    private var mOnSelectAllListener: CompoundButton.OnCheckedChangeListener? = null
 
     private var mCustomFooterContainer: FrameLayout? = null
     private lateinit var mBottomActionModeBar: BottomNavigationView
@@ -679,39 +663,6 @@ open class ToolbarLayout @JvmOverloads constructor(
             }
         }
 
-    @Deprecated("You can directly invoke setBadge on the MenuItem.",
-        ReplaceWith("menuItem.setBadge(badge)", "dev.oneuiproject.oneui.ktx.setBadge"),
-        level = DeprecationLevel.ERROR)
-    fun setMenuItemBadge(@IdRes id: Int, text: String?) {
-    }
-
-    /**
-     * Sets the badge of a Toolbar MenuItem.
-     *
-     * Important: Requires sesl.androidx.appcompat:1.7.0+1.0.34-sesl6+rev0 or higher
-     *
-     * @param menuItem The [menuItem][SeslMenuItem] to set the badge
-     * @param badge The [Badge] to be set.
-     */
-    @Deprecated("You can directly invoke setBadge on the MenuItem.",
-        ReplaceWith("menuItem.setBadge(badge)", "dev.oneuiproject.oneui.ktx.setBadge"),
-        level = DeprecationLevel.ERROR)
-    inline fun setMenuItemBadge(menuItem: SeslMenuItem, badge: Badge) = menuItem.setBadge(badge)
-
-    /**
-     * Sets the badge of a Toolbar MenuItem.
-     * This should be invoked after the MenuItem is inflated.
-     *
-     * Important: Requires sesl.androidx.appcompat:1.7.0+1.0.34-sesl6+rev0 or higher
-     *
-     * @param id    The resource ID of the MenuItem
-     * @param badge The [Badge] to be displayed.
-     */
-    @Deprecated("You can directly invoke setBadge on the MenuItem.",
-        ReplaceWith("menu.findItem(id).setBadge(badge)", "dev.oneuiproject.oneui.ktx.setBadge"),
-        level = DeprecationLevel.ERROR)
-    fun setMenuItemBadge(@IdRes id: Int, badge: Badge) = mMainToolbar.menu.findItem(id).setBadge(badge)
-
     //
     // Navigation Button methods
     //
@@ -726,21 +677,6 @@ open class ToolbarLayout @JvmOverloads constructor(
         navButtonsHandler.setNavigationButtonIcon(icon)
     }
 
-    /**
-     * Change the visibility of the navigation button.
-     * This applies only when [showNavigationButtonAsBack] is `false` (default).
-     * This is `false` by default.
-     *
-     * @see setNavigationButtonOnClickListener
-     * @see setNavigationButtonIcon
-     * @see setNavigationButtonTooltip
-     */
-    @Deprecated("Use `showNavigationButton` property instead.",
-        replaceWith = ReplaceWith("showNavigationButton = visible"),
-        level = DeprecationLevel.ERROR)
-    fun setNavigationButtonVisible(visible: Boolean) {
-        navButtonsHandler.showNavigationButton = visible
-    }
 
     /**
      * Set a badge to the navigation button.
@@ -773,20 +709,6 @@ open class ToolbarLayout @JvmOverloads constructor(
      */
     fun setNavigationButtonOnClickListener(listener: OnClickListener?) {
         navButtonsHandler.setNavigationButtonOnClickListener(listener)
-    }
-
-    /**
-     * Sets the icon to a back icon, the tooltip to 'Navigate up' and calls [OnBackPressedDispatcher.onBackPressed] when clicked.
-     *
-     * @see showNavigationButtonAsBack
-     */
-    @Deprecated("Use showNavigationButtonAsBack=true instead",
-        replaceWith = ReplaceWith("showNavigationButtonAsBack"),
-        level = DeprecationLevel.ERROR)
-    fun setNavigationButtonAsBack() {
-        if (!isInEditMode) {
-            showNavigationButtonAsBack = true
-        }
     }
 
 
@@ -903,29 +825,6 @@ open class ToolbarLayout @JvmOverloads constructor(
         updateOnBackCallbackState()
     }
 
-    /**
-     * Show the [SearchView] in the Toolbar.
-     * To enable the voice input icon in the SearchView, please refer to the project wiki.
-     */
-    @Deprecated("Replaced by startSearchMode().", ReplaceWith("startSearchMode(listener)"),
-        level = DeprecationLevel.ERROR)
-    open fun showSearchMode() {
-        mSearchModeListener?.let { startSearchMode(it) }
-            ?: Log.e(TAG, "Can't start search mode without setting the listener.")
-    }
-
-    /**
-     * Dismiss the [SearchView] in the Toolbar.
-     *
-     * @see showSearchMode
-     * @see startSearchMode
-     * @see endSearchMode
-     */
-    @Deprecated("Replaced by endSearchMode().", ReplaceWith("endSearchMode()"),
-        level = DeprecationLevel.ERROR)
-    open fun dismissSearchMode() {
-        endSearchMode()
-    }
 
     private fun ensureSearchModeViews() {
         if (mSearchToolbar == null) {
@@ -953,26 +852,6 @@ open class ToolbarLayout @JvmOverloads constructor(
             return mSearchView
         }
 
-    /**
-     * Set the [SearchModeListener] for the Toolbar's SearchMode.
-     */
-    @Deprecated(
-        "Set it as parameter when calling startSearchMode().",
-        ReplaceWith("startSearchMode(listener)"), level = DeprecationLevel.ERROR)
-    fun setSearchModeListener(listener: SearchModeListener?) {
-        mSearchModeListener = listener
-    }
-
-    /**
-     * Forward the voice input result to the Toolbar.
-     */
-    @Deprecated("Use setSearchQueryFromIntent(intent) instead.",
-        ReplaceWith("setSearchQueryFromIntent(intent)"), level = DeprecationLevel.ERROR)
-    fun onSearchModeVoiceInputResult(intent: Intent) {
-        if (Intent.ACTION_SEARCH == intent.action) {
-            mSearchView.setQuery(intent.getStringExtra(SearchManager.QUERY), true)
-        }
-    }
 
     /**
      * Updates the query text of the [SearchView] with the search query extracted from the provided [Intent].
@@ -1003,16 +882,6 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
     }
 
-    @Deprecated("This is now a no op.", level = DeprecationLevel.ERROR)
-    fun setActionModeToolbarShowAlwaysMax(max: Int) {
-        //no op
-    }
-
-    @Deprecated("Use the `ActionModeListener` param when calling startActionMode() instead.",
-        level = DeprecationLevel.ERROR)
-    fun setOnActionModeListener(callback: ActionModeCallback?) {
-        mActionModeCallback = callback
-    }
 
     //
     // Action Mode methods
@@ -1097,29 +966,6 @@ open class ToolbarLayout @JvmOverloads constructor(
 
         setupAllSelectorOnClickListener()
         updateOnBackCallbackState()
-    }
-
-    /**
-     * Starts an Action Mode session. This shows the Toolbar's ActionMode with a toggleable 'All' Checkbox
-     * and a counter ('x selected') that temporarily replaces the Toolbar's title.
-     *
-     * @param listener The [ActionModeListener] to be invoke for this action mode.
-     * @param keepSearchMode Set to `true` to keep active search mode and
-     * restore it's interface when this ActionMode is ended. This is set `false` by default.
-     * @param allSelectorStateFlow (Optional) StateFlow of [AllSelectorState] that will be used
-     * to update "All" selector state and count
-     *
-     * @see [ToolbarLayout.endActionMode]
-     */
-    @Deprecated("Use startActionMode that accepts SearchOnActionMode as one of the params replacing the boolean `keepSearchMode` param.",
-        ReplaceWith("startActionMode(listener, searchOnActionMode, allSelectorStateFlow)"))
-    @JvmOverloads
-    inline fun startActionMode(
-        listener: ActionModeListener,
-        keepSearchMode: Boolean,
-        allSelectorStateFlow: StateFlow<AllSelectorState>? = null
-    ){
-        startActionMode(listener, if (keepSearchMode) NoDismiss else Dismiss , allSelectorStateFlow)
     }
 
     private inline fun showActionModeToolbarAnimate() {
@@ -1275,35 +1121,6 @@ open class ToolbarLayout @JvmOverloads constructor(
         updateOnBackCallbackState()
     }
 
-    /**
-     * Show the Toolbar's ActionMode. This will show a 'All' Checkbox instead of the navigation button,
-     * temporarily replace the Toolbar's title with a counter ('x selected')
-     * and show a [BottomNavigationView] in the footer.
-     * The ActionMode is useful when the user can select items in a list.
-     */
-    @Deprecated("Use startActionMode() instead.", ReplaceWith("startActionMode(callback)"))
-    open fun showActionMode() {
-        startActionMode(
-            object : ActionModeListener {
-                override fun onInflateActionMenu(menu: Menu) {
-                    if (mActionModeMenuRes != 0) {
-                        activity!!.menuInflater.inflate(mActionModeMenuRes, menu)
-                    }
-                    mActionModeCallback?.onShow(this@ToolbarLayout)
-                }
-
-                override fun onEndActionMode() {
-                    mActionModeCallback?.onDismiss(this@ToolbarLayout)
-                }
-
-                override fun onMenuItemClicked(item: MenuItem): Boolean = false
-                override fun onSelectAll(isChecked: Boolean) {
-                    mOnSelectAllListener?.onCheckedChanged(mActionModeCheckBox, isChecked)
-                }
-            }
-        )
-    }
-
     private inline fun setupAllSelectorOnClickListener() {
         mActionModeSelectAll.setOnClickListener {
             mActionModeCheckBox.apply {
@@ -1421,81 +1238,6 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
     }
 
-    /**
-     * Dismiss the ActionMode.
-     *
-     * @see endActionMode
-     */
-    @Deprecated("Use endActionMode() instead.", ReplaceWith("endActionMode()"),
-        level = DeprecationLevel.ERROR)
-    open fun dismissActionMode() {
-        endActionMode()
-    }
-
-    /**
-     * Set the menu resource for the ActionMode's [BottomNavigationView]
-     */
-    @Deprecated(
-        "Use the ActionModeListener#onInflateActionMenu() callback when calling startActionMode() instead.",
-        level = DeprecationLevel.ERROR)
-    fun setActionModeBottomMenu(@MenuRes menuRes: Int) {
-        mActionModeMenuRes = menuRes
-    }
-
-    /**
-     * Set the menu resource for the ActionMode's [BottomNavigationView].
-     * On landscape orientation where ActionMode's [BottomNavigationView] will be hidden,
-     * the visible items from this menu resource we be shown to ActionMode's [Toolbar] [Menu]
-     */
-    @Deprecated(
-        "Use the ActionModeListener#onInflateActionMenu() callback when calling startActionMode() instead.",
-        level = DeprecationLevel.ERROR)
-    fun setActionModeMenu(@MenuRes menuRes: Int) {
-        mActionModeMenuRes = menuRes
-    }
-
-    /**
-     * Set the listener for the ActionMode's [BottomNavigationView].
-     * On landscape orientation, the same listener will be invoke for ActionMode's [Toolbar] [MenuItem]s
-     * which are copied from ActionMode's [BottomNavigationView]
-     */
-    @Deprecated(
-        "Use the ActionModeListener#onMenuItemClicked() callback when calling startActionMode() instead.",
-        level = DeprecationLevel.ERROR)
-    fun setActionModeMenuListener(listener: NavigationBarView.OnItemSelectedListener) {
-        ensureActionModeViews()
-        setActionModeMenuListenerInternal(listener)
-    }
-
-    /**
-     * Set the menu resource for the ActionMode's [Toolbar].
-     */
-    @Deprecated("This is now no op.", level = DeprecationLevel.ERROR)
-    fun setActionModeToolbarMenu(@MenuRes menuRes: Int) {
-        //no op
-    }
-
-    /**
-     * Set the listener for the ActionMode's [Toolbar].
-     */
-    @Deprecated("This is now no op.", level = DeprecationLevel.ERROR)
-    fun setActionModeToolbarMenuListener(listener: Toolbar.OnMenuItemClickListener?) {
-        //no op
-    }
-
-    /**
-     * Set the ActionMode's count and  checkbox enabled state.
-     * Check state will stay.
-     *
-     * @param count number of selected items in the list
-     * @param enabled enabled click
-     */
-    @Deprecated(
-        "Use updateAllSelector() instead.",
-        ReplaceWith("updateAllSelector(count, enabled, checked)"),
-        level = DeprecationLevel.ERROR)
-    fun setActionModeAllSelector(count: Int, enabled: Boolean) =
-        updateAllSelector(count, enabled, null)
 
     /**
      * Update action mode's 'All' selector state
@@ -1548,45 +1290,6 @@ open class ToolbarLayout @JvmOverloads constructor(
         mActionModeSelectAll.isEnabled = enabled
     }
 
-    /**
-     * Set the ActionMode's count and Select all checkBox's enabled state and check state
-     *
-     * @param count number of selected items in the list
-     * @param enabled enable or disable click
-     * @param checked
-     */
-    @Deprecated(
-        "Use updateAllSelector() instead.",
-        ReplaceWith("updateAllSelector(count, enabled, checked)"),
-        level = DeprecationLevel.ERROR)
-    fun setActionModeAllSelector(count: Int, enabled: Boolean, checked: Boolean?) {
-        updateAllSelectorInternal(count, enabled, checked)
-    }
-
-    /**
-     * Set the ActionMode's count. This will change the count in the Toolbar's title
-     * and if count = total, the 'All' Checkbox will be checked.
-     *
-     * @param count number of selected items in the list
-     * @param total number of total items in the list
-     */
-    @Deprecated(
-        "Use setActionModeAllSelector() instead.",
-        ReplaceWith("setActionModeAllSelector(count, enabled, checked)"),
-        level = DeprecationLevel.ERROR)
-    fun setActionModeCount(count: Int, total: Int) {
-        updateAllSelectorInternal(count, true, count == total)
-    }
-
-    /**
-     * Set the listener for the 'All' Checkbox of the ActionMode.
-     */
-    @Deprecated(
-        "Use ActionModeListener#onSelectAll() callback when calling startActionMode() instead.",
-        ReplaceWith(""), level = DeprecationLevel.ERROR)
-    fun setActionModeCheckboxListener(listener: CompoundButton.OnCheckedChangeListener?) {
-        mOnSelectAllListener = listener
-    }
 
     //
     // others
@@ -1702,12 +1405,6 @@ sealed class Badge {
         }
 }
 
-@Deprecated(
-    "Use setNavigationButtonBadge()",
-    ReplaceWith("setNavigationButtonBadge(badge)"), level = DeprecationLevel.ERROR)
-inline fun <T : ToolbarLayout> T.setNavigationBadge(badge: Badge) {
-    setNavigationButtonBadge(badge)
-}
 
 
 /**
@@ -1832,29 +1529,6 @@ inline fun <T : ToolbarLayout> T.startActionMode(
         searchOnActionMode,
         allSelectorStateFlow,
         showCancel
-    )
-}
-
-
-@Deprecated("Use startActionMode that accepts SearchOnActionMode as one of the params replacing the boolean `keepSearchMode` param.",
-    ReplaceWith("startActionMode(onInflateMenu, onEnd, onSelectMenuItem, onSelectAll, searchOnActionMode, allSelectorStateFlow)"))
-inline fun <T : ToolbarLayout> T.startActionMode(
-    crossinline onInflateMenu: (menu: Menu) -> Unit,
-    crossinline onEnd: () -> Unit,
-    crossinline onSelectMenuItem: (item: MenuItem) -> Boolean,
-    crossinline onSelectAll: (Boolean) -> Unit,
-    keepSearchMode: Boolean,
-    allSelectorStateFlow: StateFlow<AllSelectorState>? = null
-) {
-    startActionMode(
-        object : ActionModeListener {
-            override fun onInflateActionMenu(menu: Menu) = onInflateMenu(menu)
-            override fun onEndActionMode() = onEnd()
-            override fun onMenuItemClicked(item: MenuItem) = onSelectMenuItem(item)
-            override fun onSelectAll(isChecked: Boolean) = onSelectAll.invoke(isChecked)
-        },
-        if (keepSearchMode) NoDismiss else Dismiss,
-        allSelectorStateFlow
     )
 }
 

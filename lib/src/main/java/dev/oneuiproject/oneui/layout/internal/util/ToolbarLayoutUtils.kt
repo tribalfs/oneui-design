@@ -22,13 +22,6 @@ import android.view.SemWindowManager.LayoutParams.SEM_EXTENSION_FLAG_RESIZE_FULL
 
 internal object ToolbarLayoutUtils {
 
-    @JvmStatic
-    @Deprecated(
-        "Replace CoordinatorLayout with AdaptiveCoordinatorLayout that " +
-                "extends CoordinatorLayout and implements this behavior instead.")
-    fun hideStatusBarForLandscape(activity: Activity, orientation: Int) =
-        activity.updateStatusBarVisibility()
-
     @RestrictTo(RestrictTo.Scope.LIBRARY)
     inline fun Activity.updateStatusBarVisibility() {
         if (isTabletBuildOrIsDeskTopMode(this)) return
