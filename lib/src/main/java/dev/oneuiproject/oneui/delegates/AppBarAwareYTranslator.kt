@@ -57,6 +57,9 @@ class AppBarAwareYTranslator: ViewYTranslator, DefaultLifecycleObserver {
         lifecycleOwnerWR = WeakReference(lifecycleOwner)
 
         for (v in mTranslationViews!!) {
+            if (v.isAttachedToWindow) {
+                lifecycleOwner.lifecycle.addObserver(this@AppBarAwareYTranslator)
+            }
             v.doOnAttachedStateChanged { _, isAttached ->
                 lifecycleOwnerWR?.get()?.lifecycle?.apply {
                     if (isAttached) {
