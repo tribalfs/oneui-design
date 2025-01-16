@@ -438,8 +438,8 @@ open class ToolbarLayout @JvmOverloads constructor(
         mCoordinatorLayout.configureAdaptiveMargin(marginProviderImpl, getAdaptiveChildViews())
     }
 
-    internal open fun getAdaptiveChildViews(): Set<View> =
-         mCoordinatorLayout.children.filterNot { it.getTag(R.id.tag_side_margin_excluded) == true }.toSet()
+    internal open fun getAdaptiveChildViews(): Set<View>? =
+        mCoordinatorLayout.children.filterNot { it.getTag(R.id.tag_side_margin_excluded) == true }.toSet()
 
 
     private fun updateAppbarHeight() {
@@ -1072,9 +1072,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             mActionModeSearchView =
                 (mMainContainerParent.findViewById<ViewStub>(R.id.viewstub_oui_view_actionmode_searchview)
                     .inflate() as ActionModeSearchView)
-                    .apply {
-                        setSearchableInfoFrom(activity!!)
-                    }
+                    .apply { setSearchableInfoFrom(activity!!) }
         }
     }
 

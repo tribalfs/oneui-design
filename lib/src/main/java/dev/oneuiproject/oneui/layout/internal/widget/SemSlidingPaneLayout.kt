@@ -291,8 +291,8 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
 
     private var mDrawerStateListener: ((state: DrawerState) -> Unit)? = null
 
-    override fun setOnDrawerStateChangedListener(action: ((DrawerState) -> Unit)?) {
-        mDrawerStateListener = action
+    override fun setOnDrawerStateChangedListener(listener: ((DrawerState) -> Unit)?) {
+        mDrawerStateListener = listener
     }
 
     override fun getDrawerSlideOffset(): Float = sSlideOffset

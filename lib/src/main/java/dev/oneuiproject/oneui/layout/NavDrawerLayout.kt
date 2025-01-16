@@ -223,7 +223,6 @@ class NavDrawerLayout @JvmOverloads constructor(
 
     companion object {
         private const val TAG = "NavDrawerLayout"
-        private const val DEFAULT_DRAWER_RADIUS = 16F
         private const val DRAWER_HEADER = 4
         const val DEFAULT_NAV_RAIL_DETAILS_WIDTH = -1
     }
