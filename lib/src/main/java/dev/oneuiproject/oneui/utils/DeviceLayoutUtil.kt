@@ -8,19 +8,22 @@ import android.content.res.Configuration
 import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.content.res.Resources
+import android.content.res.SemConfiguration
 import android.graphics.Point
 import android.os.Build
 import android.os.Build.VERSION
+import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.annotation.RestrictTo
+import androidx.reflect.DeviceInfo
 import androidx.reflect.content.res.SeslConfigurationReflector
 import dev.oneuiproject.oneui.ktx.activity
 import dev.oneuiproject.oneui.utils.internal.getSystemProp
+import dev.rikka.tools.refine.Refine
 
 
 object DeviceLayoutUtil {
-    private var sIsDexMode: Boolean? = null
     private var sIsTabBuildOrCategory: Boolean? = null
 
     inline fun isPortrait(config: Configuration) = config.orientation == ORIENTATION_PORTRAIT
@@ -59,9 +62,25 @@ object DeviceLayoutUtil {
     }
 
     @SuppressLint("RestrictedApi")
-    fun isDeskTopMode(resources: Resources) =  sIsDexMode
-        //private method
-        ?: SeslConfigurationReflector.isDexEnabled(resources.configuration).also { sIsDexMode = it }
+    fun isDeskTopMode(resources: Resources): Boolean{
+        if (DeviceInfo.isOneUI()) {
+            try {
+                if (VERSION.SDK_INT >= 34 &&
+                    Refine.unsafeCast<SemConfiguration>(resources.configuration).isNewDexMode){
+                        return true
+                }
+                if (VERSION.SDK_INT >= 31){
+                    return Refine.unsafeCast<SemConfiguration>(resources.configuration).isDexMode
+                }
+                return SeslConfigurationReflector.isDexEnabled(resources.configuration)//private method
+            } catch (e: Exception){
+                Log.e(this::class.simpleName, "isDeskTopMode invocation error: ${e.message}")
+                return false
+            }
+        } else {
+            return false
+        }
+    }
 
     inline fun isTabletLayout(resources: Resources) = resources.configuration.smallestScreenWidthDp >= 600
 
