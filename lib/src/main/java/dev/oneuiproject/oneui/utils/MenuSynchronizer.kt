@@ -1,69 +1,46 @@
 package dev.oneuiproject.oneui.utils
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.view.Menu
 import android.view.MenuItem
-import android.view.animation.Interpolator
 import androidx.annotation.IdRes
+import androidx.appcompat.view.menu.MenuBuilder
+import androidx.appcompat.view.menu.MenuItemImpl
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.MenuItemCompat
+import androidx.core.view.forEach
 import androidx.core.view.isVisible
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dev.oneuiproject.oneui.utils.MenuSynchronizer.State
 
-
 /**
  * Handles the synchronization of menu items between a BottomNavigationView and a Toolbar,
- * adapting to different orientation states.
+ * which can be used to adapt menu to different device configurations and orientation states.
  *
- * @param bottomNavView The BottomNavigationView to synchronize with the Toolbar.
- * @param toolbar The Toolbar to synchronize with the BottomNavigationView.
+ * @param bottomNavView The BottomNavigationView to synchronize the menu items with.
+ * @param toolbar The Toolbar to synchronize the menu items with.
  * @param onMenuItemClick A callback to handle menu item click events.
- * @param initialState The initial state of the menu - either [State.PORTRAIT], [State.LANDSCAPE], or [State.HIDDEN].
- * @param maxActionItems The maximum number of items to show as action items in the Toolbar. By default, it's 2.
- * @param copyIcon Boolean flag to determine whether to copy icons from BottomNavigationView to Toolbar.
- * By default, it's true when there are more than one item in BottomNavigationView and `maxActionItems` is greater than 1..
+ * @param initialState (Optional) The initial state of the menu - either [State.PORTRAIT], [State.LANDSCAPE], or [State.HIDDEN].
+ * @param maxActionItems (Optional) The maximum number of items to show as action items in the Toolbar. By default, it's 2.
+ * @param copyIcon (Optional) Boolean flag to determine whether to show icons on the Toolbar menu items.
+ * By default, it's true when there are more than one item in the menu and `maxActionItems` is greater than 1.
  */
+@SuppressLint("RestrictedApi")
 class MenuSynchronizer @JvmOverloads constructor(
-    private val bottomNavView: BottomNavigationView,
-    private val toolbar: Toolbar,
+    bottomNavView: BottomNavigationView,
+    toolbar: Toolbar,
     onMenuItemClick: (menuItem: MenuItem) -> Boolean,
     initialState: State? = null,
     maxActionItems: Int = 2,
     private var copyIcon: Boolean? = null,
 ) {
 
-    private var interpolator: Interpolator? = null
+    val menu = SynchronizedMenuBuilder(toolbar, bottomNavView, maxActionItems)
 
     init{
-        val toolbarMenu = toolbar.menu
-        toolbarMenu.removeGroup(AMT_GROUP_MENU_ID)
-        val amBottomMenu = bottomNavView.menu
-        val size = amBottomMenu.size()
-        if (copyIcon == null){
-            copyIcon = size > 1
-        }
-        var menuItemsAdded = 0
-        for (a in 0 until size) {
-            val ambMenuItem = amBottomMenu.getItem(a)
-            if (ambMenuItem.isVisible) {
-                toolbarMenu.add(AMT_GROUP_MENU_ID, ambMenuItem.itemId, Menu.NONE, ambMenuItem.title).apply {
-                    if (copyIcon!!) {
-                        icon = ambMenuItem.icon
-                        MenuItemCompat.setIconTintList(this, MenuItemCompat.getIconTintList(ambMenuItem) )
-                    }
-                    if (Build.VERSION.SDK_INT >= 26) {
-                        ambMenuItem.tooltipText?.let { MenuItemCompat.setTooltipText(this, it) }
-                    }
-                    setOnMenuItemClickListener {
-                        onMenuItemClick(it)
-                    }
-                    menuItemsAdded++
-                    if (menuItemsAdded <= maxActionItems) {
-                        setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-                    }
-                }
-            }
+        toolbar.setOnMenuItemClickListener {
+            onMenuItemClick(it)
         }
 
         bottomNavView.setOnItemSelectedListener {
@@ -71,54 +48,159 @@ class MenuSynchronizer @JvmOverloads constructor(
         }
 
         initialState?.let {
-            updateState(it)
+            menu.setState(it)
         }
     }
 
-    private var currentState: State? = null
+    var state: State
+        get() = menu.getState()
+        set(value) {
+            if (menu.getState() == value) return
+            menu.setState(value)
+        }
 
-    fun updateState(state: State): Boolean {
-        if (currentState == state) return false
-        currentState = state
-        when (state) {
-            State.PORTRAIT -> {
-                toolbar.menu.setGroupVisible(AMT_GROUP_MENU_ID, false)
-                bottomNavView.isVisible = true
-            }
+    fun setMenuItemEnabled(@IdRes menuItemId: Int, enabled: Boolean) =
+        menu.setMenuItemEnabled(menuItemId, enabled)
 
-            State.LANDSCAPE -> {
-                toolbar.menu.setGroupVisible(AMT_GROUP_MENU_ID, true)
-                bottomNavView.isVisible = false
-            }
+    fun setMenuItemHidden(@IdRes menuItemId: Int, isHidden: Boolean) =
+        menu.setMenuItemHidden(menuItemId, isHidden)
 
-            State.HIDDEN -> {
-                toolbar.menu.setGroupVisible(AMT_GROUP_MENU_ID, false)
-                bottomNavView.isVisible = false
+    fun clear()= menu.clearAll()
+
+    class SynchronizedMenuBuilder(private val toolbar: Toolbar,
+                                        private val bottomNavView: BottomNavigationView,
+                                        private val maxActionItems: Int): MenuBuilder(toolbar.context){
+
+        private var currentState: State = State.HIDDEN
+        private var refreshToolbarMenu = false
+        private var refreshBottomMenu = false
+
+        override fun onItemsChanged(structureChanged: Boolean) {
+            when (currentState){
+                State.PORTRAIT -> {
+                    toolbar.menu.removeGroup(AMT_GROUP_MENU_ID)
+                    refreshBottomMenu = false
+                    refreshToolbarMenu = true
+                    refreshBottomMenu()
+                }
+
+                State.LANDSCAPE -> {
+                    bottomNavView.menu.clear()
+                    refreshBottomMenu = true
+                    refreshToolbarMenu = false
+                    refreshToolbarMenu()
+                }
+
+                State.HIDDEN -> {
+                    bottomNavView.menu.clear()
+                    toolbar.menu.removeGroup(AMT_GROUP_MENU_ID)
+                    refreshBottomMenu = true
+                    refreshToolbarMenu = true
+                }
             }
         }
-        return true
+
+        private fun refreshToolbarMenu(){
+            var menuItemsAdded = 0
+            val size = size()
+            forEach {
+                if (!it.isVisible) return@forEach
+                menuItemsAdded++
+                addMenuItem(toolbar.menu, it, size > 1, AMT_GROUP_MENU_ID).apply {
+                    if (menuItemsAdded <= maxActionItems) {
+                        setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+                    }
+                }
+            }
+        }
+
+        private fun refreshBottomMenu(){
+            var menuItemsAdded = 0
+            forEach {
+                if (!it.isVisible) return@forEach
+                menuItemsAdded++
+                addMenuItem(bottomNavView.menu, it, true).apply {
+                    if ((it as MenuItemImpl).requiresActionButton()){
+                        setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+                    }
+                }
+            }
+        }
+
+        @Suppress("RedundantOverride")
+        //To suppress restricted api lint warning on caller
+        override fun findItem(id: Int): MenuItem? = super.findItem(id)
+
+        internal fun getState(): State = currentState
+
+        internal fun setState(state: State): Boolean{
+            currentState = state
+
+            when (state) {
+                State.PORTRAIT -> {
+                    if (refreshBottomMenu){
+                        refreshBottomMenu = false
+                        refreshBottomMenu()
+                    }
+                    bottomNavView.isVisible = true
+                    toolbar.menu.setGroupVisible(AMT_GROUP_MENU_ID, false)
+                }
+
+                State.LANDSCAPE -> {
+                    if (refreshToolbarMenu){
+                        refreshToolbarMenu = false
+                        refreshToolbarMenu()
+                    }
+                    toolbar.menu.setGroupVisible(AMT_GROUP_MENU_ID, true)
+                    bottomNavView.isVisible = false
+                }
+
+                State.HIDDEN -> {
+                    toolbar.menu.setGroupVisible(AMT_GROUP_MENU_ID, false)
+                    bottomNavView.isVisible = false
+                }
+            }
+            return true
+        }
+
+
+        internal fun setMenuItemEnabled(@IdRes menuItemId: Int, enabled: Boolean) {
+            findItem(menuItemId)?.isEnabled = enabled
+        }
+
+        internal fun setMenuItemHidden(@IdRes menuItemId: Int, isHidden: Boolean) {
+            findItem(menuItemId)?.isVisible = !isHidden
+        }
+
+        override fun clearAll(){
+            super.clearAll()
+            bottomNavView.setOnItemSelectedListener(null)
+            toolbar.setOnMenuItemClickListener(null)
+            toolbar.menu.clear()
+            bottomNavView.menu.clear()
+            currentState = State.HIDDEN
+        }
+
+
+        private fun addMenuItem(
+            menu: Menu,
+            item: MenuItem,
+            addIcon: Boolean,
+            groupId: Int? = null
+        ): MenuItem {
+            return menu.add(groupId ?: item.groupId, item.itemId, item.order, item.title).apply {
+                isEnabled = item.isEnabled
+                if (addIcon) {
+                    icon = item.icon
+                    MenuItemCompat.setIconTintList(this, MenuItemCompat.getIconTintList(item))
+                }
+                if (Build.VERSION.SDK_INT >= 26) {
+                    item.tooltipText?.let { t -> MenuItemCompat.setTooltipText(this, t) }
+                }
+            }
+        }
+
     }
-
-
-    fun setMenuItemEnabled(@IdRes menuItemId: Int, enabled: Boolean) {
-        bottomNavView.menu.findItem(menuItemId)?.isEnabled = enabled
-        toolbar.menu.findItem(menuItemId)?.isEnabled = enabled
-    }
-
-    fun setHideMenuItem(@IdRes menuItemId: Int, isHidden: Boolean) {
-        bottomNavView.menu.findItem(menuItemId)?.isVisible = !isHidden
-        toolbar.menu.findItem(menuItemId)?.isVisible = !isHidden
-    }
-
-
-    fun clear(){
-        bottomNavView.setOnItemSelectedListener(null)
-        toolbar.setOnMenuItemClickListener(null)
-        toolbar.menu.clear()
-        bottomNavView.menu.clear()
-        currentState = null
-    }
-
 
     enum class State{
         PORTRAIT,
@@ -129,5 +211,5 @@ class MenuSynchronizer @JvmOverloads constructor(
     companion object{
         private const val AMT_GROUP_MENU_ID = 999
     }
-
 }
+

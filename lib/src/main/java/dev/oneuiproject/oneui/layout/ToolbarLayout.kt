@@ -1188,19 +1188,19 @@ open class ToolbarLayout @JvmOverloads constructor(
                     || DeviceLayoutUtil.isTabletLayoutOrDesktop(context)
             if (isActionModePortrait) {
                 if (!isTouching) {
-                    mMenuSynchronizer!!.updateState(State.PORTRAIT)
+                    mMenuSynchronizer!!.state = State.PORTRAIT
                 } else {
-                    mMenuSynchronizer!!.updateState(State.HIDDEN)
+                    mMenuSynchronizer!!.state = State.HIDDEN
                 }
             } else {
                 if (!isTouching) {
-                    mMenuSynchronizer!!.updateState(State.LANDSCAPE)
+                    mMenuSynchronizer!!.state = State.LANDSCAPE
                 } else {
-                    mMenuSynchronizer!!.updateState(State.HIDDEN)
+                    mMenuSynchronizer!!.state = State.HIDDEN
                 }
             }
         } else {
-            mMenuSynchronizer!!.updateState(State.HIDDEN)
+            mMenuSynchronizer!!.state = State.HIDDEN
         }
     }
 
