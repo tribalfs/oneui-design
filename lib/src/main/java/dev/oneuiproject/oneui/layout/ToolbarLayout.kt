@@ -899,6 +899,10 @@ open class ToolbarLayout @JvmOverloads constructor(
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                 isTouching = false
                 syncActionModeMenu()
+                if (showActionModeSearchPending) {
+                    showActionModeSearchPending = false
+                    showActionModeSearchView()
+                }
             }
         }
         return super.dispatchTouchEvent(event)
@@ -906,6 +910,7 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     private var updateAllSelectorJob: Job? = null
     private var mSearchOnActionMode: SearchOnActionMode? = null
+    private var showActionModeSearchPending = false
 
     /**
      * Starts an Action Mode session. This shows the Toolbar's ActionMode with a toggleable 'All' Checkbox
@@ -942,14 +947,21 @@ open class ToolbarLayout @JvmOverloads constructor(
                 if (isSearchMode) {
                     val query = mSearchView.query
                     animatedVisibility(mSearchToolbar!!, GONE)
-                    showActionModeSearchView()
-                    mActionModeSearchView!!.setQuery(query, true)
+                    mActionModeSearchView?.apply {
+                        setQuery(query, false)
+                        setOnQueryTextListener((mSearchOnActionMode as Concurrent).searchModeListener)
+                    }
+                    if (isTouching) {
+                        showActionModeSearchPending = true
+                    } else{
+                        showActionModeSearchView()
+                    }
                 }
             }
         }
+
         animatedVisibility(mMainToolbar, GONE)
         showActionModeToolbarAnimate()
-        mCustomFooterContainer!!.visibility = GONE
         setupActionModeMenu(showCancel)
         allSelectorStateFlow?.let {
             updateAllSelectorJob = activity!!.lifecycleScope.launch {
@@ -1035,10 +1047,12 @@ open class ToolbarLayout @JvmOverloads constructor(
         ensureActionModeSearchViews()
         mActionModeToolbar!!.apply {
             inflateMenu(R.menu.tbl_am_common)
+            val listener = (mSearchOnActionMode as Concurrent).searchModeListener
             searchMenuItem = menu.findItem(R.id.menu_item_am_search)!!.also {
                 it.isVisible = true
                 it.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
                 it.setOnMenuItemClickListener {
+                    mActionModeSearchView!!.setOnQueryTextListener(listener)
                     showActionModeSearchView()
                     true
                 }
@@ -1047,8 +1061,7 @@ open class ToolbarLayout @JvmOverloads constructor(
                     mActionModeSearchView!!.query = ""
                     v.isVisible = false
                     it.isVisible = true
-                    (mSearchOnActionMode as Concurrent).searchModeListener
-                        .onSearchModeToggle(mActionModeSearchView!!, false)
+                    listener.onSearchModeToggle(mActionModeSearchView!!, false)
                 }
             }
         }
@@ -1065,21 +1078,12 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
     }
 
-
-    private fun showActionModeSearchView() {
-        val actionModeSearchListener =
-            (mSearchOnActionMode as Concurrent).searchModeListener
-
-        mActionModeSearchView!!.setOnQueryTextListener(
-            object: SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String) = actionModeSearchListener.onQueryTextSubmit(query)
-                override fun onQueryTextChange(newText: String) = actionModeSearchListener.onQueryTextChange(newText)
-            })
+    private fun showActionModeSearchView(){
         mActionModeSearchView!!.isVisible = true
         searchMenuItem!!.isVisible = false
+        (mSearchOnActionMode as Concurrent).searchModeListener
+            .onSearchModeToggle(mActionModeSearchView!!, true)
         setExpanded(expanded = false, animate = true)
-
-        actionModeSearchListener.onSearchModeToggle(mActionModeSearchView!!, true)
     }
 
     private val isRTLayout get() = layoutDirection == LAYOUT_DIRECTION_RTL
@@ -1115,7 +1119,6 @@ open class ToolbarLayout @JvmOverloads constructor(
         mAppBarLayout.removeOnOffsetChangedListener(mActionModeTitleFadeListener)
         mActionModeSelectAll.setOnClickListener(null)
         mActionModeCheckBox.isChecked = false
-        setActionModeMenuListenerInternal(null)
         mActionModeTitleFadeListener = null
         mActionModeListener = null
         mMenuSynchronizer = null
@@ -1153,10 +1156,6 @@ open class ToolbarLayout @JvmOverloads constructor(
             }
         }
 
-        mBottomActionModeBar.menu.apply {
-            clear()
-            mActionModeListener!!.onInflateActionMenu(this)
-        }
         mMenuSynchronizer = MenuSynchronizer(
             mBottomActionModeBar,
             mActionModeToolbar!!,
@@ -1164,43 +1163,29 @@ open class ToolbarLayout @JvmOverloads constructor(
                 mActionModeListener!!.onMenuItemClicked(it)
             },
             null
-        )
-    }
-
-    private fun setActionModeMenuListenerInternal(listener: NavigationBarView.OnItemSelectedListener?) {
-        mBottomActionModeBar.setOnItemSelectedListener(listener)
-        if (listener != null) {
-            mActionModeToolbar!!.setOnMenuItemClickListener { item: MenuItem ->
-                listener.onNavigationItemSelected(
-                    mActionModeToolbar!!.menu.findItem(item.itemId)
-                )
-            }
-        } else {
-            mActionModeToolbar!!.setOnMenuItemClickListener(null)
+        ).apply {
+          mActionModeListener!!.onInflateActionMenu(this.menu, activity!!.menuInflater)
         }
     }
 
     private inline fun syncActionModeMenu() {
         if (!isActionMode) return
-        syncActionModeMenuInternal()
+        if (!isTouching && with(mCustomFooterContainer!!){isVisible && height > 0}){
+            mCustomFooterContainer!!.isVisible = false
+            postOnAnimationDelayed({ if (isActionMode) syncActionModeMenuInternal() }, 350)
+        }else{
+            syncActionModeMenuInternal()
+        }
     }
 
     private fun syncActionModeMenuInternal() {
         if (mSelectedItemsCount > 0) {
-            val isActionModePortrait = forcePortraitMenu || DeviceLayoutUtil.isPortrait(resources.configuration)
-                    || DeviceLayoutUtil.isTabletLayoutOrDesktop(context)
-            if (isActionModePortrait) {
-                if (!isTouching) {
-                    mMenuSynchronizer!!.state = State.PORTRAIT
-                } else {
-                    mMenuSynchronizer!!.state = State.HIDDEN
-                }
-            } else {
-                if (!isTouching) {
-                    mMenuSynchronizer!!.state = State.LANDSCAPE
-                } else {
-                    mMenuSynchronizer!!.state = State.HIDDEN
-                }
+            if (!isTouching) {
+                val isMenuModePortrait = forcePortraitMenu
+                        || DeviceLayoutUtil.isPortrait(resources.configuration)
+                        || DeviceLayoutUtil.isTabletLayoutOrDesktop(context)
+                mMenuSynchronizer!!.state =
+                    if (isMenuModePortrait) State.PORTRAIT else State.LANDSCAPE
             }
         } else {
             mMenuSynchronizer!!.state = State.HIDDEN
