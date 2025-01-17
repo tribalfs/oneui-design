@@ -263,6 +263,7 @@ class BottomTabLayout(
                 }
                 true
             }
+            setHorizontalCenter(getMoreButtonHorizontalCenter())
         }
 
     private val reshowDialogRunnable = Runnable {
@@ -293,15 +294,22 @@ class BottomTabLayout(
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        if (gridMenuDialog?.isShowing == true){
-            gridMenuDialog?.updateDialog()
-        }
+        updateGridDialogSizeAndPosition()
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        if (gridMenuDialog?.isShowing == true){
-            gridMenuDialog?.updateDialog()
+        updateGridDialogSizeAndPosition()
+    }
+
+    private fun updateGridDialogSizeAndPosition(){
+        gridMenuDialog?.apply {
+            if (isShowing) {
+                doOnLayout {
+                    setHorizontalCenter(getMoreButtonHorizontalCenter())
+                    updateDialog()
+                }
+            }
         }
     }
 
@@ -494,6 +502,14 @@ class BottomTabLayout(
 
     fun setOnMenuItemClickListener(onMenuItemClickedListener: MenuItem.OnMenuItemClickListener){
         this.itemClickedListener = onMenuItemClickedListener
+    }
+
+    private fun getMoreButtonHorizontalCenter(): Float? {
+        return getTabView(3)?.let { view ->
+            val location = IntArray(2)
+            view.getLocationOnScreen(location)
+            location[0] + view.width / 2f
+        }
     }
 
     private class SavedState : AbsSavedState {

@@ -26,8 +26,6 @@ import androidx.appcompat.app.AppCompatDialog
 import androidx.appcompat.view.SupportMenuInflater
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuItemImpl
-import androidx.appcompat.widget.TooltipCompat
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
@@ -37,6 +35,7 @@ import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.activity
 import dev.oneuiproject.oneui.dialog.internal.toGridDialogItem
 import dev.oneuiproject.oneui.ktx.findWithIndex
+import dev.oneuiproject.oneui.ktx.semSetToolTipText
 import dev.oneuiproject.oneui.ktx.windowWidthNetOfInsets
 import dev.oneuiproject.oneui.layout.Badge
 import dev.oneuiproject.oneui.layout.internal.util.DrawerLayoutUtils.updateBadgeView
@@ -63,6 +62,7 @@ class GridMenuDialog @JvmOverloads constructor(
     private lateinit var mContentView: LinearLayout
     private lateinit var mGridListView: RecyclerView
     private val mAdapter: GridListAdapter = GridListAdapter()
+    private var horizontalCenter: Float? = null
 
     fun interface OnItemClickListener {
         fun onClick(item: GridItem): Boolean
@@ -101,6 +101,10 @@ class GridMenuDialog @JvmOverloads constructor(
         updateDialog()
     }
 
+    fun setHorizontalCenter(center: Float?) {
+        horizontalCenter = center
+    }
+
     fun updateDialog(){
         mSpanCount = calculateColumnCount()
         mGridListView = mContentView.findViewById<RecyclerView>(R.id.grid_menu_view).apply {
@@ -117,7 +121,7 @@ class GridMenuDialog @JvmOverloads constructor(
         updateDialogWidthAndPosition()
     }
 
-    private fun updateDialogWidthAndPosition(){
+    private fun updateDialogWidthAndPosition() {
         if (Build.VERSION.SDK_INT >= 22) {
             window!!.setElevation(0f)
         }
@@ -132,35 +136,48 @@ class GridMenuDialog @JvmOverloads constructor(
                     this@wlp.y = 0
                     this@wlp.width = context.windowWidthNetOfInsets
                 }
-                setGravity(81)
+                setGravity(Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL)
             }
         }else{
             val context = context
             val resources = context.resources
             val config = resources.configuration
-            val isDesktopMode = isDeskTopMode(resources)
 
             window!!.apply {
-                attributes = windowLp.apply wlp@ {
-                    var width = (context.activity!!.window.decorView.width * TypedValueUtils.getFloat(context,
-                        if (isInMultiWindowModeCompat(context)) {
-                            R.dimen.more_menu_dialog_width_ratio_mw
-                        } else R.dimen.more_menu_dialog_width_ratio)).toInt()
+                val decorView = context.activity!!.window.decorView
+                val decorViewWidth = decorView.width
+                var dialogWidth = (decorViewWidth * TypedValueUtils.getFloat(context,
+                    if (isInMultiWindowModeCompat(context)) {
+                        R.dimen.more_menu_dialog_width_ratio_mw
+                    } else R.dimen.more_menu_dialog_width_ratio)).toInt()
 
-                    if (DeviceLayoutUtil.isTabletLayoutOrDesktop(context)) {
-                        width = width.coerceAtMost(resources.getDimensionPixelOffset(R.dimen.more_menu_dialog_max_width))
-                        if (DeviceLayoutUtil.isLandscape(config) && !isInMultiWindowModeCompat(context)) {
-                            width = width.coerceAtLeast(resources.getDimensionPixelOffset(R.dimen.more_menu_dialog_min_width))
+                if (DeviceLayoutUtil.isTabletLayoutOrDesktop(context)) {
+                    dialogWidth = dialogWidth.coerceAtMost(resources.getDimensionPixelOffset(R.dimen.more_menu_dialog_max_width))
+                    if (DeviceLayoutUtil.isLandscape(config) && !isInMultiWindowModeCompat(context)) {
+                        dialogWidth = dialogWidth.coerceAtLeast(resources.getDimensionPixelOffset(R.dimen.more_menu_dialog_min_width))
+                    }
+                }
+
+                val isRTL = config.layoutDirection == LAYOUT_DIRECTION_RTL
+
+                attributes = windowLp.apply wlp@ {
+                    this@wlp.width = dialogWidth
+                    this@wlp.y = resources.getDimensionPixelOffset(R.dimen.more_menu_dialog_y_offset)
+
+                    if (isRTL) {
+                        setGravity(Gravity.BOTTOM or Gravity.START)
+                        horizontalCenter?.let {
+                            this@wlp.x = -(decorViewWidth / 2 - it).toInt()
+                            this@wlp.windowAnimations = R.style.MoreMenuDialogSlideRight
+                        }
+                    }else{
+                        setGravity(Gravity.BOTTOM or Gravity.END)
+                        horizontalCenter?.let {
+                            this@wlp.x = (it - decorViewWidth / 2).toInt()
+                            this@wlp.windowAnimations = R.style.MoreMenuDialogSlideLeft
                         }
                     }
-                    this@wlp.width = width
-                    this@wlp.y = resources.getDimensionPixelOffset(
-                        if (isDesktopMode) R.dimen.more_menu_dialog_y_offset_dex else R.dimen.more_menu_dialog_y_offset)
                 }
-                val baseGravity = if (isDesktopMode) Gravity.TOP else Gravity.BOTTOM
-                val isRTL = config.layoutDirection == LAYOUT_DIRECTION_RTL
-                setGravity(baseGravity or (if (isRTL) { Gravity.START } else Gravity.END))
-                attributes!!.windowAnimations = if (isRTL) R.style.MoreMenuDialogSlideRight else R.style.MoreMenuDialogSlideLeft
             }
         }
     }
@@ -354,9 +371,7 @@ class GridMenuDialog @JvmOverloads constructor(
             }
         }
 
-        override fun getItemCount(): Int {
-            return mGridItems.size
-        }
+        override fun getItemCount(): Int = mGridItems.size
     }
 
     private class GridListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -374,9 +389,7 @@ class GridMenuDialog @JvmOverloads constructor(
             }
         }
 
-        fun setTooltipText(tooltipText: CharSequence?) {
-            TooltipCompat.setTooltipText(itemView, tooltipText)
-        }
+        fun setTooltipText(tooltipText: CharSequence?) = itemView.semSetToolTipText(tooltipText)
     }
 
     data class GridItem(
