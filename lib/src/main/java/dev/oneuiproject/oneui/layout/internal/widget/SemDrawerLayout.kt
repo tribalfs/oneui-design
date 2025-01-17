@@ -196,10 +196,11 @@ class SemDrawerLayout @JvmOverloads constructor(
 
     /**
      * Set a custom radius for the drawer panel's edges.
+     * Set to -1 to reset the default.
      */
     override fun setDrawerCornerRadius(@Px px: Int) {
         (mDrawerPane.outlineProvider as? DrawerOutlineProvider)?.let {
-            it.cornerRadius = px
+            it.cornerRadius = if (px == -1) DEFAULT_DRAWER_RADIUS.dpToPx(resources) else px
         } ?: run {
             mDrawerPane.outlineProvider = DrawerOutlineProvider(px)
             mDrawerPane.clipToOutline = true

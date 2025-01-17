@@ -104,7 +104,9 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     /**Set a custom radius for the drawer panel's edges.*/
     fun setDrawerCornerRadius(@Dimension dp: Float) = containerLayout.setDrawerCornerRadius(dp)
 
-    /**Set a custom radius for the drawer panel's edges.*/
+    /**Set a custom radius for the drawer panel's edges.
+     * @param px The radius in pixels. Set to -1 to restore the default radius.
+     */
     fun setDrawerCornerRadius(@Px px: Int) = containerLayout.setDrawerCornerRadius(px)
 
 
@@ -202,7 +204,6 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
 
     companion object {
         private const val TAG = "DrawerLayout"
-        private const val DEFAULT_DRAWER_RADIUS = 15f
         private const val DRAWER_HEADER = 4
         const val DRAWER_PANEL = 5
 

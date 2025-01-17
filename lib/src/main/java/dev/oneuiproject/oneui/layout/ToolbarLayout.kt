@@ -32,6 +32,11 @@ import android.widget.TextView
 import androidx.annotation.CallSuper
 import androidx.annotation.IntRange
 import androidx.annotation.RestrictTo
+import androidx.appcompat.util.SeslRoundedCorner
+import androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_ALL
+import androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_NONE
+import androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_TOP_LEFT
+import androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_TOP_RIGHT
 import androidx.appcompat.widget.ActionModeSearchView
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SeslSwitchBar
@@ -76,6 +81,7 @@ import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type
 import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout
 import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout.Companion.MARGIN_PROVIDER_ADP_DEFAULT
 import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout.MarginProvider
+import dev.oneuiproject.oneui.widget.RoundedFrameLayout
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.StateFlow
@@ -146,6 +152,12 @@ open class ToolbarLayout @JvmOverloads constructor(
         CLEAR_CLOSE
     }
 
+    enum class MainRoundedCorners {
+        ALL,
+        TOP,
+        BOTTOM,
+        NONE
+    }
     /**
      * @see Dismiss
      * @see NoDismiss
@@ -227,8 +239,9 @@ open class ToolbarLayout @JvmOverloads constructor(
     private var _showNavAsBack = false
     private var mNavigationBadgeIcon: LayerDrawable? = null
 
-    private var _mainContainer: FrameLayout? = null
+    private var _mainContainer: RoundedFrameLayout? = null
     internal val mainContainer: FrameLayout get() = _mainContainer!!
+    private var _mainRoundedCorners: MainRoundedCorners = MainRoundedCorners.ALL
 
     private lateinit var mMainContainerParent: LinearLayout
 
@@ -354,6 +367,7 @@ open class ToolbarLayout @JvmOverloads constructor(
                 mHandleInsets = it.getBoolean(R.styleable.ToolbarLayout_handleInsets, true)
             }
             mShowSwitchBar = it.getBoolean(R.styleable.ToolbarLayout_showSwitchBar, false)
+            _mainRoundedCorners = MainRoundedCorners.entries[it.getInteger(R.styleable.ToolbarLayout_mainRoundedCorners, 0)]
         }
     }
 
@@ -396,6 +410,9 @@ open class ToolbarLayout @JvmOverloads constructor(
         setNavigationButtonIcon(mNavigationIcon)
         applyCachedTitles()
         updateAppbarHeight()
+        if (_mainRoundedCorners != MainRoundedCorners.ALL){
+            applyMainRoundedCorners()
+        }
     }
 
     override fun onAttachedToWindow() {
@@ -1310,6 +1327,43 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Set [rounded corners][SeslRoundedCorner] around the main content.
+     * This is set to [ROUNDED_CORNER_ALL] by default.
+     *
+     */
+    var mainRoundedCorners: MainRoundedCorners
+        get() = _mainRoundedCorners
+        set(value) {
+            if (_mainRoundedCorners == value) return
+            _mainRoundedCorners = value
+            applyMainRoundedCorners()
+        }
+
+    private fun applyMainRoundedCorners(){
+        when (mainRoundedCorners) {
+            MainRoundedCorners.ALL -> {
+                _mainContainer!!.roundedCorners = ROUNDED_CORNER_TOP
+                mBottomRoundedCorner.isVisible = true
+            }
+
+            MainRoundedCorners.TOP -> {
+                _mainContainer!!.roundedCorners = ROUNDED_CORNER_TOP
+                mBottomRoundedCorner.isVisible = false
+            }
+
+            MainRoundedCorners.BOTTOM -> {
+                _mainContainer!!.roundedCorners = ROUNDED_CORNER_NONE
+                mBottomRoundedCorner.isVisible = true
+            }
+
+            MainRoundedCorners.NONE -> {
+                _mainContainer!!.roundedCorners = ROUNDED_CORNER_NONE
+                mBottomRoundedCorner.isVisible = false
+            }
+        }
+    }
+
     class ToolbarLayoutParams(context: Context, attrs: AttributeSet?) :
         LayoutParams(context, attrs) {
         val layoutLocation = attrs?.let { at ->
@@ -1369,6 +1423,8 @@ open class ToolbarLayout @JvmOverloads constructor(
         private const val FOOTER = 2
         private const val ROOT = 3
         private const val ROOT_BOUNDED = 6
+
+        private const val ROUNDED_CORNER_TOP = ROUNDED_CORNER_TOP_LEFT or ROUNDED_CORNER_TOP_RIGHT
     }
 }
 

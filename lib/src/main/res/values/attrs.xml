@@ -116,6 +116,13 @@
         <attr name="navigationIcon" format="reference" />
         <!-- Set to true to show a SeslSwitchBar right below the AppBarLayout. Default is false-->
         <attr name="showSwitchBar" format="boolean"/>
+        <!-- Sets rounded corners around the main content. Default is all.-->
+        <attr name="mainRoundedCorners">
+            <enum name="all" value="0" />
+            <enum name="top" value="1" />
+            <enum name="bottom" value="2" />
+            <enum name="none" value="3" />
+        </attr>
     </declare-styleable>
 
     <declare-styleable name="DrawerLayout">

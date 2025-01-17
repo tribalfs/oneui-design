@@ -127,12 +127,7 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
         mDrawerHeaderButtonBadgeView =
             mDrawerHeaderLayout!!.findViewById(R.id.drawer_header_button_badge)
 
-        val cornerRadius = DEFAULT_DRAWER_RADIUS.dpToPx(resources)
-        seslSetRoundedCornerOn(cornerRadius)
-        mDrawerPane.apply {
-            outlineProvider = DrawerOutlineProvider(cornerRadius)
-            clipToOutline = true
-        }
+        setDrawerCornerRadius(-1)
 
         setNavigationButtonTooltip(context.getText(R.string.oui_navigation_drawer))
         setDualDetailPane(false)
@@ -219,12 +214,14 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
      * Set a custom radius for the drawer panel's edges.
      */
     override fun setDrawerCornerRadius(@Px px: Int) {
+        val cornerRadius = if (px == -1) DEFAULT_DRAWER_RADIUS.dpToPx(resources) else px
         (mDrawerPane.outlineProvider as? DrawerOutlineProvider)?.let {
-            it.cornerRadius = px
+            it.cornerRadius = cornerRadius
         } ?: run {
-            mDrawerPane.outlineProvider = DrawerOutlineProvider(px)
+            mDrawerPane.outlineProvider = DrawerOutlineProvider(cornerRadius)
             mDrawerPane.clipToOutline = true
         }
+        seslSetRoundedCornerOn(cornerRadius)
     }
 
     override fun setCustomHeader(headerView: View, params: ViewGroup.LayoutParams) {
