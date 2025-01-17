@@ -1,5 +1,6 @@
 package dev.oneuiproject.oneuiexample.ui.fragment.icons;
 
+import static dev.oneuiproject.oneui.ktx.MenuItemKt.setMenuItemBadge;
 import static dev.oneuiproject.oneui.ktx.RecyclerViewKt.enableCoreSeslFeatures;
 import static dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.DISMISS;
 import static dev.oneuiproject.oneuiexample.ui.core.ktx.ToastKt.toast;
@@ -27,6 +28,7 @@ import com.sec.sesl.tester.R;
 
 import dev.oneuiproject.oneui.delegates.AppBarAwareYTranslator;
 import dev.oneuiproject.oneui.delegates.ViewYTranslator;
+import dev.oneuiproject.oneui.ktx.MenuItemKt;
 import dev.oneuiproject.oneui.layout.Badge;
 import dev.oneuiproject.oneui.layout.DrawerLayout;
 import dev.oneuiproject.oneui.layout.ToolbarLayout;
@@ -171,8 +173,8 @@ public class IconsFragment extends BaseFragment {
         drawerLayout.startActionMode(
                 new ToolbarLayout.ActionModeListener() {
                     @Override
-                    public void onInflateActionMenu(@NonNull Menu menu) {
-                        requireActivity().getMenuInflater().inflate(R.menu.menu_action_mode_icons, menu);
+                    public void onInflateActionMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                        menuInflater.inflate(R.menu.menu_action_mode_icons, menu);
                     }
 
                     @Override
@@ -248,14 +250,14 @@ public class IconsFragment extends BaseFragment {
             menuInflater.inflate(R.menu.menu_icons, menu);
 
             MenuItem searchItem = menu.findItem(R.id.menu_icons_search);
-            drawerLayout.setMenuItemBadge((SeslMenuItem) searchItem, Badge.DOT.INSTANCE);
+            setMenuItemBadge(searchItem, Badge.DOT.INSTANCE);
         }
 
         @Override
         public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
             if (menuItem.getItemId() == R.id.menu_icons_search) {
                 launchSearchMode();
-                drawerLayout.setMenuItemBadge((SeslMenuItem) menuItem, Badge.NONE.INSTANCE);
+                setMenuItemBadge(menuItem, Badge.NONE.INSTANCE);
                 return true;
             }
             return false;
