@@ -15,6 +15,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
@@ -97,10 +98,12 @@ open class ToolbarLayout @JvmOverloads constructor(
          * during the lifetime of this action mode.
          *
          * @param menu The [Menu] to be used for action menu items.
-         * Inflate the menu items for this action mode session using this menu.
+         * @param menuInflater The [MenuInflater] to use for inflating the menu.
+         *
+         * Inflate the menu items for this action mode session using this menu and menuInflater.
          *
          * @see onMenuItemClicked */
-        fun onInflateActionMenu(menu: Menu)
+        fun onInflateActionMenu(menu: Menu, menuInflater: MenuInflater)
 
         /** Called when the current action mode session is ended.*/
         fun onEndActionMode()
@@ -1489,7 +1492,7 @@ inline fun <T : ToolbarLayout> T.startSearchMode(
  * Example usage:
  * ```
  * toolbarLayout.startActionMode(
- *     onInflateMenu = { menu ->
+ *     onInflateMenu = { menu, menuInflater ->
  *         // Inflate menu items here
  *         menuInflater.inflate(R.menu.action_menu, menu)
  *     },
@@ -1511,7 +1514,7 @@ inline fun <T : ToolbarLayout> T.startSearchMode(
  *
  */
 inline fun <T : ToolbarLayout> T.startActionMode(
-    crossinline onInflateMenu: (menu: Menu) -> Unit,
+    crossinline onInflateMenu: (menu: Menu, menuInflater: MenuInflater) -> Unit,
     crossinline onEnd: () -> Unit,
     crossinline onSelectMenuItem: (item: MenuItem) -> Boolean,
     crossinline onSelectAll: (Boolean) -> Unit,
@@ -1521,7 +1524,7 @@ inline fun <T : ToolbarLayout> T.startActionMode(
 ) {
     startActionMode(
         object : ActionModeListener {
-            override fun onInflateActionMenu(menu: Menu) = onInflateMenu(menu)
+            override fun onInflateActionMenu(menu: Menu, menuInflater: MenuInflater) = onInflateMenu(menu, menuInflater)
             override fun onEndActionMode() = onEnd()
             override fun onMenuItemClicked(item: MenuItem) = onSelectMenuItem(item)
             override fun onSelectAll(isChecked: Boolean) = onSelectAll.invoke(isChecked)
