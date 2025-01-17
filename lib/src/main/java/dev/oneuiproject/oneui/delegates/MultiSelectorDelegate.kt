@@ -129,6 +129,9 @@ class MultiSelectorDelegate<T>(
                             if (pos != NO_POSITION) onStateChanged(STARTED, pos)
                         }
                         ENDED -> {
+                            //cache bottomPosition before the values are reset in onStateChanged()
+                            val bottomPosition = maxOf(firstPosition, lastPosition)
+                            postDelayed({smoothScrollToPosition(bottomPosition)}, 450)
                             onStateChanged(ENDED, pos)
                             restoreItemAnimator?.let {
                                 itemAnimator = it
