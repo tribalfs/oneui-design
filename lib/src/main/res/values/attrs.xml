@@ -289,4 +289,10 @@
     <declare-styleable name="BottomTabLayout">
         <attr name="menu" />
     </declare-styleable>
+
+    <!-- The SeslTimePicker dialog theme. -->
+    <attr name="timePickerDialogTheme" format="reference" />
+
+    <!-- The SeslDatePicker dialog theme. -->
+    <attr name="datePickerDialogTheme" format="reference" />
 </resources>

@@ -34,6 +34,9 @@
         <item name="android:buttonStyle">@style/Widget.AppCompat.Button</item>
         <item name="android:spinnerStyle">@style/Widget.AppCompat.Spinner</item>
         <item name="android:editTextStyle">@style/Widget.AppCompat.EditText</item>
+
+        <item name="datePickerDialogTheme">@style/Theme.AppCompat.PickerDialog.DatePicker</item>
+        <item name="timePickerDialogTheme">@style/Theme.AppCompat.PickerDialog.TimePicker</item>
     </style>
 
 </resources>
