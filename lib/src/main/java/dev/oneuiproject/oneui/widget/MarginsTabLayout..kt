@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import androidx.annotation.CallSuper
 import androidx.core.content.res.use
+import androidx.core.view.doOnLayout
 import androidx.core.view.updateLayoutParams
 import com.google.android.material.tabs.TabLayout
 import dev.oneuiproject.oneui.design.R
@@ -112,14 +113,15 @@ open class MarginsTabLayout @JvmOverloads constructor(
         }
     }
 
-    private fun invalidateTabLayoutInternal() = post {
+    private fun invalidateTabLayoutInternal() = doOnLayout{
         val parentWidth = with(parent as ViewGroup) { width - paddingStart - paddingEnd }
         if (parentWidth != 0 && containerWidth != parentWidth) {
             containerWidth = parentWidth
             if (tabDimens == null) {
                 tabDimens = TabDimenDefault(defaultTabPadding)
             }
-            invalidateTabLayout()
+            // Post the invalidateTabLayout call to ensure layout is complete
+            post { invalidateTabLayout() }
         }
     }
 
