@@ -77,6 +77,7 @@ import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout
 import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout.Companion.MARGIN_PROVIDER_ADP_DEFAULT
 import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout.MarginProvider
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -397,7 +398,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         updateAppbarHeight()
     }
 
-    public override fun onAttachedToWindow() {
+    override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         refreshLayout(resources.configuration)
         syncActionModeMenu()
@@ -788,12 +789,20 @@ open class ToolbarLayout @JvmOverloads constructor(
     private inline fun setupSearchModeListener() {
         mSearchView.setOnQueryTextListener(
             object : SearchView.OnQueryTextListener {
+                private var backCallbackUpdaterJob: Job? = null
+
                 override fun onQueryTextSubmit(query: String): Boolean {
                     return mSearchModeListener?.onQueryTextSubmit(query) == true
                 }
 
                 override fun onQueryTextChange(newText: String): Boolean {
-                    updateOnBackCallbackState()
+                    if (searchModeOBPBehavior == CLEAR_CLOSE) {
+                        backCallbackUpdaterJob?.cancel()
+                        backCallbackUpdaterJob = activity!!.lifecycleScope.launch {
+                            delay(250)
+                            updateOnBackCallbackState()
+                        }
+                    }
                     return mSearchModeListener?.onQueryTextChange(newText) == true
                 }
             })
