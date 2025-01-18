@@ -12,8 +12,11 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.updateLayoutParams
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.appCompatActivity
+import dev.oneuiproject.oneui.ktx.pxToDp
+import dev.oneuiproject.oneui.ktx.windowHeight
 import dev.oneuiproject.oneui.ktx.windowWidthNetOfInsets
 import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.updateStatusBarVisibility
+import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout.MarginProvider
 
 /**
  * Extension of [CoordinatorLayout]  which automatically hides the status bar based
@@ -26,7 +29,7 @@ open class AdaptiveCoordinatorLayout @JvmOverloads constructor(
     defStyleAttr: Int = androidx.coordinatorlayout.R.attr.coordinatorLayoutStyle,
 ) : CoordinatorLayout(context, attrs, defStyleAttr) {
 
-    class SideMarginParams(
+    data class SideMarginParams(
         @JvmField @Px var sideMargin: Int,
         @JvmField var matchParent: Boolean = true
     )
@@ -52,8 +55,9 @@ open class AdaptiveCoordinatorLayout @JvmOverloads constructor(
         restoreMargins(childViews)
         adaptiveMarginViews = childViews
         marginProviderImpl = provider
-        if (isAttachedToWindow){
-            updateContentSideMargin()
+        if (!isAttachedToWindow) return
+        if (computeSideMarginParams()){
+            requestLayout()
         }
     }
 
@@ -88,48 +92,75 @@ open class AdaptiveCoordinatorLayout @JvmOverloads constructor(
         super.addView(child, index, params)
     }
 
+    override fun onMeasureChild(
+        child: View,
+        parentWidthMeasureSpec: Int,
+        widthUsed: Int,
+        parentHeightMeasureSpec: Int,
+        heightUsed: Int
+    ) {
+
+        if (lastSideMarginParams != null || computeSideMarginParams()) {
+            if (adaptiveMarginViews?.contains(child) == true) {
+                @Suppress("UNCHECKED_CAST")
+                val origMargins = child.getTag(R.id.tag_init_side_margins) as Pair<Int, Int>
+                child.applySideMarginParams(
+                    lastSideMarginParams!!,
+                    origMargins.first,
+                    origMargins.second
+                )
+            }
+        }
+
+        super.onMeasureChild(
+            child,
+            parentWidthMeasureSpec,
+            widthUsed,
+            parentHeightMeasureSpec,
+            heightUsed
+        )
+    }
+
     override fun onAttachedToWindow() {
+        computeSideMarginParams()
         super.onAttachedToWindow()
         activity?.updateStatusBarVisibility()
-        updateContentSideMargin()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
+        computeSideMarginParams()
         super.onConfigurationChanged(newConfig)
-        if (!isAttachedToWindow) return
         activity?.updateStatusBarVisibility()
-        updateContentSideMargin()
     }
 
-    private fun updateContentSideMargin() {
-        val adaptiveViews = adaptiveMarginViews?.also { if (it.isEmpty()) return } ?: return
-        val sideMarginParams = marginProviderImpl?.getSideMarginParams(context) ?: return
-        for (child in adaptiveViews) {
-            @Suppress("UNCHECKED_CAST")
-            val origMargins = child.getTag(R.id.tag_init_side_margins) as Pair<Int, Int>
-            child.setSideMarginParams(sideMarginParams, origMargins.first, origMargins.second)
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        computeSideMarginParams()
+        super.onSizeChanged(w, h, oldw, oldh)
+    }
+
+    private var lastSideMarginParams: SideMarginParams? = null
+
+    private fun computeSideMarginParams(): Boolean {
+        adaptiveMarginViews?.let {
+            marginProviderImpl?.getSideMarginParams(context)?.let {smp ->
+                if (smp != lastSideMarginParams) {
+                    lastSideMarginParams = smp
+                    return true
+                }
+            }
         }
-        post{ requestLayout() }
+        return false
     }
 
-    private inline fun View.setSideMarginParams(
+    private inline fun View.applySideMarginParams(
         smp: SideMarginParams,
         additionalLeft: Int,
         additionalRight: Int
     ) {
-        (layoutParams as? MarginLayoutParams)?.let {
-            updateLayoutParams<MarginLayoutParams> {
-                if (smp.matchParent) width = ViewGroup.LayoutParams.MATCH_PARENT
-                leftMargin = smp.sideMargin + additionalLeft
-                rightMargin = smp.sideMargin + additionalRight
-            }
-        } ?: run {
-            setPadding(
-                smp.sideMargin + additionalLeft,
-                paddingTop,
-                smp.sideMargin + additionalRight,
-                paddingBottom
-            )
+        layoutParams = (layoutParams as LayoutParams).apply{
+            if (smp.matchParent) width = ViewGroup.LayoutParams.MATCH_PARENT
+            leftMargin = smp.sideMargin + additionalLeft
+            rightMargin = smp.sideMargin + additionalRight
         }
     }
 
@@ -138,10 +169,15 @@ open class AdaptiveCoordinatorLayout @JvmOverloads constructor(
 
         @JvmField
         val MARGIN_PROVIDER_ADP_DEFAULT = MarginProvider { context ->
-            val config = context.resources.configuration
-            val screenWidthDp = config.screenWidthDp
-            val screenHeightDp = config.screenHeightDp
             val widthXInsets = context.windowWidthNetOfInsets
+            val pxToDp = 1f.pxToDp(context.resources)
+
+            // Using the following values instead of those from
+            // resources.configuration.* due to the latter's
+            // delay in being updated.
+            val screenWidthDp = widthXInsets * pxToDp
+            val screenHeightDp = context.windowHeight * pxToDp
+
             val marginRatio = when {
                 (screenWidthDp < 589) -> 0.0f
                 (screenHeightDp > 411 && screenWidthDp <= 959) -> 0.05f
@@ -150,7 +186,7 @@ open class AdaptiveCoordinatorLayout @JvmOverloads constructor(
                 else -> 0.0f
             }
             SideMarginParams(
-                maxOf((widthXInsets * marginRatio).toInt()),
+                (widthXInsets * marginRatio).toInt(),
                 screenWidthDp >= 589
             )
         }
