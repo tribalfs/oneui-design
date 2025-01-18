@@ -208,6 +208,40 @@ inline fun <T: TabLayout>T.getTabView(position: Int): View? {
     } else null
 }
 
+
+/**
+ * Enables or disables all or specified tabs.
+ *
+ * @param enabled `true` to enable the tabs, `false` to disable them.
+ * @param tabIndex Optional. Array of zero-based indices representing the tabs to enable/disable.
+ * If not provided, all tabs are affected.
+ *
+ * Example Usage:
+ * ```kotlin
+ * // Disable all tabs:
+ * myTabLayout.setTabsEnabled(false)
+ *
+ * // Disable the tab at index 1:
+ * myTabLayout.setTabsEnabled(false, 1)
+ *
+ * // Enable tabs at index 0 and 2:
+ * myTabLayout.setTabsEnabled(true, 0, 2)
+ * ```
+ */
+inline fun <T: TabLayout>T.setTabsEnabled(enabled: Boolean, vararg tabIndex: Int) {
+    tabViewGroup?.apply {
+        for (i in 0 until tabCount) {
+            if (tabIndex.isEmpty() || i in tabIndex) {
+                getChildAt(i)?.apply {
+                    isEnabled = enabled
+                    alpha = if (enabled) 1.0f else 0.4f
+                }
+            }
+        }
+    }
+}
+
+
 @JvmName("setTabBadge")
 inline fun <T: TabLayout>T.setBadge(tabIndex: Int, badge: Badge){
     when (badge){
