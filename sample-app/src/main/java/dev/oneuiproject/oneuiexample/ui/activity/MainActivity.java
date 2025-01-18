@@ -20,6 +20,7 @@ import com.sec.sesl.tester.R;
 import com.sec.sesl.tester.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -42,8 +43,6 @@ import dev.oneuiproject.oneuiexample.ui.core.DarkModeUtils;
 public class MainActivity extends AppCompatActivity
         implements DrawerListAdapter.DrawerListener {
     private ActivityMainBinding mBinding;
-    private FragmentManager mFragmentManager;
-    private final List<Fragment> fragments = new ArrayList<>();
     DrawerListAdapter adapter;
 
     @Override
@@ -52,10 +51,11 @@ public class MainActivity extends AppCompatActivity
         mBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
 
-        initFragmentList();
-        initDrawer();
-        initFragments();
-        initOnBackPressed();
+        if (savedInstanceState == null) {
+            initFragments();
+        }
+        initDrawer(savedInstanceState);
+        getOnBackPressedDispatcher().addCallback(this, mBackPressedCallback);
     }
 
     @Override
@@ -68,33 +68,19 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void initFragmentList() {
-        fragments.add(new ContactsFragment());
-        fragments.add(null);
-        fragments.add(new WidgetsFragment());
-        fragments.add(new ProgressBarFragment());
-        fragments.add(new SeekBarFragment());
-        fragments.add(new TabsFragment());
-        fragments.add(null);
-        fragments.add(new PickersFragment());
-        fragments.add(new QRCodeFragment());
-        fragments.add(new IconsFragment());
-        fragments.add(null);
-        fragments.add(new AppPickerFragment());
-
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_SELECTED_POSITION, adapter.getSelectedPosition());
     }
 
     private OnBackPressedCallback mBackPressedCallback = new OnBackPressedCallback(false) {
         @Override
         public void handleOnBackPressed() {
-            onDrawerItemSelected(0);
-            ((DrawerListAdapter)mBinding.drawerListView.getAdapter()).setSelectedItem(0);
+            adapter.setSelectedItem(0);
         }
     };
 
-    private void initOnBackPressed() {
-        getOnBackPressedDispatcher().addCallback(this, mBackPressedCallback);
-    }
 
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
@@ -115,9 +101,26 @@ public class MainActivity extends AppCompatActivity
         }
     };
 
-    private void initDrawer() {
-        adapter = new DrawerListAdapter(this, fragments, this);
-        mBinding.drawerLayout.setHeaderButtonIcon(AppCompatResources.getDrawable(this, dev.oneuiproject.oneui.R.drawable.ic_oui_settings_outline));
+    private void initDrawer(Bundle savedInstanceState) {
+        List<FragmentInfo> drawerItems = new ArrayList<>();
+        List<Integer> dividerPositions = Arrays.asList(1, 5, 8);
+        for (Fragment fragment: getSupportFragmentManager().getFragments()){
+            drawerItems.add((FragmentInfo)fragment);
+            if (dividerPositions.contains(drawerItems.size() - 1)){
+                drawerItems.add(null/*for divider*/);
+            }
+        }
+
+        adapter = new DrawerListAdapter(this, drawerItems, this);
+
+        if (savedInstanceState != null) {
+            adapter.setSelectedItem(savedInstanceState.getInt(KEY_SELECTED_POSITION, 0));
+        }else{
+            adapter.setSelectedItem(0);
+        }
+
+        mBinding.drawerLayout.setHeaderButtonIcon(
+                AppCompatResources.getDrawable(this, dev.oneuiproject.oneui.R.drawable.ic_oui_settings_outline));
         mBinding.drawerLayout.setHeaderButtonTooltip("Preferences");
         mBinding.drawerLayout.setHeaderButtonOnClickListener(v -> {
             ActivityUtils.startPopOverActivity(this,
@@ -156,43 +159,54 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initFragments() {
-        mFragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        for (Fragment fragment : fragments) {
-            if (fragment != null) transaction.add(R.id.main_content, fragment);
-        }
-        transaction.commit();
-        mFragmentManager.executePendingTransactions();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-        onDrawerItemSelected(0);
+        transaction.add(R.id.main_content, new ContactsFragment());
+        transaction.add(R.id.main_content, new WidgetsFragment());
+        transaction.add(R.id.main_content, new ProgressBarFragment());
+        transaction.add(R.id.main_content, new SeekBarFragment());
+        transaction.add(R.id.main_content, new TabsFragment());
+        transaction.add(R.id.main_content, new PickersFragment());
+        transaction.add(R.id.main_content, new QRCodeFragment());
+        transaction.add(R.id.main_content, new IconsFragment());
+        transaction.add(R.id.main_content, new AppPickerFragment());
+
+        transaction.commitNow();
     }
 
     @Override
-    public boolean onDrawerItemSelected(int position) {
-        Fragment newFragment = fragments.get(position);
-        FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        for (Fragment fragment : mFragmentManager.getFragments()) {
-            transaction.hide(fragment);
+    public boolean onFragmentItemSelected(FragmentInfo fragmentInfo) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        String selectedClassName = fragmentInfo.getClass().getName();
+        for (Fragment fragment : fragmentManager.getFragments()) {
+            if (fragment.getClass().getName().equals(selectedClassName)){
+                if (fragment.isHidden()) {
+                    transaction.show(fragment);
+                }
+            }else {
+                transaction.hide(fragment);
+            }
         }
-        transaction.show(newFragment).commit();
+        transaction.commit();
 
-        if (newFragment instanceof FragmentInfo) {
-            if (!((FragmentInfo) newFragment).isAppBarEnabled()) {
-                mBinding.drawerLayout.setExpanded(false, false);
-                mBinding.drawerLayout.setExpandable(false);
-            } else {
-                mBinding.drawerLayout.setExpandable(true);
-                mBinding.drawerLayout.setExpanded(false, false);
-            }
-            mBinding.drawerLayout.setTitle(((FragmentInfo) newFragment).getTitle());
-            mBinding.drawerLayout.setExpandedSubtitle(((FragmentInfo) newFragment).getSubtitle());
-            if (((FragmentInfo) newFragment).showBottomTab()) {
-                mBinding.bottomTab.show();
-            }else{
-                mBinding.bottomTab.hide();
-            }
-            mBinding.drawerLayout.setImmersiveScroll(((FragmentInfo) newFragment).isImmersiveScroll());
+        if (!fragmentInfo.isAppBarEnabled()) {
+            mBinding.drawerLayout.setExpanded(false, false);
+            mBinding.drawerLayout.setExpandable(false);
+        } else {
+            mBinding.drawerLayout.setExpandable(true);
+            mBinding.drawerLayout.setExpanded(false, false);
         }
+        mBinding.drawerLayout.setTitle(fragmentInfo.getTitle());
+        mBinding.drawerLayout.setExpandedSubtitle(fragmentInfo.getSubtitle());
+
+        if (fragmentInfo.showBottomTab()) {
+            mBinding.bottomTab.show();
+        }else{
+            mBinding.bottomTab.hide();
+        }
+        mBinding.drawerLayout.setImmersiveScroll(fragmentInfo.isImmersiveScroll());
 
         if (mBinding.drawerLayout.isLargeScreenMode()) {
             if (mBinding.drawerLayout.isActionMode()) {
@@ -205,7 +219,7 @@ public class MainActivity extends AppCompatActivity
             mBinding.drawerLayout.setDrawerOpen(false, true);
         }
 
-        mBackPressedCallback.setEnabled(position != 0);
+        mBackPressedCallback.setEnabled(!selectedClassName.equals(ContactsFragment.class.getSimpleName()));
 
         return true;
     }
@@ -221,4 +235,6 @@ public class MainActivity extends AppCompatActivity
             mBinding.drawerLayout.setSearchQueryFromIntent(intent);
         }
     }
+
+    private static final String KEY_SELECTED_POSITION = "selected_position";
 }

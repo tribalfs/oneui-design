@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sec.sesl.tester.R;
@@ -18,19 +17,19 @@ import dev.oneuiproject.oneuiexample.ui.core.base.FragmentInfo;
 
 public class DrawerListAdapter extends RecyclerView.Adapter<DrawerListViewHolder> {
     private Context mContext;
-    private List<Fragment> mFragments;
+    private List<FragmentInfo> mFragmentInfos;
     private DrawerListener mListener;
-    private int mSelectedPos;
+    private int mSelectedPos = -1;
     private float offsetApplied = 1f;
 
     public interface DrawerListener {
-        boolean onDrawerItemSelected(int position);
+        boolean onFragmentItemSelected(FragmentInfo fragmentInfo);
     }
 
-    public DrawerListAdapter(@NonNull Context context, List<Fragment> fragments,
+    public DrawerListAdapter(@NonNull Context context, List<FragmentInfo> fragmentInfos,
                              @Nullable DrawerListener listener) {
         mContext = context;
-        mFragments = fragments;
+        mFragmentInfos = fragmentInfos;
         mListener = listener;
     }
 
@@ -62,37 +61,44 @@ public class DrawerListAdapter extends RecyclerView.Adapter<DrawerListViewHolder
     public void onBindViewHolder(@NonNull DrawerListViewHolder holder, int position) {
         holder.applyOffset(offsetApplied);
         if (!holder.isSeparator()) {
-            Fragment fragment = mFragments.get(position);
-            if (fragment instanceof FragmentInfo) {
-                holder.setIcon(((FragmentInfo) fragment).getIconResId());
-                holder.setTitle(((FragmentInfo) fragment).getTitle());
-            }
+            FragmentInfo fragmentInfo = mFragmentInfos.get(position);
+            holder.setIcon(fragmentInfo.getIconResId());
+            holder.setTitle(fragmentInfo.getTitle());
             holder.setSelected(position == mSelectedPos);
+
             holder.itemView.setOnClickListener(v -> {
                 final int itemPos = holder.getBindingAdapterPosition();
-                boolean result = false;
-                if (mListener != null) {
-                    result = mListener.onDrawerItemSelected(itemPos);
-                }
-                if (result) {
-                    setSelectedItem(itemPos);
-                }
+                setSelectedItem(itemPos);
             });
         }
     }
 
     @Override
     public int getItemCount() {
-        return mFragments.size();
+        return mFragmentInfos.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        return (mFragments.get(position) == null) ? 0 : 1;
+        return (mFragmentInfos.get(position) == null) ? 0 : 1;
     }
 
     public void setSelectedItem(int position) {
-        mSelectedPos = position;
-        notifyItemRangeChanged(0, getItemCount());
+        if (position == mSelectedPos) return;
+        FragmentInfo fragmentInfo = mFragmentInfos.get(position);
+        boolean result = false;
+        if (fragmentInfo != null) {
+            if (mListener != null) {
+                result = mListener.onFragmentItemSelected(fragmentInfo);
+            }
+            if (result) {
+                mSelectedPos = position;
+                notifyItemRangeChanged(0, getItemCount());
+            }
+        }
+    }
+
+    public int getSelectedPosition(){
+        return mSelectedPos;
     }
 }
