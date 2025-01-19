@@ -9,6 +9,7 @@ import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.content.res.Resources
 import android.content.res.SemConfiguration
+import android.content.res.SemConfiguration.SEM_DISPLAY_DEVICE_TYPE_SUB
 import android.graphics.Point
 import android.os.Build
 import android.os.Build.VERSION
@@ -86,20 +87,9 @@ object DeviceLayoutUtil {
     /**
      * Sub-display like on samsung flip phone cover screens
      */
-    fun isDisplayTypeSub(config: Configuration): Boolean =
-        getDisplayDeviceType(config) == 5/*Configuration.SEM_DISPLAY_DEVICE_TYPE_SUB*/
-
-    private fun getDisplayDeviceType(config: Configuration): Int? {
-        return try {
-            val field = @Suppress("PrivateApi")
-            Configuration::class.java.getDeclaredField("semDisplayDeviceType")
-            field.isAccessible = true
-            val displayDeviceType = field[config]
-            displayDeviceType as? Int?
-        } catch (_: Exception) {
-            null
-        }
-    }
+    fun isDisplayTypeSub(config: Configuration): Boolean = DeviceInfo.isOneUI() &&
+            try { with(Refine.unsafeCast<SemConfiguration>(config)){semDisplayDeviceType == SEM_DISPLAY_DEVICE_TYPE_SUB}}
+            catch (_: Throwable){ false }
 
     @SuppressLint("InternalInsetResource", "DiscouragedApi")
     fun getNavigationBarHeight(resources: Resources): Int {
