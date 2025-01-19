@@ -3,14 +3,11 @@
 package dev.oneuiproject.oneui.widget
 
 import android.content.Context
-import android.content.res.Configuration
 import android.util.AttributeSet
+import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
 import androidx.annotation.CallSuper
 import androidx.core.content.res.use
-import androidx.core.view.doOnLayout
-import androidx.core.view.updateLayoutParams
 import com.google.android.material.tabs.TabLayout
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.getTabView
@@ -38,6 +35,7 @@ open class MarginsTabLayout @JvmOverloads constructor(
     @JvmField
     internal val defaultTabPadding = context.resources.getDimension(R.dimen.oui_tab_layout_default_tab_padding)
 
+    private var sideMarginChanged = false
     @JvmField
     internal var sideMargin: Int = 0
     @JvmField
@@ -48,8 +46,6 @@ open class MarginsTabLayout @JvmOverloads constructor(
 
     @JvmField
     internal var mRecalculateTextWidths = false
-
-    private val globalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener { invalidateTabLayoutInternal() }
 
     init{
         context.obtainStyledAttributes(attrs, R.styleable.MarginsTabLayout).use{
@@ -62,7 +58,6 @@ open class MarginsTabLayout @JvmOverloads constructor(
         if (depthStyle == DEPTH_TYPE_SUB){
             super.seslSetSubTabStyle()
         }
-        invalidateTabLayoutInternal()
     }
 
     override fun seslSetSubTabStyle() {
@@ -71,21 +66,30 @@ open class MarginsTabLayout @JvmOverloads constructor(
         depthStyle = DEPTH_TYPE_SUB
     }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
-        invalidateTabLayoutInternal()
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        updateLayoutParams()
+        super.onLayout(changed, left, top, right, bottom)
     }
 
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        viewTreeObserver.removeOnGlobalLayoutListener(globalLayoutListener)
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        if (containerWidth != null || calculateMarginsInternal()){
+            updateLayoutParams()
+        }
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
     }
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        invalidateTabLayoutInternal()
+    override fun onVisibilityChanged(changedView: View, visibility: Int) {
+        if (visibility == VISIBLE) {
+            alpha = 0f
+            animate()
+                .alpha(1f)
+                .setStartDelay(300)
+                .setDuration(100)
+                .start()
+        }
+        super.onVisibilityChanged(changedView, visibility)
     }
+
 
     override fun addTab(tab: Tab, position: Int, setSelected: Boolean) {
         mRecalculateTextWidths = true
@@ -113,49 +117,66 @@ open class MarginsTabLayout @JvmOverloads constructor(
         }
     }
 
-    private fun invalidateTabLayoutInternal() = doOnLayout{
+    override fun onAttachedToWindow() {
+        calculateMarginsInternal()
+        setScrollPosition(selectedTabPosition, 0.0f, true)
+        super.onAttachedToWindow()
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        if (isAttachedToWindow) {
+            calculateMarginsInternal()
+            setScrollPosition(selectedTabPosition, 0.0f, true)
+        }
+        super.onSizeChanged(w, h, oldw, oldh)
+    }
+
+
+    private fun calculateMarginsInternal(): Boolean {
         val parentWidth = with(parent as ViewGroup) { width - paddingStart - paddingEnd }
         if (parentWidth != 0 && containerWidth != parentWidth) {
             containerWidth = parentWidth
             if (tabDimens == null) {
                 tabDimens = TabDimenDefault(defaultTabPadding)
             }
-            // Post the invalidateTabLayout call to ensure layout is complete
-            post { invalidateTabLayout() }
+            calculateMargins()
+            return true
         }
+        return false
     }
 
     @CallSuper
-    internal open fun invalidateTabLayout(){
+    internal open fun calculateMargins(){
         if (mRecalculateTextWidths || isInEditMode) {
             recalculateTextWidths()
             mRecalculateTextWidths = false
         }
-        sideMargin = tabDimens!!.getSideMargin(this, containerWidth!!, getTabTextWidthsSum()).toInt()
-        updateLayoutParams()
-        setScrollPosition(selectedTabPosition, 0.0f, true)
+
+        tabDimens!!.getSideMargin(this, containerWidth!!, getTabTextWidthsSum()).toInt().let {
+            if (it != sideMargin){
+                sideMargin = it
+                sideMarginChanged = true
+                post { requestLayout() }
+            }
+        }
     }
 
 
     open fun updateLayoutParams() {
-        updateLayoutParams<MarginLayoutParams> {
+        if (!sideMarginChanged) return
+        sideMarginChanged = false
+        layoutParams = (layoutParams as MarginLayoutParams).apply {
             marginStart = sideMargin
             marginEnd = sideMargin
         }
     }
 
-    internal fun getTabTextWidthsSum(): Float {
-        var widthSum = 0f
-        val tabTextWidthsList = tabTextWidthsList
-        for (width in tabTextWidthsList) {
-            widthSum += width
-        }
-        return widthSum
-    }
+    internal fun getTabTextWidthsSum() =
+        tabTextWidthsList.reduce { acc, fl ->  acc + fl }
 
     open fun setCustomTabDimen(tabDimenImpl: TabDimen){
         tabDimens = tabDimenImpl
-        invalidateTabLayoutInternal()
+        requestLayout()
     }
 
     fun interface TabDimen{

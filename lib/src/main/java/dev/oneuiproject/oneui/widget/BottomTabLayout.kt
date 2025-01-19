@@ -6,9 +6,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
+import android.os.Build.VERSION.SDK_INT
 import android.os.Parcel
 import android.os.Parcelable
-import android.os.Parcelable.ClassLoaderCreator
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MenuItem
@@ -37,6 +37,7 @@ import dev.oneuiproject.oneui.dialog.GridMenuDialog
 import dev.oneuiproject.oneui.dialog.internal.toGridDialogItem
 import dev.oneuiproject.oneui.ktx.addCustomTab
 import dev.oneuiproject.oneui.ktx.addTab
+import dev.oneuiproject.oneui.ktx.doOnEnd
 import dev.oneuiproject.oneui.ktx.getTabView
 import dev.oneuiproject.oneui.ktx.isNumericValue
 import dev.oneuiproject.oneui.ktx.setBadge
@@ -54,6 +55,8 @@ class BottomTabLayout(
 
     private var slideDownAnim: Animation? = null
     private var slideUpAnim: Animation? = null
+    private var isAboutToHide = false
+    private var isAboutToShow = false
 
     private var gridMenuDialog: GridMenuDialog? = null
     private var itemClickedListener: MenuItem.OnMenuItemClickListener? = null
@@ -73,7 +76,6 @@ class BottomTabLayout(
                     inflateMenu((a.getResourceId(R.styleable.BottomTabLayout_menu, 0)))
                 }
             }
-
         addOnTabSelectedListener(this)
     }
 
@@ -102,12 +104,12 @@ class BottomTabLayout(
         }
     }
 
-    override fun invalidateTabLayout(){
+    override fun calculateMargins(){
         if (isPopulatingTabs) return
         if (mRecalculateTextWidths) {
             updatePointerAndDescription()
         }
-        super.invalidateTabLayout()
+        super.calculateMargins()
     }
 
     private fun updatePointerAndDescription() {
@@ -132,28 +134,24 @@ class BottomTabLayout(
 
     override fun updateLayoutParams() {
         super.updateLayoutParams()
-        updateTabWidths()
-    }
-
-    private fun updateTabWidths() {
+        if (containerWidth == null) return
         val availableForTabPaddings = containerWidth!! - getTabTextWidthsSum() - (sideMargin * 2)
         val tabPadding = (availableForTabPaddings/(tabCount * 2)).coerceAtLeast(defaultTabPadding)
 
         for (i in 0 until tabCount) {
-            val tabView = getTabView(i)!!
-            val tabWidth =   (tabPadding * 2f + tabTextWidthsList[i]).toInt()
-
-            tabView.minimumWidth = tabWidth
-            (tabView as? ViewGroup)?.getChildAt(0)?.minimumWidth = tabWidth
+            val tabWidth =  (tabPadding * 2f + tabTextWidthsList[i]).toInt()
+            getTabView(i)!!.apply {
+                minimumWidth = tabWidth
+                (this as? ViewGroup)?.getChildAt(0)?.minimumWidth = tabWidth
+            }
         }
-        requestLayout()
+        post{ requestLayout() }
     }
 
     fun inflateMenu(
         @MenuRes menuResId: Int,
         onMenuItemClicked: MenuItem.OnMenuItemClickListener? = null
     ){
-        Log.d(TAG, "inflateMenu")
         this.itemClickedListener = onMenuItemClicked
 
         menu.apply {
@@ -222,10 +220,6 @@ class BottomTabLayout(
 
         isPopulatingTabs = false
         mRecalculateTextWidths = true
-
-        if (isAttachedToWindow){
-            doOnLayout { invalidateTabLayout() }
-        }
     }
 
     private fun addTabForMenu(menuItem: MenuItemImpl) {
@@ -277,16 +271,19 @@ class BottomTabLayout(
         postDelayed(reshowDialogRunnable,50)
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         //Block touch on parent
+        @Suppress("ClickableViewAccessibility")
         (parent as View).setOnTouchListener { _, _ -> true }
     }
 
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
+        if (isAboutToHide) { isGone = true; isAboutToHide = false }
+        if (isAboutToShow) { isVisible = true; isAboutToShow = false }
         (parent as View).setOnTouchListener(null)
         //Dismiss to prevent activity window from leaking
         gridMenuDialog?.dismiss()
@@ -327,7 +324,7 @@ class BottomTabLayout(
         }
         super.onRestoreInstanceState(state.superState)
         if (state.isGridDialogShowing) {
-            createAndShowGridDialog()
+            postDelayed({ createAndShowGridDialog() }, 500)
         }
     }
 
@@ -341,12 +338,17 @@ class BottomTabLayout(
 
     private fun doSlideDownAnimation() {
         if (isGone) return
+        isAboutToHide = true
         if (slideDownAnim == null) {
             slideDownAnim = AnimationUtils.loadAnimation(context, R.anim.oui_bottom_tab_slide_down).apply {
+                startOffset = 100L
                 interpolator = CachedInterpolatorFactory.getOrCreate(SINE_IN_OUT_90)
                 setListener(
-                    onStart = { this@BottomTabLayout.visibility = VISIBLE},
-                    onEnd = { this@BottomTabLayout.visibility = GONE}
+                    onStart = {this@BottomTabLayout.visibility = VISIBLE},
+                    onEnd = {
+                        this@BottomTabLayout.visibility = GONE
+                        isAboutToHide = false
+                    },
                 )
             }
         }
@@ -355,9 +357,12 @@ class BottomTabLayout(
 
     private fun doSlideUpAnimation() {
         if (isVisible) return
+        isAboutToHide = false
         if (slideUpAnim == null) {
             slideUpAnim = AnimationUtils.loadAnimation(context, R.anim.oui_bottom_tab_slide_up).apply {
+                startOffset = 480
                 interpolator = CachedInterpolatorFactory.getOrCreate(SINE_IN_OUT_90)
+                doOnEnd { isAboutToShow = false }
             }
         }
         visibility = VISIBLE
@@ -463,19 +468,19 @@ class BottomTabLayout(
                 }
             }
         }
-        Log.d(TAG, "setTabSelected:  $position is an invalid position.")
+        Log.w(TAG, "setTabSelected:  $position is an invalid position.")
     }
 
     fun setItemBadge(itemId: Int, badge: Badge) = menu.setBadge(itemId, badge)
 
     fun setItemEnabled(itemId: Int, enabled: Boolean){
         menu.findItem(itemId)?.setEnabled(enabled)
-            ?: Log.d(TAG, "setItemEnabled: ${context.resources.getResourceEntryName(itemId)} item id is invalid.")
+            ?: Log.w(TAG, "setItemEnabled: ${context.resources.getResourceEntryName(itemId)} item id is invalid.")
     }
 
     fun setItemVisible(itemId: Int, visible: Boolean){
         menu.findItem(itemId)?.setVisible(visible)
-            ?: Log.d(TAG, "`setItemVisible`, ${context.resources.getResourceEntryName(itemId)} item id is invalid.")
+            ?: Log.w(TAG, "`setItemVisible`, ${context.resources.getResourceEntryName(itemId)} item id is invalid.")
     }
 
     fun findTab(tabId: Int): Tab? {
@@ -507,7 +512,11 @@ class BottomTabLayout(
     private fun getMoreButtonHorizontalCenter(): Float? {
         return getTabView(3)?.let { view ->
             val location = IntArray(2)
-            view.getLocationOnScreen(location)
+            if (SDK_INT >= 29) {
+                view.getLocationInSurface(location)
+            }else{
+                view.getLocationInWindow(location)
+            }
             location[0] + view.width / 2f
         }
     }
@@ -523,18 +532,6 @@ class BottomTabLayout(
         override fun writeToParcel(out: Parcel, flags: Int) {
             super.writeToParcel(out, flags)
             out.writeInt(if (isGridDialogShowing) 1 else 0)
-        }
-
-        companion object {
-            @JvmField
-            val CREATOR: Parcelable.Creator<SavedState> =
-                object :
-                    ClassLoaderCreator<SavedState> {
-                    override fun createFromParcel(parcel: Parcel,
-                                                  loader: ClassLoader): SavedState = SavedState(parcel, null)
-                    override fun createFromParcel(parcel: Parcel): SavedState = SavedState(parcel, null)
-                    override fun newArray(size: Int): Array<SavedState?> = arrayOfNulls(size)
-                }
         }
     }
 
