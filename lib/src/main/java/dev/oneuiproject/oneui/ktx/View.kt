@@ -69,7 +69,7 @@ inline fun View.semGetRoundedCorners(): Int {
     if (Build.VERSION.SDK_INT >= 28 && DeviceInfo.isOneUI()) {
         try {
             return Refine.unsafeCast<SemView>(this).semGetRoundedCorners()
-        } catch (e: Exception){
+        } catch (e: Throwable){
             Log.e(this::class.simpleName, "semGetRoundedCorners invocation error: ${e.message}")
         }
     } else {
@@ -90,7 +90,7 @@ inline fun View.semSetRoundedCorners(corners: Int, radius: Int? = null) {
             radius?.let {
                 Refine.unsafeCast<SemView>(this).semSetRoundedCorners(corners, it)
             } ?: Refine.unsafeCast<SemView>(this).semSetRoundedCorners(corners)
-        } catch (e: Exception){
+        } catch (e: Throwable){
             Log.e(this::class.simpleName, "semSetRoundedCorners invocation error: ${e.message}")
         }
     } else {
@@ -110,7 +110,7 @@ inline fun View.semSetRoundedCornerColor(
     if (DeviceInfo.isOneUI() && Build.VERSION.SDK_INT >= 28) {
         try {
             return Refine.unsafeCast<SemView>(this).semSetRoundedCornerColor(corners, color)
-        } catch (e: Exception){
+        } catch (e: Throwable){
             Log.e(this::class.simpleName, "semSetRoundedCornerColor invocation error: ${e.message}")
         }
     } else {

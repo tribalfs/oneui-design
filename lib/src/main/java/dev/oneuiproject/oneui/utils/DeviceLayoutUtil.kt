@@ -12,7 +12,6 @@ import android.content.res.SemConfiguration
 import android.graphics.Point
 import android.os.Build
 import android.os.Build.VERSION
-import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.annotation.RestrictTo
@@ -66,17 +65,15 @@ object DeviceLayoutUtil {
         if (DeviceInfo.isOneUI()) {
             try {
                 if (VERSION.SDK_INT >= 34 &&
-                    Refine.unsafeCast<SemConfiguration>(resources.configuration).isNewDexMode){
-                        return true
-                }
-                if (VERSION.SDK_INT >= 31){
+                    Refine.unsafeCast<SemConfiguration>(resources.configuration).isNewDexMode
+                ) return true
+            }catch (_: Throwable){}
+            try {
+                if (VERSION.SDK_INT >= 31) {
                     return Refine.unsafeCast<SemConfiguration>(resources.configuration).isDexMode
                 }
-                return SeslConfigurationReflector.isDexEnabled(resources.configuration)//private method
-            } catch (e: Exception){
-                Log.e(this::class.simpleName, "isDeskTopMode invocation error: ${e.message}")
-                return false
-            }
+            }catch (_: Throwable){}
+            return SeslConfigurationReflector.isDexEnabled(resources.configuration)//private method
         } else {
             return false
         }

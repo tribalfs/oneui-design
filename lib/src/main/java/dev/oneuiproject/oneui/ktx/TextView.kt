@@ -23,7 +23,7 @@ inline fun TextView.semSetButtonShapeEnabled(enabled: Boolean, textColor: Int = 
             }else{
                 Refine.unsafeCast<SemTextView>(this).semSetButtonShapeEnabled(enabled)
             }
-        } catch (e: Exception){
+        } catch (e: Throwable){
             Log.e(this::class.simpleName, "semAddExtensionFlags, error: ${e.message}")
         }
     }

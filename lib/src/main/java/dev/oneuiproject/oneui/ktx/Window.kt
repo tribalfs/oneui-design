@@ -15,7 +15,7 @@ inline fun Window.semAddExtensionFlags(flags: Int) {
             Refine.unsafeCast<SemWindowManager.LayoutParams>(lp)
                 .semAddExtensionFlags(flags)
             attributes = lp
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             Log.e(this::class.simpleName, "semAddExtensionFlags, error: ${e.message}")
         }
     }
@@ -28,7 +28,7 @@ inline fun Window.semClearExtensionFlags(flags: Int) {
             Refine.unsafeCast<SemWindowManager.LayoutParams>(lp)
                 .semClearExtensionFlags(flags)
             attributes = lp
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             Log.e(this::class.simpleName, "semAddExtensionFlags, error: ${e.message}")
         }
     }
