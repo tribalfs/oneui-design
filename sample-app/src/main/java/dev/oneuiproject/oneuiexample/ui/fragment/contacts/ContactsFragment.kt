@@ -84,8 +84,33 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
                 Lifecycle.State.STARTED
             )
         }
+
+        savedInstanceState?.apply {
+            if (getBoolean(KEY_IS_ACTION_MODE)) {
+                val selectedIds = savedInstanceState.getLongArray(KEY_ACTION_MODE_SELECTED_IDS)!!
+                launchActionMode(selectedIds.toTypedArray())
+            }
+            if (getBoolean(KEY_IS_SEARCH_MODE)){
+                (requireActivity() as MainActivity).drawerLayout
+                    .launchSearchMode(CLEAR_DISMISS)
+            }
+        }
     }
 
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        (requireActivity() as MainActivity).drawerLayout?.apply {
+            if (isActionMode) {
+                outState.putBoolean(KEY_IS_ACTION_MODE, true)
+                outState.putLongArray(KEY_ACTION_MODE_SELECTED_IDS,
+                    contactsAdapter.getSelectedIds().asSet().toLongArray())
+            }
+            if (isSearchMode) {
+                outState.putBoolean(KEY_IS_SEARCH_MODE, true)
+            }
+        }
+        super.onSaveInstanceState(outState)
+    }
 
     private fun initViews(view: View){
         mIndexScrollView = view.findViewById(R.id.indexscroll_view)
@@ -442,4 +467,9 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
         return true
     }
 
+    companion object {
+        private const val KEY_IS_ACTION_MODE = "isActionMode"
+        private const val KEY_ACTION_MODE_SELECTED_IDS = "selectedIds"
+        private const val KEY_IS_SEARCH_MODE = "isSearchMode"
+    }
 }
