@@ -173,8 +173,8 @@ public class IconsFragment extends BaseFragment {
         drawerLayout.startActionMode(
                 new ToolbarLayout.ActionModeListener() {
                     @Override
-                    public void onInflateActionMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-                        menuInflater.inflate(R.menu.menu_action_mode_icons, menu);
+                    public void onInflateActionMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+                         inflater.inflate(R.menu.menu_contacts_am, menu);
                     }
 
                     @Override

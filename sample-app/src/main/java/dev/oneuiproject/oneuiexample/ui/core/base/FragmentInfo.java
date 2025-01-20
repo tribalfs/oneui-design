@@ -15,4 +15,5 @@ public interface FragmentInfo {
 
     boolean showBottomTab();
 
+    boolean showSwitchBar();
 }

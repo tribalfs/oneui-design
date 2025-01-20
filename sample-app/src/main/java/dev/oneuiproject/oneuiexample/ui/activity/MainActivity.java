@@ -204,9 +204,17 @@ public class MainActivity extends AppCompatActivity
         if (fragmentInfo.showBottomTab()) {
             mBinding.bottomTab.show();
         }else{
-            mBinding.bottomTab.hide();
+            mBinding.bottomTab.hide(false);
         }
-        mBinding.drawerLayout.setImmersiveScroll(fragmentInfo.isImmersiveScroll());
+
+        boolean isImmersive = fragmentInfo.isImmersiveScroll();
+        mBinding.drawerLayout.setImmersiveScroll(isImmersive);
+
+        if (fragmentInfo.showSwitchBar()) {
+            mBinding.drawerLayout.getSwitchBar().show();
+        }else{
+            mBinding.drawerLayout.getSwitchBar().hide();
+        }
 
         if (mBinding.drawerLayout.isLargeScreenMode()) {
             if (mBinding.drawerLayout.isActionMode()) {
@@ -219,6 +227,7 @@ public class MainActivity extends AppCompatActivity
             mBinding.drawerLayout.setDrawerOpen(false, true);
         }
 
+        mBinding.drawerLayout.setCloseNavRailOnBack(true);
         mBackPressedCallback.setEnabled(!selectedClassName.equals(ContactsFragment.class.getSimpleName()));
 
         return true;

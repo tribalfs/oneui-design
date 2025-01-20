@@ -49,4 +49,9 @@ public abstract class BaseFragment extends Fragment
     public  boolean showBottomTab() {
         return false;
     }
+
+    @Override
+    public  boolean showSwitchBar() {
+        return false;
+    }
 }

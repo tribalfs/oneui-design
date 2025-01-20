@@ -14,22 +14,9 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <dev.oneuiproject.oneui.widget.RoundFrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/oui_background_color"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="4dp">
-
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/pickers_spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </dev.oneuiproject.oneui.widget.RoundFrameLayout>
-
-        <dev.oneuiproject.oneui.widget.Separator
-            android:layout_width="match_parent"
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/pickers_spinner"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <dev.oneuiproject.oneui.widget.RoundFrameLayout
@@ -87,6 +74,14 @@
                 android:visibility="gone"
                 app:pickerLayoutMode="defaultMode" />
 
+
+            <androidx.picker.widget.SeslSleepTimePicker
+                android:id="@+id/picker_sleep_time"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
+
         </dev.oneuiproject.oneui.widget.RoundFrameLayout>
 
         <dev.oneuiproject.oneui.widget.Separator
@@ -131,6 +126,7 @@
                 android:text="Color" />
 
         </dev.oneuiproject.oneui.widget.RoundLinearLayout>
+
 
     </LinearLayout>
 

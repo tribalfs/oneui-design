@@ -274,30 +274,21 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
         fab.isVisible = false
 
         val contactsSettings = contactsViewModel.contactsSettingsStateFlow.value
-        contactsAdapter.onToggleActionMode(true, initialSelected)
+
 
         drawerLayout.startActionMode(
-            onInflateMenu = {menu, inflater ->
-                inflater.inflate(R.menu.menu_contacts_am, menu)
+            onInflateMenu = {menu, menuInflater ->
+                contactsAdapter.onToggleActionMode(true, initialSelected)
+                menuInflater.inflate( R.menu.menu_contacts_am, menu)
             },
             onEnd = {
                 contactsAdapter.onToggleActionMode(false)
                 fab.isVisible = true
             },
             onSelectMenuItem = {
-                when (it.itemId) {
-                    R.id.menu_contacts_am_share -> {
-                        requireActivity().toast("Share!")
-                        drawerLayout.endActionMode()
-                        true
-                    }
-                    R.id.menu_contacts_am_delete -> {
-                        requireActivity().toast("Delete!")
-                        drawerLayout.endActionMode()
-                        true
-                    }
-                    else -> false
-                }
+                requireActivity().toast(it.title.toString())
+                drawerLayout.endActionMode()
+                true
             },
             onSelectAll = { isChecked: Boolean -> contactsAdapter.onToggleSelectAll(isChecked) },
             allSelectorStateFlow = contactsViewModel.allSelectorStateFlow,
@@ -438,4 +429,17 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
     override fun getTitle(): CharSequence = "Contacts"
 
     override fun getSubtitle(): CharSequence = "Pull down to refresh"
+
+    override fun showBottomTab(): Boolean {
+        return false
+    }
+
+    override fun isImmersiveScroll(): Boolean {
+        return false
+    }
+
+    override fun isAppBarEnabled(): Boolean {
+        return true
+    }
+
 }

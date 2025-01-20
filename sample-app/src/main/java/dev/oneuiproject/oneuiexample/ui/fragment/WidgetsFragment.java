@@ -67,10 +67,8 @@ public class WidgetsFragment extends BaseFragment
     public void onHiddenChanged(boolean hidden) {
         try {
             if (!hidden) {
-                seslSwitchBar.setVisibility(VISIBLE);
                 seslSwitchBar.addOnSwitchChangeListener(listener);
             } else {
-                seslSwitchBar.setVisibility(View.GONE);
                 seslSwitchBar.removeOnSwitchChangeListener(listener);
             }
         }catch (Exception ignore){}
@@ -89,6 +87,11 @@ public class WidgetsFragment extends BaseFragment
     @Override
     public CharSequence getTitle() {
         return "Widgets";
+    }
+
+    @Override
+    public boolean showSwitchBar() {
+        return true;
     }
 
     @Override

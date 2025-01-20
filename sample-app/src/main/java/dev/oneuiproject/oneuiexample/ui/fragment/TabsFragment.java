@@ -1,7 +1,5 @@
 package dev.oneuiproject.oneuiexample.ui.fragment;
 
-import static dev.oneuiproject.oneui.ktx.TabLayoutKt.addCustomTab;
-
 import android.os.Bundle;
 import android.view.View;
 
@@ -12,7 +10,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.sec.sesl.tester.R;
 
-import dev.oneuiproject.oneui.dialog.GridMenuDialog;
+import dev.oneuiproject.oneui.utils.DeviceLayoutUtil;
 import dev.oneuiproject.oneuiexample.ui.core.base.BaseFragment;
 
 public class TabsFragment extends BaseFragment {
@@ -46,7 +44,11 @@ public class TabsFragment extends BaseFragment {
 
     @Override
     public CharSequence getSubtitle() {
-        return "Immersive scroll";
+       if (!DeviceLayoutUtil.INSTANCE.isDeskTopMode(getResources())){
+           return "Immersive scroll";
+       } else {
+           return "";
+       }
     }
 
     @Override

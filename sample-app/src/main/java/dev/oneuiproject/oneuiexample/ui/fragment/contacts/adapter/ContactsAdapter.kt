@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.MarginLayoutParams
-import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
@@ -19,6 +18,7 @@ import dev.oneuiproject.oneui.delegates.MultiSelector
 import dev.oneuiproject.oneui.delegates.MultiSelectorDelegate
 import dev.oneuiproject.oneui.delegates.SectionIndexerDelegate
 import dev.oneuiproject.oneui.delegates.SemSectionIndexer
+import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.utils.SearchHighlighter
 import dev.oneuiproject.oneui.widget.SelectableLinearLayout
 import dev.oneuiproject.oneui.widget.Separator
@@ -147,6 +147,14 @@ class ContactsAdapter (
         }
     }
 
+    override fun onViewRecycled(holder: ViewHolder) {
+        super.onViewRecycled(holder).also {
+            holder.selectableLinearLayout?.apply {
+                setOverlayCornerRadius(18f.dpToPx(resources).toFloat())
+            }
+        }
+    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when(val item = currentList[position]){
             is GroupItem -> holder.bind(getItemId(position), item.groupName, R.drawable.indexscroll_group_icon, null)
@@ -213,6 +221,7 @@ class ContactsAdapter (
             }
         }
     }
+
 
     enum class Payload{
         SELECTION_MODE,
