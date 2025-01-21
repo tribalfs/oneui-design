@@ -251,7 +251,8 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     private lateinit var mCoordinatorLayout: AdaptiveCoordinatorLayout
     private lateinit var mBottomRoundedCorner: LinearLayout
-    private lateinit var mFooterParent: LinearLayout
+    internal lateinit var footerParent: LinearLayout
+        private set
 
     private var mActionModeToolbar: Toolbar? = null
     private lateinit var mActionModeSelectAll: LinearLayout
@@ -389,8 +390,8 @@ open class ToolbarLayout @JvmOverloads constructor(
         _mainContainer = mMainContainerParent.findViewById(R.id.tbl_main_content)
         mBottomRoundedCorner = mCoordinatorLayout.findViewById(R.id.tbl_bottom_corners)
 
-        mFooterParent = findViewById(R.id.tbl_footer_parent)
-        mCustomFooterContainer = findViewById(R.id.tbl_custom_footer_container)
+        footerParent = findViewById(R.id.tbl_footer_parent)
+        mCustomFooterContainer = footerParent.findViewById(R.id.tbl_custom_footer_container)
 
         activity?.apply {
             setSupportActionBar(mMainToolbar)

@@ -6,11 +6,15 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewParent
 import androidx.annotation.CallSuper
 import androidx.core.content.res.use
 import com.google.android.material.tabs.TabLayout
 import dev.oneuiproject.oneui.design.R
+import dev.oneuiproject.oneui.ktx.findAncestorOfType
 import dev.oneuiproject.oneui.ktx.getTabView
+import dev.oneuiproject.oneui.ktx.isDescendantOf
+import dev.oneuiproject.oneui.layout.ToolbarLayout
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isDisplayTypeSub
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isLandscape
 
@@ -47,6 +51,8 @@ open class MarginsTabLayout @JvmOverloads constructor(
     @JvmField
     internal var mRecalculateTextWidths = false
 
+    private var referenceContainer: ViewParent? = null
+
     init{
         context.obtainStyledAttributes(attrs, R.styleable.MarginsTabLayout).use{
             depthStyle = it.getInteger(R.styleable.MarginsTabLayout_seslDepthStyle, DEPTH_TYPE_MAIN)
@@ -72,20 +78,14 @@ open class MarginsTabLayout @JvmOverloads constructor(
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        if (containerWidth != null || calculateMarginsInternal()){
-            updateLayoutParams()
-        }
+        updateLayoutParams()
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
     }
 
     override fun onVisibilityChanged(changedView: View, visibility: Int) {
         if (visibility == VISIBLE) {
-            alpha = 0f
-            animate()
-                .alpha(1f)
-                .setStartDelay(300)
-                .setDuration(100)
-                .start()
+            ensureReferenceContainer()
+            calculateMarginsInternal()
         }
         super.onVisibilityChanged(changedView, visibility)
     }
@@ -118,9 +118,28 @@ open class MarginsTabLayout @JvmOverloads constructor(
     }
 
     override fun onAttachedToWindow() {
+        ensureReferenceContainer()
         calculateMarginsInternal()
         setScrollPosition(selectedTabPosition, 0.0f, true)
         super.onAttachedToWindow()
+    }
+
+    private fun ensureReferenceContainer(){
+        if (referenceContainer == null){
+            // Attempt to use a consistently visible reference parent for determining the container's width.
+            // This helps prevent width "jumping" issues during visibility transitions
+            // (from 'gone' to 'visible'). Such issues arise due to delayed width updates when
+            // the reference container was previously set to 'gone'.
+            referenceContainer = findAncestorOfType<ToolbarLayout>()?.let{
+                if (isDescendantOf(it.mainContainer)){
+                    it.mainContainer
+                }else if (isDescendantOf(it.footerParent)){
+                    it.footerParent
+                }else if (isDescendantOf(it.appBarLayout.parent as ViewGroup)){
+                    it.appBarLayout.parent
+                } else null
+            } ?: parent
+        }
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -133,7 +152,7 @@ open class MarginsTabLayout @JvmOverloads constructor(
 
 
     private fun calculateMarginsInternal(): Boolean {
-        val parentWidth = with(parent as ViewGroup) { width - paddingStart - paddingEnd }
+        val parentWidth = with(referenceContainer!! as ViewGroup) { width - paddingStart - paddingEnd }
         if (parentWidth != 0 && containerWidth != parentWidth) {
             containerWidth = parentWidth
             if (tabDimens == null) {
