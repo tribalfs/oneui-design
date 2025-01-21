@@ -1,5 +1,7 @@
 package dev.oneuiproject.oneuiexample.ui.fragment;
 
+import static android.os.Build.VERSION.SDK_INT;
+
 import android.os.Bundle;
 import android.view.View;
 
@@ -44,7 +46,7 @@ public class TabsFragment extends BaseFragment {
 
     @Override
     public CharSequence getSubtitle() {
-       if (!DeviceLayoutUtil.INSTANCE.isDeskTopMode(getResources())){
+       if (SDK_INT >= 30 && !DeviceLayoutUtil.INSTANCE.isDeskTopMode(getResources())){
            return "Immersive scroll";
        } else {
            return "";

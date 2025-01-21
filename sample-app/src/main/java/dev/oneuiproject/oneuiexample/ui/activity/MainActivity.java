@@ -191,12 +191,15 @@ public class MainActivity extends AppCompatActivity
         }
         transaction.commit();
 
+        boolean isImmersive = fragmentInfo.isImmersiveScroll();
+        mBinding.drawerLayout.setImmersiveScroll(isImmersive);
+
         if (!fragmentInfo.isAppBarEnabled()) {
             mBinding.drawerLayout.setExpanded(false, false);
             mBinding.drawerLayout.setExpandable(false);
         } else {
             mBinding.drawerLayout.setExpandable(true);
-            mBinding.drawerLayout.setExpanded(false, false);
+            mBinding.drawerLayout.setExpanded(isImmersive, false);
         }
         mBinding.drawerLayout.setTitle(fragmentInfo.getTitle());
         mBinding.drawerLayout.setExpandedSubtitle(fragmentInfo.getSubtitle());
@@ -206,9 +209,6 @@ public class MainActivity extends AppCompatActivity
         }else{
             mBinding.bottomTab.hide(false);
         }
-
-        boolean isImmersive = fragmentInfo.isImmersiveScroll();
-        mBinding.drawerLayout.setImmersiveScroll(isImmersive);
 
         if (fragmentInfo.showSwitchBar()) {
             mBinding.drawerLayout.getSwitchBar().show();
@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         mBinding.drawerLayout.setCloseNavRailOnBack(true);
-        mBackPressedCallback.setEnabled(!selectedClassName.equals(ContactsFragment.class.getSimpleName()));
+        mBackPressedCallback.setEnabled(!selectedClassName.equals(ContactsFragment.class.getName()));
 
         return true;
     }

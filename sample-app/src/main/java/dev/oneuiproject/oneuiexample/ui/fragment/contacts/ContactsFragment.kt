@@ -308,7 +308,7 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
             },
             onEnd = {
                 contactsAdapter.onToggleActionMode(false)
-                fab.isVisible = true
+                fab.isVisible =! (requireActivity() as MainActivity).drawerLayout.isSearchMode
             },
             onSelectMenuItem = {
                 requireActivity().toast(it.title.toString())
@@ -408,6 +408,7 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
                 } else {
                     contactsViewModel.setQuery("")
                 }
+                fab.isVisible = !visible && !(requireActivity() as MainActivity).drawerLayout.isActionMode
             }
         }
     }
