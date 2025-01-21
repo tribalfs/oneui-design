@@ -171,7 +171,7 @@ open class MarginsTabLayout @JvmOverloads constructor(
             mRecalculateTextWidths = false
         }
 
-        tabDimens!!.getSideMargin(this, containerWidth!!, getTabTextWidthsSum()).toInt().let {
+        tabDimens!!.getSideMargin(this, containerWidth!!, tabTextWidthsList.sum()).toInt().let {
             if (it != sideMargin){
                 sideMargin = it
                 sideMarginChanged = true
@@ -189,9 +189,6 @@ open class MarginsTabLayout @JvmOverloads constructor(
             marginEnd = sideMargin
         }
     }
-
-    internal fun getTabTextWidthsSum() =
-        tabTextWidthsList.reduce { acc, fl ->  acc + fl }
 
     open fun setCustomTabDimen(tabDimenImpl: TabDimen){
         tabDimens = tabDimenImpl

@@ -134,7 +134,7 @@ class BottomTabLayout(
     override fun updateLayoutParams() {
         super.updateLayoutParams()
         if (containerWidth == null) return
-        val availableForTabPaddings = containerWidth!! - getTabTextWidthsSum() - (sideMargin * 2)
+        val availableForTabPaddings = containerWidth!! - tabTextWidthsList.sum() - (sideMargin * 2)
         val tabPadding = (availableForTabPaddings/(tabCount * 2)).coerceAtLeast(defaultTabPadding)
 
         for (i in 0 until tabCount) {
