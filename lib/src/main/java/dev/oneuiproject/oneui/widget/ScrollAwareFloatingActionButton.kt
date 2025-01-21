@@ -3,6 +3,7 @@ package dev.oneuiproject.oneui.widget
 import android.content.Context
 import android.os.Build
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.view.isVisible
@@ -67,14 +68,34 @@ class ScrollAwareFloatingActionButton @JvmOverloads constructor(
      * Shows the button.
      * This method will animate the button show if the view has already been laid out.
      * This has no effect when [setVisibility] is not set to [View.VISIBLE].
+     *
+     * **Note:**  Avoid invoking this function when [hideOnScroll] is set.
+     * Use the [setVisibility] function or [isVisible] extension function instead
+     * to change visibility.
      */
     override fun show() {
+        if (recyclerViewWR != null){
+            Log.w(TAG, "show() called with hideOnScroll configured. " +
+                    "This call will be superseded by the hideOnScroll behavior.")
+        }
         if (setVisibility == VISIBLE) {
             super.show()
         }
     }
 
+    /**
+     * Hides the button.
+     * This method will animate the button hide if the view has already been laid out.
+     *
+     * **Note:**  Avoid invoking this function when [hideOnScroll] is set.
+     * Use the [setVisibility] function or [isVisible] extension function instead
+     * to change visibility.
+     */
     override fun hide() {
+        if (recyclerViewWR != null){
+            Log.w(TAG, "hide() called with `hideOnScroll` configured. " +
+                    "This call will be superseded by the hideOnScroll behavior.")
+        }
         removeCallbacks(showRunnable)
         super.hide()
     }
@@ -136,7 +157,13 @@ class ScrollAwareFloatingActionButton @JvmOverloads constructor(
 
 
     /**
-     * Hides this FAB if the provided [RecyclerView] is scrolling
+     * Automatically manages the visibility of this Floating Action Button (FAB)
+     * based on user interactions.
+     *
+     * This FAB will be hidden when the associated [RecyclerView] is scrolling or
+     * when the [AutoHideIndexScrollView], if provided, is being interacted with.
+     * The visibility is controlled by internally invoking the [show] and [hide] methods,
+     * responding to the state of these dependencies.
      *
      * @param recyclerView
      * @param indexScrollView (Optional)
