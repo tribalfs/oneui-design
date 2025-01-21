@@ -11,6 +11,7 @@ import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.os.Build.VERSION
+import android.os.Build.VERSION.SDK_INT
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
@@ -1195,12 +1196,14 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     private inline fun syncActionModeMenu() {
         if (!isActionMode) return
-        if (!isTouching && with(mCustomFooterContainer!!){isVisible && height > 0}){
+        if (!isTouching && mCustomFooterContainer!!.isVisible){
             mCustomFooterContainer!!.isVisible = false
-            postOnAnimationDelayed({ if (isActionMode) syncActionModeMenuInternal() }, 350)
-        }else{
-            syncActionModeMenuInternal()
+            if (SDK_INT >= 26) {
+                postOnAnimationDelayed({ if (isActionMode) syncActionModeMenuInternal() }, 300)
+                return
+            }
         }
+        syncActionModeMenuInternal()
     }
 
     private fun syncActionModeMenuInternal() {
@@ -1456,7 +1459,6 @@ sealed class Badge {
             NONE -> null
         }
 }
-
 
 
 /**
