@@ -55,8 +55,7 @@ class BottomTabLayout(
 
     private var slideDownAnim: Animation? = null
     private var slideUpAnim: Animation? = null
-    private var isAboutToHide = false
-    private var isAboutToShow = false
+    private var transientState = TRANSIENT_NONE
 
     private var gridMenuDialog: GridMenuDialog? = null
     private var itemClickedListener: MenuItem.OnMenuItemClickListener? = null
@@ -113,7 +112,7 @@ class BottomTabLayout(
     }
 
     private fun updatePointerAndDescription() {
-        val systemIcon = if (Build.VERSION.SDK_INT >= 24) {
+        val systemIcon = if (SDK_INT >= 24) {
             PointerIcon.getSystemIcon(context, 1000)
         } else null
 
@@ -274,6 +273,14 @@ class BottomTabLayout(
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
+        when (transientState){
+            ABOUT_TO_HIDE -> isGone = true
+            ABOUT_TO_SHOW -> {
+                isVisible = false
+                doSlideUpAnimation()
+            }
+        }
+        transientState = TRANSIENT_NONE
         //Block touch on parent
         @Suppress("ClickableViewAccessibility")
         (parent as View).setOnTouchListener { _, _ -> true }
@@ -282,8 +289,6 @@ class BottomTabLayout(
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        if (isAboutToHide) { isGone = true; isAboutToHide = false }
-        if (isAboutToShow) { isVisible = true; isAboutToShow = false }
         (parent as View).setOnTouchListener(null)
         //Dismiss to prevent activity window from leaking
         gridMenuDialog?.dismiss()
@@ -338,7 +343,7 @@ class BottomTabLayout(
 
     private fun doSlideDownAnimation() {
         if (isGone) return
-        isAboutToHide = true
+        transientState = ABOUT_TO_HIDE
         if (slideDownAnim == null) {
             slideDownAnim = AnimationUtils.loadAnimation(context, R.anim.oui_bottom_tab_slide_down).apply {
                 startOffset = 100L
@@ -347,7 +352,7 @@ class BottomTabLayout(
                     onStart = {this@BottomTabLayout.visibility = VISIBLE},
                     onEnd = {
                         this@BottomTabLayout.visibility = GONE
-                        isAboutToHide = false
+                        transientState = TRANSIENT_NONE
                     },
                 )
             }
@@ -357,12 +362,12 @@ class BottomTabLayout(
 
     private fun doSlideUpAnimation() {
         if (isVisible) return
-        isAboutToHide = false
+        transientState = ABOUT_TO_SHOW
         if (slideUpAnim == null) {
             slideUpAnim = AnimationUtils.loadAnimation(context, R.anim.oui_bottom_tab_slide_up).apply {
-                startOffset = 480
+                startOffset = 240
                 interpolator = CachedInterpolatorFactory.getOrCreate(SINE_IN_OUT_90)
-                doOnEnd { isAboutToShow = false }
+                doOnEnd { transientState = TRANSIENT_NONE }
             }
         }
         visibility = VISIBLE
@@ -429,7 +434,7 @@ class BottomTabLayout(
 
     override fun onInitializeAccessibilityNodeInfo(nodeInfo: AccessibilityNodeInfo) {
         super.onInitializeAccessibilityNodeInfo(nodeInfo)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        if (SDK_INT >= Build.VERSION_CODES.R) {
             AccessibilityNodeInfo.CollectionInfo(
                 1,
                 getTabCountWithoutOverflow(),
@@ -550,5 +555,8 @@ class BottomTabLayout(
 
     companion object{
         private const val TAG = "BottomTabLayout"
+        private const val ABOUT_TO_HIDE = 1
+        private const val ABOUT_TO_SHOW = 2
+        private const val TRANSIENT_NONE = 0
     }
 }
