@@ -199,7 +199,7 @@ open class MarginsTabLayout @JvmOverloads constructor(
                 return tabLayoutPaddingMin
             }
 
-            val tabLayoutPaddingMax = containerWidthPixels * 0.125f
+            val tabLayoutPaddingMax = maxOf(containerWidthPixels * 0.125f, tabLayoutPaddingMin)
             val totalTabPaddings = defaultTabPadding * tabLayout.tabCount * 2
 
             return ((containerWidthPixels - totalTabTextsWidth - totalTabPaddings) / 2f)
