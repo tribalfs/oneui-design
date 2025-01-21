@@ -32,8 +32,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.tabs.TabLayout.LAYOUT_DIRECTION_RTL
 import dev.oneuiproject.oneui.design.R
-import dev.oneuiproject.oneui.ktx.activity
 import dev.oneuiproject.oneui.dialog.internal.toGridDialogItem
+import dev.oneuiproject.oneui.ktx.activity
 import dev.oneuiproject.oneui.ktx.findWithIndex
 import dev.oneuiproject.oneui.ktx.semSetToolTipText
 import dev.oneuiproject.oneui.ktx.windowWidthNetOfInsets
@@ -129,21 +129,12 @@ class GridMenuDialog @JvmOverloads constructor(
         val windowLp = WindowManager.LayoutParams()
         windowLp.copyFrom(window!!.attributes)
 
-        Log.d(TAG, "isPhoneLandscapeOrTablet(context): ${isPhoneLandscapeOrTablet(context)}")
-        if (!isPhoneLandscapeOrTablet(context)) {
-            window!!.apply {
-                attributes = windowLp.apply wlp@{
-                    this@wlp.y = 0
-                    this@wlp.width = context.windowWidthNetOfInsets
-                }
-                setGravity(Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL)
-            }
-        }else{
+        if (isPhoneLandscapeOrTablet(context)) {
             val context = context
             val resources = context.resources
             val config = resources.configuration
 
-            window!!.apply {
+            window!!.apply{
                 val decorView = context.activity!!.window.decorView
                 val decorViewWidth = decorView.width
                 var dialogWidth = (decorViewWidth * TypedValueUtils.getFloat(context,
@@ -159,25 +150,24 @@ class GridMenuDialog @JvmOverloads constructor(
                 }
 
                 val isRTL = config.layoutDirection == LAYOUT_DIRECTION_RTL
-
                 attributes = windowLp.apply wlp@ {
                     this@wlp.width = dialogWidth
                     this@wlp.y = resources.getDimensionPixelOffset(R.dimen.more_menu_dialog_y_offset)
-
-                    if (isRTL) {
-                        setGravity(Gravity.BOTTOM or Gravity.START)
-                        horizontalCenter?.let {
-                            this@wlp.x = -(decorViewWidth / 2 - it).toInt()
-                            this@wlp.windowAnimations = R.style.MoreMenuDialogSlideRight
-                        }
-                    }else{
-                        setGravity(Gravity.BOTTOM or Gravity.END)
-                        horizontalCenter?.let {
-                            this@wlp.x = (it - decorViewWidth / 2).toInt()
-                            this@wlp.windowAnimations = R.style.MoreMenuDialogSlideLeft
-                        }
+                    horizontalCenter?.let {
+                        this@wlp.x = (it - dialogWidth / 2).toInt()
                     }
+                    this@wlp.windowAnimations = if (isRTL) R.style.MoreMenuDialogSlideRight else
+                        R.style.MoreMenuDialogSlideLeft
                 }
+                setGravity(Gravity.BOTTOM or Gravity.START)
+            }
+        }else{
+            window!!.apply {
+                attributes = windowLp.apply wlp@{
+                    this@wlp.y = 0
+                    this@wlp.width = context.windowWidthNetOfInsets
+                }
+                setGravity(Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL)
             }
         }
     }

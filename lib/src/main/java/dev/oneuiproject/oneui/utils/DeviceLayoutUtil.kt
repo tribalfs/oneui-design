@@ -136,7 +136,7 @@ object DeviceLayoutUtil {
 
     fun isPhoneLandscapeOrTablet(context: Context): Boolean {
         val resources = context.resources
-        return isTabletLayoutOrDesktop(context) || (isLandscape(resources.configuration) && !isInMultiWindowModeCompat(context))
+        return isTabletLayoutOrDesktop(context) || isLandscape(resources.configuration)
     }
 
     @JvmStatic
