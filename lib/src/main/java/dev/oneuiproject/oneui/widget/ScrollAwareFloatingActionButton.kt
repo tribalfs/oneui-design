@@ -79,20 +79,20 @@ class ScrollAwareFloatingActionButton @JvmOverloads constructor(
         super.hide()
     }
 
-    private fun showDelayed() {
+    private fun showDelayed(showDelay: Long) {
         removeCallbacks(showRunnable)
-        postDelayed(showRunnable, 1_500)
+        postDelayed(showRunnable, showDelay)
     }
 
     override fun setVisibility(visibility: Int) {
         this.setVisibility = visibility
         when (visibility) {
             GONE, INVISIBLE -> hide()
-            VISIBLE -> updateState()
+            VISIBLE -> updateState(0)
         }
     }
 
-    private fun updateState(){
+    private fun updateState(showDelay: Long = 1_500){
         if (setVisibility != VISIBLE || fastScrollerPressed) {
             hide()
             return
@@ -106,7 +106,7 @@ class ScrollAwareFloatingActionButton @JvmOverloads constructor(
             }
             ScrollState.IDLE -> {
                 if (isTouchingRv) return
-                showDelayed()
+                showDelayed(showDelay)
             }
         }
     }
