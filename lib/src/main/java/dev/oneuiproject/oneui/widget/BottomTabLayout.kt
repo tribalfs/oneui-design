@@ -54,6 +54,7 @@ class BottomTabLayout(
     attrs: AttributeSet?
 ) : MarginsTabLayout(context, attrs), TabLayout.OnTabSelectedListener {
 
+    private var minSideMargin = 0
     private var slideDownAnim: Animation? = null
     private var slideUpAnim: Animation? = null
     private var transientState = TRANSIENT_NONE
@@ -72,6 +73,7 @@ class BottomTabLayout(
         tabGravity = GRAVITY_FILL
         context.theme
             .obtainStyledAttributes(attrs, R.styleable.BottomTabLayout, 0, 0).use { a ->
+                minSideMargin = a.getDimensionPixelSize(R.styleable.BottomTabLayout_minSideMargin, 0)
                 if (a.hasValue(R.styleable.BottomTabLayout_menu)) {
                     inflateMenu((a.getResourceId(R.styleable.BottomTabLayout_menu, 0)))
                 }
@@ -133,9 +135,17 @@ class BottomTabLayout(
     }
 
     override fun updateLayoutParams() {
-        super.updateLayoutParams()
+        if (!sideMarginChanged) return
+        sideMarginChanged = false
+
+        val sideMarginFinal = sideMargin.coerceAtLeast(minSideMargin)
+        layoutParams = (layoutParams as MarginLayoutParams).apply {
+            marginStart = sideMarginFinal
+            marginEnd = sideMarginFinal
+        }
+
         if (containerWidth == null) return
-        val availableForTabPaddings = containerWidth!! - tabTextWidthsList.sum() - (sideMargin * 2)
+        val availableForTabPaddings = containerWidth!! - tabTextWidthsList.sum() - (sideMarginFinal * 2)
         val tabPadding = (availableForTabPaddings/(tabCount * 2)).coerceAtLeast(defaultTabPadding)
 
         tabViewGroup?.let {

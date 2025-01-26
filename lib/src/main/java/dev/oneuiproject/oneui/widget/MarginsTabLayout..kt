@@ -39,7 +39,7 @@ open class MarginsTabLayout @JvmOverloads constructor(
     @JvmField
     internal val defaultTabPadding = context.resources.getDimension(R.dimen.oui_tab_layout_default_tab_padding)
 
-    private var sideMarginChanged = false
+    internal var sideMarginChanged = false
     @JvmField
     internal var sideMargin: Int = 0
     @JvmField

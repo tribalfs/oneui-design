@@ -288,6 +288,7 @@
 
     <declare-styleable name="BottomTabLayout">
         <attr name="menu" />
+        <attr name="minSideMargin" format="dimension"/>
     </declare-styleable>
 
     <!-- The SeslTimePicker dialog theme. -->
