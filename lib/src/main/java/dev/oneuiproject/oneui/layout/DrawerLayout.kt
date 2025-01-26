@@ -31,6 +31,10 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         CLOSING,
         OPENING
     }
+    
+    fun interface DrawerStateListener{
+        fun onStateChanged(state: DrawerState)
+    }
 
     internal var enableDrawerBackAnimation: Boolean = false
         private set
@@ -183,10 +187,10 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
      *
      * @param listener lambda to be invoked with the new [DrawerState]
      */
-    fun setDrawerStateListener(listener: ((state: DrawerState) -> Unit)?) {
+    fun setDrawerStateListener(listener: DrawerStateListener?) {
         containerLayout.setOnDrawerStateChangedListener {
             updateOnBackCallbackState()
-            listener?.invoke(it)
+            listener?.onStateChanged(it)
         }
     }
 
