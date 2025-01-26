@@ -1338,7 +1338,7 @@ class TipPopup(parentView: View, mode: Mode) {
                 }
             )
             it.addAnimation(
-                AlphaAnimation(0.0f, 1.0f).apply {
+                AlphaAnimation(1.0f, 0.0f).apply {
                     duration = ANIMATION_DURATION_EXPAND_TEXT
                     interpolator = INTERPOLATOR_SINE_IN_OUT_70
                 }
