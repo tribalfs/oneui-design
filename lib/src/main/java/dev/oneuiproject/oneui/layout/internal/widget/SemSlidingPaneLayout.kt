@@ -37,6 +37,7 @@ import dev.oneuiproject.oneui.ktx.appCompatActivity
 import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.ktx.dpToPxFactor
 import dev.oneuiproject.oneui.ktx.semSetToolTipText
+import dev.oneuiproject.oneui.ktx.setEnableRecursive
 import dev.oneuiproject.oneui.layout.Badge
 import dev.oneuiproject.oneui.layout.DrawerLayout.DrawerState
 import dev.oneuiproject.oneui.layout.internal.delegate.DrawerLayoutBackHandler
@@ -259,26 +260,16 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
 
     override fun getContentPane(): View = mSlideViewPane
 
+    private val drawerItemsDisabler = Runnable { mDrawerItemsContainer?.setEnableRecursive(!isLocked) }
+
     override var isLocked: Boolean
         get() = seslGetLock()
         set(value) {
             if (seslGetLock() == value) return
             seslSetLock(value)
             navRailDrawerButton!!.isEnabled = !value
-            postDelayed({
-                mDrawerItemsContainer?.let { container ->
-                    fun disableViewGroup(viewGroup: ViewGroup) {
-                        for (i in 0 until viewGroup.childCount) {
-                            val child = viewGroup.getChildAt(i)
-                            child.isEnabled = !value
-                            if (child is ViewGroup) {
-                                disableViewGroup(child)
-                            }
-                        }
-                    }
-                    disableViewGroup(container)
-                }
-            }, 50)
+            removeCallbacks(drawerItemsDisabler)
+            postDelayed(drawerItemsDisabler, 50)
         }
 
     override val isDrawerOpen: Boolean get() = mCurrentState == DrawerState.OPEN
