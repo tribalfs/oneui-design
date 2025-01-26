@@ -12,6 +12,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
 import androidx.annotation.Px
 import androidx.core.content.res.use
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.doOnLayout
 import androidx.customview.view.AbsSavedState
 import androidx.customview.widget.Openable
@@ -77,10 +78,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
 
     override fun onFinishInflate() {
         super.onFinishInflate()
-        containerLayout.apply {
-            setHandleInsets(handleInsets)
-            setOnDrawerStateChangedListener { updateOnBackCallbackState() }
-        }
+        containerLayout.setOnDrawerStateChangedListener { updateOnBackCallbackState() }
     }
 
     override fun onAttachedToWindow() {
@@ -215,8 +213,8 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     internal inline val shouldAnimateDrawer get() =
         enableDrawerBackAnimation && containerLayout.isDrawerOpen && !containerLayout.isLocked
 
-    override fun onApplyWindowInsets(insets: WindowInsets): WindowInsets =
-        if (handleInsets) insets else super.onApplyWindowInsets(insets)
+    override fun applyWindowInsets(insets: WindowInsetsCompat) =
+        containerLayout.applyWindowInsets(insets, isImmersiveScroll)
     
     open fun setDrawerEnabled(drawerEnabled: Boolean){
         if (this.drawerEnabled == drawerEnabled) return

@@ -5,13 +5,14 @@ import android.view.ViewGroup
 import androidx.annotation.Dimension
 import androidx.annotation.Px
 import androidx.annotation.RestrictTo
+import androidx.core.view.WindowInsetsCompat
 import dev.oneuiproject.oneui.layout.DrawerLayout
 import dev.oneuiproject.oneui.layout.DrawerLayout.DrawerState
 import dev.oneuiproject.oneui.layout.internal.delegate.DrawerLayoutBackHandler
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 interface DrawerLayoutInterface{
-    fun setHandleInsets(handle: Boolean)
+    fun applyWindowInsets(insets: WindowInsetsCompat, isImmersiveActive: Boolean)
     fun open(animate: Boolean = true)
     fun close(animate: Boolean = true)
     fun setDrawerCornerRadius(@Dimension dp: Float)
@@ -25,5 +26,5 @@ interface DrawerLayoutInterface{
     val isDrawerOpen: Boolean
     val isDrawerOpenOrIsOpening: Boolean
     fun getDrawerSlideOffset(): Float
-    fun getOrCreateBackHandler(drawerLayout: DrawerLayout) : DrawerLayoutBackHandler<DrawerLayout>
+    fun getOrCreateBackHandler(drawerLayout: DrawerLayout): DrawerLayoutBackHandler<DrawerLayout>
 }

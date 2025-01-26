@@ -15,7 +15,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewStub
-import android.view.WindowInsets
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.LinearLayout
@@ -29,6 +28,8 @@ import androidx.core.animation.addListener
 import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsCompat.Type.ime
+import androidx.core.view.WindowInsetsCompat.Type.systemBars
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
@@ -42,6 +43,7 @@ import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.appCompatActivity
 import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.ktx.dpToPxFactor
+import dev.oneuiproject.oneui.ktx.fitsSystemWindows
 import dev.oneuiproject.oneui.ktx.semSetToolTipText
 import dev.oneuiproject.oneui.ktx.setEnableRecursive
 import dev.oneuiproject.oneui.layout.Badge
@@ -54,7 +56,6 @@ import dev.oneuiproject.oneui.layout.internal.util.DrawerLayoutUtils.getDrawerSt
 import dev.oneuiproject.oneui.layout.internal.util.DrawerLayoutUtils.updateBadgeView
 import dev.oneuiproject.oneui.layout.internal.util.DrawerOutlineProvider
 import dev.oneuiproject.oneui.layout.internal.util.NavButtonsHandler
-import kotlin.math.max
 import androidx.slidingpanelayout.R as splR
 
 @SuppressLint("RestrictedApi")
@@ -65,7 +66,6 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
     defStyle: Int = 0
 ) : SlidingPaneLayout(context, attrs, defStyle), DrawerLayoutInterface, NavButtonsHandler {
 
-    private var handleInsets = false
     private lateinit var mToolbar: Toolbar
     private lateinit var mDrawerPane: LinearLayout
     private lateinit var mHeaderView: View
@@ -80,6 +80,8 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
     private var navDrawerButtonBadge: Badge = Badge.NONE
     private var headerButtonBadge: Badge = Badge.NONE
     private lateinit var mSlideViewPane: FrameLayout
+
+    private val defaultDrawerTopMargin = resources.getDimensionPixelSize(androidx.appcompat.R.dimen.sesl_action_bar_top_padding)
 
     private val badgeIcon by lazy(LazyThreadSafetyMode.NONE) { NavigationBadgeIcon(context) }
 
@@ -144,11 +146,6 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
             mDrawerHeaderLayout!!.findViewById(R.id.drawer_header_button_badge)
 
         setNavigationButtonTooltip(context.getText(R.string.oui_navigation_drawer))
-    }
-
-    override fun setHandleInsets(handle: Boolean) {
-        handleInsets = handle
-        requestApplyInsets()
     }
 
     override fun onAttachedToWindow() {
@@ -376,6 +373,7 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
             updateNavButton()
         }
 
+    @SuppressLint("VisibleForTests")
     private fun updateNavButton() {
         this.activity?.apply {
             supportActionBar?.setDisplayHomeAsUpEnabled(showNavigationButtonAsBack)
@@ -480,40 +478,33 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
         }
     }
 
-    @SuppressLint("NewApi")
-    override fun onApplyWindowInsets(insets: WindowInsets): WindowInsets {
-        if (handleInsets) {
-            insets.also {
-                val systemBarsInsets = it.getInsets(WindowInsetsCompat.Type.systemBars())
-                val topInset = systemBarsInsets.top
-                val bottomInset = max(
-                    systemBarsInsets.bottom,
-                    insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
-                )
-
-                mSlideViewPane.setPadding(
-                    systemBarsInsets.left,
-                    topInset,
-                    systemBarsInsets.right,
-                    bottomInset
-                )
-                mDrawerPane.updateLayoutParams<MarginLayoutParams> {
-                    topMargin =
-                        topInset + resources.getDimensionPixelSize(androidx.appcompat.R.dimen.sesl_action_bar_top_padding)
-                    bottomMargin = bottomInset
-                }
-            }
-        }
-        return super.onApplyWindowInsets(insets)
-    }
-
-
     private var _backHandler: DrawerLayoutBackHandler<OneUIDrawerLayout>? = null
 
     override fun getOrCreateBackHandler(drawerLayout: OneUIDrawerLayout) : DrawerLayoutBackHandler<OneUIDrawerLayout> {
         return _backHandler
             ?: DrawerLayoutBackHandler(drawerLayout, NavDrawerBackAnimator(this@SemSlidingPaneLayout))
                 .also { _backHandler = it }
+    }
+
+    override fun applyWindowInsets(insets: WindowInsetsCompat, isImmersiveActive: Boolean){
+        val activity = activity ?: return
+        val imeInsetBottom = insets.getInsets(ime()).bottom
+        val systemBarsInsets = insets.getInsets(systemBars())
+
+        if (isImmersiveActive) {
+            setPadding(systemBarsInsets.left, 0, systemBarsInsets.right, imeInsetBottom)
+            seslSetDrawerMarginTop(systemBarsInsets.top + defaultDrawerTopMargin)
+            seslSetDrawerMarginBottom(maxOf(imeInsetBottom, systemBarsInsets.bottom))
+        } else {
+            if (activity.fitsSystemWindows) {
+                setPadding(0, 0, 0, imeInsetBottom)
+            }else{
+                setPadding(systemBarsInsets.left, systemBarsInsets.top, systemBarsInsets.right,
+                    maxOf(imeInsetBottom, systemBarsInsets.bottom))
+            }
+            seslSetDrawerMarginTop(defaultDrawerTopMargin)
+            seslSetDrawerMarginBottom(0)
+        }
     }
 
     private inner class SlidingPaneSlideListener : PanelSlideListener {

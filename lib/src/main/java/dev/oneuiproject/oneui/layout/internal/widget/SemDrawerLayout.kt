@@ -1,18 +1,14 @@
 package dev.oneuiproject.oneui.layout.internal.widget
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.Configuration
-import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.util.AttributeSet
 import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowInsets
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.LinearLayout
@@ -21,20 +17,25 @@ import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
 import androidx.annotation.Px
 import androidx.annotation.RestrictTo
+import androidx.appcompat.R.dimen.sesl_action_bar_top_padding
 import androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_NONE
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsCompat.Type.ime
+import androidx.core.view.WindowInsetsCompat.Type.systemBars
 import androidx.core.view.isVisible
+import androidx.core.view.marginBottom
+import androidx.core.view.marginTop
 import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.drawerlayout.widget.DrawerLayout
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.appCompatActivity
 import dev.oneuiproject.oneui.ktx.dpToPx
-import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
+import dev.oneuiproject.oneui.ktx.fitsSystemWindows
 import dev.oneuiproject.oneui.ktx.ifNegativeOrZero
 import dev.oneuiproject.oneui.ktx.semSetRoundedCorners
 import dev.oneuiproject.oneui.ktx.semSetToolTipText
-import dev.oneuiproject.oneui.ktx.windowWidthNetOfInsets
 import dev.oneuiproject.oneui.layout.Badge
 import dev.oneuiproject.oneui.layout.DrawerLayout.DrawerState
 import dev.oneuiproject.oneui.layout.internal.delegate.DrawerBackAnimator
@@ -45,7 +46,7 @@ import dev.oneuiproject.oneui.layout.internal.util.DrawerLayoutUtils.getDrawerSt
 import dev.oneuiproject.oneui.layout.internal.util.DrawerLayoutUtils.updateBadgeView
 import dev.oneuiproject.oneui.layout.internal.util.DrawerOutlineProvider
 import dev.oneuiproject.oneui.layout.internal.util.NavButtonsHandler
-import kotlin.math.max
+
 typealias OneUIDrawerLayout = dev.oneuiproject.oneui.layout.DrawerLayout
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
@@ -57,7 +58,6 @@ class SemDrawerLayout @JvmOverloads constructor(
 
     private val mDrawerListener = DrawerListener()
     private var scrimAlpha = 0f
-    private var systemBarsColor = -1
 
     private lateinit var mDrawerPane: LinearLayout
     private lateinit var mSlideViewPane: FrameLayout
@@ -83,10 +83,6 @@ class SemDrawerLayout @JvmOverloads constructor(
         ContextCompat.getColor(context, R.color.oui_drawerlayout_drawer_dim_color).let {
             setScrimColor(it)
             scrimAlpha = ((it shr 24) and 0xFF) / 255f
-        }
-
-        if (Build.VERSION.SDK_INT < 35) {
-            systemBarsColor = context.getThemeAttributeValue(androidx.appcompat.R.attr.roundedCornerColor)?.data!!
         }
 
         drawerElevation = 0f
@@ -230,21 +226,6 @@ class SemDrawerLayout @JvmOverloads constructor(
     private fun updateContentTranslation(drawerView: View, slideOffset: Float){
         val transX = drawerView.width * slideOffset
         translationView.translationX = transX * if (isLayoutRTL) -1f else 1f
-
-        if (!isInEditMode) {
-            //Handle system bars dim for api35-
-            if (systemBarsColor != -1) {
-                val hsv = FloatArray(3)
-                Color.colorToHSV(systemBarsColor, hsv)
-                hsv[2] *= 1f - (slideOffset * scrimAlpha)
-                activity!!.window.apply {
-                    @Suppress("DEPRECATION")
-                    statusBarColor = Color.HSVToColor(hsv)
-                    @Suppress("DEPRECATION")
-                    navigationBarColor = Color.HSVToColor(hsv)
-                }
-            }
-        }
     }
 
     private fun dispatchDrawerStateChange(newSlideOffset: Float) {
@@ -291,11 +272,6 @@ class SemDrawerLayout @JvmOverloads constructor(
     }
 
     private inline val isLayoutRTL get() = resources.configuration.layoutDirection == LAYOUT_DIRECTION_RTL
-
-    override fun setHandleInsets(handle: Boolean){
-        handleInsets = handle
-        requestApplyInsets()
-    }
 
     override var isLocked: Boolean
         set(lock){
@@ -384,35 +360,55 @@ class SemDrawerLayout @JvmOverloads constructor(
 
     override fun getDrawerSlideOffset(): Float = sSlideOffset
 
-    @SuppressLint("NewApi")
-    override fun onApplyWindowInsets(insets: WindowInsets): WindowInsets {
-        if (handleInsets) {
-            insets.also {
-                val systemBarsInsets = it.getInsets(WindowInsetsCompat.Type.systemBars())
-                val topInset = systemBarsInsets.top
-                val bottomInset = max(systemBarsInsets.bottom, insets.getInsets(WindowInsetsCompat.Type.ime()).bottom)
-
-                mSlideViewPane.setPadding(
-                    systemBarsInsets.left,
-                    topInset,
-                    systemBarsInsets.right,
-                    bottomInset
-                )
-                mDrawerPane.updateLayoutParams<MarginLayoutParams> {
-                    topMargin = topInset + resources.getDimensionPixelSize(androidx.appcompat.R.dimen.sesl_action_bar_top_padding)
-                    bottomMargin = bottomInset
-                }
-            }
-        }
-        return super.onApplyWindowInsets(insets)
-    }
-
     private var _backHandler: DrawerLayoutBackHandler<OneUIDrawerLayout>? = null
 
     override fun getOrCreateBackHandler(drawerLayout: OneUIDrawerLayout) : DrawerLayoutBackHandler<OneUIDrawerLayout> {
         return _backHandler
             ?: DrawerLayoutBackHandler(drawerLayout, DrawerBackAnimator(this@SemDrawerLayout))
                 .also { _backHandler = it }
+    }
+
+    override fun applyWindowInsets(insets: WindowInsetsCompat, isImmersiveActive: Boolean){
+        val activity = activity ?: return
+        val systemBarsInsets = insets.getInsets(systemBars())
+        val imeInsetBottom = insets.getInsets(ime()).bottom
+        val systemBarsTop = systemBarsInsets.top
+        val defaultTopPadding = resources.getDimensionPixelSize(sesl_action_bar_top_padding)
+
+        if (activity.fitsSystemWindows) {
+            layoutParams = (layoutParams as MarginLayoutParams).apply {
+                leftMargin = 0
+                rightMargin = 0
+            }
+            mSlideViewPane.updatePadding(top = 0, bottom = imeInsetBottom)
+            mDrawerPane.apply {
+                layoutParams = (layoutParams as MarginLayoutParams).apply {
+                    if (topMargin == defaultTopPadding && bottomMargin == imeInsetBottom) return@apply
+                    topMargin = defaultTopPadding
+                    bottomMargin = imeInsetBottom
+                }
+            }
+        }else{
+            val bottomInset = maxOf(systemBarsInsets.bottom, imeInsetBottom)
+            layoutParams = (layoutParams as MarginLayoutParams).apply {
+                leftMargin = systemBarsInsets.left
+                rightMargin = systemBarsInsets.right
+            }
+            if (isImmersiveActive){
+                mSlideViewPane.updatePadding(top = 0, bottom = imeInsetBottom)
+            }else{
+                mSlideViewPane.updatePadding(top = systemBarsTop, bottom = bottomInset )
+            }
+            mDrawerPane.apply {
+                if (marginTop == systemBarsTop + defaultTopPadding
+                    && marginBottom == bottomInset) return@apply
+                layoutParams = (layoutParams as MarginLayoutParams).apply {
+                    topMargin = systemBarsTop + defaultTopPadding
+                    bottomMargin = bottomInset
+                }
+            }
+        }
+        requestLayout()
     }
 
     companion object{

@@ -4,7 +4,6 @@ package dev.oneuiproject.oneui.layout.internal.delegate
 import androidx.activity.BackEventCompat
 import androidx.annotation.CallSuper
 import androidx.annotation.RestrictTo
-import dev.oneuiproject.oneui.ktx.isSoftKeyboardShowing
 import dev.oneuiproject.oneui.layout.ToolbarLayout
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.CLEAR_CLOSE
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.CLEAR_DISMISS
@@ -26,25 +25,21 @@ open class ToolbarLayoutBackHandler(private val mToolbarLayout: ToolbarLayout
         with (mToolbarLayout) {
             when {
                 isActionMode -> {
-                    if (searchView.isSoftKeyboardShowing) {
+                    if (mToolbarLayout.isSofInputShowing) {
                         searchView.clearFocus()
                     } else endActionMode()
                 }
                 isSearchMode -> {
                     when (searchModeOBPBehavior) {
                         DISMISS -> {
-                            if (searchView.isSoftKeyboardShowing) {
+                            if (mToolbarLayout.isSofInputShowing) {
                                 searchView.clearFocus()
                             } else endSearchMode()
                         }
 
                         CLEAR_CLOSE -> {
-                            if (searchView.isSoftKeyboardShowing) {
+                            if (mToolbarLayout.isSofInputShowing) {
                                 searchView.clearFocus()
-                                //Add delay to account for the keyboard's hiding animation
-                                //so we can use the appropriate `isSoftKeyboardShowing` result
-                                //in updateObpCallbackState().
-                                postDelayed({ updateOnBackCallbackState() }, 400)
                             } else {
                                 searchView.setQuery("", true)
                                 updateOnBackCallbackState()
@@ -52,7 +47,7 @@ open class ToolbarLayoutBackHandler(private val mToolbarLayout: ToolbarLayout
                         }
 
                         CLEAR_DISMISS -> {
-                            if (searchView.isSoftKeyboardShowing) {
+                            if (mToolbarLayout.isSofInputShowing) {
                                 searchView.clearFocus()
                             } else if (searchView.query.isNotEmpty()) {
                                 searchView.setQuery("", true)

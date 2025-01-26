@@ -20,9 +20,9 @@ import dev.oneuiproject.oneui.layout.internal.util.DrawerLayoutInterface
 import dev.oneuiproject.oneui.layout.internal.util.NavButtonsHandler
 import dev.oneuiproject.oneui.layout.internal.widget.SemSlidingPaneLayout
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isTabletLayout
+import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout
 import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout.MarginProvider
 import dev.oneuiproject.oneui.layout.DrawerLayout as OneUIDrawerLayout
-import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout as AdaptiveCoordinatorLayout
 
 /**
  * OneUI-styled layout that implements a DrawerLayout interface on smaller devices and a Navigation Rail interface on larger devices,
@@ -38,7 +38,6 @@ class NavDrawerLayout @JvmOverloads constructor(
 
     @Px private var navRailContentMinSideMargin: Int = 0
     @Px private var navRailContentPreferredWidth: Int = DEFAULT_NAV_RAIL_DETAILS_WIDTH
-    private var mTopSystemBarsInset: Int = 0
     private var navRailContentPaneResizeOff = false
     private var hideNavRailDrawerOnCollapse = false
 
@@ -60,7 +59,6 @@ class NavDrawerLayout @JvmOverloads constructor(
             ?: findViewById<SemSlidingPaneLayout>(R.id.sliding_pane_layout)?.also { mSemSlidingPaneLayout = it }
             ?: super.navButtonsHandler
 
-    override val handleInsets get() = !isLargeScreenMode && super.handleInsets
 
     override fun updateOnBackCallbackState() {
         //Don't interrupt animation if has already started.

@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
-    android:animateLayoutChanges="true"
     android:visibility="gone"
     tools:viewBindingIgnore="true"
     xmlns:android="http://schemas.android.com/apk/res/android"

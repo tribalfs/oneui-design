@@ -69,4 +69,28 @@ internal object ToolbarLayoutUtils {
         }
     }
 
+    inline fun View.setVisibilityNoAnimation(visibility: Int){
+        (parent as? ViewGroup)?.layoutTransition?.let {
+            it.setAnimateParentHierarchy(false)
+            this.visibility = visibility
+            it.setAnimateParentHierarchy(true)
+        } ?: run {this.visibility = visibility}
+    }
+
+    @JvmOverloads
+    inline fun View.setVisibility(visibility: Int, applyTransition: Boolean = false, delay: Long = 0){
+        if (delay > 0) {
+            if (!applyTransition) {
+                postDelayed({ setVisibilityNoAnimation(visibility)}, delay)
+            }else{
+                postDelayed({ this.visibility = visibility }, delay)
+            }
+        }else{
+            if (!applyTransition) {
+                setVisibilityNoAnimation(visibility)
+            }else{
+                this.visibility = visibility
+            }
+        }
+    }
 }

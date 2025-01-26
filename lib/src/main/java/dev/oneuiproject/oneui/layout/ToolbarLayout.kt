@@ -11,7 +11,6 @@ import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.os.Build.VERSION
-import android.os.Build.VERSION.SDK_INT
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
@@ -23,7 +22,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewStub
 import android.view.WindowInsets
-import android.view.WindowManager
 import android.widget.CheckBox
 import android.widget.FrameLayout
 import android.widget.LinearLayout
@@ -34,7 +32,6 @@ import androidx.annotation.CallSuper
 import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
 import androidx.annotation.RestrictTo
-import androidx.appcompat.util.SeslRoundedCorner
 import androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_ALL
 import androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_NONE
 import androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_TOP_LEFT
@@ -49,6 +46,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsCompat.Type.ime
+import androidx.core.view.WindowInsetsCompat.Type.systemBars
 import androidx.core.view.children
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -61,6 +60,7 @@ import dev.oneuiproject.oneui.delegates.AllSelectorState
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.appCompatActivity
 import dev.oneuiproject.oneui.ktx.dpToPxFactor
+import dev.oneuiproject.oneui.ktx.fitsSystemWindows
 import dev.oneuiproject.oneui.ktx.isDescendantOf
 import dev.oneuiproject.oneui.ktx.isSoftKeyboardShowing
 import dev.oneuiproject.oneui.ktx.setSearchableInfoFrom
@@ -80,11 +80,14 @@ import dev.oneuiproject.oneui.layout.internal.backapi.BackHandler
 import dev.oneuiproject.oneui.layout.internal.backapi.OnBackCallbackDelegateCompat
 import dev.oneuiproject.oneui.layout.internal.delegate.ToolbarLayoutBackHandler
 import dev.oneuiproject.oneui.layout.internal.delegate.ToolbarLayoutButtonsHandler
+import dev.oneuiproject.oneui.layout.internal.util.ImmersiveScrollHelper
 import dev.oneuiproject.oneui.layout.internal.util.NavButtonsHandler
+import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.setVisibility
 import dev.oneuiproject.oneui.utils.BADGE_LIMIT_NUMBER
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil
 import dev.oneuiproject.oneui.utils.MenuSynchronizer
 import dev.oneuiproject.oneui.utils.MenuSynchronizer.State
+import dev.oneuiproject.oneui.utils.applyEdgeToEdge
 import dev.oneuiproject.oneui.utils.badgeCountToText
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type
@@ -98,7 +101,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlin.math.abs
-import kotlin.math.max
 import androidx.appcompat.R as appcompatR
 
 /**
@@ -192,7 +194,9 @@ open class ToolbarLayout @JvmOverloads constructor(
     private var allSelectorChecked: Boolean? = null
 
     private var mActionModeListener: ActionModeListener? = null
-    private var mActionModeMenuRes: Int = 0
+
+    internal var isSofInputShowing: Boolean = isSoftKeyboardShowing
+        private set
 
     open val backHandler: BackHandler
         get() = ToolbarLayoutBackHandler(this@ToolbarLayout)
@@ -204,8 +208,10 @@ open class ToolbarLayout @JvmOverloads constructor(
     internal open fun updateOnBackCallbackState() {
         if (isInEditMode) return
         if (getBackCallbackStateUpdate()) {
+            Log.d(TAG, "Registering on back callback")
             onBackCallbackDelegate.startListening(true)
         }else{
+            Log.d(TAG, "Unregistering on back callback")
             onBackCallbackDelegate.stopListening()
         }
     }
@@ -220,7 +226,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             isSearchMode -> {
                 when (searchModeOBPBehavior) {
                     DISMISS, CLEAR_DISMISS -> true
-                    CLEAR_CLOSE -> searchView.query.isNotEmpty() || searchView.isSoftKeyboardShowing
+                    CLEAR_CLOSE -> searchView.query.isNotEmpty() || isSofInputShowing
                 }
             }
 
@@ -347,6 +353,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     }
 
     init {
+        activity?.applyEdgeToEdge()
         orientation = VERTICAL
         context.theme.obtainStyledAttributes(attrs, R.styleable.ToolbarLayout, 0, 0).use {
             mLayout = it.getResourceId(
@@ -365,9 +372,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             mTitleCollapsed = it.getString(R.styleable.ToolbarLayout_title)
             mTitleExpanded = mTitleCollapsed
             mSubtitleExpanded = it.getString(R.styleable.ToolbarLayout_subtitle)
-            if (VERSION.SDK_INT >= 30 && !fitsSystemWindows) {
-                mHandleInsets = it.getBoolean(R.styleable.ToolbarLayout_handleInsets, true)
-            }
+            mHandleInsets = it.getBoolean(R.styleable.ToolbarLayout_handleInsets, true)
             mShowSwitchBar = it.getBoolean(R.styleable.ToolbarLayout_showSwitchBar, false)
             _mainRoundedCorners = MainRoundedCorners.entries[it.getInteger(R.styleable.ToolbarLayout_mainRoundedCorners, 0)]
         }
@@ -400,7 +405,6 @@ open class ToolbarLayout @JvmOverloads constructor(
                 setDisplayHomeAsUpEnabled(false)
                 setDisplayShowTitleEnabled(false)
             }
-            window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         }
     }
 
@@ -669,25 +673,67 @@ open class ToolbarLayout @JvmOverloads constructor(
             mCollapsingToolbarLayout.seslSetCustomSubtitle(value)
         }
 
-    var isImmersiveScroll: Boolean
-        /**
-         * Returns true if the immersive scroll is enabled.
-         */
-        get() = _appBarLayout.seslGetImmersiveScroll()
-        /**
-         * Enable or disable the immersive scroll of the Toolbar.
-         * When this is enabled the Toolbar will completely hide when scrolling up.
-         */
-        set(activate) {
-            if (VERSION.SDK_INT >= 30) {
-                _appBarLayout.seslSetImmersiveScroll(activate)
-            } else {
-                Log.e(
-                    TAG,
-                    "setImmersiveScroll: immersive scroll is available only on api 30 and above"
-                )
-            }
+    private var immersiveScrollHelper: ImmersiveScrollHelper? = null
+
+    /**
+     * Activate or deactivate the immersive scroll behavior.
+     * When this is activated, the AppBar and the layout footer will completely hide when scrolling up.
+     * This is only available on api level 30 and above and when not in [desktop mode][DeviceLayoutUtil.isDeskTopMode].
+     *
+     * @param activate
+     * @param withFooter Apply immersive behavior to footer
+     * @param footerAlpha The alpha value of the footer when on immersive scroll.
+     */
+    @JvmOverloads
+    @CallSuper
+    open fun activateImmersiveScroll(activate: Boolean, withFooter: Boolean, @FloatRange(0.0, 1.0)
+                                footerAlpha: Float = 1f): Boolean {
+        if (VERSION.SDK_INT < 30) {
+            Log.w(TAG, "activateImmersiveScroll: immersive scroll is available only on api 30 and above")
+            return false
         }
+
+        if (DeviceLayoutUtil.isDeskTopMode(context.resources)){
+            Log.w(TAG, "activateImmersiveScroll: immersive scroll is not available on desktop mode.")
+            return false
+        }
+
+        if (activate) {
+            if (immersiveScrollHelper == null) {
+                immersiveScrollHelper = ImmersiveScrollHelper(activity!!, appBarLayout, footerParent, footerAlpha)
+            }
+            immersiveScrollHelper!!.activateImmersiveScroll(withFooter)
+        } else {
+            immersiveScrollHelper?.deactivateImmersiveScroll()
+            immersiveScrollHelper = null
+            requestApplyInsets()
+        }
+        return true
+    }
+
+    /**
+     * Represents if immersive scroll is active or not.
+     * This does not apply on API level 29 and below
+     * and when on desktop mode.
+     *
+     * @see activateImmersiveScroll
+     */
+    @set:CallSuper
+    @get:CallSuper
+    open var isImmersiveScroll: Boolean
+        /**
+         * Returns if immersive scroll behavior is active or not.
+         * This always returns false on API level 29 and below.
+         */
+        get() = VERSION.SDK_INT >= 30 && immersiveScrollHelper?.isImmersiveScrollActivated == true
+        /**
+         * Activate or deactivate the immersive scroll behavior.
+         * When this is activated, the AppBar, the Navigation bar and the layout footer will completely hide when scrolling up.
+         */
+        set(activate)  {
+            activateImmersiveScroll(activate, true, if (VERSION.SDK_INT >= 35) 0.8f else 1f)
+        }
+
 
     //
     // Navigation Button methods
@@ -811,7 +857,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         setupSearchView()
         animatedVisibility(_mainToolbar, GONE)
         animatedVisibility(mSearchToolbar!!, VISIBLE)
-        mCustomFooterContainer!!.visibility = GONE
+        mCustomFooterContainer!!.setVisibility(GONE, false)
         setExpanded(expanded = false, animate = true)
         setupSearchModeListener()
         _searchView!!.isIconified = false//to focus
@@ -832,7 +878,7 @@ open class ToolbarLayout @JvmOverloads constructor(
                 }
 
                 override fun onQueryTextChange(newText: String): Boolean {
-                    if (searchModeOBPBehavior == CLEAR_CLOSE) {
+                    if (!isActionMode && searchModeOBPBehavior == CLEAR_CLOSE) {
                         backCallbackUpdaterJob?.cancel()
                         backCallbackUpdaterJob = activity!!.lifecycleScope.launch {
                             delay(250)
@@ -859,7 +905,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         //Restore views visibility
         mSearchToolbar!!.visibility = GONE
         animatedVisibility(_mainToolbar, VISIBLE)
-        mCustomFooterContainer!!.visibility = VISIBLE
+        mCustomFooterContainer!!.setVisibility(VISIBLE, true, 450)
 
         mSearchModeListener!!.onSearchModeToggle(_searchView!!, false)
         // We are clearing the listener first. We don't want to trigger
@@ -1196,10 +1242,10 @@ open class ToolbarLayout @JvmOverloads constructor(
         } else {
             clearActionModeSearch()
             showMainToolbarAnimate()
-            mCustomFooterContainer!!.visibility = VISIBLE
             applyCachedTitles()
+            mCustomFooterContainer!!.setVisibility(VISIBLE, true, 0)
         }
-        mBottomActionModeBar.visibility = GONE
+        mBottomActionModeBar.setVisibility(GONE, true, 0)
         mActionModeListener!!.onEndActionMode()
         //This clears menu including the common action mode menu
         //items - search and cancel
@@ -1261,7 +1307,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         if (!isActionMode) return
         if (!isTouching && mCustomFooterContainer!!.isVisible){
             mCustomFooterContainer!!.isVisible = false
-            if (SDK_INT >= 26) {
+            if (VERSION.SDK_INT >= 26) {
                 postOnAnimationDelayed({ if (isActionMode) syncActionModeMenuInternal() }, 300)
                 return
             }
@@ -1378,24 +1424,41 @@ open class ToolbarLayout @JvmOverloads constructor(
     //
     // others
     //
-    protected open val handleInsets get() = mHandleInsets
 
-    @SuppressLint("NewApi")
     override fun onApplyWindowInsets(insets: WindowInsets): WindowInsets {
+        val insetsCompat =  WindowInsetsCompat.toWindowInsetsCompat(insets)
+
+        //Note: insetsCompat.isVisible(WindowInsetsCompat.Type.ime())
+        //returns incorrect on api29-
+        if (isSofInputShowing != isSoftKeyboardShowing){
+            isSofInputShowing = !isSofInputShowing
+            updateOnBackCallbackState()
+        }
+
         if (mHandleInsets) {
-            val systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            setPadding(
-                systemBarsInsets.left,
-                systemBarsInsets.top,
-                systemBarsInsets.right,
-                max(
-                    systemBarsInsets.bottom.toDouble(),
-                    insets.getInsets(WindowInsetsCompat.Type.ime()).bottom.toDouble()
-                ).toInt()
-            )
+            applyWindowInsets(insetsCompat)
             return insets
         } else {
             return super.onApplyWindowInsets(insets)
+        }
+    }
+
+    open fun applyWindowInsets(insets: WindowInsetsCompat){
+        val activity = activity ?: return
+        val imeInsetBottom = insets.getInsets(ime()).bottom
+        val systemBarsInsets = insets.getInsets(systemBars())
+
+        if (isImmersiveScroll){
+            setPadding(systemBarsInsets.left, systemBarsInsets.top , systemBarsInsets.right, imeInsetBottom)
+        }else{
+            if (activity.fitsSystemWindows) {
+                setPadding(0, 0, 0, imeInsetBottom)
+            }else{
+                setPadding(
+                    systemBarsInsets.left, systemBarsInsets.top , systemBarsInsets.right,
+                    maxOf(systemBarsInsets.bottom, imeInsetBottom)
+                )
+            }
         }
     }
 

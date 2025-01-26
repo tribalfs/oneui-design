@@ -25,7 +25,9 @@ class OnBackCallbackDelegateCompat(activity: ComponentActivity,
         fun stopListening(view: View)
     }
 
-    private val onBackCallbackDelegate by lazy {  createBackCallbackDelegate(activity) }
+    private val onBackCallbackDelegate by lazy(LazyThreadSafetyMode.NONE) {
+        createBackCallbackDelegate(activity)
+    }
 
     fun startListening(priorityOverlay: Boolean = false) {
         onBackCallbackDelegate.startListening(view, backHandler, priorityOverlay)
