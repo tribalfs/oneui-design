@@ -123,23 +123,23 @@ class SemDrawerLayout @JvmOverloads constructor(
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        updateDrawerLayout()
+        updateDrawerWidthAndState()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         if (!isAttachedToWindow) return
-        updateDrawerLayout()
+        updateDrawerWidthAndState()
     }
 
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         if (!isAttachedToWindow) return
-        updateDrawerLayout()
+        updateDrawerWidthAndState()
     }
 
-    private fun updateDrawerLayout(){
+    private fun updateDrawerWidthAndState(){
         updateDrawerWidth()
         if (isOpen) {
             removeCallbacks(ensureDrawerOpenState)
@@ -155,23 +155,16 @@ class SemDrawerLayout @JvmOverloads constructor(
     }
 
     private fun updateDrawerWidth() {
-        val displayWidth = context.windowWidthNetOfInsets
-
-        val density = resources.displayMetrics.density
-        val dpi = displayWidth.toFloat() / density
-
-        val widthRate = when {
-            dpi >= 1920.0f -> 0.22
-            dpi in 960.0f..1919.9f -> 0.2734
-            dpi in 600.0f..959.9f -> 0.46
-            dpi in 480.0f..599.9f -> 0.5983
-            else -> 0.844
+        val drawerWidth = resources.configuration.screenWidthDp.let {
+            when {
+                it >= 960 -> 310f
+                it in 600..959 -> it * 0.40f
+                it in 480..599 -> it * 0.60f
+                else -> it * 0.86f
+            }.dpToPx(resources)
         }
 
-        mDrawerPane.apply {
-            updateLayoutParams{ width = (displayWidth * widthRate).toInt() }
-            requestLayout()
-        }
+        mDrawerPane.updateLayoutParams{ width = drawerWidth }
 
         if (isInEditMode && isOpen){
             ensureOpenDrawerPreview()
