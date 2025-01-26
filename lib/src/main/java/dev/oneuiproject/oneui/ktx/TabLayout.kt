@@ -185,15 +185,7 @@ inline fun <T: TabLayout>T.addCustomTab(
  * @return The ViewGroup containing the tab views, or null if not found or empty.
  */
 inline val <T: TabLayout>T.tabViewGroup: ViewGroup?
-    get() {
-        if (childCount <= 0) {
-            return null
-        }
-        val view = getChildAt(0)
-        return if (view is ViewGroup) {
-            view
-        } else null
-    }
+    get() = if (childCount <= 0) null else getChildAt(0) as? ViewGroup
 
 /**
  * Retrieves the view for the tab at the specified position.

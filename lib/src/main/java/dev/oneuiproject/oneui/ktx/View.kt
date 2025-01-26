@@ -1,9 +1,6 @@
 @file:Suppress("unused", "NOTHING_TO_INLINE")
 package dev.oneuiproject.oneui.ktx
 
-import android.animation.LayoutTransition
-import android.animation.LayoutTransition.APPEARING
-import android.animation.LayoutTransition.CHANGE_APPEARING
 import android.os.Build
 import android.util.Log
 import android.view.SemView

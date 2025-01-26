@@ -67,7 +67,7 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
     private var mDrawerHeaderLayout: View? = null
     private var mDrawerItemsContainer: FrameLayout? = null
     private var mDrawerHeaderButtonBadgeView: TextView? = null
-    private var mSplitDetailsPane: FrameLayout? = null
+    private var mSplitDetailsPane: LinearLayout? = null
     private var navDrawerButtonBadge: Badge = Badge.NONE
     private var headerButtonBadge: Badge = Badge.NONE
     private lateinit var mSlideViewPane: FrameLayout
@@ -163,7 +163,7 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
             if (mSplitDetailsPane == null) {
                 mSplitDetailsPane =
                     mSlideViewPane.findViewById<ViewStub>(R.id.viewstub_split_details_container)
-                        .inflate() as FrameLayout
+                        .inflate() as LinearLayout
             }
             seslSetResizeChild()
             mainDetailsPane.updateLayoutParams<LinearLayout.LayoutParams> { width = 0 }

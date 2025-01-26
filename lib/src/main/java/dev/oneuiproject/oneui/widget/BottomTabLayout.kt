@@ -42,6 +42,7 @@ import dev.oneuiproject.oneui.ktx.getTabView
 import dev.oneuiproject.oneui.ktx.isNumericValue
 import dev.oneuiproject.oneui.ktx.setBadge
 import dev.oneuiproject.oneui.ktx.setListener
+import dev.oneuiproject.oneui.ktx.tabViewGroup
 import dev.oneuiproject.oneui.layout.Badge
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type.SINE_IN_OUT_90
@@ -137,11 +138,13 @@ class BottomTabLayout(
         val availableForTabPaddings = containerWidth!! - tabTextWidthsList.sum() - (sideMargin * 2)
         val tabPadding = (availableForTabPaddings/(tabCount * 2)).coerceAtLeast(defaultTabPadding)
 
-        for (i in 0 until tabCount) {
-            val tabWidth =  (tabPadding * 2f + tabTextWidthsList[i]).toInt()
-            getTabView(i)!!.apply {
-                minimumWidth = tabWidth
-                (this as? ViewGroup)?.getChildAt(0)?.minimumWidth = tabWidth
+        tabViewGroup?.let {
+            for (i in 0 until tabCount) {
+                val tabWidth =  (tabPadding * 2f + tabTextWidthsList[i]).toInt()
+                it.getChildAt(i)?.apply {
+                    minimumWidth = tabWidth
+                    (this as? ViewGroup)?.getChildAt(0)?.minimumWidth = tabWidth
+                }
             }
         }
         post{ requestLayout() }

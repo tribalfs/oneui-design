@@ -26,7 +26,7 @@ import dev.oneuiproject.oneui.layout.internal.util.DrawerLayoutInterface
 class NavDrawerBackAnimator(drawerLayoutInterface: DrawerLayoutInterface): BackAnimator {
 
     companion object{
-        private const val TAG = "DrawerBackAnimationDelegate"
+        private const val TAG = "DrawerBackAnimDel"
         private const val RESET_ANIMATION_DURATION = 100L
 
     }

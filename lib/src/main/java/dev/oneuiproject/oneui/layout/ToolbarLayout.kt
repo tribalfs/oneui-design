@@ -60,6 +60,10 @@ import dev.oneuiproject.oneui.ktx.appCompatActivity
 import dev.oneuiproject.oneui.ktx.isSoftKeyboardShowing
 import dev.oneuiproject.oneui.ktx.setSearchableInfoFrom
 import dev.oneuiproject.oneui.layout.ToolbarLayout.ActionModeListener
+import dev.oneuiproject.oneui.layout.ToolbarLayout.MainRoundedCorners.ALL
+import dev.oneuiproject.oneui.layout.ToolbarLayout.MainRoundedCorners.BOTTOM
+import dev.oneuiproject.oneui.layout.ToolbarLayout.MainRoundedCorners.NONE
+import dev.oneuiproject.oneui.layout.ToolbarLayout.MainRoundedCorners.TOP
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.CLEAR_CLOSE
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.CLEAR_DISMISS
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.DISMISS
@@ -153,6 +157,15 @@ open class ToolbarLayout @JvmOverloads constructor(
         CLEAR_CLOSE
     }
 
+
+    /**
+     * The configuration for rounded corners that can be applied to the main content
+     * located between the app bar and the footer.
+     * - [ALL]
+     * - [TOP]
+     * - [BOTTOM]
+     * - [NONE]
+     */
     enum class MainRoundedCorners {
         ALL,
         TOP,
@@ -242,13 +255,13 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     private var _mainContainer: RoundedFrameLayout? = null
     internal val mainContainer: FrameLayout get() = _mainContainer!!
-    private var _mainRoundedCorners: MainRoundedCorners = MainRoundedCorners.ALL
+    private var _mainRoundedCorners: MainRoundedCorners = ALL
 
     private lateinit var mMainContainerParent: LinearLayout
 
-    private lateinit var mAppBarLayout: AppBarLayout
+    private lateinit var _appBarLayout: AppBarLayout
     private lateinit var mCollapsingToolbarLayout: CollapsingToolbarLayout
-    private lateinit var mMainToolbar: Toolbar
+    private lateinit var _mainToolbar: Toolbar
 
     private lateinit var mCoordinatorLayout: AdaptiveCoordinatorLayout
     private lateinit var mBottomRoundedCorner: LinearLayout
@@ -343,7 +356,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     }
 
     open val navButtonsHandler: NavButtonsHandler by lazy(LazyThreadSafetyMode.NONE) {
-        ToolbarLayoutButtonsHandler(mMainToolbar)
+        ToolbarLayoutButtonsHandler(_mainToolbar)
     }
 
     init {
@@ -382,10 +395,10 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     private fun initViews() {
         mCoordinatorLayout = findViewById(R.id.toolbarlayout_coordinator_layout)
-        mAppBarLayout = mCoordinatorLayout.findViewById<AppBarLayout?>(R.id.toolbarlayout_app_bar)
+        _appBarLayout = mCoordinatorLayout.findViewById<AppBarLayout?>(R.id.toolbarlayout_app_bar)
             .apply { setTag(R.id.tag_side_margin_excluded, true) }
-        mCollapsingToolbarLayout = mAppBarLayout.findViewById(R.id.toolbarlayout_collapsing_toolbar)
-        mMainToolbar = mCollapsingToolbarLayout.findViewById(R.id.toolbarlayout_main_toolbar)
+        mCollapsingToolbarLayout = _appBarLayout.findViewById(R.id.toolbarlayout_collapsing_toolbar)
+        _mainToolbar = mCollapsingToolbarLayout.findViewById(R.id.toolbarlayout_main_toolbar)
 
         mMainContainerParent = mCoordinatorLayout.findViewById(R.id.tbl_main_content_parent)
         _mainContainer = mMainContainerParent.findViewById(R.id.tbl_main_content)
@@ -395,7 +408,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         mCustomFooterContainer = footerParent.findViewById(R.id.tbl_custom_footer_container)
 
         activity?.apply {
-            setSupportActionBar(mMainToolbar)
+            setSupportActionBar(_mainToolbar)
             supportActionBar!!.apply {
                 setDisplayHomeAsUpEnabled(false)
                 setDisplayShowTitleEnabled(false)
@@ -412,7 +425,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         setNavigationButtonIcon(mNavigationIcon)
         applyCachedTitles()
         updateAppbarHeight()
-        if (_mainRoundedCorners != MainRoundedCorners.ALL){
+        if (_mainRoundedCorners != ALL){
             applyMainRoundedCorners()
         }
     }
@@ -455,7 +468,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     open fun setAdaptiveMarginProvider(provider: MarginProvider){
         if (marginProviderImpl == provider) return
         marginProviderImpl = provider
-        mCoordinatorLayout.configureAdaptiveMargin(marginProviderImpl, getAdaptiveChildViews())
+        mCoordinatorLayout.configureAdaptiveMargin(provider, getAdaptiveChildViews())
     }
 
     internal open fun getAdaptiveChildViews(): Set<View>? =
@@ -463,11 +476,11 @@ open class ToolbarLayout @JvmOverloads constructor(
 
 
     private fun updateAppbarHeight() {
-        mAppBarLayout.isEnabled = mExpandable
+        _appBarLayout.isEnabled = mExpandable
         if (mExpandable) {
-            mAppBarLayout.seslSetCustomHeightProportion(false, 0f)
+            _appBarLayout.seslSetCustomHeightProportion(false, 0f)
         } else {
-            mAppBarLayout.seslSetCustomHeight(
+            _appBarLayout.seslSetCustomHeight(
                 context.resources.getDimensionPixelSize(appcompatR.dimen.sesl_action_bar_height_with_padding))
         }
     }
@@ -476,11 +489,11 @@ open class ToolbarLayout @JvmOverloads constructor(
     // AppBar methods
     //
     /**@return the [AppBarLayout].*/
-    val appBarLayout: AppBarLayout get() = mAppBarLayout
+    val appBarLayout: AppBarLayout get() = _appBarLayout
 
     /**@return the main [Toolbar].*/
     @get:RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    val toolbar: Toolbar get() = mMainToolbar
+    val toolbar: Toolbar get() = _mainToolbar
 
     /**
      * Set the title of both the collapsed and expanded Toolbar.
@@ -531,7 +544,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         get() = mTitleCollapsed
         set(value) {
             if (mTitleCollapsed == value) return
-            mMainToolbar.title = value.also { mTitleCollapsed = it }
+            _mainToolbar.title = value.also { mTitleCollapsed = it }
         }
 
     /**
@@ -568,7 +581,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         get() = mSubtitleCollapsed
         set(value) {
             if (mSubtitleCollapsed == value) return
-            mMainToolbar.subtitle = value.also { mSubtitleCollapsed = it }
+            _mainToolbar.subtitle = value.also { mSubtitleCollapsed = it }
         }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY)
@@ -576,17 +589,17 @@ open class ToolbarLayout @JvmOverloads constructor(
                          collapsedTitle: CharSequence?,
                          expandedSubTitle: CharSequence?,
                          collapsedSubtitle: CharSequence?){
-        mMainToolbar.title = collapsedTitle
+        _mainToolbar.title = collapsedTitle
         mCollapsingToolbarLayout.title = expandedTitle
-        mMainToolbar.subtitle = collapsedSubtitle
+        _mainToolbar.subtitle = collapsedSubtitle
         mCollapsingToolbarLayout.seslSetSubtitle(expandedSubTitle)
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY)
     fun applyCachedTitles(){
-        mMainToolbar.title = mTitleCollapsed
+        _mainToolbar.title = mTitleCollapsed
         mCollapsingToolbarLayout.title = mTitleExpanded
-        mMainToolbar.subtitle = mSubtitleCollapsed
+        _mainToolbar.subtitle = mSubtitleCollapsed
         mCollapsingToolbarLayout.seslSetSubtitle(mSubtitleExpanded)
     }
 
@@ -613,7 +626,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     fun setExpanded(expanded: Boolean, animate: Boolean) {
         if (mExpandable) {
             mExpanded = expanded
-            mAppBarLayout.setExpanded(expanded, animate)
+            _appBarLayout.setExpanded(expanded, animate)
         } else Log.d(TAG, "setExpanded: mExpandable is false")
     }
 
@@ -623,9 +636,9 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @see setExpanded
      */
     var isExpanded: Boolean
-        get() = mExpandable && !mAppBarLayout.seslIsCollapsed()
+        get() = mExpandable && !_appBarLayout.seslIsCollapsed()
         set(expanded) {
-            setExpanded(expanded, mAppBarLayout.isLaidOut)
+            setExpanded(expanded, _appBarLayout.isLaidOut)
         }
 
 
@@ -670,14 +683,14 @@ open class ToolbarLayout @JvmOverloads constructor(
         /**
          * Returns true if the immersive scroll is enabled.
          */
-        get() = mAppBarLayout.seslGetImmersiveScroll()
+        get() = _appBarLayout.seslGetImmersiveScroll()
         /**
          * Enable or disable the immersive scroll of the Toolbar.
          * When this is enabled the Toolbar will completely hide when scrolling up.
          */
         set(activate) {
             if (VERSION.SDK_INT >= 30) {
-                mAppBarLayout.seslSetImmersiveScroll(activate)
+                _appBarLayout.seslSetImmersiveScroll(activate)
             } else {
                 Log.e(
                     TAG,
@@ -792,7 +805,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         mSearchModeListener = listener
         if (isActionMode) endActionMode()
         searchModeOBPBehavior = searchModeOnBackBehavior
-        animatedVisibility(mMainToolbar, GONE)
+        animatedVisibility(_mainToolbar, GONE)
         animatedVisibility(mSearchToolbar!!, VISIBLE)
         mCustomFooterContainer!!.visibility = GONE
         setExpanded(expanded = false, animate = true)
@@ -841,7 +854,7 @@ open class ToolbarLayout @JvmOverloads constructor(
 
         //Restore views visibility
         mSearchToolbar!!.visibility = GONE
-        animatedVisibility(mMainToolbar, VISIBLE)
+        animatedVisibility(_mainToolbar, VISIBLE)
         mCustomFooterContainer!!.visibility = VISIBLE
 
         mSearchModeListener!!.onSearchModeToggle(mSearchView, false)
@@ -946,9 +959,9 @@ open class ToolbarLayout @JvmOverloads constructor(
      *
      * @param listener The [ActionModeListener] to be invoked for this action mode.
      * @param searchOnActionMode (optional) The [SearchOnActionMode] option to set for this action mode.
-     * It is set to [SearchOnActionMode.Dismiss] by default.
-     * @param allSelectorStateFlow StateFlow of [AllSelectorState] that will be used to update
-     * "All" selector state and count.
+     * It is set to [Dismiss] by default.
+     * @param allSelectorStateFlow (optional) StateFlow of [AllSelectorState] that will be used to update
+     * "All" selector state and count. If not set, "All" selector state must be updated by calling [updateAllSelector].
      * @param showCancel (optional) Show a Cancel button in the toolbar menu. Setting this to true
      * disables adaptive action mode menu (i.e. menu will always be shown as a bottom action menu.
      * This is false by default.
@@ -988,7 +1001,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             }
         }
 
-        animatedVisibility(mMainToolbar, GONE)
+        animatedVisibility(_mainToolbar, GONE)
         showActionModeToolbarAnimate()
         setupActionModeMenu(showCancel)
         allSelectorStateFlow?.let {
@@ -999,13 +1012,12 @@ open class ToolbarLayout @JvmOverloads constructor(
                     }
             }
         }
-        mAppBarLayout.addOnOffsetChangedListener(
+
+        _appBarLayout.addOnOffsetChangedListener(
             AppBarOffsetListener().also { mActionModeTitleFadeListener = it })
 
         mCollapsingToolbarLayout.seslSetSubtitle(null)
-        mMainToolbar.setSubtitle(null)
-
-        syncActionModeMenuInternal()
+        _mainToolbar.subtitle = null
 
         setupAllSelectorOnClickListener()
         updateOnBackCallbackState()
@@ -1041,12 +1053,12 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     @SuppressLint("VisibleForTests")
     private inline fun showMainToolbarAnimate() {
-        animatedVisibility(mMainToolbar, VISIBLE)
+        animatedVisibility(_mainToolbar, VISIBLE)
 
         val overshoot = CachedInterpolatorFactory.getOrCreate(Type.OVERSHOOT)
         val start = if (isRTLayout) -80f else 80f
 
-        mMainToolbar.titleTextView?.apply {
+        _mainToolbar.titleTextView?.apply {
             alpha = 0f
             translationX = start
             animate()
@@ -1058,7 +1070,7 @@ open class ToolbarLayout @JvmOverloads constructor(
                 .setDuration(260)
         }
 
-        mMainToolbar.subtitleTextView?.apply {
+        _mainToolbar.subtitleTextView?.apply {
             alpha = 0f
             translationX = start
             animate()
@@ -1142,7 +1154,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         //This clears menu including the common action mode menu
         //items - search and cancel
         mMenuSynchronizer!!.clear()
-        mAppBarLayout.removeOnOffsetChangedListener(mActionModeTitleFadeListener)
+        _appBarLayout.removeOnOffsetChangedListener(mActionModeTitleFadeListener)
         mActionModeSelectAll.setOnClickListener(null)
         mActionModeCheckBox.isChecked = false
         mActionModeTitleFadeListener = null
@@ -1256,12 +1268,14 @@ open class ToolbarLayout @JvmOverloads constructor(
 
 
     /**
-     * Update action mode's 'All' selector state
+     * Update action mode's 'All' selector state.
+     *
+     * **Note: Don't call this method if 'allSelectorStateFlow' is provided on [startActionMode].**
      *
      * @param count Number of selected items
      * @param enabled To enable/disable clicking the 'All' selector.
      * @param checked (Optional) check all selector toggle. When not provided or `null` is set,
-     * it will keep the current checked state
+     * it will keep the current checked state.
      */
     @JvmOverloads
     fun updateAllSelector(count: Int, enabled: Boolean, checked: Boolean? = null) {
@@ -1332,7 +1346,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     }
 
     /**
-     * Set [rounded corners][SeslRoundedCorner] around the main content.
+     * Set [rounded corners][MainRoundedCorners] around the main content.
      * This is set to [ROUNDED_CORNER_ALL] by default.
      *
      */
@@ -1346,22 +1360,22 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     private fun applyMainRoundedCorners(){
         when (mainRoundedCorners) {
-            MainRoundedCorners.ALL -> {
+            ALL -> {
                 _mainContainer!!.roundedCorners = ROUNDED_CORNER_TOP
                 mBottomRoundedCorner.isVisible = true
             }
 
-            MainRoundedCorners.TOP -> {
+            TOP -> {
                 _mainContainer!!.roundedCorners = ROUNDED_CORNER_TOP
                 mBottomRoundedCorner.isVisible = false
             }
 
-            MainRoundedCorners.BOTTOM -> {
+            BOTTOM -> {
                 _mainContainer!!.roundedCorners = ROUNDED_CORNER_NONE
                 mBottomRoundedCorner.isVisible = true
             }
 
-            MainRoundedCorners.NONE -> {
+            NONE -> {
                 _mainContainer!!.roundedCorners = ROUNDED_CORNER_NONE
                 mBottomRoundedCorner.isVisible = false
             }
@@ -1402,12 +1416,12 @@ open class ToolbarLayout @JvmOverloads constructor(
     private inner class AppBarOffsetListener : AppBarLayout.OnOffsetChangedListener {
         override fun onOffsetChanged(layout: AppBarLayout, verticalOffset: Int) {
             if (mActionModeToolbar!!.isVisible) {
-                val layoutPosition = abs(mAppBarLayout.top)
+                val layoutPosition = abs(_appBarLayout.top)
                 val collapsingTblHeight = mCollapsingToolbarLayout.height
                 val alphaRange = collapsingTblHeight * 0.17999999f
                 val toolbarTitleAlphaStart = collapsingTblHeight * 0.35f
 
-                if (mAppBarLayout.seslIsCollapsed()) {
+                if (_appBarLayout.seslIsCollapsed()) {
                     mActionModeTitleTextView.alpha = 1.0f
                 } else {
                     mActionModeTitleTextView.alpha = (150.0f / alphaRange

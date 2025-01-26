@@ -12,8 +12,8 @@ import androidx.core.content.res.use
 import com.google.android.material.tabs.TabLayout
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.findAncestorOfType
-import dev.oneuiproject.oneui.ktx.getTabView
 import dev.oneuiproject.oneui.ktx.isDescendantOf
+import dev.oneuiproject.oneui.ktx.tabViewGroup
 import dev.oneuiproject.oneui.layout.ToolbarLayout
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isDisplayTypeSub
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isLandscape
@@ -103,9 +103,10 @@ open class MarginsTabLayout @JvmOverloads constructor(
 
     private fun recalculateTextWidths() {
         tabTextWidthsList.clear()
+        val tabViewGroup = tabViewGroup ?: return
         for (i in 0 until tabCount) {
             val tab = getTabAt(i)
-            val viewGroup = getTabView(i) as? ViewGroup
+            val viewGroup = tabViewGroup.getChildAt(i) as? ViewGroup
             if (tab != null && viewGroup != null) {
                 val textView = tab.seslGetTextView()
                 val subTextView = tab.seslGetSubTextView()

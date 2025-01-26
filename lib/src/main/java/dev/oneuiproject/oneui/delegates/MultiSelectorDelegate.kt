@@ -278,8 +278,8 @@ interface MultiSelector<T> {
      * @param recyclerView The `RecyclerView` to configure. A [RecyclerView.Adapter] must already be attached.
      * @param selectionChangePayload (Optional) Change payload for more efficient updating of selected items.
      * @param selectionId (Optional) Lambda to be invoked to get the item id used for selection.
-     * @param onAllSelectorStateChanged  (Optional) Lambda to be invoked to [AllSelectorState] changes.
      * If not set (or `null`), adapter must set [RecyclerView.Adapter.hasStableIds] to true and implement [RecyclerView.Adapter.getItemId]
+     * @param onAllSelectorStateChanged  (Optional) Lambda to be invoked to [AllSelectorState] changes.
      */
     fun configure(
         recyclerView: RecyclerView,

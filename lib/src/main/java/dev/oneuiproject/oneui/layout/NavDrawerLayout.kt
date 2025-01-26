@@ -62,9 +62,11 @@ class NavDrawerLayout @JvmOverloads constructor(
         super.updateOnBackCallbackState()
     }
 
-    /**Set whether or not back button press or gesture closes the drawer/nav rail pane if it's opened.
+    /**
+     * Set whether or not back button press or gesture closes the drawer/nav rail pane if it's opened.
      * This applies only when on [largeScreenMode][isLargeScreenMode].
-     * */
+     * This is false by default.
+     */
     var closeNavRailOnBack = false
         set(value) {
             if (field == value) return
@@ -161,7 +163,7 @@ class NavDrawerLayout @JvmOverloads constructor(
     }
 
     override fun getAdaptiveChildViews() =
-        if(containerLayout is SemSlidingPaneLayout) emptySet() else super.getAdaptiveChildViews()
+        if(containerLayout is SemSlidingPaneLayout) null else super.getAdaptiveChildViews()
 
     override fun updateDrawerLock() {
         (containerLayout as? SemSlidingPaneLayout)?.apply {
