@@ -11,6 +11,7 @@ import android.os.Parcelable
 import android.util.AttributeSet
 import androidx.annotation.Px
 import androidx.annotation.RestrictTo
+import androidx.core.view.doOnLayout
 import androidx.customview.view.AbsSavedState
 import androidx.customview.widget.Openable
 import dev.oneuiproject.oneui.design.R
@@ -38,6 +39,7 @@ class NavDrawerLayout @JvmOverloads constructor(
     @Px private var navRailContentMinSideMargin: Int = 0
     @Px private var navRailContentPreferredWidth: Int = DEFAULT_NAV_RAIL_DETAILS_WIDTH
     private var mTopSystemBarsInset: Int = 0
+    private var navRailContentPaneResizeOff = false
     private var hideNavRailDrawerOnCollapse = false
 
     private var mSemSlidingPaneLayout: SemSlidingPaneLayout? = null
@@ -122,8 +124,12 @@ class NavDrawerLayout @JvmOverloads constructor(
     private fun updateContentWidth() {
         (containerLayout as? SemSlidingPaneLayout)?.apply {
             updateContentMinSidePadding(navRailContentMinSideMargin)
-            if (seslGetPreferredContentPixelSize() != navRailContentPreferredWidth) {
-                seslRequestPreferredContentPixelSize(navRailContentPreferredWidth)
+            if (navRailContentPaneResizeOff){
+                doOnLayout { seslSetResizeOff(true) }
+            }else {
+                if (seslGetPreferredContentPixelSize() != navRailContentPreferredWidth) {
+                    seslRequestPreferredContentPixelSize(navRailContentPreferredWidth)
+                }
             }
         }
     }
@@ -142,6 +148,23 @@ class NavDrawerLayout @JvmOverloads constructor(
         if (navRailContentPreferredWidth == preferredWidth) return
         navRailContentPreferredWidth = preferredWidth
         (containerLayout as? SemSlidingPaneLayout)?.seslRequestPreferredContentPixelSize(preferredWidth)
+    }
+
+    /**
+     * Setting this to true disables auto resizing of the views width inside the details pane
+     * when on [largeScreenMode][isLargeScreenMode]. The views will just slide out when
+     * the drawer pane is expanded.
+     *
+     * This is false by default.
+     */
+    fun setNavRailContentPaneResizeOff(resizeOff: Boolean){
+        if (navRailContentPaneResizeOff == resizeOff) return
+        navRailContentPaneResizeOff = resizeOff
+        (containerLayout as? SemSlidingPaneLayout)?.apply {
+            if (seslGetResizeOff() != resizeOff) {
+                doOnLayout { seslSetResizeOff(resizeOff) }
+            }
+        }
     }
 
     /**
@@ -252,6 +275,7 @@ class NavDrawerLayout @JvmOverloads constructor(
     override fun onSaveInstanceState(): Parcelable {
         val superState = super.onSaveInstanceState()
         val state = SavedState(superState)
+        state.navRailContentPaneResizeOff = navRailContentPaneResizeOff
         state.hideNavRailDrawerOnCollapse = hideNavRailDrawerOnCollapse
         return state
     }
@@ -261,6 +285,7 @@ class NavDrawerLayout @JvmOverloads constructor(
             super.onRestoreInstanceState(state)
             return
         }
+        setNavRailContentPaneResizeOff(state.navRailContentPaneResizeOff)
         setHideNavRailDrawerOnCollapse(state.hideNavRailDrawerOnCollapse)
         super.onRestoreInstanceState(state.superState)
     }
