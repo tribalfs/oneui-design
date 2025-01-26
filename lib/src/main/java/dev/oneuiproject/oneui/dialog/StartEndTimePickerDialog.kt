@@ -6,6 +6,7 @@ import android.content.Context
 import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
+import androidx.annotation.IntRange
 import androidx.appcompat.app.AlertDialog
 import androidx.picker.widget.SeslTimePicker
 import dev.oneuiproject.oneui.design.R
@@ -16,7 +17,9 @@ import dev.oneuiproject.oneui.utils.internal.updateWidth
 
 class StartEndTimePickerDialog(
     context: Context,
+    /**Start time in minutes*/
     startTime: Int,
+    /**End time in minutes*/
     endTime: Int,
     private val mIs24HourFormat: Boolean = DateFormat.is24HourFormat(context),
     private val mTimePickerChangeListener: TimePickerChangeListener?,
@@ -48,7 +51,7 @@ class StartEndTimePickerDialog(
         mTabLayout!!.init(
             startTime,
             endTime,
-            onTabSelectedListener =  object: StartEndTabLayout.OnTabSelectedListener {
+            onTabSelectedListener = object: StartEndTabLayout.OnTabSelectedListener {
                 override fun onPreTabSelected() {
                     mTimePicker!!.isEditTextMode = false
                 }
@@ -126,6 +129,22 @@ class StartEndTimePickerDialog(
 
     private fun getTimeInt(hourOfDay: Int, minute: Int): Int {
         return hourOfDay * 60 + minute
+    }
+
+    fun setStartTimeTitle(title: String) {
+        mTabLayout!!.getTabAt(0)!!.setText(title)
+    }
+
+    fun setEndTimeTitle(title: String) {
+        mTabLayout!!.getTabAt(1)!!.setText(title)
+    }
+
+    fun setShowSubText(show: Boolean) {
+        mTabLayout!!.showSubText = show
+    }
+
+    fun selectTabAtIndex(@IntRange(0,1) index: Int){
+        mTabLayout!!.select(index)
     }
 
 }

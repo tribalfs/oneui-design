@@ -71,8 +71,25 @@ class StartEndTabLayout @JvmOverloads constructor(
         }
     }
 
+    var showSubText: Boolean = true
+        set(value) {
+            if (field == value) return
+            field = value
+            if (value){
+                val startTime = times[0]
+                val endTime = times[1]
+                getTabAt(0)!!.seslSetSubText(mTimeFormatter?.invoke(startTime) ?: defaultFormatter(startTime))
+                getTabAt(1)!!.seslSetSubText(mTimeFormatter?.invoke(endTime) ?: defaultFormatter(endTime))
+            }else{
+                getTabAt(0)!!.seslSetSubText("")
+                getTabAt(1)!!.seslSetSubText("")
+            }
+        }
+
+
     private fun updateTime(index: Int, time: Int) {
         times[index] = time
+        if (!showSubText) return
         val tabAt = getTabAt(index)
         tabAt!!.seslSetSubText(mTimeFormatter?.invoke(time) ?: defaultFormatter(time))
     }
