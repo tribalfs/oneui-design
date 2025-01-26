@@ -85,6 +85,9 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
     @Volatile
     private var sSlideOffset = 0f
 
+    private var drawerCornerRadius = -1
+    private var isDualDetails = false
+
     private val activity by lazy(LazyThreadSafetyMode.NONE) { context.appCompatActivity }
 
     init { setOverhangSize(DEFAULT_OVERHANG_SIZE) }
@@ -128,16 +131,20 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
         mDrawerHeaderButtonBadgeView =
             mDrawerHeaderLayout!!.findViewById(R.id.drawer_header_button_badge)
 
-        setDrawerCornerRadius(-1)
-
         setNavigationButtonTooltip(context.getText(R.string.oui_navigation_drawer))
-        setDualDetailPane(false)
-
     }
 
     override fun setHandleInsets(handle: Boolean) {
         handleInsets = handle
         requestApplyInsets()
+    }
+
+    override fun onAttachedToWindow() {
+        //Apply defaults if custom not set
+        if (drawerCornerRadius == -1) applyDrawerCornerRadius(drawerCornerRadius)
+        if (!isDualDetails) configDetailsPane(false)
+
+        super.onAttachedToWindow()
     }
 
     override fun open(animate: Boolean) = seslOpenPane(animate).also {
@@ -160,7 +167,13 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
     }
 
     internal fun setDualDetailPane(enable: Boolean) {
-        if (enable) {
+        if (isDualDetails == enable) return
+        isDualDetails = enable
+        configDetailsPane(enable)
+    }
+
+    private fun configDetailsPane(isDualDetails: Boolean){
+        if (isDualDetails) {
             if (mSplitDetailsPane == null) {
                 mSplitDetailsPane =
                     mSlideViewPane.findViewById<ViewStub>(R.id.viewstub_split_details_container)
@@ -215,6 +228,12 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
      * Set a custom radius for the drawer panel's edges.
      */
     override fun setDrawerCornerRadius(@Px px: Int) {
+        if (drawerCornerRadius == px) return
+        drawerCornerRadius = px
+        applyDrawerCornerRadius(px)
+    }
+
+    private fun applyDrawerCornerRadius(@Px px: Int){
         val cornerRadius = if (px == -1) DEFAULT_DRAWER_RADIUS.dpToPx(resources) else px
         (mDrawerPane.outlineProvider as? DrawerOutlineProvider)?.let {
             it.cornerRadius = cornerRadius
