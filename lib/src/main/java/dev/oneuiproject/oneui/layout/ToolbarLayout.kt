@@ -187,7 +187,9 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     val activity by lazy(LazyThreadSafetyMode.NONE) { context.appCompatActivity }
 
-    private var mSelectedItemsCount = 0
+    private var allSelectorItemsCount = SELECTED_ITEMS_UNSET
+    private var allSelectorEnabled = true
+    private var allSelectorChecked: Boolean? = null
 
     private var mActionModeListener: ActionModeListener? = null
     private var mActionModeMenuRes: Int = 0
@@ -1062,12 +1064,18 @@ open class ToolbarLayout @JvmOverloads constructor(
         animatedVisibility(_mainToolbar, GONE)
         showActionModeToolbarAnimate()
         setupActionModeMenu(showCancel)
+
         allSelectorStateFlow?.let {
             updateAllSelectorJob = activity!!.lifecycleScope.launch {
                 it.flowWithLifecycle(activity!!.lifecycle)
                     .collectLatest {
                         updateAllSelectorInternal(it.totalSelected, it.isEnabled, it.isChecked)
                     }
+            }
+        } ?: run {
+            if (allSelectorItemsCount != SELECTED_ITEMS_UNSET) {
+                applyAllSelectorCount(allSelectorItemsCount)
+                applyAllSelectorState(allSelectorEnabled, allSelectorChecked)
             }
         }
 
@@ -1199,6 +1207,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         _appBarLayout.removeOnOffsetChangedListener(mActionModeTitleFadeListener)
         mActionModeSelectAll.setOnClickListener(null)
         mActionModeCheckBox.isChecked = false
+        allSelectorItemsCount = SELECTED_ITEMS_UNSET
         mActionModeTitleFadeListener = null
         mActionModeListener = null
         mMenuSynchronizer = null
@@ -1261,7 +1270,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     }
 
     private fun syncActionModeMenuInternal() {
-        if (mSelectedItemsCount > 0) {
+        if (allSelectorItemsCount > 0) {
             if (!isTouching) {
                 val isMenuModePortrait = forcePortraitMenu
                         || DeviceLayoutUtil.isPortrait(resources.configuration)
@@ -1330,30 +1339,41 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @param enabled enable or disable click
      * @param checked
      */
-    private fun updateAllSelectorInternal(count: Int, enabled: Boolean, checked: Boolean?) {
+    private fun updateAllSelectorInternal(@IntRange(from = 0) count: Int, enabled: Boolean, checked: Boolean?) {
         if (!isActionMode) {
+            //Cache for later
+            allSelectorItemsCount = count
+            allSelectorEnabled = enabled
+            allSelectorChecked = checked
             Log.w(TAG, "'updateAllSelector' called with action mode not started.")
             return
         }
-        ensureActionModeViews()
-        if (checked != null) {
-            mActionModeCheckBox.isChecked = checked
-        }
-        if (mSelectedItemsCount != count) {
-            mSelectedItemsCount = count
-            syncActionModeMenu()
-            val title = if (count > 0) {
-                resources.getString(R.string.oui_action_mode_n_selected, count)
-            } else {
-                resources.getString(R.string.oui_action_mode_select_items)
-            }
-            mCollapsingToolbarLayout.title = title
-            mActionModeTitleTextView.text = title
-        }
 
-        mActionModeSelectAll.isEnabled = enabled
+        ensureActionModeViews()
+        if (allSelectorItemsCount != count) {
+            allSelectorItemsCount = count
+            applyAllSelectorCount(count)
+        }
+        applyAllSelectorState(enabled, checked)
     }
 
+    private inline fun applyAllSelectorCount(count: Int) {
+        syncActionModeMenu()
+        val title = if (count > 0) {
+            resources.getString(R.string.oui_action_mode_n_selected, count)
+        } else {
+            resources.getString(R.string.oui_action_mode_select_items)
+        }
+        mCollapsingToolbarLayout.title = title
+        mActionModeTitleTextView.text = title
+    }
+
+    private inline fun applyAllSelectorState(isEnabled: Boolean, isChecked: Boolean?) {
+        if (isChecked != null) {
+            mActionModeCheckBox.isChecked = isChecked
+        }
+        mActionModeSelectAll.isEnabled = isEnabled
+    }
 
     //
     // others
@@ -1477,6 +1497,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         private const val ROOT_BOUNDED = 6
 
         private const val ROUNDED_CORNER_TOP = ROUNDED_CORNER_TOP_LEFT or ROUNDED_CORNER_TOP_RIGHT
+        private const val SELECTED_ITEMS_UNSET = -1
     }
 }
 
