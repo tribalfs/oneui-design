@@ -37,7 +37,7 @@
             android:value="@xml/meta_998_sesl_app" />
 
         <activity
-            android:name="dev.oneuiproject.oneuiexample.ui.activity.MainActivity"
+            android:name="dev.oneuiproject.oneuiexample.ui.main.MainActivity"
             android:configChanges="orientation|screenLayout|screenSize"
             android:launchMode="singleTop"
             android:exported="true">
@@ -58,14 +58,14 @@
         </activity>
 
         <activity
-            android:name="dev.oneuiproject.oneuiexample.ui.activity.AboutActivity"
+            android:name="dev.oneuiproject.oneuiexample.ui.customabout.CustomAboutActivity"
             android:configChanges="orientation|screenLayout|screenSize|smallestScreenSize" />
 
         <activity
-            android:name="dev.oneuiproject.oneuiexample.ui.activity.SampleAboutActivity" />
+            android:name="dev.oneuiproject.oneuiexample.ui.about.SampleAboutActivity" />
 
         <activity
-            android:name="dev.oneuiproject.oneuiexample.ui.activity.PreferenceActivity"
+            android:name="dev.oneuiproject.oneuiexample.ui.preference.PreferenceActivity"
             android:configChanges="orientation|screenLayout|screenSize|smallestScreenSize" />
 
     </application>

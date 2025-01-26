@@ -17,17 +17,65 @@
         android:layout_height="match_parent"
         app:layout_location="main_content" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/drawer_list_view"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical"
-        app:layout_location="drawer_panel" />
+        app:layout_location="drawer_panel"
+        android:layout_marginVertical="10dp"
+        android:orientation="vertical">
 
-    <dev.oneuiproject.oneui.widget.BottomTabLayout
-        android:id="@+id/bottomTab"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/drawer_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:scrollbars="vertical"
+            tools:listitem="@layout/sample3_view_drawer_list_item"/>
+
+        <ImageButton
+            android:id="@+id/drawer_hide_btn"
+            style="@style/OneUI.ButtonStyleTransparent"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_gravity="bottom|start"
+            android:layout_marginStart="20dp"
+            android:alpha="0.4"
+            android:padding="6dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/baseline_arrow_right_24"
+            android:tint="@android:color/darker_gray"
+            android:visibility="gone"
+            tools:visibility="visible" />
+    </LinearLayout>
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_location="footer"
-        app:menu="@menu/sample3_tabs_grid_menu"/>
+        app:layout_location="footer">
+
+        <ImageButton
+            android:id="@+id/drawer_show_btn"
+            android:layout_marginHorizontal="8dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:scaleType="fitXY"
+            android:padding="6dp"
+            android:alpha="0.4"
+            android:tint="@android:color/darker_gray"
+            android:layout_gravity="center_vertical|start"
+            style="@style/OneUI.ButtonStyleTransparent"
+            android:src="@drawable/baseline_arrow_up_24"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+        <dev.oneuiproject.oneui.widget.BottomTabLayout
+            android:id="@+id/bottomTab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:menu="@menu/menu_bottom_tabs"
+            app:minSideMargin="34dp"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+    </FrameLayout>
+
 </dev.oneuiproject.oneui.layout.NavDrawerLayout>

@@ -12,12 +12,7 @@
         app:iconTint="?actionMenuTextColor"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/menu_about_app"
-        android:title="About"
-        android:icon="@drawable/ic_about_sample"
-        app:iconTint="?actionMenuTextColor"
-        app:showAsAction="always" />
+
     <item
         android:id="@+id/menu_contacts_indexscroll_show_letters"
         android:title="Show indexscroller letters"

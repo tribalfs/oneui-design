@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/item1"
+        android:icon="@drawable/ic_oui_accessibility"
+        android:title="Nav item 1" />
+
+    <item
+        android:id="@+id/item2"
+        android:icon="@drawable/ic_oui_gif"
+        android:title="Nav item 2" />
+
+    <item
+        android:id="@+id/item3"
+        android:icon="@drawable/ic_oui_import"
+        android:title="Nav item 3" />
+
+    <item
+        android:id="@+id/item4"
+        android:icon="@drawable/ic_oui_location_outline"
+        android:title="Nav item 4" />
+
+    <item
+        android:id="@+id/item5"
+        android:icon="@drawable/ic_oui_advanced_call_outline"
+        android:title="Nav item 5" />
+
+    <item
+        android:id="@+id/item6"
+        android:icon="@drawable/ic_oui_brightness_outline"
+        android:title="Nav item 6" />
+
+    <item
+        android:id="@+id/item7"
+        android:icon="@drawable/ic_oui_settings_outline"
+        android:title="Nav item 7" />
+
+    <item
+        android:id="@+id/item8"
+        android:icon="@drawable/ic_oui_gif"
+        android:title="Nav item 8" />
+
+    <item
+        android:id="@+id/item9"
+        android:icon="@drawable/ic_oui_import"
+        android:title="Nav item 9" />
+
+    <item
+        android:id="@+id/item10"
+        android:icon="@drawable/ic_oui_location_outline"
+        android:title="Nav item 10" />
+
+    <item
+        android:id="@+id/item11"
+        android:icon="@drawable/ic_oui_advanced_call_outline"
+        android:title="Nav item 11" />
+
+    <item
+        android:id="@+id/item12"
+        android:icon="@drawable/ic_oui_brightness_outline"
+        android:title="Nav item 12" />
+
+    <item
+        android:id="@+id/item13"
+        android:icon="@drawable/ic_oui_settings_outline"
+        android:title="Nav item 13" />
+
+</menu>

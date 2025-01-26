@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="10dp"
-    android:layout_marginEnd="10dp"
+    android:layout_marginHorizontal="14dp"
+    android:layout_marginVertical="6dp"
     android:background="@drawable/drawer_item_selector"
     tools:viewBindingIgnore="true">
 
@@ -18,8 +18,8 @@
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
-            android:paddingEnd="16dp"
+            android:layout_marginStart="10dp"
+            android:paddingEnd="10dp"
             android:gravity="start|center">
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -29,7 +29,8 @@
                 android:alpha=".75"
                 android:layout_gravity="center"
                 android:scaleType="fitXY"
-                app:tint="@color/oui_primary_text_color" />
+                app:tint="@color/oui_primary_text_color"
+                tools:src="@drawable/ic_about_sample"/>
 
         </FrameLayout>
 
@@ -37,8 +38,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp">
+            android:layout_marginStart="4dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:id="@+id/drawer_item_title"
@@ -47,7 +49,8 @@
                 android:textSize="17sp"
                 android:textColor="@color/oui_primary_text_color"
                 android:singleLine="true"
-                android:ellipsize="end" />
+                android:ellipsize="end"
+                tools:text="Drawer item"/>
 
         </RelativeLayout>
 
