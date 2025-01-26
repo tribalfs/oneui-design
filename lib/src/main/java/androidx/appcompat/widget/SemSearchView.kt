@@ -15,67 +15,54 @@ import dev.oneuiproject.oneui.ktx.isLightMode
 import androidx.appcompat.R as appcompatR
 
 //We are placing this here to avoid using reflection
-internal class  ActionModeSearchView @JvmOverloads constructor (
+internal class SemSearchView @JvmOverloads constructor (
     context: Context,
-    attrs: AttributeSet?,
+    attrs: AttributeSet? = null,
     defStyleAttr: Int = androidx.appcompat.R.attr.searchViewStyle
 ): SearchView(context, attrs, defStyleAttr){
 
     @JvmField
     var onCloseClickListener: ((View) -> Unit) ? = null
 
-    init {
-        setIconifiedByDefault(false)
-        context.theme.obtainStyledAttributes(intArrayOf(
-            appcompatR.attr.searchViewHintTextColor,
-            appcompatR.attr.searchViewTextColor
-        )).use {
-            val hintColor = it.getColor(0, ContextCompat.getColor(context,
-                android.R.color.darker_gray))
-            val textColor = it.getColor( @Suppress("ResourceType") 1,
-                ContextCompat.getColor(context, R.color.oui_primary_text_color))
-            mSearchSrcTextView.setHintTextColor(hintColor)
-            mSearchSrcTextView.setTextColor(textColor)
-            mVoiceButton.setColorFilter(textColor)
-            mCloseButton.setColorFilter(textColor)
-        }
+    override fun onCloseClicked() {
+        onCloseClickListener?.let {
+            clearFocus()
+            it.invoke(this)
+        } ?: super.onCloseClicked()
+    }
+}
 
-        val backgroundColor = if (context.isLightMode()) {
-            Color.parseColor("#0D000000")
-        } else {
-            Color.parseColor("#26ffffff")
-        }
-        background = GradientDrawable().apply {
-            shape = GradientDrawable.RECTANGLE
-            val res = context.resources
-            cornerRadius = res.getDimension(
-                @Suppress("PrivateResource")
-                appcompatR.dimen.sesl_rounded_corner_radius)
-            setColor(backgroundColor)
-        }
+
+internal fun SearchView.applyActionModeSearchStyle(){
+    context.theme.obtainStyledAttributes(intArrayOf(
+        appcompatR.attr.searchViewHintTextColor,
+        android.R.attr.textColorPrimary
+    )).use {
+        val hintColor = it.getColor(0, ContextCompat.getColor(context,
+            android.R.color.darker_gray))
+        val textColor = it.getColor( @Suppress("ResourceType") 1,
+            ContextCompat.getColor(context, R.color.oui_primary_text_color))
+        setSearchViewColors(textColor, textColor, hintColor)
     }
 
-    public override fun onCloseClicked() {
-        clearFocus()
-        onCloseClickListener?.invoke(this)
+    val backgroundColor = if (context.isLightMode()) {
+        Color.parseColor("#0D000000")
+    } else {
+        Color.parseColor("#26ffffff")
     }
-
-    override fun setVisibility(visibility: Int) {
-        if (visibility == VISIBLE) {
-            post { onSearchClicked() }
-        }
-        super.setVisibility(visibility)
+    background = GradientDrawable().apply {
+        shape = GradientDrawable.RECTANGLE
+        val res = context.resources
+        cornerRadius = res.getDimension(
+            @Suppress("PrivateResource")
+            appcompatR.dimen.sesl_rounded_corner_radius)
+        setColor(backgroundColor)
     }
-
-    fun setQuery(query: CharSequence) {
-        setQuery(query, true)
-    }
-
 }
 
 
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-fun SearchView.applyThemeColors(){
+internal fun SearchView.applyThemeColors(){
     with (context!!) {
         theme.obtainStyledAttributes(
             intArrayOf(
@@ -93,7 +80,7 @@ fun SearchView.applyThemeColors(){
 }
 
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-fun SearchView.setSearchViewColors(@ColorInt iconColor: Int, @ColorInt textColor: Int, @ColorInt hintColor: Int){
+internal fun SearchView.setSearchViewColors(@ColorInt iconColor: Int, @ColorInt textColor: Int, @ColorInt hintColor: Int){
     mSearchSrcTextView.setTextColor(textColor)
     mSearchSrcTextView.setHintTextColor(hintColor)
     mVoiceButton.setColorFilter(iconColor, PorterDuff.Mode.SRC_ATOP)
