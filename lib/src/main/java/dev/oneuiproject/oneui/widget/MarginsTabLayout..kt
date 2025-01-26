@@ -165,6 +165,8 @@ open class MarginsTabLayout @JvmOverloads constructor(
         return false
     }
 
+    internal val requestLayoutRunnable = Runnable { requestLayout() }
+
     @CallSuper
     internal open fun calculateMargins(){
         if (mRecalculateTextWidths || isInEditMode) {
@@ -176,7 +178,7 @@ open class MarginsTabLayout @JvmOverloads constructor(
             if (it != sideMargin){
                 sideMargin = it
                 sideMarginChanged = true
-                post { requestLayout() }
+                post(requestLayoutRunnable)
             }
         }
     }

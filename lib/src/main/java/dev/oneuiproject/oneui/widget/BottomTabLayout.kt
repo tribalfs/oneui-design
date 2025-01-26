@@ -147,7 +147,7 @@ class BottomTabLayout(
                 }
             }
         }
-        post{ requestLayout() }
+        post(requestLayoutRunnable)
     }
 
     fun inflateMenu(
@@ -262,17 +262,7 @@ class BottomTabLayout(
             setHorizontalCenter(getMoreButtonHorizontalCenter())
         }
 
-    private val reshowDialogRunnable = Runnable {
-        if (isAttachedToWindow){
-            createAndShowGridDialog()
-        }
-    }
-
-    private fun reshowGridDialog(){
-        removeCallbacks(reshowDialogRunnable)
-        postDelayed(reshowDialogRunnable,50)
-    }
-
+    private val reshowDialogRunnable = Runnable { if (isAttachedToWindow) createAndShowGridDialog() }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -332,7 +322,7 @@ class BottomTabLayout(
         }
         super.onRestoreInstanceState(state.superState)
         if (state.isGridDialogShowing) {
-            postDelayed({ createAndShowGridDialog() }, 500)
+            postDelayed(reshowDialogRunnable, 500)
         }
     }
 
