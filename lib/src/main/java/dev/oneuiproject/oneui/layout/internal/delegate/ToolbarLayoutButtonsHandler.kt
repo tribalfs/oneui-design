@@ -22,16 +22,16 @@ internal open class ToolbarLayoutButtonsHandler(private val toolbar: Toolbar):
 
     private val mActivity by lazy(LazyThreadSafetyMode.NONE) { toolbar.context.appCompatActivity }
 
+    /**Note: This doesn't check for the current value*/
     override var showNavigationButtonAsBack = false
         set(value) {
-            if (value == field) return
             field = value
             updateNavButton()
         }
 
+    /**Note: This doesn't check for the current value*/
     override var showNavigationButton = false
         set(value) {
-            if (value == field) return
             field = value
             updateNavButton()
         }

@@ -72,6 +72,8 @@ class SemDrawerLayout @JvmOverloads constructor(
 
     private lateinit var translationView: View
     private var handleInsets = false
+    private var _showNavButtonAsBack = false
+    private var _showNavigationButton = true
 
     private lateinit var mNavButtonsHandlerDelegate: NavButtonsHandler
 
@@ -114,7 +116,6 @@ class SemDrawerLayout @JvmOverloads constructor(
         mNavButtonsHandlerDelegate.setNavigationButtonOnClickListener{
             openDrawer(mDrawerPane, true)
         }
-        mNavButtonsHandlerDelegate.showNavigationButton = true
 
         removeDrawerListener(mDrawerListener)
         addDrawerListener(mDrawerListener)
@@ -124,6 +125,10 @@ class SemDrawerLayout @JvmOverloads constructor(
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         updateDrawerWidthAndState()
+        mNavButtonsHandlerDelegate.apply {
+            if (_showNavigationButton) showNavigationButton = true
+            if (!_showNavButtonAsBack) showNavigationButtonAsBack = false
+        }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -310,12 +315,20 @@ class SemDrawerLayout @JvmOverloads constructor(
 
 
     override var showNavigationButtonAsBack: Boolean
-        get() = mNavButtonsHandlerDelegate.showNavigationButtonAsBack
+        get() = _showNavButtonAsBack
         set(value) {
+            if (_showNavButtonAsBack == value) return
+            _showNavButtonAsBack = value
             mNavButtonsHandlerDelegate.showNavigationButtonAsBack = value
         }
 
-    override var showNavigationButton: Boolean = true
+    override var showNavigationButton: Boolean
+        get() = _showNavigationButton
+        set(value) {
+            if (_showNavigationButton == value) return
+            _showNavigationButton = value
+            mNavButtonsHandlerDelegate.showNavigationButton = value
+        }
 
     override fun setNavigationButtonOnClickListener(listener: OnClickListener?) = Unit
 

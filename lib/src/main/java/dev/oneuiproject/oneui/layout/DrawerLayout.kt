@@ -2,6 +2,8 @@ package dev.oneuiproject.oneui.layout
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.os.Parcel
+import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +13,7 @@ import androidx.annotation.Dimension
 import androidx.annotation.Px
 import androidx.core.content.res.use
 import androidx.core.view.doOnLayout
+import androidx.customview.view.AbsSavedState
 import androidx.customview.widget.Openable
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.layout.internal.backapi.BackHandler
@@ -37,6 +40,9 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     }
 
     internal var enableDrawerBackAnimation: Boolean = false
+        private set
+
+    protected var drawerEnabled = true
         private set
 
     init { initLayoutAttrs(attrs) }
@@ -74,11 +80,17 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         containerLayout.apply {
             setHandleInsets(handleInsets)
             setOnDrawerStateChangedListener { updateOnBackCallbackState() }
-            setNavigationButtonTooltip(resources.getText(R.string.oui_navigation_drawer))
-            if (isInEditMode && mDrawerPreviewOpen) {
-                containerLayout.open(false)
-            }
         }
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        if (isInEditMode && mDrawerPreviewOpen) {
+            containerLayout.open(false)
+        }
+        //Only needed for default value.
+        //Otherwise, drawer state is already updated
+        if (drawerEnabled) updateDrawerState()
     }
 
     override fun addView(child: View, index: Int, params: ViewGroup.LayoutParams) {
@@ -95,7 +107,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     }
 
     internal open fun updateDrawerLock() {
-        containerLayout.isLocked = isActionMode || isSearchMode
+        containerLayout.isLocked = isActionMode || isSearchMode || !drawerEnabled
     }
 
     fun isDrawerLocked(): Boolean = containerLayout.isLocked
@@ -205,6 +217,56 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
 
     override fun onApplyWindowInsets(insets: WindowInsets): WindowInsets =
         if (handleInsets) insets else super.onApplyWindowInsets(insets)
+    
+    open fun setDrawerEnabled(drawerEnabled: Boolean){
+        if (this.drawerEnabled == drawerEnabled) return
+        this.drawerEnabled = drawerEnabled
+        updateDrawerState()
+    }
+
+    internal open fun updateDrawerState(animate: Boolean = true){
+        updateDrawerLock()
+        if (drawerEnabled) {
+            showNavigationButton = true
+            setNavigationButtonTooltip(resources.getText(R.string.oui_navigation_drawer))
+          } else {
+            showNavigationButton = false
+            setNavigationButtonTooltip(null)
+        }
+    }
+
+    override fun onSaveInstanceState(): Parcelable {
+        val superState = super.onSaveInstanceState()
+        val state = SavedState(superState)
+        state.drawerEnabled = drawerEnabled
+        return state
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        if (state !is SavedState) {
+            super.onRestoreInstanceState(state)
+            return
+        }
+        if (this.drawerEnabled != state.drawerEnabled) {
+            this.drawerEnabled = state.drawerEnabled
+            updateDrawerState(false)
+        }
+        super.onRestoreInstanceState(state.superState)
+    }
+
+    private class SavedState : AbsSavedState {
+        var drawerEnabled = true
+
+        constructor(superState: Parcelable?) : super(superState!!)
+        constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
+            drawerEnabled = parcel.readInt() != 0
+        }
+
+        override fun writeToParcel(out: Parcel, flags: Int) {
+            super.writeToParcel(out, flags)
+            out.writeInt(if (drawerEnabled) 1 else 0)
+        }
+    }
 
     companion object {
         private const val TAG = "DrawerLayout"

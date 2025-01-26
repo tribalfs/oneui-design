@@ -1,10 +1,12 @@
 package dev.oneuiproject.oneui.layout.internal.widget
 
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.LayerDrawable
 import android.os.SystemClock
 import android.util.AttributeSet
 import android.util.Log
@@ -23,10 +25,14 @@ import androidx.annotation.Px
 import androidx.annotation.RestrictTo
 import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.animation.addListener
+import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isGone
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
+import androidx.core.view.marginStart
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import androidx.reflect.view.SeslViewReflector
@@ -40,6 +46,7 @@ import dev.oneuiproject.oneui.ktx.semSetToolTipText
 import dev.oneuiproject.oneui.ktx.setEnableRecursive
 import dev.oneuiproject.oneui.layout.Badge
 import dev.oneuiproject.oneui.layout.DrawerLayout.DrawerState
+import dev.oneuiproject.oneui.layout.internal.NavigationBadgeIcon
 import dev.oneuiproject.oneui.layout.internal.delegate.DrawerLayoutBackHandler
 import dev.oneuiproject.oneui.layout.internal.delegate.NavDrawerBackAnimator
 import dev.oneuiproject.oneui.layout.internal.util.DrawerLayoutInterface
@@ -48,6 +55,7 @@ import dev.oneuiproject.oneui.layout.internal.util.DrawerLayoutUtils.updateBadge
 import dev.oneuiproject.oneui.layout.internal.util.DrawerOutlineProvider
 import dev.oneuiproject.oneui.layout.internal.util.NavButtonsHandler
 import kotlin.math.max
+import androidx.slidingpanelayout.R as splR
 
 @SuppressLint("RestrictedApi")
 @RestrictTo(RestrictTo.Scope.LIBRARY)
@@ -73,6 +81,8 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
     private var headerButtonBadge: Badge = Badge.NONE
     private lateinit var mSlideViewPane: FrameLayout
 
+    private val badgeIcon by lazy(LazyThreadSafetyMode.NONE) { NavigationBadgeIcon(context) }
+
     @JvmField
     internal var navRailDrawerButton: ImageButton? = null
 
@@ -87,6 +97,8 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
 
     private var drawerCornerRadius = -1
     private var isDualDetails = false
+    private var drawerEnabled = true
+    private var hideDrawerOnCollapse = false
 
     private val activity by lazy(LazyThreadSafetyMode.NONE) { context.appCompatActivity }
 
@@ -285,7 +297,7 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
         get() = seslGetLock()
         set(value) {
             if (seslGetLock() == value) return
-            seslSetLock(value)
+            seslSetLock(value || !drawerEnabled)
             navRailDrawerButton!!.isEnabled = !value
             removeCallbacks(drawerItemsDisabler)
             postDelayed(drawerItemsDisabler, 50)
@@ -317,23 +329,49 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
         if (navDrawerButtonBadge == Badge.NONE && headerButtonBadge != Badge.NONE) {
             updateNavBadgeScale()
         }
+
+        if (drawerEnabled && hideDrawerOnCollapse) {
+            mToolbar.apply {
+                if (navigationIcon == null){
+                    navigationIcon = createBadgeNavIcon()
+                }
+                navigationIcon?.apply {
+                    (32.dpToPx(resources) * sSlideOffset).let{
+                        titleTextView?.translationX = -it
+                        subtitleTextView?.translationX = -it
+                    }
+                    (255 * (1f - (sSlideOffset * 15f)).coerceIn(0f, 1f)).toInt().let {
+                        alpha = it
+                        navRailDrawerButton?.alpha =  1f - it
+                        navRailDrawerButtonBadgeView?.alpha = 1f - it
+                    }
+                }
+                if (newSlideOffset == 1f){
+                    badgeIcon.setBadge(if (navDrawerButtonBadge != Badge.NONE) navDrawerButtonBadge else headerButtonBadge)
+                }
+            }
+        }
     }
+
+    private fun createBadgeNavIcon() =
+        LayerDrawable(arrayOf(navRailDrawerButton!!.drawable.constantState!!.newDrawable(), badgeIcon)).apply {
+            setId(0, R.id.nav_button_icon_layer_id)
+        }
 
     private fun updateNavBadgeScale() {
         navRailDrawerButtonBadgeView!!.apply {
             val scale = 1f - sSlideOffset
             scaleX = scale
             scaleY = scale
-            alpha = scale
         }
     }
 
     internal fun updateContentMinSidePadding(@Px padding: Int) =
         mSlideViewPane.updatePadding(left = padding, right = padding)
 
+    /**Note: This doesn't check for the current value*/
     override var showNavigationButtonAsBack = false
         set(value) {
-            if (value == field) return
             field = value
             updateNavButton()
         }
@@ -349,9 +387,32 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
                 }
             } else {
                 mToolbar.apply {
-                    navigationIcon = null
-                    navigationContentDescription = null
-                    setNavigationOnClickListener(null)
+                    titleTextView?.translationX = 0f
+                    subtitleTextView?.translationX = 0f
+                }
+                if (drawerEnabled && hideDrawerOnCollapse) {
+                    mToolbar.apply {
+                        navigationContentDescription = resources.getText(R.string.oui_navigation_drawer)
+                        setNavigationOnClickListener{
+                            navigationIcon = null
+                            open(true)
+                        }
+                        if (mCurrentState == DrawerState.OPEN) {
+                            navigationIcon = null
+                        } else {
+                            if (navigationIcon == null) {
+                                navigationIcon = createBadgeNavIcon()
+                            }
+                        }
+                        badgeIcon.setBadge(if (navDrawerButtonBadge != Badge.NONE) navDrawerButtonBadge else headerButtonBadge)
+                    }
+                }else{
+                    navRailDrawerButton?.alpha = 1f
+                    mToolbar.apply {
+                        navigationIcon = null
+                        navigationContentDescription = null
+                        setNavigationOnClickListener(null)
+                    }
                 }
             }
         }
@@ -410,6 +471,9 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
             if (navDrawerButtonBadge == Badge.NONE) {
                 navRailDrawerButtonBadgeView!!.updateBadgeView(badge)
                 updateNavBadgeScale()
+                if (drawerEnabled && hideDrawerOnCollapse){
+                    badgeIcon.setBadge(badge)
+                }
             }
         } else {
             Log.e(TAG, "setHeaderButtonBadge: `drawer_header_button_badge` id is not set in custom header view")
@@ -457,6 +521,87 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
         override fun onPanelOpened(panel: View) = dispatchDrawerStateChange(1f)
         override fun onPanelSlide(panel: View, slideOffset: Float) =
             dispatchDrawerStateChange(slideOffset)
+    }
+
+    fun isDrawerEnabled() = drawerEnabled
+
+    @JvmOverloads
+    fun setDrawerEnabled(enabled: Boolean, hideOnCollapsed: Boolean = false, animate: Boolean = true) {
+        if (this.drawerEnabled == enabled && this.hideDrawerOnCollapse == hideOnCollapsed) return
+        this.drawerEnabled = enabled
+        this.hideDrawerOnCollapse = hideOnCollapsed
+
+        mSlideViewPane.clearAnimation()
+
+        when {
+            drawerEnabled && !hideOnCollapsed -> {
+                val defaultMargin =
+                    context.resources.getDimensionPixelSize(splR.dimen.navigation_rail_margin_start)
+                if (animate) {
+                    createDrawerModeAnimator(mSlideViewPane.marginStart, defaultMargin).apply {
+                        addListener(
+                            onStart = { mDrawerPane.isVisible = true },
+                            onEnd = { updateNavButton() }
+                        )
+                        start()
+                    }
+                }else{
+                    mDrawerPane.isVisible = true
+                    updateSlideViewPaneWidth(defaultMargin)
+                    updateNavButton()
+                }
+            }
+
+            drawerEnabled && hideOnCollapsed -> {
+                val startMargin = mSlideViewPane.marginStart
+                if (startMargin == 0) {
+                    seslSetResizeOff(seslGetResizeOff())
+                    return
+                }
+
+                if (animate) {
+                    createDrawerModeAnimator(startMargin, 0).apply {
+                        doOnEnd { updateNavButton() }
+                        start()
+                    }
+                }else{
+                    mDrawerPane.isVisible = true
+                    updateSlideViewPaneWidth(0)
+                    updateNavButton()
+                }
+            }
+
+            else -> { //drawerEnabled == false
+                close(false)
+                val startMargin = mSlideViewPane.marginStart
+                if (startMargin == 0) return
+
+                if (animate) {
+                    createDrawerModeAnimator(startMargin, 0).apply {
+                        doOnEnd { updateNavButton(); mDrawerPane.isInvisible = true }
+                        start()
+                    }
+                }else{
+                    mDrawerPane.isInvisible = true
+                    updateSlideViewPaneWidth(0)
+                    updateNavButton()
+                }
+            }
+        }
+    }
+
+    private fun createDrawerModeAnimator(startValue: Int, endValue: Int): ValueAnimator {
+        return ValueAnimator.ofInt(startValue, endValue).apply {
+            duration = 350
+            addUpdateListener { updateSlideViewPaneWidth(it.animatedValue as Int) }
+        }
+    }
+
+    private fun updateSlideViewPaneWidth(width: Int){
+        mSlideViewPane.updateLayoutParams<LayoutParams> {
+            marginStart = width
+            seslSetResizeOff(seslGetResizeOff())
+        }
     }
 
     companion object {

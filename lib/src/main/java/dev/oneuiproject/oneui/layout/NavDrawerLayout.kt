@@ -6,9 +6,12 @@ package dev.oneuiproject.oneui.layout
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
+import android.os.Parcel
+import android.os.Parcelable
 import android.util.AttributeSet
 import androidx.annotation.Px
 import androidx.annotation.RestrictTo
+import androidx.customview.view.AbsSavedState
 import androidx.customview.widget.Openable
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.layout.internal.delegate.DrawerLayoutBackHandler
@@ -35,6 +38,7 @@ class NavDrawerLayout @JvmOverloads constructor(
     @Px private var navRailContentMinSideMargin: Int = 0
     @Px private var navRailContentPreferredWidth: Int = DEFAULT_NAV_RAIL_DETAILS_WIDTH
     private var mTopSystemBarsInset: Int = 0
+    private var hideNavRailDrawerOnCollapse = false
 
     private var mSemSlidingPaneLayout: SemSlidingPaneLayout? = null
 
@@ -167,7 +171,9 @@ class NavDrawerLayout @JvmOverloads constructor(
 
     override fun updateDrawerLock() {
         (containerLayout as? SemSlidingPaneLayout)?.apply {
-            isLocked = lockNavRailOnActionMode && isActionMode || lockNavRailOnSearchMode && isSearchMode }
+            isLocked = lockNavRailOnActionMode && isActionMode
+                    || lockNavRailOnSearchMode && isSearchMode
+                    || !drawerEnabled}
             ?: super.updateDrawerLock()
     }
 
@@ -222,6 +228,59 @@ class NavDrawerLayout @JvmOverloads constructor(
      * Otherwise, it will always return 0.*/
     fun getNavRailSlideRange(): Int =
         (containerLayout as? SemSlidingPaneLayout)?.getSlideRange() ?: 0
+
+
+    fun setHideNavRailDrawerOnCollapse(hideOnCollapse: Boolean){
+        if (this.hideNavRailDrawerOnCollapse == hideOnCollapse) return
+        this.hideNavRailDrawerOnCollapse = hideOnCollapse
+        updateDrawerState()
+    }
+
+    override fun updateDrawerState(animate: Boolean) {
+        (containerLayout as? SemSlidingPaneLayout)?.apply {
+            setDrawerEnabled(drawerEnabled, hideNavRailDrawerOnCollapse, animate)
+            if (drawerEnabled) {
+                updateDrawerLock()
+            }else{
+                seslSetLock(true)
+            }
+            return
+        }
+        super.updateDrawerState(animate)
+    }
+
+    override fun onSaveInstanceState(): Parcelable {
+        val superState = super.onSaveInstanceState()
+        val state = SavedState(superState)
+        state.hideNavRailDrawerOnCollapse = hideNavRailDrawerOnCollapse
+        return state
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        if (state !is SavedState) {
+            super.onRestoreInstanceState(state)
+            return
+        }
+        setHideNavRailDrawerOnCollapse(state.hideNavRailDrawerOnCollapse)
+        super.onRestoreInstanceState(state.superState)
+    }
+
+    private class SavedState : AbsSavedState {
+        var navRailContentPaneResizeOff = false
+        var hideNavRailDrawerOnCollapse = false
+
+        constructor(superState: Parcelable?) : super(superState!!)
+        constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
+            navRailContentPaneResizeOff = parcel.readInt() != 0
+            hideNavRailDrawerOnCollapse = parcel.readInt() != 0
+        }
+
+        override fun writeToParcel(out: Parcel, flags: Int) {
+            super.writeToParcel(out, flags)
+            out.writeInt(if (navRailContentPaneResizeOff) 1 else 0)
+            out.writeInt(if (hideNavRailDrawerOnCollapse) 1 else 0)
+        }
+    }
 
     companion object {
         private const val TAG = "NavDrawerLayout"

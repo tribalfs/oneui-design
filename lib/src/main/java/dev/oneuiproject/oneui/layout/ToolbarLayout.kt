@@ -239,6 +239,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     private var mNavigationIcon: Drawable? = null
 
     private var _showNavAsBack = false
+    private var _showNavigationButton = false
     private var mNavigationBadgeIcon: LayerDrawable? = null
 
     private var _mainContainer: RoundedFrameLayout? = null
@@ -404,7 +405,10 @@ open class ToolbarLayout @JvmOverloads constructor(
     override fun onFinishInflate() {
         super.onFinishInflate()
         mCoordinatorLayout.configureAdaptiveMargin(marginProviderImpl, getAdaptiveChildViews())
-        navButtonsHandler.showNavigationButtonAsBack = _showNavAsBack
+        navButtonsHandler.apply {
+            showNavigationButtonAsBack = _showNavAsBack
+            showNavigationButton = _showNavigationButton
+        }
         if (mShowSwitchBar) switchBar.visibility = VISIBLE
         setNavigationButtonIcon(mNavigationIcon)
         applyCachedTitles()
@@ -764,6 +768,8 @@ open class ToolbarLayout @JvmOverloads constructor(
     var showNavigationButton
         get() = navButtonsHandler.showNavigationButton
         set(value) {
+            if (_showNavigationButton == value) return
+            _showNavigationButton = value
             navButtonsHandler.showNavigationButton = value
         }
 
