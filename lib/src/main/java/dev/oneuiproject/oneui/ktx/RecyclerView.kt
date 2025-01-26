@@ -13,11 +13,15 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
+import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_DRAGGING
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.recyclerview.widget.SeslSwipeListAnimator
 import androidx.recyclerview.widget.SeslSwipeListAnimator.SwipeConfiguration
 import dev.oneuiproject.oneui.delegates.SwipeActionListener
 import dev.oneuiproject.oneui.delegates.SwipeItemCallbackDelegate
+import dev.oneuiproject.oneui.design.R
+import kotlin.LazyThreadSafetyMode.NONE
 
 /**
  * Registers a long-press multi-selection listener.
@@ -198,6 +202,33 @@ inline fun RecyclerView.configureItemSwipeAnimator(
         )
     ).apply {
         attachToRecyclerView(this@configureItemSwipeAnimator)
+    }
+}
+
+/**
+ * Hides soft input if showing when this [RecyclerView] is scrolled
+ * and optionally clear  focus on the text input view.
+ */
+@JvmOverloads
+fun RecyclerView.hideSoftInputOnScroll(clearFocus: Boolean = true){
+    getTag(R.id.tag_rv_hide_soft_input)?.let { return }
+    setTag(R.id.tag_rv_hide_soft_input, true)
+
+    val activity by lazy(NONE) { context.activity!! }
+
+    val scrollListener = object: OnScrollListener(){
+        override fun onScrollStateChanged(rv: RecyclerView, newState: Int) {
+            if (newState == SCROLL_STATE_DRAGGING) {
+                activity.hideSoftInput(clearFocus)
+            }
+        }
+    }
+
+    if (isAttachedToWindow) addOnScrollListener(scrollListener)
+
+    doOnAttachedStateChanged { _, isAttached ->
+        if (isAttached) addOnScrollListener(scrollListener)
+        else removeOnScrollListener(scrollListener)
     }
 }
 

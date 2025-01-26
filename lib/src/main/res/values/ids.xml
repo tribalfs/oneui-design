@@ -7,6 +7,7 @@
     <item name="tag_side_margin_excluded" type="id"/>
     <item name="tag_init_side_margins" type="id"/>
     <item name="tag_badge_text" type="id"/>
+    <item name="tag_rv_hide_soft_input" type="id"/>
 
     <item name="bottom_tab_menu_show_grid_dialog" type="id"/>
 </resources>
