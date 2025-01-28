@@ -492,9 +492,9 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
         val systemBarsInsets = insets.getInsets(systemBars())
 
         if (isImmersiveActive) {
-            setPadding(systemBarsInsets.left, 0, systemBarsInsets.right, imeInsetBottom)
+            setPadding(systemBarsInsets.left, 0, systemBarsInsets.right, 0)
             seslSetDrawerMarginTop(systemBarsInsets.top + defaultDrawerTopMargin)
-            seslSetDrawerMarginBottom(maxOf(imeInsetBottom, systemBarsInsets.bottom))
+            seslSetDrawerMarginBottom(systemBarsInsets.bottom)
         } else {
             if (activity.fitsSystemWindows) {
                 setPadding(0, 0, 0, imeInsetBottom)
