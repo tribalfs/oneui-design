@@ -5,7 +5,7 @@ package dev.oneuiproject.oneui.dialog
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.os.Build
+import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -62,7 +62,7 @@ class GridMenuDialog @JvmOverloads constructor(
     private lateinit var mContentView: LinearLayout
     private lateinit var mGridListView: RecyclerView
     private val mAdapter: GridListAdapter = GridListAdapter()
-    private var horizontalCenter: Float? = null
+    private var mCurrentAnchorView: View? = null
 
     fun interface OnItemClickListener {
         fun onClick(item: GridItem): Boolean
@@ -101,10 +101,6 @@ class GridMenuDialog @JvmOverloads constructor(
         updateDialog()
     }
 
-    fun setHorizontalCenter(center: Float?) {
-        horizontalCenter = center
-    }
-
     fun updateDialog(){
         mSpanCount = calculateColumnCount()
         mGridListView = mContentView.findViewById<RecyclerView>(R.id.grid_menu_view).apply {
@@ -118,11 +114,10 @@ class GridMenuDialog @JvmOverloads constructor(
         }
 
         updateDialogMaxHeight()
-        updateDialogWidthAndPosition()
     }
 
     private fun updateDialogWidthAndPosition() {
-        if (Build.VERSION.SDK_INT >= 22) {
+        if (SDK_INT >= 22) {
             window!!.setElevation(0f)
         }
 
@@ -145,7 +140,8 @@ class GridMenuDialog @JvmOverloads constructor(
                 if (DeviceLayoutUtil.isTabletLayoutOrDesktop(context)) {
                     dialogWidth = dialogWidth.coerceAtMost(resources.getDimensionPixelOffset(R.dimen.more_menu_dialog_max_width))
                     if (DeviceLayoutUtil.isLandscape(config) && !isInMultiWindowModeCompat(context)) {
-                        dialogWidth = dialogWidth.coerceAtLeast(resources.getDimensionPixelOffset(R.dimen.more_menu_dialog_min_width))
+                        dialogWidth = dialogWidth.coerceAtLeast(resources.getDimensionPixelOffset(
+                            R.dimen.more_menu_dialog_min_width))
                     }
                 }
 
@@ -153,21 +149,20 @@ class GridMenuDialog @JvmOverloads constructor(
                 attributes = windowLp.apply wlp@ {
                     this@wlp.width = dialogWidth
                     this@wlp.y = resources.getDimensionPixelOffset(R.dimen.more_menu_dialog_y_offset)
-                    horizontalCenter?.let {
+                    getAnchorViewHorizontalCenter()?.let {
                         this@wlp.x = (it - dialogWidth / 2).toInt()
                     }
-                    this@wlp.windowAnimations = if (isRTL) R.style.MoreMenuDialogSlideRight else
-                        R.style.MoreMenuDialogSlideLeft
+                    this@wlp.windowAnimations = if (isRTL) R.style.MoreMenuDialogSlideRight else R.style.MoreMenuDialogSlideLeft
+                    gravity = Gravity.BOTTOM or Gravity.START
                 }
-                setGravity(Gravity.BOTTOM or Gravity.START)
             }
         }else{
             window!!.apply {
                 attributes = windowLp.apply wlp@{
                     this@wlp.y = 0
                     this@wlp.width = context.windowWidthNetOfInsets
+                    gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
                 }
-                setGravity(Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL)
             }
         }
     }
@@ -193,6 +188,44 @@ class GridMenuDialog @JvmOverloads constructor(
             gridViewLP.height = WRAP_CONTENT
         }
         mGridListView.setLayoutParams(gridViewLP)
+    }
+
+    private val updateDialogWidthAndPositionRunnable = Runnable {
+        updateDialogWidthAndPosition();
+        show()
+    }
+
+    private val mOnLayoutChangeListener = View.OnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+        mCurrentAnchorView?.apply {
+            removeCallbacks(updateDialogWidthAndPositionRunnable)
+            hide()
+            postDelayed(updateDialogWidthAndPositionRunnable,500)
+        }
+    }
+
+    fun setAnchor(anchor: View) {
+        mCurrentAnchorView?.removeOnLayoutChangeListener(mOnLayoutChangeListener)
+        mCurrentAnchorView = anchor
+        anchor.addOnLayoutChangeListener(mOnLayoutChangeListener)
+        updateDialogWidthAndPosition()
+    }
+
+    private fun getAnchorViewHorizontalCenter(): Float? {
+        return mCurrentAnchorView?.let { view ->
+            val location = IntArray(2)
+            if (SDK_INT >= 29) {
+                view.getLocationInSurface(location)
+            }else{
+                view.getLocationInWindow(location)
+            }
+            location[0] + view.width / 2f
+        }
+    }
+
+    override fun dismiss() {
+        mCurrentAnchorView?.removeOnLayoutChangeListener(mOnLayoutChangeListener)
+        mCurrentAnchorView = null
+        super.dismiss()
     }
 
     private fun getMoreMenuItemHeight(): Int {

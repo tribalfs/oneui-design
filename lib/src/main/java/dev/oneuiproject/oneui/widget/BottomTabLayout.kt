@@ -27,7 +27,6 @@ import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuItemImpl
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
-import androidx.core.view.doOnLayout
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.customview.view.AbsSavedState
@@ -269,7 +268,7 @@ class BottomTabLayout(
                 }
                 true
             }
-            setHorizontalCenter(getMoreButtonHorizontalCenter())
+            setAnchor(getTabView(3)!!)
         }
 
     private val reshowDialogRunnable = Runnable { if (isAttachedToWindow) createAndShowGridDialog() }
@@ -297,25 +296,27 @@ class BottomTabLayout(
         gridMenuDialog?.dismiss()
     }
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        updateGridDialogSizeAndPosition()
+    private val dialogUpdateRunnable = Runnable {
+        gridMenuDialog?.apply {
+            updateDialog()
+            window!!.decorView.alpha = 1f
+        }
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        updateGridDialogSizeAndPosition()
+        updateGridDialogSizeAndHeight()
     }
 
-    private fun updateGridDialogSizeAndPosition(){
+    private fun updateGridDialogSizeAndHeight(){
         gridMenuDialog?.apply {
-            if (isShowing) {
-                doOnLayout {
-                    setHorizontalCenter(getMoreButtonHorizontalCenter())
-                    updateDialog()
-                }
-            }
+            if (isShowing) updateDialog()
         }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        updateGridDialogSizeAndHeight()
     }
 
     override fun onSaveInstanceState(): Parcelable {
@@ -332,7 +333,7 @@ class BottomTabLayout(
         }
         super.onRestoreInstanceState(state.superState)
         if (state.isGridDialogShowing) {
-            postDelayed(reshowDialogRunnable, 500)
+            createAndShowGridDialog()
         }
     }
 
@@ -515,18 +516,6 @@ class BottomTabLayout(
 
     fun setOnMenuItemClickListener(onMenuItemClickedListener: MenuItem.OnMenuItemClickListener){
         this.itemClickedListener = onMenuItemClickedListener
-    }
-
-    private fun getMoreButtonHorizontalCenter(): Float? {
-        return getTabView(3)?.let { view ->
-            val location = IntArray(2)
-            if (SDK_INT >= 29) {
-                view.getLocationInSurface(location)
-            }else{
-                view.getLocationInWindow(location)
-            }
-            location[0] + view.width / 2f
-        }
     }
 
     private class SavedState : AbsSavedState {
