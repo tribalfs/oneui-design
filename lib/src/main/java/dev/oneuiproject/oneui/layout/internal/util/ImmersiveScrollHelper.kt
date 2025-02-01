@@ -103,6 +103,7 @@ internal class ImmersiveScrollHelper(
             @Suppress("DEPRECATION")
             activity.window.navigationBarColor = Color.TRANSPARENT
             setBackgroundColor(defaultBottomViewBgColor)
+            translationY = 0f
         }
     }
 

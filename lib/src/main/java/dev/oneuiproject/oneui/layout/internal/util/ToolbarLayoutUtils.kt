@@ -13,9 +13,13 @@ import android.view.WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON
 import android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
 import androidx.annotation.RequiresApi
 import androidx.annotation.RestrictTo
+import androidx.core.view.isVisible
+import dev.oneuiproject.oneui.ktx.findAncestorOfType
+import dev.oneuiproject.oneui.ktx.isDescendantOf
 import dev.oneuiproject.oneui.ktx.isInMultiWindowModeCompat
 import dev.oneuiproject.oneui.ktx.semAddExtensionFlags
 import dev.oneuiproject.oneui.ktx.semClearExtensionFlags
+import dev.oneuiproject.oneui.layout.ToolbarLayout
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isScreenWidthLarge
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isTabletBuildOrIsDeskTopMode
 import android.view.SemWindowManager.LayoutParams.SEM_EXTENSION_FLAG_RESIZE_FULLSCREEN_WINDOW_ON_SOFT_INPUT as FLAG_RESIZE_FULLSCREEN_WINDOW_ON_SOFT_INPUT
@@ -93,4 +97,25 @@ internal object ToolbarLayoutUtils {
             }
         }
     }
+
+    inline fun ViewGroup.hasShowingChild(): Boolean {
+        if (!isVisible) return false
+        for (i in 0 until childCount) {
+            val child = getChildAt(i)
+            if (child.isVisible) return true
+        }
+        return false
+    }
+
+    internal data class InternalLayoutInfo(
+        val isInsideTBLMainContainer: Boolean,
+        val tblParent: ToolbarLayout? = null
+    )
+
+    internal fun View.getLayoutLocationInfo(): InternalLayoutInfo{
+        return findAncestorOfType<ToolbarLayout>()?.let {
+            InternalLayoutInfo(this.isDescendantOf(it.mainContainer), it)
+        } ?: InternalLayoutInfo(false)
+    }
+
 }

@@ -82,6 +82,7 @@ import dev.oneuiproject.oneui.layout.internal.delegate.ToolbarLayoutBackHandler
 import dev.oneuiproject.oneui.layout.internal.delegate.ToolbarLayoutButtonsHandler
 import dev.oneuiproject.oneui.layout.internal.util.ImmersiveScrollHelper
 import dev.oneuiproject.oneui.layout.internal.util.NavButtonsHandler
+import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.hasShowingChild
 import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.setVisibility
 import dev.oneuiproject.oneui.utils.BADGE_LIMIT_NUMBER
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil
@@ -705,10 +706,12 @@ open class ToolbarLayout @JvmOverloads constructor(
                 immersiveScrollHelper = ImmersiveScrollHelper(activity!!, appBarLayout, footerParent, footerAlpha)
             }
             immersiveScrollHelper!!.activateImmersiveScroll(withFooter)
+            dispatchImmersiveStateChanged(true)
         } else {
             immersiveScrollHelper?.deactivateImmersiveScroll()
             immersiveScrollHelper = null
             requestApplyInsets()
+            dispatchImmersiveStateChanged(false)
         }
         return true
     }
@@ -735,6 +738,27 @@ open class ToolbarLayout @JvmOverloads constructor(
         set(activate)  {
             activateImmersiveScroll(activate, true, if (VERSION.SDK_INT >= 35) 0.8f else 1f)
         }
+
+    private var immersiveStateListener: MutableList<(isImmersive: Boolean) -> Unit>? = null
+
+    internal fun addImmersiveStateChangeListener(listener : (Boolean) -> Unit){
+        if (immersiveStateListener == null){
+            immersiveStateListener = mutableListOf(listener)
+        }
+        immersiveStateListener!!.apply {
+            if (!contains(listener)) add(listener)
+        }
+    }
+
+    internal fun removeImmersiveStateChangeListener(listener : (Boolean) -> Unit){
+        immersiveStateListener?.remove(listener)
+    }
+
+    private fun dispatchImmersiveStateChanged(isImmersive: Boolean){
+        immersiveStateListener?.forEach {
+            it.invoke(isImmersive)
+        }
+    }
 
 
     //

@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package dev.oneuiproject.oneui.widget
 
 import android.content.Context
@@ -6,15 +8,16 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnLayoutChangeListener
+import android.view.WindowInsets
 import androidx.core.view.isVisible
 import androidx.indexscroll.widget.SeslIndexScrollView.OnIndexBarEventListener
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import dev.oneuiproject.oneui.ktx.findAncestorOfType
-import dev.oneuiproject.oneui.ktx.isDescendantOf
-import dev.oneuiproject.oneui.layout.ToolbarLayout
+import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.InternalLayoutInfo
+import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.getLayoutLocationInfo
 import kotlinx.coroutines.Runnable
 import java.lang.ref.WeakReference
 
@@ -36,7 +39,7 @@ class ScrollAwareFloatingActionButton @JvmOverloads constructor(
         SCROLLING_UP, SCROLLING_DOWN, IDLE
     }
 
-    private val showRunnable = Runnable { show() }
+    private val showRunnable = Runnable { showInternal() }
 
     private var setVisibility = View.VISIBLE
     private var isTouchingRv = false
@@ -64,6 +67,25 @@ class ScrollAwareFloatingActionButton @JvmOverloads constructor(
         }
     }
 
+    private var navBarInsetBottom = 0
+    private var isImmersive = false
+    private var appBarOffset = 0
+    private var footerHeight = 0
+    private var adjRatio = 0f
+
+    private val immersiveStateListener: (Boolean) -> Unit by lazy(LazyThreadSafetyMode.NONE) {
+        { isImmersive = it; updateTranslationY() }
+    }
+
+    private val footerLayoutListener: OnLayoutChangeListener by lazy(LazyThreadSafetyMode.NONE) {
+        OnLayoutChangeListener { v, _, _, _, _, _, _, _, _ ->
+            val newFooterHeight = v.height
+            if (newFooterHeight == footerHeight) return@OnLayoutChangeListener
+            footerHeight = newFooterHeight
+            updateTranslationY()
+        }
+    }
+
     /**
      * Shows the button.
      * This method will animate the button show if the view has already been laid out.
@@ -78,6 +100,10 @@ class ScrollAwareFloatingActionButton @JvmOverloads constructor(
             Log.w(TAG, "show() called with hideOnScroll configured. " +
                     "This call will be superseded by the hideOnScroll behavior.")
         }
+        showInternal()
+    }
+
+    private inline fun showInternal(){
         if (setVisibility == VISIBLE) {
             super.show()
         }
@@ -96,6 +122,10 @@ class ScrollAwareFloatingActionButton @JvmOverloads constructor(
             Log.w(TAG, "hide() called with `hideOnScroll` configured. " +
                     "This call will be superseded by the hideOnScroll behavior.")
         }
+        hideInternal()
+    }
+
+    private inline fun hideInternal(){
         removeCallbacks(showRunnable)
         super.hide()
     }
@@ -108,22 +138,22 @@ class ScrollAwareFloatingActionButton @JvmOverloads constructor(
     override fun setVisibility(visibility: Int) {
         this.setVisibility = visibility
         when (visibility) {
-            GONE, INVISIBLE -> hide()
+            GONE, INVISIBLE -> hideInternal()
             VISIBLE -> updateState(0)
         }
     }
 
     private fun updateState(showDelay: Long = 1_500){
         if (setVisibility != VISIBLE || fastScrollerPressed) {
-            hide()
+            hideInternal()
             return
         }
         when (scrollState){
             ScrollState.SCROLLING_UP -> {
-                hide()
+                hideInternal()
             }
             ScrollState.SCROLLING_DOWN -> {
-                show()
+                showInternal()
             }
             ScrollState.IDLE -> {
                 if (isTouchingRv) return
@@ -225,32 +255,48 @@ class ScrollAwareFloatingActionButton @JvmOverloads constructor(
         offsetYIfInsideMainContainer(false)
     }
 
-    private fun offsetYIfInsideMainContainer(register: Boolean){
-        if (!layoutLocationInfo.isInsideTBLMainContainer) return
-        layoutLocationInfo.tblParent!!.appBarLayout.apply {
-            if (register){
-                addOnOffsetChangedListener(this@ScrollAwareFloatingActionButton)
+    private var layoutLocationInfo: InternalLayoutInfo? = null
+
+    private fun offsetYIfInsideMainContainer(register: Boolean) {
+        layoutLocationInfo = layoutLocationInfo ?: getLayoutLocationInfo()
+        layoutLocationInfo?.takeIf { it.isInsideTBLMainContainer }?.tblParent?.apply {
+            if (register) {
+                appBarLayout.addOnOffsetChangedListener(this@ScrollAwareFloatingActionButton)
+                isImmersive = isImmersiveScroll
+                addImmersiveStateChangeListener(immersiveStateListener)
+                footerParent.addOnLayoutChangeListener(footerLayoutListener)
             } else {
-                removeOnOffsetChangedListener(this@ScrollAwareFloatingActionButton)
+                appBarLayout.removeOnOffsetChangedListener(this@ScrollAwareFloatingActionButton)
+                removeImmersiveStateChangeListener(immersiveStateListener)
+                footerParent.removeOnLayoutChangeListener(footerLayoutListener)
+                layoutLocationInfo = null
             }
+        } ?: run {
+            if (!register) layoutLocationInfo = null
         }
     }
 
-    private val layoutLocationInfo by lazy {
-        findAncestorOfType<ToolbarLayout>()?.let {
-            InternalLayoutInfo(this.isDescendantOf(it.mainContainer), it)
-        } ?: InternalLayoutInfo(false)
-    }
-
-    override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
+    override fun onOffsetChanged(abl: AppBarLayout, vOffset: Int) {
         if (!isVisible) return
-        translationY = (verticalOffset + appBarLayout.totalScrollRange).toFloat() * -1f
+        appBarOffset = vOffset + abl.totalScrollRange
+        adjRatio = (appBarOffset/abl.seslGetCollapsedHeight()).coerceAtMost(1f)
+        updateTranslationY()
     }
 
-    private data class InternalLayoutInfo(
-        val isInsideTBLMainContainer: Boolean,
-        val tblParent: ToolbarLayout? = null
-    )
+    private fun updateTranslationY(){
+        val translationYAdj = if (isImmersive) {
+            ((navBarInsetBottom + footerHeight) * adjRatio).coerceAtLeast(navBarInsetBottom.toFloat())
+        } else 0f
+        translationY = (appBarOffset + translationYAdj) * -1f
+    }
+
+    override fun onApplyWindowInsets(insets: WindowInsets): WindowInsets {
+        if (layoutLocationInfo?.isInsideTBLMainContainer == true && Build.VERSION.SDK_INT >= 30) {
+            navBarInsetBottom = insets.getInsets(WindowInsets.Type.navigationBars()).bottom
+            updateTranslationY()
+        }
+        return super.onApplyWindowInsets(insets)
+    }
 
     companion object {
         private const val TAG = "ScrollAwareFAB"
