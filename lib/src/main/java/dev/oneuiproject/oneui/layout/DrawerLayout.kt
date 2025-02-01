@@ -4,10 +4,10 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Parcel
 import android.os.Parcelable
+import android.os.Parcelable.ClassLoaderCreator
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowInsets
 import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
 import androidx.annotation.Px
@@ -263,6 +263,18 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         override fun writeToParcel(out: Parcel, flags: Int) {
             super.writeToParcel(out, flags)
             out.writeInt(if (drawerEnabled) 1 else 0)
+        }
+
+        companion object {
+            @JvmField
+            val CREATOR: Parcelable.Creator<SavedState> =
+                object :
+                    ClassLoaderCreator<SavedState> {
+                    override fun createFromParcel(parcel: Parcel,
+                                                  loader: ClassLoader): SavedState = SavedState(parcel, null)
+                    override fun createFromParcel(parcel: Parcel): SavedState = SavedState(parcel, null)
+                    override fun newArray(size: Int): Array<SavedState?> = arrayOfNulls(size)
+                }
         }
     }
 

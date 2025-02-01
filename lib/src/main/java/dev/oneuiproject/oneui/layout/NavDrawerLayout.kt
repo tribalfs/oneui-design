@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.os.Parcel
 import android.os.Parcelable
+import android.os.Parcelable.ClassLoaderCreator
 import android.util.AttributeSet
 import androidx.annotation.Px
 import androidx.annotation.RestrictTo
@@ -302,6 +303,18 @@ class NavDrawerLayout @JvmOverloads constructor(
             super.writeToParcel(out, flags)
             out.writeInt(if (navRailContentPaneResizeOff) 1 else 0)
             out.writeInt(if (hideNavRailDrawerOnCollapse) 1 else 0)
+        }
+
+        companion object {
+            @JvmField
+            val CREATOR: Parcelable.Creator<SavedState> =
+                object :
+                    ClassLoaderCreator<SavedState> {
+                    override fun createFromParcel(parcel: Parcel,
+                                                  loader: ClassLoader): SavedState = SavedState(parcel, null)
+                    override fun createFromParcel(parcel: Parcel): SavedState = SavedState(parcel, null)
+                    override fun newArray(size: Int): Array<SavedState?> = arrayOfNulls(size)
+                }
         }
     }
 
