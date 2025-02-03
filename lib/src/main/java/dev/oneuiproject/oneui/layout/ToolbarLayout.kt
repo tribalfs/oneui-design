@@ -285,6 +285,8 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     private var mMenuSynchronizer: MenuSynchronizer? = null
     private var forcePortraitMenu: Boolean = false
+    private var syncMenuPending = false
+
     private var mShowSwitchBar = false
 
     open val switchBar by lazy{
@@ -1070,7 +1072,10 @@ open class ToolbarLayout @JvmOverloads constructor(
             MotionEvent.ACTION_DOWN -> isTouching = true
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                 isTouching = false
-                syncActionModeMenu()
+                if (syncMenuPending){
+                    syncMenuPending = false
+                    syncActionModeMenu()
+                }
                 if (showActionModeSearchPending) {
                     showActionModeSearchPending = false
                     showActionModeSearchView()
@@ -1135,6 +1140,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         setupActionModeMenu(showCancel)
 
         allSelectorStateFlow?.let {
+            allSelectorItemsCount = 0
             updateAllSelectorJob = activity!!.lifecycleScope.launch {
                 it.flowWithLifecycle(activity!!.lifecycle)
                     .collectLatest {
@@ -1143,7 +1149,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             }
         } ?: run {
             if (allSelectorItemsCount != SELECTED_ITEMS_UNSET) {
-                applyAllSelectorCount(allSelectorItemsCount)
+                applyAllSelectorCount(allSelectorItemsCount, true)
                 applyAllSelectorState(allSelectorEnabled, allSelectorChecked)
             }
         }
@@ -1156,6 +1162,8 @@ open class ToolbarLayout @JvmOverloads constructor(
 
         setupAllSelectorOnClickListener()
         updateOnBackCallbackState()
+
+        if (isTouching) syncMenuPending = true else syncActionModeMenu()
     }
 
     private inline fun showActionModeToolbarAnimate() {
@@ -1326,12 +1334,16 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
     }
 
-    private inline fun syncActionModeMenu() {
+    private fun syncActionModeMenu() {
         if (!isActionMode) return
-        if (!isTouching && mCustomFooterContainer!!.isVisible){
+        if (isTouching){
+            syncMenuPending = true
+            return
+        }
+        if (mCustomFooterContainer!!.hasShowingChild()){
             mCustomFooterContainer!!.isVisible = false
             if (VERSION.SDK_INT >= 26) {
-                postOnAnimationDelayed({ if (isActionMode) syncActionModeMenuInternal() }, 300)
+                postOnAnimationDelayed({ if (isActionMode) syncActionModeMenuInternal() }, 375)
                 return
             }
         }
@@ -1344,8 +1356,10 @@ open class ToolbarLayout @JvmOverloads constructor(
                 val isMenuModePortrait = forcePortraitMenu
                         || DeviceLayoutUtil.isPortrait(resources.configuration)
                         || DeviceLayoutUtil.isTabletLayoutOrDesktop(context)
-                mMenuSynchronizer!!.state =
-                    if (isMenuModePortrait) State.PORTRAIT else State.LANDSCAPE
+                mMenuSynchronizer!!.state = if (isMenuModePortrait) State.PORTRAIT else State.LANDSCAPE
+                if (isImmersiveScroll) {
+                    postOnAnimation { _appBarLayout.setExpanded(false, true)}
+                }
             }
         } else {
             mMenuSynchronizer!!.state = State.HIDDEN
@@ -1420,14 +1434,16 @@ open class ToolbarLayout @JvmOverloads constructor(
 
         ensureActionModeViews()
         if (allSelectorItemsCount != count) {
+            val updateMenu = count == 0 || allSelectorItemsCount == 0 ||
+                    allSelectorItemsCount == SELECTED_ITEMS_UNSET
             allSelectorItemsCount = count
-            applyAllSelectorCount(count)
+            applyAllSelectorCount(count, updateMenu)
         }
         applyAllSelectorState(enabled, checked)
     }
 
-    private inline fun applyAllSelectorCount(count: Int) {
-        syncActionModeMenu()
+    private inline fun applyAllSelectorCount(count: Int, updateMenu: Boolean) {
+        if (updateMenu) syncActionModeMenu()
         val title = if (count > 0) {
             resources.getString(R.string.oui_action_mode_n_selected, count)
         } else {
