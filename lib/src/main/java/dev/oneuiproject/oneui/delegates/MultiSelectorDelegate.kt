@@ -1,14 +1,19 @@
 package dev.oneuiproject.oneui.delegates
 
+import android.graphics.Rect
 import android.util.Log
 import androidx.collection.ScatterSet
 import androidx.collection.mutableScatterSetOf
+import androidx.core.view.WindowInsetsCompat.Type.*
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import dev.oneuiproject.oneui.ktx.MultiSelectionState
 import dev.oneuiproject.oneui.ktx.MultiSelectionState.ENDED
 import dev.oneuiproject.oneui.ktx.MultiSelectionState.STARTED
 import dev.oneuiproject.oneui.ktx.doOnLongPressMultiSelection
+import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.getLayoutLocationInfo
+import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory
+import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type
 
 /**
  * Delegate for multi-selection in OneUI style.
@@ -129,9 +134,7 @@ class MultiSelectorDelegate<T>(
                             if (pos != NO_POSITION) onStateChanged(STARTED, pos)
                         }
                         ENDED -> {
-                            //cache bottomPosition before the values are reset in onStateChanged()
-                            val bottomPosition = maxOf(firstPosition, lastPosition)
-                            postDelayed({smoothScrollToPosition(bottomPosition)}, 400)
+                            scrollToBottomSelected()
                             onStateChanged(ENDED, pos)
                             restoreItemAnimator?.let {
                                 itemAnimator = it
@@ -142,6 +145,38 @@ class MultiSelectorDelegate<T>(
                 }
             )
         }
+    }
+
+    private fun RecyclerView.scrollToBottomSelected() {
+        val bottomPosition = maxOf(firstPosition, lastPosition)
+
+        findViewHolderForAdapterPosition(bottomPosition)?.let { viewHolder ->
+            val itemBottom = viewHolder.itemView.run { y + height }
+            isNestedScrollingEnabled = false
+
+            postOnAnimationDelayed({
+                val rvBottom = Rect().apply { getLocalVisibleRect(this) }.bottom
+                val bottomOffset = calculateBottomOffset()
+                val scrollDistance = (itemBottom - (rvBottom - bottomOffset)).toInt()
+                if (scrollDistance > 0) {
+                    smoothScrollBy(0, scrollDistance, CachedInterpolatorFactory.getOrCreate(Type.SINE_IN_OUT_60), 300)
+                }
+                postDelayed({ isNestedScrollingEnabled = true }, 400)
+            }, 750)
+        }
+    }
+
+    private fun RecyclerView.calculateBottomOffset(): Int {
+        val locInfo = getLayoutLocationInfo()
+        return if (locInfo.isInsideTBLMainContainer) {
+            locInfo.tblParent?.let {
+                if (it.isImmersiveScroll) {
+                    Rect().apply { it.footerParent.getLocalVisibleRect(this) }.let { rect ->
+                        (rect.bottom - rect.top) + rootWindowInsets.getInsets(navigationBars()).bottom
+                    }
+                } else 0
+            } ?: 0
+        } else 0
     }
 
     override fun updateSelectableIds(selectableIds: List<T>) {
@@ -257,7 +292,7 @@ class MultiSelectorDelegate<T>(
         val isEnabled = currentDataSetCount > 0
         val selectedIds = selectedIds
         val allSelected = if (!isEnabled) null else {
-             selectedIds.count { it in currentList } >= currentDataSetCount
+            selectedIds.count { it in currentList } >= currentDataSetCount
         }
         return AllSelectorState(
             selectedIds.size,
