@@ -216,7 +216,7 @@ class BottomTabLayout(
 
         if (hasOverflowItems()) {
             addCustomTab(
-                tabTitleRes =/* if (showMoreText)materialR.string.sesl_more_item_label else*/ null,
+                tabTitleRes = if (showMoreText) materialR.string.sesl_more_item_label else null,
                 tabIconRes = R.drawable.oui_ic_ab_drawer,
                 listener = { createAndShowGridDialog() }
             ).apply{
@@ -230,6 +230,7 @@ class BottomTabLayout(
                     updateItems(overFLowItems!!.map { it.toGridDialogItem()})
                 }
             }
+            //TODO (set permanent tint to icon and text)
         }
 
         isPopulatingTabs = false
@@ -239,7 +240,7 @@ class BottomTabLayout(
     private fun addTabForMenu(menuItem: MenuItemImpl) {
         addTab(
             tabTitle = menuItem.title,
-            tabIcon = /*menuItem.icon*/null
+            tabIcon = menuItem.icon
         ).apply {
             isEnabled = menuItem.isEnabled
             menuItem.badgeText?.let {
