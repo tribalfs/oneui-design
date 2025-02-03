@@ -10,7 +10,6 @@ import androidx.appcompat.util.SeslRoundedCorner
 import androidx.core.content.res.use
 import androidx.core.graphics.Insets
 import dev.oneuiproject.oneui.design.R
-import dev.oneuiproject.oneui.widget.internal.InsetRoundedCorner
 
 class ViewRoundedCornerDelegate(
     private val context: Context,
@@ -19,9 +18,9 @@ class ViewRoundedCornerDelegate(
     defStyleRes: Int
 ): ViewRoundedCorner {
 
-    private var mRoundedCorner: InsetRoundedCorner? = null
+    private var mRoundedCorner: SeslRoundedCorner? = null
 
-    override var edgeInsets = Insets.of(0,0,0,0)
+    override var edgeInsets = Insets.NONE
 
     override var drawOverEdge = true
 
@@ -62,7 +61,7 @@ class ViewRoundedCornerDelegate(
 
     private inline fun ensureRoundedCorner() {
         if (mRoundedCorner == null) {
-            mRoundedCorner = InsetRoundedCorner(context)
+            mRoundedCorner = SeslRoundedCorner(context)
             if (roundedCornersColor != -1 && roundedCorners != SeslRoundedCorner.ROUNDED_CORNER_NONE) {
                 mRoundedCorner?.setRoundedCornerColor(roundedCorners, roundedCornersColor)
             }
