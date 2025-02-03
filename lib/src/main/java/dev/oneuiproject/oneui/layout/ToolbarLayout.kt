@@ -208,10 +208,8 @@ open class ToolbarLayout @JvmOverloads constructor(
     internal open fun updateOnBackCallbackState() {
         if (isInEditMode) return
         if (getBackCallbackStateUpdate()) {
-            Log.d(TAG, "Registering on back callback")
             onBackCallbackDelegate.startListening(true)
         }else{
-            Log.d(TAG, "Unregistering on back callback")
             onBackCallbackDelegate.stopListening()
         }
     }
@@ -239,7 +237,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     private var mLayout: Int = 0
 
     private var mExpandable: Boolean = false
-    private var mExpanded: Boolean = false
+    private var expandedPortrait: Boolean = false
     private var mTitleCollapsed: CharSequence? = null
     private var mTitleExpanded: CharSequence? = null
     private var mSubtitleCollapsed: CharSequence? = null
@@ -269,6 +267,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     private lateinit var mActionModeSelectAll: LinearLayout
     private lateinit var mActionModeCheckBox: CheckBox
     private lateinit var mActionModeTitleTextView: TextView
+    private var updateAllSelectorJob: Job? = null
 
     private var mCustomFooterContainer: FrameLayout? = null
     private lateinit var mBottomActionModeBar: BottomNavigationView
@@ -279,6 +278,9 @@ open class ToolbarLayout @JvmOverloads constructor(
     @JvmField
     internal var searchModeOBPBehavior = CLEAR_DISMISS
     private var searchMenuItem: MenuItem? = null
+
+    private var searchOnActionMode: SearchOnActionMode? = null
+    private var showActionModeSearchPending = false
 
     private var mMenuSynchronizer: MenuSynchronizer? = null
     private var forcePortraitMenu: Boolean = false
@@ -365,7 +367,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             initViews()
 
             mExpandable = it.getBoolean(R.styleable.ToolbarLayout_expandable, true)
-            mExpanded = it.getBoolean(R.styleable.ToolbarLayout_expanded, mExpandable)
+            expandedPortrait = it.getBoolean(R.styleable.ToolbarLayout_expanded, mExpandable)
             _showNavAsBack = it.getBoolean(R.styleable.ToolbarLayout_showNavButtonAsBack, false)
             mNavigationIcon = it.getDrawable(R.styleable.ToolbarLayout_navigationIcon)
                 ?: getDefaultNavigationIconResource()?.let { d -> ContextCompat.getDrawable(context, d) }
@@ -442,7 +444,7 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     private fun refreshLayout(newConfig: Configuration) {
         val isLandscape = newConfig.orientation == ORIENTATION_LANDSCAPE
-        isExpanded = !isLandscape and mExpanded
+        isExpanded = !isLandscape and expandedPortrait
     }
 
     private var marginProviderImpl: MarginProvider = MARGIN_PROVIDER_ADP_DEFAULT
@@ -619,7 +621,7 @@ open class ToolbarLayout @JvmOverloads constructor(
      */
     fun setExpanded(expanded: Boolean, animate: Boolean) {
         if (mExpandable) {
-            mExpanded = expanded
+            expandedPortrait = expanded
             _appBarLayout.setExpanded(expanded, animate)
         } else Log.d(TAG, "setExpanded: mExpandable is false")
     }
@@ -1054,9 +1056,6 @@ open class ToolbarLayout @JvmOverloads constructor(
         return super.dispatchTouchEvent(event)
     }
 
-    private var updateAllSelectorJob: Job? = null
-    private var searchOnActionMode: SearchOnActionMode? = null
-    private var showActionModeSearchPending = false
 
     /**
      * Starts an Action Mode session. This shows the Toolbar's ActionMode with a toggleable 'All' Checkbox
