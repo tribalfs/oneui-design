@@ -965,10 +965,10 @@ open class ToolbarLayout @JvmOverloads constructor(
 
         when {
             isActionMode -> {
-                if (_searchView!!.tag == 0) return
                 _searchView!!.apply {
-                    tag = 0
                     isVisible = false
+                    if (tag == 0) return
+                    tag = 0
                     applyActionModeSearchStyle()
                     seslSetUpButtonVisibility(GONE)
                     seslSetOnUpButtonClickListener(null)
@@ -991,8 +991,8 @@ open class ToolbarLayout @JvmOverloads constructor(
             }
 
             isSearchMode -> {
-                if (_searchView!!.tag == 1) return
                 _searchView!!.apply {
+                    if (tag == 1) { isVisible = true; return }
                     tag = 1
                     background = null
                     applyThemeColors()
