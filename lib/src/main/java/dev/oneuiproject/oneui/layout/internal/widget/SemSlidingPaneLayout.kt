@@ -149,10 +149,8 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
     }
 
     override fun onAttachedToWindow() {
-        //Apply defaults if custom not set
-        if (drawerCornerRadius == -1) applyDrawerCornerRadius(drawerCornerRadius)
-        if (!isDualDetails) configDetailsPane(false)
-
+        applyDrawerCornerRadius(drawerCornerRadius)
+        configDetailsPane(false)
         super.onAttachedToWindow()
     }
 
@@ -178,7 +176,7 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
     internal fun setDualDetailPane(enable: Boolean) {
         if (isDualDetails == enable) return
         isDualDetails = enable
-        configDetailsPane(enable)
+        if (isAttachedToWindow) configDetailsPane(enable)
     }
 
     private fun configDetailsPane(isDualDetails: Boolean){
@@ -239,7 +237,7 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
     override fun setDrawerCornerRadius(@Px px: Int) {
         if (drawerCornerRadius == px) return
         drawerCornerRadius = px
-        applyDrawerCornerRadius(px)
+        if (isAttachedToWindow) applyDrawerCornerRadius(px)
     }
 
     private fun applyDrawerCornerRadius(@Px px: Int){

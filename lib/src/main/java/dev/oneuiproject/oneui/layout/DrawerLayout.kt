@@ -86,9 +86,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         if (isInEditMode && mDrawerPreviewOpen) {
             containerLayout.open(false)
         }
-        //Only needed for default value.
-        //Otherwise, drawer state is already updated
-        if (drawerEnabled) updateDrawerState()
+        updateDrawerState()
     }
 
     override fun addView(child: View, index: Int, params: ViewGroup.LayoutParams) {
@@ -219,7 +217,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     open fun setDrawerEnabled(drawerEnabled: Boolean){
         if (this.drawerEnabled == drawerEnabled) return
         this.drawerEnabled = drawerEnabled
-        updateDrawerState()
+        if (isAttachedToWindow) updateDrawerState()
     }
 
     internal open fun updateDrawerState(animate: Boolean = true){

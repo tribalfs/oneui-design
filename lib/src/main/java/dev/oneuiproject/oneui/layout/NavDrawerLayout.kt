@@ -116,7 +116,7 @@ class NavDrawerLayout @JvmOverloads constructor(
     fun setNavRailContentMinSideMargin(@Px minSideMargin: Int) {
         if (navRailContentMinSideMargin == minSideMargin) return
         navRailContentMinSideMargin = minSideMargin
-        updateContentWidth()
+        if (isAttachedToWindow) updateContentWidth()
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY)

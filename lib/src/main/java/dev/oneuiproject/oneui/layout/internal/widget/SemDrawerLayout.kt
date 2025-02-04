@@ -122,8 +122,8 @@ class SemDrawerLayout @JvmOverloads constructor(
         super.onAttachedToWindow()
         updateDrawerWidthAndState()
         mNavButtonsHandlerDelegate.apply {
-            if (_showNavigationButton) showNavigationButton = true
-            if (!_showNavButtonAsBack) showNavigationButtonAsBack = false
+            showNavigationButton = _showNavigationButton
+            showNavigationButtonAsBack = _showNavButtonAsBack
         }
     }
 
@@ -295,7 +295,9 @@ class SemDrawerLayout @JvmOverloads constructor(
         set(value) {
             if (_showNavButtonAsBack == value) return
             _showNavButtonAsBack = value
-            mNavButtonsHandlerDelegate.showNavigationButtonAsBack = value
+            if (isAttachedToWindow) {
+                mNavButtonsHandlerDelegate.showNavigationButtonAsBack = value
+            }
         }
 
     override var showNavigationButton: Boolean
@@ -303,7 +305,9 @@ class SemDrawerLayout @JvmOverloads constructor(
         set(value) {
             if (_showNavigationButton == value) return
             _showNavigationButton = value
-            mNavButtonsHandlerDelegate.showNavigationButton = value
+            if (isAttachedToWindow) {
+                mNavButtonsHandlerDelegate.showNavigationButton = value
+            }
         }
 
     override fun setNavigationButtonOnClickListener(listener: OnClickListener?) = Unit
