@@ -152,16 +152,15 @@ class MultiSelectorDelegate<T>(
 
         findViewHolderForAdapterPosition(bottomPosition)?.let { viewHolder ->
             val itemBottom = viewHolder.itemView.run { y + height }
-            isNestedScrollingEnabled = false
-
             postOnAnimationDelayed({
                 val rvBottom = Rect().apply { getLocalVisibleRect(this) }.bottom
                 val bottomOffset = calculateBottomOffset()
                 val scrollDistance = (itemBottom - (rvBottom - bottomOffset)).toInt()
                 if (scrollDistance > 0) {
+                    isNestedScrollingEnabled = false
                     smoothScrollBy(0, scrollDistance, CachedInterpolatorFactory.getOrCreate(Type.SINE_IN_OUT_60), 300)
+                    postDelayed({ isNestedScrollingEnabled = true }, 350)
                 }
-                postDelayed({ isNestedScrollingEnabled = true }, 400)
             }, 750)
         }
     }
