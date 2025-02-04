@@ -128,6 +128,8 @@ class NavDrawerLayout @JvmOverloads constructor(
             }else {
                 if (seslGetPreferredContentPixelSize() != navRailContentPreferredWidth) {
                     seslRequestPreferredContentPixelSize(navRailContentPreferredWidth)
+                }else{
+                    resizeSlideableView(drawerOffset)
                 }
             }
         }
