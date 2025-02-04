@@ -34,20 +34,17 @@ internal class ImmersiveScrollHelper(
     private var restoreParentIndex: Int = 0
     private var defaultBottomViewBgColor =
         activity.getThemeAttributeValue(androidx.appcompat.R.attr.roundedCornerColor)!!.data
-    private var withFooter = true
 
-    fun getImmersiveScrollState() = State(isImmersiveScrollActivated, withFooter)
 
     var isImmersiveScrollActivated = false
         private set
 
     @RequiresApi(Build.VERSION_CODES.R)
-    fun activateImmersiveScroll(withFooter: Boolean){
+    fun activateImmersiveScroll(){
         if (isImmersiveScrollActivated) return
         isImmersiveScrollActivated = true
         ensureImmersiveScrollBehavior()
         appBarLayout.seslSetImmersiveScroll(true)
-        this.withFooter = withFooter
         setupBottomView()
         appBarLayout.apply {
             //Workaround wrong collapsed height
@@ -79,10 +76,12 @@ internal class ImmersiveScrollHelper(
             return
         }
 
-        if (withFooter && isImmersiveScrollActivated){
+        if (isImmersiveScrollActivated){
             bottomView?.apply {
                 switchFooterParent(true)
-                ColorUtils.setAlphaComponent(defaultBottomViewBgColor, (255 * bottomViewAlpha).toInt()).let {
+                ColorUtils.setAlphaComponent(defaultBottomViewBgColor,
+                    // Set 0.01 as min alpha - SeslImmersiveScrollBehavior is glitching with 0f
+                    (255 * bottomViewAlpha.coerceAtLeast(0.01f)).toInt()).let {
                     @Suppress("DEPRECATION")
                     activity.window.navigationBarColor = it
                     setBackgroundColor(it)

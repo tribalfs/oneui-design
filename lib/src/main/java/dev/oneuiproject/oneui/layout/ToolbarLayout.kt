@@ -686,12 +686,11 @@ open class ToolbarLayout @JvmOverloads constructor(
      * This is only available on api level 30 and above and when not in [desktop mode][DeviceLayoutUtil.isDeskTopMode].
      *
      * @param activate
-     * @param withFooter Apply immersive behavior to footer
      * @param footerAlpha The alpha value of the footer when on immersive scroll.
      */
     @JvmOverloads
     @CallSuper
-    open fun activateImmersiveScroll(activate: Boolean, withFooter: Boolean, @FloatRange(0.0, 1.0)
+    open fun activateImmersiveScroll(activate: Boolean, @FloatRange(0.0, 1.0)
                                 footerAlpha: Float = 1f): Boolean {
         if (VERSION.SDK_INT < 30) {
             Log.w(TAG, "activateImmersiveScroll: immersive scroll is available only on api 30 and above")
@@ -707,7 +706,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             if (immersiveScrollHelper == null) {
                 immersiveScrollHelper = ImmersiveScrollHelper(activity!!, appBarLayout, footerParent, footerAlpha)
             }
-            immersiveScrollHelper!!.activateImmersiveScroll(withFooter)
+            immersiveScrollHelper!!.activateImmersiveScroll()
             dispatchImmersiveStateChanged(true)
         } else {
             immersiveScrollHelper?.deactivateImmersiveScroll()
@@ -738,7 +737,7 @@ open class ToolbarLayout @JvmOverloads constructor(
          * When this is activated, the AppBar, the Navigation bar and the layout footer will completely hide when scrolling up.
          */
         set(activate)  {
-            activateImmersiveScroll(activate, true, if (VERSION.SDK_INT >= 35) 0.8f else 1f)
+            activateImmersiveScroll(activate, if (VERSION.SDK_INT >= 35) 0.8f else 1f)
         }
 
     private var immersiveStateListener: MutableList<(isImmersive: Boolean) -> Unit>? = null
