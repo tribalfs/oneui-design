@@ -108,6 +108,27 @@ subprojects {
                     afterEvaluate {
                         from components.release
                     }
+
+                    pom {
+                        name = artifact
+                        url = "https://github.com/tribalfs/oneui-design"
+                        developers {
+                            developer {
+                                id = "tribalfs"
+                                name = "Tribalfs"
+                                email = "tribalfs@gmail.com"
+                                url = "https://github.com/tribalfs"
+                            }
+                        }
+
+                        licenses {
+                            license {
+                                name = "MIT License"
+                                url = "https://github.com/tribalfs/oneui-design/blob/oneui6/LICENSE"
+                                distribution = "repo"
+                            }
+                        }
+                    }
                 }
             }
 
