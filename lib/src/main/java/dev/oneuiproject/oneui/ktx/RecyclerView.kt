@@ -9,6 +9,7 @@ import android.widget.SectionIndexer
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.annotation.Px
+import androidx.annotation.RequiresApi
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.SeslSwipeListAnimator.SwipeConfiguration
 import dev.oneuiproject.oneui.delegates.SwipeActionListener
 import dev.oneuiproject.oneui.delegates.SwipeItemCallbackDelegate
 import dev.oneuiproject.oneui.design.R
+import dev.oneuiproject.oneui.layout.ToolbarLayout
 import kotlin.LazyThreadSafetyMode.NONE
 
 /**
@@ -232,3 +234,25 @@ fun RecyclerView.hideSoftInputOnScroll(clearFocus: Boolean = true){
     }
 }
 
+/**
+ * Automatically adjust bottom padding of GoToTop button
+ * and fast scroller when immersive scroll is active.
+ */
+@RequiresApi(30)
+fun RecyclerView.configureImmBottomPadding(toolbarLayout: ToolbarLayout, extraPadding: Int = 0){
+    val bottomOffsetChangedListener: (bottomOffset: Float) -> Unit = {
+        seslSetImmersiveScrollBottomPadding(extraPadding + it.toInt())
+    }
+
+    if (isAttachedToWindow){
+        toolbarLayout.addOnBottomOffsetChangedListener(bottomOffsetChangedListener)
+    }
+
+    doOnAttachedStateChanged { _, isViewAttached ->
+        if (isViewAttached){
+            toolbarLayout.addOnBottomOffsetChangedListener(bottomOffsetChangedListener)
+        }else{
+            toolbarLayout.removeOnBottomOffsetChangedListener(bottomOffsetChangedListener)
+        }
+    }
+}
