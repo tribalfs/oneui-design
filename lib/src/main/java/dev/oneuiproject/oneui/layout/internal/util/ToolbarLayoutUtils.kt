@@ -3,8 +3,10 @@
 package dev.oneuiproject.oneui.layout.internal.util
 
 import android.app.Activity
+import android.content.Context
 import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.os.Build
+import android.provider.Settings
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsets.Type
@@ -14,6 +16,7 @@ import android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
 import androidx.annotation.RequiresApi
 import androidx.annotation.RestrictTo
 import androidx.core.view.isVisible
+import androidx.reflect.DeviceInfo
 import dev.oneuiproject.oneui.ktx.findAncestorOfType
 import dev.oneuiproject.oneui.ktx.isDescendantOf
 import dev.oneuiproject.oneui.ktx.isInMultiWindowModeCompat
@@ -117,5 +120,20 @@ internal object ToolbarLayoutUtils {
             InternalLayoutInfo(this.isDescendantOf(it.mainContainer), it)
         } ?: InternalLayoutInfo(false)
     }
+
+    /**
+     * **TODO: Needs further checking on different devices**
+     *
+     * Checks if the gesture hint is set to transparent by NavStar, a Good lock module.
+     * When true, nav bar doesn't scroll out during immersive scrolling.
+     */
+    internal fun Context.navBarCanImmScroll(): Boolean{
+        if (!DeviceInfo.isOneUI()) return true
+        val navStarFlags = Settings.Global.getInt(contentResolver, NAV_STAR_FLAG_SETTINGS, 0)
+        return navStarFlags and FLAG_TRANSPARENT_HINT_STATUS == 0
+    }
+
+    private const val FLAG_TRANSPARENT_HINT_STATUS = 0x2
+    private const val NAV_STAR_FLAG_SETTINGS = "navigationbar_splugin_flags"
 
 }

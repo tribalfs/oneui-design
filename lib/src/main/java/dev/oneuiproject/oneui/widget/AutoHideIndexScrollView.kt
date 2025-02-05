@@ -12,8 +12,6 @@ import android.os.Build
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-import android.view.View.OnLayoutChangeListener
-import android.view.WindowInsets
 import android.window.OnBackInvokedCallback
 import android.window.OnBackInvokedDispatcher
 import android.window.OnBackInvokedDispatcher.PRIORITY_OVERLAY
@@ -64,21 +62,10 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private var mDummyOnBackInvokedCallback: OnBackInvokedCallback? = null
 
-    private var navBarInsetBottom = 0
     private var isImmersive = false
-    private var footerHeight = 0
-    private var appBarScrollAdj = 0
-    private var adjRatio = 0f
 
-    private val immersiveStateListener: (Boolean) -> Unit by lazy(NONE) { { isImmersive = it} }
-
-    private val footerLayoutListener: OnLayoutChangeListener by lazy(NONE) {
-        OnLayoutChangeListener { v, _, _, _, _, _, _, _, _ ->
-            val newFooterHeight = v.height
-            if (newFooterHeight == footerHeight) return@OnLayoutChangeListener
-            footerHeight = newFooterHeight
-            if (isVisible) updateBottomMargin()
-        }
+    private val immersiveStateListener: (Float) -> Unit by lazy(NONE) {
+        { setIndexScrollMarginInternal(topMargin, bottomMargin + it.toInt()) }
     }
 
     init{
@@ -154,10 +141,7 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
         layoutLocationInfo = layoutLocationInfo ?: getLayoutLocationInfo()
         layoutLocationInfo?.takeIf { it.isInsideTBLMainContainer }?.tblParent?.apply {
             isImmersive = isImmersiveScroll
-            if (isImmersiveScroll) {
-                addImmersiveStateChangeListener(immersiveStateListener)
-                footerParent.addOnLayoutChangeListener(footerLayoutListener)
-            }
+            addOnBottomOffsetChangedListener(immersiveStateListener)
         }
     }
 
@@ -256,7 +240,7 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
 
         layoutLocationInfo?.takeIf { it.isInsideTBLMainContainer }?.tblParent?.apply {
             mAppBarLayout?.removeOnOffsetChangedListener(mHideWhenExpandedListener)
-            removeImmersiveStateChangeListener(immersiveStateListener)
+            removeOnBottomOffsetChangedListener (immersiveStateListener)
         }
     }
 
@@ -354,20 +338,16 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
         var appBarState: AppBarState = COLLAPSED
 
         override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
-            val adjustmentForImmersiveMode = if (isImmersive) appBarLayout.seslGetCollapsedHeight().toInt() else 0
-            val maximumScrollRange = appBarLayout.totalScrollRange - adjustmentForImmersiveMode
-            val scrolledAmount = maximumScrollRange + verticalOffset
+            val immScrollOffset = if (isImmersive) appBarLayout.seslGetCollapsedHeight().toInt() else 0
+            val immScrollRange = appBarLayout.totalScrollRange - immScrollOffset
+
+            val scrollDelta = appBarLayout.totalScrollRange + verticalOffset
+            val scrollDeltaBottom = scrollDelta - immScrollOffset
+
             val newAppBarState = when{
-                scrolledAmount > maximumScrollRange / 3 -> SUBSTANTIALLY_EXPANDED
-                scrolledAmount == 0 -> COLLAPSED
+                scrollDeltaBottom > immScrollRange / 3 -> SUBSTANTIALLY_EXPANDED
+                scrollDeltaBottom == 0 -> COLLAPSED
                 else -> LITTLE_EXPANDED
-            }
-
-
-            if (isImmersive) {
-                appBarScrollAdj = scrolledAmount.coerceAtMost(adjustmentForImmersiveMode) + adjustmentForImmersiveMode
-                adjRatio = (1f + (scrolledAmount/appBarLayout.seslGetCollapsedHeight())).coerceAtMost(1f)
-                if (isVisible) updateBottomMargin()
             }
 
             if (appBarState == newAppBarState) return
@@ -377,26 +357,11 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
         }
     }
 
-    private fun updateBottomMargin(){
-        val indexScrollBottomOffset =  appBarScrollAdj +
-                ((navBarInsetBottom + footerHeight) * adjRatio).toInt().coerceAtLeast(navBarInsetBottom)
-        setIndexScrollMarginInternal(topMargin, bottomMargin + indexScrollBottomOffset)
-    }
-
     override fun onVisibilityChanged(changedView: View, visibility: Int) {
         super.onVisibilityChanged(changedView, visibility)
         if (isVisible){
             updateVisibility(delayShow = false, delayHide = false)
         }
-    }
-
-    override fun onApplyWindowInsets(insets: WindowInsets): WindowInsets {
-        layoutLocationInfo?.let {
-            if (Build.VERSION.SDK_INT >= 30 && it.isInsideTBLMainContainer) {
-                navBarInsetBottom = insets.getInsets(WindowInsets.Type.navigationBars()).bottom
-            }
-        }
-        return super.onApplyWindowInsets(insets)
     }
 
     override fun setVisibility(visibility: Int) {

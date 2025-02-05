@@ -31,6 +31,7 @@ import android.widget.TextView
 import androidx.annotation.CallSuper
 import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
+import androidx.annotation.RequiresApi
 import androidx.annotation.RestrictTo
 import androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_ALL
 import androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_NONE
@@ -47,6 +48,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsCompat.Type.ime
+import androidx.core.view.WindowInsetsCompat.Type.navigationBars
 import androidx.core.view.WindowInsetsCompat.Type.systemBars
 import androidx.core.view.children
 import androidx.core.view.isGone
@@ -83,6 +85,7 @@ import dev.oneuiproject.oneui.layout.internal.delegate.ToolbarLayoutButtonsHandl
 import dev.oneuiproject.oneui.layout.internal.util.ImmersiveScrollHelper
 import dev.oneuiproject.oneui.layout.internal.util.NavButtonsHandler
 import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.hasShowingChild
+import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.navBarCanImmScroll
 import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.setVisibility
 import dev.oneuiproject.oneui.utils.BADGE_LIMIT_NUMBER
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil
@@ -233,7 +236,12 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
     }
 
-    private var mActionModeTitleFadeListener: AppBarOffsetListener? = null
+    private var scrollDelta = 0
+    private var navBarInsetBottom = 0
+    private var footerHeight = 0
+    private var bottomOffsetListeners: MutableList<(bottomOffset: Float) -> Unit>? = null
+
+    private var appBarOffsetListener = AppBarOffsetListener()
 
     private var mLayout: Int = 0
 
@@ -434,6 +442,14 @@ open class ToolbarLayout @JvmOverloads constructor(
         refreshLayout(resources.configuration)
         syncActionModeMenu()
         updateOnBackCallbackState()
+        _appBarLayout.addOnOffsetChangedListener(appBarOffsetListener)
+        footerParent.addOnLayoutChangeListener(footerLayoutListener)
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        _appBarLayout.removeOnOffsetChangedListener(appBarOffsetListener)
+        footerParent.removeOnLayoutChangeListener(footerLayoutListener)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -707,12 +723,10 @@ open class ToolbarLayout @JvmOverloads constructor(
                 immersiveScrollHelper = ImmersiveScrollHelper(activity!!, appBarLayout, footerParent, footerAlpha)
             }
             immersiveScrollHelper!!.activateImmersiveScroll()
-            dispatchImmersiveStateChanged(true)
         } else {
             immersiveScrollHelper?.deactivateImmersiveScroll()
             immersiveScrollHelper = null
             requestApplyInsets()
-            dispatchImmersiveStateChanged(false)
         }
         return true
     }
@@ -739,28 +753,6 @@ open class ToolbarLayout @JvmOverloads constructor(
         set(activate)  {
             activateImmersiveScroll(activate, if (VERSION.SDK_INT >= 35) 0.8f else 1f)
         }
-
-    private var immersiveStateListener: MutableList<(isImmersive: Boolean) -> Unit>? = null
-
-    internal fun addImmersiveStateChangeListener(listener : (Boolean) -> Unit){
-        if (immersiveStateListener == null){
-            immersiveStateListener = mutableListOf(listener)
-        }
-        immersiveStateListener!!.apply {
-            if (!contains(listener)) add(listener)
-        }
-    }
-
-    internal fun removeImmersiveStateChangeListener(listener : (Boolean) -> Unit){
-        immersiveStateListener?.remove(listener)
-    }
-
-    private fun dispatchImmersiveStateChanged(isImmersive: Boolean){
-        immersiveStateListener?.forEach {
-            it.invoke(isImmersive)
-        }
-    }
-
 
     //
     // Navigation Button methods
@@ -1153,9 +1145,6 @@ open class ToolbarLayout @JvmOverloads constructor(
             }
         }
 
-        _appBarLayout.addOnOffsetChangedListener(
-            AppBarOffsetListener().also { mActionModeTitleFadeListener = it })
-
         mCollapsingToolbarLayout.seslSetSubtitle(null)
         _mainToolbar.subtitle = null
 
@@ -1280,11 +1269,9 @@ open class ToolbarLayout @JvmOverloads constructor(
         //This clears menu including the common action mode menu
         //items - search and cancel
         mMenuSynchronizer!!.clear()
-        _appBarLayout.removeOnOffsetChangedListener(mActionModeTitleFadeListener)
         mActionModeSelectAll.setOnClickListener(null)
         mActionModeCheckBox.isChecked = false
         allSelectorItemsCount = SELECTED_ITEMS_UNSET
-        mActionModeTitleFadeListener = null
         mActionModeListener = null
         mMenuSynchronizer = null
         updateAllSelectorJob = null
@@ -1465,6 +1452,12 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     override fun onApplyWindowInsets(insets: WindowInsets): WindowInsets {
         val insetsCompat =  WindowInsetsCompat.toWindowInsetsCompat(insets)
+        insetsCompat.getInsets(navigationBars()).bottom.let {
+            if (it != navBarInsetBottom){
+                navBarInsetBottom = it
+                dispatchBottomOffsetChanged()
+            }
+        }
 
         //Note: insetsCompat.isVisible(WindowInsetsCompat.Type.ime())
         //returns incorrect on api29-
@@ -1568,9 +1561,50 @@ open class ToolbarLayout @JvmOverloads constructor(
             .start()
     }
 
+    internal fun addOnBottomOffsetChangedListener(listener : (Float) -> Unit){
+        if (bottomOffsetListeners == null){
+            bottomOffsetListeners = mutableListOf(listener)
+        }
+        bottomOffsetListeners!!.apply {
+            if (!contains(listener)) add(listener)
+        }
+    }
+
+    internal fun removeOnBottomOffsetChangedListener(listener : (Float) -> Unit){
+        bottomOffsetListeners?.remove(listener)
+    }
+
+    private val footerLayoutListener: OnLayoutChangeListener by lazy(LazyThreadSafetyMode.NONE) {
+        OnLayoutChangeListener { v, _, _, _, _, _, _, _, _ ->
+            v.height.let {
+                if (it != footerHeight){ footerHeight = it; dispatchBottomOffsetChanged() }
+            }
+        }
+    }
+
+    private fun dispatchBottomOffsetChanged(){
+        bottomOffsetListeners?.apply {
+            val scrollDeltaBottom = scrollDelta - _appBarLayout.seslGetCollapsedHeight()
+            val maxBottomInset = navBarInsetBottom + footerHeight
+            val adjBottomInset = if (isImmersiveScroll && maxBottomInset > 0) {
+                val scrollRatio = (1f + scrollDeltaBottom/maxBottomInset).coerceIn(0f, 1f)
+                (maxBottomInset * scrollRatio).applyMinForNonScrollingNavBar()
+            } else 0f
+            forEach {
+                it.invoke(scrollDelta + adjBottomInset)
+            }
+        }
+    }
+
+    private inline fun Float.applyMinForNonScrollingNavBar() =
+         if (context.navBarCanImmScroll()) this else { this.coerceAtLeast(navBarInsetBottom.toFloat()) }
+
     private inner class AppBarOffsetListener : AppBarLayout.OnOffsetChangedListener {
         override fun onOffsetChanged(layout: AppBarLayout, verticalOffset: Int) {
-            if (mActionModeToolbar!!.isVisible) {
+            scrollDelta = verticalOffset + layout.totalScrollRange
+            dispatchBottomOffsetChanged()
+
+            if (isActionMode && mActionModeToolbar!!.isVisible) {
                 val layoutPosition = abs(_appBarLayout.top)
                 val collapsingTblHeight = mCollapsingToolbarLayout.height
                 val alphaRange = collapsingTblHeight * 0.17999999f

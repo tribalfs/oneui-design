@@ -8,13 +8,10 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.view.View.OnLayoutChangeListener
-import android.view.WindowInsets
 import androidx.core.view.isVisible
 import androidx.indexscroll.widget.SeslIndexScrollView.OnIndexBarEventListener
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
-import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.InternalLayoutInfo
 import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.getLayoutLocationInfo
@@ -33,7 +30,7 @@ import java.lang.ref.WeakReference
 class ScrollAwareFloatingActionButton @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null) : FloatingActionButton(context, attrs),
-    AppBarLayout.OnOffsetChangedListener, RecyclerView.OnItemTouchListener {
+    RecyclerView.OnItemTouchListener {
 
     private enum class ScrollState{
         SCROLLING_UP, SCROLLING_DOWN, IDLE
@@ -67,23 +64,8 @@ class ScrollAwareFloatingActionButton @JvmOverloads constructor(
         }
     }
 
-    private var navBarInsetBottom = 0
-    private var isImmersive = false
-    private var appBarOffset = 0
-    private var footerHeight = 0
-    private var adjRatio = 0f
-
-    private val immersiveStateListener: (Boolean) -> Unit by lazy(LazyThreadSafetyMode.NONE) {
-        { isImmersive = it; updateTranslationY() }
-    }
-
-    private val footerLayoutListener: OnLayoutChangeListener by lazy(LazyThreadSafetyMode.NONE) {
-        OnLayoutChangeListener { v, _, _, _, _, _, _, _, _ ->
-            val newFooterHeight = v.height
-            if (newFooterHeight == footerHeight) return@OnLayoutChangeListener
-            footerHeight = newFooterHeight
-            updateTranslationY()
-        }
+    private val bottomOffsetListener: (Float) -> Unit by lazy(LazyThreadSafetyMode.NONE) {
+        { translationY = -it }
     }
 
     /**
@@ -261,46 +243,12 @@ class ScrollAwareFloatingActionButton @JvmOverloads constructor(
         layoutLocationInfo = layoutLocationInfo ?: getLayoutLocationInfo()
         layoutLocationInfo?.takeIf { it.isInsideTBLMainContainer }?.tblParent?.apply {
             if (register) {
-                appBarLayout.addOnOffsetChangedListener(this@ScrollAwareFloatingActionButton)
-                isImmersive = isImmersiveScroll
-                addImmersiveStateChangeListener(immersiveStateListener)
-                footerParent.addOnLayoutChangeListener(footerLayoutListener)
+                addOnBottomOffsetChangedListener(bottomOffsetListener)
             } else {
-                appBarLayout.removeOnOffsetChangedListener(this@ScrollAwareFloatingActionButton)
-                removeImmersiveStateChangeListener(immersiveStateListener)
-                footerParent.removeOnLayoutChangeListener(footerLayoutListener)
+                removeOnBottomOffsetChangedListener(bottomOffsetListener)
                 layoutLocationInfo = null
             }
-        } ?: run {
-            if (!register) layoutLocationInfo = null
-        }
-    }
-
-    override fun onOffsetChanged(abl: AppBarLayout, vOffset: Int) {
-        if (!isVisible) return
-        appBarOffset = vOffset + abl.totalScrollRange
-        adjRatio = (appBarOffset/abl.seslGetCollapsedHeight()).coerceAtMost(1f)
-        updateTranslationY()
-    }
-
-    private fun updateTranslationY(){
-        val translationYAdj = if (isImmersive) {
-            ((navBarInsetBottom + footerHeight) * adjRatio).coerceAtLeast(navBarInsetBottom.toFloat())
-        } else 0f
-        translationY = (appBarOffset + translationYAdj) * -1f
-    }
-
-    override fun onApplyWindowInsets(insets: WindowInsets): WindowInsets {
-        if (layoutLocationInfo?.isInsideTBLMainContainer == true && Build.VERSION.SDK_INT >= 30) {
-            navBarInsetBottom = insets.getInsets(WindowInsets.Type.navigationBars()).bottom
-            updateTranslationY()
-        }
-        return super.onApplyWindowInsets(insets)
-    }
-
-    companion object {
-        private const val TAG = "ScrollAwareFAB"
-        private const val SCROLL_DELTA = 4f
+        } ?: run { layoutLocationInfo = null }
     }
 
     override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
@@ -319,4 +267,9 @@ class ScrollAwareFloatingActionButton @JvmOverloads constructor(
 
     override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
     override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
+
+    companion object {
+        private const val TAG = "ScrollAwareFAB"
+        private const val SCROLL_DELTA = 4f
+    }
 }
