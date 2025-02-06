@@ -134,6 +134,8 @@
     </declare-styleable>
 
     <attr name="drawerBackgroundColor" format="reference|color" />
+    <attr name="drawerSelectedBackgroundColor" format="reference|color"/>
+    <attr name="drawerHeaderTextAppearance" format="reference" />
 
     <declare-styleable name="ToolbarLayoutParams">
         <!--The location of the ToolbarLayout children views.

@@ -42,4 +42,8 @@
     <!-- TipPopup -->
     <string name="sem_tip_popup_hint_string">Double tap this button to learn more.</string>
 
+    <!--Navigation-->
+    <string name="navArg_subtitle" translatable="false">drawer:subtitle</string>
+    <string name="navArg_expandable" translatable="false">drawer:expandable</string>
+    <string name="navArg_immersiveScroll" translatable="false">drawer:immersive_scroll</string>
 </resources>

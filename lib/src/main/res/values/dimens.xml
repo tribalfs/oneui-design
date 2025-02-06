@@ -102,6 +102,39 @@
     <dimen name="drawer_header_height">56dp</dimen>
     <dimen name="drawer_header_icon_size">48dp</dimen>
 
+    <dimen name="drawer_category_title_text_size">17sp</dimen>
+    <dimen name="drawer_category_item_min_height">52dp</dimen>
+    <dimen name="drawer_category_item_view_stroke">0.75dp</dimen>
+    <dimen name="drawer_category_item_view_background_radius">26dp</dimen>
+    <dimen name="drawer_category_item_margin_top">12dp</dimen>
+    <dimen name="drawer_category_item_margin_bottom">24dp</dimen>
+    <dimen name="drawer_category_view_margin_end">28dp</dimen>
+    <dimen name="drawer_category_view_margin_start">22dp</dimen>
+    <dimen name="drawer_category_view_elevation">3dp</dimen>
+    <dimen name="drawer_category_view_icon_margin_start">42dp</dimen>
+    <dimen name="drawer_category_view_title_margin_start">12dp</dimen>
+    <dimen name="drawer_category_view_count_margin_end">45dp</dimen>
+    <dimen name="drawer_category_title_margin">18dp</dimen>
+
+    <dimen name="drawer_divider_padding_start_end">25dp</dimen>
+
+    <dimen name="drawer_item_icon_size">24dp</dimen>
+    <dimen name="drawer_item_count_margin_end">32dp</dimen>
+    <dimen name="drawer_item_count_text_size">13dp</dimen>
+    <dimen name="drawer_item_group_expand_margin_end">32dp</dimen>
+    <dimen name="drawer_item_group_margin_vertical">8dp</dimen>
+    <dimen name="drawer_item_icon_margin_start">32dp</dimen>
+    <dimen name="drawer_item_margin_vertical">14dp</dimen>
+    <dimen name="drawer_item_open_drawer_margin_start_phone">8dp</dimen>
+    <dimen name="drawer_item_selected_layout_margin_end">18dp</dimen>
+    <dimen name="drawer_item_selected_layout_margin_start">14dp</dimen>
+    <dimen name="drawer_item_selected_layout_margin_vertical">6dp</dimen>
+    <dimen name="drawer_item_selected_layout_width_collapsed">44dp</dimen>
+    <dimen name="drawer_item_action_container_margin">8dp</dimen>
+    <dimen name="drawer_item_bg_corner_radius">8dp</dimen>
+
+
+
     <!--SuggestionCardPreference-->
     <dimen name="sec_dashboard_tile_image_margin_start">20dp</dimen>
     <dimen name="sec_widget_round_button_bg_radius">22dp</dimen>

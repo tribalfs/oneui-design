@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:state_enabled="false"
+        android:alpha="0.7"
+        android:color="@color/oui_drawer_category_stroke_color"/>
+
+    <item
+        android:state_enabled="true"
+        android:color="@color/oui_drawer_category_stroke_color"/>
+
+</selector>

@@ -29,7 +29,9 @@
 
         <item name="bottomSheetDialogTheme">@style/OneUI.BottomSheetDialog</item>
         <item name="bottomSheetDragHandleStyle">@style/OneUI.BottomSheet.DragHandle</item>
+
         <item name="drawerBackgroundColor">@color/drawer_background_color</item>
+        <item name="drawerSelectedBackgroundColor">@color/oui_drawer_item_selected_background_color</item>
 
         <item name="android:buttonStyle">@style/Widget.AppCompat.Button</item>
         <item name="android:spinnerStyle">@style/Widget.AppCompat.Spinner</item>

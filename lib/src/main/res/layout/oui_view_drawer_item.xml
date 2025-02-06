@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dev.oneuiproject.oneui.navigation.widget.DrawerMenuItemView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+    android:layout_height="wrap_content"
+    tools:viewBindingIgnore="true">
+
+    <View android:id="@+id/ripple_background"
+        android:background="@drawable/oui_drawer_list_item_background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/drawer_item_selected_layout_margin_start"
+        android:layout_marginEnd="@dimen/drawer_item_selected_layout_margin_end"
+        android:layout_marginVertical="@dimen/drawer_item_selected_layout_margin_vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_content"
+        app:layout_constrainedHeight="true"
+        android:layout_width="match_parent"
+        android:minHeight="@dimen/drawer_category_item_min_height"
+        android:background="@null"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/icon_background"
+            android:layout_width="@dimen/drawer_item_selected_layout_width_collapsed"
+            android:layout_height="0dp"
+            android:layout_marginVertical="@dimen/drawer_item_selected_layout_margin_vertical"
+            android:layout_marginStart="@dimen/drawer_item_selected_layout_margin_start"
+            android:background="@drawable/oui_drawer_list_item_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/drawer_menu_item_icon"
+            android:layout_width="@dimen/drawer_item_icon_size"
+            android:layout_height="@dimen/drawer_item_icon_size"
+            android:layout_marginStart="@dimen/drawer_item_icon_margin_start"
+            android:importantForAccessibility="no"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/drawer_item_text_color_selector"
+            />
+
+        <TextView
+            android:ellipsize="end"
+            android:id="@+id/drawer_menu_item_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/drawer_item_margin_vertical"
+            android:layout_marginBottom="@dimen/drawer_item_margin_vertical"
+            android:importantForAccessibility="no"
+            android:layout_marginStart="@dimen/drawer_category_title_margin"
+            android:layout_marginEnd="@dimen/drawer_category_title_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/drawer_menu_item_count_stub"
+            app:layout_constraintStart_toEndOf="@+id/drawer_menu_item_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            style="@style/OneUI.DrawerCategoryTitle"
+            tools:text="Title"
+            />
+
+
+        <ViewStub
+            android:id="@+id/drawer_menu_expand_button_stub"
+            android:inflatedId="@+id/drawer_menu_expand_button"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="11dp"
+            android:layout_marginEnd="@dimen/drawer_item_count_margin_end"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/drawer_menu_item_title"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            android:layout="@layout/oui_view_drawer_item_expand_button"
+            />
+
+        <ViewStub
+            android:id="@+id/drawer_menu_item_count_stub"
+            android:inflatedId="@+id/drawer_menu_item_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:importantForAccessibility="no"
+            android:layout_marginEnd="@dimen/drawer_item_count_margin_end"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/drawer_menu_item_title"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            style="@style/OneUI.Drawer.Category.Count"
+            android:layout="@layout/oui_view_drawer_item_count"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ViewStub
+        android:id="@+id/nav_drawer_menu_item_action_area_stub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/drawer_item_action_container_margin"
+        app:layout_constraintTop_toBottomOf="@+id/main_content"
+        app:layout_constraintBottom_toBottomOf="@+id/ripple_background"
+        app:layout_constraintStart_toStartOf="@+id/ripple_background"
+        app:layout_constraintEnd_toEndOf="@+id/ripple_background"
+        app:layout_constrainedWidth="true"
+        android:inflatedId="@+id/nav_drawer_menu_item_action_area"
+        android:layout="@layout/oui_view_drawer_item_action_area"
+        />
+</dev.oneuiproject.oneui.navigation.widget.DrawerMenuItemView>

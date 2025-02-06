@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="60dp"
+    android:height="60dp"
+    android:viewportWidth="60"
+    android:viewportHeight="60">
+    <path
+        android:fillColor="@color/oui_drawer_list_expand_indicator_color"
+        android:fillType="nonZero"
+        android:pathData="M42.9799,21.6671L30.4069,34.3421C30.2779,34.4711 30.1279,34.4981 30.0259,34.4981C29.9209,34.4981 29.7769,34.4711 29.6479,34.3421L17.0209,21.6641C16.1419,20.7821 14.7199,20.7821 13.8379,21.6581C12.9559,22.5341 12.9529,23.9591 13.8319,24.8411L26.4559,37.5161C27.4099,38.4731 28.6729,38.9981 30.0259,38.9981L30.0289,38.9981C31.3789,38.9951 32.6479,38.4701 33.5989,37.5071L46.1719,24.8381C47.0479,23.9561 47.0419,22.5281 46.1629,21.6551C45.2809,20.7791 43.8559,20.7851 42.9799,21.6671"
+        android:strokeWidth="1"
+        android:strokeColor="#00000000" />
+</vector>

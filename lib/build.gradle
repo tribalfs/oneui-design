@@ -57,6 +57,10 @@ dependencies {
 
     implementation("dev.rikka.tools.refine:runtime:4.4.0")
     compileOnly project(":stub")
+
+    implementation 'androidx.navigation:navigation-runtime-ktx:2.8.6'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.8.6'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.8.6'
 }
 
 configurations.configureEach {

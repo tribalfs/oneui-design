@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="?android:attr/colorControlHighlight">
+    <item android:id="@android:id/mask">
+        <shape android:shape="rectangle">
+            <corners
+                android:radius="@dimen/drawer_category_item_view_background_radius"/>
+            <solid
+                android:color="@color/oui_drawer_category_group_view_background_color"/>
+        </shape>
+    </item>
+</ripple>

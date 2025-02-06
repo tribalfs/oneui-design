@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dev.oneuiproject.oneui.navigation.widget.DrawerMenuItemView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginBottom="@dimen/drawer_category_item_margin_bottom"
+    android:minHeight="@dimen/drawer_category_item_min_height"
+    tools:viewBindingIgnore="true">
+
+    <View android:id="@+id/ripple_background"
+        android:background="@drawable/drawer_category_background_navigation_rail"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/drawer_category_item_min_height"
+        android:layout_marginStart="@dimen/drawer_category_view_margin_start"
+        android:layout_marginEnd="@dimen/drawer_category_view_margin_end"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <View android:id="@+id/icon_background"
+        android:background="@drawable/oui_drawer_list_item_background"
+
+        android:layout_width="@dimen/drawer_item_selected_layout_width_collapsed"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/drawer_category_view_margin_start"
+        android:layout_marginEnd="@dimen/drawer_category_view_margin_end"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:duplicateParentState="false"/>
+
+    <ImageView android:gravity="center"
+        android:id="@+id/drawer_menu_item_icon"
+        android:layout_width="@dimen/drawer_item_icon_size"
+        android:layout_height="@dimen/drawer_item_icon_size"
+        android:scaleType="fitXY"
+        android:contentDescription="@null"
+        android:importantForAccessibility="no"
+        android:layout_marginStart="@dimen/drawer_category_view_icon_margin_start"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+     />
+
+    <TextView android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:id="@+id/drawer_menu_item_title"
+        android:focusable="false"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/drawer_item_group_margin_vertical"
+        android:layout_marginBottom="@dimen/drawer_item_group_margin_vertical"
+        android:importantForAccessibility="no"
+        android:layout_marginStart="@dimen/drawer_category_view_title_margin_start"
+        android:layout_marginEnd="@dimen/drawer_category_title_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/drawer_menu_item_count_stub"
+        app:layout_constraintStart_toEndOf="@+id/drawer_menu_item_icon"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/OneUI.Drawer.Category.Title"/>
+
+    <ViewStub android:id="@+id/drawer_menu_item_count_stub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:importantForAccessibility="no"
+        android:layout_marginEnd="@dimen/drawer_category_view_count_margin_end"
+        android:elevation="@dimen/drawer_category_view_elevation"
+        android:outlineProvider="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constrainedWidth="true"
+        android:layout="@layout/oui_view_drawer_item_category_count"
+        style="@style/OneUI.Drawer.Category.Count"
+        />
+</dev.oneuiproject.oneui.navigation.widget.DrawerMenuItemView>

@@ -263,6 +263,34 @@
         <item name="android:minHeight">29.25dp</item>
     </style>
 
+    <!-- Drawer items-->
+    <style name="OneUI.DrawerItemTextStyle">
+        <item name="android:paddingStart">18dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/drawer_item_text_color_selector</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="OneUI.DrawerCategoryTitle" parent="@style/RobotoRegular">
+        <item name="android:textSize">@dimen/drawer_category_title_text_size</item>
+        <item name="android:textColor">@color/drawer_item_text_color_selector</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:includeFontPadding">true</item>
+        <item name="android:textDirection">locale</item>
+    </style>
+
+    <style name="OneUI.Drawer.Category.Count" parent="@style/RobotoRegular">
+        <item name="android:textSize">@dimen/drawer_item_count_text_size</item>
+        <item name="android:textColor">@color/oui_drawer_count_text_color</item>
+    </style>
+
+    <style name="OneUI.Drawer.Category.Title" parent="@style/OneUI.DrawerCategoryTitle"/>
+
+
     <!--BottomTabLayout-->
     <style name="OneUI.BottomTabLayout.MoreMenuItemStyle" parent="">
         <item name="android:background">@drawable/oui_grid_menu_dialog_item_bg</item>

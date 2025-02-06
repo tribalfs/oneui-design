@@ -48,6 +48,14 @@
     <color name="oui_drawerlayout_drawer_dim_color">#33000000</color>
     <color name="oui_drawerlayout_header_icon_tint">#ff676768</color>
     <color name="drawer_background_color">#CCFCFCFC</color>
+    <color name="oui_drawer_item_text_color">@color/oui_primary_text_color</color>
+    <color name="oui_drawer_count_text_color">#8c8c8c</color>>
+    <color name="oui_drawer_item_selected_background_color">#0d010102</color>
+    <color name="oui_drawer_category_dotted_line_color">#c6c6c6</color>
+    <color name="oui_drawer_category_stroke_color">#e4e4e4</color>
+    <color name="oui_drawer_category_group_view_background_color">#fcfcfc</color>
+    <color name="oui_drawer_list_expand_indicator_color">#797979</color>
+    <color name="oui_list_ripple_color">@color/sesl_list_ripple_color_light</color>
 
     <!-- AppInfoLayout -->
     <!--Note: Samsung apps typically set dynamic colors for app label and sub texts via

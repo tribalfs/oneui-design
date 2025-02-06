@@ -2,4 +2,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <color name="drawer_background_tablet_color" tools:ignore="MissingDefaultResource">#EEEEEF</color>
     <color name="drawer_background_color">@color/drawer_background_tablet_color</color>
+    <color name="oui_drawer_item_selected_background_color">#E5E5E8</color>
 </resources>
