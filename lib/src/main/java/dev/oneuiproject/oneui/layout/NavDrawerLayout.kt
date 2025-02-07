@@ -93,8 +93,6 @@ class NavDrawerLayout @JvmOverloads constructor(
         } ?: super.shouldCloseDrawer
 
 
-    /**The current slide offset of the drawer pane.*/
-    val drawerOffset get() = containerLayout.getDrawerSlideOffset()
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
