@@ -102,7 +102,7 @@ class GridMenuDialog @JvmOverloads constructor(
     }
 
     fun updateDialog(){
-        mSpanCount = calculateColumnCount()
+        mSpanCount = calculateColumnCount().coerceAtMost(mGridItems.size)
         mGridListView = mContentView.findViewById<RecyclerView>(R.id.grid_menu_view).apply {
             layoutManager = GridLayoutManager(context, mSpanCount).apply {
                 spanSizeLookup = object : SpanSizeLookup() {
