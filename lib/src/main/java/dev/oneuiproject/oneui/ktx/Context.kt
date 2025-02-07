@@ -183,47 +183,6 @@ inline fun Context.showTimePickerDialog(
 }
 
 
-
-inline fun <T : Activity> Context.startPopOverActivity(activityClass: Class<T>) {
-    startPopOverActivity(activityClass, null, null)
-}
-
-
-/**
- * Starts an activity in PopOver mode with [TOP_LEFT] anchor position and default sizes.
- * This mode is only available to large display Samsung device with OneUI.
- *
- * @param activityClass The activity class to start.
- * @param activityOptions (Optional) Additional options for how the Activity should be started.
- * See [android.app.ActivityOptions]
- *
- * Example usage:
- * ```
- * startPopOverActivity(
- *    activityClass = SearchActivity::class.java
- * )
- * ```
- */
-inline fun <T : Activity> Context.startPopOverActivity(activityClass: Class<T>, activityOptions: Bundle? = null) {
-    val anchorPositions = if (resources.configuration.layoutDirection == LAYOUT_DIRECTION_RTL){
-        PopOverPositions(PopOverPosition.TOP_LEFT, PopOverPosition.TOP_LEFT)
-    }else{
-        PopOverPositions(PopOverPosition.TOP_RIGHT, PopOverPosition.TOP_RIGHT)
-    }
-    startPopOverActivity(
-        activityClass,
-        PopOverOptions(
-            popOverSize = PopOverSize(
-                731,
-                360,
-                if (isTabletCategoryOrBuild(this)) 731 else 574,
-                360),
-            anchorPositions = anchorPositions
-        ),
-        activityOptions
-    )
-}
-
 /**
  * Starts an activity in PopOver mode. This mode is only available to large display Samsung device with OneUI.
  *
@@ -252,6 +211,7 @@ inline fun <T : Activity> Context.startPopOverActivity(activityClass: Class<T>, 
  * )
  * ```
  */
+@JvmOverloads
 inline fun <T : Activity> Context.startPopOverActivity(
     activityClass: Class<T>,
     popOverOptions: PopOverOptions? = null,
@@ -290,7 +250,7 @@ inline fun <T : Activity> Context.startPopOverActivity(
  *    )
  * )
  */
-inline fun Context.startPopOverActivity(
+fun Context.startPopOverActivity(
     intent: Intent,
     popOverOptions: PopOverOptions? = null,
     activityOptions: Bundle? = null,
@@ -314,7 +274,7 @@ inline fun Context.startPopOverActivity(
 }
 
 
-inline fun Context.startPopOverActivityForResult(
+fun startPopOverActivityForResult(
     intent: Intent,
     popOverOptions: PopOverOptions? = null,
     activityOptions: ActivityOptionsCompat? = null,

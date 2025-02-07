@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 
+import dev.oneuiproject.oneui.popover.PopOverOptions;
+
+@Deprecated
 public class ActivityUtils {
 
     public static final int POP_OVER_POSITION_CENTER = 68;
@@ -15,6 +18,7 @@ public class ActivityUtils {
     public static final int POP_OVER_POSITION_TOP = 1;
     public static final int POP_OVER_POSITION_BOTTOM = 2;
 
+    @Deprecated
     public static class PopOverConfig {
         int widthDp, heightDp, position;
         Point margins;
@@ -27,6 +31,10 @@ public class ActivityUtils {
         }
     }
 
+    /**
+     * @deprecated See {@link dev.oneuiproject.oneui.ktx.ContextKt#startPopOverActivity(Context, Intent, PopOverOptions, Bundle)}
+     */
+    @Deprecated
     public static void startPopOverActivity(Context context, Intent intent, Bundle options, int position) {
         PopOverConfig configPortrait = new PopOverConfig(360, 731, position, new Point());
         PopOverConfig configLandScape = new PopOverConfig(360,
@@ -34,10 +42,19 @@ public class ActivityUtils {
         startPopOverActivity(context, intent, options, configPortrait, configLandScape);
     }
 
+    /**
+     * @deprecated See {@link dev.oneuiproject.oneui.ktx.ContextKt#startPopOverActivity(Context, Intent, PopOverOptions, Bundle)}
+     */
+    @Deprecated
     public static void startPopOverActivity(Context context, Intent intent, Bundle options, PopOverConfig portrait, PopOverConfig landscape) {
         startPopOverActivity(context, intent, options, false, false, portrait, landscape);
     }
 
+
+    /**
+     * @deprecated See {@link dev.oneuiproject.oneui.ktx.ContextKt#startPopOverActivity(Context, Intent, PopOverOptions, Bundle)}
+     */
+    @Deprecated
     public static void startPopOverActivity(Context context, Intent intent, Bundle options, boolean allowOutsideTouch, boolean removeOutline, PopOverConfig portrait, PopOverConfig landscape) {
         if (options == null) options = new Bundle();
         options.putBoolean("android:activity.popOver", true);
