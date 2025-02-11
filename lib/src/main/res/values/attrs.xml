@@ -213,6 +213,8 @@
         <attr name="tipPopupBackgroundColor" format="reference|color" />
     </declare-styleable>
 
+    <attr name="showTopDivider" format="boolean" />
+
     <declare-styleable name="CardItemView">
         <attr name="android:enabled"/>
         <attr name="icon" />
@@ -224,7 +226,7 @@
         <!-- If set to true summary will be themed with active color-->
         <attr name="userUpdatable" format="boolean" />
         <!--Show divider at the top. Default is true-->
-        <attr name="showTopDivider" format="boolean" />
+        <attr name="showTopDivider" />
         <!--Show divider at the bottom. Default is false-->
         <attr name="showBottomDivider" format="boolean" />
         <!-- Set to true to make top divider extend to cover the icon. False by default-->
@@ -298,4 +300,18 @@
 
     <!-- The SeslDatePicker dialog theme. -->
     <attr name="datePickerDialogTheme" format="reference" />
+
+    <declare-styleable name="RadioItemViewGroup">
+        <attr name="checkedButton"/>
+    </declare-styleable>
+
+    <attr name="radioItemViewGroupStyle"/>
+
+    <declare-styleable name="RadioItemView">
+        <attr name="title"/>
+        <!-- Show divider above. True by default-->
+        <attr name="showTopDivider"/>
+        <attr name="android:enabled"/>
+        <attr name="android:checked"/>
+    </declare-styleable>
 </resources>

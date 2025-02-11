@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?listPreferredItemHeight"
+    tools:parentTag="dev.oneuiproject.oneui.widget.CheckableLinearLayout"
+    tools:orientation="vertical"
+    tools:viewBindingIgnore="true">
+
+    <View
+        style="@style/OneUI.ListDividerStyle"
+        android:id="@+id/top_divider"
+        android:visibility="visible"/>
+
+    <androidx.appcompat.widget.SeslCheckedTextView
+        android:id="@+id/checkedTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="-4dp"
+        android:layout_weight="1"
+        android:checkMark="?android:attr/listChoiceIndicatorSingle"
+        android:checked="false"
+        android:ellipsize="end"
+        android:gravity="center_vertical|start"
+        android:paddingEnd="?listPreferredItemPaddingEnd"
+        android:textAlignment="viewStart"
+        android:textAppearance="?attr/textAppearanceListItem"
+        tools:text="Radio Item"
+        />
+</merge>
