@@ -11,6 +11,7 @@ import android.os.Build
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.Log
+import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,8 @@ import android.view.autofill.AutofillValue
 import android.widget.LinearLayout
 import androidx.annotation.IdRes
 import androidx.annotation.RequiresApi
+import androidx.appcompat.animation.SeslRecoilAnimator
+import androidx.appcompat.graphics.drawable.SeslRecoilDrawable
 import androidx.core.content.res.use
 import androidx.core.view.isVisible
 import dev.oneuiproject.oneui.design.R
@@ -59,6 +62,7 @@ class RadioItemViewGroup @JvmOverloads constructor(
     private var mInitialCheckedId = View.NO_ID
 
     private var mItemBackgroundHolder: ItemBackgroundHolder? = null
+    private var mRecoilAnimatorHolder: SeslRecoilAnimator.Holder? = null
 
     init {
         orientation = VERTICAL
@@ -92,6 +96,7 @@ class RadioItemViewGroup @JvmOverloads constructor(
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             mItemBackgroundHolder = ItemBackgroundHolder()
+            mRecoilAnimatorHolder = SeslRecoilAnimator.Holder(context)
         }
     }
 
@@ -157,6 +162,21 @@ class RadioItemViewGroup @JvmOverloads constructor(
         return childUnder
     }
 
+    @SuppressLint("NewApi")
+    override fun dispatchKeyEvent(keyEvent: KeyEvent): Boolean {
+        if (keyEvent.keyCode == 66) {
+            if (keyEvent.action == 0) {
+                val focusedChild = focusedChild
+                if (focusedChild != null) {
+                    mRecoilAnimatorHolder?.setPress(focusedChild)
+                }
+            } else {
+                mRecoilAnimatorHolder?.setRelease()
+            }
+        }
+        return super.dispatchKeyEvent(keyEvent)
+    }
+
 
     @SuppressLint("NewApi")
     override fun dispatchTouchEvent(motionEvent: MotionEvent): Boolean {
@@ -166,6 +186,7 @@ class RadioItemViewGroup @JvmOverloads constructor(
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     findClickableChildUnder(motionEvent)?.let {
                         mItemBackgroundHolder?.setPress(it)
+                        mRecoilAnimatorHolder?.setPress(it)
                     }
                 }
             }
@@ -173,12 +194,14 @@ class RadioItemViewGroup @JvmOverloads constructor(
             MotionEvent.ACTION_UP, MOTION_EVENT_ACTION_PEN_UP -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     mItemBackgroundHolder?.setRelease()
+                    mRecoilAnimatorHolder?.setRelease()
                 }
             }
 
             MotionEvent.ACTION_CANCEL -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     mItemBackgroundHolder?.setCancel()
+                    mRecoilAnimatorHolder?.setRelease()
                 }
             }
 
@@ -525,7 +548,11 @@ class RadioItemViewGroup @JvmOverloads constructor(
 
         fun setCancel() {
             if (activeBg != null) {
-                activeBg!!.setState(IntArray(0))
+                if (activeBg is SeslRecoilDrawable) {
+                    (activeBg as SeslRecoilDrawable).setCancel()
+                } else {
+                    activeBg!!.setState(IntArray(0))
+                }
                 this.activeBg = null
             }
         }
