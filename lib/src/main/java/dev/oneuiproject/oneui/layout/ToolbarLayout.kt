@@ -31,7 +31,6 @@ import android.widget.TextView
 import androidx.annotation.CallSuper
 import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
-import androidx.annotation.RequiresApi
 import androidx.annotation.RestrictTo
 import androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_ALL
 import androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_NONE
