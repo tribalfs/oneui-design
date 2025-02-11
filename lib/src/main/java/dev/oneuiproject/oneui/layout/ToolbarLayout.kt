@@ -32,6 +32,7 @@ import androidx.annotation.CallSuper
 import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
 import androidx.annotation.RestrictTo
+import androidx.annotation.StringRes
 import androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_ALL
 import androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_NONE
 import androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_TOP_LEFT
@@ -1788,4 +1789,28 @@ inline fun <T : ToolbarLayout> T.startActionMode(
         showCancel
     )
 }
+
+inline fun <T: ToolbarLayout>T.setTitle(@StringRes titleRes: Int) =
+   context.getString(titleRes).let {
+       expandedTitle = it
+       collapsedTitle = it
+   }
+
+inline fun <T: ToolbarLayout>T.setTitle(@StringRes expandedTitleRes: Int, @StringRes collapsedTitleRes: Int) =
+    with(context) {
+        expandedTitle = getString(expandedTitleRes)
+        collapsedTitle = getString(collapsedTitleRes)
+    }
+
+inline fun <T: ToolbarLayout>T.setSubTitle(@StringRes titleRes: Int) =
+    context.getString(titleRes).let {
+        expandedSubtitle = it
+        collapsedSubtitle = it
+    }
+
+inline fun <T: ToolbarLayout>T.setSubTitle(@StringRes expandedTitleRes: Int, @StringRes collapsedTitleRes: Int) =
+    with(context) {
+        expandedSubtitle = getString(expandedTitleRes)
+        collapsedSubtitle = getString(collapsedTitleRes)
+    }
 
