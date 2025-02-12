@@ -276,7 +276,6 @@ class SemDrawerLayout @JvmOverloads constructor(
     override var isLocked: Boolean
         set(lock){
             if (lock){
-                if (isOpen) close(false)
                 setDrawerLockMode(LOCK_MODE_LOCKED_CLOSED)
             }else{
                 setDrawerLockMode(LOCK_MODE_UNLOCKED)
