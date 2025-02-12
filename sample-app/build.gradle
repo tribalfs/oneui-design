@@ -66,13 +66,11 @@ dependencies {
     implementation("sesl.androidx.viewpager2:viewpager2:1.1.0+1.0.0-sesl6+rev0")
 
     //design lib
-    implementation("io.github.tribalfs:oneui-design:0.5.2+oneui6")
+    implementation("io.github.tribalfs:oneui-design:0.5.6+oneui6")
 
-    implementation("androidx.constraintlayout:constraintlayout:2.2.0")
-
-    implementation 'com.airbnb.android:lottie:6.5.2'
     implementation 'io.github.oneuiproject:icons:1.1.0'
 
+    implementation("androidx.constraintlayout:constraintlayout:2.2.0")
     implementation("androidx.datastore:datastore-preferences-android:1.1.2")
     implementation("androidx.activity:activity-ktx:1.10.0")
 
