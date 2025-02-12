@@ -58,6 +58,7 @@ class BottomTabLayout(
     private var slideDownAnim: Animation? = null
     private var slideUpAnim: Animation? = null
     private var transientState = TRANSIENT_NONE
+    private var previousContainerWidth = -1
 
     private var gridMenuDialog: GridMenuDialog? = null
     private var itemClickedListener: MenuItem.OnMenuItemClickListener? = null
@@ -135,16 +136,17 @@ class BottomTabLayout(
     }
 
     override fun updateLayoutParams() {
-        if (!sideMarginChanged) return
-        sideMarginChanged = false
-
         val sideMarginFinal = sideMargin.coerceAtLeast(minSideMargin)
-        layoutParams = (layoutParams as MarginLayoutParams).apply {
-            marginStart = sideMarginFinal
-            marginEnd = sideMarginFinal
+        if (sideMarginChanged) {
+            sideMarginChanged = false
+            layoutParams = (layoutParams as MarginLayoutParams).apply {
+                marginStart = sideMarginFinal
+                marginEnd = sideMarginFinal
+            }
         }
 
-        if (containerWidth == null) return
+        if (containerWidth == null || previousContainerWidth == containerWidth) return
+        previousContainerWidth = containerWidth!!
         val availableForTabPaddings = containerWidth!! - tabTextWidthsList.sum() - (sideMarginFinal * 2)
         val tabPadding = (availableForTabPaddings/(tabCount * 2)).coerceAtLeast(defaultTabPadding)
 
