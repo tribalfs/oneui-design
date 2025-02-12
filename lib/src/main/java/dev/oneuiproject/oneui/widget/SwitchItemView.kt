@@ -39,7 +39,7 @@ class SwitchItemView @JvmOverloads constructor(
     private var verticalDivider: View
     private val mMainContent: ConstraintLayout
     private val mContentFrame: FrameLayout
-    private var badgeFrame: LinearLayout? = null
+    private var badgeFrame: ConstraintLayout? = null
     private var bottomSpacer: Space
     private var mIsLargeLayout = false
 
@@ -122,7 +122,7 @@ class SwitchItemView @JvmOverloads constructor(
         set(value) {
             if (value) {
                 if (badgeFrame == null){
-                    badgeFrame = (findViewById<ViewStub>(R.id.viewstub_badge_frame).inflate() as LinearLayout)
+                    badgeFrame = (findViewById<ViewStub>(R.id.viewstub_badge_frame).inflate() as ConstraintLayout)
                 }
                 badgeFrame!!.isVisible = true
             } else {
