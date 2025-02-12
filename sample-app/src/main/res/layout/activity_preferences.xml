@@ -10,7 +10,7 @@
     app:expanded="false"
     tools:title="ToolbarLayout">
 
-    <dev.oneuiproject.oneui.widget.RoundFrameLayout
+    <dev.oneuiproject.oneui.widget.RoundedFrameLayout
         android:id="@+id/frag_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

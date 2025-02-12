@@ -56,6 +56,8 @@ public class WidgetsFragment extends BaseFragment
         searchView.seslSetUpButtonVisibility(VISIBLE);
         searchView.seslSetOnUpButtonClickListener(this);
 
+        view.findViewById(R.id.cardItemView).setOnClickListener(this);
+
     }
 
     private SeslSwitchBar.OnSwitchChangeListener listener = (v, isChecked) ->{

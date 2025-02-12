@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:text="Indeterminate" />
 
-        <dev.oneuiproject.oneui.widget.RoundLinearLayout
+        <dev.oneuiproject.oneui.widget.RoundedLinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/oui_background_color"
@@ -68,7 +68,7 @@
                 android:indeterminate="true"
                 android:paddingHorizontal="24dp" />
 
-        </dev.oneuiproject.oneui.widget.RoundLinearLayout>
+        </dev.oneuiproject.oneui.widget.RoundedLinearLayout>
 
 
         <dev.oneuiproject.oneui.widget.Separator
@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:text="Determinate" />
 
-        <dev.oneuiproject.oneui.widget.RoundLinearLayout
+        <dev.oneuiproject.oneui.widget.RoundedLinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/oui_background_color"
@@ -127,7 +127,7 @@
                 android:paddingHorizontal="24dp"
                 android:progress="40" />
 
-        </dev.oneuiproject.oneui.widget.RoundLinearLayout>
+        </dev.oneuiproject.oneui.widget.RoundedLinearLayout>
 
     </LinearLayout>
 

@@ -14,16 +14,16 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-      <!--  <androidx.appcompat.widget.SeslSwitchBar
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />-->
+        <!--  <androidx.appcompat.widget.SeslSwitchBar
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content" />-->
 
         <dev.oneuiproject.oneui.widget.Separator
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Compound Buttons" />
 
-        <dev.oneuiproject.oneui.widget.RoundLinearLayout
+        <dev.oneuiproject.oneui.widget.RoundedLinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/oui_background_color"
@@ -64,14 +64,14 @@
 
             </RadioGroup>
 
-        </dev.oneuiproject.oneui.widget.RoundLinearLayout>
+        </dev.oneuiproject.oneui.widget.RoundedLinearLayout>
 
         <dev.oneuiproject.oneui.widget.Separator
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Buttons" />
 
-        <dev.oneuiproject.oneui.widget.RoundLinearLayout
+        <dev.oneuiproject.oneui.widget.RoundedLinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/oui_background_color"
@@ -130,14 +130,14 @@
                 android:focusable="true"
                 android:text="Button" />
 
-        </dev.oneuiproject.oneui.widget.RoundLinearLayout>
+        </dev.oneuiproject.oneui.widget.RoundedLinearLayout>
 
         <dev.oneuiproject.oneui.widget.Separator
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Spinner" />
 
-        <dev.oneuiproject.oneui.widget.RoundFrameLayout
+        <dev.oneuiproject.oneui.widget.RoundedFrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/oui_background_color"
@@ -149,14 +149,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-        </dev.oneuiproject.oneui.widget.RoundFrameLayout>
+        </dev.oneuiproject.oneui.widget.RoundedFrameLayout>
 
         <dev.oneuiproject.oneui.widget.Separator
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="SearchView" />
 
-        <dev.oneuiproject.oneui.widget.RoundFrameLayout
+        <dev.oneuiproject.oneui.widget.RoundedFrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/oui_background_color">
@@ -167,7 +167,54 @@
                 android:layout_height="wrap_content"
                 app:iconifiedByDefault="false" />
 
-        </dev.oneuiproject.oneui.widget.RoundFrameLayout>
+        </dev.oneuiproject.oneui.widget.RoundedFrameLayout>
+
+        <dev.oneuiproject.oneui.widget.Separator
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Custom item views" />
+
+        <dev.oneuiproject.oneui.widget.RoundedLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/oui_background_color">
+
+            <dev.oneuiproject.oneui.widget.CardItemView
+                android:id="@+id/cardItemView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="CardItemView"
+                app:showTopDivider="false"/>
+
+            <dev.oneuiproject.oneui.widget.SwitchItemView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="SwitchItemView"/>
+
+            <View style="@style/OneUI.ListDividerStyle" />
+
+            <dev.oneuiproject.oneui.widget.RadioItemViewGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <dev.oneuiproject.oneui.widget.RadioItemView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="RadioItemView 1"/>
+
+                <dev.oneuiproject.oneui.widget.RadioItemView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="RadioItemView 2"/>
+
+                <dev.oneuiproject.oneui.widget.RadioItemView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="RadioItemView 3"/>
+            </dev.oneuiproject.oneui.widget.RadioItemViewGroup>
+
+        </dev.oneuiproject.oneui.widget.RoundedLinearLayout>
 
         <dev.oneuiproject.oneui.widget.Separator
             android:layout_width="match_parent"

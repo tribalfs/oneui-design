@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <dev.oneuiproject.oneui.widget.RoundFrameLayout
+        <dev.oneuiproject.oneui.widget.RoundedFrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/oui_background_color"
@@ -82,14 +82,14 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"/>
 
-        </dev.oneuiproject.oneui.widget.RoundFrameLayout>
+        </dev.oneuiproject.oneui.widget.RoundedFrameLayout>
 
         <dev.oneuiproject.oneui.widget.Separator
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Dialogs" />
 
-        <dev.oneuiproject.oneui.widget.RoundLinearLayout
+        <dev.oneuiproject.oneui.widget.RoundedLinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/oui_background_color"
@@ -125,7 +125,7 @@
                 android:layout_marginVertical="5dp"
                 android:text="Color" />
 
-        </dev.oneuiproject.oneui.widget.RoundLinearLayout>
+        </dev.oneuiproject.oneui.widget.RoundedLinearLayout>
 
 
     </LinearLayout>

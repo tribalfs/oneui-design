@@ -17,7 +17,7 @@
         tools:visibility="visible"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal" />
 
-    <dev.oneuiproject.oneui.widget.RoundFrameLayout
+    <dev.oneuiproject.oneui.widget.RoundedFrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:roundedCorners="top_left|top_right"
@@ -71,5 +71,5 @@
             app:fabSize="normal"
             app:layout_behavior="@null"
             />
-    </dev.oneuiproject.oneui.widget.RoundFrameLayout>
+    </dev.oneuiproject.oneui.widget.RoundedFrameLayout>
 </LinearLayout>
