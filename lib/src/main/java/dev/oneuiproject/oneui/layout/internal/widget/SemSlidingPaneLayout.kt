@@ -45,7 +45,6 @@ import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.ktx.dpToPxFactor
 import dev.oneuiproject.oneui.ktx.fitsSystemWindows
 import dev.oneuiproject.oneui.ktx.semSetToolTipText
-import dev.oneuiproject.oneui.ktx.setEnableRecursive
 import dev.oneuiproject.oneui.layout.Badge
 import dev.oneuiproject.oneui.layout.DrawerLayout.DrawerState
 import dev.oneuiproject.oneui.layout.internal.NavigationBadgeIcon
@@ -286,16 +285,12 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
 
     override fun getContentPane(): View = mSlideViewPane
 
-    private val drawerItemsDisabler = Runnable { mDrawerItemsContainer?.setEnableRecursive(!isLocked) }
-
     override var isLocked: Boolean
         get() = seslGetLock()
         set(value) {
             if (seslGetLock() == value) return
             seslSetLock(value || !drawerEnabled)
             navRailDrawerButton!!.isEnabled = !value
-            removeCallbacks(drawerItemsDisabler)
-            postDelayed(drawerItemsDisabler, 50)
         }
 
     override val isDrawerOpen: Boolean get() = mCurrentState == DrawerState.OPEN

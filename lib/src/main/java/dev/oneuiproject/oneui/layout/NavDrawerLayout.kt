@@ -193,18 +193,30 @@ class NavDrawerLayout @JvmOverloads constructor(
 
     override fun updateDrawerLock() {
         (containerLayout as? SemSlidingPaneLayout)?.apply {
-            isLocked = lockNavRailOnActionMode && isActionMode
+            val newLockState = lockNavRailOnActionMode && isActionMode
                     || lockNavRailOnSearchMode && isSearchMode
-                    || !drawerEnabled}
-            ?: super.updateDrawerLock()
+                    || !drawerEnabled
+            if (isLocked != newLockState) {
+                isLocked = newLockState
+                drawerLockListener?.onLockChanged(newLockState)
+            }
+           } ?: super.updateDrawerLock()
     }
 
     /**
-     * Sets whether to lock the navigation rail when action mode is active.
+     * Sets whether to lock the navigation rail or not when action mode is active.
+     * When the navigation rail is locked, it can't be closed or opened by the user.
      * This applies only when in [largeScreenMode][isLargeScreenMode].
      *
+     * **Important:** The management of enabling and disabling descendant views within the
+     * drawer pane (such as drawer items) is not handled by this component.
+     * This responsibility must be managed separately. For instance, if drawer items
+     * are implemented using a RecyclerView, this task can be delegated to the RecyclerView adapter.
+     *
+     * @see setDrawerLockListener
      * @see lockNavRailOnSearchMode
      * @see isActionMode
+     * @see startActionMode
      */
     var lockNavRailOnActionMode = false
         set(value) {
@@ -217,10 +229,18 @@ class NavDrawerLayout @JvmOverloads constructor(
 
     /**
      * Sets whether to lock the navigation rail when search mode is active.
+     * When the navigation rail is locked, it can't be closed or opened by the user.
      * This applies only when in [largeScreenMode][isLargeScreenMode].
      *
+     * **Important:** The management of enabling and disabling descendant views within the
+     * drawer pane (such as drawer items) is not handled by this component.
+     * This responsibility must be managed separately. For instance, if drawer items
+     * are implemented using a RecyclerView, this task can be delegated to the RecyclerView adapter.
+     *
+     * @see setDrawerLockListener
      * @see lockNavRailOnActionMode
      * @see isSearchMode
+     * @see startSearchMode
      */
     var lockNavRailOnSearchMode = false
         set(value) {

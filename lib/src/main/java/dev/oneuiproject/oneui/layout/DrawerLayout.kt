@@ -40,7 +40,14 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         fun onStateChanged(state: DrawerState)
     }
 
-    internal var enableDrawerBackAnimation: Boolean = false
+    fun interface DrawerLockListener{
+        fun onLockChanged(isLocked: Boolean)
+    }
+
+    protected var drawerLockListener: DrawerLockListener? = null
+        private set
+
+    protected var enableDrawerBackAnimation: Boolean = false
         private set
 
     protected var drawerEnabled = true
@@ -102,8 +109,12 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         super.updateOnBackCallbackState()
     }
 
-    internal open fun updateDrawerLock() {
-        containerLayout.isLocked = isActionMode || isSearchMode || !drawerEnabled
+    protected open fun updateDrawerLock() {
+        val newLockState = isActionMode || isSearchMode || !drawerEnabled
+        if (containerLayout.isLocked != newLockState) {
+            containerLayout.isLocked = newLockState
+            drawerLockListener?.onLockChanged(newLockState)
+        }
     }
 
     fun isDrawerLocked(): Boolean = containerLayout.isLocked
@@ -202,6 +213,16 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         }
     }
 
+    /**
+     * Sets the listener for changes in the drawer's lock state.
+     *
+     * @param listener An instance of [DrawerLockListener] to receive lock state change events.
+     */
+    fun setDrawerLockListener(listener: DrawerLockListener?) {
+        drawerLockListener = listener
+        listener?.onLockChanged(containerLayout.isLocked)
+    }
+
     /**The current slide offset of the drawer pane.*/
     val drawerOffset get() = containerLayout.getDrawerSlideOffset()
 
@@ -223,7 +244,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         if (isAttachedToWindow) updateDrawerState()
     }
 
-    internal open fun updateDrawerState(animate: Boolean = true){
+    protected open fun updateDrawerState(animate: Boolean = true){
         updateDrawerLock()
         if (drawerEnabled) {
             showNavigationButton = true
