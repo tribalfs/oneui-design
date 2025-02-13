@@ -28,6 +28,7 @@ import androidx.core.animation.addListener
 import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsCompat.Type.displayCutout
 import androidx.core.view.WindowInsetsCompat.Type.ime
 import androidx.core.view.WindowInsetsCompat.Type.systemBars
 import androidx.core.view.isGone
@@ -482,18 +483,32 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
     override fun applyWindowInsets(insets: WindowInsetsCompat, isImmersiveActive: Boolean){
         val activity = activity ?: return
         val imeInsetBottom = insets.getInsets(ime()).bottom
-        val systemBarsInsets = insets.getInsets(systemBars())
+        val basePadding = insets.getInsets(systemBars() or displayCutout())
 
         if (isImmersiveActive) {
-            setPadding(systemBarsInsets.left, 0, systemBarsInsets.right, 0)
-            seslSetDrawerMarginTop(systemBarsInsets.top + defaultDrawerTopMargin)
-            seslSetDrawerMarginBottom(systemBarsInsets.bottom)
+            updateLayoutParams<MarginLayoutParams> {
+                leftMargin = basePadding.left
+                rightMargin = basePadding.right
+                bottomMargin = 0
+                topMargin = 0
+            }
+            seslSetDrawerMarginTop(basePadding.top + defaultDrawerTopMargin)
+            seslSetDrawerMarginBottom(basePadding.bottom)
         } else {
             if (activity.fitsSystemWindows) {
-                setPadding(0, 0, 0, imeInsetBottom)
+                updateLayoutParams<MarginLayoutParams> {
+                    leftMargin = 0
+                    rightMargin = 0
+                    bottomMargin = imeInsetBottom
+                    topMargin = 0
+                }
             }else{
-                setPadding(systemBarsInsets.left, systemBarsInsets.top, systemBarsInsets.right,
-                    maxOf(imeInsetBottom, systemBarsInsets.bottom))
+                updateLayoutParams<MarginLayoutParams> {
+                    leftMargin = basePadding.left
+                    rightMargin = basePadding.right
+                    bottomMargin = maxOf(imeInsetBottom, basePadding.bottom)
+                    topMargin = basePadding.top
+                }
             }
             seslSetDrawerMarginTop(defaultDrawerTopMargin)
             seslSetDrawerMarginBottom(0)
