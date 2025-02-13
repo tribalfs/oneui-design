@@ -47,6 +47,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsCompat.Type.displayCutout
 import androidx.core.view.WindowInsetsCompat.Type.ime
 import androidx.core.view.WindowInsetsCompat.Type.navigationBars
 import androidx.core.view.WindowInsetsCompat.Type.systemBars
@@ -1477,17 +1478,17 @@ open class ToolbarLayout @JvmOverloads constructor(
     open fun applyWindowInsets(insets: WindowInsetsCompat){
         val activity = activity ?: return
         val imeInsetBottom = insets.getInsets(ime()).bottom
-        val systemBarsInsets = insets.getInsets(systemBars())
+        val basePadding = insets.getInsets(systemBars() or displayCutout())
 
         if (isImmersiveScroll){
-            setPadding(systemBarsInsets.left, systemBarsInsets.top , systemBarsInsets.right, imeInsetBottom)
+            setPadding(basePadding.left, basePadding.top , basePadding.right, imeInsetBottom)
         }else{
             if (activity.fitsSystemWindows) {
                 setPadding(0, 0, 0, imeInsetBottom)
             }else{
                 setPadding(
-                    systemBarsInsets.left, systemBarsInsets.top , systemBarsInsets.right,
-                    maxOf(systemBarsInsets.bottom, imeInsetBottom)
+                    basePadding.left, basePadding.top , basePadding.right,
+                    maxOf(basePadding.bottom, imeInsetBottom)
                 )
             }
         }
