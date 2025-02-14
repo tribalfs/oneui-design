@@ -293,8 +293,8 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
                 object :
                     ClassLoaderCreator<SavedState> {
                     override fun createFromParcel(parcel: Parcel,
-                                                  loader: ClassLoader): SavedState = SavedState(parcel, null)
-                    override fun createFromParcel(parcel: Parcel): SavedState = SavedState(parcel, null)
+                                                  loader: ClassLoader): SavedState = SavedState(parcel, loader)
+                    override fun createFromParcel(parcel: Parcel): SavedState = SavedState(parcel, SavedState::class.java.classLoader)
                     override fun newArray(size: Int): Array<SavedState?> = arrayOfNulls(size)
                 }
         }
