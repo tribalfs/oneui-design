@@ -52,7 +52,7 @@
                 <ViewStub
                     android:id="@+id/viewstub_badge_frame"
                     android:inflatedId="@+id/badge_frame"
-                    android:layout="@layout/oui_widget_card_item_badge"
+                    android:layout="@layout/oui_widget_item_badge"
                     android:layout_width="10dp"
                     android:layout_height="10dp"
                     android:layout_alignEnd="@id/cardview_title"

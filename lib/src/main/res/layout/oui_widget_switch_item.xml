@@ -9,11 +9,6 @@
     tools:orientation="vertical"
     tools:viewBindingIgnore="true">
 
-    <View
-        style="@style/OneUI.ListDividerStyle"
-        android:id="@+id/top_divider"
-        android:visibility="visible"/>
-
     <FrameLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
@@ -53,7 +48,7 @@
             <ViewStub
                 android:id="@+id/viewstub_badge_frame"
                 android:inflatedId="@+id/badge_frame"
-                android:layout="@layout/oui_widget_card_item_badge"
+                android:layout="@layout/oui_widget_item_badge"
                 android:layout_width="10dp"
                 android:layout_height="10dp"
                 app:layout_constraintStart_toEndOf="@id/switch_card_title"

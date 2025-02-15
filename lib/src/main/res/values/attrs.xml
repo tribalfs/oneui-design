@@ -214,6 +214,8 @@
     </declare-styleable>
 
     <attr name="showTopDivider" format="boolean" />
+    <attr name="userUpdatableSummary" format="boolean"/>
+    <attr name="showBottomDivider" format="boolean" />
 
     <declare-styleable name="CardItemView">
         <attr name="android:enabled"/>
@@ -224,11 +226,11 @@
         <attr name="summary"/>
         <attr name="summaryMaxLines" format="integer" />
         <!-- If set to true summary will be themed with active color-->
-        <attr name="userUpdatable" format="boolean" />
+        <attr name="userUpdatableSummary"/>
         <!--Show divider at the top. Default is true-->
         <attr name="showTopDivider" />
         <!--Show divider at the bottom. Default is false-->
-        <attr name="showBottomDivider" format="boolean" />
+        <attr name="showBottomDivider" />
         <!-- Set to true to make top divider extend to cover the icon. False by default-->
         <attr name="fullWidthDivider" format="boolean" />
     </declare-styleable>
@@ -300,6 +302,24 @@
 
     <!-- The SeslDatePicker dialog theme. -->
     <attr name="datePickerDialogTheme" format="reference" />
+
+    <!--SwitchItemView-->
+    <declare-styleable name="SwitchItemView">
+        <attr name="title"/>
+        <!-- Show divider above. True by default-->
+        <attr name="showTopDivider"/>
+        <!--Show divider at the bottom. Default is false-->
+        <attr name="showBottomDivider" />
+        <!-- Makes click and switch change events separate. True by default-->
+        <attr name="separateSwitch" format="boolean"/>
+        <attr name="summaryOn"/>
+        <attr name="summaryOff"/>
+        <attr name="switchTextOn"/>/>
+        <attr name="switchTextOff"/>
+        <attr name="android:enabled"/>
+        <attr name="android:checked"/>
+        <attr name="userUpdatableSummary"/>
+    </declare-styleable>
 
     <declare-styleable name="RadioItemViewGroup">
         <attr name="checkedButton"/>

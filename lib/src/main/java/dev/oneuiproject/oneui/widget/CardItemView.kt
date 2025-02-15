@@ -52,6 +52,9 @@ class CardItemView @JvmOverloads constructor(
             mDividerViewTop?.isVisible = value
         }
 
+    /**
+     *  Show divider at the bottom. False by default
+     */
     var showBottomDivider: Boolean
         get() = mDividerViewBottom?.isVisible == true
         set(value) {
@@ -161,7 +164,7 @@ class CardItemView @JvmOverloads constructor(
                 maxLines = a.getInteger(R.styleable.CardItemView_summaryMaxLines, 10)
             }
             summary = a.getString(R.styleable.CardItemView_summary)
-            if (a.getBoolean(R.styleable.CardItemView_userUpdatable, false)){
+            if (a.getBoolean(R.styleable.CardItemView_userUpdatableSummary, false)){
                 val colorEnabled = ContextCompat.getColor(context,
                     context.getThemeAttributeValue(androidx.appcompat.R.attr.colorPrimaryDark)!!.resourceId)
                 val states = arrayOf(

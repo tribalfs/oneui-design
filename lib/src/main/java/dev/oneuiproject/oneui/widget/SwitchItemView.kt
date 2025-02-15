@@ -35,11 +35,12 @@ class SwitchItemView @JvmOverloads constructor(
     private var mSwitchView: SwitchCompat
     private var mTitleView: TextView
     private var mSummaryView: TextView
-    private var mTopDivider: View
+    private var mDividerViewTop: View? = null
+    private var mDividerViewBottom: View? = null
     private var verticalDivider: View
     private val mMainContent: ConstraintLayout
     private val mContentFrame: FrameLayout
-    private var badgeFrame: ConstraintLayout? = null
+    private var badgeFrame: LinearLayout? = null
     private var bottomSpacer: Space
     private var mIsLargeLayout = false
 
@@ -67,12 +68,37 @@ class SwitchItemView @JvmOverloads constructor(
      *  Show divider on top. True by default
      */
     var showTopDivider: Boolean
-        get() = mTopDivider.isVisible
+        get() = mDividerViewTop?.isVisible == true
         set(value) {
-            if (mTopDivider.isVisible != value) {
-                mTopDivider.isVisible = value
-            }
+            if (value) ensureTopDivider()
+            mDividerViewTop?.isVisible = value
         }
+
+    /**
+     *  Show divider at the bottom. False by default
+     */
+    var showBottomDivider: Boolean
+        get() = mDividerViewBottom?.isVisible == true
+        set(value) {
+            if (value) ensureBottomDivider()
+            mDividerViewBottom?.isVisible = value
+        }
+
+    private fun ensureTopDivider(){
+        if (mDividerViewTop == null){
+            mDividerViewTop = LayoutInflater.from(context)
+                .inflate(R.layout.oui_widget_card_item_divider, this, false)
+            addView(mDividerViewTop, 0)
+        }
+    }
+
+    private fun ensureBottomDivider(){
+        if (mDividerViewBottom == null){
+            mDividerViewBottom = LayoutInflater.from(context)
+                .inflate(R.layout.oui_widget_card_item_divider, this, false)
+            addView(mDividerViewBottom, childCount)
+        }
+    }
 
     var summaryOn: CharSequence? = null
         set(value) {
@@ -122,7 +148,7 @@ class SwitchItemView @JvmOverloads constructor(
         set(value) {
             if (value) {
                 if (badgeFrame == null){
-                    badgeFrame = (findViewById<ViewStub>(R.id.viewstub_badge_frame).inflate() as ConstraintLayout)
+                    badgeFrame = (findViewById<ViewStub>(R.id.viewstub_badge_frame).inflate() as LinearLayout)
                 }
                 badgeFrame!!.isVisible = true
             } else {
@@ -138,7 +164,6 @@ class SwitchItemView @JvmOverloads constructor(
         mTitleView = findViewById(R.id.switch_card_title)
         mSummaryView = findViewById(R.id.switch_card_summary)
 
-        mTopDivider = findViewById(R.id.top_divider)
         mMainContent = findViewById(R.id.main_content)
         mContentFrame = findViewById(R.id.content_frame)
         verticalDivider = findViewById(R.id.vertical_divider)
@@ -164,12 +189,9 @@ class SwitchItemView @JvmOverloads constructor(
             title = a.getText(R.styleable.SwitchItemView_title)
             summaryOn = a.getText(R.styleable.SwitchItemView_summaryOn)
             summaryOff = a.getText(R.styleable.SwitchItemView_summaryOff)
-            separateSwitch = a.getBoolean(R.styleable.SwitchItemView_separateSwitch, false).also {
-                verticalDivider.isVisible = it
-            }
-            showTopDivider = a.getBoolean(R.styleable.SwitchItemView_showTopDivider, true).also {
-                mTopDivider.isVisible = it
-            }
+            separateSwitch = a.getBoolean(R.styleable.SwitchItemView_separateSwitch, false)
+            showTopDivider = a.getBoolean(R.styleable.SwitchItemView_showTopDivider, true)
+            showBottomDivider = a.getBoolean(R.styleable.SwitchItemView_showBottomDivider, false)
             if (a.getBoolean(R.styleable.SwitchItemView_userUpdatableSummary, false)){
                 val colorEnabled = ContextCompat.getColor(context,
                     context.getThemeAttributeValue(androidx.appcompat.R.attr.colorPrimaryDark)!!.resourceId)

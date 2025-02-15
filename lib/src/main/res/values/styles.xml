@@ -311,20 +311,4 @@
         <item name="android:windowExitAnimation">@anim/more_menu_dialog_slide_right_exit</item>
     </style>
 
-    <!--SwitchItemView-->
-    <declare-styleable name="SwitchItemView">
-        <attr name="title"/>
-        <!-- Show divider above. True by default-->
-        <attr name="showTopDivider"/>
-        <!-- Makes click and switch change events separate. True by default-->
-        <attr name="separateSwitch" format="boolean"/>
-        <attr name="summaryOn"/>
-        <attr name="summaryOff"/>
-        <attr name="switchTextOn"/>/>
-        <attr name="switchTextOff"/>
-        <attr name="android:enabled"/>
-        <attr name="android:checked"/>
-        <attr name="userUpdatableSummary" format="boolean"/>
-    </declare-styleable>
-
 </resources>
