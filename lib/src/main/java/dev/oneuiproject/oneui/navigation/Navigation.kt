@@ -83,12 +83,3 @@ private inline fun onNavDestinationSelected(item: MenuItem,
         false
     }
 }
-
-
-private inline fun NavController.getPopupDestinationLabel(): CharSequence? {
-    return previousBackStackEntry?.destination?.label
-}
-
-private inline fun NavController.isPopupDestinationTop(): CharSequence? {
-    return previousBackStackEntry?.destination?.label
-}

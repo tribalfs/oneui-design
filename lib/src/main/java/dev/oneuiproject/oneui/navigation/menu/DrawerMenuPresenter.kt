@@ -186,7 +186,8 @@ internal class DrawerMenuPresenter(
     }
 
     /**
-     * Handles click events for the [NavDrawerLayout][sem.oneuiproject.layout.NavDrawerLayout] navigation menu items.
+     * Handles click events for the [DrawerLayout][dev.oneuiproject.oneui.layout.DrawerLayout]
+     * or [NavDrawerLayout][dev.oneuiproject.oneui.layout.NavDrawerLayout] navigation menu items.
      * The items has to be [DrawerMenuItemView].
      */
     val onClickListener: View.OnClickListener = View.OnClickListener { view ->

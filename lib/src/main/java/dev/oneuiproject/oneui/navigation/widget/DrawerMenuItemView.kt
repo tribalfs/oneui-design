@@ -160,7 +160,7 @@ internal class DrawerMenuItemView @JvmOverloads constructor(
 
     private fun setActionView(actionView: View) {
         if (actionArea == null) {
-            actionArea = (findViewById<View>(R.id.nav_drawer_menu_item_action_area_stub) as ViewStub).inflate() as DrawerActionViewContainer
+            actionArea = findViewById<ViewStub>(R.id.nav_drawer_menu_item_action_area_stub).inflate() as DrawerActionViewContainer
         }
 
         // Make sure to remove the existing parent if the View is reused
@@ -200,9 +200,7 @@ internal class DrawerMenuItemView @JvmOverloads constructor(
         iconBackgroundView?.let {
             it.isSelected = checked
         }
-        titleView.apply {
-            if (checked && isBold) getSemiBoldFont() else getRegularFont()
-        }
+        titleView.typeface = if (checked && isBold) getSemiBoldFont() else getRegularFont()
     }
 
     override fun setShortcut(showShortcut: Boolean, shortcutKey: Char) {}
