@@ -386,6 +386,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             mTitleCollapsed = it.getString(R.styleable.ToolbarLayout_title)
             mTitleExpanded = mTitleCollapsed
             mSubtitleExpanded = it.getString(R.styleable.ToolbarLayout_subtitle)
+            mSubtitleCollapsed = mSubtitleExpanded
             mHandleInsets = it.getBoolean(R.styleable.ToolbarLayout_handleInsets, true)
             mShowSwitchBar = it.getBoolean(R.styleable.ToolbarLayout_showSwitchBar, false)
             _mainRoundedCorners = MainRoundedCorners.entries[it.getInteger(R.styleable.ToolbarLayout_mainRoundedCorners, 0)]
