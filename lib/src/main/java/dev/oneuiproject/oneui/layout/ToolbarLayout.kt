@@ -54,6 +54,7 @@ import androidx.core.view.WindowInsetsCompat.Type.systemBars
 import androidx.core.view.children
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.appbar.AppBarLayout
@@ -976,10 +977,12 @@ open class ToolbarLayout @JvmOverloads constructor(
                     }
                     if (!isDescendantOf(mMainContainerParent)) {
                         (parent as? ViewGroup)?.removeView(this)
-                        val dpToPx = context.dpToPxFactor
-                        val lp = MarginLayoutParams(MATCH_PARENT, (48 * dpToPx).toInt())
-                            .apply { bottomMargin = (12 * dpToPx).toInt() }
-                        mMainContainerParent.addView(this, 0, lp)
+                        mMainContainerParent.addView(this, 0, MarginLayoutParams(MATCH_PARENT, WRAP_CONTENT))
+                        updateLayoutParams<MarginLayoutParams> {
+                            val dpToPx = context.dpToPxFactor
+                            height = (48 * dpToPx).toInt()
+                            bottomMargin = (12 * dpToPx).toInt()
+                        }
                     }
                 }
             }
