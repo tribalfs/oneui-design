@@ -229,7 +229,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             isSearchMode -> {
                 when (searchModeOBPBehavior) {
                     DISMISS, CLEAR_DISMISS -> true
-                    CLEAR_CLOSE -> searchView.query.isNotEmpty() || isSofInputShowing
+                    CLEAR_CLOSE -> _searchView!!.query.isNotEmpty() || isSofInputShowing
                 }
             }
 
@@ -1018,11 +1018,9 @@ open class ToolbarLayout @JvmOverloads constructor(
     /**
      * The [SearchView] for [search mode][startSearchMode] or [action mode search][SearchOnActionMode].
      *
-     * Note: Apps should access this view using [SearchModeListener] callback
-     * to prevent premature inflation.
+     * Note: Apps should access this view using [SearchModeListener] callback.
      */
-    internal val searchView: SearchView
-        get() { setupSearchView(); return _searchView!! }
+    internal val searchView get() = _searchView
 
 
     /**
