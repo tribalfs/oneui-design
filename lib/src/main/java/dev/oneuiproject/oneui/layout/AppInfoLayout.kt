@@ -108,30 +108,6 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
     private var bottomButtonsStyle: Int = 0
     private val optionalTextParent: LinearLayout
 
-    @Deprecated("Use the type-safe `updateState`.",
-        level = DeprecationLevel.WARNING)
-    inline var status: Int
-        get() {
-            return when (updateStatus){
-                Status.NotUpdatable -> NOT_UPDATEABLE
-                Status.Loading -> LOADING
-                Status.UpdateAvailable -> UPDATE_AVAILABLE
-                Status.UpdateDownloaded -> UPDATE_AVAILABLE
-                Status.NoUpdate -> NO_UPDATE
-                is Status.Failed,
-                Status.NoConnection -> NO_CONNECTION
-            }
-        }
-        set(value) {
-            when(value){
-                NOT_UPDATEABLE -> updateStatus = Status.NotUpdatable
-                LOADING -> updateStatus = Status.Loading
-                UPDATE_AVAILABLE -> updateStatus = Status.UpdateAvailable
-                NO_UPDATE -> updateStatus = Status.NoUpdate
-                NO_CONNECTION -> updateStatus = Status.NoConnection
-            }
-        }
-
     /**
      * Get the App Info's current update state.
      *
@@ -470,40 +446,6 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
         throw UnsupportedOperationException("AppInfoLayout has no switchbar.")
 
     companion object{
-        /**
-         * Updates aren't possible in this app. Buttons and status text won't be shown.
-         */
-        @Deprecated ("Use the type-safe `updateState`.")
-        const val NOT_UPDATEABLE: Int = -1
-
-        /**
-         * The app is checking for updates. A [SeslProgressBar] will be shown.
-         */
-        @Deprecated ("Use the type-safe `updateState`.")
-        const val LOADING: Int = 0
-
-        /**
-         * There is a update available and the update button will be visible.
-         *
-         * @see [mainButtonClickListener]
-         */
-        @Deprecated ("Use the type-safe `updateState`.")
-        const val UPDATE_AVAILABLE: Int = 1
-
-        /**
-         * There are now updates available.
-         */
-        @Deprecated ("Use the type-safe `updateState`.")
-        const val NO_UPDATE: Int = 2
-
-        /**
-         * The device has no internet connection. Show a retry button.
-         *
-         * @see [mainButtonClickListener]
-         */
-        @Deprecated ("Use the type-safe `updateState`.")
-        const val NO_CONNECTION: Int = 3
-
         private const val TAG = "AppInfoLayout"
     }
 

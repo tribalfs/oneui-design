@@ -65,12 +65,6 @@ class BottomTipView @JvmOverloads constructor(
         setSummary(context.getString(summaryStringRes))
     }
 
-    @Deprecated("Use setSummary() instead", ReplaceWith("setSummary(summaryText)"))
-    inline fun setContent(contentText: CharSequence?) = setSummary(contentText)
-
-    @Deprecated("Use setSummary() instead", ReplaceWith("setSummary(summaryStringRes)"))
-    inline fun setContent(@StringRes contentRes: Int) = setSummary(context.getString(contentRes))
-
     fun setLink(linkText: CharSequence, clickListener: OnClickListener) {
         setLinkText(linkText)
         linkTextView.setOnClickListener(clickListener)

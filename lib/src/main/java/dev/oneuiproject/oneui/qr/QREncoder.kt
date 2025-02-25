@@ -46,9 +46,6 @@ class QREncoder(private val mContext: Context, private val mContent: String) {
      */
     fun setSize(@Px size: Int) = apply { this.mSize = size }
 
-    @Deprecated("Use roundedFrame() instead.", ReplaceWith("roundedFrame(apply)"))
-    fun setFrame(frame: Boolean) = apply { this.mFrame = frame }
-
     /**
      * Sets the icon to be placed at the center of the QR code.
      *
@@ -64,9 +61,6 @@ class QREncoder(private val mContext: Context, private val mContent: String) {
      * @return The current [QREncoder] instance for chaining.
      */
     fun setIcon(icon: Drawable?) = apply { this.mIcon = icon }
-
-    @Deprecated("Use setBackgroundColor() instead.", ReplaceWith("setBackgroundColor(color)"))
-    fun setBGColor(color: Int) = apply { this.mBGColor = color }
 
     /**
      * Sets the background color of the QR code.
@@ -84,10 +78,6 @@ class QREncoder(private val mContext: Context, private val mContent: String) {
      */
     fun roundedFrame(apply: Boolean) = apply { this.mFrame = apply }
 
-    @Deprecated("Use setForegroundColor() instead.",
-        ReplaceWith("setForegroundColor(color, tintAnchor, tintBorder)"))
-    fun setFGColor(color: Int, tintAnchor: Boolean, tintBorder: Boolean)
-            = setForegroundColor(color, tintAnchor, tintBorder)
 
     /**
      * Sets the foreground color of the QR code, with options to tint anchor and border.
