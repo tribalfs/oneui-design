@@ -2,6 +2,8 @@ package dev.oneuiproject.oneuiexample.ui.main;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static androidx.picker3.widget.SeslColorPicker.isTablet;
+import static dev.oneuiproject.oneui.ktx.ContextKt.startPopOverActivity;
 import static dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout.MARGIN_PROVIDER_ADP_DEFAULT;
 import static dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout.MARGIN_PROVIDER_ZERO;
 
@@ -31,7 +33,10 @@ import java.util.Objects;
 
 import dev.oneuiproject.oneui.layout.Badge;
 import dev.oneuiproject.oneui.layout.DrawerLayout;
-import dev.oneuiproject.oneui.utils.ActivityUtils;
+import dev.oneuiproject.oneui.popover.PopOverOptions;
+import dev.oneuiproject.oneui.popover.PopOverPosition;
+import dev.oneuiproject.oneui.popover.PopOverPositions;
+import dev.oneuiproject.oneui.popover.PopOverSize;
 import dev.oneuiproject.oneuiexample.ui.customabout.CustomAboutActivity;
 import dev.oneuiproject.oneuiexample.ui.preference.PreferenceActivity;
 import dev.oneuiproject.oneuiexample.ui.main.core.drawer.FragmentDrawerItem;
@@ -150,10 +155,12 @@ public class MainActivity extends AppCompatActivity
                 AppCompatResources.getDrawable(this, dev.oneuiproject.oneui.R.drawable.ic_oui_settings_outline));
         mBinding.drawerLayout.setHeaderButtonTooltip("Preferences");
         mBinding.drawerLayout.setHeaderButtonOnClickListener(v -> {
-            ActivityUtils.startPopOverActivity(this,
+            startPopOverActivity(this,
                     new Intent(MainActivity.this, PreferenceActivity.class),
-                    null,
-                    ActivityUtils.POP_OVER_POSITION_TOP | ActivityUtils.POP_OVER_POSITION_CENTER_HORIZONTAL);
+                    new PopOverOptions(
+                            new PopOverSize(731, 360, (isTablet(this)) ? 731 : 574, 360),
+                            new PopOverPositions(PopOverPosition.TOP_LEFT, PopOverPosition.TOP_LEFT)
+                    ), null);
         });
 
         mBinding.drawerListView.setLayoutManager(new LinearLayoutManager(this));
