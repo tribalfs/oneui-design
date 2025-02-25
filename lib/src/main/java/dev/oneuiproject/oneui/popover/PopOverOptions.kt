@@ -2,7 +2,7 @@ package dev.oneuiproject.oneui.popover
 
 import android.graphics.Point
 
-data class PopOverOptions(
+data class PopOverOptions @JvmOverloads constructor(
     @JvmField
     val allowOutsideTouch: Boolean = false,
     @JvmField

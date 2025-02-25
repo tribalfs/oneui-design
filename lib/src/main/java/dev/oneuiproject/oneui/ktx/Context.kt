@@ -90,6 +90,7 @@ inline val Context.windowHeight: Int get() = getWindowHeight(this)
  * @param onDateSelected Lambda to be invoked for the result containing the [Calendar] instance with updated year, month and day of month.
  * @return [SeslDatePickerDialog] created and shown.
  */
+@JvmOverloads
 inline fun Context.showDatePickerDialog(
     initialValue: Calendar,
     minSelectable: Calendar? = null,
@@ -136,6 +137,7 @@ inline fun Context.showDatePickerDialog(
  * @param onTimeSelected Lambda to be invoked containing the selected hour and minute.
  * @return [SeslTimePickerDialog] created and shown.
  */
+@JvmOverloads
 inline fun Context.showTimePickerDialog(
     initialValue: Calendar,
     is24HoursFormat: Boolean? = null,
@@ -155,6 +157,7 @@ inline fun Context.showTimePickerDialog(
  * @param onTimeSelected Lambda to be invoked containing the selected hour and minute.
  * @return [SeslTimePickerDialog] created and shown.
  */
+@JvmOverloads
 inline fun Context.showTimePickerDialog(
     hour: Int,
     minute: Int,
@@ -246,6 +249,7 @@ inline fun <T : Activity> Context.startPopOverActivity(
  *    )
  * )
  */
+@JvmOverloads
 fun Context.startPopOverActivity(
     intent: Intent,
     popOverOptions: PopOverOptions? = null,
@@ -269,7 +273,7 @@ fun Context.startPopOverActivity(
     )
 }
 
-
+@JvmOverloads
 fun startPopOverActivityForResult(
     intent: Intent,
     popOverOptions: PopOverOptions? = null,
