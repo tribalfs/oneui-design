@@ -11,8 +11,7 @@
     <FrameLayout
         android:id="@+id/tbl_custom_footer_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" />
+        android:layout_height="wrap_content"/>
 
     <ViewStub
         android:id="@+id/viewstub_tbl_actionmode_bottom_menu"
