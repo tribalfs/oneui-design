@@ -13,7 +13,7 @@
     <color name="oui_functional_red_color">@color/sesl_functional_red_light</color>
 
     <!-- Buttons -->
-    <color name="oui_btn_border_color">#66252525</color>
+    <color name="oui_btn_border_color">#252525</color>
     <color name="oui_btn_text_color">#666666</color>
 
     <!-- RelatedCard -->

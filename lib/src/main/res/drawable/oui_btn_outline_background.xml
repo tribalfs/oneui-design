@@ -4,5 +4,5 @@
     <corners android:radius="18dp" />
     <stroke
         android:width="0.3dp"
-        android:color="@color/oui_btn_border_color" />
+        android:color="@color/oui_outline_btn_border_color_selector" />
 </shape>
