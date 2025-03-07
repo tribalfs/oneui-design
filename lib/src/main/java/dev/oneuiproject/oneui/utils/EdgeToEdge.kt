@@ -9,6 +9,7 @@ import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.annotation.DoNotInline
 import androidx.annotation.RequiresApi
+import androidx.core.content.res.use
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import dev.oneuiproject.oneui.ktx.isLightMode
@@ -18,17 +19,23 @@ private var Impl: EdgeToEdgeImpl? = null
 @JvmName("apply")
 fun ComponentActivity.applyEdgeToEdge() {
     val view = window.decorView
-    val statusBarIsDark = !isLightMode()
-    val impl = Impl ?: if (SDK_INT in 29..34) {
-        EdgeToEdgeApi29()
-    } else if (SDK_INT >= 26) {
-        EdgeToEdgeApi26()
-    }  else if (SDK_INT >= 23) {
-        EdgeToEdgeApi23()
-    } else {
-        EdgeToEdgeApi21()
-    } .also { Impl = it }
-    impl.setUp(window, view, statusBarIsDark, statusBarIsDark)
+    val isLightMode = isLightMode()
+    obtainStyledAttributes(intArrayOf(android.R.attr.windowLightStatusBar, android.R.attr.windowLightNavigationBar)).use {
+        val statusBarIsDark = !it.getBoolean(0, isLightMode)
+        @Suppress("ResourceType")
+        val navigationBarIsDark = !it.getBoolean(1, isLightMode)
+
+        val impl = Impl ?: if (SDK_INT in 29..34) {
+            EdgeToEdgeApi29()
+        } else if (SDK_INT >= 26) {
+            EdgeToEdgeApi26()
+        } else if (SDK_INT >= 23) {
+            EdgeToEdgeApi23()
+        } else {
+            EdgeToEdgeApi21()
+        }.also { Impl = it }
+        impl.setUp(window, view, statusBarIsDark, navigationBarIsDark)
+    }
 }
 
 private interface EdgeToEdgeImpl {
