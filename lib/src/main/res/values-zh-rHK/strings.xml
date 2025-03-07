@@ -18,7 +18,7 @@
     <string name="oui_common_continue">繼續</string>
     <string name="oui_time_dialog_end">結束</string>
     <string name="oui_navigation_drawer">導覽滑動選單</string>
-    <string name="version_info">版本%s</string>
+    <string name="version_info">版本 %s</string>
     <string name="oui_action_mode_n_selected">已選擇 %d 個</string>
     <string name="oui_common_add">加入</string>
     <string name="oui_common_done">完成</string>
