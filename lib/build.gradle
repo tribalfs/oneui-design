@@ -29,12 +29,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
     }
 
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "21"
     }
 
 }
@@ -42,15 +42,18 @@ android {
 dependencies {
     api("androidx.annotation:annotation:1.9.1")
 
-    implementation("sesl.androidx.appcompat:appcompat:1.7.0+1.0.34-sesl6+rev8")
-    implementation("sesl.androidx.indexscroll:indexscroll:1.0.3+1.0.3-sesl6+rev5")
-    implementation("sesl.androidx.picker:picker-color:1.0.6+1.0.6-sesl6+rev3")
-    implementation("sesl.androidx.picker:picker-basic:1.0.16+1.0.16-sesl6+rev0")
-    implementation("sesl.androidx.preference:preference:1.2.1+1.0.4-sesl6+rev3")
-    implementation("sesl.com.google.android.material:material:1.12.0+1.0.23-sesl6+rev3")
-    implementation("sesl.androidx.apppickerview:apppickerview:1.0.1+1.0.1-sesl6+rev3")
-    implementation("sesl.androidx.drawerlayout:drawerlayout:1.2.0+1.0.1-sesl6+rev3")
-    implementation("sesl.androidx.slidingpanelayout:slidingpanelayout:1.2.0+1.0.2-sesl6+rev7")
+    implementation("sesl.androidx.core:core:1.15.0+1.0.15-sesl7+rev1")
+    implementation("sesl.androidx.core:core-ktx:1.15.0+1.0.0-sesl7+rev0")
+    implementation("sesl.androidx.appcompat:appcompat:1.7.0+1.0.47000-sesl7+rev1")
+    implementation("sesl.androidx.indexscroll:indexscroll:1.0.6+1.0.6-sesl7+rev3")
+    implementation("sesl.androidx.picker:picker-color:1.0.6+1.0.6-sesl7+rev0")
+    implementation("sesl.androidx.picker:picker-basic:1.0.11+1.0.11-sesl7+rev0")
+    implementation("sesl.androidx.preference:preference:1.2.1+1.0.11-sesl7+rev0")
+    implementation("sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev3")
+    implementation("sesl.androidx.apppickerview:apppickerview:1.0.1+1.0.1-sesl7+rev0")
+    implementation("sesl.androidx.drawerlayout:drawerlayout:1.2.0+1.0.0-sesl7+rev0")
+    implementation("sesl.androidx.slidingpanelayout:slidingpanelayout:1.2.0+1.0.5-sesl7+rev0")
+    implementation("sesl.androidx.recyclerview:recyclerview:1.4.0+1.0.33-sesl7+rev1")
 
     implementation("com.google.zxing:core:3.5.3")
     implementation("com.airbnb.android:lottie:6.6.2")
@@ -58,9 +61,9 @@ dependencies {
     implementation("dev.rikka.tools.refine:runtime:4.4.0")
     compileOnly project(":stub")
 
-    implementation 'androidx.navigation:navigation-runtime-ktx:2.8.7'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.8.7'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.8.7'
+    implementation("androidx.navigation:navigation-runtime-ktx:2.8.9")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.8.9")
+    implementation("androidx.navigation:navigation-ui-ktx:2.8.9")
 }
 
 configurations.configureEach {
