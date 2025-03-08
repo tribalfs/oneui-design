@@ -372,6 +372,7 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
 
     private var dumbCallbackRegistered = false
 
+    @SuppressLint("ClickableViewAccessibility")
     @Suppress("NewApi")
     override fun onTouchEvent(ev: MotionEvent): Boolean {
         when (ev.action){

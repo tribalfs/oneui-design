@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
 import android.widget.LinearLayout
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import dev.oneuiproject.oneui.design.R
@@ -19,7 +20,7 @@ class HorizontalRadioViewContainer @JvmOverloads constructor(
     private var mIsDividerEnabled: Boolean? = null
 
     private val resources = context.resources
-    private val divider = context.getDrawable(R.drawable.oui_divider_vertical)
+    private val divider = AppCompatResources.getDrawable(context, R.drawable.oui_divider_vertical)
     private val marginTop = resources.getDimension(R.dimen.oui_horizontalradiopref_divider_margin_top)
     private val dividerBottom = resources.getDimension(R.dimen.oui_horizontalradiopref_divider_margin_bottom).roundToInt()
     private val dividerWidth = resources.getDimension(androidx.appcompat.R.dimen.sesl_list_divider_height).roundToInt()

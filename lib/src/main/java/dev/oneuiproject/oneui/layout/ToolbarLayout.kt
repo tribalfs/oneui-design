@@ -261,13 +261,20 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     private var _mainContainer: RoundedFrameLayout? = null
     internal val mainContainer: FrameLayout get() = _mainContainer!!
+
     private var _mainRoundedCorners: MainRoundedCorners = ALL
 
     private lateinit var mMainContainerParent: LinearLayout
+    private lateinit var mCollapsingToolbarLayout: CollapsingToolbarLayout
 
     private lateinit var _appBarLayout: AppBarLayout
-    private lateinit var mCollapsingToolbarLayout: CollapsingToolbarLayout
+    /**@return the [AppBarLayout].*/
+    val appBarLayout: AppBarLayout get() = _appBarLayout
+
     private lateinit var _mainToolbar: Toolbar
+    /**@return the main [Toolbar].*/
+    @get:RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    val toolbar: Toolbar get() = _mainToolbar
 
     private lateinit var mCoordinatorLayout: AdaptiveCoordinatorLayout
     private lateinit var mBottomRoundedCorner: LinearLayout
@@ -506,12 +513,6 @@ open class ToolbarLayout @JvmOverloads constructor(
     //
     // AppBar methods
     //
-    /**@return the [AppBarLayout].*/
-    val appBarLayout: AppBarLayout get() = _appBarLayout
-
-    /**@return the main [Toolbar].*/
-    @get:RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    val toolbar: Toolbar get() = _mainToolbar
 
     /**
      * Set the title of both the collapsed and expanded Toolbar.

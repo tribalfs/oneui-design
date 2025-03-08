@@ -107,7 +107,7 @@ import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
  * ```
  * @see addLinks
  * @see replaceLinks
- * @see [initRelativeLinksCard][dev.oneuiproject.oneui.ktx.initRelativeLinksCard]
+ * @see [addRelativeLinksCard][dev.oneuiproject.oneui.ktx.addRelativeLinksCard]
  * @see [getRelativeLinksCard][dev.oneuiproject.oneui.ktx.getRelativeLinksCard]
  * @see [removeRelativeLinksCard][dev.oneuiproject.oneui.ktx.removeRelativeLinksCard]
  */

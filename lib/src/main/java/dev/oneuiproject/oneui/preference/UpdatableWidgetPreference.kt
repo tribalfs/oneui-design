@@ -2,14 +2,10 @@ package dev.oneuiproject.oneui.preference
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.ViewGroup.MarginLayoutParams
 import android.widget.LinearLayout
-import androidx.annotation.Dimension
 import androidx.core.view.isVisible
-import androidx.core.view.updateLayoutParams
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
-import dev.oneuiproject.oneui.ktx.dpToPx
 
 class UpdatableWidgetPreference @JvmOverloads constructor(
     context: Context,

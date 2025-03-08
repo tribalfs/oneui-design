@@ -1,4 +1,4 @@
-@file:Suppress("unused", "MemberVisibilityCanBePrivate", "NOTHING_TO_INLINE")
+@file:Suppress("unused", "MemberVisibilityCanBePrivate")
 
 package dev.oneuiproject.oneui.layout
 

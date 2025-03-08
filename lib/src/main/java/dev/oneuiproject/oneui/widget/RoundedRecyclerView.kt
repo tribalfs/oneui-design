@@ -1,4 +1,4 @@
-@file:Suppress("MemberVisibilityCanBePrivate","unused", "NOTHING_TO_INLINE")
+@file:Suppress("MemberVisibilityCanBePrivate","unused")
 package dev.oneuiproject.oneui.widget
 
 import android.content.Context

@@ -133,7 +133,7 @@ class MenuSynchronizer @JvmOverloads constructor(
 
         internal fun getState(): State = currentState
 
-        internal fun setState(state: State): Boolean{
+        internal fun setState(state: State) {
             currentState = state
 
             when (state) {
@@ -160,7 +160,6 @@ class MenuSynchronizer @JvmOverloads constructor(
                     bottomNavView.isVisible = false
                 }
             }
-            return true
         }
 
 

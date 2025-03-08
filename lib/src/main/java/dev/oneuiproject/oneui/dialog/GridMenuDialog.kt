@@ -191,7 +191,7 @@ class GridMenuDialog @JvmOverloads constructor(
     }
 
     private val updateDialogWidthAndPositionRunnable = Runnable {
-        updateDialogWidthAndPosition();
+        updateDialogWidthAndPosition()
         show()
     }
 

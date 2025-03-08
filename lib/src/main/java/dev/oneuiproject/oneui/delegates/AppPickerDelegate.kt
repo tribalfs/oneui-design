@@ -229,7 +229,6 @@ interface AppPickerOp{
      * @param onItemCheckChanged Lambda function to handle item check change.
      * @param onItemActionClicked Lambda function to handle item action click.
      * @param onLongClick Lambda function to handle item long click.
-     * @param enableLongPressMultiSelection Enable long press multi selection.
      */
     fun AppPickerView.configure(
         /**

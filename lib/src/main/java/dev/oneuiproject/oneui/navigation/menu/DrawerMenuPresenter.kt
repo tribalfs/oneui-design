@@ -481,6 +481,7 @@ internal class DrawerMenuPresenter(
             }
         }
 
+        @SuppressLint("NotifyDataSetChanged")
         fun update() {
             prepareMenuItems()
             notifyDataSetChanged()

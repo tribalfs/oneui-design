@@ -8,7 +8,7 @@ import android.os.Build
 fun getBoldFont(): Typeface {
     if (Build.VERSION.SDK_INT >= 34){
         val family = Typeface.create("sec", Typeface.NORMAL)
-        return Typeface.create(family, 700, false);
+        return Typeface.create(family, 700, false)
     }else {
         return Typeface.create("roboto", Typeface.BOLD)
     }
@@ -17,7 +17,7 @@ fun getBoldFont(): Typeface {
 fun getSemiBoldFont(): Typeface {
     if (Build.VERSION.SDK_INT >= 34){
         val family = Typeface.create("sec", Typeface.NORMAL)
-        return Typeface.create(family, 600, false);
+        return Typeface.create(family, 600, false)
     }else {
         //Medium
         return Typeface.create("sec-roboto-light", Typeface.BOLD)

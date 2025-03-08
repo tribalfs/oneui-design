@@ -272,7 +272,7 @@ class SeekBarPreferencePro @JvmOverloads constructor(
         return false
     }
 
-
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(view: View, event: MotionEvent): Boolean {
         if (event.action == MotionEvent.ACTION_UP) {
             mIsLongKeyProcessing = false

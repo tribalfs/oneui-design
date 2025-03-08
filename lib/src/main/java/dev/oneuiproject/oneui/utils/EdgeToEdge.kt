@@ -1,5 +1,5 @@
 @file:JvmName("EdgeToEdge")
-package dev.oneuiproject.oneui.utils;
+package dev.oneuiproject.oneui.utils
 
 import android.graphics.Color
 import android.os.Build.VERSION.SDK_INT
@@ -20,10 +20,11 @@ private var Impl: EdgeToEdgeImpl? = null
 fun ComponentActivity.applyEdgeToEdge() {
     val view = window.decorView
     val isLightMode = isLightMode()
-    obtainStyledAttributes(intArrayOf(android.R.attr.windowLightStatusBar, android.R.attr.windowLightNavigationBar)).use {
-        val statusBarIsDark = !it.getBoolean(0, isLightMode)
+    @Suppress("InlinedApi")
+    obtainStyledAttributes(intArrayOf(android.R.attr.windowLightStatusBar, android.R.attr.windowLightNavigationBar)).use {a ->
+        val statusBarIsDark = !a.getBoolean(0, isLightMode)
         @Suppress("ResourceType")
-        val navigationBarIsDark = !it.getBoolean(1, isLightMode)
+        val navigationBarIsDark = !a.getBoolean(1, isLightMode)
 
         val impl = Impl ?: if (SDK_INT in 29..34) {
             EdgeToEdgeApi29()
