@@ -46,31 +46,9 @@ open class MarginsTabLayout @JvmOverloads constructor(
     internal var containerWidth: Int? = null
 
     @JvmField
-    internal var depthStyle = DEPTH_TYPE_MAIN
-
-    @JvmField
     internal var mRecalculateTextWidths = false
 
     private var referenceContainer: ViewParent? = null
-
-    init{
-        context.obtainStyledAttributes(attrs, R.styleable.MarginsTabLayout).use{
-            depthStyle = it.getInteger(R.styleable.MarginsTabLayout_seslDepthStyle, DEPTH_TYPE_MAIN)
-        }
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-        if (depthStyle == DEPTH_TYPE_SUB){
-            super.seslSetSubTabStyle()
-        }
-    }
-
-    override fun seslSetSubTabStyle() {
-        if (depthStyle == DEPTH_TYPE_SUB) return
-        super.seslSetSubTabStyle()
-        depthStyle = DEPTH_TYPE_SUB
-    }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         updateLayoutParams()

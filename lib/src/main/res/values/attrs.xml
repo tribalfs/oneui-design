@@ -285,12 +285,6 @@
         <attr name="actionButtonText" format="string"/>
     </declare-styleable>
 
-    <declare-styleable name="MarginsTabLayout">
-        <attr name="seslDepthStyle">
-            <enum name="sesl_main" value="1"/>
-            <enum name="sesl_sub" value="2"/>
-        </attr>
-    </declare-styleable>
 
     <declare-styleable name="BottomTabLayout">
         <attr name="menu" />
