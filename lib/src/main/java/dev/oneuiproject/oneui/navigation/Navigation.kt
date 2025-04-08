@@ -17,10 +17,11 @@ import dev.oneuiproject.oneui.navigation.delegates.OnBackAppBarHandler
 import dev.oneuiproject.oneui.navigation.widget.DrawerNavigationView
 
 @JvmName("setup")
+@JvmOverloads
 fun NavDrawerLayout.setupNavigation(
     drawerNavigationView: DrawerNavigationView,
     navHostFragment: NavHostFragment,
-    configuration: AppBarConfiguration
+    configuration: AppBarConfiguration = AppBarConfiguration(drawerNavigationView.getDrawerMenu(), this)
 ) {
     val navController = navHostFragment.navController
     val startDestination = navController.graph.findStartDestination()
