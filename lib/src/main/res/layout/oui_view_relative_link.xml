@@ -9,17 +9,11 @@
     android:orientation="vertical"
     android:background="@drawable/oui_relative_link_background">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
         <TextView
             android:id="@+id/link_title"
             style="@style/OneUI.RelativeLinkTitleTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginBottom="@dimen/oui_relative_link_title_text_margin_bottom"
             android:paddingStart="@dimen/oui_relative_link_view_margin_start_end"
             android:text="@string/oui_relative_description" />
@@ -31,7 +25,5 @@
             android:paddingStart="@dimen/oui_relative_link_text_margin_start"
             android:paddingEnd="0dp"
             android:orientation="vertical" />
-
-    </LinearLayout>
 
 </LinearLayout>

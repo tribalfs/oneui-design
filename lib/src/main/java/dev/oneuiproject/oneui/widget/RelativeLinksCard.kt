@@ -107,9 +107,9 @@ import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
  * ```
  * @see addLinks
  * @see replaceLinks
- * @see [addRelativeLinksCard][dev.oneuiproject.oneui.ktx.addRelativeLinksCard]
- * @see [getRelativeLinksCard][dev.oneuiproject.oneui.ktx.getRelativeLinksCard]
- * @see [removeRelativeLinksCard][dev.oneuiproject.oneui.ktx.removeRelativeLinksCard]
+ * @see [dev.oneuiproject.oneui.ktx.addRelativeLinksCard]
+ * @see [dev.oneuiproject.oneui.ktx.getRelativeLinksCard]
+ * @see [dev.oneuiproject.oneui.ktx.removeRelativeLinksCard]
  */
 class RelativeLinksCard @JvmOverloads constructor(
     mContext: Context,
