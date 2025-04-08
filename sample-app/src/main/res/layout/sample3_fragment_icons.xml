@@ -13,6 +13,8 @@
         tools:listitem="@layout/sample3_view_icon_listview_item"
         android:background="?android:colorBackground"
         android:clipToPadding="false"
+        android:paddingHorizontal="10dp"
+        android:scrollbarStyle="outsideOverlay"
         tools:visibility="visible" />
 
     <androidx.core.widget.NestedScrollView

@@ -16,13 +16,17 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:roundedCorners="top_right|top_left"
-        android:background="?android:colorBackground"
+        app:edgeInsetLeft="10dp"
+        app:edgeInsetRight="10dp"
         android:layout_weight="1">
 
         <androidx.apppickerview.widget.AppPickerView
             android:id="@+id/app_picker_view"
             android:layout_width="match_parent"
             android:clipToPadding="false"
+            android:background="?android:colorBackground"
+            android:paddingHorizontal="10dp"
+            android:scrollbarStyle="outsideOverlay"
             android:layout_height="match_parent"/>
 
         <androidx.core.widget.NestedScrollView

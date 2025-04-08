@@ -7,13 +7,19 @@
     tools:viewBindingIgnore="true">
 
     <androidx.appcompat.widget.AppCompatButton
-        style="@style/OneUI.AppInfoButton"
+        android:theme="@style/OneUI.ContainedButtonTheme"
+        style="@style/OneUI.ContainedButton"
         android:onClick="changeStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Status" />
 
     <androidx.appcompat.widget.AppCompatButton
-        style="@style/OneUI.AppInfoButton"
+        android:theme="@style/OneUI.ContainedButtonTheme"
+        style="@style/OneUI.ContainedButton"
         android:onClick="openGitHubPage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="GitHub" />
 
 </dev.oneuiproject.oneui.layout.AppInfoLayout>

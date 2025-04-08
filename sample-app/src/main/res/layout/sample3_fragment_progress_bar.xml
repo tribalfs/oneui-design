@@ -6,7 +6,8 @@
     android:fillViewport="true"
     android:overScrollMode="always"
     android:scrollbars="vertical"
-    tools:viewBindingIgnore="true">
+    tools:viewBindingIgnore="true"
+    android:paddingHorizontal="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,7 +22,7 @@
         <dev.oneuiproject.oneui.widget.RoundedLinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/oui_background_color"
+            android:background="?android:colorBackground"
             android:orientation="vertical"
             android:paddingVertical="12dp">
 
@@ -79,7 +80,7 @@
         <dev.oneuiproject.oneui.widget.RoundedLinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/oui_background_color"
+            android:background="?android:colorBackground"
             android:orientation="vertical"
             android:paddingVertical="12dp">
 

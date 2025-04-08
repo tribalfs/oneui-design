@@ -50,6 +50,7 @@ import dev.oneuiproject.oneuiexample.data.ContactsRepo
 import dev.oneuiproject.oneuiexample.ui.main.MainActivity
 import dev.oneuiproject.oneuiexample.ui.main.core.base.BaseFragment
 import dev.oneuiproject.oneuiexample.ui.main.core.util.launchAndRepeatWithViewLifecycle
+import dev.oneuiproject.oneuiexample.ui.main.core.util.suggestiveSnackBar
 import dev.oneuiproject.oneuiexample.ui.main.core.util.toast
 import dev.oneuiproject.oneuiexample.ui.main.fragment.contacts.adapter.ContactsAdapter
 import dev.oneuiproject.oneuiexample.ui.main.fragment.contacts.model.ContactsListItemUiModel
@@ -155,6 +156,7 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
             setItemAnimator(null)
             enableCoreSeslFeatures(fastScrollerEnabled = false)
             hideSoftInputOnScroll()
+            seslSetFillHorizontalPaddingEnabled(true)
         }
 
         contactsAdapter.configure(
@@ -240,14 +242,14 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
                             autoHideMenuItemTitle = if (it.autoHideIndexScroll) {
                                 "Always show indexscroll" } else "Autohide indexscroll"
                             showLettersMenuItemTitle = if (it.isTextModeIndexScroll) {
-                                "Hide indexscroll letters" } else "Show indexscroll letters"
+                                "Hide index letters" } else "Show index letters"
                             keepSearchMenuItemTitle = when (it.searchOnActionMode) {
-                                ActionModeSearch.DISMISS -> "Resume search mode on action mode end"
-                                ActionModeSearch.NO_DISMISS -> "Allow search mode on action mode"
-                                ActionModeSearch.CONCURRENT -> "Dismiss search on action mode"
+                                ActionModeSearch.DISMISS -> "ActionModeSearch.DISMISS"
+                                ActionModeSearch.NO_DISMISS -> "ActionModeSearch.NO_DISMISS"
+                                ActionModeSearch.CONCURRENT -> "ActionModeSearch.CONCURRENT"
                             }
                             showCancelMenuItemTitle = if (it.actionModeShowCancel){
-                                "No cancel button on action mode" } else "Show cancel button on action mode"
+                                "No cancel button" } else "Show cancel button"
                         }
                     }
             }
@@ -278,10 +280,14 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
 
                 when(contact){
                     is ContactsListItemUiModel.ContactItem -> {
-                        toast("${contact.contact.name} clicked!")
+                        suggestiveSnackBar("${contact.contact.name} clicked!").apply {
+                            setAction("Dismiss") { dismiss() }
+                        }
                     }
                     is ContactsListItemUiModel.GroupItem -> {
-                        toast("${contact.groupName} clicked!")
+                        suggestiveSnackBar("${contact.groupName} clicked!").apply {
+                            setAction("Dismiss") { dismiss() }
+                        }
                     }
                     else -> Unit
                 }

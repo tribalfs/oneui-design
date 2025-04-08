@@ -21,6 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:roundedCorners="top_left|top_right"
+        app:edgeInsetLeft="10dp"
+        app:edgeInsetRight="10dp"
         tools:viewBindingIgnore="true">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -32,8 +34,8 @@
                 android:id="@+id/contacts_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scrollbars="none"
-                android:background="@color/oui_background_color" />
+                android:paddingHorizontal="10dp"
+                android:background="?android:colorBackground" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -41,7 +43,8 @@
             android:id="@+id/indexscroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible" />
+            android:visibility="visible"
+            android:layout_marginHorizontal="10dp"/>
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nsvNoItem"
