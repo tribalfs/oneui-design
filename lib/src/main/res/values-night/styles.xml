@@ -2,7 +2,7 @@
 <resources>
 
     <style name="OneUI.ButtonStyleTransparent" parent="Widget.AppCompat.Button">
-        <item name="android:background">@drawable/oui_btn_transparent</item>
+        <item name="android:background">@drawable/oui_btn_transparent_background</item>
     </style>
 
     <style name="OneUI.ThemeOverlay.AlertDialog" parent="@style/ThemeOverlay.AppCompat.Dialog.Alert">

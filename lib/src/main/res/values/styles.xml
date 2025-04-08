@@ -81,7 +81,7 @@
     </style>
 
     <style name="OneUI.ButtonStyleTransparent" parent="Widget.AppCompat.Light.Button">
-        <item name="android:background">@drawable/oui_btn_transparent</item>
+        <item name="android:background">@drawable/oui_btn_transparent_background</item>
     </style>
 
     <style name="OneUI.ButtonStyleOutline" parent="Widget.AppCompat.Light.Button">
