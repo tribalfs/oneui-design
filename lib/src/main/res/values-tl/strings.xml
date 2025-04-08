@@ -8,9 +8,9 @@
     <string name="oui_common_edit">I-edit</string>
     <string name="oui_common_apply">Ilapat</string>
     <string name="oui_common_close">Isara</string>
-    <string name="cant_check_for_updates_phone">Hindi matingnan kung may mga update. Hindi matatag ang koneksiyon ng telepono mo sa network.</string>
+    <string name="network_connect_is_not_stable">Hindi matingnan kung may mga update.</string>
     <string name="latest_version">Naka-install na ang pinakabagong bersiyon.</string>
-    <string name="cant_check_for_updates_tablet">Hindi matingnan kung may mga update. Hindi matatag ang koneksiyon ng tablet mo sa network.</string>
+
     <string name="oui_time_dialog_start">Simula</string>
     <string name="app_info">Info ng app</string>
     <string name="retry">Subukang muli</string>

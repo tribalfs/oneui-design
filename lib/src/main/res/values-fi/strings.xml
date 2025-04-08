@@ -8,9 +8,9 @@
     <string name="oui_common_edit">Muokkaa</string>
     <string name="oui_common_apply">Käytä</string>
     <string name="oui_common_close">Sulje</string>
-    <string name="cant_check_for_updates_phone">Päivityksiä ei voi hakea. Puhelimen verkkoyhteys ei ole vakaa.</string>
+    <string name="network_connect_is_not_stable">Päivitysten hakeminen epäonnistui.</string>
     <string name="latest_version">Uusin versio on jo asennettu.</string>
-    <string name="cant_check_for_updates_tablet">Päivityksiä ei voi hakea. Tablet-laitteen verkkoyhteys ei ole vakaa.</string>
+
     <string name="oui_time_dialog_start">Alkaa</string>
     <string name="app_info">Sovelluksen tiedot</string>
     <string name="retry">Yritä uud.</string>

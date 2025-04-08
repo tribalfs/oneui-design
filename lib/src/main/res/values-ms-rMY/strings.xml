@@ -8,9 +8,9 @@
     <string name="oui_common_edit">Sunting</string>
     <string name="oui_common_apply">Guna</string>
     <string name="oui_common_close">Tutup</string>
-    <string name="cant_check_for_updates_phone">Tidak dapat menyemak kemas kini. Sambungan rangkaian telefon anda tidak stabil.</string>
+    <string name="network_connect_is_not_stable">Tidak dapat menyemak kemas kini.</string>
     <string name="latest_version">Versi terkini telah dipasang.</string>
-    <string name="cant_check_for_updates_tablet">Tidak dapat menyemak kemas kini.Sambungan rangkaian tablet anda tidak stabil.</string>
+
     <string name="oui_time_dialog_start">Mula</string>
     <string name="app_info">Maklumat aplikasi</string>
     <string name="retry">Cuba lagi</string>

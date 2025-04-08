@@ -8,9 +8,9 @@
     <string name="oui_common_edit">แก้ไข</string>
     <string name="oui_common_apply">ใช้</string>
     <string name="oui_common_close">ปิด</string>
-    <string name="cant_check_for_updates_phone">ไม่สามารถตรวจหาอัพเดท การเชื่อมต่อเครือข่ายของโทรศัพท์ของคุณไม่เสถียร</string>
+    <string name="network_connect_is_not_stable">ไม่สามารถตรวจหาอัปเดตได้</string>
     <string name="latest_version">ติดตั้งเวอร์ชั่นล่าสุดอยู่แล้ว</string>
-    <string name="cant_check_for_updates_tablet">ไม่สามารถตรวจหาอัพเดท การเชื่อมต่อเครือข่ายของแท็บเล็ตของคุณไม่เสถียร</string>
+
     <string name="oui_time_dialog_start">เริ่ม</string>
     <string name="app_info">ข้อมูลแอพ</string>
     <string name="retry">ลอง​ใหม่</string>

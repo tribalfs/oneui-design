@@ -8,9 +8,9 @@
     <string name="oui_common_edit">تعديل</string>
     <string name="oui_common_apply">تطبيق</string>
     <string name="oui_common_close">إغلاق</string>
-    <string name="cant_check_for_updates_phone">يتعذر التحقق من توفر تحديثات. إن اتصال شبكة هاتفك غير ثابت.</string>
+    <string name="network_connect_is_not_stable">تعذر التحقق من توفر تحديثات.</string>
     <string name="latest_version">تم مسبقاً تثبيت أحدث إصدار.</string>
-    <string name="cant_check_for_updates_tablet">يتعذر التحقق من توفر تحديثات. إن اتصال شبكة جهازك اللوحي غير ثابت.</string>
+
     <string name="oui_time_dialog_start">بدء</string>
     <string name="app_info">معلومات التطبيق</string>
     <string name="retry">إعادة المحاولة</string>

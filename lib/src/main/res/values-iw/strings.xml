@@ -8,9 +8,9 @@
     <string name="oui_common_edit">ערוך</string>
     <string name="oui_common_apply">החל</string>
     <string name="oui_common_close">סגור</string>
-    <string name="cant_check_for_updates_phone">לא ניתן לבדוק זמינות עדכונים. החיבור של הטלפון לרשת אינו יציב.</string>
+    <string name="network_connect_is_not_stable">לא ניתן לבדוק זמינות עדכונים.</string>
     <string name="latest_version">הגרסה העדכנית ביותר כבר מותקנת.</string>
-    <string name="cant_check_for_updates_tablet">לא ניתן לבדוק זמינות עדכונים.​ החיבור של הטאבלט לרשת אינו יציב.</string>
+
     <string name="oui_time_dialog_start">התחלה</string>
     <string name="app_info">פרטי יישום</string>
     <string name="retry">נסה שוב</string>

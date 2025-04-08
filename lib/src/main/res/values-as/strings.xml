@@ -8,9 +8,9 @@
     <string name="oui_common_edit">সম্পাদনা কৰক</string>
     <string name="oui_common_apply">প্ৰয়োগ কৰক</string>
     <string name="oui_common_close">বন্ধ কৰক</string>
-    <string name="cant_check_for_updates_phone">আপডেটসমূহৰ বাবে পৰীক্ষা কৰিব নোৱাৰে। আপোনাৰ ফোনৰ নেটৱৰ্ক সংযোগ স্থিৰ নহয়।</string>
+    <string name="network_connect_is_not_stable">আপডেটসমূহৰ বাবে পৰীক্ষা কৰিব পৰা নগ\'ল।</string>
     <string name="latest_version">শেহতীয়া সংস্কৰণ ইতিমধ্যে ইনষ্টল হৈছে৷</string>
-    <string name="cant_check_for_updates_tablet">আপডেটসমূহৰ বাবে পৰীক্ষা কৰিব নোৱাৰে। আপোনাৰ টেবলেটৰ নেটৱৰ্ক সংযোগ স্থিৰ নহয়।</string>
+
     <string name="oui_time_dialog_start">আৰম্ভ</string>
     <string name="app_info">এপ্প্‌ তথ্য</string>
     <string name="retry">পুনঃচেষ্টা</string>

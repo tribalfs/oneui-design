@@ -8,9 +8,9 @@
     <string name="oui_common_edit">შეცვლა</string>
     <string name="oui_common_apply">გამოყენება</string>
     <string name="oui_common_close">დახურვა</string>
-    <string name="cant_check_for_updates_phone">განახლების შემოწმება შეუძლებელია. ტელეფონის კავშირი ქსელთან არასტაბილურია.</string>
+    <string name="network_connect_is_not_stable">განახლებები ვერ შემოწმდა.</string>
     <string name="latest_version">უახლესი ვერსია უკვე დაინსტალირებულია.</string>
-    <string name="cant_check_for_updates_tablet">განახლების შემოწმება შეუძლებელია. პლანშეტის კავშირი ქსელთან არასტაბილურია.</string>
+
     <string name="oui_time_dialog_start">დასაწ.</string>
     <string name="app_info">აპლიკაციის ინფორმაცია</string>
     <string name="retry">ისევ ცდა</string>

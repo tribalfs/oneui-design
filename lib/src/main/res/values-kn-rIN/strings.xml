@@ -8,9 +8,9 @@
     <string name="oui_common_edit">ತಿದ್ದಿ </string>
     <string name="oui_common_apply">ಅನ್ವಯಿಸಿ</string>
     <string name="oui_common_close">ಮುಚ್ಚಿ</string>
-    <string name="cant_check_for_updates_phone">ನವೀಕರಣಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ. ನಿಮ್ಮ ಫೋನಿನ ನೆಟ್‍ವರ್ಕ್ ಸಂಪರ್ಕ ಅಸ್ಥಿರವಾಗಿದೆ.</string>
+    <string name="network_connect_is_not_stable">ನವೀಕರಣಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ.</string>
     <string name="latest_version">ಈಗಾಗಲೇ ಇತ್ತೀಚಿನ ಆವೃತ್ತಿಯನ್ನು ಸ್ಥಾಪಿಸಲಾಗಿದೆ.</string>
-    <string name="cant_check_for_updates_tablet">ನವೀಕರಣಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ. ನಿಮ್ಮ ಟ್ಯಾಬ್ಲೆಟಿನ ನೆಟ್‍ವರ್ಕ್ ಸಂಪರ್ಕ ಅಸ್ಥಿರವಾಗಿದೆ.</string>
+
     <string name="oui_time_dialog_start">ಆರಂಭ</string>
     <string name="app_info">ಅನ್ವಯಿಸುವಿಕೆ ಮಾಹಿತಿ</string>
     <string name="retry">ಮರುಪ್ರಯತ್ನಿಸಿ</string>

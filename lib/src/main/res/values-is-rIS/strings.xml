@@ -8,9 +8,9 @@
     <string name="oui_common_edit">Breyta</string>
     <string name="oui_common_apply">Nota</string>
     <string name="oui_common_close">Loka</string>
-    <string name="cant_check_for_updates_phone">Ekki er hægt að leita að uppfærslum. Nettenging símans er ekki stöðug.</string>
+    <string name="network_connect_is_not_stable">Ekki tókst að leita að uppfærslum.</string>
     <string name="latest_version">Nýjasta útgáfan hefur þegar verið sett upp.</string>
-    <string name="cant_check_for_updates_tablet">Ekki er hægt að leita að uppfærslum. Nettenging spjaldtölvunnar er ekki stöðug.</string>
+
     <string name="oui_time_dialog_start">Upphaf</string>
     <string name="app_info">Upplýsingar um forrit</string>
     <string name="retry">Reyna aftur</string>

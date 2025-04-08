@@ -8,9 +8,9 @@
     <string name="oui_common_edit">編集</string>
     <string name="oui_common_apply">適用</string>
     <string name="oui_common_close">閉じる</string>
-    <string name="cant_check_for_updates_phone">更新を確認できません。端末のネットワーク接続が不安定です。</string>
+    <string name="network_connect_is_not_stable">更新を確認できませんでした。</string>
     <string name="latest_version">最新バージョンは既にインストールされています。</string>
-    <string name="cant_check_for_updates_tablet">更新を確認できません。タブレットのネットワーク接続が不安定です。</string>
+
     <string name="oui_time_dialog_start">開始</string>
     <string name="app_info">アプリ情報</string>
     <string name="retry">再試行</string>

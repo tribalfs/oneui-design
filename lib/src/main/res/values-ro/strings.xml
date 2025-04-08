@@ -8,9 +8,9 @@
     <string name="oui_common_edit">Editare</string>
     <string name="oui_common_apply">Aplicare</string>
     <string name="oui_common_close">Închidere</string>
-    <string name="cant_check_for_updates_phone">Nu se pot căuta actualizări. Conexiunea la rețea a telefonului dvs. nu este stabilă.</string>
+    <string name="network_connect_is_not_stable">Nu s-au putut căuta actualizări.</string>
     <string name="latest_version">Cea mai recentă versiune este deja instalată.</string>
-    <string name="cant_check_for_updates_tablet">Nu se pot căuta actualizări. Conexiunea la rețea a tabletei dvs. nu este stabilă.</string>
+
     <string name="oui_time_dialog_start">Începe</string>
     <string name="app_info">Informații despre aplicație</string>
     <string name="retry">Reîncercare</string>

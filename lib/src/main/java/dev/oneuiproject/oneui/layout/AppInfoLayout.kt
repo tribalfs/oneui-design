@@ -2,15 +2,11 @@
 
 package dev.oneuiproject.oneui.layout
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.PorterDuff
 import android.net.Uri
 import android.util.AttributeSet
 import android.util.TypedValue
-import android.view.ContextThemeWrapper
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +14,6 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RestrictTo
-import androidx.annotation.StyleRes
 import androidx.appcompat.widget.SeslProgressBar
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -27,7 +22,6 @@ import androidx.core.view.children
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
-import androidx.core.widget.TextViewCompat
 import dev.oneuiproject.oneui.delegates.AllSelectorState
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.dpToPx
@@ -105,7 +99,6 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
     private var mProgressCircle: SeslProgressBar
 
     private var mInfoTextColor: Int = 0
-    private var bottomButtonsStyle: Int = 0
     private val optionalTextParent: LinearLayout
 
     /**
@@ -154,7 +147,7 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
                     mProgressCircle.isGone = true
                     mUpdateNotice.isGone = false
                     mUpdateButton.isGone = false
-                    mUpdateNotice.text = context.getText(R.string.cant_check_for_updates_phone)
+                    mUpdateNotice.text = context.getText(R.string.network_connect_is_not_stable)
                     mUpdateButton.text = context.getText(R.string.retry)
                 }
 
@@ -171,7 +164,6 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
     init {
         isExpanded = false
 
-        var mainButtonStyle = 0
         var titleTextColor = 0
 
         context.theme.obtainStyledAttributes(
@@ -194,15 +186,6 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
                 )
             )
 
-            bottomButtonsStyle = ta.getResourceId(
-                R.styleable.AppInfoLayout_bottomButtonsStyle,
-                R.style.OneUI_AppInfoButton
-            )
-
-            mainButtonStyle = ta.getResourceId(
-                R.styleable.AppInfoLayout_mainButtonStyle,
-                R.style.OneUI_AppInfoMainButton
-            )
         }
 
         showNavigationButtonAsBack = true
@@ -224,7 +207,6 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
             mVersionTextView.text = getString(R.string.version_info, getAppVersion())
         }
 
-        applyButtonStyle(mUpdateButton, mainButtonStyle, true)
         mAppNameTextView.setTextColor(titleTextColor)
         mVersionTextView.setTextColor(mInfoTextColor)
         mUpdateNotice.setTextColor(mInfoTextColor)
@@ -278,7 +260,11 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
                 when (child) {
                     is Button -> {
                         mAILContainer.addView(child, params)
-                        applyButtonStyle(child, bottomButtonsStyle, mAILContainer.indexOfChild(child) > 0)
+                        if (mAILContainer.indexOfChild(child) > 0) {
+                            child.updateLayoutParams<LayoutParams> {
+                                topMargin = 15.dpToPx(resources)
+                            }
+                        }
                     }
                     is CardItemView -> {
                         optionalTextParent.addView(
@@ -357,37 +343,6 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
         mAILContainer.children.forEach {
             (it as Button).width = widthButtons
         }
-    }
-
-    @SuppressLint("ResourceType")
-    private fun applyButtonStyle(
-        button: Button,
-        @StyleRes buttonStyle: Int,
-        addTopMargin: Boolean
-    ) {
-        ContextThemeWrapper(context, buttonStyle).obtainStyledAttributes(
-            null,
-            intArrayOf(
-                android.R.attr.background,
-                android.R.attr.backgroundTint,
-                android.R.attr.gravity,
-                android.R.attr.minHeight
-            )
-        ).use {
-            button.background = it.getDrawable(0)
-            it.getColorStateList(1)?.let { bt ->
-                button.backgroundTintMode = PorterDuff.Mode.SRC_OVER
-                button.setBackgroundTintList(bt)
-            }
-
-            button.updateLayoutParams<LayoutParams> {
-                gravity = it.getInt(2, Gravity.CENTER)
-                minimumHeight = it.getDimensionPixelSize(3, 0)
-                topMargin = if (addTopMargin) 15.dpToPx(resources) else 0
-               // width = getButtonWidth()
-            }
-        }
-        TextViewCompat.setTextAppearance(button, buttonStyle)
     }
 
 

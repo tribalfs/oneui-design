@@ -8,9 +8,8 @@
     <string name="oui_common_edit">Sửa</string>
     <string name="oui_common_apply">Áp dụng</string>
     <string name="oui_common_close">Đóng</string>
-    <string name="cant_check_for_updates_phone">Không thể kiểm tra các bản cập nhật. Kết nối mạng trên điện thoại của bạn không ổn định.</string>
+    <string name="network_connect_is_not_stable">Không thể kiểm tra để tìm bản cập nhật mới.</string>
     <string name="latest_version">Phiên bản mới nhất đã được cài đặt.</string>
-    <string name="cant_check_for_updates_tablet">Không thể kiểm tra các bản cập nhật. Kết nối mạng trên máy tính bảng của bạn không ổn định.</string>
     <string name="oui_time_dialog_start">B.đầu</string>
     <string name="app_info">Thông tin ứng dụng</string>
     <string name="retry">Thử lại</string>

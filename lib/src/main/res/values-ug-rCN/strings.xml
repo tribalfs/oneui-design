@@ -8,9 +8,9 @@
     <string name="update">يېڭىلاش</string>
     <string name="version_info">نەشرى %s</string>
     <string name="oui_action_mode_n_selected">%d تاللىنىش</string>
-    <string name="cant_check_for_updates_phone">يېڭىلانما تەكشۈرگىلى بولمىدى. تېلېفونىڭىزنىڭ تورى مۇقىم ئەمەس.</string>
+    <string name="network_connect_is_not_stable">يېڭىلانما تەكشۈرۈلمىدى.</string>
     <string name="latest_version">ئەڭ يېڭى نەشرى قاچىلاندى.</string>
-    <string name="cant_check_for_updates_tablet">يېڭىلانما تەكشۈرگىلى بولمىدى. تاختا كومپيۇتېرىڭىزنىڭ تورى مۇقىم ئەمەس.</string>
+
     <string name="app_info">ئەپ ئۇچۇرى</string>
     <string name="oui_action_mode_all_checkbox">بارلىق</string>
     <string name="retry">قايتا سىناش</string>

@@ -8,9 +8,9 @@
     <string name="oui_common_edit">Uredi</string>
     <string name="oui_common_apply">Uporabi</string>
     <string name="oui_common_close">Zapri</string>
-    <string name="cant_check_for_updates_phone">Posodobitev ni mogoče preveriti. Omrežna povezava telefona ni stabilna.</string>
+    <string name="network_connect_is_not_stable">Posodobitev ni bilo mogoče preveriti.</string>
     <string name="latest_version">Najnovejša različica je že nameščena.</string>
-    <string name="cant_check_for_updates_tablet">Posodobitev ni mogoče preveriti. Omrežna povezava tabličnega računalnika ni stabilna.</string>
+
     <string name="oui_time_dialog_start">Začet.</string>
     <string name="app_info">Podatki o aplikaciji</string>
     <string name="retry">Posk. znova</string>

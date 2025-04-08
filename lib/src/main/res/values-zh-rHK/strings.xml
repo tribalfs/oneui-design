@@ -8,9 +8,9 @@
     <string name="oui_common_edit">編輯</string>
     <string name="oui_common_apply">應用</string>
     <string name="oui_common_close">關閉</string>
-    <string name="cant_check_for_updates_phone">無法檢查更新。您的手機的網絡連接不穩定。</string>
+    <string name="network_connect_is_not_stable">無法檢查更新。</string>
     <string name="latest_version">已安裝最新版本。</string>
-    <string name="cant_check_for_updates_tablet">無法檢查更新。您的平板電腦的網絡連接不穩定。</string>
+
     <string name="oui_time_dialog_start">開始</string>
     <string name="app_info">應用程式資訊</string>
     <string name="retry">重試</string>

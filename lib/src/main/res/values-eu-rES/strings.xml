@@ -8,9 +8,9 @@
     <string name="oui_common_edit">Editatu</string>
     <string name="oui_common_apply">Aplikatu</string>
     <string name="oui_common_close">Itxi</string>
-    <string name="cant_check_for_updates_phone">Ezin da bilatu eguneraketarik. Telefonoaren sare konexioa ez da egonkorra.</string>
+    <string name="network_connect_is_not_stable">Ezin izan da bilatu eguneraketarik.</string>
     <string name="latest_version">Azken bertsioa jada instalatu da.</string>
-    <string name="cant_check_for_updates_tablet">Ezin da bilatu eguneraketarik. Tabletaren sare konexioa ez da egonkorra.</string>
+
     <string name="oui_time_dialog_start">Hasi</string>
     <string name="app_info">Aplikazioaren informazioa</string>
     <string name="retry">Saiatu berriz</string>

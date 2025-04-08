@@ -60,6 +60,8 @@
                 android:visibility="gone"/>
 
             <Button
+                android:theme="@style/OneUI.ContainedPrimaryColorButtonTheme"
+                style="@style/OneUI.ContainedButton"
                 android:id="@+id/app_info_update"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

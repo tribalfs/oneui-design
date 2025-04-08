@@ -8,9 +8,9 @@
     <string name="oui_common_edit">Modifier</string>
     <string name="oui_common_apply">Appliquer</string>
     <string name="oui_common_close">Fermer</string>
-    <string name="cant_check_for_updates_phone">"Impossible de rechercher les mises à jour. La connexion réseau de votre téléphone n'est pas stable."</string>
+    <string name="network_connect_is_not_stable">Impossible de rechercher les mises à jour.</string>
     <string name="latest_version">La dernière version est déjà installée.</string>
-    <string name="cant_check_for_updates_tablet">"Impossible de rechercher les mises à jour. La connexion réseau de votre tablette n'est pas stable."</string>
+
     <string name="oui_time_dialog_start">Début</string>
     <string name="app_info">"Informations sur l'application"</string>
     <string name="retry">Réessayer</string>

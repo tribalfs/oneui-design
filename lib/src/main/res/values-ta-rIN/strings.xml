@@ -8,9 +8,9 @@
     <string name="oui_common_edit">திருத்துக</string>
     <string name="oui_common_apply">செயல்படுத்துக</string>
     <string name="oui_common_close">மூடவும்</string>
-    <string name="cant_check_for_updates_phone">புதுப்பிப்புகளைச் சரிபார்க்க இயலாது. உங்கள் ஃபோனின் நெட்வொர்க் இணைப்பு நிலையற்றதாக உள்ளது.</string>
+    <string name="network_connect_is_not_stable">புதுப்பிப்புகள் உள்ளனவா என்று பார்க்க இயலவில்லை.</string>
     <string name="latest_version">சமீபத்திய பதிப்பு ஏற்கனவே நிறுவப்பட்டது.</string>
-    <string name="cant_check_for_updates_tablet">புதுப்பிப்புகளைச் சரிபார்க்க இயலாது. உங்கள் டேப்லேட்டின் நெட்வொர்க் இணைப்பு நிலையற்றதாக உள்ளது.</string>
+
     <string name="oui_time_dialog_start">துவங்குக</string>
     <string name="app_info">பயன்பாட்டு விவரம்</string>
     <string name="retry">மீ. முயலவும்</string>

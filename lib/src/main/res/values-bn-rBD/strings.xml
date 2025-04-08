@@ -8,9 +8,9 @@
     <string name="oui_common_edit">সম্পাদনা করুন</string>
     <string name="oui_common_apply">প্রয়োগ করুন</string>
     <string name="oui_common_close">বন্ধ</string>
-    <string name="cant_check_for_updates_phone">আপডেট চেক করা যাবে না৷ আপনার ফোনের নেটওয়ার্ক সংযোগ অস্থিতিশীল৷</string>
+    <string name="network_connect_is_not_stable">আপডেট চেক করা যায়নি৷</string>
     <string name="latest_version">সর্বশেষ সংস্করণ ইতিমধ্যে ইনস্টল করা হয়েছে৷</string>
-    <string name="cant_check_for_updates_tablet">আপডেট চেক করা যাবে না৷ আপনার ট্যাবলেটের নেটওয়ার্ক সংযোগ অস্থিতিশীল৷</string>
+
     <string name="oui_time_dialog_start">শুরু</string>
     <string name="app_info">অ্যাপের তথ্য</string>
     <string name="retry">পুনঃচেষ্টা</string>

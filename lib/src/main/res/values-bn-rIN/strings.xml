@@ -8,9 +8,8 @@
     <string name="oui_common_edit">সম্পাদনা করুন</string>
     <string name="oui_common_apply">প্রয়োগ করুন</string>
     <string name="oui_common_close">বন্ধ করুন</string>
-    <string name="cant_check_for_updates_phone">আপডেটগুলির জন্য পরীক্ষা করা যাচ্ছে না। আপনার ফোনের নেটওয়ার্কের সংযোগ স্থিতিশীল নয়।</string>
+    <string name="network_connect_is_not_stable">আপডেটগুলি পরীক্ষা করা যায়নি।</string>
     <string name="latest_version">সাম্প্রতিকতম সংস্করণটি ইতিমধ্যে ইনস্টল আছে।</string>
-    <string name="cant_check_for_updates_tablet">আপডেটগুলির জন্য পরীক্ষা করা যাচ্ছে না। আপনার ট্যাবেলেটের নেটওয়ার্কের সংযোগ স্থিতিশীল নয়।</string>
     <string name="oui_time_dialog_start">শুরু</string>
     <string name="app_info">অ্যাপের তথ্য</string>
     <string name="retry">পুনঃচেষ্টা</string>

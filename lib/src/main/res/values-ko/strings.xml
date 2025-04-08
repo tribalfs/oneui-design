@@ -8,9 +8,9 @@
     <string name="oui_common_edit">편집</string>
     <string name="oui_common_apply">적용</string>
     <string name="oui_common_close">닫기</string>
-    <string name="cant_check_for_updates_phone">업데이트를 확인할 수 없습니다. 휴대전화의 네트워크 연결이 불안정합니다.</string>
+    <string name="network_connect_is_not_stable">업데이트를 확인하지 못했습니다.</string>
     <string name="latest_version">최신 버전입니다.</string>
-    <string name="cant_check_for_updates_tablet">업데이트를 확인할 수 없습니다. 태블릿의 네트워크 연결이 불안정합니다.</string>
+
     <string name="oui_time_dialog_start">시작</string>
     <string name="app_info">애플리케이션 정보</string>
     <string name="retry">다시 시도</string>

@@ -8,9 +8,9 @@
     <string name="oui_common_edit">എഡിറ്റ് ചെയ്യുക</string>
     <string name="oui_common_apply">പ്രയോഗിക്കുക</string>
     <string name="oui_common_close">അടയ്ക്കുക</string>
-    <string name="cant_check_for_updates_phone">‌അപ്ഡേറ്റുകൾക്കായി പരിശോധിക്കാനാവില്ല. നിങ്ങളുടെ ഫോണിന്‍റെ നെറ്റ്‌വർക്ക് കണക്ഷൻ സുസ്ഥിരമല്ല.</string>
+    <string name="network_connect_is_not_stable">‌അപ്ഡേറ്റുകൾക്കായി പരിശോധിക്കാനായില്ല.</string>
     <string name="latest_version">ഏറ്റവും പുതിയ പതിപ്പ് നേരത്തേതന്നെ ഇൻസ്റ്റാൾ ചെയ്തിട്ടുണ്ട്.</string>
-    <string name="cant_check_for_updates_tablet">‌അപ്ഡേറ്റുകൾക്കായി പരിശോധിക്കാനാവില്ല. നിങ്ങളുടെ ടാബ്‌ലറ്റിന്‍റെ നെറ്റ്‌വർക്ക് കണക്ഷൻ സുസ്ഥിരമല്ല.</string>
+
     <string name="oui_time_dialog_start">ആരംഭം</string>
     <string name="app_info">ആപ്ലിക്കേഷൻ വിവരം</string>
     <string name="retry">വീണ്ടും ശ്രമിക്കുക</string>
