@@ -26,15 +26,21 @@ class OnBackCallbackDelegateCompat(activity: ComponentActivity,
     }
 
     private val onBackCallbackDelegate by lazy(LazyThreadSafetyMode.NONE) {
-        createBackCallbackDelegate(activity)
+        createBackCallbackDelegate()
+    }
+
+    private val onBackPressedDelegate by lazy(LazyThreadSafetyMode.NONE) {
+        OnBackPressedCallbackDelegate(activity, backHandler)
     }
 
     fun startListening(priorityOverlay: Boolean = false) {
-        onBackCallbackDelegate.startListening(view, backHandler, priorityOverlay)
+        onBackCallbackDelegate?.startListening(view, backHandler, priorityOverlay)
+        onBackPressedDelegate.isEnabled = true
     }
 
     fun stopListening() {
-        onBackCallbackDelegate.stopListening(view)
+        onBackCallbackDelegate?.stopListening(view)
+        onBackPressedDelegate.isEnabled = false
     }
 
     @RequiresApi(34)
@@ -94,34 +100,38 @@ class OnBackCallbackDelegateCompat(activity: ComponentActivity,
 
     }
 
-    private class PreApi33BackCallbackDelegate(private val activity: ComponentActivity) :
-        BackCallbackDelegate {
+    private class OnBackPressedCallbackDelegate(private val activity: ComponentActivity,
+                                                private val backHandler: BackHandler) {
         private var obpCallback:  OnBackPressedCallback? = null
         private val obpDispatcher = activity.onBackPressedDispatcher
 
         private val isListening: Boolean get() = obpCallback?.isEnabled == true
 
-        override fun startListening(view: View, backHandler: BackHandler, priorityOverlay: Boolean) {
-            if (obpCallback == null) {
-                obpCallback = obpDispatcher.addCallback(activity, true) { backHandler.handleBackInvoked() }
-                return
+        var isEnabled: Boolean
+            get() = obpCallback?.isEnabled == true
+            set(value) {
+                if (value) {
+                    if (obpCallback == null) {
+                        obpCallback = obpDispatcher.addCallback(activity, true) {
+                            backHandler.handleBackInvoked()
+                        }
+                        return
+                    }
+                    obpCallback!!.isEnabled = true
+                } else {
+                    obpCallback?.isEnabled = false
+                }
             }
-            obpCallback!!.isEnabled = true
-        }
-
-        override fun stopListening(view: View) {
-            obpCallback?.isEnabled = false
-        }
     }
 
     companion object {
-        private fun createBackCallbackDelegate(activity: ComponentActivity): BackCallbackDelegate {
+        private fun createBackCallbackDelegate(): BackCallbackDelegate? {
             return if (Build.VERSION.SDK_INT >= 34) {
                 Api34BackCallbackDelegate()
             } else if (Build.VERSION.SDK_INT == 33) {
                 Api33BackCallbackDelegate()
             } else {
-                PreApi33BackCallbackDelegate(activity)
+                null
             }
         }
     }
