@@ -15,6 +15,7 @@
     <!-- Buttons -->
     <color name="oui_btn_border_color">#252525</color>
     <color name="oui_btn_text_color">#666666</color>
+    <color name="oui_des_btn_contained_primary_text">#fffafafa</color>
 
     <!-- RelatedCard -->
     <color name="oui_relative_link_title_text_color">#ff252525</color>

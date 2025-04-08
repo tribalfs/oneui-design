@@ -41,4 +41,13 @@
         <item name="timePickerDialogTheme">@style/Theme.AppCompat.Light.PickerDialog.TimePicker</item>
     </style>
 
+    <style name="OneUI.ContainedButtonTheme" parent="@style/Widget.AppCompat.Button.Custom">
+        <item name="android:textSize">17sp</item>
+        <item name="buttonCornerRadius">26dp</item>
+    </style>
+
+    <style name="OneUI.ContainedPrimaryColorButtonTheme" parent="@style/OneUI.ContainedButtonTheme">
+        <item name="android:textColor">@color/oui_des_btn_contained_primary_text</item>
+        <item name="colorButtonNormal">@color/oui_btn_colored_background</item>
+    </style>
 </resources>
