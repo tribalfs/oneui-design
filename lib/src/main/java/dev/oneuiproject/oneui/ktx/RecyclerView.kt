@@ -77,20 +77,6 @@ enum class MultiSelectionState{
 }
 
 
-/**
- * Syntactic sugar equivalent to calling:
- *
- * ```
- * RecyclerView.apply{
- *     seslSetFillBottomEnabled(true)
- *     seslSetLastRoundedCorner(true)
- *     seslSetFastScrollerEnabled(true)
- *     seslSetGoToTopEnabled(true)
- *     seslSetSmoothScrollEnabled(true)
- *     seslSetIndexTipEnabled(true)
- * }
- * ```
- */
 @JvmOverloads
 inline fun RecyclerView.enableCoreSeslFeatures(
     fillBottom:Boolean = true,
@@ -102,9 +88,7 @@ inline fun RecyclerView.enableCoreSeslFeatures(
 ){
     if (fillBottom) seslSetFillBottomEnabled(true)
     if (lastRoundedCorner) seslSetLastRoundedCorner(true)
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && fastScrollerEnabled) {
-        seslSetFastScrollerEnabled(true)
-    }
+    if (fastScrollerEnabled) seslSetFastScrollerEnabled(true)
     if (goToTopEnabled) seslSetGoToTopEnabled(true)
     if (smoothScrollEnabled) seslSetSmoothScrollEnabled(true)
     if (indexTipEnabled) seslSetIndexTipEnabled(true)
