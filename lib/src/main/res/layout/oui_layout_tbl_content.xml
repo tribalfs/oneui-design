@@ -19,7 +19,7 @@
             style="?attr/collapsingToolbarLayoutStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_scrollFlags="exitUntilCollapsed|scroll">
+            app:layout_scrollFlags="snap|exitUntilCollapsed|scroll">
 
             <include layout="@layout/oui_view_toolbar_main" />
 
@@ -55,6 +55,7 @@
             android:layout="@layout/oui_layout_tbl_switchbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
             android:layout_marginBottom="20dp" />
 
         <dev.oneuiproject.oneui.widget.RoundedFrameLayout
@@ -70,7 +71,7 @@
         android:focusable="false"
         android:id="@+id/tbl_bottom_corners"
         android:layout_width="match_parent"
-        android:layout_height="26dp"
+        android:layout_height="52dp"
         android:layout_gravity="bottom|center_horizontal"
         app:roundedCorners="bottom_left|bottom_right" />
 

@@ -39,6 +39,7 @@
 
     <!-- ToolbarLayout -->
     <dimen name="oui_n_badge_view_size">17.0dip</dimen>
+    <dimen name="oui_des_toolbar_title_margin_end">21dp</dimen>
 
     <!-- HorizontalRadioPreference -->
     <dimen name="oui_horizontalradiopref_padding_start_end">8.0dip</dimen>

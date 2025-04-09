@@ -123,6 +123,11 @@
             <enum name="bottom" value="2" />
             <enum name="none" value="3" />
         </attr>
+        <!--Applies horizontal insets to the edges and rounded corners
+        of the main content.  Note that this method does not add any
+        horizontal padding or margin.  It is the responsibility of the content
+        to set the appropriate padding or margin as needed..-->
+        <attr format="dimension" name="edgeInsetHorizontal"/>
     </declare-styleable>
 
     <declare-styleable name="DrawerLayout">

@@ -9,7 +9,6 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.graphics.drawable.Drawable
-import android.graphics.drawable.LayerDrawable
 import android.os.Build.VERSION
 import android.util.AttributeSet
 import android.util.Log
@@ -19,6 +18,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnLayoutChangeListener
 import android.view.ViewGroup
 import android.view.ViewStub
 import android.view.WindowInsets
@@ -31,6 +31,7 @@ import android.widget.TextView
 import androidx.annotation.CallSuper
 import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
+import androidx.annotation.Px
 import androidx.annotation.RestrictTo
 import androidx.annotation.StringRes
 import androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_ALL
@@ -46,6 +47,7 @@ import androidx.appcompat.widget.applyThemeColors
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
+import androidx.core.graphics.Insets
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsCompat.Type.displayCutout
 import androidx.core.view.WindowInsetsCompat.Type.ime
@@ -63,10 +65,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import dev.oneuiproject.oneui.delegates.AllSelectorState
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.appCompatActivity
+import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.ktx.dpToPxFactor
 import dev.oneuiproject.oneui.ktx.fitsSystemWindows
 import dev.oneuiproject.oneui.ktx.isDescendantOf
 import dev.oneuiproject.oneui.ktx.isSoftKeyboardShowing
+import dev.oneuiproject.oneui.ktx.pxToDp
 import dev.oneuiproject.oneui.ktx.setSearchableInfoFrom
 import dev.oneuiproject.oneui.layout.ToolbarLayout.ActionModeListener
 import dev.oneuiproject.oneui.layout.ToolbarLayout.MainRoundedCorners.ALL
@@ -101,6 +105,7 @@ import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout
 import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout.Companion.MARGIN_PROVIDER_ADP_DEFAULT
 import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout.MarginProvider
 import dev.oneuiproject.oneui.widget.RoundedFrameLayout
+import dev.oneuiproject.oneui.widget.RoundedLinearLayout
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.StateFlow
@@ -258,10 +263,9 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     private var _showNavAsBack = false
     private var _showNavigationButton = false
-    private var mNavigationBadgeIcon: LayerDrawable? = null
 
     private var _mainContainer: RoundedFrameLayout? = null
-    internal val mainContainer: FrameLayout get() = _mainContainer!!
+    internal val mainContainer get() = _mainContainer!!
 
     private var _mainRoundedCorners: MainRoundedCorners = ALL
 
@@ -278,7 +282,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     val toolbar: Toolbar get() = _mainToolbar
 
     private lateinit var mCoordinatorLayout: AdaptiveCoordinatorLayout
-    private lateinit var mBottomRoundedCorner: LinearLayout
+    private lateinit var mBottomRoundedCorner: RoundedLinearLayout
     internal lateinit var footerParent: LinearLayout
         private set
 
@@ -304,6 +308,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     private var mMenuSynchronizer: MenuSynchronizer? = null
     private var forcePortraitMenu: Boolean = false
     private var syncMenuPending = false
+    private var edgeInsetHorizontal = 10f //dp
 
     private var mShowSwitchBar = false
 
@@ -383,6 +388,9 @@ open class ToolbarLayout @JvmOverloads constructor(
                 R.styleable.ToolbarLayout_android_layout,
                 getDefaultLayoutResource()
             )
+            it.getDimension(R.styleable.ToolbarLayout_edgeInsetHorizontal, 0f).let{px ->
+                if (px != 0f) edgeInsetHorizontal = px.pxToDp(resources)
+            }
 
             inflateChildren()
             initViews()
@@ -446,6 +454,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         if (_mainRoundedCorners != ALL){
             applyMainRoundedCorners()
         }
+        updateHorizontalEdgeInsets()
     }
 
     override fun onAttachedToWindow() {
@@ -470,6 +479,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         updateAppbarHeight()
         syncActionModeMenu()
         updateOnBackCallbackState()
+        updateHorizontalEdgeInsets()
     }
 
     private fun refreshLayout(newConfig: Configuration) {
@@ -508,6 +518,26 @@ open class ToolbarLayout @JvmOverloads constructor(
         } else {
             _appBarLayout.seslSetCustomHeight(
                 context.resources.getDimensionPixelSize(appcompatR.dimen.sesl_action_bar_height_with_padding))
+        }
+    }
+
+    /**
+     * Applies horizontal insets to the edges and rounded corners of the main content.
+     * Note that this method does not add any horizontal padding or margin.
+     * It is the responsibility of the content to set the appropriate padding or margin as needed.
+     */
+    fun setEdgeInsetHorizontal(@Px px: Float) {
+        if (edgeInsetHorizontal == px) return
+        edgeInsetHorizontal = px
+        updateHorizontalEdgeInsets()
+    }
+
+    private fun updateHorizontalEdgeInsets() {
+        edgeInsetHorizontal.dpToPx(resources).let {px ->
+            Insets.of(px, 0, px, 0).let {
+                _mainContainer!!.edgeInsets = it
+                mBottomRoundedCorner.edgeInsets = it
+            }
         }
     }
 
@@ -984,6 +1014,8 @@ open class ToolbarLayout @JvmOverloads constructor(
                             val dpToPx = context.dpToPxFactor
                             height = (48 * dpToPx).toInt()
                             bottomMargin = (12 * dpToPx).toInt()
+                            marginStart = (10 * dpToPx).toInt()
+                            marginEnd = (10 * dpToPx).toInt()
                         }
                     }
                 }
