@@ -9,17 +9,9 @@ android {
     namespace "com.sec.sesl.tester"
 
     defaultConfig {
-        applicationId "com.tribalfs.oneuisample"
-
-        minSdk 21
-        targetSdk 35
-
-        versionCode sample_version_code
-        versionName sample_version_name
-
+        applicationId = "com.tribalfs.oneuisample"
+        versionCode = 1
         vectorDrawables.useSupportLibrary = true
-
-        buildConfigField "String", "ONEUI_DESIGN_VERSION", "\"${lib_version}\""
     }
 
     buildFeatures {
@@ -66,7 +58,7 @@ dependencies {
     implementation("sesl.androidx.viewpager2:viewpager2:1.1.0+1.0.4-sesl7+rev0")
 
     //design lib
-    implementation project(":lib")
+    implementation project(":oneui-design")
    // implementation("io.github.tribalfs:oneui-design:0.5.9+oneui6")
 
     implementation 'io.github.oneuiproject:icons:1.1.0'

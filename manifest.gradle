@@ -1,9 +1,7 @@
 ext {
-    // Library version.
-    lib_version = "0.5.13+oneui6"
-
-    // Sample App version.
-    sample_version_code = 1
-    sample_version_name = lib_version
-    
+    versions_metadata = [
+            "oneui-design"     : ["0.5.13+oneui7", 21, 35],
+            "stub"             : ["1.0.0", 21, 35],
+            "sample-app"       : ["0.5.13+oneui7", 21, 35]
+    ]
 }

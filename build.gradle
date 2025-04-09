@@ -78,67 +78,101 @@ allprojects {
     }
 }
 
-def groupId = "io.github.tribalfs"
-def artifact = "oneui-design"
+def group = "io.github.tribalfs"
 
 subprojects {
     plugins.withId("com.android.base") {
         plugins.apply('dev.rikka.tools.refine')
     }
 
-    afterEvaluate { project ->
-        if (!plugins.hasPlugin("maven-publish")) {
-            return
-        }
+    plugins.whenPluginAdded { plugin ->
+        def isAndroidLibrary = "com.android.build.gradle.LibraryPlugin" == plugin.class.name
+        def isAndroidApp = "com.android.build.gradle.AppPlugin" == plugin.class.name
 
-        group = groupId
-        version = android.defaultConfig.versionName
+        if (isAndroidLibrary || isAndroidApp) {
+            def artifact = project.name
+            def version_info = rootProject.ext.versions_metadata[artifact]
 
-        def readmeFile = file("${rootProject.projectDir}/README.md")
-        def readmeContent = new String(readmeFile.bytes)
-        def newVersionString = "$groupId:$artifact:$version"
-        def pattern = ~/io\.github\.tribalfs:oneui-design:\S+oneui\d/
-        new File(readmeFile.path).text = readmeContent.replaceAll(pattern, newVersionString)
-        println "Updated README.md with version: $newVersionString"
+            android {
+                if (version_info != null) {
+                    defaultConfig.versionName = version_info[0]
+                    compileSdk = version_info[2]
+                    defaultConfig.minSdk = version_info[1]
+                    defaultConfig.targetSdk = version_info[2]
+                }
 
-        publishing {
-            publications {
-                mavenJava(MavenPublication) {
-                    artifactId = artifact
-                    afterEvaluate {
-                        from components.release
-                    }
-
-                    pom {
-                        name = artifact
-                        url = "https://github.com/tribalfs/oneui-design"
-                        developers {
-                            developer {
-                                id = "tribalfs"
-                                name = "Tribalfs"
-                                email = "tribalfs@gmail.com"
-                                url = "https://github.com/tribalfs"
-                            }
-                        }
-
-                        licenses {
-                            license {
-                                name = "MIT License"
-                                url = "https://github.com/tribalfs/oneui-design/blob/oneui6/LICENSE"
-                                distribution = "repo"
-                            }
-                        }
+                publishing {
+                    singleVariant("release") {
+                        withSourcesJar()
+                        withJavadocJar()
                     }
                 }
             }
 
-            repositories {
-                maven {
-                    name = "GitHubPackages"
-                    url = uri("https://maven.pkg.github.com/tribalfs/oneui-design")
-                    credentials {
-                        username = githubUsername
-                        password = githubAccessToken
+
+            if (isAndroidApp) {
+                android.defaultConfig {
+                    buildConfigField "String", "ONEUI_DESIGN_VERSION", "\"${version_info[0]}\""
+                }
+            }
+
+            afterEvaluate {
+                if (!plugins.hasPlugin("maven-publish")) {
+                    return
+                }
+
+                if (artifact == "oneui-design" || artifact == "oneui-icons") {
+                    def readmeFile = file("${rootProject.projectDir}/README.md")
+                    def readmeContent = new String(readmeFile.bytes)
+                    def newVersionString = "$group:$artifact:${android.defaultConfig.versionName}"
+                    def oneuiVersion = (android.defaultConfig.versionName =~ /oneui\d+/)[0]
+                    def pattern = ~/io\.github\.tribalfs:$artifact:\S+$oneuiVersion/
+                    new File(readmeFile.path).text = readmeContent.replaceAll(pattern, newVersionString)
+                    println "Updated README.md with version: $newVersionString"
+                }
+
+                publishing {
+                    publications {
+                        mavenJava(MavenPublication) {
+                            version = android.defaultConfig.versionName
+                            groupId = group
+                            artifactId = artifact
+                            afterEvaluate {
+                                from components.release
+                            }
+
+                            pom {
+                                name = artifact
+                                url = "https://github.com/tribalfs/oneui-design"
+                                developers {
+                                    developer {
+                                        id = "tribalfs"
+                                        name = "Tribalfs"
+                                        email = "tribalfs@gmail.com"
+                                        url = "https://github.com/tribalfs"
+                                    }
+                                }
+
+                                licenses {
+                                    license {
+                                        name = "MIT License"
+                                        url = "https://github.com/tribalfs/oneui-design/blob/main/LICENSE"
+                                        distribution = "repo"
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    repositories {
+                        maven {
+                            name = "GitHubPackages"
+                            url = uri("https://maven.pkg.github.com/tribalfs/oneui-design")
+                            credentials {
+                                username = githubUsername
+                                password = githubAccessToken
+                            }
+                        }
                     }
                 }
             }

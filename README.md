@@ -1,11 +1,11 @@
 ## OneUI6 Design Lib
 
-This design lib is consists of custom components intended to complement and integrate with both [SESL6 Android Jetpack Modules](https://github.com/tribalfs/sesl-androidx?tab=readme-ov-file#sesloneui-android-jetpack-unofficial)
-and [SESL6 Material Components for Android](https://github.com/tribalfs/sesl-material-components-android?tab=readme-ov-file#sesloneui-material-components-for-android-unofficial).
+This design lib is consists of custom components intended to complement and integrate with both [SESL Android Jetpack Modules](https://github.com/tribalfs/sesl-androidx?tab=readme-ov-file#sesloneui-android-jetpack-unofficial)
+and [SESL Material Components for Android](https://github.com/tribalfs/sesl-material-components-android?tab=readme-ov-file#sesloneui-material-components-for-android-unofficial).
 
 ## Usage
-- Add the needed [SESL6 Android Jetpack Modules](https://github.com/tribalfs/sesl-androidx?tab=readme-ov-file#sesloneui-android-jetpack-unofficial)
-  and [SESL6 Material Components for Android](https://github.com/tribalfs/sesl-material-components-android?tab=readme-ov-file#sesloneui-material-components-for-android-unofficial)
+- Add the needed [SESL Android Jetpack Modules](https://github.com/tribalfs/sesl-androidx?tab=readme-ov-file#sesloneui-android-jetpack-unofficial)
+  and [SESL Material Components for Android](https://github.com/tribalfs/sesl-material-components-android?tab=readme-ov-file#sesloneui-material-components-for-android-unofficial)
   dependencies to your project following their usage guide. Then add the following dependency next:
 
 ```
@@ -25,7 +25,11 @@ repositories {
 ```
 dependencies {
   //sesl and other dependencies
-  
+
+  //For OneUI 7 - must use sesl7 dependencies
+  //coming soon
+    
+  //For OneUI 6 - must use sesl6 dependencies
   implementation("io.github.tribalfs:oneui-design:0.5.13+oneui6")
 }
 ```
