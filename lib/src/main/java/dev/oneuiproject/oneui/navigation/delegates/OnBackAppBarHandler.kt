@@ -2,6 +2,7 @@ package dev.oneuiproject.oneui.navigation.delegates
 
 import android.os.Build
 import androidx.activity.BackEventCompat
+import androidx.annotation.FloatRange
 import androidx.annotation.RestrictTo
 import androidx.core.view.animation.PathInterpolatorCompat
 import androidx.fragment.app.Fragment
@@ -17,6 +18,8 @@ internal class OnBackAppBarHandler(
     private val navDrawerLayout: NavDrawerLayout,
     private val navController: NavController,
     private val configuration: AppBarConfiguration,
+    @FloatRange(0.0, 1.0)
+    private val toolbarThreshold: Float
 ) : FragmentManager.OnBackStackChangedListener {
 
     private var isBackFragmentLabelSet = false
@@ -45,7 +48,7 @@ internal class OnBackAppBarHandler(
         if (updateTitleOnBackProgress) {
             val interpolatedProgress =
                 progressInterpolator.getInterpolation(backEventCompat.progress)
-            if (isBackFragmentLabelSet != interpolatedProgress > PREDICTIVE_BACK_TOOLBAR_TITLE_THRESHOLD) {
+            if (isBackFragmentLabelSet != interpolatedProgress > toolbarThreshold) {
                 isBackFragmentLabelSet = !isBackFragmentLabelSet
                 if (isBackFragmentLabelSet) {
                     navDrawerLayout.apply {
@@ -115,7 +118,7 @@ internal class OnBackAppBarHandler(
     }
 
     companion object{
-        private const val PREDICTIVE_BACK_TOOLBAR_TITLE_THRESHOLD = 0.3f
+        private const val PREDICTIVE_BACK_TOOLBAR_TITLE_THRESHOLD = 0.8f
             private const val TAG = "OnBackAppBarHandler"
     }
 }

@@ -84,7 +84,7 @@ class DrawerNavigationView @JvmOverloads constructor(
     //Workaround https://issuetracker.google.com/issues/340202276
     private fun isClickAllowed(): Boolean{
         System.currentTimeMillis().let {
-            if (it - lastTimeClicked < 350)  return false
+            if (it - lastTimeClicked < 400)  return false
             lastTimeClicked = it
             return true
         }

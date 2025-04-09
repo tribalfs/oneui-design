@@ -5,6 +5,7 @@ package dev.oneuiproject.oneui.navigation
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.annotation.FloatRange
 import androidx.navigation.FloatingWindow
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -21,12 +22,14 @@ import dev.oneuiproject.oneui.navigation.widget.DrawerNavigationView
 fun NavDrawerLayout.setupNavigation(
     drawerNavigationView: DrawerNavigationView,
     navHostFragment: NavHostFragment,
-    configuration: AppBarConfiguration = AppBarConfiguration(drawerNavigationView.getDrawerMenu(), this)
+    configuration: AppBarConfiguration = AppBarConfiguration(drawerNavigationView.getDrawerMenu(), this),
+    @FloatRange(0.0, 1.0)
+    toolbarBackThreshold: Float = 0.75f
 ) {
     val navController = navHostFragment.navController
     val startDestination = navController.graph.findStartDestination()
 
-    val onBackAppBarHandler = OnBackAppBarHandler(this, navController, configuration).apply {
+    val onBackAppBarHandler = OnBackAppBarHandler(this, navController, configuration, toolbarBackThreshold).apply {
         this.startDestination = startDestination }
 
     navHostFragment.childFragmentManager.addOnBackStackChangedListener(onBackAppBarHandler)
