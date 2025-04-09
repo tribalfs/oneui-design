@@ -30,14 +30,14 @@
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingEnd="@dimen/cardview_icon_margin_end"
+                android:paddingEnd="@dimen/oui_des_cardview_icon_margin_end"
                 android:gravity="start|center">
 
                 <ImageView
                     android:id="@+id/cardview_icon"
-                    android:layout_width="@dimen/cardview_icon_size"
-                    android:layout_height="@dimen/cardview_icon_size"
-                    android:layout_marginVertical="@dimen/cardview_icon_margin_vertical"
+                    android:layout_width="@dimen/oui_des_cardview_icon_size"
+                    android:layout_height="@dimen/oui_des_cardview_icon_size"
+                    android:layout_marginVertical="@dimen/oui_des_cardview_icon_margin_vertical"
                     android:layout_gravity="center"
                     android:scaleType="centerInside" />
 

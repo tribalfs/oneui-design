@@ -40,7 +40,7 @@
                     android:gravity="center"
                     android:text="@string/app_name"
                     android:textSize="30sp"
-                    android:textColor="@color/oui_appinfolayout_app_label_text_color"
+                    android:textColor="@color/oui_des_appinfolayout_app_label_text_color"
                     app:fontFamily="@font/samsungsharpsans_bold" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -50,7 +50,7 @@
                     android:layout_marginTop="8dp"
                     android:gravity="center"
                     android:textSize="14sp"
-                    android:textColor="@color/oui_appinfolayout_sub_text_color" />
+                    android:textColor="@color/oui_des_appinfolayout_sub_text_color" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -129,13 +129,13 @@
                         android:layout_height="wrap_content"
                         android:text="@string/app_name"
                         android:textSize="18sp"
-                        android:textColor="@color/oui_appinfolayout_app_label_text_color"/>
+                        android:textColor="@color/oui_des_appinfolayout_app_label_text_color"/>
 
                     <TextView
                         android:id="@+id/about_bottom_app_version"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/oui_appinfolayout_sub_text_color" />
+                        android:textColor="@color/oui_des_appinfolayout_sub_text_color" />
 
                 </LinearLayout>
             </RelativeLayout>

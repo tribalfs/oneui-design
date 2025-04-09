@@ -29,7 +29,7 @@
                 android:alpha=".75"
                 android:layout_gravity="center"
                 android:scaleType="fitXY"
-                app:tint="@color/oui_primary_text_color"
+                app:tint="@color/oui_des_primary_text_color"
                 tools:src="@drawable/ic_about_sample"/>
 
         </FrameLayout>
@@ -47,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="17sp"
-                android:textColor="@color/oui_primary_text_color"
+                android:textColor="@color/oui_des_primary_text_color"
                 android:singleLine="true"
                 android:ellipsize="end"
                 tools:text="Drawer item"/>
