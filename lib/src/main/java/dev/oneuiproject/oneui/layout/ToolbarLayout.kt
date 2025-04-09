@@ -349,7 +349,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         fun onSearchModeToggle(searchView: SearchView, isActive: Boolean)
     }
 
-    protected open fun getDefaultLayoutResource(): Int = R.layout.oui_layout_tbl_main
+    protected open fun getDefaultLayoutResource(): Int = R.layout.oui_des_layout_tbl_main
     protected open fun getDefaultNavigationIconResource(): Int? = null
 
 
@@ -1263,7 +1263,7 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     private inline fun setupActionModeSearchMenu() {
         mActionModeToolbar!!.apply {
-            inflateMenu(R.menu.tbl_am_common)
+            inflateMenu(R.menu.oui_des_tbl_am_common)
             searchMenuItem = menu.findItem(R.id.menu_item_am_search)!!.also {
                 it.isVisible = true
                 it.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
@@ -1341,7 +1341,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         mActionModeToolbar!!.apply {
             var cancelMenuItem: MenuItem? = menu.findItem(R.id.menu_item_am_cancel)
             if (showCancel && cancelMenuItem == null) {
-                inflateMenu(R.menu.tbl_am_common)
+                inflateMenu(R.menu.oui_des_tbl_am_common)
                 cancelMenuItem = menu.findItem(R.id.menu_item_am_cancel)!!
             }
             cancelMenuItem?.let {
@@ -1478,9 +1478,9 @@ open class ToolbarLayout @JvmOverloads constructor(
     private inline fun applyAllSelectorCount(count: Int, updateMenu: Boolean) {
         if (updateMenu) syncActionModeMenu()
         val title = if (count > 0) {
-            resources.getString(R.string.oui_action_mode_n_selected, count)
+            resources.getString(R.string.oui_des_action_mode_n_selected, count)
         } else {
-            resources.getString(R.string.oui_action_mode_select_items)
+            resources.getString(R.string.oui_des_action_mode_select_items)
         }
         mCollapsingToolbarLayout.title = title
         mActionModeTitleTextView.text = title

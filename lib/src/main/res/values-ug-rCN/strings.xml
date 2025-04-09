@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
-    <string name="oui_new_badge_text">يېڭى</string>
-    <string name="new_version_is_available">يېڭى نەشرى چىقتى.</string>
-    <string name="oui_action_mode_select_items">نەرسە تاللاش</string>
-    <string name="oui_relative_description">باشقا ئىقتىدار كېرەكمۇ ؟</string>
-    <string name="oui_navigation_drawer">يولچى سىزغۇچ</string>
-    <string name="update">يېڭىلاش</string>
-    <string name="version_info">نەشرى %s</string>
-    <string name="oui_action_mode_n_selected">%d تاللىنىش</string>
-    <string name="network_connect_is_not_stable">يېڭىلانما تەكشۈرۈلمىدى.</string>
-    <string name="latest_version">ئەڭ يېڭى نەشرى قاچىلاندى.</string>
-
-    <string name="app_info">ئەپ ئۇچۇرى</string>
-    <string name="oui_action_mode_all_checkbox">بارلىق</string>
-    <string name="retry">قايتا سىناش</string>
+    <string name="oui_des_new_badge_text">يېڭى</string>
+    <string name="oui_des_new_version_is_available">يېڭى نەشرى چىقتى.</string>
+    <string name="oui_des_action_mode_select_items">نەرسە تاللاش</string>
+    <string name="oui_des_relative_description">باشقا ئىقتىدار كېرەكمۇ ؟</string>
+    <string name="oui_des_navigation_drawer">يولچى سىزغۇچ</string>
+    <string name="oui_des_update">يېڭىلاش</string>
+    <string name="oui_des_version_info">نەشرى %s</string>
+    <string name="oui_des_action_mode_n_selected">%d تاللىنىش</string>
+    <string name="oui_des_network_connect_is_not_stable">يېڭىلانما تەكشۈرۈلمىدى.</string>
+    <string name="oui_des_latest_version">ئەڭ يېڭى نەشرى قاچىلاندى.</string>
+    <string name="oui_des_app_info">ئەپ ئۇچۇرى</string>
+    <string name="oui_des_action_mode_all_checkbox">بارلىق</string>
+    <string name="oui_des_retry">قايتا سىناش</string>
 </resources>

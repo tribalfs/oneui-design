@@ -20,7 +20,7 @@ public class Toast extends android.widget.Toast {
 
         LayoutInflater inflate = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflate.inflate(R.layout.oui_transient_notification, null);
+        View v = inflate.inflate(R.layout.oui_des_transient_notification, null);
         TextView tv = v.findViewById(android.R.id.message);
         tv.setText(text);
 

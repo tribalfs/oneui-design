@@ -48,7 +48,7 @@ class NavDrawerLayout @JvmOverloads constructor(
     val isLargeScreenMode get() = isTabletLayout(resources)
 
     override fun getDefaultLayoutResource() =
-        if (isLargeScreenMode) R.layout.oui_layout_navdrawer_main else super.getDefaultLayoutResource()
+        if (isLargeScreenMode) R.layout.oui_des_layout_navdrawer_main else super.getDefaultLayoutResource()
 
     override val containerLayout: DrawerLayoutInterface get() =
         mSemSlidingPaneLayout

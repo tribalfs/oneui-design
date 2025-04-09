@@ -41,7 +41,7 @@ internal fun SearchView.applyActionModeSearchStyle(){
         val hintColor = it.getColor(0, ContextCompat.getColor(context,
             android.R.color.darker_gray))
         val textColor = it.getColor( @Suppress("ResourceType") 1,
-            ContextCompat.getColor(context, R.color.oui_primary_text_color))
+            ContextCompat.getColor(context, R.color.oui_des_primary_text_color))
         setSearchViewColors(textColor, textColor, hintColor)
     }
 

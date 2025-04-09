@@ -217,7 +217,7 @@ class BottomTabLayout(
         if (hasOverflowItems()) {
             addCustomTab(
                 tabTitleRes = if (showMoreText) materialR.string.sesl_more_item_label else null,
-                tabIconRes = R.drawable.oui_ic_ab_drawer,
+                tabIconRes = R.drawable.oui_des_ic_ab_drawer,
                 listener = { createAndShowGridDialog() }
             ).apply{
                 tabIconTint = ContextCompat.getColorStateList(context, R.color.sesl_tablayout_selected_indicator_color)
@@ -353,7 +353,7 @@ class BottomTabLayout(
         if (isGone) return
         transientState = ABOUT_TO_HIDE
         if (slideDownAnim == null) {
-            slideDownAnim = AnimationUtils.loadAnimation(context, R.anim.oui_bottom_tab_slide_down).apply {
+            slideDownAnim = AnimationUtils.loadAnimation(context, R.anim.oui_des_bottom_tab_slide_down).apply {
                 startOffset = 100L
                 interpolator = CachedInterpolatorFactory.getOrCreate(SINE_IN_OUT_90)
                 setListener(
@@ -372,7 +372,7 @@ class BottomTabLayout(
         if (isVisible) return
         transientState = ABOUT_TO_SHOW
         if (slideUpAnim == null) {
-            slideUpAnim = AnimationUtils.loadAnimation(context, R.anim.oui_bottom_tab_slide_up).apply {
+            slideUpAnim = AnimationUtils.loadAnimation(context, R.anim.oui_des_bottom_tab_slide_up).apply {
                 startOffset = 240
                 interpolator = CachedInterpolatorFactory.getOrCreate(SINE_IN_OUT_90)
                 doOnEnd { transientState = TRANSIENT_NONE }

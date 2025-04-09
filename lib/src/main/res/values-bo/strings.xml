@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
-    <string name="oui_new_badge_text">གསར་པ།</string>
-    <string name="new_version_is_available">པར་གཞི་གསར་པ་སྤྱོད་མི་ཐུབ།</string>
-    <string name="oui_action_mode_select_items">རྣམ་གྲངས་འདེམས་པ།</string>
-    <string name="oui_relative_description">བྱེད་ནུས་གཞན་པ་འཚོལ་བ་ཡིན་ནམ།</string>
-    <string name="oui_navigation_drawer">འདྲེན་སྒམ་མཛུབ་སྟོན།</string>
-    <string name="update">གསར་སྒྱུར།</string>
-    <string name="version_info">པར་གཞི།%s</string>
-    <string name="oui_action_mode_n_selected">གྲངས་%dའདེམས་ཟིན།</string>
-    <string name="network_connect_is_not_stable">གསར་སྒྱུར་ལ་ལྟ་རྟོག་བྱེད་མི་ཐུབ།</string>
-    <string name="latest_version">པར་གཞི་ཆེས་གསར་ཤོས་དེ་སྒྲིག་འཇུག་བྱས་འདུག</string>
-    <string name="app_info">ཉེར་སྤྱོད་བྱ་རིམ་ཆ་འཕྲིན།</string>
-    <string name="oui_action_mode_all_checkbox">ཚང་མ།</string>
-    <string name="retry">བསྐྱར་ཚོད།</string>
+    <string name="oui_des_new_badge_text">གསར་པ།</string>
+    <string name="oui_des_new_version_is_available">པར་གཞི་གསར་པ་སྤྱོད་མི་ཐུབ།</string>
+    <string name="oui_des_action_mode_select_items">རྣམ་གྲངས་འདེམས་པ།</string>
+    <string name="oui_des_relative_description">བྱེད་ནུས་གཞན་པ་འཚོལ་བ་ཡིན་ནམ།</string>
+    <string name="oui_des_navigation_drawer">འདྲེན་སྒམ་མཛུབ་སྟོན།</string>
+    <string name="oui_des_update">གསར་སྒྱུར།</string>
+    <string name="oui_des_version_info">པར་གཞི།%s</string>
+    <string name="oui_des_action_mode_n_selected">གྲངས་%dའདེམས་ཟིན།</string>
+    <string name="oui_des_network_connect_is_not_stable">གསར་སྒྱུར་ལ་ལྟ་རྟོག་བྱེད་མི་ཐུབ།</string>
+    <string name="oui_des_latest_version">པར་གཞི་ཆེས་གསར་ཤོས་དེ་སྒྲིག་འཇུག་བྱས་འདུག</string>
+    <string name="oui_des_app_info">ཉེར་སྤྱོད་བྱ་རིམ་ཆ་འཕྲིན།</string>
+    <string name="oui_des_action_mode_all_checkbox">ཚང་མ།</string>
+    <string name="oui_des_retry">བསྐྱར་ཚོད།</string>
 </resources>

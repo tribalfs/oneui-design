@@ -49,7 +49,7 @@ class SuggestionCardPreference @JvmOverloads constructor(
 
     init {
         isSelectable = false
-        layoutResource = R.layout.oui_preference_suggestion_card
+        layoutResource = R.layout.oui_des_preference_suggestion_card
         if (attrs != null) {
             context.obtainStyledAttributes(
                 attrs,
@@ -58,7 +58,7 @@ class SuggestionCardPreference @JvmOverloads constructor(
                 setActionButtonText(a.getText(R.styleable.SuggestionCardPreference_actionButtonText)?.toString())
             }
         }
-        setIcon(R.drawable.oui_suggestion_card_icon)
+        setIcon(R.drawable.oui_des_preference_suggestion_card_icon)
         val primaryTextColor = ResourcesCompat.getColorStateList(context.resources,
             context.getThemeAttributeValue(android.R.attr.textColorPrimary)!!.resourceId,
             context.theme)

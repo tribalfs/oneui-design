@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="split_view_detail_weight">50</integer>
-    <integer name="split_view_list_weight">50</integer>
+    <integer name="oui_des_navdrawer_split_view_detail_weight">50</integer>
+    <integer name="oui_des_navdrawer_split_view_list_weight">50</integer>
 
     <!--BottomTabLayout-->
-    <integer name="more_menu_dialog_anim_from_delta">100</integer>
-    <integer name="more_menu_dialog_anim_from_delta_rtl">-100</integer>
+    <integer name="oui_des_more_menu_dialog_anim_from_delta">100</integer>
+    <integer name="oui_des_more_menu_dialog_anim_from_delta_rtl">-100</integer>
 </resources>

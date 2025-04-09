@@ -33,7 +33,7 @@ class BottomTipView @JvmOverloads constructor(
         context.getThemeAttributeValue(androidx.appcompat.R.attr.roundedCornerColor)?.let {
             setBackgroundColor(it.data)
         }
-        inflate(context, R.layout.oui_widget_bottom_tip, this)
+        inflate(context, R.layout.oui_des_widget_bottom_tip, this)
         titleTextView = findViewById(R.id.tv_tip_title)
         tipContentView = findViewById(R.id.tv_tip_content)
         linkTextView = findViewById(R.id.tv_tip_link)

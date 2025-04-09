@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
-    <string name="oui_new_badge_text">N</string>
-    <string name="new_version_is_available">გამოვიდა ახალი ვერსია.</string>
-    <string name="oui_action_mode_select_items">ელემენტების არჩევა</string>
-    <string name="oui_relative_description">კიდევ სხვა რამეს ეძებთ?</string>
-    <string name="update">განახლება</string>
-    <string name="oui_common_edit">შეცვლა</string>
-    <string name="oui_common_apply">გამოყენება</string>
-    <string name="oui_common_close">დახურვა</string>
-    <string name="network_connect_is_not_stable">განახლებები ვერ შემოწმდა.</string>
-    <string name="latest_version">უახლესი ვერსია უკვე დაინსტალირებულია.</string>
-
-    <string name="oui_time_dialog_start">დასაწ.</string>
-    <string name="app_info">აპლიკაციის ინფორმაცია</string>
-    <string name="retry">ისევ ცდა</string>
-    <string name="oui_common_cancel">გაუქმება</string>
-    <string name="oui_common_continue">გაგრძელება</string>
-    <string name="oui_time_dialog_end">ბოლო</string>
-    <string name="oui_navigation_drawer">ნავიგაციის მხაზავი</string>
-    <string name="version_info">ვერსია %s</string>
-    <string name="oui_action_mode_n_selected">%d არჩეულია</string>
-    <string name="oui_common_add">დამატება</string>
-    <string name="oui_common_done">შესრულებულია</string>
-    <string name="oui_common_button_yes">დიახ</string>
-    <string name="oui_common_disable">გამორთვა</string>
-    <string name="sem_tip_popup_hint_string">ორჯერ შეეხეთ ამ ღილაკს, რომ შეიტყოთ მეტი.</string>
-    <string name="oui_action_mode_all_checkbox">ყველა</string>
+    <string name="oui_des_new_badge_text">N</string>
+    <string name="oui_des_new_version_is_available">გამოვიდა ახალი ვერსია.</string>
+    <string name="oui_des_action_mode_select_items">ელემენტების არჩევა</string>
+    <string name="oui_des_relative_description">კიდევ სხვა რამეს ეძებთ?</string>
+    <string name="oui_des_update">განახლება</string>
+    <string name="oui_des_common_edit">შეცვლა</string>
+    <string name="oui_des_common_apply">გამოყენება</string>
+    <string name="oui_des_common_close">დახურვა</string>
+    <string name="oui_des_network_connect_is_not_stable">განახლებები ვერ შემოწმდა.</string>
+    <string name="oui_des_latest_version">უახლესი ვერსია უკვე დაინსტალირებულია.</string>
+    <string name="oui_des_time_dialog_start">დასაწ.</string>
+    <string name="oui_des_app_info">აპლიკაციის ინფორმაცია</string>
+    <string name="oui_des_retry">ისევ ცდა</string>
+    <string name="oui_des_common_cancel">გაუქმება</string>
+    <string name="oui_des_common_continue">გაგრძელება</string>
+    <string name="oui_des_time_dialog_end">ბოლო</string>
+    <string name="oui_des_navigation_drawer">ნავიგაციის მხაზავი</string>
+    <string name="oui_des_version_info">ვერსია %s</string>
+    <string name="oui_des_action_mode_n_selected">%d არჩეულია</string>
+    <string name="oui_des_common_add">დამატება</string>
+    <string name="oui_des_common_done">შესრულებულია</string>
+    <string name="oui_des_common_button_yes">დიახ</string>
+    <string name="oui_des_common_disable">გამორთვა</string>
+    <string name="oui_des_tip_popup_hint_string">ორჯერ შეეხეთ ამ ღილაკს, რომ შეიტყოთ მეტი.</string>
+    <string name="oui_des_action_mode_all_checkbox">ყველა</string>
 </resources>

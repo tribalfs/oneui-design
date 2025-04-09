@@ -133,23 +133,23 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
                     mProgressCircle.isGone = true
                     mUpdateNotice.isGone = false
                     mUpdateButton.isGone = false
-                    mUpdateNotice.text = context.getText(R.string.new_version_is_available)
-                    mUpdateButton.text = context.getText(R.string.update)
+                    mUpdateNotice.text = context.getText(R.string.oui_des_new_version_is_available)
+                    mUpdateButton.text = context.getText(R.string.oui_des_update)
                 }
 
                 Status.NoUpdate -> {
                     mProgressCircle.isGone = true
                     mUpdateNotice.isGone = false
                     mUpdateButton.isGone = true
-                    mUpdateNotice.text = context.getText(R.string.latest_version)
+                    mUpdateNotice.text = context.getText(R.string.oui_des_latest_version)
                 }
 
                 Status.NoConnection -> {
                     mProgressCircle.isGone = true
                     mUpdateNotice.isGone = false
                     mUpdateButton.isGone = false
-                    mUpdateNotice.text = context.getText(R.string.network_connect_is_not_stable)
-                    mUpdateButton.text = context.getText(R.string.retry)
+                    mUpdateNotice.text = context.getText(R.string.oui_des_network_connect_is_not_stable)
+                    mUpdateButton.text = context.getText(R.string.oui_des_retry)
                 }
 
                 is Status.Failed -> {
@@ -157,7 +157,7 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
                     mUpdateNotice.isGone = false
                     mUpdateButton.isGone = false
                     mUpdateNotice.text = status.message
-                    mUpdateButton.text = context.getText(R.string.retry)
+                    mUpdateButton.text = context.getText(R.string.oui_des_retry)
                 }
             }
         }
@@ -176,14 +176,14 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
                 R.styleable.AppInfoLayout_appTitleTextColor,
                 ContextCompat.getColor(
                     context,
-                    R.color.oui_appinfolayout_app_label_text_color
+                    R.color.oui_des_appinfolayout_app_label_text_color
                 )
             )
             mInfoTextColor = ta.getColor(
                 R.styleable.AppInfoLayout_appInfoTextColor,
                 ContextCompat.getColor(
                     context,
-                    R.color.oui_appinfolayout_sub_text_color
+                    R.color.oui_des_appinfolayout_sub_text_color
                 )
             )
 
@@ -192,7 +192,7 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
         showNavigationButtonAsBack = true
         activity?.setSupportActionBar(null)
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-        LayoutInflater.from(context).inflate(R.layout.oui_layout_app_info, mainContainer, true)
+        LayoutInflater.from(context).inflate(R.layout.oui_des_layout_app_info, mainContainer, true)
         mAILContainer = findViewById(R.id.app_info_lower_layout)
         mAppNameTextView = findViewById(R.id.app_info_name)
         mVersionTextView = findViewById(R.id.app_info_version)
@@ -205,7 +205,7 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
         setLayoutMargins()
         with(context) {
             setTitle(context.getApplicationName())
-            mVersionTextView.text = getString(R.string.version_info, getAppVersion())
+            mVersionTextView.text = getString(R.string.oui_des_version_info, getAppVersion())
         }
 
         mAppNameTextView.setTextColor(titleTextColor)
@@ -218,7 +218,7 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
     }
 
     private fun Toolbar.setupMenu() {
-        inflateMenu(R.menu.app_info_menu)
+        inflateMenu(R.menu.oui_des_app_info)
         setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.menu_app_info -> {

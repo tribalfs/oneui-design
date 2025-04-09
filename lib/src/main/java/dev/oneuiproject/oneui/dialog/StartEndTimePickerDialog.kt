@@ -77,7 +77,7 @@ class StartEndTimePickerDialog(
     }
 
     private fun initMainView() {
-        LayoutInflater.from(context).inflate(R.layout.oui_dialog_start_end_time_picker, null).also {
+        LayoutInflater.from(context).inflate(R.layout.oui_des_dialog_start_end_time_picker, null).also {
             setView(it)
             mTimePickerDialog = it
             mTimePicker = it.findViewById<SeslTimePicker>(R.id.time_picker).apply {
@@ -92,7 +92,7 @@ class StartEndTimePickerDialog(
         val resources = context.resources
         setButton(
             BUTTON_POSITIVE,
-            resources.getString(R.string.oui_common_done)
+            resources.getString(R.string.oui_des_common_done)
         ) { _, _ ->
             mTimePicker!!.clearFocus()
             mTabLayout!!.times.let{
@@ -101,7 +101,7 @@ class StartEndTimePickerDialog(
         }
         setButton(
             BUTTON_NEGATIVE,
-            resources.getString(R.string.oui_common_cancel)
+            resources.getString(R.string.oui_des_common_cancel)
         ) { _, _ -> mTimePicker!!.clearFocus() }
     }
 

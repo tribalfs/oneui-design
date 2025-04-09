@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--BottomTabLayout-->
-    <item name="more_menu_dialog_width_ratio" type="dimen" format="float">0.58</item>
+    <item name="oui_des_more_menu_dialog_width_ratio" type="dimen" format="float">0.58</item>
 
-    <dimen name="drawer_header_icon_start_end_margin">6dp</dimen>
-    <dimen name="drawer_header_icon_margin_bottom">6dp</dimen>
+    <dimen name="oui_des_drawer_header_icon_start_end_margin">6dp</dimen>
+    <dimen name="oui_des_drawer_header_icon_margin_bottom">6dp</dimen>
 
-    <dimen name="drawer_item_icon_margin_start">24dp</dimen>
-    <dimen name="drawer_item_action_container_margin">0dp</dimen>
+    <dimen name="oui_des_drawer_menu_item_icon_margin_start">24dp</dimen>
+    <dimen name="oui_des_drawer_menu_item_action_container_margin">0dp</dimen>
 
-    <dimen name="drawer_category_view_margin_end">12dp</dimen>
-    <dimen name="drawer_category_view_margin_start">14dp</dimen>
-    <dimen name="drawer_category_view_elevation">0dp</dimen>
-    <dimen name="drawer_category_view_icon_margin_start">32dp</dimen>
-    <dimen name="drawer_category_view_count_margin_end">32dp</dimen>
+    <dimen name="oui_des_drawer_menu_category_view_margin_end">12dp</dimen>
+    <dimen name="oui_des_drawer_menu_category_view_margin_start">14dp</dimen>
+    <dimen name="oui_des_drawer_menu_category_view_elevation">0dp</dimen>
+    <dimen name="oui_des_drawer_menu_category_view_icon_margin_start">32dp</dimen>
+    <dimen name="oui_des_drawer_menu_category_view_count_margin_end">32dp</dimen>
 
 </resources>

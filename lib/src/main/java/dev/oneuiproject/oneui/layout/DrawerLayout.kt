@@ -57,8 +57,8 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
 
     override val backHandler: BackHandler get() = containerLayout.getOrCreateBackHandler(this@DrawerLayout)
 
-    override fun getDefaultLayoutResource() = R.layout.oui_layout_drawerlayout_main
-    override fun getDefaultNavigationIconResource(): Int = R.drawable.oui_ic_ab_drawer
+    override fun getDefaultLayoutResource() = R.layout.oui_des_layout_drawerlayout_main
+    override fun getDefaultNavigationIconResource(): Int = R.drawable.oui_des_ic_ab_drawer
 
     private var mDrawerPreviewOpen = false
 
@@ -248,7 +248,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         updateDrawerLock()
         if (drawerEnabled) {
             showNavigationButton = true
-            setNavigationButtonTooltip(resources.getText(R.string.oui_navigation_drawer))
+            setNavigationButtonTooltip(resources.getText(R.string.oui_des_navigation_drawer))
           } else {
             showNavigationButton = false
             setNavigationButtonTooltip(null)

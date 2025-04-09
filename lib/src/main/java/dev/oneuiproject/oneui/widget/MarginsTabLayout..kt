@@ -37,7 +37,7 @@ open class MarginsTabLayout @JvmOverloads constructor(
     @JvmField
     internal var tabTextWidthsList: ArrayList<Float> = arrayListOf()
     @JvmField
-    internal val defaultTabPadding = context.resources.getDimension(R.dimen.oui_tab_layout_default_tab_padding)
+    internal val defaultTabPadding = context.resources.getDimension(R.dimen.oui_des_tab_layout_default_tab_padding)
 
     internal var sideMarginChanged = false
     @JvmField
@@ -186,7 +186,7 @@ open class MarginsTabLayout @JvmOverloads constructor(
             val res = tabLayout.resources
             val configuration = res.configuration
 
-            val tabLayoutPaddingMin = res.getDimension(R.dimen.oui_tab_layout_default_side_margin)
+            val tabLayoutPaddingMin = res.getDimension(R.dimen.oui_des_tab_layout_default_side_margin)
 
             if (isLandscape(configuration) && isDisplayTypeSub(configuration)) {
                 return tabLayoutPaddingMin / 2f

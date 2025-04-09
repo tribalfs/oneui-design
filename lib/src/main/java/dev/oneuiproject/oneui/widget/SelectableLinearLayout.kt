@@ -71,7 +71,7 @@ class SelectableLinearLayout @JvmOverloads constructor(
                     addView(mCheckBox, 0)
                 }
                 1 -> {
-                    checkDrawable = SelectableAnimatedDrawable.create(context, R.drawable.ic_oui_check_animated_selector, context.theme)
+                    checkDrawable = SelectableAnimatedDrawable.create(context, R.drawable.oui_des_list_item_selection_anim_selector, context.theme)
                     if (it.hasValue(R.styleable.SelectableLinearLayout_cornerRadius)){
                         checkDrawable!!.setCornerRadius(
                             it.getDimension(R.styleable.SelectableLinearLayout_cornerRadius, 0f)

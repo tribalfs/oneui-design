@@ -99,7 +99,7 @@ internal class DrawerMenuPresenter(
 
     override fun getMenuView(root: ViewGroup): DrawerMenuView {
         if (drawerMenuView == null) {
-            drawerMenuView = (layoutInflater!!.inflate(R.layout.oui_view_drawer_menu, root, false) as DrawerMenuView)
+            drawerMenuView = (layoutInflater!!.inflate(R.layout.oui_des_drawer_menu_view, root, false) as DrawerMenuView)
                 .apply {
                     setAccessibilityDelegateCompat( NavigationMenuViewAccessibilityDelegate(this))
                 }
@@ -274,19 +274,19 @@ internal class DrawerMenuPresenter(
                 VIEW_TYPE_SEPARATOR -> SeparatorViewHolder(DrawerDividerItemView(parent.context))
 
                 VIEW_TYPE_NORMAL -> NormalViewHolder(
-                    layoutInflater!!.inflate(R.layout.oui_view_drawer_item, parent, false) as DrawerMenuItemView
+                    layoutInflater!!.inflate(R.layout.oui_des_drawer_menu_item, parent, false) as DrawerMenuItemView
                 ).apply {
                     itemView.setOnClickListener(onClickListener)
                 }
 
                 VIEW_TYPE_SUBHEADER -> SubheaderViewHolder(
-                    layoutInflater!!.inflate(R.layout.oui_view_drawer_item, parent, false) as DrawerMenuItemView
+                    layoutInflater!!.inflate(R.layout.oui_des_drawer_menu_item, parent, false) as DrawerMenuItemView
                 ).apply {
                     itemView.setOnClickListener(onClickListener)
                 }
 
                 VIEW_TYPE_CATEGORY -> CategoryItemViewHolder(
-                    layoutInflater!!.inflate(R.layout.oui_view_drawer_item_category, parent, false) as DrawerMenuItemView
+                    layoutInflater!!.inflate(R.layout.oui_des_drawer_menu_category, parent, false) as DrawerMenuItemView
                 ).apply {
                     itemView.setOnClickListener(onClickListener)
                 }

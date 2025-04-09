@@ -131,7 +131,7 @@ class QREncoder(private val mContext: Context, private val mContent: String) {
     }
 
     private fun drawAnchor(qrcode: Bitmap, byteMatrix: ByteMatrix) {
-        val anchor = getBitmap(getDrawable(R.drawable.oui_qr_code_anchor)!!)
+        val anchor = getBitmap(getDrawable(R.drawable.oui_des_qr_code_anchor)!!)
         val width = qrcode.width
         val height = qrcode.height
 

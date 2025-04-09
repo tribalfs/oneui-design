@@ -20,9 +20,9 @@ class HorizontalRadioViewContainer @JvmOverloads constructor(
     private var mIsDividerEnabled: Boolean? = null
 
     private val resources = context.resources
-    private val divider = AppCompatResources.getDrawable(context, R.drawable.oui_divider_vertical)
-    private val marginTop = resources.getDimension(R.dimen.oui_horizontalradiopref_divider_margin_top)
-    private val dividerBottom = resources.getDimension(R.dimen.oui_horizontalradiopref_divider_margin_bottom).roundToInt()
+    private val divider = AppCompatResources.getDrawable(context, R.drawable.oui_des_preference_horizontal_radio_divider_vertical)
+    private val marginTop = resources.getDimension(R.dimen.oui_des_horizontalradiopref_divider_margin_top)
+    private val dividerBottom = resources.getDimension(R.dimen.oui_des_horizontalradiopref_divider_margin_bottom).roundToInt()
     private val dividerWidth = resources.getDimension(androidx.appcompat.R.dimen.sesl_list_divider_height).roundToInt()
 
     override fun dispatchDraw(canvas: Canvas) {

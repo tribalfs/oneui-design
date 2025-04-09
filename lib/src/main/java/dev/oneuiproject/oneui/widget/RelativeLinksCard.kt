@@ -126,14 +126,14 @@ class RelativeLinksCard @JvmOverloads constructor(
         orientation = VERTICAL
         val context = context
         mParentView =
-            LayoutInflater.from(context).inflate(R.layout.oui_widget_relative_links_card, this)
+            LayoutInflater.from(context).inflate(R.layout.oui_des_widget_relative_links_card, this)
                 .apply {
                     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
                     setPadding(
                         0,
                         0,
                         0,
-                        context.resources.getDimensionPixelSize(R.dimen.oui_relative_link_gap_height)
+                        context.resources.getDimensionPixelSize(R.dimen.oui_des_relative_link_gap_height)
                     )
                     context.getThemeAttributeValue(androidx.appcompat.R.attr.roundedCornerColor)
                         ?.let {
@@ -171,7 +171,7 @@ class RelativeLinksCard @JvmOverloads constructor(
         isFocusable = true
         isClickable = true
         text = linkTitle
-        setBackgroundResource(R.drawable.oui_relative_link_item_background)
+        setBackgroundResource(R.drawable.oui_des_relative_links_item_bg)
         setOnClickListener(onClick)
         mLinkContainer.addView(this, createLinkParams())
     }
@@ -184,7 +184,7 @@ class RelativeLinksCard @JvmOverloads constructor(
                 with(child) {
                     isFocusable = true
                     isClickable = true
-                    setBackgroundResource(R.drawable.oui_relative_link_item_background)
+                    setBackgroundResource(R.drawable.oui_des_relative_links_item_bg)
                     TextViewCompat.setTextAppearance(
                         this,
                         R.style.OneUI_RelativeLinkTextViewTextStyle
@@ -208,8 +208,8 @@ class RelativeLinksCard @JvmOverloads constructor(
     private fun createLinkParams() =
         with(resources) {
             LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
-                marginStart = getDimensionPixelSize(R.dimen.oui_relative_link_view_margin_start_end) -
-                            getDimensionPixelSize(R.dimen.oui_relative_link_text_padding_side)
+                marginStart = getDimensionPixelSize(R.dimen.oui_des_relative_link_view_margin_start_end) -
+                            getDimensionPixelSize(R.dimen.oui_des_relative_link_text_padding_side)
             }
         }
 
@@ -228,7 +228,7 @@ class RelativeLinksCard @JvmOverloads constructor(
     private fun ensureTopDivider(){
         if (mTopDivider == null){
             mTopDivider = LayoutInflater.from(context)
-                .inflate(R.layout.oui_widget_relative_links_card_divider, this, false)
+                .inflate(R.layout.oui_des_widget_relative_links_card_divider, this, false)
             addView(mTopDivider, 0)
         }
     }

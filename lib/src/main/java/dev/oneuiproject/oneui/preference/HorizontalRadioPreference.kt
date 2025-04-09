@@ -49,7 +49,7 @@ class HorizontalRadioPreference(context: Context, attrs: AttributeSet?) :
     private val mIsItemHiddenMap = MutableScatterMap<CharSequence, Boolean>()
 
     private val selectedColor: Int = context.getThemeAttributeValue(androidx.appcompat.R.attr.colorPrimaryDark)!!.data
-    private val unselectedColor: Int = ContextCompat.getColor(context, R.color.oui_horizontalradiopref_text_unselected_color)
+    private val unselectedColor: Int = ContextCompat.getColor(context, R.color.oui_des_horizontalradiopref_text_unselected_color)
 
     init {
         context.obtainStyledAttributes(attrs, R.styleable.HorizontalRadioPreference).use{
@@ -81,10 +81,10 @@ class HorizontalRadioPreference(context: Context, attrs: AttributeSet?) :
         isSelectable = false
 
         with(getContext().resources) {
-            paddingStartEnd = getDimension(R.dimen.oui_horizontalradiopref_padding_start_end).toInt()
-            paddingTop = getDimension(R.dimen.oui_horizontalradiopref_padding_top).toInt()
-            paddingBottom = getDimension(R.dimen.oui_horizontalradiopref_padding_bottom).toInt()
-            layoutResource = R.layout.oui_preference_horizontal_radio_layout
+            paddingStartEnd = getDimension(R.dimen.oui_des_horizontalradiopref_padding_start_end).toInt()
+            paddingTop = getDimension(R.dimen.oui_des_horizontalradiopref_padding_top).toInt()
+            paddingBottom = getDimension(R.dimen.oui_des_horizontalradiopref_padding_bottom).toInt()
+            layoutResource = R.layout.oui_des_preference_horizontal_radio_layout
         }
 
     }

@@ -40,7 +40,7 @@ internal class DrawerMenuItemView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr), MenuView.ItemView {
 
-    private var iconSize = context.resources.getDimensionPixelSize(R.dimen.drawer_item_icon_size)
+    private var iconSize = context.resources.getDimensionPixelSize(R.dimen.oui_des_drawer_menu_item_icon_size)
     private var needsEmptyIcon = true
     private var mOffset: Float = 1f
 

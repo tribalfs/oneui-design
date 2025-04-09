@@ -25,7 +25,7 @@ class DescriptionPreference @JvmOverloads constructor(
             context.obtainStyledAttributes(attrs, androidx.preference.R.styleable.Preference).use {
                 layoutResource = it.getResourceId(
                     androidx.preference.R.styleable.Preference_android_layout,
-                    R.layout.oui_preference_unclickable_layout
+                    R.layout.oui_des_preference_unclickable_layout
                 )
             }
 
@@ -36,7 +36,7 @@ class DescriptionPreference @JvmOverloads constructor(
                 mPositionMode = it.getInt(R.styleable.DescriptionPreference_positionMode, POSITION_NORMAL)
             }
         } else {
-            layoutResource = R.layout.oui_preference_unclickable_layout
+            layoutResource = R.layout.oui_des_preference_unclickable_layout
             seslSetSubheaderRoundedBackground(SeslRoundedCorner.ROUNDED_CORNER_ALL)
         }
     }
@@ -54,27 +54,27 @@ class DescriptionPreference @JvmOverloads constructor(
         val bottom: Int
         when (mPositionMode) {
             POSITION_FIRST_ITEM -> {
-                top = context.resources.getDimensionPixelSize(R.dimen.oui_unclickablepref_first_margin_top)
-                bottom = context.resources.getDimensionPixelSize(R.dimen.oui_unclickablepref_first_margin_bottom)
+                top = context.resources.getDimensionPixelSize(R.dimen.oui_des_unclickablepref_first_margin_top)
+                bottom = context.resources.getDimensionPixelSize(R.dimen.oui_des_unclickablepref_first_margin_bottom)
             }
 
             POSITION_SUBHEADER -> {
-                top = context.resources.getDimensionPixelSize(R.dimen.oui_unclickablepref_subheader_margin_top)
-                bottom = context.resources.getDimensionPixelSize(R.dimen.oui_unclickablepref_subheader_margin_bottom)
+                top = context.resources.getDimensionPixelSize(R.dimen.oui_des_unclickablepref_subheader_margin_top)
+                bottom = context.resources.getDimensionPixelSize(R.dimen.oui_des_unclickablepref_subheader_margin_bottom)
             }
 
             POSITION_NORMAL -> {
-                top = context.resources.getDimensionPixelSize(R.dimen.oui_unclickablepref_margin_top)
-                bottom = context.resources.getDimensionPixelSize(R.dimen.oui_unclickablepref_margin_bottom)
+                top = context.resources.getDimensionPixelSize(R.dimen.oui_des_unclickablepref_margin_top)
+                bottom = context.resources.getDimensionPixelSize(R.dimen.oui_des_unclickablepref_margin_bottom)
             }
 
             else -> {
-                top = context.resources.getDimensionPixelSize(R.dimen.oui_unclickablepref_margin_top)
-                bottom = context.resources.getDimensionPixelSize(R.dimen.oui_unclickablepref_margin_bottom)
+                top = context.resources.getDimensionPixelSize(R.dimen.oui_des_unclickablepref_margin_top)
+                bottom = context.resources.getDimensionPixelSize(R.dimen.oui_des_unclickablepref_margin_bottom)
             }
         }
 
-        val horizontal = context.resources.getDimensionPixelSize(R.dimen.oui_unclickablepref_text_padding_start_end)
+        val horizontal = context.resources.getDimensionPixelSize(R.dimen.oui_des_unclickablepref_text_padding_start_end)
 
         lp.setMargins(horizontal, top, horizontal, bottom)
         titleTextView.layoutParams = lp

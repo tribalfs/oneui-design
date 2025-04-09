@@ -2,162 +2,158 @@
 <resources>
 
     <!-- RelatedCard -->
-    <dimen name="oui_relative_link_gap_height">20.0dip</dimen>
-    <dimen name="oui_relative_link_view_margin_start_end">24.0dip</dimen>
-    <dimen name="oui_relative_link_view_margin_top_bottom">20.0dip</dimen>
-    <dimen name="oui_relative_link_view_margin_start_tip">18.0dip</dimen>
-    <dimen name="oui_relative_link_title_text_size">18.0sp</dimen>
-    <dimen name="oui_relative_link_title_text_margin_bottom">10.0dip</dimen>
-    <dimen name="oui_relative_link_text_margin_start">8.0dip</dimen>
-    <dimen name="oui_relative_link_text_padding_side">16.0dip</dimen>
-    <dimen name="oui_relative_link_text_padding_top">6.0dip</dimen>
-    <dimen name="oui_relative_link_text_size">17.0sp</dimen>
+    <dimen name="oui_des_relative_link_gap_height">20.0dip</dimen>
+    <dimen name="oui_des_relative_link_view_margin_start_end">24.0dip</dimen>
+    <dimen name="oui_des_relative_link_view_margin_top_bottom">20.0dip</dimen>
+    <dimen name="oui_des_relative_link_view_margin_start_tip">18.0dip</dimen>
+    <dimen name="oui_des_relative_link_title_text_size">18.0sp</dimen>
+    <dimen name="oui_des_relative_link_title_text_margin_bottom">10.0dip</dimen>
+    <dimen name="oui_des_relative_link_text_margin_start">8.0dip</dimen>
+    <dimen name="oui_des_relative_link_text_padding_side">16.0dip</dimen>
+    <dimen name="oui_des_relative_link_text_padding_top">6.0dip</dimen>
+    <dimen name="oui_des_relative_link_text_size">17.0sp</dimen>
 
     <!-- UnclickablePreference -->
-    <dimen name="oui_unclickablepref_text_padding_start_end">24.0dip</dimen>
-    <dimen name="oui_unclickablepref_margin_bottom">20.0dip</dimen>
-    <dimen name="oui_unclickablepref_margin_top">20.0dip</dimen>
-    <dimen name="oui_unclickablepref_first_margin_bottom">20.0dip</dimen>
-    <dimen name="oui_unclickablepref_first_margin_top">0.0dip</dimen>
-    <dimen name="oui_unclickablepref_subheader_margin_bottom">20.0dip</dimen>
-    <dimen name="oui_unclickablepref_subheader_margin_top">6.0dip</dimen>
+    <dimen name="oui_des_unclickablepref_text_padding_start_end">24.0dip</dimen>
+    <dimen name="oui_des_unclickablepref_margin_bottom">20.0dip</dimen>
+    <dimen name="oui_des_unclickablepref_margin_top">20.0dip</dimen>
+    <dimen name="oui_des_unclickablepref_first_margin_bottom">20.0dip</dimen>
+    <dimen name="oui_des_unclickablepref_first_margin_top">0.0dip</dimen>
+    <dimen name="oui_des_unclickablepref_subheader_margin_bottom">20.0dip</dimen>
+    <dimen name="oui_des_unclickablepref_subheader_margin_top">6.0dip</dimen>
 
     <!-- MarginsTabLayout -->
-    <dimen name="oui_tab_layout_default_padding">24.0dip</dimen>
+    <dimen name="oui_des_tab_layout_default_padding">24.0dip</dimen>
 
     <!-- GridMenuDialog -->
-    <dimen name="oui_grid_menu_dialog_horizontal_padding">10.0dip</dimen>
-    <dimen name="oui_grid_menu_dialog_vertical_padding">20.0dip</dimen>
-    <dimen name="oui_grid_menu_dialog_item_gap">8.0dip</dimen>
-    <dimen name="oui_grid_menu_dialog_item_text_size">12sp</dimen>
-    <dimen name="oui_grid_menu_dialog_item_min_width">56dp</dimen>
-    <dimen name="oui_grid_menu_dialog_item_min_height">78dp</dimen>
-    <dimen name="oui_grid_menu_dialog_item_ripple_radius">12dp</dimen>
-    <dimen name="oui_grid_menu_dialog_item_badge_margin_end">-3dp</dimen>
-    <dimen name="oui_grid_menu_dialog_item_badge_margin_top">-3dp</dimen>
-    <dimen name="oui_grid_menu_dialog_item_icon_size">24dp</dimen>
+    <dimen name="oui_des_grid_menu_dialog_horizontal_padding">10.0dip</dimen>
+    <dimen name="oui_des_grid_menu_dialog_vertical_padding">20.0dip</dimen>
+    <dimen name="oui_des_grid_menu_dialog_item_gap">8.0dip</dimen>
+    <dimen name="oui_des_grid_menu_dialog_item_text_size">12sp</dimen>
+    <dimen name="oui_des_grid_menu_dialog_item_min_width">56dp</dimen>
+    <dimen name="oui_des_grid_menu_dialog_item_min_height">78dp</dimen>
+    <dimen name="oui_des_grid_menu_dialog_item_ripple_radius">12dp</dimen>
+    <dimen name="oui_des_grid_menu_dialog_item_badge_margin_end">-3dp</dimen>
+    <dimen name="oui_des_grid_menu_dialog_item_badge_margin_top">-3dp</dimen>
+    <dimen name="oui_des_grid_menu_dialog_item_icon_size">24dp</dimen>
 
     <!-- ToolbarLayout -->
-    <dimen name="oui_n_badge_view_size">17.0dip</dimen>
+    <dimen name="oui_des_n_badge_view_size">17.0dip</dimen>
     <dimen name="oui_des_toolbar_title_margin_end">21dp</dimen>
 
     <!-- HorizontalRadioPreference -->
-    <dimen name="oui_horizontalradiopref_padding_start_end">8.0dip</dimen>
-    <dimen name="oui_horizontalradiopref_padding_top">18.0dip</dimen>
-    <dimen name="oui_horizontalradiopref_padding_bottom">14.0dip</dimen>
-    <dimen name="oui_horizontalradiopref_divider_margin_top">24dp</dimen>
-    <dimen name="oui_horizontalradiopref_divider_margin_bottom">61dp</dimen>
+    <dimen name="oui_des_horizontalradiopref_padding_start_end">8.0dip</dimen>
+    <dimen name="oui_des_horizontalradiopref_padding_top">18.0dip</dimen>
+    <dimen name="oui_des_horizontalradiopref_padding_bottom">14.0dip</dimen>
+    <dimen name="oui_des_horizontalradiopref_divider_margin_top">24dp</dimen>
+    <dimen name="oui_des_horizontalradiopref_divider_margin_bottom">61dp</dimen>
 
     <!-- TipPopup -->
-    <dimen name="sem_tip_popup_balloon_action_text_size">15sp</dimen>
-    <dimen name="sem_tip_popup_balloon_arrow_height">12dp</dimen>
-    <dimen name="sem_tip_popup_balloon_arrow_width">16dp</dimen>
-    <dimen name="sem_tip_popup_balloon_background_minwidth">24dp</dimen>
-    <dimen name="sem_tip_popup_balloon_button_minheight">36dp</dimen>
-    <dimen name="sem_tip_popup_balloon_button_minwidth">0dp</dimen>
-    <dimen name="sem_tip_popup_balloon_message_margin_horizontal">18dp</dimen>
-    <dimen name="sem_tip_popup_balloon_message_margin_vertical">16dp</dimen>
-    <dimen name="sem_tip_popup_balloon_message_text_size">15sp</dimen>
-    <dimen name="sem_tip_popup_bubble_height">31dp</dimen>
-    <dimen name="sem_tip_popup_bubble_height_translucent">31dp</dimen>
-    <dimen name="sem_tip_popup_bubble_width">31dp</dimen>
-    <dimen name="sem_tip_popup_bubble_width_translucent">31dp</dimen>
-    <dimen name="sem_tip_popup_button_inset_horizontal">0dp</dimen>
-    <dimen name="sem_tip_popup_button_inset_vertical">0dp</dimen>
-    <dimen name="sem_tip_popup_button_padding_horizontal">9dp</dimen>
-    <dimen name="sem_tip_popup_button_padding_vertical">8dp</dimen>
-    <dimen name="sem_tip_popup_scale_margin">10dp</dimen>
-    <dimen name="sem_tip_popup_side_margin">10dp</dimen>
+    <dimen name="oui_des_tip_popup_balloon_action_text_size">15sp</dimen>
+    <dimen name="oui_des_tip_popup_balloon_arrow_height">12dp</dimen>
+    <dimen name="oui_des_tip_popup_balloon_arrow_width">16dp</dimen>
+    <dimen name="oui_des_tip_popup_balloon_background_minwidth">24dp</dimen>
+    <dimen name="oui_des_tip_popup_balloon_button_minheight">36dp</dimen>
+    <dimen name="oui_des_tip_popup_balloon_button_minwidth">0dp</dimen>
+    <dimen name="oui_des_tip_popup_balloon_message_margin_horizontal">18dp</dimen>
+    <dimen name="oui_des_tip_popup_balloon_message_margin_vertical">16dp</dimen>
+    <dimen name="oui_des_tip_popup_balloon_message_text_size">15sp</dimen>
+    <dimen name="oui_des_tip_popup_bubble_height">31dp</dimen>
+    <dimen name="oui_des_tip_popup_bubble_height_translucent">31dp</dimen>
+    <dimen name="oui_des_tip_popup_bubble_width">31dp</dimen>
+    <dimen name="oui_des_tip_popup_bubble_width_translucent">31dp</dimen>
+    <dimen name="oui_des_tip_popup_button_inset_horizontal">0dp</dimen>
+    <dimen name="oui_des_tip_popup_button_inset_vertical">0dp</dimen>
+    <dimen name="oui_des_tip_popup_button_padding_horizontal">9dp</dimen>
+    <dimen name="oui_des_tip_popup_button_padding_vertical">8dp</dimen>
+    <dimen name="oui_des_tip_popup_scale_margin">10dp</dimen>
+    <dimen name="oui_des_tip_popup_side_margin">10dp</dimen>
 
     <!--CardItemView-->
-    <dimen name="cardview_icon_divider_margin_end">24dp</dimen>
-    <dimen name="cardview_icon_size">38dp</dimen>
-    <dimen name="cardview_icon_margin_vertical">8dp</dimen>
-    <dimen name="cardview_icon_margin_end">16dp</dimen>
+    <dimen name="oui_des_cardview_icon_divider_margin_end">24dp</dimen>
+    <dimen name="oui_des_cardview_icon_size">38dp</dimen>
+    <dimen name="oui_des_cardview_icon_margin_vertical">8dp</dimen>
+    <dimen name="oui_des_cardview_icon_margin_end">16dp</dimen>
 
     <!--AppInfoLayout-->
-    <dimen name="oui_ail_sub_text_size">13sp</dimen>
-    <dimen name="oui_ail_app_label_text_size">34sp</dimen>
+    <dimen name="oui_des_ail_sub_text_size">13sp</dimen>
+    <dimen name="oui_des_ail_app_label_text_size">34sp</dimen>
 
     <!-- OnboardingTipsItemView -->
-    <dimen name="obs_item_text_max_width">300dp</dimen>
-    <dimen name="obs_item_text_min_width">260dp</dimen>
+    <dimen name="oui_des_obs_item_text_max_width">300dp</dimen>
+    <dimen name="oui_des_obs_item_text_min_width">260dp</dimen>
 
     <!--StartEnd Time Picker-->
-    <dimen name="sec_dark_mode_time_dash_margin">18dp</dimen>
-    <dimen name="sec_dark_mode_time_dash_text_size">23dp</dimen>
-    <dimen name="start_end_time_picker_height">155dp</dimen>
-    <dimen name="start_end_time_picker_margin_bottom">16dp</dimen>
-    <dimen name="start_end_time_picker_margin_top">18dp</dimen>
-    <dimen name="start_end_time_picker_tab_height">53dp</dimen>
-    <dimen name="start_end_time_picker_tab_margin">24dp</dimen>
-    <dimen name="start_end_time_picker_tab_margin_bottom">0dp</dimen>
-    <dimen name="start_end_time_picker_tab_margin_top">0dp</dimen>
-    <dimen name="sec_dark_mode_time_text_margin">5dp</dimen>
+    <dimen name="oui_des_dialog_start_end_time_picker_height">155dp</dimen>
+    <dimen name="oui_des_dialog_start_end_time_picker_margin_bottom">16dp</dimen>
+    <dimen name="oui_des_dialog_start_end_time_picker_margin_top">18dp</dimen>
+    <dimen name="oui_des_dialog_start_end_time_picker_tab_height">53dp</dimen>
+    <dimen name="oui_des_dialog_start_end_time_picker_tab_margin">24dp</dimen>
+    <dimen name="oui_des_dialog_start_end_time_picker_tab_margin_bottom">0dp</dimen>
+    <dimen name="oui_des_dialog_start_end_time_picker_tab_margin_top">0dp</dimen>
 
     <!--DrawerLayout/NavDrawerLayout-->
-    <dimen name="drawer_item_open_drawer_margin_start">12dp</dimen>
-    <dimen name="drawer_header_icon_start_end_margin">16dp</dimen>
-    <dimen name="drawer_header_icon_margin_top">8dp</dimen>
-    <dimen name="drawer_header_icon_margin_bottom">1dp</dimen>
-    <dimen name="drawer_header_height">56dp</dimen>
-    <dimen name="drawer_header_icon_size">48dp</dimen>
+    <dimen name="oui_des_drawer_menu_item_open_drawer_margin_start">12dp</dimen>
+    <dimen name="oui_des_drawer_header_icon_start_end_margin">16dp</dimen>
+    <dimen name="oui_des_drawer_header_icon_margin_top">8dp</dimen>
+    <dimen name="oui_des_drawer_header_icon_margin_bottom">1dp</dimen>
+    <dimen name="oui_des_drawer_header_height">56dp</dimen>
+    <dimen name="oui_des_drawer_header_icon_size">48dp</dimen>
 
-    <dimen name="drawer_category_title_text_size">17sp</dimen>
-    <dimen name="drawer_category_item_min_height">52dp</dimen>
-    <dimen name="drawer_category_item_view_stroke">0.75dp</dimen>
-    <dimen name="drawer_category_item_view_background_radius">26dp</dimen>
-    <dimen name="drawer_category_item_margin_top">12dp</dimen>
-    <dimen name="drawer_category_item_margin_bottom">24dp</dimen>
-    <dimen name="drawer_category_view_margin_end">28dp</dimen>
-    <dimen name="drawer_category_view_margin_start">22dp</dimen>
-    <dimen name="drawer_category_view_elevation">3dp</dimen>
-    <dimen name="drawer_category_view_icon_margin_start">42dp</dimen>
-    <dimen name="drawer_category_view_title_margin_start">12dp</dimen>
-    <dimen name="drawer_category_view_count_margin_end">45dp</dimen>
-    <dimen name="drawer_category_title_margin">18dp</dimen>
+    <dimen name="oui_des_drawer_menu_category_title_text_size">17sp</dimen>
+    <dimen name="oui_des_drawer_menu_category_min_height">52dp</dimen>
+    <dimen name="oui_des_drawer_menu_category_view_stroke">0.75dp</dimen>
+    <dimen name="oui_des_drawer_menu_category_view_background_radius">26dp</dimen>
+    <dimen name="oui_des_drawer_menu_category_margin_top">12dp</dimen>
+    <dimen name="oui_des_drawer_menu_category_margin_bottom">24dp</dimen>
+    <dimen name="oui_des_drawer_menu_category_view_margin_end">28dp</dimen>
+    <dimen name="oui_des_drawer_menu_category_view_margin_start">22dp</dimen>
+    <dimen name="oui_des_drawer_menu_category_view_elevation">3dp</dimen>
+    <dimen name="oui_des_drawer_menu_category_view_icon_margin_start">42dp</dimen>
+    <dimen name="oui_des_drawer_menu_category_view_title_margin_start">12dp</dimen>
+    <dimen name="oui_des_drawer_menu_category_view_count_margin_end">45dp</dimen>
+    <dimen name="oui_des_drawer_menu_category_title_margin">18dp</dimen>
 
-    <dimen name="drawer_divider_padding_start_end">25dp</dimen>
+    <dimen name="oui_des_drawer_menu_divider_padding_start_end">25dp</dimen>
 
-    <dimen name="drawer_item_icon_size">24dp</dimen>
-    <dimen name="drawer_item_count_margin_end">32dp</dimen>
-    <dimen name="drawer_item_count_text_size">13dp</dimen>
-    <dimen name="drawer_item_group_expand_margin_end">32dp</dimen>
-    <dimen name="drawer_item_group_margin_vertical">8dp</dimen>
-    <dimen name="drawer_item_icon_margin_start">32dp</dimen>
-    <dimen name="drawer_item_margin_vertical">14dp</dimen>
-    <dimen name="drawer_item_open_drawer_margin_start_phone">8dp</dimen>
-    <dimen name="drawer_item_selected_layout_margin_end">18dp</dimen>
-    <dimen name="drawer_item_selected_layout_margin_start">14dp</dimen>
-    <dimen name="drawer_item_selected_layout_margin_vertical">6dp</dimen>
-    <dimen name="drawer_item_selected_layout_width_collapsed">44dp</dimen>
-    <dimen name="drawer_item_action_container_margin">8dp</dimen>
-    <dimen name="drawer_item_bg_corner_radius">8dp</dimen>
-
+    <dimen name="oui_des_drawer_menu_item_icon_size">24dp</dimen>
+    <dimen name="oui_des_drawer_menu_item_count_margin_end">32dp</dimen>
+    <dimen name="oui_des_drawer_menu_item_count_text_size">13dp</dimen>
+    <dimen name="oui_des_drawer_menu_group_expand_margin_end">32dp</dimen>
+    <dimen name="oui_des_drawer_menu_group_margin_vertical">8dp</dimen>
+    <dimen name="oui_des_drawer_menu_item_icon_margin_start">32dp</dimen>
+    <dimen name="oui_des_drawer_menu_item_margin_vertical">14dp</dimen>
+    <dimen name="oui_des_drawer_menu_item_open_drawer_margin_start_phone">8dp</dimen>
+    <dimen name="oui_des_drawer_menu_item_selected_layout_margin_end">18dp</dimen>
+    <dimen name="oui_des_drawer_menu_item_selected_layout_margin_start">14dp</dimen>
+    <dimen name="oui_des_drawer_menu_item_selected_layout_margin_vertical">6dp</dimen>
+    <dimen name="oui_des_drawer_menu_item_selected_layout_width_collapsed">44dp</dimen>
+    <dimen name="oui_des_drawer_menu_item_action_container_margin">8dp</dimen>
+    <dimen name="oui_des_drawer_menu_item_bg_corner_radius">8dp</dimen>
 
 
     <!--SuggestionCardPreference-->
-    <dimen name="sec_dashboard_tile_image_margin_start">20dp</dimen>
-    <dimen name="sec_widget_round_button_bg_radius">22dp</dimen>
-    <dimen name="sec_widget_round_button_padding_start_end">16dp</dimen>
-    <dimen name="sec_widget_round_button_padding_top_bottom">9dp</dimen>
+    <dimen name="oui_des_suggestionpref_tile_image_margin_start">20dp</dimen>
+    <dimen name="oui_des_suggestionpref_round_button_bg_radius">22dp</dimen>
+    <dimen name="oui_des_suggestionpref_round_button_padding_start_end">16dp</dimen>
+    <dimen name="oui_des_suggestionpref_round_button_padding_top_bottom">9dp</dimen>
 
     <!-- MarginsTabLayout -->
-    <dimen name="oui_tab_layout_default_side_margin">24dp</dimen>
-    <dimen name="oui_tab_layout_default_tab_padding">8dp</dimen>
+    <dimen name="oui_des_tab_layout_default_side_margin">24dp</dimen>
+    <dimen name="oui_des_tab_layout_default_tab_padding">8dp</dimen>
 
     <!--BottomTabLayout-->
-    <dimen name="more_menu_dialog_y_offset_dex">88dp</dimen>
-    <dimen name="more_menu_dialog_y_offset">48dp</dimen>
-    <dimen name="more_menu_dialog_padding_horizontal">8dp</dimen>
-    <dimen name="more_menu_griditem_padding_horizontal">8dp</dimen>
-    <dimen name="more_menu_grid_item_min_width">56dp</dimen>
-    <dimen name="more_menu_dialog_max_width">460dp</dimen>
-    <dimen name="more_menu_dialog_min_width">360dp</dimen>
-    <dimen name="more_menu_griditem_padding_vertical">3dp</dimen>
-    <dimen name="more_menu_grid_item_height">78dp</dimen>
-    <dimen name="more_menu_dialog_padding_top">17dp</dimen>
-    <dimen name="more_menu_dialog_padding_bottom">9dp</dimen>
-    <item name="more_menu_dialog_width_ratio_mw" type="dimen" format="float">0.58</item>
-    <item name="more_menu_dialog_width_ratio" type="dimen" format="float">0.6</item>
+    <dimen name="oui_des_more_menu_dialog_y_offset_dex">88dp</dimen>
+    <dimen name="oui_des_more_menu_dialog_y_offset">48dp</dimen>
+    <dimen name="oui_des_more_menu_dialog_padding_horizontal">8dp</dimen>
+    <dimen name="oui_des_more_menu_griditem_padding_horizontal">8dp</dimen>
+    <dimen name="oui_des_more_menu_grid_item_min_width">56dp</dimen>
+    <dimen name="oui_des_more_menu_dialog_max_width">460dp</dimen>
+    <dimen name="oui_des_more_menu_dialog_min_width">360dp</dimen>
+    <dimen name="oui_des_more_menu_griditem_padding_vertical">3dp</dimen>
+    <dimen name="oui_des_more_menu_grid_item_height">78dp</dimen>
+    <dimen name="oui_des_more_menu_dialog_padding_top">17dp</dimen>
+    <dimen name="oui_des_more_menu_dialog_padding_bottom">9dp</dimen>
+    <item name="oui_des_more_menu_dialog_width_ratio_mw" type="dimen" format="float">0.58</item>
+    <item name="oui_des_more_menu_dialog_width_ratio" type="dimen" format="float">0.6</item>
 </resources>

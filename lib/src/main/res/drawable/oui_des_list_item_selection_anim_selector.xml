@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_selected="true" android:id="@+id/on" android:drawable="@drawable/oui_des_list_item_selected_icon"/>
+    <item android:state_selected="false" android:id="@+id/off" android:drawable="@drawable/oui_des_list_item_unselected_icon"/>
+    <transition android:drawable="@drawable/oui_des_list_item_selected_avd" android:toId="@+id/on" android:fromId="@+id/off"/>
+    <transition android:drawable="@drawable/oui_des_list_item_unselected_avd" android:toId="@+id/off" android:fromId="@+id/on"/>
+</animated-selector>

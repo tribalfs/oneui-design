@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--BottomTabLayout-->
-    <item name="more_menu_dialog_width_ratio" type="dimen" format="float">0.3625</item>
+    <item name="oui_des_more_menu_dialog_width_ratio" type="dimen" format="float">0.3625</item>
 </resources>

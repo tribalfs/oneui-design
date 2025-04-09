@@ -35,7 +35,7 @@ class TipsCardPreference @JvmOverloads constructor(
 
     init {
         isSelectable = false
-        layoutResource = R.layout.oui_preference_tips_layout
+        layoutResource = R.layout.oui_des_preference_tips_layout
         val primaryTextColor = ResourcesCompat.getColorStateList(context.resources,
             context.getThemeAttributeValue(android.R.attr.textColorPrimary)!!.resourceId,
             context.theme)

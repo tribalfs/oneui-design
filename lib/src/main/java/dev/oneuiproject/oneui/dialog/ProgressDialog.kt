@@ -76,7 +76,7 @@ class ProgressDialog @JvmOverloads constructor(
                  * must be updated on the same thread that created them.
                  */
                 mViewUpdateHandler = PgHandler(this)
-                mContentView = inflater.inflate(R.layout.oui_dialog_progress_dialog_horizontal, null).apply {
+                mContentView = inflater.inflate(R.layout.oui_des_dialog_progress_dialog_horizontal, null).apply {
                     mProgress = findViewById<View>(R.id.progress) as SeslProgressBar
                     mProgressNumber = findViewById<View>(R.id.progress_number) as TextView
                     mProgressPercent = findViewById<View>(R.id.progress_percent) as TextView
@@ -87,13 +87,13 @@ class ProgressDialog @JvmOverloads constructor(
             STYLE_CIRCLE -> {
                 setTitle(null)
                 window!!.setBackgroundDrawableResource(android.R.color.transparent)
-                val view = inflater.inflate(R.layout.oui_dialog_progress_dialog_circle, null)
+                val view = inflater.inflate(R.layout.oui_des_dialog_progress_dialog_circle, null)
                 mProgress = view.findViewById<View>(R.id.progress) as SeslProgressBar
                 mMessageView = view.findViewById<View>(R.id.message) as TextView
                 setView(view)
             }
             else -> {
-                val view = inflater.inflate(R.layout.oui_dialog_progress_dialog_spinner, null)
+                val view = inflater.inflate(R.layout.oui_des_dialog_progress_dialog_spinner, null)
                 mProgress = view.findViewById<View>(R.id.progress) as SeslProgressBar
                 mMessageView = view.findViewById<View>(R.id.message) as TextView
                 setView(view)

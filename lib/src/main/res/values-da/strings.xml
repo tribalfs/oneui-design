@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
-    <string name="oui_new_badge_text">N</string>
-    <string name="new_version_is_available">En ny version er tilgængelig.</string>
-    <string name="oui_action_mode_select_items">Vælg elementer</string>
-    <string name="oui_relative_description">Leder du efter noget andet?</string>
-    <string name="update">Opdater</string>
-    <string name="oui_common_edit">Rediger</string>
-    <string name="oui_common_apply">Anvend</string>
-    <string name="oui_common_close">Luk</string>
-    <string name="network_connect_is_not_stable">Der kunne ikke søges efter opdateringer.</string>
-    <string name="latest_version">Den nyeste version er allerede installeret.</string>
-
-    <string name="oui_time_dialog_start">Start</string>
-    <string name="app_info">Appoplysninger</string>
-    <string name="retry">Prøv igen</string>
-    <string name="oui_common_cancel">Annuller</string>
-    <string name="oui_common_continue">Fortsæt</string>
-    <string name="oui_time_dialog_end">Afslut</string>
-    <string name="oui_navigation_drawer">Navigationsskuffe</string>
-    <string name="version_info">Version %s</string>
-    <string name="oui_action_mode_n_selected">%d valgt</string>
-    <string name="oui_common_add">Tilføj</string>
-    <string name="oui_common_done">Udført</string>
-    <string name="oui_common_button_yes">Ja</string>
-    <string name="oui_common_disable">Deaktiver</string>
-    <string name="sem_tip_popup_hint_string">Dobbelttryk på denne knap for at få mere at vide.</string>
-    <string name="oui_action_mode_all_checkbox">Alt</string>
+    <string name="oui_des_new_badge_text">N</string>
+    <string name="oui_des_new_version_is_available">En ny version er tilgængelig.</string>
+    <string name="oui_des_action_mode_select_items">Vælg elementer</string>
+    <string name="oui_des_relative_description">Leder du efter noget andet?</string>
+    <string name="oui_des_update">Opdater</string>
+    <string name="oui_des_common_edit">Rediger</string>
+    <string name="oui_des_common_apply">Anvend</string>
+    <string name="oui_des_common_close">Luk</string>
+    <string name="oui_des_network_connect_is_not_stable">Der kunne ikke søges efter opdateringer.</string>
+    <string name="oui_des_latest_version">Den nyeste version er allerede installeret.</string>
+    <string name="oui_des_time_dialog_start">Start</string>
+    <string name="oui_des_app_info">Appoplysninger</string>
+    <string name="oui_des_retry">Prøv igen</string>
+    <string name="oui_des_common_cancel">Annuller</string>
+    <string name="oui_des_common_continue">Fortsæt</string>
+    <string name="oui_des_time_dialog_end">Afslut</string>
+    <string name="oui_des_navigation_drawer">Navigationsskuffe</string>
+    <string name="oui_des_version_info">Version %s</string>
+    <string name="oui_des_action_mode_n_selected">%d valgt</string>
+    <string name="oui_des_common_add">Tilføj</string>
+    <string name="oui_des_common_done">Udført</string>
+    <string name="oui_des_common_button_yes">Ja</string>
+    <string name="oui_des_common_disable">Deaktiver</string>
+    <string name="oui_des_tip_popup_hint_string">Dobbelttryk på denne knap for at få mere at vide.</string>
+    <string name="oui_des_action_mode_all_checkbox">Alt</string>
 </resources>

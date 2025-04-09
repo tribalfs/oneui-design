@@ -117,7 +117,7 @@ class AppPickerDelegate : AppPickerOp, AppPickerView.OnBindListener{
                                                 packageName: CharSequence, holder: AppPickerView.ViewHolder) {
         if (position == 0) {
             if (AppPickerView.ALL_APPS_STRING != packageName) return
-            holder.appLabel.text = mContext.getString(R.string.oui_action_mode_all_checkbox)
+            holder.appLabel.text = mContext.getString(R.string.oui_des_action_mode_all_checkbox)
             switchWidget.apply {
                 isChecked = mSelectedItems.size == mGetCurrentList().size
                 holder.itemView.setOnClickListener {

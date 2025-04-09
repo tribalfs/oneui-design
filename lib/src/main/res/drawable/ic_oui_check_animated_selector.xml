@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<animated-selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_selected="true" android:id="@+id/on" android:drawable="@drawable/ic_oui_check"/>
-    <item android:state_selected="false" android:id="@+id/off" android:drawable="@drawable/ic_oui_check_none"/>
-    <transition android:drawable="@drawable/ic_oui_check_selected" android:toId="@+id/on" android:fromId="@+id/off"/>
-    <transition android:drawable="@drawable/ic_oui_check_unselected" android:toId="@+id/off" android:fromId="@+id/on"/>
-</animated-selector>

@@ -2,45 +2,44 @@
 <resources>
 
     <!-- RelatedCard -->
-    <string name="oui_relative_description">Looking for something else?</string>
+    <string name="oui_des_relative_description">Looking for something else?</string>
 
     <!-- GridMenuDialog -->
-    <string name="oui_new_badge_text">N</string>
+    <string name="oui_des_new_badge_text">N</string>
 
     <!-- ToolbarLayout -->
-    <string name="oui_navigation_drawer">Navigation drawer</string>
-    <string name="oui_action_mode_all_checkbox">All</string>
-    <string name="oui_action_mode_n_selected">%d selected</string>
-    <string name="oui_action_mode_select_items">Select items</string>
+    <string name="oui_des_navigation_drawer">Navigation drawer</string>
+    <string name="oui_des_action_mode_all_checkbox">All</string>
+    <string name="oui_des_action_mode_n_selected">%d selected</string>
+    <string name="oui_des_action_mode_select_items">Select items</string>
 
     <!-- AppInfoLayout -->
     <string name="app_name" />
-    <string name="app_info">App info</string>
-    <string name="version_info">Version %s</string>
-    <string name="update">Update</string>
-    <string name="retry">Retry</string>
-    <string name="new_version_is_available">A new version is available.</string>
-    <string name="latest_version">The latest version is already installed.</string>
-    <string name="network_connect_is_not_stable">Couldn\'t check for updates.</string>
-
+    <string name="oui_des_app_info">App info</string>
+    <string name="oui_des_version_info">Version %s</string>
+    <string name="oui_des_update">Update</string>
+    <string name="oui_des_retry">Retry</string>
+    <string name="oui_des_new_version_is_available">A new version is available.</string>
+    <string name="oui_des_latest_version">The latest version is already installed.</string>
+    <string name="oui_des_network_connect_is_not_stable">Couldn\'t check for updates.</string>
 
     <!-- StartEndTimePicker -->
-    <string name="oui_time_dialog_end">End</string>
-    <string name="oui_time_dialog_start">Start</string>
+    <string name="oui_des_time_dialog_end">End</string>
+    <string name="oui_des_time_dialog_start">Start</string>
 
     <!-- Common -->
-    <string name="oui_common_add">Add</string>
-    <string name="oui_common_apply">Apply</string>
-    <string name="oui_common_button_yes">Yes</string>
-    <string name="oui_common_cancel">Cancel</string>
-    <string name="oui_common_continue">Continue</string>
-    <string name="oui_common_disable">Disable</string>
-    <string name="oui_common_done">Done</string>
-    <string name="oui_common_edit">Edit</string>
-    <string name="oui_common_close">Close</string>
+    <string name="oui_des_common_add">Add</string>
+    <string name="oui_des_common_apply">Apply</string>
+    <string name="oui_des_common_button_yes">Yes</string>
+    <string name="oui_des_common_cancel">Cancel</string>
+    <string name="oui_des_common_continue">Continue</string>
+    <string name="oui_des_common_disable">Disable</string>
+    <string name="oui_des_common_done">Done</string>
+    <string name="oui_des_common_edit">Edit</string>
+    <string name="oui_des_common_close">Close</string>
 
     <!-- TipPopup -->
-    <string name="sem_tip_popup_hint_string">Double tap this button to learn more.</string>
+    <string name="oui_des_tip_popup_hint_string">Double tap this button to learn more.</string>
 
     <!--Navigation-->
     <string name="navArg_subtitle" translatable="false">drawer:subtitle</string>

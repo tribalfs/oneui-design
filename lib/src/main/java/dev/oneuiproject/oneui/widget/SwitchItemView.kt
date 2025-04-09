@@ -87,7 +87,7 @@ class SwitchItemView @JvmOverloads constructor(
     private fun ensureTopDivider(){
         if (mDividerViewTop == null){
             mDividerViewTop = LayoutInflater.from(context)
-                .inflate(R.layout.oui_widget_card_item_divider, this, false)
+                .inflate(R.layout.oui_des_widget_card_item_divider, this, false)
             addView(mDividerViewTop, 0)
         }
     }
@@ -95,7 +95,7 @@ class SwitchItemView @JvmOverloads constructor(
     private fun ensureBottomDivider(){
         if (mDividerViewBottom == null){
             mDividerViewBottom = LayoutInflater.from(context)
-                .inflate(R.layout.oui_widget_card_item_divider, this, false)
+                .inflate(R.layout.oui_des_widget_card_item_divider, this, false)
             addView(mDividerViewBottom, childCount)
         }
     }
@@ -159,7 +159,7 @@ class SwitchItemView @JvmOverloads constructor(
     init {
         orientation = VERTICAL
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-        LayoutInflater.from(context).inflate(R.layout.oui_widget_switch_item, this@SwitchItemView)
+        LayoutInflater.from(context).inflate(R.layout.oui_des_widget_switch_item, this@SwitchItemView)
 
         mTitleView = findViewById(R.id.switch_card_title)
         mSummaryView = findViewById(R.id.switch_card_summary)

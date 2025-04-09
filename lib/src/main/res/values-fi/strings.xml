@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
-    <string name="oui_new_badge_text">U</string>
-    <string name="new_version_is_available">Uusi versio saatavilla</string>
-    <string name="oui_action_mode_select_items">Valitse kohteet</string>
-    <string name="oui_relative_description">Etsitkö jotain muuta?</string>
-    <string name="update">Päivitä</string>
-    <string name="oui_common_edit">Muokkaa</string>
-    <string name="oui_common_apply">Käytä</string>
-    <string name="oui_common_close">Sulje</string>
-    <string name="network_connect_is_not_stable">Päivitysten hakeminen epäonnistui.</string>
-    <string name="latest_version">Uusin versio on jo asennettu.</string>
-
-    <string name="oui_time_dialog_start">Alkaa</string>
-    <string name="app_info">Sovelluksen tiedot</string>
-    <string name="retry">Yritä uud.</string>
-    <string name="oui_common_cancel">Peruuta</string>
-    <string name="oui_common_continue">Jatka</string>
-    <string name="oui_time_dialog_end">Loppuu</string>
-    <string name="oui_navigation_drawer">Siirtymisvalikko</string>
-    <string name="version_info">Versio %s</string>
-    <string name="oui_action_mode_n_selected">%d valittu</string>
-    <string name="oui_common_add">Lisää</string>
-    <string name="oui_common_done">Valmis</string>
-    <string name="oui_common_button_yes">Kyllä</string>
-    <string name="oui_common_disable">Ei käyt.</string>
-    <string name="sem_tip_popup_hint_string">Lisätietoja saat kaksoisnapauttamalla tätä painiketta.</string>
-    <string name="oui_action_mode_all_checkbox">Kaikki</string>
+    <string name="oui_des_new_badge_text">U</string>
+    <string name="oui_des_new_version_is_available">Uusi versio saatavilla</string>
+    <string name="oui_des_action_mode_select_items">Valitse kohteet</string>
+    <string name="oui_des_relative_description">Etsitkö jotain muuta?</string>
+    <string name="oui_des_update">Päivitä</string>
+    <string name="oui_des_common_edit">Muokkaa</string>
+    <string name="oui_des_common_apply">Käytä</string>
+    <string name="oui_des_common_close">Sulje</string>
+    <string name="oui_des_network_connect_is_not_stable">Päivitysten hakeminen epäonnistui.</string>
+    <string name="oui_des_latest_version">Uusin versio on jo asennettu.</string>
+    <string name="oui_des_time_dialog_start">Alkaa</string>
+    <string name="oui_des_app_info">Sovelluksen tiedot</string>
+    <string name="oui_des_retry">Yritä uud.</string>
+    <string name="oui_des_common_cancel">Peruuta</string>
+    <string name="oui_des_common_continue">Jatka</string>
+    <string name="oui_des_time_dialog_end">Loppuu</string>
+    <string name="oui_des_navigation_drawer">Siirtymisvalikko</string>
+    <string name="oui_des_version_info">Versio %s</string>
+    <string name="oui_des_action_mode_n_selected">%d valittu</string>
+    <string name="oui_des_common_add">Lisää</string>
+    <string name="oui_des_common_done">Valmis</string>
+    <string name="oui_des_common_button_yes">Kyllä</string>
+    <string name="oui_des_common_disable">Ei käyt.</string>
+    <string name="oui_des_tip_popup_hint_string">Lisätietoja saat kaksoisnapauttamalla tätä painiketta.</string>
+    <string name="oui_des_action_mode_all_checkbox">Kaikki</string>
 </resources>

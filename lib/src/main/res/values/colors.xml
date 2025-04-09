@@ -1,98 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="oui_round_and_bgcolor">@color/sesl_round_and_bgcolor_light</color>
-    <color name="oui_background_color">@color/sesl_background_color_light</color>
-    <color name="oui_primary_text_color">@color/sesl_primary_text_light</color>
-    <color name="oui_primary_icon_color">@color/oui_primary_text_color</color>
+    <color name="oui_des_round_and_bgcolor">@color/sesl_round_and_bgcolor_light</color>
+    <color name="oui_des_background_color">@color/sesl_background_color_light</color>
+    <color name="oui_des_primary_text_color">@color/sesl_primary_text_light</color>
+    <color name="oui_des_primary_icon_color">@color/oui_des_primary_text_color</color>
 
-    <color name="oui_list_divider_color">@color/sesl_list_divider_color_light</color>
+    <color name="oui_des_list_divider_color">@color/sesl_list_divider_color_light</color>
 
-    <color name="oui_functional_green_color">@color/sesl_functional_green_light</color>
-    <color name="oui_functional_orange_color">@color/sesl_functional_orange_light</color>
-    <color name="oui_functional_red_color">@color/sesl_functional_red_light</color>
+    <color name="oui_des_functional_green_color">@color/sesl_functional_green_light</color>
+    <color name="oui_des_functional_orange_color">@color/sesl_functional_orange_light</color>
+    <color name="oui_des_functional_red_color">@color/sesl_functional_red_light</color>
 
     <!-- Buttons -->
-    <color name="oui_btn_border_color">#252525</color>
-    <color name="oui_btn_text_color">#666666</color>
+    <color name="oui_des_btn_outline_border_color">#252525</color>
+    <color name="oui_des_btn_outline_text_color">#666666</color>
     <color name="oui_des_btn_contained_primary_text">#fffafafa</color>
 
     <!-- RelatedCard -->
-    <color name="oui_relative_link_title_text_color">#ff252525</color>
+    <color name="oui_des_relative_link_title_text_color">#ff252525</color>
 
     <!-- UnclickablePreference -->
-    <color name="oui_unclickablepref_text_color">#ff252525</color>
-    <color name="oui_unclickablepref_link_text_color">#ff3b3b3b</color>
+    <color name="oui_des_unclickablepref_text_color">#ff252525</color>
+    <color name="oui_des_unclickablepref_link_text_color">#ff3b3b3b</color>
 
     <!-- SeekBar -->
-    <color name="oui_seekbar_overlap_color_default">
+    <color name="oui_des_seekbar_overlap_color_default">
         @color/sesl_seekbar_overlap_color_default_light
     </color>
-    <color name="oui_seekbar_legacy_overlap_color_default">#fffcb69b</color>
-    <color name="oui_seekbar_overlap_color_activated">
+    <color name="oui_des_seekbar_legacy_overlap_color_default">#fffcb69b</color>
+    <color name="oui_des_seekbar_overlap_color_activated">
         @color/sesl_seekbar_overlap_color_activated_light
     </color>
 
-    <color name="oui_seekbar_circle_marker_color">#ff9c9c9c</color>
+    <color name="oui_des_seekbar_circle_marker_color">#ff9c9c9c</color>
 
-    <color name="oui_widget_seekbar_preference_label_text_color">#4d4d52</color>
+    <color name="oui_des_seekbar_preference_label_text_color">#4d4d52</color>
 
     <!-- ProgressDialog -->
-    <color name="oui_progress_dialog_text_color">#ff252525</color>
-    <color name="oui_progress_dialog_horizontal_text_color">#ff505050</color>
+    <color name="oui_des_progress_dialog_text_color">#ff252525</color>
+    <color name="oui_des_progress_dialog_horizontal_text_color">#ff505050</color>
 
     <!-- GridMenuDialog -->
-    <color name="oui_grid_menu_dialog_item_ripple_color">#1a000000</color>
-    <color name="oui_grid_menu_dialog_item_icon_text_color">#ff252525</color>
+    <color name="oui_des_grid_menu_dialog_item_ripple_color">#1a000000</color>
+    <color name="oui_des_grid_menu_dialog_item_icon_text_color">#ff252525</color>
 
     <!-- DrawerLayout -->
-    <color name="oui_drawerlayout_drawer_dim_color">#33000000</color>
-    <color name="oui_drawerlayout_header_icon_tint">#ff676768</color>
-    <color name="drawer_background_color">#CCFCFCFC</color>
-    <color name="oui_drawer_item_text_color">@color/oui_primary_text_color</color>
-    <color name="oui_drawer_count_text_color">#8c8c8c</color>>
-    <color name="oui_drawer_item_selected_background_color">#0d010102</color>
-    <color name="oui_drawer_category_dotted_line_color">#c6c6c6</color>
-    <color name="oui_drawer_category_stroke_color">#e4e4e4</color>
-    <color name="oui_drawer_category_group_view_background_color">#fcfcfc</color>
-    <color name="oui_drawer_list_expand_indicator_color">#797979</color>
-    <color name="oui_list_ripple_color">@color/sesl_list_ripple_color_light</color>
+    <color name="oui_des_drawerlayout_drawer_dim_color">#33000000</color>
+    <color name="oui_des_drawerlayout_drawer_bg_color">#CCFCFCFC</color>
+    <color name="oui_des_drawerlayout_header_icon_tint">#ff676768</color>
+    <color name="oui_des_drawer_menu_item_text_color">@color/oui_des_primary_text_color</color>
+    <color name="oui_des_drawer_menu_item_count_text_color">#8c8c8c</color>>
+    <color name="oui_des_drawer_menu_item_selected_bg_color">#0d010102</color>
+    <color name="oui_des_drawer_menu_dotted_line_color">#c6c6c6</color>
+    <color name="oui_des_drawer_menu_expand_indicator_color">#797979</color>
+    <color name="oui_des_drawer_menu_category_stroke_color">#e4e4e4</color>
+    <color name="oui_des_drawer_menu_category_fg_color">#fcfcfc</color>
+    <color name="oui_des_drawer_menu_category_recoil_color">@color/sesl_list_ripple_color_light</color>
 
     <!-- AppInfoLayout -->
     <!--Note: Samsung apps typically set dynamic colors for app label and sub texts via
     theme meta xml but we observed that color values are set to the same value as action bar title.
     and subheader text color, respectively. So we use the latter values to eliminate the
     need of adding the app label and sub texts colors to the theme meta xml.    -->
-    <color name="oui_appinfolayout_app_label_text_color">@color/sesl_action_bar_text_color_title_light</color>
-    <color name="oui_appinfolayout_sub_text_color">@color/sesl_list_subheader_text_color</color>
-    <color name="oui_appinfolayout_button_bg_color">#ffebebeb</color>
-    <color name="oui_appinfolayout_button_default_text_color">#ff252525</color>
-    <color name="oui_appinfolayout_button_primary_text_color">#fffafafa</color>
+    <color name="oui_des_appinfolayout_app_label_text_color">@color/sesl_action_bar_text_color_title_light</color>
+    <color name="oui_des_appinfolayout_sub_text_color">@color/sesl_list_subheader_text_color</color>
+    <color name="oui_des_appinfolayout_button_bg_color">#ffebebeb</color>
+    <color name="oui_des_appinfolayout_button_default_text_color">#ff252525</color>
+    <color name="oui_des_appinfolayout_button_primary_text_color">#fffafafa</color>
 
     <!-- HorizontalRadioPreference -->
-    <color name="oui_horizontalradiopref_text_unselected_color">#ff858585</color>
+    <color name="oui_des_horizontalradiopref_text_unselected_color">#ff858585</color>
 
     <!-- TipPopup -->
-    <color name="sem_tip_popup_background_color">#ff474747</color>
-    <color name="sem_tip_popup_text_color">#fffafafa</color>
-    <color name="sem_tip_popup_text_color_translucent">#fffafafa</color>
-    <color name="sem_tip_popup_button_color">#1A000000</color>
+    <color name="oui_des_tip_popup_background_color">#ff474747</color>
+    <color name="oui_des_tip_popup_text_color">#fffafafa</color>
+    <color name="oui_des_tip_popup_text_color_translucent">#fffafafa</color>
+    <color name="oui_des_tip_popup_button_color">#1A000000</color>
 
     <!--BottomSheet-->
-    <color name="bottomsheet_bg_color">@color/sesl_gray_L2</color>
+    <color name="oui_des_bottomsheet_bg_color">@color/sesl_gray_L2</color>
 
     <!--SelectableLinearLayout-->
-    <color name="animated_check_bgcolor">@color/sesl_primary_color_light</color>
+    <color name="oui_des_list_item_selection_anim_bg_color">@color/sesl_primary_color_light</color>
 
-    <color name="fab_bg_tint_color">#fffcfcff</color>
+    <color name="oui_des_fab_bg_tint_color">#fffcfcff</color>
 
     <!--BottomTipView-->
-    <color name="bottom_tip_textview_text_color">@color/sesl_list_subheader_text_color</color>
+    <color name="oui_des_bottom_tip_textview_text_color">@color/sesl_list_subheader_text_color</color>
 
-    <color name="oui_suggestion_card_close_button_bg_color">#6669696c</color>
-    <color name="oui_suggestion_card_close_button_color">#fafaff</color>
-    <color name="oui_suggestion_card_button_text_color">@color/sesl_text1_dark</color>
+    <color name="oui_des_suggestion_card_close_button_bg_color">#6669696c</color>
+    <color name="oui_des_suggestion_card_close_button_color">#fafaff</color>
+    <color name="oui_des_suggestion_card_button_text_color">@color/sesl_text1_dark</color>
 
     <!--BottomTabLayout-->
-    <color name="more_menu_list_edge_effect_color">#0d000000</color>
+    <color name="oui_des_more_menu_list_edge_effect_color">#0d000000</color>
 </resources>

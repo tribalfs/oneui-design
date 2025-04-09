@@ -152,7 +152,7 @@ inline fun <T: TabLayout>T.addCustomTab(
     }
 
     getTabView(newTab.position)!!.apply {
-        background = AppCompatResources.getDrawable(context, R.drawable.oui_tab_layout_custom_button_background)
+        background = AppCompatResources.getDrawable(context, R.drawable.oui_des_tab_layout_custom_button_bg)
         setOnTouchListener { v, event ->
             val selectedTabPos = selectedTabPosition
             when (event.action) {

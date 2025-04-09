@@ -60,7 +60,7 @@ class RadioItemView @JvmOverloads constructor(
 
     init {
         orientation = VERTICAL
-        LayoutInflater.from(context).inflate(R.layout.widget_radio_item, this@RadioItemView)
+        LayoutInflater.from(context).inflate(R.layout.oui_des_widget_radio_item, this@RadioItemView)
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
 
         checkedTextView = findViewById(R.id.checkedTextView)

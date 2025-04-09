@@ -83,7 +83,7 @@ class SemDrawerLayout @JvmOverloads constructor(
     private val activity by lazy(LazyThreadSafetyMode.NONE) {  context.appCompatActivity }
 
     init{
-        ContextCompat.getColor(context, R.color.oui_drawerlayout_drawer_dim_color).let {
+        ContextCompat.getColor(context, R.color.oui_des_drawerlayout_drawer_dim_color).let {
             setScrimColor(it)
             scrimAlpha = ((it shr 24) and 0xFF) / 255f
         }
@@ -104,8 +104,8 @@ class SemDrawerLayout @JvmOverloads constructor(
         mHeaderView = mDrawerPane.findViewById(R.id.header_layout)
         mDrawerItemsContainer = mDrawerPane.findViewById(R.id.drawer_items_container)
 
-        mDrawerHeaderButton = mHeaderView.findViewById(R.id.drawer_header_button)
-        mDrawerHeaderBadgeView = mHeaderView.findViewById(R.id.drawer_header_button_badge)
+        mDrawerHeaderButton = mHeaderView.findViewById(R.id.oui_des_drawer_header_button)
+        mDrawerHeaderBadgeView = mHeaderView.findViewById(R.id.oui_des_drawer_header_button_badge)
 
         translationView = findViewById(R.id.drawer_custom_translation) ?: mSlideViewPane
 
@@ -343,7 +343,7 @@ class SemDrawerLayout @JvmOverloads constructor(
         mDrawerHeaderButton?.apply {
             setImageDrawable(icon)
             imageTintList = ColorStateList.valueOf(tint
-                ?: ContextCompat.getColor(context, R.color.oui_drawerlayout_header_icon_tint))
+                ?: ContextCompat.getColor(context, R.color.oui_des_drawerlayout_header_icon_tint))
             mHeaderView.isVisible = icon != null
         } ?: Log.e(TAG, "setHeaderButtonIcon: this method can be used " +
                 "only with the default header view")

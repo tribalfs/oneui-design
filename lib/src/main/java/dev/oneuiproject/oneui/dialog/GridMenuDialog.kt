@@ -79,7 +79,7 @@ class GridMenuDialog @JvmOverloads constructor(
         supportRequestWindowFeature(FEATURE_NO_TITLE)
         val context = context
         val inflater = LayoutInflater.from(context)
-        mContentView = inflater.inflate(R.layout.oui_dialog_grid_menu, null) as LinearLayout
+        mContentView = inflater.inflate(R.layout.oui_des_dialog_grid_menu, null) as LinearLayout
         setContentView(mContentView)
         super.onCreate(savedInstanceState)
 
@@ -134,21 +134,21 @@ class GridMenuDialog @JvmOverloads constructor(
                 val decorViewWidth = decorView.width
                 var dialogWidth = (decorViewWidth * TypedValueUtils.getFloat(context,
                     if (isInMultiWindowModeCompat(context)) {
-                        R.dimen.more_menu_dialog_width_ratio_mw
-                    } else R.dimen.more_menu_dialog_width_ratio)).toInt()
+                        R.dimen.oui_des_more_menu_dialog_width_ratio_mw
+                    } else R.dimen.oui_des_more_menu_dialog_width_ratio)).toInt()
 
                 if (DeviceLayoutUtil.isTabletLayoutOrDesktop(context)) {
-                    dialogWidth = dialogWidth.coerceAtMost(resources.getDimensionPixelOffset(R.dimen.more_menu_dialog_max_width))
+                    dialogWidth = dialogWidth.coerceAtMost(resources.getDimensionPixelOffset(R.dimen.oui_des_more_menu_dialog_max_width))
                     if (DeviceLayoutUtil.isLandscape(config) && !isInMultiWindowModeCompat(context)) {
                         dialogWidth = dialogWidth.coerceAtLeast(resources.getDimensionPixelOffset(
-                            R.dimen.more_menu_dialog_min_width))
+                            R.dimen.oui_des_more_menu_dialog_min_width))
                     }
                 }
 
                 val isRTL = config.layoutDirection == LAYOUT_DIRECTION_RTL
                 attributes = windowLp.apply wlp@ {
                     this@wlp.width = dialogWidth
-                    this@wlp.y = resources.getDimensionPixelOffset(R.dimen.more_menu_dialog_y_offset)
+                    this@wlp.y = resources.getDimensionPixelOffset(R.dimen.oui_des_more_menu_dialog_y_offset)
                     getAnchorViewHorizontalCenter()?.let {
                         this@wlp.x = (it - dialogWidth / 2).toInt()
                     }
@@ -230,15 +230,15 @@ class GridMenuDialog @JvmOverloads constructor(
 
     private fun getMoreMenuItemHeight(): Int {
         val resources = context.resources
-        return (resources.getDimensionPixelSize(R.dimen.more_menu_griditem_padding_vertical) * 2) +
-                resources.getDimensionPixelSize(R.dimen.more_menu_grid_item_height)
+        return (resources.getDimensionPixelSize(R.dimen.oui_des_more_menu_griditem_padding_vertical) * 2) +
+                resources.getDimensionPixelSize(R.dimen.oui_des_more_menu_grid_item_height)
     }
 
     private fun getAvailableMoreMenuHeight(): Int {
         val resources = context.resources
         return (getWindowHeight(context) - window!!.attributes.y -
-                resources.getDimensionPixelSize(R.dimen.more_menu_dialog_padding_top)) -
-                resources.getDimensionPixelSize(R.dimen.more_menu_dialog_padding_bottom) -
+                resources.getDimensionPixelSize(R.dimen.oui_des_more_menu_dialog_padding_top)) -
+                resources.getDimensionPixelSize(R.dimen.oui_des_more_menu_dialog_padding_bottom) -
                 getStatusBarHeight()
     }
 
@@ -262,9 +262,9 @@ class GridMenuDialog @JvmOverloads constructor(
         val resources = context.resources
 
         // Calculate the available width for grid items
-        val horizontalPadding = resources.getDimensionPixelOffset(R.dimen.more_menu_dialog_padding_horizontal)
-        val gridItemHorizontalPadding = resources.getDimensionPixelSize(R.dimen.more_menu_griditem_padding_horizontal)
-        val minGridItemWidth = resources.getDimensionPixelOffset(R.dimen.more_menu_grid_item_min_width)
+        val horizontalPadding = resources.getDimensionPixelOffset(R.dimen.oui_des_more_menu_dialog_padding_horizontal)
+        val gridItemHorizontalPadding = resources.getDimensionPixelSize(R.dimen.oui_des_more_menu_griditem_padding_horizontal)
+        val minGridItemWidth = resources.getDimensionPixelOffset(R.dimen.oui_des_more_menu_grid_item_min_width)
 
         val maxColumns = ((context.windowWidthNetOfInsets - (horizontalPadding * 2)) /
                 ((gridItemHorizontalPadding * 2) + minGridItemWidth)).coerceAtLeast(1)
@@ -277,8 +277,8 @@ class GridMenuDialog @JvmOverloads constructor(
 
     private fun resetContentPadding() {
         val res = context.resources
-        val horizontalPadding = res.getDimensionPixelSize(R.dimen.oui_grid_menu_dialog_horizontal_padding)
-        val verticalPadding = res.getDimensionPixelSize(R.dimen.oui_grid_menu_dialog_vertical_padding)
+        val horizontalPadding = res.getDimensionPixelSize(R.dimen.oui_des_grid_menu_dialog_horizontal_padding)
+        val verticalPadding = res.getDimensionPixelSize(R.dimen.oui_des_grid_menu_dialog_vertical_padding)
         val hasMessage = mMessage != null && mMessage!!.isNotEmpty()
         mContentView.setPaddingRelative(
             horizontalPadding,
@@ -370,7 +370,7 @@ class GridMenuDialog @JvmOverloads constructor(
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GridListViewHolder {
             val inflater = LayoutInflater.from(context)
             val view =
-                inflater.inflate(R.layout.oui_view_grid_menu_dialog_item, null, false)
+                inflater.inflate(R.layout.oui_des_view_grid_menu_dialog_item, null, false)
 
             return GridListViewHolder(view).apply {
                 itemView.setOnClickListener {

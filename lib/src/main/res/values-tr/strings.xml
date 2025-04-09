@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
-    <string name="oui_new_badge_text">Y</string>
-    <string name="new_version_is_available">Yeni bir sürüm mevcut.</string>
-    <string name="oui_action_mode_select_items">Ögeleri seç</string>
-    <string name="oui_relative_description">Başka bir şey mi arıyorsunuz?</string>
-    <string name="update">Güncelle</string>
-    <string name="oui_common_edit">Düzenle</string>
-    <string name="oui_common_apply">Uygula</string>
-    <string name="oui_common_close">Kapat</string>
-    <string name="network_connect_is_not_stable">Güncellemeler denetlenemedi.</string>
-    <string name="latest_version">En son sürüm zaten yüklü.</string>
-
-    <string name="oui_time_dialog_start">Başlangıç</string>
-    <string name="app_info">Uygulama bilgileri</string>
-    <string name="retry">Tekrar dene</string>
-    <string name="oui_common_cancel">İptal</string>
-    <string name="oui_common_continue">Devam</string>
-    <string name="oui_time_dialog_end">Bitiş</string>
-    <string name="oui_navigation_drawer">Navigasyon çekmecesi</string>
-    <string name="version_info">%s Sürümü</string>
-    <string name="oui_action_mode_n_selected">%d seçildi</string>
-    <string name="oui_common_add">Ekle</string>
-    <string name="oui_common_done">Tamamlandı</string>
-    <string name="oui_common_button_yes">Evet</string>
-    <string name="oui_common_disable">Devre dışı</string>
-    <string name="sem_tip_popup_hint_string">Daha fazla bilgi edinmek için bu tuşa çift dokunun.</string>
-    <string name="oui_action_mode_all_checkbox">Tümü</string>
+    <string name="oui_des_new_badge_text">Y</string>
+    <string name="oui_des_new_version_is_available">Yeni bir sürüm mevcut.</string>
+    <string name="oui_des_action_mode_select_items">Ögeleri seç</string>
+    <string name="oui_des_relative_description">Başka bir şey mi arıyorsunuz?</string>
+    <string name="oui_des_update">Güncelle</string>
+    <string name="oui_des_common_edit">Düzenle</string>
+    <string name="oui_des_common_apply">Uygula</string>
+    <string name="oui_des_common_close">Kapat</string>
+    <string name="oui_des_network_connect_is_not_stable">Güncellemeler denetlenemedi.</string>
+    <string name="oui_des_latest_version">En son sürüm zaten yüklü.</string>
+    <string name="oui_des_time_dialog_start">Başlangıç</string>
+    <string name="oui_des_app_info">Uygulama bilgileri</string>
+    <string name="oui_des_retry">Tekrar dene</string>
+    <string name="oui_des_common_cancel">İptal</string>
+    <string name="oui_des_common_continue">Devam</string>
+    <string name="oui_des_time_dialog_end">Bitiş</string>
+    <string name="oui_des_navigation_drawer">Navigasyon çekmecesi</string>
+    <string name="oui_des_version_info">%s Sürümü</string>
+    <string name="oui_des_action_mode_n_selected">%d seçildi</string>
+    <string name="oui_des_common_add">Ekle</string>
+    <string name="oui_des_common_done">Tamamlandı</string>
+    <string name="oui_des_common_button_yes">Evet</string>
+    <string name="oui_des_common_disable">Devre dışı</string>
+    <string name="oui_des_tip_popup_hint_string">Daha fazla bilgi edinmek için bu tuşa çift dokunun.</string>
+    <string name="oui_des_action_mode_all_checkbox">Tümü</string>
 </resources>

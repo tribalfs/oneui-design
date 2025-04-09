@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbarlayout_coordinator_layout"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    tools:viewBindingIgnore="true">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/toolbarlayout_app_bar"
+        style="?attr/appBarLayoutStyle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/toolbarlayout_collapsing_toolbar"
+            style="?attr/collapsingToolbarLayoutStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="snap|exitUntilCollapsed|scroll">
+
+            <include layout="@layout/oui_des_view_toolbar_main" />
+
+            <ViewStub
+                android:id="@+id/viewstub_oui_view_toolbar_search"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_gravity="bottom"
+                android:layout="@layout/oui_des_view_toolbar_search" />
+
+            <ViewStub
+                android:id="@+id/viewstub_oui_view_toolbar_action_mode"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_gravity="bottom"
+                android:layout="@layout/oui_des_view_toolbar_action_mode" />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:id="@+id/tbl_main_content_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@null"
+        android:layout_gravity="center_horizontal|top"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <ViewStub
+            android:id="@+id/viewstub_tbl_switchbar"
+            android:layout="@layout/oui_des_layout_tbl_switchbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginBottom="20dp" />
+
+        <dev.oneuiproject.oneui.widget.RoundedFrameLayout
+            android:id="@+id/tbl_main_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:roundedCorners="top_left|top_right"/>
+    </LinearLayout>
+
+    <dev.oneuiproject.oneui.widget.RoundedLinearLayout
+        android:clickable="false"
+        android:focusableInTouchMode="false"
+        android:focusable="false"
+        android:id="@+id/tbl_bottom_corners"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_gravity="bottom|center_horizontal"
+        app:roundedCorners="bottom_left|bottom_right" />
+
+</dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout>

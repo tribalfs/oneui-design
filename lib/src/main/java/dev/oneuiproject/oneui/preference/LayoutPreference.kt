@@ -77,7 +77,7 @@ class LayoutPreference : Preference {
     }
 
     private fun setView(view: View) {
-        layoutResource = R.layout.oui_preference_layout_frame
+        layoutResource = R.layout.oui_des_preference_layout_frame
         mRootView = view
         shouldDisableView = false
     }

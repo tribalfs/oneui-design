@@ -13,7 +13,7 @@ public class SwitchBarPreference extends TwoStatePreference {
 
     public SwitchBarPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        setLayoutResource(R.layout.oui_preference_switch_bar_layout);
+        setLayoutResource(R.layout.oui_des_preference_switch_bar_layout);
     }
 
     public SwitchBarPreference(Context context, AttributeSet attrs, int defStyleAttr) {

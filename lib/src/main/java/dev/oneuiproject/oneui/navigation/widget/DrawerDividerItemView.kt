@@ -30,14 +30,14 @@ internal class DrawerDividerItemView @JvmOverloads constructor(
 
     init {
         val res = context.resources
-        defaultWidth = res.getDimensionPixelSize(R.dimen.drawer_item_icon_size)
-        defaultMargin = res.getDimensionPixelSize(R.dimen.drawer_divider_padding_start_end)
+        defaultWidth = res.getDimensionPixelSize(R.dimen.oui_des_drawer_menu_item_icon_size)
+        defaultMargin = res.getDimensionPixelSize(R.dimen.oui_des_drawer_menu_divider_padding_start_end)
         dividerView = View(context).apply {
             layoutParams = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 5f.dpToPx(res)).apply {
                 marginStart = defaultMargin
                 marginEnd = defaultMargin
             }
-            setBackgroundResource(R.drawable.oui_drawer_item_separator_bg)
+            setBackgroundResource(R.drawable.oui_des_drawer_menu_dotted_separator)
             alpha = if (SeslMisc.isLightTheme(context)) 0.87f else 0.5f
         }
         addView(dividerView)

@@ -43,7 +43,7 @@ public class SplashLayout extends LinearLayout {
             if (animated) {
                 mImage_foreground = attr.getDrawable(R.styleable.SplashLayout_foreground_image);
                 mImage_background = attr.getDrawable(R.styleable.SplashLayout_background_image);
-                splash_anim = AnimationUtils.loadAnimation(context, attr.getResourceId(R.styleable.SplashLayout_animation, R.anim.oui_splash_animation));
+                splash_anim = AnimationUtils.loadAnimation(context, attr.getResourceId(R.styleable.SplashLayout_animation, R.anim.oui_des_splash_animation));
             } else {
                 mImage = attr.getDrawable(R.styleable.SplashLayout_image);
             }
@@ -53,20 +53,20 @@ public class SplashLayout extends LinearLayout {
         }
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(animated ? R.layout.oui_layout_splash_animated : R.layout.oui_layout_splash_simple, this, true);
+        inflater.inflate(animated ? R.layout.oui_des_layout_splash_animated : R.layout.oui_des_layout_splash_simple, this, true);
 
 
-        textView = findViewById(R.id.oui_splash_text);
+        textView = findViewById(R.id.oui_des_splash_text);
         textView.setText(mText);
 
         if (animated) {
-            imageview_foreground = findViewById(R.id.oui_splash_image_foreground);
-            imageview_background = findViewById(R.id.oui_splash_image_background);
+            imageview_foreground = findViewById(R.id.oui_des_splash_image_foreground);
+            imageview_background = findViewById(R.id.oui_des_splash_image_background);
 
             imageview_foreground.setImageDrawable(mImage_foreground);
             imageview_background.setImageDrawable(mImage_background);
         } else {
-            imageview = findViewById(R.id.oui_splash_image);
+            imageview = findViewById(R.id.oui_des_splash_image);
             imageview.setImageDrawable(mImage);
         }
 

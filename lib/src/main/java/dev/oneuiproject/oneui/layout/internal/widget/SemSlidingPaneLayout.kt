@@ -141,11 +141,11 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
 
         mDrawerHeaderLayout = mDrawerPane.findViewById(R.id.header_layout)
         mDrawerItemsContainer = mDrawerPane.findViewById(R.id.drawer_items_container)
-        mDrawerHeaderButton = mDrawerHeaderLayout!!.findViewById(R.id.drawer_header_button)
+        mDrawerHeaderButton = mDrawerHeaderLayout!!.findViewById(R.id.oui_des_drawer_header_button)
         mDrawerHeaderButtonBadgeView =
-            mDrawerHeaderLayout!!.findViewById(R.id.drawer_header_button_badge)
+            mDrawerHeaderLayout!!.findViewById(R.id.oui_des_drawer_header_button_badge)
 
-        setNavigationButtonTooltip(context.getText(R.string.oui_navigation_drawer))
+        setNavigationButtonTooltip(context.getText(R.string.oui_des_navigation_drawer))
     }
 
     override fun onAttachedToWindow() {
@@ -257,8 +257,8 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
             removeView(mDrawerHeaderButtonBadgeView)
         }
         mDrawerPane.addView(headerView, 1, params)
-        mDrawerHeaderButton = headerView.findViewById(R.id.drawer_header_button)
-        mDrawerHeaderButtonBadgeView = headerView.findViewById(R.id.drawer_header_button_badge)
+        mDrawerHeaderButton = headerView.findViewById(R.id.oui_des_drawer_header_button)
+        mDrawerHeaderButtonBadgeView = headerView.findViewById(R.id.oui_des_drawer_header_button_badge)
         navRailDrawerButton = headerView.findViewById<ImageButton>(R.id.navRailDrawerButton).apply {
             isVisible = true
         }
@@ -384,7 +384,7 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
                 }
                 if (drawerEnabled && hideDrawerOnCollapse) {
                     mToolbar.apply {
-                        navigationContentDescription = resources.getText(R.string.oui_navigation_drawer)
+                        navigationContentDescription = resources.getText(R.string.oui_des_navigation_drawer)
                         setNavigationOnClickListener{
                             navigationIcon = null
                             open(true)
@@ -441,7 +441,7 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
         mDrawerHeaderButton?.apply {
             setImageDrawable(icon)
             imageTintList = ColorStateList.valueOf(
-                tint ?: ContextCompat.getColor(context, R.color.oui_drawerlayout_header_icon_tint))
+                tint ?: ContextCompat.getColor(context, R.color.oui_des_drawerlayout_header_icon_tint))
         } ?: Log.e(TAG, "setHeaderButtonIcon: `drawer_header_button` id is not set in custom header view")
     }
 

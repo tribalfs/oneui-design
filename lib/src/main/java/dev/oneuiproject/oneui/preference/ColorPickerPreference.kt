@@ -42,7 +42,7 @@ class ColorPickerPreference @JvmOverloads constructor(
     private var mPersistRecentColors = true
 
     init {
-        widgetLayoutResource = R.layout.oui_preference_color_picker_widget
+        widgetLayoutResource = R.layout.oui_des_preference_color_picker_widget
         onPreferenceClickListener = this
 
         context.obtainStyledAttributes(attrs, R.styleable.ColorPickerPreference).use {
@@ -79,7 +79,7 @@ class ColorPickerPreference @JvmOverloads constructor(
     private fun setPreviewColor() {
         if (mPreview == null) return
         mPreview!!.background =
-            (ContextCompat.getDrawable(context, R.drawable.oui_preference_color_picker_preview)!!
+            (ContextCompat.getDrawable(context, R.drawable.oui_des_preference_color_picker_preview)!!
                 .mutate() as GradientDrawable)
                 .apply { setColor(mValue) }
     }

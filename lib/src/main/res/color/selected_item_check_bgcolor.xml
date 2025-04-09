@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:alpha=".8"
-        android:color="@color/animated_check_bgcolor"
-        android:state_enabled="true"/>
-</selector>

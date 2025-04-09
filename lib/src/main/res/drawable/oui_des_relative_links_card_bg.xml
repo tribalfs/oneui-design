@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="?roundedCornerColor" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/oui_des_relative_links_card_bg_color_selector" />
+            <corners android:radius="26dp" />
+        </shape>
+    </item>
+</layer-list>

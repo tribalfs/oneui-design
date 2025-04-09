@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
-    <string name="oui_new_badge_text">ಹೊ</string>
-    <string name="new_version_is_available">ಒಂದು ಹೊಸ ಆವೃತ್ತಿಯು ಲಭ್ಯವಿರುತ್ತದೆ.</string>
-    <string name="oui_action_mode_select_items">ಅಂಶಗಳನ್ನು ಆರಿಸಿ</string>
-    <string name="oui_relative_description">ಬೇರೆ ಸಂಗತಿಗಳಿಗಾಗಿ ಹುಡುಕುತ್ತಿರುವಿರೇ?</string>
-    <string name="update">ನವೀಕರಿಸಿ</string>
-    <string name="oui_common_edit">ತಿದ್ದಿ </string>
-    <string name="oui_common_apply">ಅನ್ವಯಿಸಿ</string>
-    <string name="oui_common_close">ಮುಚ್ಚಿ</string>
-    <string name="network_connect_is_not_stable">ನವೀಕರಣಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ.</string>
-    <string name="latest_version">ಈಗಾಗಲೇ ಇತ್ತೀಚಿನ ಆವೃತ್ತಿಯನ್ನು ಸ್ಥಾಪಿಸಲಾಗಿದೆ.</string>
-
-    <string name="oui_time_dialog_start">ಆರಂಭ</string>
-    <string name="app_info">ಅನ್ವಯಿಸುವಿಕೆ ಮಾಹಿತಿ</string>
-    <string name="retry">ಮರುಪ್ರಯತ್ನಿಸಿ</string>
-    <string name="oui_common_cancel">ರದ್ದು</string>
-    <string name="oui_common_continue">ಮುಂದುವರಿಸು</string>
-    <string name="oui_time_dialog_end">ಮುಕ್ತಾಯ</string>
-    <string name="oui_navigation_drawer">ನ್ಯಾವಿಗೇಶನ್ ಡ್ರಾಯರ್</string>
-    <string name="version_info">ಆವೃತ್ತಿ %s</string>
-    <string name="oui_action_mode_n_selected">%d ಆಯ್ಕೆಮಾಡಿದೆ</string>
-    <string name="oui_common_add">ಸೇರಿಸಿ</string>
-    <string name="oui_common_done">ಮಾಡಲಾಗಿದೆ</string>
-    <string name="oui_common_button_yes">ಹೌದು</string>
-    <string name="oui_common_disable">ನಿಶಕ್ತ</string>
-    <string name="sem_tip_popup_hint_string">ಇನ್ನಷ್ಟು ತಿಳಿಯಲು ಈ ಬಟನ್ ಎರಡುಬಾರಿ ತಟ್ಟಿ.</string>
-    <string name="oui_action_mode_all_checkbox">ಎಲ್ಲ</string>
+    <string name="oui_des_new_badge_text">ಹೊ</string>
+    <string name="oui_des_new_version_is_available">ಒಂದು ಹೊಸ ಆವೃತ್ತಿಯು ಲಭ್ಯವಿರುತ್ತದೆ.</string>
+    <string name="oui_des_action_mode_select_items">ಅಂಶಗಳನ್ನು ಆರಿಸಿ</string>
+    <string name="oui_des_relative_description">ಬೇರೆ ಸಂಗತಿಗಳಿಗಾಗಿ ಹುಡುಕುತ್ತಿರುವಿರೇ?</string>
+    <string name="oui_des_update">ನವೀಕರಿಸಿ</string>
+    <string name="oui_des_common_edit">ತಿದ್ದಿ </string>
+    <string name="oui_des_common_apply">ಅನ್ವಯಿಸಿ</string>
+    <string name="oui_des_common_close">ಮುಚ್ಚಿ</string>
+    <string name="oui_des_network_connect_is_not_stable">ನವೀಕರಣಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ.</string>
+    <string name="oui_des_latest_version">ಈಗಾಗಲೇ ಇತ್ತೀಚಿನ ಆವೃತ್ತಿಯನ್ನು ಸ್ಥಾಪಿಸಲಾಗಿದೆ.</string>
+    <string name="oui_des_time_dialog_start">ಆರಂಭ</string>
+    <string name="oui_des_app_info">ಅನ್ವಯಿಸುವಿಕೆ ಮಾಹಿತಿ</string>
+    <string name="oui_des_retry">ಮರುಪ್ರಯತ್ನಿಸಿ</string>
+    <string name="oui_des_common_cancel">ರದ್ದು</string>
+    <string name="oui_des_common_continue">ಮುಂದುವರಿಸು</string>
+    <string name="oui_des_time_dialog_end">ಮುಕ್ತಾಯ</string>
+    <string name="oui_des_navigation_drawer">ನ್ಯಾವಿಗೇಶನ್ ಡ್ರಾಯರ್</string>
+    <string name="oui_des_version_info">ಆವೃತ್ತಿ %s</string>
+    <string name="oui_des_action_mode_n_selected">%d ಆಯ್ಕೆಮಾಡಿದೆ</string>
+    <string name="oui_des_common_add">ಸೇರಿಸಿ</string>
+    <string name="oui_des_common_done">ಮಾಡಲಾಗಿದೆ</string>
+    <string name="oui_des_common_button_yes">ಹೌದು</string>
+    <string name="oui_des_common_disable">ನಿಶಕ್ತ</string>
+    <string name="oui_des_tip_popup_hint_string">ಇನ್ನಷ್ಟು ತಿಳಿಯಲು ಈ ಬಟನ್ ಎರಡುಬಾರಿ ತಟ್ಟಿ.</string>
+    <string name="oui_des_action_mode_all_checkbox">ಎಲ್ಲ</string>
 </resources>

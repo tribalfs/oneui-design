@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/oui_des_drawerlayout_drawer_bg_color"/>
+    <corners android:radius="@dimen/oui_des_drawer_menu_category_view_background_radius"/>
+    <stroke android:width="@dimen/oui_des_drawer_menu_category_view_stroke"
+        android:color="@color/oui_des_drawer_menu_category_stroke_selector"/>
+</shape>

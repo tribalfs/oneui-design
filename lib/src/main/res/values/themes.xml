@@ -30,8 +30,8 @@
         <item name="bottomSheetDialogTheme">@style/OneUI.BottomSheetDialog.Light</item>
         <item name="bottomSheetDragHandleStyle">@style/OneUI.BottomSheet.DragHandle</item>
 
-        <item name="drawerBackgroundColor">@color/drawer_background_color</item>
-        <item name="drawerSelectedBackgroundColor">@color/oui_drawer_item_selected_background_color</item>
+        <item name="drawerBackgroundColor">@color/oui_des_drawerlayout_drawer_bg_color</item>
+        <item name="drawerSelectedBackgroundColor">@color/oui_des_drawer_menu_item_selected_bg_color</item>
 
         <item name="android:buttonStyle">@style/Widget.AppCompat.Light.Button</item>
         <item name="android:spinnerStyle">@style/Widget.AppCompat.Light.Spinner</item>
@@ -48,6 +48,12 @@
 
     <style name="OneUI.ContainedPrimaryColorButtonTheme" parent="@style/OneUI.ContainedButtonTheme">
         <item name="android:textColor">@color/oui_des_btn_contained_primary_text</item>
-        <item name="colorButtonNormal">@color/oui_btn_colored_background</item>
+        <item name="colorButtonNormal">@color/oui_des_enabled_disabled_primary_color_selector</item>
     </style>
+
+    <style name="OneUI.ColoredButtonTheme" parent="@style/Widget.AppCompat.Light.Button">
+        <item name="android:textColor">@color/oui_des_btn_contained_primary_text</item>
+        <item name="colorButtonNormal">@color/oui_des_enabled_disabled_primary_color_selector</item>
+    </style>
+
 </resources>
