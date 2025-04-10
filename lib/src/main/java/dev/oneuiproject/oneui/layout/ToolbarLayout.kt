@@ -204,8 +204,9 @@ open class ToolbarLayout @JvmOverloads constructor(
     internal var isSofInputShowing: Boolean = isSoftKeyboardShowing
         private set
 
-    open val backHandler: BackHandler
-        get() = ToolbarLayoutBackHandler(this@ToolbarLayout)
+    open val backHandler: BackHandler by lazy(LazyThreadSafetyMode.NONE) {
+        ToolbarLayoutBackHandler(this@ToolbarLayout)
+    }
 
     private val onBackCallbackDelegate: OnBackCallbackDelegateCompat by lazy {
         OnBackCallbackDelegateCompat(activity!!, this, backHandler)
