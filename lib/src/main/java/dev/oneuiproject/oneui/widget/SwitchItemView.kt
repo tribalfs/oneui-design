@@ -32,17 +32,17 @@ class SwitchItemView @JvmOverloads constructor(
     defStyleRes: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr, defStyleRes) {
 
-    private var mSwitchView: SwitchCompat
-    private var mTitleView: TextView
-    private var mSummaryView: TextView
-    private var mDividerViewTop: View? = null
-    private var mDividerViewBottom: View? = null
+    private var switchView: SwitchCompat
+    private var titleView: TextView
+    private var summaryView: TextView
+    private var dividerViewTop: View? = null
+    private var dividerViewBottom: View? = null
     private var verticalDivider: View
-    private val mMainContent: ConstraintLayout
-    private val mContentFrame: FrameLayout
+    private val mainContent: ConstraintLayout
+    private val contentFrame: FrameLayout
     private var badgeFrame: LinearLayout? = null
     private var bottomSpacer: Space
-    private var mIsLargeLayout = false
+    private var isLargeLayout = false
 
     /**
      * @param viewId The view id of SwitchItemView
@@ -60,7 +60,7 @@ class SwitchItemView @JvmOverloads constructor(
         set(value) {
             if (verticalDivider.isVisible != value) {
                 verticalDivider.isVisible = value
-                mSwitchView.isClickable = value
+                switchView.isClickable = value
             }
         }
 
@@ -68,35 +68,35 @@ class SwitchItemView @JvmOverloads constructor(
      *  Show divider on top. True by default
      */
     var showTopDivider: Boolean
-        get() = mDividerViewTop?.isVisible == true
+        get() = dividerViewTop?.isVisible == true
         set(value) {
             if (value) ensureTopDivider()
-            mDividerViewTop?.isVisible = value
+            dividerViewTop?.isVisible = value
         }
 
     /**
      *  Show divider at the bottom. False by default
      */
     var showBottomDivider: Boolean
-        get() = mDividerViewBottom?.isVisible == true
+        get() = dividerViewBottom?.isVisible == true
         set(value) {
             if (value) ensureBottomDivider()
-            mDividerViewBottom?.isVisible = value
+            dividerViewBottom?.isVisible = value
         }
 
     private fun ensureTopDivider(){
-        if (mDividerViewTop == null){
-            mDividerViewTop = LayoutInflater.from(context)
+        if (dividerViewTop == null){
+            dividerViewTop = LayoutInflater.from(context)
                 .inflate(R.layout.oui_des_widget_card_item_divider, this, false)
-            addView(mDividerViewTop, 0)
+            addView(dividerViewTop, 0)
         }
     }
 
     private fun ensureBottomDivider(){
-        if (mDividerViewBottom == null){
-            mDividerViewBottom = LayoutInflater.from(context)
+        if (dividerViewBottom == null){
+            dividerViewBottom = LayoutInflater.from(context)
                 .inflate(R.layout.oui_des_widget_card_item_divider, this, false)
-            addView(mDividerViewBottom, childCount)
+            addView(dividerViewBottom, childCount)
         }
     }
 
@@ -125,22 +125,22 @@ class SwitchItemView @JvmOverloads constructor(
     }
 
     var title: CharSequence?
-        get() = mTitleView.text?.toString()
+        get() = titleView.text?.toString()
         set(value) {
-            if (mTitleView.text != value) {
-                mTitleView.text = value
+            if (titleView.text != value) {
+                titleView.text = value
             }
         }
 
     fun setTiTle(value: SpannableString) {
-        mTitleView.text = value
+        titleView.text = value
     }
 
     var isChecked: Boolean
-        get() = mSwitchView.isChecked
+        get() = switchView.isChecked
         set(checked) {
-            if (mSwitchView.isChecked == checked) return
-            mSwitchView.isChecked = checked
+            if (switchView.isChecked == checked) return
+            switchView.isChecked = checked
         }
 
     var showBadge: Boolean
@@ -161,14 +161,14 @@ class SwitchItemView @JvmOverloads constructor(
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
         LayoutInflater.from(context).inflate(R.layout.oui_des_widget_switch_item, this@SwitchItemView)
 
-        mTitleView = findViewById(R.id.switch_card_title)
-        mSummaryView = findViewById(R.id.switch_card_summary)
+        titleView = findViewById(R.id.switch_card_title)
+        summaryView = findViewById(R.id.switch_card_summary)
 
-        mMainContent = findViewById(R.id.main_content)
-        mContentFrame = findViewById(R.id.content_frame)
+        mainContent = findViewById(R.id.main_content)
+        contentFrame = findViewById(R.id.content_frame)
         verticalDivider = findViewById(R.id.vertical_divider)
 
-        mSwitchView = findViewById<SwitchCompat>(R.id.switch_widget).apply {
+        switchView = findViewById<SwitchCompat>(R.id.switch_widget).apply {
             isSaveEnabled = false
         }
 
@@ -203,23 +203,23 @@ class SwitchItemView @JvmOverloads constructor(
                     colorEnabled,
                     ColorUtils.setAlphaComponent(colorEnabled, (255 * 0.4).toInt())
                 )
-                mSummaryView.setTextColor(ColorStateList(states, colors))
+                summaryView.setTextColor(ColorStateList(states, colors))
             }
 
 
         }
 
-        mContentFrame.setOnClickListener {
+        contentFrame.setOnClickListener {
             if (isEnabled) {
                 if (!separateSwitch) {
-                    mSwitchView.performClick()
+                    switchView.performClick()
                 }else{
                     super.callOnClick()
                 }
             }
         }
 
-        mSwitchView.apply {
+        switchView.apply {
             setOnClickListener {v ->
                 (v as SwitchCompat).isChecked.let { b ->
                     this.isChecked = b
@@ -234,12 +234,12 @@ class SwitchItemView @JvmOverloads constructor(
 
     @SuppressLint("ClickableViewAccessibility")
     override fun performClick(): Boolean {
-        return mSwitchView.performClick()
+        return switchView.performClick()
     }
 
     private fun updateSubtitleVisibility(){
         val summaryToSet = if (isChecked) summaryOn else summaryOff
-        mSummaryView.apply {
+        summaryView.apply {
             if (text == summaryToSet) return
             text = summaryToSet
             isVisible = summaryToSet != null
@@ -248,11 +248,11 @@ class SwitchItemView @JvmOverloads constructor(
 
     override fun setEnabled(enable: Boolean) {
         super.setEnabled(enable)
-        mContentFrame.isEnabled = enable
-        mMainContent.isEnabled = enable
-        mTitleView.isEnabled = enable
-        mSummaryView.isEnabled = enable
-        mSwitchView.isEnabled = enable
+        contentFrame.isEnabled = enable
+        mainContent.isEnabled = enable
+        titleView.isEnabled = enable
+        summaryView.isEnabled = enable
+        switchView.isEnabled = enable
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -273,25 +273,25 @@ class SwitchItemView @JvmOverloads constructor(
                 && (swDp >= 411 || configuration.fontScale < 1.3f))
 
         if (isLargeLayout) {
-            val titleLen: Float = mTitleView.paint.measureText(mTitleView.getText().toString())
+            val titleLen: Float = titleView.paint.measureText(titleView.getText().toString())
 
             val availableWidth =
-                mMainContent.width - mMainContent.paddingStart - mMainContent.paddingEnd -
-                        (mSwitchView.width + mSwitchView.paddingStart + mSwitchView.paddingEnd)
+                mainContent.width - mainContent.paddingStart - mainContent.paddingEnd -
+                        (switchView.width + switchView.paddingStart + switchView.paddingEnd)
 
             if (titleLen < availableWidth) {
-                val summaryLen: Float = if (mSummaryView.isVisible) {
-                    mSummaryView.paint.measureText(mSummaryView.getText().toString())
+                val summaryLen: Float = if (summaryView.isVisible) {
+                    summaryView.paint.measureText(summaryView.getText().toString())
                 } else 0.0f
                 if (summaryLen < availableWidth) isLargeLayout = false
             }
         }
 
-        if (mIsLargeLayout != isLargeLayout) {
+        if (this.isLargeLayout != isLargeLayout) {
 
-            val switchLP = mSwitchView.layoutParams as ConstraintLayout.LayoutParams
-            val titleLP = mTitleView.layoutParams as ConstraintLayout.LayoutParams
-            val summaryLP = mSummaryView.layoutParams as ConstraintLayout.LayoutParams
+            val switchLP = switchView.layoutParams as ConstraintLayout.LayoutParams
+            val titleLP = titleView.layoutParams as ConstraintLayout.LayoutParams
+            val summaryLP = summaryView.layoutParams as ConstraintLayout.LayoutParams
             val bottomSpacerLP = bottomSpacer.layoutParams as ConstraintLayout.LayoutParams
 
             if (isLargeLayout) {
@@ -319,12 +319,12 @@ class SwitchItemView @JvmOverloads constructor(
                 summaryLP.endToStart = R.id.switch_widget
                 bottomSpacerLP.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
             }
-            mSwitchView.layoutParams = switchLP
-            mTitleView.layoutParams = titleLP
-            mSummaryView.layoutParams = summaryLP
+            switchView.layoutParams = switchLP
+            titleView.layoutParams = titleLP
+            summaryView.layoutParams = summaryLP
             bottomSpacer.layoutParams = bottomSpacerLP
 
-            mIsLargeLayout = isLargeLayout
+            this.isLargeLayout = isLargeLayout
 
             post { requestLayout() }
         }

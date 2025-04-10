@@ -117,15 +117,15 @@ class RelativeLinksCard @JvmOverloads constructor(
     defStyleAttr: Int = 0,
     defStyleRes: Int = 0
 ) : LinearLayout(mContext, attrs, defStyleAttr, defStyleRes) {
-    private var mParentView: View? = null
-    private var mCardTitleText: TextView
-    private var mLinkContainer: ViewGroup
-    private var mTopDivider: View? = null
+    private var parentView: View? = null
+    private var cardTitleText: TextView
+    private var linkContainer: ViewGroup
+    private var topDivider: View? = null
 
     init {
         orientation = VERTICAL
         val context = context
-        mParentView =
+        parentView =
             LayoutInflater.from(context).inflate(R.layout.oui_des_widget_relative_links_card, this)
                 .apply {
                     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
@@ -141,9 +141,9 @@ class RelativeLinksCard @JvmOverloads constructor(
                         }
 
                 }.also {
-                    mCardTitleText = it.findViewById(R.id.link_title)
-                    mLinkContainer = it.findViewById(R.id.link_container)
-                    mTopDivider = it.findViewById(R.id.link_divider)
+                    cardTitleText = it.findViewById(R.id.link_title)
+                    linkContainer = it.findViewById(R.id.link_container)
+                    topDivider = it.findViewById(R.id.link_divider)
                 }
         context.theme.obtainStyledAttributes(
             attrs,
@@ -153,15 +153,15 @@ class RelativeLinksCard @JvmOverloads constructor(
         ).use {
             val cardTitle = it.getString(R.styleable.RelativeLinksCard_title)
             showTopDivider = it.getBoolean(R.styleable.RelativeLinksCard_showTopDivider, false)
-            cardTitle?.let { t -> mCardTitleText.text = t }
+            cardTitle?.let { t -> cardTitleText.text = t }
         }
 
     }
 
-    fun setTitle(@StringRes resid: Int) = mCardTitleText.setText(resid)
+    fun setTitle(@StringRes resid: Int) = cardTitleText.setText(resid)
 
     fun setTitle(title: CharSequence?) {
-        mCardTitleText.text = title
+        cardTitleText.text = title
     }
 
     fun addLink(
@@ -173,11 +173,11 @@ class RelativeLinksCard @JvmOverloads constructor(
         text = linkTitle
         setBackgroundResource(R.drawable.oui_des_relative_links_item_bg)
         setOnClickListener(onClick)
-        mLinkContainer.addView(this, createLinkParams())
+        linkContainer.addView(this, createLinkParams())
     }
 
     override fun addView(child: View, index: Int, params: ViewGroup.LayoutParams) {
-        if (mParentView == null) {
+        if (parentView == null) {
             super.addView(child, index, params)
         } else {
             if (child is TextView) {
@@ -190,7 +190,7 @@ class RelativeLinksCard @JvmOverloads constructor(
                         R.style.OneUI_RelativeLinkTextViewTextStyle
                     )
                 }
-                mLinkContainer.addView(
+                linkContainer.addView(
                     child,
                     index,
                     createLinkParams()
@@ -214,22 +214,22 @@ class RelativeLinksCard @JvmOverloads constructor(
         }
 
     fun clearLinks() {
-        if (mLinkContainer.childCount < 2) return
-        mLinkContainer.removeViews(1, mLinkContainer.childCount - 1)
+        if (linkContainer.childCount < 2) return
+        linkContainer.removeViews(1, linkContainer.childCount - 1)
     }
 
     var showTopDivider: Boolean
-        get() = mTopDivider?.isVisible == true
+        get() = topDivider?.isVisible == true
         set(value) {
             if (value) ensureTopDivider()
-            mTopDivider?.isVisible = value
+            topDivider?.isVisible = value
         }
 
     private fun ensureTopDivider(){
-        if (mTopDivider == null){
-            mTopDivider = LayoutInflater.from(context)
+        if (topDivider == null){
+            topDivider = LayoutInflater.from(context)
                 .inflate(R.layout.oui_des_widget_relative_links_card_divider, this, false)
-            addView(mTopDivider, 0)
+            addView(topDivider, 0)
         }
     }
     companion object {

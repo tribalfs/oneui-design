@@ -29,12 +29,12 @@ class CardItemView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
 ) : LinearLayout(context, attrs) {
 
-    private lateinit var mContainerView: LinearLayout
-    private lateinit var mTitleTextView: TextView
-    private lateinit var mSummaryTextView: TextView
-    private var mDividerViewTop: View? = null
-    private var mDividerViewBottom: View? = null
-    private var mIconImageView: ImageView? = null
+    private lateinit var containerView: LinearLayout
+    private lateinit var titleTextView: TextView
+    private lateinit var summaryTextView: TextView
+    private var dividerViewTop: View? = null
+    private var dividerViewBottom: View? = null
+    private var iconImageView: ImageView? = null
     private var badgeFrame: LinearLayout? = null
 
     private var containerLeftPaddingWithIcon: Int = 0
@@ -46,35 +46,35 @@ class CardItemView @JvmOverloads constructor(
      *  Show divider on top. True by default
      */
     var showTopDivider: Boolean
-        get() = mDividerViewTop?.isVisible == true
+        get() = dividerViewTop?.isVisible == true
         set(value) {
             if (value) ensureTopDivider()
-            mDividerViewTop?.isVisible = value
+            dividerViewTop?.isVisible = value
         }
 
     /**
      *  Show divider at the bottom. False by default
      */
     var showBottomDivider: Boolean
-        get() = mDividerViewBottom?.isVisible == true
+        get() = dividerViewBottom?.isVisible == true
         set(value) {
             if (value) ensureBottomDivider()
-            mDividerViewBottom?.isVisible = value
+            dividerViewBottom?.isVisible = value
         }
 
     private fun ensureTopDivider(){
-        if (mDividerViewTop == null){
-            mDividerViewTop = LayoutInflater.from(context)
+        if (dividerViewTop == null){
+            dividerViewTop = LayoutInflater.from(context)
                 .inflate(R.layout.oui_des_widget_card_item_divider, this, false)
-            addView(mDividerViewTop, 0)
+            addView(dividerViewTop, 0)
         }
     }
 
     private fun ensureBottomDivider(){
-        if (mDividerViewBottom == null){
-            mDividerViewBottom = LayoutInflater.from(context)
+        if (dividerViewBottom == null){
+            dividerViewBottom = LayoutInflater.from(context)
                 .inflate(R.layout.oui_des_widget_card_item_divider, this, false)
-            addView(mDividerViewBottom, childCount)
+            addView(dividerViewBottom, childCount)
         }
     }
 
@@ -89,26 +89,26 @@ class CardItemView @JvmOverloads constructor(
         }
 
     var title: CharSequence?
-        get() = mTitleTextView.text
+        get() = titleTextView.text
         set(value) {
-            if (mTitleTextView.text == value) return
-            mTitleTextView.text = value
+            if (titleTextView.text == value) return
+            titleTextView.text = value
         }
 
     var summary: CharSequence?
-        get() = mSummaryTextView.text
+        get() = summaryTextView.text
         set(value) {
-            if (mSummaryTextView.text == value) return
-            mSummaryTextView.isVisible = !value.isNullOrEmpty()
-            mSummaryTextView.text = value
+            if (summaryTextView.text == value) return
+            summaryTextView.isVisible = !value.isNullOrEmpty()
+            summaryTextView.text = value
         }
 
     var icon: Drawable?
-        get() = mIconImageView?.drawable
+        get() = iconImageView?.drawable
         set(value) {
             if (value != null) ensureInflatedIconView()
-            if (mIconImageView?.drawable == value) return
-            mIconImageView!!.setImageDrawable(value)
+            if (iconImageView?.drawable == value) return
+            iconImageView!!.setImageDrawable(value)
             updateLayoutParams()
         }
 
@@ -142,25 +142,25 @@ class CardItemView @JvmOverloads constructor(
 
         context.obtainStyledAttributes(attrs, R.styleable.CardItemView).use { a ->
             inflate(context, R.layout.oui_des_widget_card_item, this)
-            mContainerView = findViewById(R.id.cardview_container)
+            containerView = findViewById(R.id.cardview_container)
 
             val iconDrawable = a.getDrawable(R.styleable.CardItemView_icon)
 
             if ( iconDrawable != null) {
                 ensureInflatedIconView()
-                mIconImageView!!.setImageDrawable(iconDrawable)
+                iconImageView!!.setImageDrawable(iconDrawable)
                 val iconTint = a.getColor(R.styleable.CardItemView_iconTint, -1)
                 if (iconTint != -1) {
-                    DrawableCompat.setTint(mIconImageView!!.drawable, iconTint)
+                    DrawableCompat.setTint(iconImageView!!.drawable, iconTint)
                 }
             }
 
-            mTitleTextView = findViewById<TextView?>(R.id.cardview_title).apply {
+            titleTextView = findViewById<TextView?>(R.id.cardview_title).apply {
                 maxLines = a.getInteger(R.styleable.CardItemView_titleMaxLines, 5)
             }
             title = a.getString(R.styleable.CardItemView_title)
 
-            mSummaryTextView = findViewById<TextView>(R.id.cardview_summary).apply {
+            summaryTextView = findViewById<TextView>(R.id.cardview_summary).apply {
                 maxLines = a.getInteger(R.styleable.CardItemView_summaryMaxLines, 10)
             }
             summary = a.getString(R.styleable.CardItemView_summary)
@@ -175,7 +175,7 @@ class CardItemView @JvmOverloads constructor(
                     colorEnabled,
                     ColorUtils.setAlphaComponent(colorEnabled, (255 * 0.4).toInt())
                 )
-                mSummaryTextView.setTextColor(ColorStateList(states, colors))
+                summaryTextView.setTextColor(ColorStateList(states, colors))
             }
 
             showTopDivider = a.getBoolean(R.styleable.CardItemView_showTopDivider, true)
@@ -188,29 +188,29 @@ class CardItemView @JvmOverloads constructor(
     }
 
     private fun ensureInflatedIconView(){
-        if (mIconImageView == null) {
-            mIconImageView = (findViewById<ViewStub>(R.id.viewstub_icon_frame).inflate() as FrameLayout)
+        if (iconImageView == null) {
+            iconImageView = (findViewById<ViewStub>(R.id.viewstub_icon_frame).inflate() as FrameLayout)
                 .findViewById(R.id.cardview_icon)
         }
     }
 
     private fun updateLayoutParams(){
-        val hasIcon = mIconImageView?.drawable != null
+        val hasIcon = iconImageView?.drawable != null
 
         val newPaddingLeft = if (hasIcon) containerLeftPaddingWithIcon else containerLeftPaddingNoIcon
-        mContainerView.apply {
+        containerView.apply {
             if (newPaddingLeft == paddingLeft) return@apply
             updatePadding(left = if (hasIcon) containerLeftPaddingWithIcon else containerLeftPaddingNoIcon)
         }
 
         val newDividerStartMargin = if (!hasIcon || fullWidthDivider) dividerMarginStart else dividerMarginStartWithIcon
-        mDividerViewTop?.apply {
+        dividerViewTop?.apply {
             if (newDividerStartMargin == marginStart) return@apply
             updateLayoutParams<LayoutParams> {
                 this.marginStart = newDividerStartMargin
             }
         }
-       mDividerViewBottom?.apply {
+       dividerViewBottom?.apply {
             if (newDividerStartMargin == marginStart) return@apply
             updateLayoutParams<LayoutParams> {
                 this.marginStart = newDividerStartMargin
@@ -220,13 +220,13 @@ class CardItemView @JvmOverloads constructor(
 
     fun getIconImageView(): ImageView {
         ensureInflatedIconView()
-        return mIconImageView!!
+        return iconImageView!!
     }
 
     override fun setEnabled(enabled: Boolean) {
         if (isEnabled == enabled) return
         super.setEnabled(enabled)
-        mContainerView.apply {
+        containerView.apply {
             isFocusable = enabled
             isClickable = enabled
             alpha = when {
@@ -237,7 +237,7 @@ class CardItemView @JvmOverloads constructor(
     }
 
     override fun setOnClickListener(l: OnClickListener?) {
-        mContainerView.setOnClickListener {
+        containerView.setOnClickListener {
             if (isEnabled) {
                 l?.onClick(this)
             }

@@ -49,17 +49,17 @@ class RadioItemViewGroup @JvmOverloads constructor(
     private var _checkedRadioButtonId: Int = -1
 
     // tracks children checked texts checked state
-    private var mChildOnCheckedChangeListener: RadioItemView.OnCheckedChangeListener? = null
+    private var childOnCheckedChangeListener = CheckedStateTracker()
 
     // when true, mOnCheckedChangeListener discards events
-    private var mProtectFromCheckedChange = false
+    private var protectFromCheckedChange = false
 
-    private var mOnCheckedChangeListener: OnCheckedChangeListener? = null
-    private var mPassThroughListener: PassThroughHierarchyChangeListener? = null
+    private var onCheckedChangeListener: OnCheckedChangeListener? = null
+    private var passThroughListener = PassThroughHierarchyChangeListener()
 
     // Indicates whether the child was set from resources or dynamically, so it can be used
     // to sanitize autofill requests.
-    private var mInitialCheckedId = View.NO_ID
+    private var initialCheckedId = View.NO_ID
 
     private var mItemBackgroundHolder: ItemBackgroundHolder? = null
     private var mRecoilAnimatorHolder: SeslRecoilAnimator.Holder? = null
@@ -85,14 +85,12 @@ class RadioItemViewGroup @JvmOverloads constructor(
             values.getResourceId(R.styleable.RadioItemViewGroup_checkedButton, View.NO_ID).let { checkedButtonId ->
                 if (checkedButtonId != View.NO_ID) {
                     _checkedRadioButtonId = checkedButtonId
-                    mInitialCheckedId = checkedButtonId
+                    initialCheckedId = checkedButtonId
                 }
             }
         }
 
-        mChildOnCheckedChangeListener = CheckedStateTracker()
-        mPassThroughListener = PassThroughHierarchyChangeListener()
-        super.setOnHierarchyChangeListener(mPassThroughListener)
+        super.setOnHierarchyChangeListener(passThroughListener)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             mItemBackgroundHolder = ItemBackgroundHolder()
@@ -213,7 +211,7 @@ class RadioItemViewGroup @JvmOverloads constructor(
 
     override fun setOnHierarchyChangeListener(listener: OnHierarchyChangeListener) {
         // the user listener is delegated to our pass-through listener
-        mPassThroughListener!!.mOnHierarchyChangeListener = listener
+        passThroughListener!!.mOnHierarchyChangeListener = listener
     }
 
     override fun onFinishInflate() {
@@ -221,9 +219,9 @@ class RadioItemViewGroup @JvmOverloads constructor(
 
         // checks the appropriate checked text as requested in the XML file
         if (_checkedRadioButtonId != -1) {
-            mProtectFromCheckedChange = true
+            protectFromCheckedChange = true
             setCheckedStateForView(_checkedRadioButtonId, true)
-            mProtectFromCheckedChange = false
+            protectFromCheckedChange = false
             setCheckedId(_checkedRadioButtonId)
         }
     }
@@ -231,11 +229,11 @@ class RadioItemViewGroup @JvmOverloads constructor(
     override fun addView(child: View, index: Int, params: ViewGroup.LayoutParams) {
         if (child is RadioItemView) {
             if (child.isChecked) {
-                mProtectFromCheckedChange = true
+                protectFromCheckedChange = true
                 if (_checkedRadioButtonId != -1) {
                     setCheckedStateForView(_checkedRadioButtonId, false)
                 }
-                mProtectFromCheckedChange = false
+                protectFromCheckedChange = false
                 setCheckedId(child.getId())
             }
             child.apply {
@@ -281,8 +279,8 @@ class RadioItemViewGroup @JvmOverloads constructor(
         val changed = id != _checkedRadioButtonId
         _checkedRadioButtonId = id
 
-        if (mOnCheckedChangeListener != null) {
-            mOnCheckedChangeListener!!.onCheckedChanged(this, _checkedRadioButtonId)
+        if (onCheckedChangeListener != null) {
+            onCheckedChangeListener!!.onCheckedChanged(this, _checkedRadioButtonId)
         }
         if (changed && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             mContext.getSystemService(AutofillManager::class.java).notifyValueChanged(this)
@@ -317,7 +315,7 @@ class RadioItemViewGroup @JvmOverloads constructor(
      * @param listener the callback to call on checked state change
      */
     fun setOnCheckedChangeListener(listener: OnCheckedChangeListener?) {
-        mOnCheckedChangeListener = listener
+        onCheckedChangeListener = listener
     }
 
     override fun generateLayoutParams(attrs: AttributeSet): LayoutParams {
@@ -400,15 +398,15 @@ class RadioItemViewGroup @JvmOverloads constructor(
     private inner class CheckedStateTracker : RadioItemView.OnCheckedChangeListener {
         override fun onCheckedChanged(radioItem: RadioItemView, isChecked: Boolean) {
             // prevents from infinite recursion
-            if (mProtectFromCheckedChange) {
+            if (protectFromCheckedChange) {
                 return
             }
 
-            mProtectFromCheckedChange = true
+            protectFromCheckedChange = true
             if (_checkedRadioButtonId != -1) {
                 setCheckedStateForView(_checkedRadioButtonId, false)
             }
-            mProtectFromCheckedChange = false
+            protectFromCheckedChange = false
 
             val id: Int = radioItem.id
             setCheckedId(id)
@@ -434,7 +432,7 @@ class RadioItemViewGroup @JvmOverloads constructor(
                     child.id = id
                 }
                 child.setOnCheckedChangeWidgetListener(
-                    mChildOnCheckedChangeListener
+                    childOnCheckedChangeListener
                 )
             }
 

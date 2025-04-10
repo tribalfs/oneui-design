@@ -30,16 +30,16 @@ class RadioItemView @JvmOverloads constructor(
     }
 
     private var checkedTextView: SeslCheckedTextView
-    private var mTopDivider: View
+    private var topDivider: View
     private var onCheckedChangeListener: OnCheckedChangeListener? = null
 
     /**
      *  Show divider on top. True by default
      */
     var showTopDivider: Boolean
-        get() = mTopDivider.isVisible
+        get() = topDivider.isVisible
         set(value) {
-            mTopDivider.isVisible = value
+            topDivider.isVisible = value
         }
 
     var title: CharSequence?
@@ -65,7 +65,7 @@ class RadioItemView @JvmOverloads constructor(
 
         checkedTextView = findViewById(R.id.checkedTextView)
 
-        mTopDivider = findViewById(R.id.top_divider)
+        topDivider = findViewById(R.id.top_divider)
 
         attrs?.let{
             context.obtainStyledAttributes(
@@ -78,7 +78,7 @@ class RadioItemView @JvmOverloads constructor(
                 isChecked = a.getBoolean(R.styleable.RadioItemView_android_checked, false)
                 title = a.getText(R.styleable.RadioItemView_title)
                 showTopDivider = a.getBoolean(R.styleable.RadioItemView_showTopDivider, true).also {
-                    mTopDivider.isVisible = it
+                    topDivider.isVisible = it
                 }
             }
         }

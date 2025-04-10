@@ -194,10 +194,10 @@ open class ToolbarLayout @JvmOverloads constructor(
      * the existing listener for the current search mode will be used.
      * If specified, it overrides the current search mode listener.
      */
-    sealed interface SearchOnActionMode{
-        data object Dismiss: SearchOnActionMode
-        data object NoDismiss: SearchOnActionMode
-        data class Concurrent(val searchModeListener: SearchModeListener?): SearchOnActionMode
+    sealed interface SearchOnActionMode {
+        data object Dismiss : SearchOnActionMode
+        data object NoDismiss : SearchOnActionMode
+        data class Concurrent(val searchModeListener: SearchModeListener?) : SearchOnActionMode
     }
 
     val activity by lazy(LazyThreadSafetyMode.NONE) { context.appCompatActivity }
@@ -223,7 +223,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         if (isInEditMode) return
         if (getBackCallbackStateUpdate()) {
             onBackCallbackDelegate.startListening(true)
-        }else{
+        } else {
             onBackCallbackDelegate.stopListening()
         }
     }
@@ -253,53 +253,64 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     private var appBarOffsetListener = AppBarOffsetListener()
 
-    private var mLayout: Int = 0
+    private var layoutRes: Int = 0
 
-    private var mExpandable: Boolean = false
+    private var _expandable: Boolean = false
     private var expandedPortrait: Boolean = false
-    private var mTitleCollapsed: CharSequence? = null
-    private var mTitleExpanded: CharSequence? = null
-    private var mSubtitleCollapsed: CharSequence? = null
-    private var mSubtitleExpanded: CharSequence? = null
-    private var mNavigationIcon: Drawable? = null
+    private var _collapsedTitle: CharSequence? = null
+    private var _titleExpanded: CharSequence? = null
+    private var _collapsedSubtitle: CharSequence? = null
+    private var _subtitleExpanded: CharSequence? = null
+    private var navigationIcon: Drawable? = null
 
-    private var _showNavAsBack = false
+    private var _showNavigationButtonAsBack = false
     private var _showNavigationButton = false
 
     private var _mainContainer: RoundedFrameLayout? = null
-    internal val mainContainer get() = _mainContainer!!
+    internal val mainContainer: FrameLayout get() = _mainContainer!!
 
     private var _mainRoundedCorners: MainRoundedCorners = ALL
 
-    private lateinit var mMainContainerParent: LinearLayout
-    private lateinit var mCollapsingToolbarLayout: CollapsingToolbarLayout
+    private lateinit var mainContainerParent: LinearLayout
+    private lateinit var collapsingToolbarLayout: CollapsingToolbarLayout
 
-    private lateinit var _appBarLayout: AppBarLayout
     /**@return the [AppBarLayout].*/
-    val appBarLayout: AppBarLayout get() = _appBarLayout
+    lateinit var appBarLayout: AppBarLayout
+        private set
 
     private lateinit var _mainToolbar: Toolbar
+
     /**@return the main [Toolbar].*/
     @get:RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     val toolbar: Toolbar get() = _mainToolbar
 
-    private lateinit var mCoordinatorLayout: AdaptiveCoordinatorLayout
-    private lateinit var mBottomRoundedCorner: RoundedLinearLayout
+    private lateinit var adpCoordinatorLayout: AdaptiveCoordinatorLayout
+    private lateinit var bottomRoundedCorner: RoundedLinearLayout
     internal lateinit var footerParent: LinearLayout
         private set
 
-    private var mActionModeToolbar: Toolbar? = null
-    private lateinit var mActionModeSelectAll: LinearLayout
-    private lateinit var mActionModeCheckBox: CheckBox
-    private lateinit var mActionModeTitleTextView: TextView
+    private var actionModeToolbar: Toolbar? = null
+    private lateinit var actionModeSelectAll: LinearLayout
+    private lateinit var actionModeCheckBox: CheckBox
+    private lateinit var actionModeTitleTextView: TextView
     private var updateAllSelectorJob: Job? = null
 
-    private var mCustomFooterContainer: FrameLayout? = null
-    private lateinit var mBottomActionModeBar: BottomNavigationView
+    private var customFooterContainer: FrameLayout? = null
+    private lateinit var bottomActionModeBar: BottomNavigationView
 
-    private var mSearchToolbar: Toolbar? = null
+    private var searchToolbar: Toolbar? = null
+
     private var _searchView: SemSearchView? = null
+
+    /**
+     * The [SearchView] for [search mode][startSearchMode] or [action mode search][SearchOnActionMode].
+     *
+     * Note: Apps should access this view using [SearchModeListener] callback.
+     */
+    internal val searchView: SearchView? get() = _searchView
+
     private var mSearchModeListener: SearchModeListener? = null
+
     @JvmField
     internal var searchModeOBPBehavior = CLEAR_DISMISS
     private var searchMenuItem: MenuItem? = null
@@ -307,15 +318,16 @@ open class ToolbarLayout @JvmOverloads constructor(
     private var searchOnActionMode: SearchOnActionMode? = null
     private var showActionModeSearchPending = false
 
-    private var mMenuSynchronizer: MenuSynchronizer? = null
+    private var menuSynchronizer: MenuSynchronizer? = null
     private var forcePortraitMenu: Boolean = false
     private var syncMenuPending = false
     private var edgeInsetHorizontal = 10f //dp
 
-    private var mShowSwitchBar = false
+    private var _showSwitchBar = false
 
-    open val switchBar by lazy{
-        mMainContainerParent.findViewById<ViewStub>(R.id.viewstub_tbl_switchbar).inflate() as SeslSwitchBar
+    open val switchBar by lazy {
+        mainContainerParent.findViewById<ViewStub>(R.id.viewstub_tbl_switchbar)
+            .inflate() as SeslSwitchBar
     }
 
     /**
@@ -334,7 +346,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     var isActionMode: Boolean = false
         private set
 
-    private var mHandleInsets: Boolean = false
+    private var _handleInsets: Boolean = false
 
     /**
      * Listener for the search mode.
@@ -342,7 +354,7 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @see startSearchMode
      * @see endSearchMode
      */
-    interface SearchModeListener: SearchView.OnQueryTextListener{
+    interface SearchModeListener : SearchView.OnQueryTextListener {
         /**
          * Called when search mode is toggled active or inactive.
          */
@@ -359,24 +371,21 @@ open class ToolbarLayout @JvmOverloads constructor(
                 child,
                 CollapsingToolbarLayout.LayoutParams(params)
             )
-            FOOTER -> mCustomFooterContainer!!.addView(child, params)
+
+            FOOTER -> customFooterContainer!!.addView(child, params)
             ROOT, ROOT_BOUNDED -> {
                 if (params.layoutLocation == ROOT) {
                     child.setTag(R.id.tag_side_margin_excluded, true)
                 }
-                mCoordinatorLayout.addView(child, cllpWrapper(params as LayoutParams))
+                adpCoordinatorLayout.addView(child, cllpWrapper(params as LayoutParams))
             }
-            else ->  _mainContainer?.addView(child, params) ?: super.addView(child, index, params)
+            else -> _mainContainer?.addView(child, params) ?: super.addView(child, index, params)
         }
     }
 
-    public override fun generateDefaultLayoutParams(): LayoutParams {
-        return ToolbarLayoutParams(context, null)
-    }
+    public override fun generateDefaultLayoutParams() = ToolbarLayoutParams(context, null)
 
-    override fun generateLayoutParams(attrs: AttributeSet): LayoutParams {
-        return ToolbarLayoutParams(context, attrs)
-    }
+    override fun generateLayoutParams(attrs: AttributeSet) = ToolbarLayoutParams(context, attrs)
 
     open val navButtonsHandler: NavButtonsHandler by lazy(LazyThreadSafetyMode.NONE) {
         ToolbarLayoutButtonsHandler(_mainToolbar)
@@ -386,7 +395,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         activity?.applyEdgeToEdge()
         orientation = VERTICAL
         context.theme.obtainStyledAttributes(attrs, R.styleable.ToolbarLayout, 0, 0).use {
-            mLayout = it.getResourceId(
+            layoutRes = it.getResourceId(
                 R.styleable.ToolbarLayout_android_layout,
                 getDefaultLayoutResource()
             )
@@ -397,41 +406,50 @@ open class ToolbarLayout @JvmOverloads constructor(
             inflateChildren()
             initViews()
 
-            mExpandable = it.getBoolean(R.styleable.ToolbarLayout_expandable, true)
-            expandedPortrait = it.getBoolean(R.styleable.ToolbarLayout_expanded, mExpandable)
-            _showNavAsBack = it.getBoolean(R.styleable.ToolbarLayout_showNavButtonAsBack, false)
-            mNavigationIcon = it.getDrawable(R.styleable.ToolbarLayout_navigationIcon)
-                ?: getDefaultNavigationIconResource()?.let { d -> ContextCompat.getDrawable(context, d) }
-            mTitleCollapsed = it.getString(R.styleable.ToolbarLayout_title)
-            mTitleExpanded = mTitleCollapsed
-            mSubtitleExpanded = it.getString(R.styleable.ToolbarLayout_subtitle)
-            mSubtitleCollapsed = mSubtitleExpanded
-            mHandleInsets = it.getBoolean(R.styleable.ToolbarLayout_handleInsets, true)
-            mShowSwitchBar = it.getBoolean(R.styleable.ToolbarLayout_showSwitchBar, false)
-            _mainRoundedCorners = MainRoundedCorners.entries[it.getInteger(R.styleable.ToolbarLayout_mainRoundedCorners, 0)]
+            _expandable = it.getBoolean(R.styleable.ToolbarLayout_expandable, true)
+            expandedPortrait = it.getBoolean(R.styleable.ToolbarLayout_expanded, _expandable)
+            _showNavigationButtonAsBack =
+                it.getBoolean(R.styleable.ToolbarLayout_showNavButtonAsBack, false)
+            navigationIcon = it.getDrawable(R.styleable.ToolbarLayout_navigationIcon)
+                ?: getDefaultNavigationIconResource()?.let { d ->
+                    ContextCompat.getDrawable(
+                        context,
+                        d
+                    )
+                }
+            _collapsedTitle = it.getString(R.styleable.ToolbarLayout_title)
+            _titleExpanded = _collapsedTitle
+            _subtitleExpanded = it.getString(R.styleable.ToolbarLayout_subtitle)
+            _collapsedSubtitle = _subtitleExpanded
+            _handleInsets = it.getBoolean(R.styleable.ToolbarLayout_handleInsets, true)
+            _showSwitchBar = it.getBoolean(R.styleable.ToolbarLayout_showSwitchBar, false)
+            _mainRoundedCorners = MainRoundedCorners.entries[it.getInteger(
+                R.styleable.ToolbarLayout_mainRoundedCorners,
+                0
+            )]
         }
     }
 
     private fun inflateChildren() {
-        if (mLayout != getDefaultLayoutResource()) {
+        if (layoutRes != getDefaultLayoutResource()) {
             Log.w(TAG, "Inflating custom layout")
         }
-        LayoutInflater.from(context).inflate(mLayout, this, true)
+        LayoutInflater.from(context).inflate(layoutRes, this, true)
     }
 
     private fun initViews() {
-        mCoordinatorLayout = findViewById(R.id.toolbarlayout_coordinator_layout)
-        _appBarLayout = mCoordinatorLayout.findViewById<AppBarLayout?>(R.id.toolbarlayout_app_bar)
+        adpCoordinatorLayout = findViewById(R.id.toolbarlayout_coordinator_layout)
+        appBarLayout = adpCoordinatorLayout.findViewById<AppBarLayout?>(R.id.toolbarlayout_app_bar)
             .apply { setTag(R.id.tag_side_margin_excluded, true) }
-        mCollapsingToolbarLayout = _appBarLayout.findViewById(R.id.toolbarlayout_collapsing_toolbar)
-        _mainToolbar = mCollapsingToolbarLayout.findViewById(R.id.toolbarlayout_main_toolbar)
+        collapsingToolbarLayout = appBarLayout.findViewById(R.id.toolbarlayout_collapsing_toolbar)
+        _mainToolbar = collapsingToolbarLayout.findViewById(R.id.toolbarlayout_main_toolbar)
 
-        mMainContainerParent = mCoordinatorLayout.findViewById(R.id.tbl_main_content_parent)
-        _mainContainer = mMainContainerParent.findViewById(R.id.tbl_main_content)
-        mBottomRoundedCorner = mCoordinatorLayout.findViewById(R.id.tbl_bottom_corners)
+        mainContainerParent = adpCoordinatorLayout.findViewById(R.id.tbl_main_content_parent)
+        _mainContainer = mainContainerParent.findViewById(R.id.tbl_main_content)
+        bottomRoundedCorner = adpCoordinatorLayout.findViewById(R.id.tbl_bottom_corners)
 
         footerParent = findViewById(R.id.tbl_footer_parent)
-        mCustomFooterContainer = footerParent.findViewById(R.id.tbl_custom_footer_container)
+        customFooterContainer = footerParent.findViewById(R.id.tbl_custom_footer_container)
 
         activity?.apply {
             setSupportActionBar(_mainToolbar)
@@ -444,16 +462,16 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     override fun onFinishInflate() {
         super.onFinishInflate()
-        mCoordinatorLayout.configureAdaptiveMargin(marginProviderImpl, getAdaptiveChildViews())
+        adpCoordinatorLayout.configureAdaptiveMargin(marginProviderImpl, getAdaptiveChildViews())
         navButtonsHandler.apply {
-            showNavigationButtonAsBack = _showNavAsBack
+            showNavigationButtonAsBack = _showNavigationButtonAsBack
             showNavigationButton = _showNavigationButton
         }
-        if (mShowSwitchBar) switchBar.visibility = VISIBLE
-        setNavigationButtonIcon(mNavigationIcon)
+        if (_showSwitchBar) switchBar.visibility = VISIBLE
+        setNavigationButtonIcon(navigationIcon)
         applyCachedTitles()
         updateAppbarHeight()
-        if (_mainRoundedCorners != ALL){
+        if (_mainRoundedCorners != ALL) {
             applyMainRoundedCorners()
         }
         updateHorizontalEdgeInsets()
@@ -464,13 +482,13 @@ open class ToolbarLayout @JvmOverloads constructor(
         refreshLayout(resources.configuration)
         syncActionModeMenu()
         updateOnBackCallbackState()
-        _appBarLayout.addOnOffsetChangedListener(appBarOffsetListener)
+        appBarLayout.addOnOffsetChangedListener(appBarOffsetListener)
         footerParent.addOnLayoutChangeListener(footerLayoutListener)
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        _appBarLayout.removeOnOffsetChangedListener(appBarOffsetListener)
+        appBarLayout.removeOnOffsetChangedListener(appBarOffsetListener)
         footerParent.removeOnLayoutChangeListener(footerLayoutListener)
     }
 
@@ -503,23 +521,25 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @see [AdaptiveCoordinatorLayout.MARGIN_PROVIDER_ZERO].
      */
     @CallSuper
-    open fun setAdaptiveMarginProvider(provider: MarginProvider){
+    open fun setAdaptiveMarginProvider(provider: MarginProvider) {
         if (marginProviderImpl == provider) return
         marginProviderImpl = provider
-        mCoordinatorLayout.configureAdaptiveMargin(provider, getAdaptiveChildViews())
+        adpCoordinatorLayout.configureAdaptiveMargin(provider, getAdaptiveChildViews())
     }
 
     internal open fun getAdaptiveChildViews(): Set<View>? =
-        mCoordinatorLayout.children.filterNot { it.getTag(R.id.tag_side_margin_excluded) == true }.toSet()
+        adpCoordinatorLayout.children.filterNot { it.getTag(R.id.tag_side_margin_excluded) == true }
+            .toSet()
 
 
     private fun updateAppbarHeight() {
-        _appBarLayout.isEnabled = mExpandable
-        if (mExpandable) {
-            _appBarLayout.seslSetCustomHeightProportion(false, 0f)
+        appBarLayout.isEnabled = _expandable
+        if (_expandable) {
+            appBarLayout.seslSetCustomHeightProportion(false, 0f)
         } else {
-            _appBarLayout.seslSetCustomHeight(
-                context.resources.getDimensionPixelSize(appcompatR.dimen.sesl_action_bar_height_with_padding))
+            appBarLayout.seslSetCustomHeight(
+                context.resources.getDimensionPixelSize(appcompatR.dimen.sesl_action_bar_height_with_padding)
+            )
         }
     }
 
@@ -538,7 +558,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         edgeInsetHorizontal.dpToPx(resources).let {px ->
             Insets.of(px, 0, px, 0).let {
                 _mainContainer!!.edgeInsets = it
-                mBottomRoundedCorner.edgeInsets = it
+                bottomRoundedCorner.edgeInsets = it
             }
         }
     }
@@ -554,9 +574,7 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @see setTitle[CharSequence?, CharSequence?] for setting titles independently.
      * @see setCustomTitleView
      */
-    open fun setTitle(title: CharSequence?) {
-        setTitle(title, title)
-    }
+    open fun setTitle(title: CharSequence?) = setTitle(title, title)
 
     /**
      * Set the title of the collapsed and expanded Toolbar independently.
@@ -566,10 +584,7 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @see expandedTitle
      * @see collapsedTitle
      */
-    fun setTitle(
-        expandedTitle: CharSequence?,
-        collapsedTitle: CharSequence?
-    ) {
+    fun setTitle(expandedTitle: CharSequence?, collapsedTitle: CharSequence?) {
         this.collapsedTitle = collapsedTitle
         this.expandedTitle = expandedTitle
     }
@@ -581,10 +596,10 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @see collapsedTitle
      */
     var expandedTitle: CharSequence?
-        get() = mTitleExpanded
+        get() = _titleExpanded
         set(value) {
-            if (mTitleExpanded == value) return
-            mCollapsingToolbarLayout.title = value.also { mTitleExpanded = it }
+            if (_titleExpanded == value) return
+            collapsingToolbarLayout.title = value.also { _titleExpanded = it }
         }
 
     /**
@@ -593,10 +608,10 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @see expandedTitle
      */
     var collapsedTitle: CharSequence?
-        get() = mTitleCollapsed
+        get() = _collapsedTitle
         set(value) {
-            if (mTitleCollapsed == value) return
-            _mainToolbar.title = value.also { mTitleCollapsed = it }
+            if (_collapsedTitle == value) return
+            _mainToolbar.title = value.also { _collapsedTitle = it }
         }
 
     /**
@@ -606,7 +621,7 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @see expandedSubtitle
      * @see collapsedSubtitle
      */
-    fun setSubtitle(subtitle: CharSequence?){
+    fun setSubtitle(subtitle: CharSequence?) {
         this.expandedSubtitle = subtitle
         this.collapsedSubtitle = subtitle
     }
@@ -618,10 +633,10 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @see collapsedSubtitle
      */
     var expandedSubtitle: CharSequence?
-        get() = mSubtitleExpanded
+        get() = _subtitleExpanded
         set(value) {
-            if (mSubtitleExpanded == value) return
-            mCollapsingToolbarLayout.seslSetSubtitle(value.also { mSubtitleExpanded = it })
+            if (_subtitleExpanded == value) return
+            collapsingToolbarLayout.seslSetSubtitle(value.also { _subtitleExpanded = it })
         }
 
     /**
@@ -630,29 +645,31 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @see expandedSubtitle
      */
     var collapsedSubtitle: CharSequence?
-        get() = mSubtitleCollapsed
+        get() = _collapsedSubtitle
         set(value) {
-            if (mSubtitleCollapsed == value) return
-            _mainToolbar.subtitle = value.also { mSubtitleCollapsed = it }
+            if (_collapsedSubtitle == value) return
+            _mainToolbar.subtitle = value.also { _collapsedSubtitle = it }
         }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY)
-    fun setTitlesNoCache(expandedTitle: CharSequence?,
-                         collapsedTitle: CharSequence?,
-                         expandedSubTitle: CharSequence?,
-                         collapsedSubtitle: CharSequence?){
+    fun setTitlesNoCache(
+        expandedTitle: CharSequence?,
+        collapsedTitle: CharSequence?,
+        expandedSubTitle: CharSequence?,
+        collapsedSubtitle: CharSequence?
+    ) {
         _mainToolbar.title = collapsedTitle
-        mCollapsingToolbarLayout.title = expandedTitle
+        collapsingToolbarLayout.title = expandedTitle
         _mainToolbar.subtitle = collapsedSubtitle
-        mCollapsingToolbarLayout.seslSetSubtitle(expandedSubTitle)
+        collapsingToolbarLayout.seslSetSubtitle(expandedSubTitle)
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY)
-    fun applyCachedTitles(){
-        _mainToolbar.title = mTitleCollapsed
-        mCollapsingToolbarLayout.title = mTitleExpanded
-        _mainToolbar.subtitle = mSubtitleCollapsed
-        mCollapsingToolbarLayout.seslSetSubtitle(mSubtitleExpanded)
+    fun applyCachedTitles() {
+        _mainToolbar.title = _collapsedTitle
+        collapsingToolbarLayout.title = _titleExpanded
+        _mainToolbar.subtitle = _collapsedSubtitle
+        collapsingToolbarLayout.seslSetSubtitle(_subtitleExpanded)
     }
 
     /**
@@ -661,10 +678,10 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @see setExpanded
      */
     var isExpandable: Boolean
-        get() = mExpandable
+        get() = _expandable
         set(expandable) {
-            if (mExpandable != expandable) {
-                mExpandable = expandable
+            if (_expandable != expandable) {
+                _expandable = expandable
                 updateAppbarHeight()
             }
         }
@@ -676,9 +693,9 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @param animate whether or not to animate the expanding or collapsing.
      */
     fun setExpanded(expanded: Boolean, animate: Boolean) {
-        if (mExpandable) {
+        if (_expandable) {
             expandedPortrait = expanded
-            _appBarLayout.setExpanded(expanded, animate)
+            appBarLayout.setExpanded(expanded, animate)
         } else Log.d(TAG, "setExpanded: mExpandable is false")
     }
 
@@ -688,9 +705,9 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @see setExpanded
      */
     var isExpanded: Boolean
-        get() = mExpandable && !_appBarLayout.seslIsCollapsed()
+        get() = _expandable && !appBarLayout.seslIsCollapsed()
         set(expanded) {
-            setExpanded(expanded, _appBarLayout.isLaidOut)
+            setExpanded(expanded, appBarLayout.isLaidOut)
         }
 
 
@@ -706,7 +723,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     fun setCustomTitleView(view: View, params: CollapsingToolbarLayout.LayoutParams? = null) {
         (params ?: CollapsingToolbarLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)).apply {
             seslSetIsTitleCustom(true)
-            mCollapsingToolbarLayout.seslSetCustomTitleView(view, this)
+            collapsingToolbarLayout.seslSetCustomTitleView(view, this)
         }
     }
 
@@ -715,7 +732,7 @@ open class ToolbarLayout @JvmOverloads constructor(
      * This might not be visible in landscape or on devices with small dpi.
      */
     fun getCustomTitleView(): View? {
-        return mCollapsingToolbarLayout.children.find {
+        return collapsingToolbarLayout.children.find {
             (it.layoutParams as? CollapsingToolbarLayout.LayoutParams)?.seslIsTitleCustom() == true
         }
     }
@@ -725,10 +742,10 @@ open class ToolbarLayout @JvmOverloads constructor(
      * This might not be visible in landscape or on devices with small dpi.
      */
     var customSubtitleView: View?
-        get() = mCollapsingToolbarLayout.seslGetCustomSubtitle()
+        get() = collapsingToolbarLayout.seslGetCustomSubtitle()
         set(value) {
-            if (value == mCollapsingToolbarLayout.seslGetCustomSubtitle()) return
-            mCollapsingToolbarLayout.seslSetCustomSubtitle(value)
+            if (value == collapsingToolbarLayout.seslGetCustomSubtitle()) return
+            collapsingToolbarLayout.seslSetCustomSubtitle(value)
         }
 
     private var immersiveScrollHelper: ImmersiveScrollHelper? = null
@@ -743,21 +760,30 @@ open class ToolbarLayout @JvmOverloads constructor(
      */
     @JvmOverloads
     @CallSuper
-    open fun activateImmersiveScroll(activate: Boolean, @FloatRange(0.0, 1.0)
-                                footerAlpha: Float = 1f): Boolean {
+    open fun activateImmersiveScroll(
+        activate: Boolean, @FloatRange(0.0, 1.0)
+        footerAlpha: Float = 1f
+    ): Boolean {
         if (VERSION.SDK_INT < 30) {
-            Log.w(TAG, "activateImmersiveScroll: immersive scroll is available only on api 30 and above")
+            Log.w(
+                TAG,
+                "activateImmersiveScroll: immersive scroll is available only on api 30 and above"
+            )
             return false
         }
 
-        if (DeviceLayoutUtil.isDeskTopMode(context.resources)){
-            Log.w(TAG, "activateImmersiveScroll: immersive scroll is not available on desktop mode.")
+        if (DeviceLayoutUtil.isDeskTopMode(context.resources)) {
+            Log.w(
+                TAG,
+                "activateImmersiveScroll: immersive scroll is not available on desktop mode."
+            )
             return false
         }
 
         if (activate) {
             if (immersiveScrollHelper == null) {
-                immersiveScrollHelper = ImmersiveScrollHelper(activity!!, appBarLayout, footerParent, footerAlpha)
+                immersiveScrollHelper =
+                    ImmersiveScrollHelper(activity!!, appBarLayout, footerParent, footerAlpha)
             }
             immersiveScrollHelper!!.activateImmersiveScroll()
         } else {
@@ -787,12 +813,12 @@ open class ToolbarLayout @JvmOverloads constructor(
          * Activate or deactivate the immersive scroll behavior.
          * When this is activated, the AppBar, the Navigation bar and the layout footer will completely hide when scrolling up.
          */
-        set(activate)  {
+        set(activate) {
             activateImmersiveScroll(activate, if (VERSION.SDK_INT >= 35) 0.8f else 1f)
         }
 
     fun setAppBarSuggestView(appBarModel: AppBarModel<out AppBarView>?){
-        mCollapsingToolbarLayout.seslSetSuggestView(appBarModel)
+        collapsingToolbarLayout.seslSetSuggestView(appBarModel)
     }
 
     //
@@ -859,8 +885,8 @@ open class ToolbarLayout @JvmOverloads constructor(
     var showNavigationButtonAsBack
         get() = navButtonsHandler.showNavigationButtonAsBack
         set(value) {
-            if (_showNavAsBack == value) return
-            _showNavAsBack = value
+            if (_showNavigationButtonAsBack == value) return
+            _showNavigationButtonAsBack = value
             navButtonsHandler.showNavigationButtonAsBack = value
         }
 
@@ -907,7 +933,7 @@ open class ToolbarLayout @JvmOverloads constructor(
                     showActionModeSearchView()
                 }
                 return
-            }else{
+            } else {
                 endActionMode()
             }
         }
@@ -916,14 +942,14 @@ open class ToolbarLayout @JvmOverloads constructor(
         ensureSearchModeToolbar()
         setupSearchView()
         animatedVisibility(_mainToolbar, GONE)
-        animatedVisibility(mSearchToolbar!!, VISIBLE)
-        mCustomFooterContainer!!.setVisibility(GONE, false)
+        animatedVisibility(searchToolbar!!, VISIBLE)
+        customFooterContainer!!.setVisibility(GONE, false)
         setExpanded(expanded = false, animate = true)
         setupSearchModeListener()
         _searchView!!.isIconified = false//to focus
-        mCollapsingToolbarLayout.title =
+        collapsingToolbarLayout.title =
             resources.getString(appcompatR.string.sesl_searchview_description_search)
-        mCollapsingToolbarLayout.seslSetSubtitle(null)
+        collapsingToolbarLayout.seslSetSubtitle(null)
         updateOnBackCallbackState()
         mSearchModeListener!!.onSearchModeToggle(_searchView!!, true)
     }
@@ -963,9 +989,9 @@ open class ToolbarLayout @JvmOverloads constructor(
         applyCachedTitles()
 
         //Restore views visibility
-        mSearchToolbar!!.visibility = GONE
+        searchToolbar!!.visibility = GONE
         animatedVisibility(_mainToolbar, VISIBLE)
-        mCustomFooterContainer!!.setVisibility(VISIBLE, true, 450)
+        customFooterContainer!!.setVisibility(VISIBLE, true, 450)
 
         mSearchModeListener!!.onSearchModeToggle(_searchView!!, false)
         // We are clearing the listener first. We don't want to trigger
@@ -981,9 +1007,9 @@ open class ToolbarLayout @JvmOverloads constructor(
 
 
     private fun ensureSearchModeToolbar() {
-        if (mSearchToolbar == null) {
-            mSearchToolbar =
-                mCollapsingToolbarLayout.findViewById<ViewStub>(R.id.viewstub_oui_view_toolbar_search)
+        if (searchToolbar == null) {
+            searchToolbar =
+                collapsingToolbarLayout.findViewById<ViewStub>(R.id.viewstub_oui_view_toolbar_search)
                     .inflate() as Toolbar
         }
     }
@@ -1006,16 +1032,20 @@ open class ToolbarLayout @JvmOverloads constructor(
                     seslSetUpButtonVisibility(GONE)
                     seslSetOnUpButtonClickListener(null)
                     onCloseClickListener = {
-                        mSearchToolbar?.isVisible = false//not anymore needed
+                        searchToolbar?.isVisible = false//not anymore needed
                         isSearchMode = false
                         iconifyActionModeSearchView(true)
                         setOnQueryTextListener(null)
                         mSearchModeListener?.onSearchModeToggle(this, false)
                         setQuery("", false)
                     }
-                    if (!isDescendantOf(mMainContainerParent)) {
+                    if (!isDescendantOf(mainContainerParent)) {
                         (parent as? ViewGroup)?.removeView(this)
-                        mMainContainerParent.addView(this, 0, MarginLayoutParams(MATCH_PARENT, WRAP_CONTENT))
+                        mainContainerParent.addView(
+                            this,
+                            0,
+                            MarginLayoutParams(MATCH_PARENT, WRAP_CONTENT)
+                        )
                         updateLayoutParams<MarginLayoutParams> {
                             val dpToPx = context.dpToPxFactor
                             height = (48 * dpToPx).toInt()
@@ -1029,16 +1059,18 @@ open class ToolbarLayout @JvmOverloads constructor(
 
             isSearchMode -> {
                 _searchView!!.apply {
-                    if (tag == 1) { isVisible = true; return }
+                    if (tag == 1) {
+                        isVisible = true; return
+                    }
                     tag = 1
                     background = null
                     applyThemeColors()
                     seslSetUpButtonVisibility(VISIBLE)
                     seslSetOnUpButtonClickListener { endSearchMode() }
                     onCloseClickListener = null
-                    if (!isDescendantOf(mSearchToolbar!!)) {
+                    if (!isDescendantOf(searchToolbar!!)) {
                         (parent as? ViewGroup)?.removeView(this)
-                        mSearchToolbar!!.addView(
+                        searchToolbar!!.addView(
                             this,
                             0,
                             Toolbar.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
@@ -1050,20 +1082,13 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
     }
 
-    private fun iconifyActionModeSearchView(iconify: Boolean){
+    private fun iconifyActionModeSearchView(iconify: Boolean) {
         _searchView!!.apply {
             isVisible = !iconify
             if (!iconify) isIconified = false//To focus
         }
         searchMenuItem!!.isVisible = iconify
     }
-
-    /**
-     * The [SearchView] for [search mode][startSearchMode] or [action mode search][SearchOnActionMode].
-     *
-     * Note: Apps should access this view using [SearchModeListener] callback.
-     */
-    internal val searchView get() = _searchView
 
 
     /**
@@ -1085,8 +1110,8 @@ open class ToolbarLayout @JvmOverloads constructor(
      * ```
      */
     fun setSearchQueryFromIntent(intent: Intent) {
-        require (Intent.ACTION_SEARCH == intent.action) {
-           "setSearchQueryFromIntent: Intent action is not ACTION_SEARCH."
+        require(Intent.ACTION_SEARCH == intent.action) {
+            "setSearchQueryFromIntent: Intent action is not ACTION_SEARCH."
         }
         if (isSearchMode) {
             _searchView!!.setQuery(intent.getStringExtra(SearchManager.QUERY), true)
@@ -1106,7 +1131,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             MotionEvent.ACTION_DOWN -> isTouching = true
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                 isTouching = false
-                if (syncMenuPending){
+                if (syncMenuPending) {
                     syncMenuPending = false
                     syncActionModeMenu()
                 }
@@ -1150,18 +1175,18 @@ open class ToolbarLayout @JvmOverloads constructor(
 
         when (searchOnActionMode) {
             Dismiss -> if (isSearchMode) endSearchMode()
-            NoDismiss -> if (isSearchMode) animatedVisibility(mSearchToolbar!!, GONE)
+            NoDismiss -> if (isSearchMode) animatedVisibility(searchToolbar!!, GONE)
             is Concurrent -> {
                 setupActionModeSearchMenu()
                 setupSearchView()
                 searchOnActionMode.searchModeListener?.let {
                     mSearchModeListener = it
                 }
-                post{
+                post {
                     if (isSearchMode || !_searchView!!.query.isNullOrEmpty()) {
                         if (isTouching) {
                             showActionModeSearchPending = true
-                        } else{
+                        } else {
                             showActionModeSearchView()
                         }
                     }
@@ -1188,7 +1213,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             }
         }
 
-        mCollapsingToolbarLayout.seslSetSubtitle(null)
+        collapsingToolbarLayout.seslSetSubtitle(null)
         _mainToolbar.subtitle = null
 
         setupAllSelectorOnClickListener()
@@ -1198,13 +1223,13 @@ open class ToolbarLayout @JvmOverloads constructor(
     }
 
     private inline fun showActionModeToolbarAnimate() {
-        animatedVisibility(mActionModeToolbar!!, VISIBLE)
+        animatedVisibility(actionModeToolbar!!, VISIBLE)
 
         if (!appBarLayout.seslIsCollapsed()) return
 
         val overshoot = CachedInterpolatorFactory.getOrCreate(Type.OVERSHOOT)
 
-        mActionModeCheckBox.apply {
+        actionModeCheckBox.apply {
             scaleX = 0f
             scaleY = 0f
             alpha = 0f
@@ -1217,7 +1242,7 @@ open class ToolbarLayout @JvmOverloads constructor(
                 .setDuration(260)
         }
 
-        mActionModeTitleTextView.apply {
+        actionModeTitleTextView.apply {
             translationX = if (isRTLayout) 80f else -80f
             animate()
                 .withLayer()
@@ -1262,7 +1287,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     }
 
     private inline fun setupActionModeSearchMenu() {
-        mActionModeToolbar!!.apply {
+        actionModeToolbar!!.apply {
             inflateMenu(R.menu.oui_des_tbl_am_common)
             searchMenuItem = menu.findItem(R.id.menu_item_am_search)!!.also {
                 it.isVisible = true
@@ -1275,7 +1300,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
     }
 
-    private fun showActionModeSearchView(){
+    private fun showActionModeSearchView() {
         iconifyActionModeSearchView(false)
         if (!isSearchMode) {
             setupSearchModeListener()
@@ -1295,40 +1320,40 @@ open class ToolbarLayout @JvmOverloads constructor(
         if (!isActionMode) return
         updateAllSelectorJob?.cancel()
         isActionMode = false
-        animatedVisibility(mActionModeToolbar!!, GONE)
+        animatedVisibility(actionModeToolbar!!, GONE)
         if (isSearchMode) {
             //return to search mode interface
             ensureSearchModeToolbar()
             setupSearchView()
-            animatedVisibility(mSearchToolbar!!, VISIBLE)
-            mCollapsingToolbarLayout.title =
+            animatedVisibility(searchToolbar!!, VISIBLE)
+            collapsingToolbarLayout.title =
                 resources.getString(appcompatR.string.sesl_searchview_description_search)
-            mCollapsingToolbarLayout.seslSetSubtitle(null)
+            collapsingToolbarLayout.seslSetSubtitle(null)
             _searchView!!.isIconified = false
         } else {
             clearActionModeSearch()
             showMainToolbarAnimate()
             applyCachedTitles()
-            mCustomFooterContainer!!.setVisibility(VISIBLE, true, 0)
+            customFooterContainer!!.setVisibility(VISIBLE, true, 0)
         }
-        mBottomActionModeBar.setVisibility(GONE, true, 0)
+        bottomActionModeBar.setVisibility(GONE, true, 0)
         mActionModeListener!!.onEndActionMode()
         //This clears menu including the common action mode menu
         //items - search and cancel
-        mMenuSynchronizer!!.clear()
-        mActionModeSelectAll.setOnClickListener(null)
-        mActionModeCheckBox.isChecked = false
+        menuSynchronizer!!.clear()
+        actionModeSelectAll.setOnClickListener(null)
+        actionModeCheckBox.isChecked = false
         allSelectorItemsCount = SELECTED_ITEMS_UNSET
         mActionModeListener = null
-        mMenuSynchronizer = null
+        menuSynchronizer = null
         updateAllSelectorJob = null
         searchOnActionMode = null
         updateOnBackCallbackState()
     }
 
     private inline fun setupAllSelectorOnClickListener() {
-        mActionModeSelectAll.setOnClickListener {
-            mActionModeCheckBox.apply {
+        actionModeSelectAll.setOnClickListener {
+            actionModeCheckBox.apply {
                 isChecked = !isChecked
                 mActionModeListener!!.onSelectAll(isChecked)
             }
@@ -1338,7 +1363,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     private inline fun setupActionModeMenu(showCancel: Boolean) {
         forcePortraitMenu = showCancel
 
-        mActionModeToolbar!!.apply {
+        actionModeToolbar!!.apply {
             var cancelMenuItem: MenuItem? = menu.findItem(R.id.menu_item_am_cancel)
             if (showCancel && cancelMenuItem == null) {
                 inflateMenu(R.menu.oui_des_tbl_am_common)
@@ -1355,26 +1380,26 @@ open class ToolbarLayout @JvmOverloads constructor(
             }
         }
 
-        mMenuSynchronizer = MenuSynchronizer(
-            mBottomActionModeBar,
-            mActionModeToolbar!!,
+        menuSynchronizer = MenuSynchronizer(
+            bottomActionModeBar,
+            actionModeToolbar!!,
             onMenuItemClick = {
                 mActionModeListener!!.onMenuItemClicked(it)
             },
             null
         ).apply {
-          mActionModeListener!!.onInflateActionMenu(this.menu, activity!!.menuInflater)
+            mActionModeListener!!.onInflateActionMenu(this.menu, activity!!.menuInflater)
         }
     }
 
     private fun syncActionModeMenu() {
         if (!isActionMode) return
-        if (isTouching){
+        if (isTouching) {
             syncMenuPending = true
             return
         }
-        if (mCustomFooterContainer!!.hasShowingChild()){
-            mCustomFooterContainer!!.isVisible = false
+        if (customFooterContainer!!.hasShowingChild()) {
+            customFooterContainer!!.isVisible = false
             if (VERSION.SDK_INT >= 26) {
                 postOnAnimationDelayed({ if (isActionMode) syncActionModeMenuInternal() }, 375)
                 return
@@ -1389,29 +1414,30 @@ open class ToolbarLayout @JvmOverloads constructor(
                 val isMenuModePortrait = forcePortraitMenu
                         || DeviceLayoutUtil.isPortrait(resources.configuration)
                         || DeviceLayoutUtil.isTabletLayoutOrDesktop(context)
-                mMenuSynchronizer!!.state = if (isMenuModePortrait) State.PORTRAIT else State.LANDSCAPE
+                menuSynchronizer!!.state =
+                    if (isMenuModePortrait) State.PORTRAIT else State.LANDSCAPE
                 if (isImmersiveScroll) {
-                    postOnAnimation { _appBarLayout.setExpanded(false, true)}
+                    postOnAnimation { appBarLayout.setExpanded(false, true) }
                 }
             }
         } else {
-            mMenuSynchronizer!!.state = State.HIDDEN
+            menuSynchronizer!!.state = State.HIDDEN
         }
     }
 
     private fun ensureActionModeViews() {
-        if (mActionModeToolbar == null) {
-            mActionModeToolbar =
-                (mCollapsingToolbarLayout.findViewById<ViewStub>(R.id.viewstub_oui_view_toolbar_action_mode)
+        if (actionModeToolbar == null) {
+            actionModeToolbar =
+                (collapsingToolbarLayout.findViewById<ViewStub>(R.id.viewstub_oui_view_toolbar_action_mode)
                     .inflate() as Toolbar).also {
-                    mActionModeSelectAll = it.findViewById(R.id.toolbarlayout_selectall)
-                    mActionModeTitleTextView =
+                    actionModeSelectAll = it.findViewById(R.id.toolbarlayout_selectall)
+                    actionModeTitleTextView =
                         it.findViewById(R.id.toolbar_layout_action_mode_title)
                 }
-            mActionModeCheckBox =
-                mActionModeSelectAll.findViewById(R.id.toolbarlayout_selectall_checkbox)
-            mActionModeSelectAll.setOnClickListener { mActionModeCheckBox.setChecked(!mActionModeCheckBox.isChecked) }
-            mBottomActionModeBar =
+            actionModeCheckBox =
+                actionModeSelectAll.findViewById(R.id.toolbarlayout_selectall_checkbox)
+            actionModeSelectAll.setOnClickListener { actionModeCheckBox.setChecked(!actionModeCheckBox.isChecked) }
+            bottomActionModeBar =
                 findViewById<ViewStub>(R.id.viewstub_tbl_actionmode_bottom_menu).inflate() as BottomNavigationView
         }
     }
@@ -1455,7 +1481,11 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @param enabled enable or disable click
      * @param checked
      */
-    private fun updateAllSelectorInternal(@IntRange(from = 0) count: Int, enabled: Boolean, checked: Boolean?) {
+    private fun updateAllSelectorInternal(
+        @IntRange(from = 0) count: Int,
+        enabled: Boolean,
+        checked: Boolean?
+    ) {
         if (!isActionMode) {
             //Cache for later
             allSelectorItemsCount = count
@@ -1482,15 +1512,15 @@ open class ToolbarLayout @JvmOverloads constructor(
         } else {
             resources.getString(R.string.oui_des_action_mode_select_items)
         }
-        mCollapsingToolbarLayout.title = title
-        mActionModeTitleTextView.text = title
+        collapsingToolbarLayout.title = title
+        actionModeTitleTextView.text = title
     }
 
     private inline fun applyAllSelectorState(isEnabled: Boolean, isChecked: Boolean?) {
         if (isChecked != null) {
-            mActionModeCheckBox.isChecked = isChecked
+            actionModeCheckBox.isChecked = isChecked
         }
-        mActionModeSelectAll.isEnabled = isEnabled
+        actionModeSelectAll.isEnabled = isEnabled
     }
 
     //
@@ -1498,9 +1528,9 @@ open class ToolbarLayout @JvmOverloads constructor(
     //
 
     override fun onApplyWindowInsets(insets: WindowInsets): WindowInsets {
-        val insetsCompat =  WindowInsetsCompat.toWindowInsetsCompat(insets)
+        val insetsCompat = WindowInsetsCompat.toWindowInsetsCompat(insets)
         insetsCompat.getInsets(navigationBars()).bottom.let {
-            if (it != navBarInsetBottom){
+            if (it != navBarInsetBottom) {
                 navBarInsetBottom = it
                 dispatchBottomOffsetChanged()
             }
@@ -1508,12 +1538,12 @@ open class ToolbarLayout @JvmOverloads constructor(
 
         //Note: insetsCompat.isVisible(WindowInsetsCompat.Type.ime())
         //returns incorrect on api29-
-        if (isSofInputShowing != isSoftKeyboardShowing){
+        if (isSofInputShowing != isSoftKeyboardShowing) {
             isSofInputShowing = !isSofInputShowing
             updateOnBackCallbackState()
         }
 
-        if (mHandleInsets) {
+        if (_handleInsets) {
             applyWindowInsets(insetsCompat)
             return insets
         } else {
@@ -1521,19 +1551,19 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
     }
 
-    open fun applyWindowInsets(insets: WindowInsetsCompat){
+    open fun applyWindowInsets(insets: WindowInsetsCompat) {
         val activity = activity ?: return
         val imeInsetBottom = insets.getInsets(ime()).bottom
         val basePadding = insets.getInsets(systemBars() or displayCutout())
 
-        if (isImmersiveScroll){
-            setPadding(basePadding.left, basePadding.top , basePadding.right, imeInsetBottom)
-        }else{
+        if (isImmersiveScroll) {
+            setPadding(basePadding.left, basePadding.top, basePadding.right, imeInsetBottom)
+        } else {
             if (activity.fitsSystemWindows) {
                 setPadding(0, 0, 0, imeInsetBottom)
-            }else{
+            } else {
                 setPadding(
-                    basePadding.left, basePadding.top , basePadding.right,
+                    basePadding.left, basePadding.top, basePadding.right,
                     maxOf(basePadding.bottom, imeInsetBottom)
                 )
             }
@@ -1553,26 +1583,26 @@ open class ToolbarLayout @JvmOverloads constructor(
             applyMainRoundedCorners()
         }
 
-    private fun applyMainRoundedCorners(){
+    private fun applyMainRoundedCorners() {
         when (mainRoundedCorners) {
             ALL -> {
                 _mainContainer!!.roundedCorners = ROUNDED_CORNER_TOP
-                mBottomRoundedCorner.isVisible = true
+                bottomRoundedCorner.isVisible = true
             }
 
             TOP -> {
                 _mainContainer!!.roundedCorners = ROUNDED_CORNER_TOP
-                mBottomRoundedCorner.isVisible = false
+                bottomRoundedCorner.isVisible = false
             }
 
             BOTTOM -> {
                 _mainContainer!!.roundedCorners = ROUNDED_CORNER_NONE
-                mBottomRoundedCorner.isVisible = true
+                bottomRoundedCorner.isVisible = true
             }
 
             NONE -> {
                 _mainContainer!!.roundedCorners = ROUNDED_CORNER_NONE
-                mBottomRoundedCorner.isVisible = false
+                bottomRoundedCorner.isVisible = false
             }
         }
     }
@@ -1582,7 +1612,8 @@ open class ToolbarLayout @JvmOverloads constructor(
         val layoutLocation = attrs?.let { at ->
             context.obtainStyledAttributes(at, R.styleable.ToolbarLayoutParams).use {
                 it.getInteger(R.styleable.ToolbarLayoutParams_layout_location, MAIN_CONTENT)
-            }} ?: MAIN_CONTENT
+            }
+        } ?: MAIN_CONTENT
     }
 
     private fun cllpWrapper(oldLp: LayoutParams): CoordinatorLayout.LayoutParams {
@@ -1608,8 +1639,8 @@ open class ToolbarLayout @JvmOverloads constructor(
             .start()
     }
 
-    internal fun addOnBottomOffsetChangedListener(listener : (Float) -> Unit){
-        if (bottomOffsetListeners == null){
+    internal fun addOnBottomOffsetChangedListener(listener: (Float) -> Unit) {
+        if (bottomOffsetListeners == null) {
             bottomOffsetListeners = mutableListOf(listener)
         }
         bottomOffsetListeners!!.apply {
@@ -1617,24 +1648,26 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
     }
 
-    internal fun removeOnBottomOffsetChangedListener(listener : (Float) -> Unit){
+    internal fun removeOnBottomOffsetChangedListener(listener: (Float) -> Unit) {
         bottomOffsetListeners?.remove(listener)
     }
 
     private val footerLayoutListener: OnLayoutChangeListener by lazy(LazyThreadSafetyMode.NONE) {
         OnLayoutChangeListener { v, _, _, _, _, _, _, _, _ ->
             v.height.let {
-                if (it != footerHeight){ footerHeight = it; dispatchBottomOffsetChanged() }
+                if (it != footerHeight) {
+                    footerHeight = it; dispatchBottomOffsetChanged()
+                }
             }
         }
     }
 
-    private fun dispatchBottomOffsetChanged(){
+    private fun dispatchBottomOffsetChanged() {
         bottomOffsetListeners?.apply {
-            val scrollDeltaBottom = scrollDelta - _appBarLayout.seslGetCollapsedHeight()
+            val scrollDeltaBottom = scrollDelta - appBarLayout.seslGetCollapsedHeight()
             val maxBottomInset = navBarInsetBottom + footerHeight
             val adjBottomInset = if (isImmersiveScroll && maxBottomInset > 0) {
-                val scrollRatio = (1f + scrollDeltaBottom/maxBottomInset).coerceIn(0f, 1f)
+                val scrollRatio = (1f + scrollDeltaBottom / maxBottomInset).coerceIn(0f, 1f)
                 (maxBottomInset * scrollRatio).applyMinForNonScrollingNavBar()
             } else 0f
             forEach {
@@ -1644,23 +1677,25 @@ open class ToolbarLayout @JvmOverloads constructor(
     }
 
     private inline fun Float.applyMinForNonScrollingNavBar() =
-         if (context.navBarCanImmScroll()) this else { this.coerceAtLeast(navBarInsetBottom.toFloat()) }
+        if (context.navBarCanImmScroll()) this else {
+            this.coerceAtLeast(navBarInsetBottom.toFloat())
+        }
 
     private inner class AppBarOffsetListener : AppBarLayout.OnOffsetChangedListener {
         override fun onOffsetChanged(layout: AppBarLayout, verticalOffset: Int) {
             scrollDelta = verticalOffset + layout.totalScrollRange
             dispatchBottomOffsetChanged()
 
-            if (isActionMode && mActionModeToolbar!!.isVisible) {
-                val layoutPosition = abs(_appBarLayout.top)
-                val collapsingTblHeight = mCollapsingToolbarLayout.height
+            if (isActionMode && actionModeToolbar!!.isVisible) {
+                val layoutPosition = abs(appBarLayout.top)
+                val collapsingTblHeight = collapsingToolbarLayout.height
                 val alphaRange = collapsingTblHeight * 0.17999999f
                 val toolbarTitleAlphaStart = collapsingTblHeight * 0.35f
 
-                if (_appBarLayout.seslIsCollapsed()) {
-                    mActionModeTitleTextView.alpha = 1.0f
+                if (appBarLayout.seslIsCollapsed()) {
+                    actionModeTitleTextView.alpha = 1.0f
                 } else {
-                    mActionModeTitleTextView.alpha = (150.0f / alphaRange
+                    actionModeTitleTextView.alpha = (150.0f / alphaRange
                             * (layoutPosition - toolbarTitleAlphaStart) / 255f).coerceIn(0f, 1f)
                 }
             }
@@ -1826,7 +1861,9 @@ inline fun <T : ToolbarLayout> T.startActionMode(
 ) {
     startActionMode(
         object : ActionModeListener {
-            override fun onInflateActionMenu(menu: Menu, menuInflater: MenuInflater) = onInflateMenu(menu, menuInflater)
+            override fun onInflateActionMenu(menu: Menu, menuInflater: MenuInflater) =
+                onInflateMenu(menu, menuInflater)
+
             override fun onEndActionMode() = onEnd()
             override fun onMenuItemClicked(item: MenuItem) = onSelectMenuItem(item)
             override fun onSelectAll(isChecked: Boolean) = onSelectAll.invoke(isChecked)
@@ -1837,25 +1874,31 @@ inline fun <T : ToolbarLayout> T.startActionMode(
     )
 }
 
-inline fun <T: ToolbarLayout>T.setTitle(@StringRes titleRes: Int) =
-   context.getString(titleRes).let {
-       expandedTitle = it
-       collapsedTitle = it
-   }
+inline fun <T : ToolbarLayout> T.setTitle(@StringRes titleRes: Int) =
+    context.getString(titleRes).let {
+        expandedTitle = it
+        collapsedTitle = it
+    }
 
-inline fun <T: ToolbarLayout>T.setTitle(@StringRes expandedTitleRes: Int, @StringRes collapsedTitleRes: Int) =
+inline fun <T : ToolbarLayout> T.setTitle(
+    @StringRes expandedTitleRes: Int,
+    @StringRes collapsedTitleRes: Int
+) =
     with(context) {
         expandedTitle = getString(expandedTitleRes)
         collapsedTitle = getString(collapsedTitleRes)
     }
 
-inline fun <T: ToolbarLayout>T.setSubTitle(@StringRes titleRes: Int) =
+inline fun <T : ToolbarLayout> T.setSubTitle(@StringRes titleRes: Int) =
     context.getString(titleRes).let {
         expandedSubtitle = it
         collapsedSubtitle = it
     }
 
-inline fun <T: ToolbarLayout>T.setSubTitle(@StringRes expandedTitleRes: Int, @StringRes collapsedTitleRes: Int) =
+inline fun <T : ToolbarLayout> T.setSubTitle(
+    @StringRes expandedTitleRes: Int,
+    @StringRes collapsedTitleRes: Int
+) =
     with(context) {
         expandedSubtitle = getString(expandedTitleRes)
         collapsedSubtitle = getString(collapsedTitleRes)

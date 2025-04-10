@@ -38,7 +38,7 @@ class SelectableLinearLayout @JvmOverloads constructor(
     private var checkMode: Int = CHECK_MODE_CHECKBOX
 
     //For CHECK_MODE_CHECKBOX
-    private var mCheckBox: CheckBox? = null
+    private var checkBox: CheckBox? = null
 
     //For CHECK_MODE_OVERLAY
     private var checkDrawable: SelectableAnimatedDrawable? = null
@@ -57,7 +57,7 @@ class SelectableLinearLayout @JvmOverloads constructor(
                 0 ->{
                     val spacing = it.getDimensionPixelSize(
                         R.styleable.SelectableLinearLayout_checkableButtonSpacing, 14)
-                    mCheckBox = AppCompatCheckBox(context).apply {
+                    checkBox = AppCompatCheckBox(context).apply {
                         layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
                             gravity = Gravity.CENTER
                             marginEnd = spacing
@@ -68,7 +68,7 @@ class SelectableLinearLayout @JvmOverloads constructor(
                         isGone = true
                         background = null //to remove ripple
                     }
-                    addView(mCheckBox, 0)
+                    addView(checkBox, 0)
                 }
                 1 -> {
                     checkDrawable = SelectableAnimatedDrawable.create(context, R.drawable.oui_des_list_item_selection_anim_selector, context.theme)
@@ -104,7 +104,7 @@ class SelectableLinearLayout @JvmOverloads constructor(
             if (field == value) return
             field = value
             when (checkMode){
-                0 -> mCheckBox!!.isVisible = value
+                0 -> checkBox!!.isVisible = value
                 else -> Unit
             }
         }
@@ -124,7 +124,7 @@ class SelectableLinearLayout @JvmOverloads constructor(
      */
     fun setSelectedAnimate(isSelected: Boolean){
         when (checkMode){
-            0 -> mCheckBox!!.isChecked = isSelected
+            0 -> checkBox!!.isChecked = isSelected
             1 -> {
                 if (Build.VERSION.SDK_INT < 23) {
                     imageTarget!!.imageAlpha = if (!isSelected) 255 else 0

@@ -19,8 +19,8 @@ open class CheckableLinearLayout @JvmOverloads constructor(
     defStyleRes: Int = 0
 ) :
     LinearLayout(context, attrs, defStyleAttr, defStyleRes), Checkable {
-    private var mDisabledAlpha: Float = 0.4f
-    private var mChecked = false
+    private var disabledAlpha: Float = 0.4f
+    private var _checked = false
 
     init {
         context.theme.obtainStyledAttributes(
@@ -31,7 +31,7 @@ open class CheckableLinearLayout @JvmOverloads constructor(
             )
         )
             .use {
-                mDisabledAlpha = it.getFloat(0, .4f)
+                disabledAlpha = it.getFloat(0, .4f)
                 minimumHeight = it.getDimension(1, 0f).toInt()
                 setBackgroundResource(it.getResourceId(2, 0))
             }
@@ -44,25 +44,25 @@ open class CheckableLinearLayout @JvmOverloads constructor(
         if (enabled == isEnabled) return
         super.setEnabled(enabled)
         for (i in 0 until childCount) {
-            getChildAt(i).alpha = if (enabled) 1.0f else mDisabledAlpha
+            getChildAt(i).alpha = if (enabled) 1.0f else disabledAlpha
         }
     }
 
     override fun setChecked(checked: Boolean) {
-        if (mChecked == checked) return
-        mChecked = checked
+        if (this._checked == checked) return
+        this._checked = checked
         updateCheckableChildViews()
     }
 
-    override fun isChecked(): Boolean = mChecked
+    override fun isChecked(): Boolean = _checked
 
     override fun toggle() {
-        isChecked = !mChecked
+        isChecked = !_checked
     }
 
     private fun updateCheckableChildViews() {
         for (i in 0 until childCount) {
-            ( getChildAt(i) as? Checkable)?.isChecked = mChecked
+            ( getChildAt(i) as? Checkable)?.isChecked = _checked
         }
     }
 }

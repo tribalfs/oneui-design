@@ -42,7 +42,7 @@ class NavDrawerLayout @JvmOverloads constructor(
     private var navRailContentPaneResizeOff = false
     private var hideNavRailDrawerOnCollapse = false
 
-    private var mSemSlidingPaneLayout: SemSlidingPaneLayout? = null
+    private var semSlidingPaneLayout: SemSlidingPaneLayout? = null
 
     /**Returns true if the current interface is in navigation rail mode*/
     val isLargeScreenMode get() = isTabletLayout(resources)
@@ -51,13 +51,13 @@ class NavDrawerLayout @JvmOverloads constructor(
         if (isLargeScreenMode) R.layout.oui_des_layout_navdrawer_main else super.getDefaultLayoutResource()
 
     override val containerLayout: DrawerLayoutInterface get() =
-        mSemSlidingPaneLayout
-            ?: findViewById<SemSlidingPaneLayout>(R.id.sliding_pane_layout)?.also { mSemSlidingPaneLayout = it }
+        semSlidingPaneLayout
+            ?: findViewById<SemSlidingPaneLayout>(R.id.sliding_pane_layout)?.also { semSlidingPaneLayout = it }
             ?: super.containerLayout
 
     override val navButtonsHandler: NavButtonsHandler get() =
-        mSemSlidingPaneLayout
-            ?: findViewById<SemSlidingPaneLayout>(R.id.sliding_pane_layout)?.also { mSemSlidingPaneLayout = it }
+        semSlidingPaneLayout
+            ?: findViewById<SemSlidingPaneLayout>(R.id.sliding_pane_layout)?.also { semSlidingPaneLayout = it }
             ?: super.navButtonsHandler
 
 
