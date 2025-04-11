@@ -7,17 +7,21 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
 import android.database.MatrixCursor
+import android.graphics.Rect
 import android.icu.text.AlphabeticIndex
 import android.os.Build
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import android.view.WindowManager
 import android.window.OnBackInvokedCallback
 import android.window.OnBackInvokedDispatcher
-import android.window.OnBackInvokedDispatcher.PRIORITY_OVERLAY
+import android.window.OnBackInvokedDispatcher.PRIORITY_DEFAULT
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.res.use
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.indexscroll.widget.SeslCursorIndexer
 import androidx.indexscroll.widget.SeslIndexScrollView
@@ -29,7 +33,6 @@ import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.doOnEnd
 import dev.oneuiproject.oneui.ktx.doOnStart
-import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.InternalLayoutInfo
 import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.getLayoutLocationInfo
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory
@@ -39,6 +42,7 @@ import dev.oneuiproject.oneui.widget.AutoHideIndexScrollView.AppBarState.LITTLE_
 import dev.oneuiproject.oneui.widget.AutoHideIndexScrollView.AppBarState.SUBSTANTIALLY_EXPANDED
 import java.util.Locale
 import kotlin.LazyThreadSafetyMode.NONE
+import kotlin.math.abs
 
 /**
  * Extension of [SeslIndexScrollView] with auto-hide feature
@@ -225,7 +229,7 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
         }
     }
 
-    override fun onDetachedFromWindow() {
+    override fun onDetachedFromWindow(){
         super.onDetachedFromWindow()
         if (mAutoHide) {
             removeCallbacks(hideMeRunnable)
@@ -244,12 +248,12 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
         }
     }
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
+    override fun onConfigurationChanged(newConfig: Configuration){
         super.onConfigurationChanged(newConfig)
         setIndexBarGravityInt(newConfig.layoutDirection)
     }
 
-    private fun setIndexBarGravityInt(layoutDirection: Int) {
+    private fun setIndexBarGravityInt(layoutDirection: Int){
         setIndexBarGravity(
             if (layoutDirection == LAYOUT_DIRECTION_RTL) {
                 GRAVITY_INDEX_BAR_LEFT
@@ -259,7 +263,7 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
         )
     }
 
-    private fun animateVisibility(show: Boolean) {
+    private fun animateVisibility(show: Boolean){
         if (isShown && show) return
         animate().apply {
             cancel()
@@ -300,7 +304,7 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
     }
 
     @SuppressLint("NewApi")
-    private inline fun getIndexes():  Array<String> {
+    private inline fun getIndexes(): Array<String>{
         if (Build.VERSION.SDK_INT < 24 || isInEditMode){
             return "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z".split(",").toTypedArray()
         }
@@ -323,7 +327,7 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
     private var topMargin = 0
     private var bottomMargin = 0
 
-    override fun setIndexScrollMargin(topMargin: Int, bottomMargin: Int) {
+    override fun setIndexScrollMargin(topMargin: Int, bottomMargin: Int){
         this.topMargin = topMargin
         this.bottomMargin = bottomMargin
         setIndexScrollMarginInternal(topMargin, bottomMargin)
@@ -371,16 +375,20 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
     }
 
     private var dumbCallbackRegistered = false
+    private var downX = 0f
+    private var downY = 0f
 
     @SuppressLint("ClickableViewAccessibility")
     @Suppress("NewApi")
     override fun onTouchEvent(ev: MotionEvent): Boolean {
         when (ev.action){
             MotionEvent.ACTION_DOWN -> {
+                downX = ev.x
+                downY = ev.y
                 mOnBackInvokedDispatcher?.apply {
                     if (dumbCallbackRegistered || !shouldRegisterDummy(ev.x)) return@apply
                     dumbCallbackRegistered = true
-                    registerOnBackInvokedCallback(PRIORITY_OVERLAY, mDummyOnBackInvokedCallback!!)
+                    registerOnBackInvokedCallback(PRIORITY_DEFAULT, mDummyOnBackInvokedCallback!!)
                 }
             }
             MotionEvent.ACTION_UP,
@@ -390,22 +398,45 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
                     mOnBackInvokedDispatcher?.unregisterOnBackInvokedCallback(mDummyOnBackInvokedCallback!!)
                 }
             }
+            MotionEvent.ACTION_MOVE -> {
+                if (dumbCallbackRegistered && !mIsIndexBarPressed && abs(ev.y - downY) < abs(downX - ev.x)) {
+                    dumbCallbackRegistered = false
+                    mOnBackInvokedDispatcher?.unregisterOnBackInvokedCallback(mDummyOnBackInvokedCallback!!)
+                }
+            }
         }
         return super.onTouchEvent(ev)
     }
 
     @RequiresApi(33)
-    private fun shouldRegisterDummy(x: Float): Boolean{
-        val scrollViewWidth = resources.getDimension(androidx.indexscroll.R.dimen.sesl_indexbar_textmode_width)
-        val backGestureAllowance = 22.4f.dpToPx(resources).toFloat()
-
+    private fun shouldRegisterDummy(x: Float): Boolean {
+        val scrollViewWidth = resources.getDimensionPixelSize(androidx.indexscroll.R.dimen.sesl_indexbar_textmode_width)
         val (startX, endX) = if (layoutDirection == LAYOUT_DIRECTION_LTR) {
-            val end = width - backGestureAllowance
+            val end = width - computeGestureAllowance(true)
             end - scrollViewWidth to end
         } else {
-            backGestureAllowance to backGestureAllowance + scrollViewWidth
+            val start = computeGestureAllowance(false)
+            start to start + scrollViewWidth
         }
-        return (x > startX && x < endX)
+        return (x.toInt() in startX..endX)
+    }
+
+    @RequiresApi(30)
+    private fun computeGestureAllowance(isLTR: Boolean): Int {
+        val insets = ViewCompat.getRootWindowInsets(this) ?: return 0
+        val gestureInsets = insets.getInsets(WindowInsetsCompat.Type.systemGestures())
+
+        val viewRect = Rect()
+        if (getGlobalVisibleRect(viewRect)) {
+            val bounds =
+                (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).currentWindowMetrics.bounds
+            return if (isLTR){
+                (gestureInsets.right - (bounds.right - viewRect.right)).coerceIn(0, 25)
+            }else{
+                (gestureInsets.left - viewRect.left).coerceIn(0, 25)
+            }
+        }
+        return 0
     }
 
     companion object{
