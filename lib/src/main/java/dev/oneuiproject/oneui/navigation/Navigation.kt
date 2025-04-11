@@ -33,6 +33,7 @@ fun NavDrawerLayout.setupNavigation(
 
     drawerNavigationView.setNavigationItemSelectedListener { item ->
         if (item.itemId == navController.currentDestination?.id) {
+            setDrawerOpen(false, animate = true, ignoreOnNavRailMode = true)
             return@setNavigationItemSelectedListener false
         }
 
