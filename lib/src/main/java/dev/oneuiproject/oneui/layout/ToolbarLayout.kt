@@ -1162,6 +1162,8 @@ open class ToolbarLayout @JvmOverloads constructor(
     private inline fun showActionModeToolbarAnimate() {
         animatedVisibility(mActionModeToolbar!!, VISIBLE)
 
+        if (!appBarLayout.seslIsCollapsed()) return
+
         val overshoot = CachedInterpolatorFactory.getOrCreate(Type.OVERSHOOT)
 
         mActionModeCheckBox.apply {
@@ -1190,6 +1192,8 @@ open class ToolbarLayout @JvmOverloads constructor(
     @SuppressLint("VisibleForTests")
     private inline fun showMainToolbarAnimate() {
         animatedVisibility(_mainToolbar, VISIBLE)
+
+        if (!appBarLayout.seslIsCollapsed()) return
 
         val overshoot = CachedInterpolatorFactory.getOrCreate(Type.OVERSHOOT)
         val start = if (isRTLayout) -80f else 80f
