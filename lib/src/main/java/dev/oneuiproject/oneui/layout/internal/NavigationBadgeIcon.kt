@@ -52,7 +52,7 @@ class NavigationBadgeIcon(private val context: Context) : Drawable() {
 
         if (badge is Badge.DOT) {
             val x = (if (isRTL) DOT_BADGE_OFFSET else width - DOT_BADGE_OFFSET).toFloat()
-            val y = DOT_BADGE_OFFSET
+            val y = DOT_BADGE_OFFSET + 2
             canvas.drawCircle(x, y, dotBadgeRadius, mCirclePaint)
         } else if (badge is Badge.NUMERIC) {
             val mBadgeText = (badge as Badge.NUMERIC).count.badgeCountToText()!!
@@ -98,7 +98,7 @@ class NavigationBadgeIcon(private val context: Context) : Drawable() {
     }
 
     companion object{
-        private const val DOT_BADGE_OFFSET = 0F
-        private const val N_BADGE_OFFSET = 4F
+        private const val DOT_BADGE_OFFSET = 3F
+        private const val N_BADGE_OFFSET = 8F
     }
 }

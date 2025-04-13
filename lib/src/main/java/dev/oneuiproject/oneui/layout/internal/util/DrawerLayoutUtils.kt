@@ -37,7 +37,7 @@ object DrawerLayoutUtils {
                 background = AppCompatResources.getDrawable(context, appcompatR.drawable.sesl_dot_badge)
                 badgeHeight = res.getDimensionPixelSize(appcompatR.dimen.sesl_menu_item_badge_size)
                 badgeWidth = badgeHeight
-                badgeMargin = (8 + marginOffset).dpToPx(res)
+                badgeMargin = (11 + marginOffset).dpToPx(res)
             }
             is Badge.NUMERIC -> {
                 background = AppCompatResources.getDrawable(context, appcompatR.drawable.sesl_noti_badge)
@@ -45,7 +45,7 @@ object DrawerLayoutUtils {
                 val additionalWidth = res.getDimensionPixelSize(appcompatR.dimen.sesl_badge_additional_width)
                 badgeHeight = defaultWidth + additionalWidth
                 badgeWidth = defaultWidth + additionalWidth * text.length
-                badgeMargin = (6 + marginOffset).dpToPx(res)
+                badgeMargin = (9 + marginOffset).dpToPx(res)
             }
         }
 
