@@ -61,6 +61,8 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
+import com.google.android.material.appbar.model.AppBarModel
+import com.google.android.material.appbar.model.view.AppBarView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dev.oneuiproject.oneui.delegates.AllSelectorState
 import dev.oneuiproject.oneui.design.R
@@ -788,6 +790,10 @@ open class ToolbarLayout @JvmOverloads constructor(
         set(activate)  {
             activateImmersiveScroll(activate, if (VERSION.SDK_INT >= 35) 0.8f else 1f)
         }
+
+    fun setAppBarSuggestView(appBarModel: AppBarModel<out AppBarView>?){
+        mCollapsingToolbarLayout.seslSetSuggestView(appBarModel)
+    }
 
     //
     // Navigation Button methods
