@@ -26,6 +26,7 @@ import dev.oneuiproject.oneui.delegates.AllSelectorState
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.ktx.ifNegative
+import dev.oneuiproject.oneui.ktx.onMultiClick
 import dev.oneuiproject.oneui.layout.internal.util.getAppVersion
 import dev.oneuiproject.oneui.layout.internal.util.getApplicationName
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil
@@ -355,6 +356,10 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
             mEmptyBottom.layoutParams.height = (h * 0.10).toInt()
         }
     }
+
+    @JvmOverloads
+    fun setTitleMultiClickListener(clickCount: Int = 7, listener: View.OnClickListener) =
+        mAppNameTextView.onMultiClick(clickCount) { listener.onClick(mAppNameTextView) }
 
     /**
      * This does nothing in AppInfoLayout.

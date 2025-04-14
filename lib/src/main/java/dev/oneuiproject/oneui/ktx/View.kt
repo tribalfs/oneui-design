@@ -142,3 +142,19 @@ inline fun View.isDescendantOf(parentView: ViewGroup): Boolean {
     }
     return false
 }
+
+inline fun View.onMultiClick(clickCount: Int = 7, maxClickIntervalMillis: Long = 1_000, crossinline action: () -> Unit) {
+    var currentCount = 0
+    val resetCount = Runnable { currentCount = 0 }
+    isClickable = true
+    setOnClickListener {
+        removeCallbacks(resetCount)
+        currentCount++
+        if (currentCount >= clickCount) {
+            currentCount = 0
+            action()
+            return@setOnClickListener
+        }
+        postDelayed(resetCount, maxClickIntervalMillis)
+    }
+}
