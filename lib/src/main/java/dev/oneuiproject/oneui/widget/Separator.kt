@@ -25,4 +25,7 @@ class Separator @JvmOverloads constructor(
                 makeMeasureSpec(minHeight, MeasureSpec.EXACTLY)
         )
     }
+
+    override fun canScrollVertically(direction: Int) = false
+    override fun canScrollHorizontally(direction: Int): Boolean = false
 }
