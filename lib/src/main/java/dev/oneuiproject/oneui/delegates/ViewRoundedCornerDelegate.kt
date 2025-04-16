@@ -18,22 +18,26 @@ class ViewRoundedCornerDelegate(
     defStyleRes: Int
 ): ViewRoundedCorner {
 
-    private var mRoundedCorner: SeslRoundedCorner? = null
+    private var mRoundedCorner: SeslRoundedCorner = SeslRoundedCorner(context)
 
+    /**
+     * Note: If [fillHorizontalPadding] is set to true,
+     * the value set here will be superseded.
+     */
     override var edgeInsets = Insets.NONE
 
     override var drawOverEdge = true
 
-    override var roundedCorners: Int = SeslRoundedCorner.ROUNDED_CORNER_NONE
+    /**
+     * This takes priority over [edgeInsets]
+     */
+    override var fillHorizontalPadding: Boolean = false
+
+    override var roundedCorners: Int
+        get() = mRoundedCorner.roundedCorners
         set(value) {
-            if (field == value) return
-            field = value
-            if (value != SeslRoundedCorner.ROUNDED_CORNER_NONE) {
-                ensureRoundedCorner()
-                mRoundedCorner?.roundedCorners = value
-            } else {
-                mRoundedCorner = null
-            }
+            if (mRoundedCorner.roundedCorners == value) return
+            mRoundedCorner.roundedCorners = value
         }
 
     @ColorInt
@@ -42,7 +46,7 @@ class ViewRoundedCornerDelegate(
             if (field == value) return
             field = value
             if (roundedCorners != SeslRoundedCorner.ROUNDED_CORNER_NONE) {
-                mRoundedCorner?.setRoundedCornerColor(roundedCorners, value)
+                mRoundedCorner.setRoundedCornerColor(roundedCorners, value)
             }
         }
 
@@ -56,20 +60,14 @@ class ViewRoundedCornerDelegate(
             edgeInsets = Insets.of(leftCornerInset, topCornerInset, rightCornerInset, bottomCornerInset)
             roundedCorners = it.getInt(R.styleable.RoundedCornerView_roundedCorners, SeslRoundedCorner.ROUNDED_CORNER_ALL)
             roundedCornersColor = it.getColor(R.styleable.RoundedCornerView_roundedCornerColor, -1)
-        }
-    }
-
-    private inline fun ensureRoundedCorner() {
-        if (mRoundedCorner == null) {
-            mRoundedCorner = SeslRoundedCorner(context)
-            if (roundedCornersColor != -1 && roundedCorners != SeslRoundedCorner.ROUNDED_CORNER_NONE) {
-                mRoundedCorner?.setRoundedCornerColor(roundedCorners, roundedCornersColor)
-            }
+            fillHorizontalPadding = it.getBoolean(R.styleable.RoundedCornerView_fillHorizontalPadding, false)
         }
     }
 
     override fun drawRoundedCorners(canvas: Canvas) {
-        mRoundedCorner?.drawRoundedCorner(canvas, edgeInsets)
+        if (edgeInsets != Insets.NONE || mRoundedCorner.roundedCorners != SeslRoundedCorner.ROUNDED_CORNER_NONE) {
+            mRoundedCorner.drawRoundedCorner(canvas, edgeInsets)
+        }
     }
 
 }
@@ -86,8 +84,19 @@ interface ViewRoundedCorner{
     var roundedCorners: Int
     @get:ColorInt
     var roundedCornersColor: Int
+
+    /**
+     * Note: If [fillHorizontalPadding] is set to true,
+     * the value set here will be superseded.
+     */
     var edgeInsets: Insets
+
     var drawOverEdge: Boolean
+
+    /**
+     * This takes priority over [edgeInsets]
+     */
+    var fillHorizontalPadding: Boolean
     /**
      * This should be called inside the View's dispatchDraw method
      */

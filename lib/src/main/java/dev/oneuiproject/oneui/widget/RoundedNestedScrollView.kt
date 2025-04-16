@@ -5,6 +5,7 @@ package dev.oneuiproject.oneui.widget
 import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
+import androidx.core.graphics.Insets
 import androidx.core.widget.NestedScrollView
 import dev.oneuiproject.oneui.delegates.ViewRoundedCornerDelegate
 import dev.oneuiproject.oneui.delegates.ViewRoundedCorner
@@ -22,7 +23,20 @@ open class RoundedNestedScrollView @JvmOverloads constructor(
 ) : NestedScrollView(context, attrs, defStyleAttr),
     ViewRoundedCorner by ViewRoundedCornerDelegate(context, attrs, defStyleAttr, 0) {
 
+    override fun onFinishInflate() {
+        seslSetFillHorizontalPaddingEnabled(fillHorizontalPadding,  roundedCornersColor)
+        if (fillHorizontalPadding){
+            edgeInsets = Insets.NONE
+        }
+        super.onFinishInflate()
+    }
+
     override fun dispatchDraw(canvas: Canvas) {
+        if(fillHorizontalPadding){
+            if (paddingStart > 0 || paddingEnd > 0) {
+                edgeInsets = Insets.of(paddingStart, edgeInsets.top, paddingEnd, edgeInsets.bottom)
+            }
+        }
         if (drawOverEdge) {
             super.dispatchDraw(canvas)
             drawRoundedCorners(canvas)

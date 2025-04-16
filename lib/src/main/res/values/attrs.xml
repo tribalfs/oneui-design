@@ -23,6 +23,7 @@
         <attr name="edgeInsetLeft" />
         <attr name="edgeInsetBottom" />
         <attr name="drawOverEdge" format="boolean" />
+        <attr name="fillHorizontalPadding" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="RelatedCard">

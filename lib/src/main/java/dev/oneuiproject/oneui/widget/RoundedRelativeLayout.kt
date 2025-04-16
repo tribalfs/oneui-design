@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
 import android.widget.RelativeLayout
+import androidx.core.graphics.Insets
 import dev.oneuiproject.oneui.delegates.ViewRoundedCorner
 import dev.oneuiproject.oneui.delegates.ViewRoundedCornerDelegate
 
@@ -22,6 +23,11 @@ open class RoundedRelativeLayout @JvmOverloads constructor(
     ViewRoundedCorner by ViewRoundedCornerDelegate(context, attrs, defStyleAttr, 0) {
 
     override fun dispatchDraw(canvas: Canvas) {
+        if(fillHorizontalPadding){
+            if (paddingStart > 0 || paddingEnd > 0) {
+                edgeInsets = Insets.of(paddingStart, edgeInsets.top, paddingEnd, edgeInsets.bottom)
+            }
+        }
         if (drawOverEdge) {
             super.dispatchDraw(canvas)
             drawRoundedCorners(canvas)
