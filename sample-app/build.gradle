@@ -43,7 +43,7 @@ android {
 
 dependencies {
     //sesl7 modules
-    implementation("sesl.androidx.core:core:1.15.0+1.0.15-sesl7+rev1")
+    implementation("sesl.androidx.core:core:1.15.0+1.0.15-sesl7+rev2")
     implementation("sesl.androidx.core:core-ktx:1.15.0+1.0.0-sesl7+rev0")
     implementation("sesl.androidx.fragment:fragment:1.8.6+1.0.9-sesl7+rev0")
     implementation("sesl.androidx.appcompat:appcompat:1.7.0+1.0.47000-sesl7+rev1")
