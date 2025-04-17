@@ -22,15 +22,9 @@ class SampleAboutActivity : AppCompatActivity() {
 
         appInfoLayout = findViewById<AppInfoLayout?>(R.id.appInfoLayout).apply {
             addOptionalText("OneUI Design version " + BuildConfig.ONEUI_DESIGN_VERSION)
-            setMainButtonClickListener(object : AppInfoLayout.OnClickListener {
-                override fun onUpdateClicked(v: View) {
-                    semToast("onUpdateClicked", Toast.LENGTH_SHORT)
-                }
-
-                override fun onRetryClicked(v: View) {
-                    semToast("onRetryClicked", Toast.LENGTH_SHORT)
-                }
-            })
+            setMainButtonClickListener {
+                semToast("Main button clicked! updateState: $updateStatus")
+            }
         }
 
     }
@@ -43,7 +37,8 @@ class SampleAboutActivity : AppCompatActivity() {
             Status.NoUpdate -> Status.NotUpdatable
             Status.NotUpdatable -> Status.UpdateAvailable
             Status.UpdateAvailable -> Status.UpdateDownloaded
-            Status.UpdateDownloaded -> Status.Failed("Failed!")
+            Status.UpdateDownloaded -> Status.Unset
+            Status.Unset -> Status.Failed("Failed!")
         }
     }
 
