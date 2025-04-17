@@ -80,14 +80,8 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
          * Update check failed.  Show a retry button. Custom message will be shown when set.
          */
         data class Failed(@JvmField val message: CharSequence? = null) : Status
-    }
 
-    /**
-     * Listener for the update and retry button.
-     */
-    interface OnClickListener {
-        fun onUpdateClicked(v: View)
-        fun onRetryClicked(v: View)
+        data object Unset : Status
     }
 
     private var mainButtonClickListener: OnClickListener? = null
@@ -107,7 +101,7 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
      *
      * @see Status
      */
-    var updateStatus: Status = Status.NoUpdate
+    var updateStatus: Status = Status.Unset
         /**
          * Set the App Info's update state.
          *
@@ -158,6 +152,12 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
                     mUpdateButton.isGone = false
                     mUpdateNotice.text = status.message
                     mUpdateButton.text = context.getText(R.string.oui_des_retry)
+                }
+
+                Status.Unset -> {
+                    mProgressCircle.isGone = true
+                    mUpdateNotice.isGone = true
+                    mUpdateButton.isGone = true
                 }
             }
         }
@@ -284,20 +284,7 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
     fun setMainButtonClickListener(listener: OnClickListener?) {
         if (mainButtonClickListener == listener) return
         mainButtonClickListener = listener
-        mUpdateButton.setOnClickListener { v: View ->
-            when (updateStatus) {
-                is Status.Failed,
-                Status.NoConnection -> {
-                    mainButtonClickListener?.onRetryClicked(v as Button)
-                }
-
-                Status.UpdateAvailable,
-                Status.UpdateDownloaded -> {
-                    mainButtonClickListener?.onUpdateClicked(v as Button)
-                }
-                else -> Unit //Not expected
-            }
-        }
+        mUpdateButton.setOnClickListener(mainButtonClickListener)
     }
 
 
