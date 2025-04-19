@@ -129,6 +129,14 @@
         horizontal padding or margin.  It is the responsibility of the content
         to set the appropriate padding or margin as needed..-->
         <attr format="dimension" name="edgeInsetHorizontal"/>
+        <!--Gravity to be set on the toolbar(s).
+        This is set to bottom by default.-->
+        <attr name="toolbarGravity">
+            <!-- Pins the toolbar to the bottom edge-->
+            <flag name="bottom" value="0x50" />
+            <!-- Pins the toolbar to the top edge. -->
+            <flag name="top" value="0x30" />
+        </attr>
     </declare-styleable>
 
     <declare-styleable name="DrawerLayout">

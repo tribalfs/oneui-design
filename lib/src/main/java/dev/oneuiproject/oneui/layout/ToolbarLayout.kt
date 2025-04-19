@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable
 import android.os.Build.VERSION
 import android.util.AttributeSet
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -300,6 +301,8 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     private var searchToolbar: Toolbar? = null
 
+    private var toolbarGravity = Gravity.BOTTOM
+
     private var _searchView: SemSearchView? = null
 
     /**
@@ -402,6 +405,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             it.getDimension(R.styleable.ToolbarLayout_edgeInsetHorizontal, 0f).let{px ->
                 if (px != 0f) edgeInsetHorizontal = px.pxToDp(resources)
             }
+            toolbarGravity = it.getInt(R.styleable.ToolbarLayout_toolbarGravity, Gravity.BOTTOM)
 
             inflateChildren()
             initViews()
@@ -442,7 +446,11 @@ open class ToolbarLayout @JvmOverloads constructor(
         appBarLayout = adpCoordinatorLayout.findViewById<AppBarLayout?>(R.id.toolbarlayout_app_bar)
             .apply { setTag(R.id.tag_side_margin_excluded, true) }
         collapsingToolbarLayout = appBarLayout.findViewById(R.id.toolbarlayout_collapsing_toolbar)
-        _mainToolbar = collapsingToolbarLayout.findViewById(R.id.toolbarlayout_main_toolbar)
+        _mainToolbar = collapsingToolbarLayout.findViewById<Toolbar?>(R.id.toolbarlayout_main_toolbar).apply {
+            if (toolbarGravity != Gravity.BOTTOM) {
+                updateLayoutParams<CollapsingToolbarLayout.LayoutParams> { gravity = toolbarGravity }
+            }
+        }
 
         mainContainerParent = adpCoordinatorLayout.findViewById(R.id.tbl_main_content_parent)
         _mainContainer = mainContainerParent.findViewById(R.id.tbl_main_content)
@@ -1009,8 +1017,11 @@ open class ToolbarLayout @JvmOverloads constructor(
     private fun ensureSearchModeToolbar() {
         if (searchToolbar == null) {
             searchToolbar =
-                collapsingToolbarLayout.findViewById<ViewStub>(R.id.viewstub_oui_view_toolbar_search)
-                    .inflate() as Toolbar
+                (collapsingToolbarLayout.findViewById<ViewStub>(R.id.viewstub_oui_view_toolbar_search).inflate() as Toolbar).apply {
+                    if (toolbarGravity != Gravity.BOTTOM) {
+                        updateLayoutParams<CollapsingToolbarLayout.LayoutParams> { gravity = toolbarGravity }
+                    }
+                }
         }
     }
 
