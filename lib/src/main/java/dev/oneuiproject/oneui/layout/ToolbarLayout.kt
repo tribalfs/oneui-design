@@ -395,6 +395,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     }
 
     init {
+        setWillNotDraw(true)
         activity?.applyEdgeToEdge()
         orientation = VERTICAL
         context.theme.obtainStyledAttributes(attrs, R.styleable.ToolbarLayout, 0, 0).use {
