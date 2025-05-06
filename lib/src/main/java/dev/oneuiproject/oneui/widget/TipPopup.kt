@@ -69,12 +69,6 @@ import kotlin.math.floor
 
 class TipPopup(parentView: View, mode: Mode) {
 
-    @Deprecated("Use the more type-safe constructor TipPopup(parentView: View, mode: Mode)")
-    constructor(parentView: View, mode: Int) : this(
-        parentView,
-        if (mode == MODE_NORMAL) Mode.NORMAL else Mode.TRANSLUCENT
-    )
-
     constructor(parentView: View): this(parentView, Mode.NORMAL)
 
     private val mParentView: View = parentView
@@ -349,18 +343,6 @@ class TipPopup(parentView: View, mode: Mode) {
             }
         }
     }
-
-    @Deprecated("Use the type-safe show(direction: Direction) instead.")
-    fun show(direction: Int) = show(
-        when(direction){
-            DIRECTION_TOP_LEFT -> TOP_LEFT
-            DIRECTION_BOTTOM_LEFT -> BOTTOM_LEFT
-            DIRECTION_BOTTOM_RIGHT -> BOTTOM_RIGHT
-            DIRECTION_TOP_RIGHT -> TOP_RIGHT
-            DIRECTION_DEFAULT -> DEFAULT
-            else -> throw IllegalArgumentException("Invalid direction value")
-        }
-    )
 
     fun show(direction: Direction) {
         setInternal()
@@ -1662,21 +1644,6 @@ class TipPopup(parentView: View, mode: Mode) {
         private var INTERPOLATOR_ELASTIC_50: Interpolator? = null
         private var INTERPOLATOR_ELASTIC_CUSTOM: Interpolator? = null
 
-
-        @Deprecated("Use Direction.BOTTOM_LEFT instead.")
-        const val DIRECTION_BOTTOM_LEFT: Int = 2
-        @Deprecated("Use Direction.BOTTOM_RIGHT instead.")
-        const val DIRECTION_BOTTOM_RIGHT: Int = 3
-        @Deprecated("Use Direction.DEFAULT instead.")
-        const val DIRECTION_DEFAULT: Int = -1
-        @Deprecated("Use Direction.TOP_LEFT instead.")
-        const val DIRECTION_TOP_LEFT: Int = 0
-        @Deprecated("Use Direction.TOP_RIGHT instead.")
-        const val DIRECTION_TOP_RIGHT: Int = 1
-        @Deprecated("Use Mode.NORMAL instead.")
-        const val MODE_NORMAL: Int = 0
-        @Deprecated("Use Mode.TRANSLUCENT instead.")
-        const val MODE_TRANSLUCENT: Int = 1
     }
 }
 
