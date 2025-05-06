@@ -23,7 +23,6 @@ import dev.oneuiproject.oneui.delegates.SwipeActionListener
 import dev.oneuiproject.oneui.delegates.SwipeItemCallbackDelegate
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.layout.ToolbarLayout
-import kotlin.LazyThreadSafetyMode.NONE
 
 /**
  * Registers a long-press multi-selection listener.
@@ -76,7 +75,21 @@ enum class MultiSelectionState{
     ENDED
 }
 
-
+/**
+ * Syntactic sugar equivalent to calling:
+ *
+ * ```
+ * RecyclerView.apply{
+ *     seslSetFillBottomEnabled(true)
+ *     seslSetLastRoundedCorner(true)
+ *     seslSetFastScrollerEnabled(true)
+ *     seslSetGoToTopEnabled(true)
+ *     seslSetSmoothScrollEnabled(true)
+ *     seslSetIndexTipEnabled(true)
+ *     seslSetFillHorizontalPaddingEnabled(true)
+ * }
+ * ```
+ */
 @JvmOverloads
 inline fun RecyclerView.enableCoreSeslFeatures(
     fillBottom:Boolean = true,
@@ -84,7 +97,8 @@ inline fun RecyclerView.enableCoreSeslFeatures(
     fastScrollerEnabled:Boolean = true,
     goToTopEnabled:Boolean = true,
     smoothScrollEnabled:Boolean = true,
-    indexTipEnabled: Boolean = adapter is SectionIndexer
+    indexTipEnabled: Boolean = adapter is SectionIndexer,
+    fillHorizontalPadding: Boolean = true
 ){
     if (fillBottom) seslSetFillBottomEnabled(true)
     if (lastRoundedCorner) seslSetLastRoundedCorner(true)
@@ -92,6 +106,7 @@ inline fun RecyclerView.enableCoreSeslFeatures(
     if (goToTopEnabled) seslSetGoToTopEnabled(true)
     if (smoothScrollEnabled) seslSetSmoothScrollEnabled(true)
     if (indexTipEnabled) seslSetIndexTipEnabled(true)
+    if (fillHorizontalPadding) seslSetFillHorizontalPaddingEnabled(true)
 }
 
 /**
