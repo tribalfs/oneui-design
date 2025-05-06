@@ -2,6 +2,7 @@ package dev.oneuiproject.oneui.utils.internal
 
 import android.annotation.SuppressLint
 import android.view.animation.Interpolator
+import android.view.animation.LinearInterpolator
 import android.view.animation.OvershootInterpolator
 import android.view.animation.PathInterpolator
 import androidx.annotation.RestrictTo
@@ -23,7 +24,9 @@ object CachedInterpolatorFactory {
         RELATED_NUMBER_FADE_IN,
         ELASTIC_50,
         ELASTIC_CUSTOM,
-        OVERSHOOT
+        OVERSHOOT,
+        LINEAR_INTERPOLATOR,
+        PATH_0_22_0_25_0_0_1_0
     }
 
     fun getOrCreate(type: Type): Interpolator {
@@ -45,6 +48,8 @@ object CachedInterpolatorFactory {
             Type.ELASTIC_50 ->  SeslAnimationUtils.ELASTIC_50
             Type.ELASTIC_CUSTOM ->  createSeslElasticInterpolator(1.0f, 1.3f) ?: SeslAnimationUtils.ELASTIC_40
             Type.OVERSHOOT -> OvershootInterpolator()
+            Type.LINEAR_INTERPOLATOR -> LinearInterpolator()
+            Type.PATH_0_22_0_25_0_0_1_0 -> PathInterpolator(0.22f, 0.25f, 0.0f, 1.0f)
         }
     }
 }

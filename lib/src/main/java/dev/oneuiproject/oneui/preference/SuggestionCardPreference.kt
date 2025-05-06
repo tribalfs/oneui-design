@@ -5,8 +5,6 @@ package dev.oneuiproject.oneui.preference
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import android.view.animation.LinearInterpolator
-import android.view.animation.PathInterpolator
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -20,7 +18,9 @@ import androidx.preference.R.attr.preferenceStyle
 import com.airbnb.lottie.LottieAnimationView
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
-
+import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory
+import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type.LINEAR_INTERPOLATOR
+import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type.PATH_0_22_0_25_0_0_1_0
 
 class SuggestionCardPreference @JvmOverloads constructor(
     context: Context,
@@ -107,14 +107,14 @@ class SuggestionCardPreference @JvmOverloads constructor(
         mActionButtonTextView!!.animate()
             .alpha(0.0f)
             .setDuration(100L)
-            .setInterpolator(LinearInterpolator())
+            .setInterpolator(CachedInterpolatorFactory.getOrCreate(LINEAR_INTERPOLATOR))
             .withEndAction{
                 postAnimationButtonText?.let{setActionButtonText(it)}
                 mActionButtonTextView!!.apply {
                     animate()
                         .alpha(1.0f)
                         .setDuration(200L)
-                        .setInterpolator(LinearInterpolator())
+                        .setInterpolator(CachedInterpolatorFactory.getOrCreate(LINEAR_INTERPOLATOR))
                         .start()
 
                     translationX -= mLottieAnimationView!!.layoutParams.width
@@ -122,7 +122,7 @@ class SuggestionCardPreference @JvmOverloads constructor(
                     animate()
                         .translationX(0.0f)
                         .setDuration(400L)
-                        .setInterpolator(PathInterpolator(0.22f, 0.25f, 0.0f, 1.0f))
+                        .setInterpolator(CachedInterpolatorFactory.getOrCreate(PATH_0_22_0_25_0_0_1_0))
                         .start()
                 }
                 mLottieAnimationView!!.apply {
