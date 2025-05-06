@@ -269,3 +269,7 @@ fun RecyclerView.configureImmBottomPadding(toolbarLayout: ToolbarLayout, extraPa
         }
     }
 }
+
+inline fun RecyclerView.seslSetFastScrollerAdditionalPadding(verticalPadding: Int){
+    seslSetFastScrollerAdditionalPadding(verticalPadding, verticalPadding)
+}
