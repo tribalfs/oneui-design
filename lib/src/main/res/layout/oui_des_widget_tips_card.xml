@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:minHeight="?attr/listPreferredItemHeight"
+    android:orientation="vertical"
+    tools:parentTag="LinearLayout"
+    tools:viewBindingIgnore="true">
+
+    <RelativeLayout
+        android:id="@+id/tips_title_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="?listPreferredItemPaddingStart"
+        android:layout_marginEnd="?listPreferredItemPaddingEnd"
+        android:paddingBottom="8dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@android:id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingEnd="22dp"
+            android:textSize="17sp"
+            android:textAppearance="@style/RobotoMedium"
+            android:textColor="?android:textColorPrimary"
+            tools:text="Title"/>
+
+        <ImageView
+            android:id="@+id/tips_cancel_button"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_alignParentEnd="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/oui_des_preference_tipscard_close"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@android:id/summary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="?listPreferredItemPaddingStart"
+        android:layout_marginEnd="?listPreferredItemPaddingEnd"
+        android:layout_marginBottom="8dp"
+        android:textSize="14sp"
+        android:textColor="?android:textColorPrimary"
+        tools:text="Tips summary"/>
+
+    <View
+        android:id="@+id/tips_empty_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="12dp" />
+
+    <LinearLayout
+        android:id="@+id/tips_bottom_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:paddingHorizontal="12dp"
+        android:paddingTop="4dp"
+        android:layout_gravity="end"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible"/>
+
+</merge>
