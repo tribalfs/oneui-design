@@ -10,6 +10,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.Px
 import androidx.annotation.RequiresApi
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
@@ -155,14 +156,14 @@ inline fun RecyclerView.configureItemSwipeAnimator(
         drawableLeftToRight = leftToRightDrawableRes?.let {
             AppCompatResources.getDrawable(context, it)?.apply {
                 mutate()
-                setTint(Color.parseColor("#CCFAFAFF"))
+                setTint("#CCFAFAFF".toColorInt())
                 setBounds(0, 0, intrinsicWidth, intrinsicHeight)
             }
         }
         drawableRightToLeft = rightToLeftDrawableRes?.let {
             AppCompatResources.getDrawable(context, it)?.apply {
                 mutate()
-                setTint(Color.parseColor("#CCFAFAFF"))
+                setTint("#CCFAFAFF".toColorInt())
                 setBounds(0, 0, intrinsicWidth, intrinsicHeight)
             }
         }
