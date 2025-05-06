@@ -2,8 +2,7 @@
 
 package dev.oneuiproject.oneui.ktx
 
-import android.graphics.Color
-import android.os.Build
+import android.app.Activity
 import android.view.View
 import android.widget.SectionIndexer
 import androidx.annotation.ColorInt
@@ -212,18 +211,24 @@ inline fun RecyclerView.configureItemSwipeAnimator(
  */
 @JvmOverloads
 fun RecyclerView.hideSoftInputOnScroll(clearFocus: Boolean = true){
-    getTag(R.id.tag_rv_hide_soft_input)?.let { return }
-    setTag(R.id.tag_rv_hide_soft_input, true)
-
-    val activity by lazy(NONE) { context.activity!! }
-
-    val scrollListener = object: OnScrollListener(){
-        override fun onScrollStateChanged(rv: RecyclerView, newState: Int) {
+    class HideOnScrollListener(
+        private val activity: Activity,
+        val clearFocus: Boolean
+    ): OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             if (newState == SCROLL_STATE_DRAGGING) {
                 activity.hideSoftInput(clearFocus)
             }
         }
     }
+
+    (getTag(R.id.tag_rv_hide_soft_input) as? HideOnScrollListener)?.let {
+        if (it.clearFocus == clearFocus) return@hideSoftInputOnScroll
+        removeOnScrollListener(it)
+    }
+
+    val scrollListener = HideOnScrollListener(context.activity!!, clearFocus)
+    setTag(R.id.tag_rv_hide_soft_input, scrollListener)
 
     if (isAttachedToWindow) addOnScrollListener(scrollListener)
 
