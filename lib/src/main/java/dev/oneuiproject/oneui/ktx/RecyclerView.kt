@@ -244,9 +244,17 @@ fun RecyclerView.hideSoftInputOnScroll(clearFocus: Boolean = true){
  */
 @RequiresApi(30)
 fun RecyclerView.configureImmBottomPadding(toolbarLayout: ToolbarLayout, extraPadding: Int = 0){
+    val tagKey = R.id.tag_rv_imm_bottom_padding_listener
+
+    @Suppress("UNCHECKED_CAST")
+    (getTag(tagKey) as? ((Float) -> Unit))?.let { oldListener ->
+        toolbarLayout.removeOnBottomOffsetChangedListener(oldListener)
+    }
+
     val bottomOffsetChangedListener: (bottomOffset: Float) -> Unit = {
         seslSetImmersiveScrollBottomPadding(extraPadding + it.toInt())
     }
+    setTag(tagKey, bottomOffsetChangedListener)
 
     if (isAttachedToWindow){
         toolbarLayout.addOnBottomOffsetChangedListener(bottomOffsetChangedListener)
@@ -255,7 +263,7 @@ fun RecyclerView.configureImmBottomPadding(toolbarLayout: ToolbarLayout, extraPa
     doOnAttachedStateChanged { _, isViewAttached ->
         if (isViewAttached){
             toolbarLayout.addOnBottomOffsetChangedListener(bottomOffsetChangedListener)
-        }else{
+        }else {
             toolbarLayout.removeOnBottomOffsetChangedListener(bottomOffsetChangedListener)
         }
     }
