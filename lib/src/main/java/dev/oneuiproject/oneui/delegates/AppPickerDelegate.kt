@@ -9,13 +9,21 @@ import android.widget.ImageButton
 import androidx.apppickerview.widget.AbsAdapter
 import androidx.apppickerview.widget.AppPickerView
 import androidx.collection.mutableScatterSetOf
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import dev.oneuiproject.oneui.design.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.concurrent.atomic.AtomicBoolean
+import kotlin.coroutines.CoroutineContext
 
 /**
  * Convenience class to handle [AppPickerView] ops.
  */
-class AppPickerDelegate : AppPickerOp, AppPickerView.OnBindListener{
+class AppPickerDelegate : AppPickerOp, AppPickerView.OnBindListener, CoroutineScope {
 
     private var mListType: Int? = null
     private lateinit var mGetCurrentList: (() -> ArrayList<String>)
@@ -31,7 +39,13 @@ class AppPickerDelegate : AppPickerOp, AppPickerView.OnBindListener{
     private lateinit var mContext: Context
     private lateinit var mAppPickerView: AppPickerView
 
+    private val masterJob = SupervisorJob()
+    override val coroutineContext: CoroutineContext
+        get() = masterJob + Dispatchers.Main
+    private lateinit var lifecycleOwner: LifecycleOwner
+
     override fun AppPickerView.configure(
+        lifecycleOwner: LifecycleOwner,
         onGetCurrentList: (() -> ArrayList<String>)?,
         onItemClicked: ((position: Int, packageName: CharSequence, appLabel: CharSequence) -> Unit)?,
         onItemCheckChanged: ((position: Int, packageName: CharSequence, appLabel: CharSequence, isChecked: Boolean) -> Unit)?,
@@ -47,22 +61,36 @@ class AppPickerDelegate : AppPickerOp, AppPickerView.OnBindListener{
         mOnLongClicked = onLongClick
         mOnSelectAllChange = onSelectAllChanged
         mGetCurrentList = onGetCurrentList ?: { AppPickerView.getInstalledPackages(mContext) as ArrayList<String>}
-    }
 
+        lifecycleOwner.lifecycle.addObserver(
+            object: DefaultLifecycleObserver{
+                override fun onDestroy(owner: LifecycleOwner) {
+                    super.onDestroy(owner)
+                    masterJob.cancel()
+                }
+            }
+        )
+    }
 
     @SuppressLint("RestrictedApi")
     override fun refreshAppList() {
-        with(mAppPickerView) {
-            if (!mIsInitialized.getAndSet(true) || mAppPickerView.adapter == null) {
-                clearItemDecorations()
-                setAppPickerView(
-                    mListType ?: AppPickerView.TYPE_LIST,
-                    mGetCurrentList(),
-                    AppPickerView.ORDER_ASCENDING_IGNORE_CASE
-                )
-                setOnBindListener(this@AppPickerDelegate)
-            } else {
-                mAppPickerView.resetPackages(mGetCurrentList())
+        launch(Dispatchers.IO) {
+            mGetCurrentList().let {
+                if (!mIsInitialized.getAndSet(true) || mAppPickerView.adapter == null) {
+                    withContext(Dispatchers.Main) {
+                        with(mAppPickerView) {
+                            clearItemDecorations()
+                            setAppPickerView(
+                                mListType ?: AppPickerView.TYPE_LIST,
+                                it,
+                                AppPickerView.ORDER_ASCENDING_IGNORE_CASE
+                            )
+                            setOnBindListener(this@AppPickerDelegate)
+                        }
+                    }
+                } else {
+                    withContext(Dispatchers.Main) { mAppPickerView.resetPackages(it) }
+                }
             }
         }
     }
@@ -231,6 +259,7 @@ interface AppPickerOp{
      * @param onLongClick Lambda function to handle item long click.
      */
     fun AppPickerView.configure(
+        lifecycleOwner: LifecycleOwner,
         /**
          * Set lambda to provide own app list. If not set or set to `null`, it will use the [default implementation]
          * [AppPickerView.getInstalledPackages]
@@ -242,6 +271,7 @@ interface AppPickerOp{
         onItemActionClicked: ((pos: Int, packageName: CharSequence, appLabel:CharSequence) -> Unit)? = null,
         onLongClick: ((position: Int, packageName: CharSequence, appLabel: CharSequence) -> Unit)? = null
     )
+
     /**
      * Updates the apps list. This is also called internally when [AppPickerView.AppPickerType] is updated by [setListType].
      */
