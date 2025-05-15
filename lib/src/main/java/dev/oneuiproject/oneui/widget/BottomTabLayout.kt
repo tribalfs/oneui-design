@@ -220,7 +220,7 @@ class BottomTabLayout(
                 tabIconRes = R.drawable.oui_des_ic_ab_drawer,
                 listener = { createAndShowGridDialog() }
             ).apply{
-                tabIconTint = ContextCompat.getColorStateList(context, R.color.sesl_tablayout_selected_indicator_color)
+                tabIconTint = getTabTextColors()
                 id = R.id.bottom_tab_menu_show_grid_dialog
                 setBadge(if (hasBadgeOnOverFlow()) Badge.DOT else Badge.NONE)
             }
@@ -230,7 +230,6 @@ class BottomTabLayout(
                     updateItems(overFLowItems!!.map { it.toGridDialogItem()})
                 }
             }
-            //TODO (set permanent tint to icon and text)
         }
 
         isPopulatingTabs = false
