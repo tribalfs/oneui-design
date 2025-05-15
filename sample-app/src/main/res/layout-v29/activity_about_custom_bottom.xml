@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:text="OneUI Project Team" />
 
-        <dev.oneuiproject.oneui.widget.RoundedLinearLayout
+        <androidx.appcompat.widget.SeslLinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?android:colorBackground"
@@ -46,14 +46,14 @@
                 app:icon="@drawable/about_page_avatar_tribalfs"
                 app:title="Tribalfs"/>
 
-        </dev.oneuiproject.oneui.widget.RoundedLinearLayout>
+        </androidx.appcompat.widget.SeslLinearLayoutCompat>
 
         <dev.oneuiproject.oneui.widget.Separator
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Open source licenses" />
 
-        <dev.oneuiproject.oneui.widget.RoundedLinearLayout
+        <androidx.appcompat.widget.SeslLinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?android:colorBackground"
@@ -75,7 +75,7 @@
                 app:title="MIT License"
                 app:summary="oneui-design" />
 
-        </dev.oneuiproject.oneui.widget.RoundedLinearLayout>
+        </androidx.appcompat.widget.SeslLinearLayoutCompat>
 
         <dev.oneuiproject.oneui.widget.RelativeLinksCard
             android:layout_width="match_parent"

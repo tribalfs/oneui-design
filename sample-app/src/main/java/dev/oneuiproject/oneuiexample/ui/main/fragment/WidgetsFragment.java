@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.SeslSwitchBar;
+import androidx.core.widget.NestedScrollView;
 
 import com.sec.sesl.tester.R;
 
@@ -57,6 +58,7 @@ public class WidgetsFragment extends BaseFragment
         searchView.seslSetOnUpButtonClickListener(this);
 
         view.findViewById(R.id.cardItemView).setOnClickListener(this);
+        ((NestedScrollView)view).seslSetGoToTopEnabled(true);
 
     }
 

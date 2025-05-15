@@ -14,6 +14,7 @@ import dev.oneuiproject.oneuiexample.data.util.getInstalledPackagesCompat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
@@ -33,7 +34,8 @@ class AppsRepo (
 ) {
     private val dataStore: DataStore<Preferences> = context.sampleAppPreferences
 
-    val appsFlow: Flow<List<App>> get() = flow { emit(getInstalledPackageNames()) }
+    val appsFlow: Flow<List<App>> get() = flow { emit(getInstalledPackageNames()) }.flowOn(
+        Dispatchers.IO)
 
     /**
      * Opted to source installed apps here instead of using list from AppPickerView itself.

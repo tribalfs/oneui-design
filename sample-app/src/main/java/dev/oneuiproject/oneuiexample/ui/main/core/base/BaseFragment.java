@@ -40,12 +40,12 @@ public abstract class BaseFragment extends Fragment
     }
 
     @Override
-    public  boolean showDrawerModeButton() {
+    public  boolean showSwitchBar() {
         return false;
     }
 
     @Override
-    public  boolean showSwitchBar() {
+    public boolean showBottomTab(){
         return false;
     }
 

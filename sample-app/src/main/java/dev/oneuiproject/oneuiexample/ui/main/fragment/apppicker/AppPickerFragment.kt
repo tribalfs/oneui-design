@@ -72,6 +72,7 @@ class AppPickerFragment : BaseFragment(),
             itemAnimator = null
             seslSetSmoothScrollEnabled(true)
             configure(
+                this@AppPickerFragment,
                 onGetCurrentList = { appsViewModel.appPickerScreenStateFlow.value.appList },
                 onItemClicked = { _, _, appLabel ->
                     toast("$appLabel clicked!")
@@ -165,9 +166,7 @@ class AppPickerFragment : BaseFragment(),
                                 applyFilter(query)
                                 true
                             },
-                            onEnd = {
-
-                            },
+                            onEnd = { applyFilter("") },
                             onBackBehavior = ToolbarLayout.SearchModeOnBackBehavior.CLEAR_DISMISS
                         )
                     }

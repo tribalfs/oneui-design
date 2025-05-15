@@ -1,9 +1,11 @@
 package dev.oneuiproject.oneuiexample.ui.main.fragment.icons;
 
 import static dev.oneuiproject.oneui.ktx.ActivityKt.hideSoftInput;
+import static dev.oneuiproject.oneui.ktx.FloatKt.dpToPx;
 import static dev.oneuiproject.oneui.ktx.MenuItemKt.setMenuItemBadge;
 import static dev.oneuiproject.oneui.ktx.RecyclerViewKt.enableCoreSeslFeatures;
 import static dev.oneuiproject.oneui.ktx.RecyclerViewKt.hideSoftInputOnScroll;
+import static dev.oneuiproject.oneui.ktx.RecyclerViewKt.seslSetFastScrollerAdditionalPadding;
 import static dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.DISMISS;
 import static dev.oneuiproject.oneuiexample.ui.main.core.util.ToastKt.toast;
 
@@ -147,6 +149,7 @@ public class IconsFragment extends BaseFragment {
         iconListView.setLayoutManager(new LinearLayoutManager(requireContext()));
         enableCoreSeslFeatures(iconListView);
         hideSoftInputOnScroll(iconListView);
+        seslSetFastScrollerAdditionalPadding(iconListView, dpToPx(8, requireContext().getResources()));
     }
 
     private void setupSelection(RecyclerView iconListView, IconsAdapter adapter){

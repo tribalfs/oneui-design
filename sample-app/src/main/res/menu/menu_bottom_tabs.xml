@@ -3,17 +3,17 @@
 
     <item
         android:id="@+id/item1"
-        android:icon="@drawable/ic_oui_accessibility"
+        android:icon="@drawable/ic_clock_alarm_tab"
         android:title="Nav item 1" />
 
     <item
         android:id="@+id/item2"
-        android:icon="@drawable/ic_oui_gif"
+        android:icon="@drawable/ic_clock_timer_tab"
         android:title="Nav item 2" />
 
     <item
         android:id="@+id/item3"
-        android:icon="@drawable/ic_oui_import"
+        android:icon="@drawable/ic_clock_stopwatch_tab"
         android:title="Nav item 3" />
 
     <item

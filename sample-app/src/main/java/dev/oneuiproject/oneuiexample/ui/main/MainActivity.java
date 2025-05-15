@@ -92,10 +92,6 @@ public class MainActivity extends AppCompatActivity
     private OnBackPressedCallback mBackPressedCallback = new OnBackPressedCallback(false) {
         @Override
         public void handleOnBackPressed() {
-            if (!mIsDrawerMode){
-                configureNavigationMode(true);
-                return;
-            }
             adapter.setSelectedItem(0);
         }
     };
@@ -146,7 +142,6 @@ public class MainActivity extends AppCompatActivity
             adapter.setSelectedItem(savedInstanceState.getInt(KEY_SELECTED_POSITION, 0));
             int bottomTabVisibility = savedInstanceState.getBoolean(KEY_BOTTOM_TAB_SHOWN) ? VISIBLE : GONE;
             mBinding.bottomTab.setVisibility(bottomTabVisibility);
-            mBinding.drawerShowBtn.setVisibility(bottomTabVisibility);
         }else{
             adapter.setSelectedItem(0);
         }
@@ -188,8 +183,6 @@ public class MainActivity extends AppCompatActivity
                 ? mBinding.drawerLayout.getDrawerOffset() : 1;
         adapter.setOffset(initialOffset);
 
-        mBinding.drawerHideBtn.setOnClickListener(v -> configureNavigationMode(false));
-        mBinding.drawerShowBtn.setOnClickListener(v -> configureNavigationMode(true));
     }
 
     private void initFragments() {
@@ -246,11 +239,6 @@ public class MainActivity extends AppCompatActivity
         mBinding.drawerLayout.setTitle(fragmentItem.getTitle());
         mBinding.drawerLayout.setSubtitle(fragmentItem.getSubtitle());
 
-        if (fragmentItem.showDrawerModeButton()) {
-            mBinding.drawerHideBtn.setVisibility(VISIBLE);
-        }else{
-            mBinding.drawerHideBtn.setVisibility(GONE);
-        }
 
         if (fragmentItem.showSwitchBar()) {
             mBinding.drawerLayout.getSwitchBar().show();
@@ -269,6 +257,12 @@ public class MainActivity extends AppCompatActivity
             mBinding.drawerLayout.setDrawerOpen(false, true);
         }
 
+        if (fragmentItem.showBottomTab()) {
+            mBinding.bottomTab.show(true);
+        } else {
+            mBinding.bottomTab.hide(true);
+        }
+
         boolean isHomeSelected = selectedClassName.equals(ContactsFragment.class.getName());
         mBinding.drawerLayout.setCloseNavRailOnBack(isHomeSelected);
         mBackPressedCallback.setEnabled(!isHomeSelected);
@@ -276,22 +270,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void configureNavigationMode(boolean isDrawerMode){
-        mIsDrawerMode = isDrawerMode;
-        if (isDrawerMode){
-            mBinding.drawerLayout.setDrawerEnabled(true);
-            mBinding.bottomTab.hide();
-            mBinding.drawerShowBtn.setVisibility(GONE);
-            mBinding.drawerLayout.postDelayed(() ->
-                    mBinding.drawerLayout.setNavRailContentPaneResizeOff(false), 400);
-        }else {
-            mBinding.drawerLayout.setNavRailContentPaneResizeOff(true);
-            mBinding.drawerLayout.setDrawerEnabled(false);
-            mBinding.bottomTab.show();
-            mBinding.drawerLayout.postDelayed(() ->
-                    mBinding.drawerShowBtn.setVisibility(VISIBLE), 400);
-        }
-    }
+
 
     private void configureImmersiveMode(boolean immersiveMode){
         mBinding.drawerLayout.setImmersiveScroll(immersiveMode);

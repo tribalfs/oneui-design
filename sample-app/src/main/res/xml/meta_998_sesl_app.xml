@@ -8,7 +8,7 @@
         <Property
             Comment="FAB : BG tint color"
             DefaultValue="#ff57b2d4"
-            DestAttribName="fab_bg_tint_color"
+            DestAttribName="oui_des_fab_bg_tint_color"
             DestQualifiers=""
             UID="13-5-5"
             ValueRef="1-8-1"
@@ -17,7 +17,7 @@
         <Property
             Comment="drawer background color for tablet"
             DefaultValue="#eaeaea"
-            DestAttribName="drawer_background_tablet_color"
+            DestAttribName="oui_des_drawer_background_tablet_color"
             UID="62-20-8-1"
             ValueRef="1-7-1"
             ValueType="BgColor" />
@@ -25,7 +25,7 @@
         <Property
             Comment="drawer selected background color"
             DefaultValue="#0d000000"
-            DestAttribName="color_drawer_list_item_background"
+            DestAttribName="oui_des_drawer_menu_item_selected_bg_color"
             Opacity="20"
             UID="62-20-2-2"
             ValueRef="1-3-1"

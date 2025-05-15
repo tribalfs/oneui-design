@@ -156,7 +156,6 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
             setItemAnimator(null)
             enableCoreSeslFeatures(fastScrollerEnabled = false)
             hideSoftInputOnScroll()
-            seslSetFillHorizontalPaddingEnabled(true)
         }
 
         contactsAdapter.configure(

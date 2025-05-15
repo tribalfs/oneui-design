@@ -62,16 +62,19 @@
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:icon="@drawable/ic_clock_alarm_tab"
                     android:text="Main tab 1" />
 
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"
+                    android:icon="@drawable/ic_clock_timer_tab"
                     android:layout_height="wrap_content"
                     android:text="Main tab 2" />
 
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:icon="@drawable/ic_clock_stopwatch_tab"
                     android:text="Main tab 3" />
 
             </dev.oneuiproject.oneui.widget.MarginsTabLayout>
