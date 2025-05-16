@@ -1,9 +1,9 @@
 plugins {
-    id("com.android.library")
-    id("maven-publish")
-    id("signing")
-    id("org.jetbrains.kotlin.android")
-    id("kotlin-parcelize")
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.maven.publish)
 }
 
 android {
@@ -32,7 +32,7 @@ dependencies {
 
     implementation(libs.zxing.core)
     implementation(libs.lottie)
-    implementation(libs.rikka.refine)
+    implementation(libs.rikka.refineRuntime)
 
     compileOnly(project(":stub"))
 

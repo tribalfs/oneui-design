@@ -60,7 +60,9 @@ androidx-datastorePreferences = { module = "androidx.datastore:datastore-prefere
 
 zxing-core = { module = "com.google.zxing:core", version.ref = "zxing-core" }
 lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
-rikka-refine = { module = "dev.rikka.tools.refine:runtime", version.ref = "rikka-refine" }
+rikka-refineRuntime = { module = "dev.rikka.tools.refine:runtime", version.ref = "rikka-refine" }
+rikka-refineAnnotation = { module = "dev.rikka.tools.refine:annotation", version.ref = "rikka-refine" }
+rikka-refineAnnotationProcessor = { module = "dev.rikka.tools.refine:annotation-processor", version.ref = "rikka-refine" }
 
 androidx-navigation-runtimeKtx = { module = "androidx.navigation:navigation-runtime-ktx", version.ref = "androidx-navigation" }
 androidx-navigation-fragmentKtx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "androidx-navigation" }
@@ -73,6 +75,8 @@ android-library = { id = "com.android.library", version.ref = "android-gradle" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 rikka-refine = { id = "dev.rikka.tools.refine", version.ref = "rikka-refine" }
+kotlin-parcelize = { id = "kotlin-parcelize"}
+maven-publish = { id = "maven-publish"}
 
 [bundles]
 sesl-androidx = ["sesl-appcompat",
