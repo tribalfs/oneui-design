@@ -5,14 +5,17 @@ package dev.oneuiproject.oneui.widget
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewStub
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
 import androidx.core.graphics.ColorUtils
@@ -23,6 +26,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
+import dev.oneuiproject.oneui.utils.SemTouchFeedbackAnimator
 
 class CardItemView @JvmOverloads constructor(
     context: Context,
@@ -41,6 +45,9 @@ class CardItemView @JvmOverloads constructor(
     private var containerLeftPaddingNoIcon: Int = 0
     private var dividerMarginStart: Int = 0
     private var dividerMarginStartWithIcon: Int = 0
+
+    @RequiresApi(29)
+    private lateinit var semTouchFeedbackAnimator: SemTouchFeedbackAnimator
 
     /**
      *  Show divider on top. True by default
@@ -184,6 +191,10 @@ class CardItemView @JvmOverloads constructor(
             fullWidthDivider = a.getBoolean(R.styleable.CardItemView_fullWidthDivider, false)
 
             updateLayoutParams()
+
+            if (Build.VERSION.SDK_INT >= 29) {
+                semTouchFeedbackAnimator = SemTouchFeedbackAnimator(containerView)
+            }
         }
     }
 
@@ -242,5 +253,12 @@ class CardItemView @JvmOverloads constructor(
                 l?.onClick(this)
             }
         }
+    }
+
+    override fun dispatchTouchEvent(motionEvent: MotionEvent): Boolean {
+        if (Build.VERSION.SDK_INT >= 29) {
+            semTouchFeedbackAnimator.animate(motionEvent)
+        }
+        return super.dispatchTouchEvent(motionEvent)
     }
 }
