@@ -17,13 +17,13 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.use
+import androidx.core.content.withStyledAttributes
 import androidx.core.graphics.ColorUtils
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
 import androidx.core.view.marginStart
 import androidx.core.view.updateLayoutParams
-import androidx.core.view.updatePadding
+import androidx.core.view.updatePaddingRelative
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
 import dev.oneuiproject.oneui.utils.SemTouchFeedbackAnimator
@@ -45,6 +45,8 @@ class CardItemView @JvmOverloads constructor(
     private var containerLeftPaddingNoIcon: Int = 0
     private var dividerMarginStart: Int = 0
     private var dividerMarginStartWithIcon: Int = 0
+
+    private var suspendLayoutUpdates = false
 
     @RequiresApi(29)
     private lateinit var semTouchFeedbackAnimator: SemTouchFeedbackAnimator
@@ -147,31 +149,38 @@ class CardItemView @JvmOverloads constructor(
                     getDimensionPixelSize(R.dimen.oui_des_cardview_icon_margin_end)
         }
 
-        context.obtainStyledAttributes(attrs, R.styleable.CardItemView).use { a ->
-            inflate(context, R.layout.oui_des_widget_card_item, this)
-            containerView = findViewById(R.id.cardview_container)
+        inflate(context, R.layout.oui_des_widget_card_item, this)
+        containerView = findViewById(R.id.cardview_container)
+        titleTextView = findViewById<TextView?>(R.id.cardview_title)
+        summaryTextView = findViewById<TextView>(R.id.cardview_summary)
 
-            val iconDrawable = a.getDrawable(R.styleable.CardItemView_icon)
+        suspendLayoutUpdates = true
+        attrs?.let { parseAttributes(it) }
+        suspendLayoutUpdates = false
+        updateLayoutParams()
 
-            if ( iconDrawable != null) {
-                ensureInflatedIconView()
-                iconImageView!!.setImageDrawable(iconDrawable)
-                val iconTint = a.getColor(R.styleable.CardItemView_iconTint, -1)
+        if (Build.VERSION.SDK_INT >= 29) {
+            semTouchFeedbackAnimator = SemTouchFeedbackAnimator(containerView)
+        }
+    }
+
+
+    private fun parseAttributes(attrs: AttributeSet) {
+        context.withStyledAttributes(attrs, R.styleable.CardItemView) {
+            title = getString(R.styleable.CardItemView_title)
+            titleTextView.maxLines = getInteger(R.styleable.CardItemView_titleMaxLines, 5)
+
+            val iconDrawable = getDrawable(R.styleable.CardItemView_icon)
+            if (iconDrawable != null) {
+                icon = iconDrawable
+                val iconTint = getColor(R.styleable.CardItemView_iconTint, -1)
                 if (iconTint != -1) {
                     DrawableCompat.setTint(iconImageView!!.drawable, iconTint)
                 }
             }
 
-            titleTextView = findViewById<TextView?>(R.id.cardview_title).apply {
-                maxLines = a.getInteger(R.styleable.CardItemView_titleMaxLines, 5)
-            }
-            title = a.getString(R.styleable.CardItemView_title)
-
-            summaryTextView = findViewById<TextView>(R.id.cardview_summary).apply {
-                maxLines = a.getInteger(R.styleable.CardItemView_summaryMaxLines, 10)
-            }
-            summary = a.getString(R.styleable.CardItemView_summary)
-            if (a.getBoolean(R.styleable.CardItemView_userUpdatableSummary, false)){
+            summary = getString(R.styleable.CardItemView_summary)
+            if (getBoolean(R.styleable.CardItemView_userUpdatableSummary, false)){
                 val colorEnabled = ContextCompat.getColor(context,
                     context.getThemeAttributeValue(androidx.appcompat.R.attr.colorPrimaryDark)!!.resourceId)
                 val states = arrayOf(
@@ -184,17 +193,11 @@ class CardItemView @JvmOverloads constructor(
                 )
                 summaryTextView.setTextColor(ColorStateList(states, colors))
             }
-
-            showTopDivider = a.getBoolean(R.styleable.CardItemView_showTopDivider, true)
-            showBottomDivider = a.getBoolean(R.styleable.CardItemView_showBottomDivider, false)
-            isEnabled = a.getBoolean(R.styleable.CardItemView_android_enabled, true)
-            fullWidthDivider = a.getBoolean(R.styleable.CardItemView_fullWidthDivider, false)
-
-            updateLayoutParams()
-
-            if (Build.VERSION.SDK_INT >= 29) {
-                semTouchFeedbackAnimator = SemTouchFeedbackAnimator(containerView)
-            }
+            summaryTextView.maxLines = getInteger(R.styleable.CardItemView_summaryMaxLines, 10)
+            showTopDivider = getBoolean(R.styleable.CardItemView_showTopDivider, true)
+            showBottomDivider = getBoolean(R.styleable.CardItemView_showBottomDivider, false)
+            isEnabled = getBoolean(R.styleable.CardItemView_android_enabled, true)
+            fullWidthDivider = getBoolean(R.styleable.CardItemView_fullWidthDivider, false)
         }
     }
 
@@ -206,26 +209,26 @@ class CardItemView @JvmOverloads constructor(
     }
 
     private fun updateLayoutParams(){
-        val hasIcon = iconImageView?.drawable != null
+        if (suspendLayoutUpdates) return
 
-        val newPaddingLeft = if (hasIcon) containerLeftPaddingWithIcon else containerLeftPaddingNoIcon
+        val hasIcon = iconImageView?.isVisible == true && iconImageView?.drawable != null
+        val desiredPaddingStart = if (hasIcon) containerLeftPaddingWithIcon else containerLeftPaddingNoIcon
+
         containerView.apply {
-            if (newPaddingLeft == paddingLeft) return@apply
-            updatePadding(left = if (hasIcon) containerLeftPaddingWithIcon else containerLeftPaddingNoIcon)
+            if (desiredPaddingStart == paddingLeft) return@apply
+            updatePaddingRelative(start = desiredPaddingStart)
         }
 
-        val newDividerStartMargin = if (!hasIcon || fullWidthDivider) dividerMarginStart else dividerMarginStartWithIcon
+        val desiredDividerStartMargin = if (!hasIcon || fullWidthDivider) dividerMarginStart else dividerMarginStartWithIcon
+
         dividerViewTop?.apply {
-            if (newDividerStartMargin == marginStart) return@apply
-            updateLayoutParams<LayoutParams> {
-                this.marginStart = newDividerStartMargin
-            }
+            if (desiredDividerStartMargin == marginStart) return@apply
+            updateLayoutParams<LayoutParams> { marginStart = desiredDividerStartMargin }
         }
-       dividerViewBottom?.apply {
-            if (newDividerStartMargin == marginStart) return@apply
-            updateLayoutParams<LayoutParams> {
-                this.marginStart = newDividerStartMargin
-            }
+
+        dividerViewBottom?.apply {
+            if (desiredDividerStartMargin == marginStart) return@apply
+            updateLayoutParams<LayoutParams> { marginStart = desiredDividerStartMargin }
         }
     }
 
