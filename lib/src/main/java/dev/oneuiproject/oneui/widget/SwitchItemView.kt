@@ -5,15 +5,18 @@ package dev.oneuiproject.oneui.widget
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
+import android.os.Build
 import android.text.SpannableString
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewStub
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.Space
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -24,6 +27,8 @@ import androidx.core.view.isVisible
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
+import dev.oneuiproject.oneui.utils.SemTouchFeedbackAnimator
+import kotlinx.coroutines.Runnable
 
 class SwitchItemView @JvmOverloads constructor(
     context: Context,
@@ -43,6 +48,9 @@ class SwitchItemView @JvmOverloads constructor(
     private var badgeFrame: LinearLayout? = null
     private var bottomSpacer: Space
     private var isLargeLayout = false
+
+    @RequiresApi(29)
+    private lateinit var semTouchFeedbackAnimator: SemTouchFeedbackAnimator
 
     /**
      * @param viewId The view id of SwitchItemView
@@ -230,6 +238,10 @@ class SwitchItemView @JvmOverloads constructor(
                 onCheckedChangedListener?.invoke(this@SwitchItemView.id, isChecked)
             }
         }
+
+        if (Build.VERSION.SDK_INT >= 29) {
+            semTouchFeedbackAnimator = SemTouchFeedbackAnimator(contentFrame)
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -265,7 +277,7 @@ class SwitchItemView @JvmOverloads constructor(
         updateSwitchPosition()
     }
 
-    private val responsiveSwitchUpdater = {
+    private val responsiveSwitchUpdater = Runnable {
         val res = context.resources
         val configuration = res.configuration
         val swDp = configuration.screenWidthDp
@@ -335,4 +347,10 @@ class SwitchItemView @JvmOverloads constructor(
         postDelayed(responsiveSwitchUpdater, 100)
     }
 
+    override fun dispatchTouchEvent(motionEvent: MotionEvent): Boolean {
+        if (Build.VERSION.SDK_INT >= 29) {
+            semTouchFeedbackAnimator.animate(motionEvent)
+        }
+        return super.dispatchTouchEvent(motionEvent)
+    }
 }
