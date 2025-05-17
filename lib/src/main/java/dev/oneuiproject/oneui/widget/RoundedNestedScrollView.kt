@@ -27,9 +27,6 @@ open class RoundedNestedScrollView @JvmOverloads constructor(
 
     override fun onFinishInflate() {
         seslSetFillHorizontalPaddingEnabled(fillHorizontalPadding,  roundedCornersColor)
-        if (fillHorizontalPadding){
-            edgeInsets = Insets.NONE
-        }
         super.onFinishInflate()
     }
 
