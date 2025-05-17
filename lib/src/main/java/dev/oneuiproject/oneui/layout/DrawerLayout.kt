@@ -25,6 +25,10 @@ import dev.oneuiproject.oneui.layout.internal.widget.SemDrawerLayout
 
 /**
  * Custom DrawerLayout extending [ToolbarLayout]. Looks and behaves the same as the one in Apps from Samsung.
+ *
+ * **Important:**
+ * - This view must be hosted within an [AppCompatActivity][androidx.appcompat.app.AppCompatActivity]
+ * as it relies on AppCompat-specific features and theming. Otherwise, it will result to runtime exceptions.
  */
 open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     ToolbarLayout(context, attrs), Openable {

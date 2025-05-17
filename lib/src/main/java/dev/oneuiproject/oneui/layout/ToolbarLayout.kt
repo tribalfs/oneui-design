@@ -118,7 +118,11 @@ import kotlin.math.abs
 import androidx.appcompat.R as appcompatR
 
 /**
- * Custom collapsing Appbar like in any App from Samsung. Includes a [SearchView] and Samsung's ActionMode.
+ *  Custom collapsing Appbar like in any App from Samsung. Includes a [SearchView] and Samsung's ActionMode.
+ *
+ * **Important:**
+ * - This view must be hosted within an [AppCompatActivity][androidx.appcompat.app.AppCompatActivity]
+ * as it relies on AppCompat-specific features and theming. Otherwise, it will result to runtime exceptions.
  */
 open class ToolbarLayout @JvmOverloads constructor(
     @JvmField protected var context: Context,

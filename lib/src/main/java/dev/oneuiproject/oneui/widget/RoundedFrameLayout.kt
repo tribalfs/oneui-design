@@ -15,6 +15,8 @@ import dev.oneuiproject.oneui.delegates.ViewRoundedCorner
  * @see roundedCorners
  * @see roundedCornersColor
  * @see edgeInsets
+ * @see drawOverEdge
+ * @see fillHorizontalPadding
  */
 open class RoundedFrameLayout @JvmOverloads constructor(
     context: Context,

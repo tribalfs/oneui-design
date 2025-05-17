@@ -20,17 +20,10 @@ class ViewRoundedCornerDelegate(
 
     private var mRoundedCorner: SeslRoundedCorner = SeslRoundedCorner(context)
 
-    /**
-     * Note: If [fillHorizontalPadding] is set to true,
-     * the value set here will be superseded.
-     */
     override var edgeInsets = Insets.NONE
 
     override var drawOverEdge = true
 
-    /**
-     * This takes priority over [edgeInsets]
-     */
     override var fillHorizontalPadding: Boolean = false
 
     override var roundedCorners: Int
@@ -86,15 +79,22 @@ interface ViewRoundedCorner{
     var roundedCornersColor: Int
 
     /**
-     * Note: If [fillHorizontalPadding] is set to true,
-     * the value set here will be superseded.
+     * The inset values to be applied to the borders and rounded corners of this view, without changing the paddings.
+     * The inset borders will be filled with the rounded corner color.
+     * @see [fillHorizontalPadding]
      */
     var edgeInsets: Insets
 
+    /**
+     * When set to true, the border and rounded corners will be drawn over the view.
+     * Defaults to true.
+     */
     var drawOverEdge: Boolean
 
     /**
-     * This takes priority over [edgeInsets]
+     * When set to true and the view has horizontal padding, the border and rounded corners
+     * will be inset horizontally by the amount of the horizontal paddings.
+     * This overrides the left and right values of the [edgeInsets].
      */
     var fillHorizontalPadding: Boolean
     /**

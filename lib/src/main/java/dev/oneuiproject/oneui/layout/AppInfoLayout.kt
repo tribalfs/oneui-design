@@ -36,6 +36,10 @@ import kotlinx.coroutines.flow.StateFlow
 
 /**
  * Custom App Info Layout like in any App from Samsung showing the App name, app version, and other related app info.
+ *
+ * **Important:**
+ * - This view must be hosted within an [AppCompatActivity][androidx.appcompat.app.AppCompatActivity]
+ * as it relies on AppCompat-specific features and theming. Otherwise, it will result to runtime exceptions.
  */
 class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(context, attrs) {
 

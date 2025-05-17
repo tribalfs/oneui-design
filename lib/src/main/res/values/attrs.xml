@@ -10,9 +10,17 @@
         <flag name="bottom_right" value="0x00000008" />
     </attr>
 
+    <!-- This amount to fill on the top edge of the view with the rounded corner color
+    and the inset the top rounded corners, if present, without changing the top padding.-->
     <attr name="edgeInsetTop" type="dimension" />
+    <!-- This amount to fill on the right edge of the view with the rounded corner color
+    and the inset the right rounded corners, if present, without changing the right padding.-->
     <attr name="edgeInsetRight" type="dimension" />
+    <!-- This amount to fill on the left edge of the view with the rounded corner color
+    and the inset the left rounded corners, if present, without changing the left padding.-->
     <attr name="edgeInsetLeft" type="dimension" />
+    <!-- This amount to fill on the bottom edge of the view with the rounded corner color
+    and the inset the bottom rounded corners, if present, without changing the bottom padding.-->
     <attr name="edgeInsetBottom" type="dimension" />
 
     <declare-styleable name="RoundedCornerView">
@@ -23,6 +31,9 @@
         <attr name="edgeInsetLeft" />
         <attr name="edgeInsetBottom" />
         <attr name="drawOverEdge" format="boolean" />
+        <!-- When set to true, the border and rounded corners will be inset
+        horizontally to the amount of the horizontal padding. This overrides
+        the edgeInsetLeft and edgeInsetRight attributes. Default Value: false -->
         <attr name="fillHorizontalPadding" format="boolean" />
     </declare-styleable>
 

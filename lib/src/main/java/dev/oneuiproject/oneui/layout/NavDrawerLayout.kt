@@ -28,8 +28,11 @@ import dev.oneuiproject.oneui.layout.DrawerLayout as OneUIDrawerLayout
 /**
  * OneUI-styled layout that implements a DrawerLayout interface on smaller devices and a Navigation Rail interface on larger devices,
  * similar to the Samsung Apps experience.
-
- * **Important:** To use this layout, ensure your activity does *not* handle `smallestScreenSize` in `android:configChanges`.
+ *
+ * **Important:**
+ * - This view must be hosted within an [AppCompatActivity][androidx.appcompat.app.AppCompatActivity] as it relies on AppCompat-specific features and theming.
+ * Otherwise, it will result to runtime exceptions.
+ * - To use this layout, ensure your activity does *not* handle `smallestScreenSize` in `android:configChanges`.
  * Otherwise, layout changes based on screen size will not function correctly.
  */
 @SuppressLint("RestrictedApi", "PrivateResource")
