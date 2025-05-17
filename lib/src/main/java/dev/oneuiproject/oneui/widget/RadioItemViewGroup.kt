@@ -119,7 +119,7 @@ class RadioItemViewGroup @JvmOverloads constructor(
             }
         }
 
-        if (foundView == null && view.isClickable && view.visibility == VISIBLE && view.isEnabled) {
+        if (foundView == null && view.isClickable && view.isVisible && view.isEnabled) {
             return view
         }
 
@@ -211,7 +211,7 @@ class RadioItemViewGroup @JvmOverloads constructor(
 
     override fun setOnHierarchyChangeListener(listener: OnHierarchyChangeListener) {
         // the user listener is delegated to our pass-through listener
-        passThroughListener!!.mOnHierarchyChangeListener = listener
+        passThroughListener.mOnHierarchyChangeListener = listener
     }
 
     override fun onFinishInflate() {

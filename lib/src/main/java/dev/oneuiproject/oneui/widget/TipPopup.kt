@@ -26,7 +26,6 @@ import android.view.Surface
 import android.view.View
 import android.view.View.MeasureSpec.UNSPECIFIED
 import android.view.View.OnTouchListener
-import android.view.View.VISIBLE
 import android.view.WindowManager
 import android.view.accessibility.AccessibilityNodeInfo
 import android.view.accessibility.AccessibilityNodeInfo.ACTION_CLICK
@@ -796,7 +795,7 @@ class TipPopup(parentView: View, mode: Mode) {
             debugLog("leftMargin[$leftMargin]")
             debugLog("rightMargin[$rightMargin] mBalloonWidth[$mBalloonWidth]")
             val horizontalContentMargin = mHorizontalTextMargin - mResources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_button_padding_horizontal)
-            val verticalButtonPadding = if (mActionView.visibility == VISIBLE) mResources.getDimensionPixelSize(
+            val verticalButtonPadding = if (mActionView.isVisible) mResources.getDimensionPixelSize(
                 R.dimen.oui_des_tip_popup_button_padding_vertical) else 0
             val paramBalloonBubble = mBalloonBubble!!.layoutParams as FrameLayout.LayoutParams
             val paramBalloonPanel = mBalloonPanel!!.layoutParams as FrameLayout.LayoutParams

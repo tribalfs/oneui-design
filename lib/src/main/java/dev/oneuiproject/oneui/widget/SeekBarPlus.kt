@@ -8,6 +8,7 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.SeslSeekBar
 import androidx.core.content.res.use
 import dev.oneuiproject.oneui.design.R
+import androidx.core.graphics.withTranslation
 
 class SeekBarPlus @JvmOverloads constructor(
     context: Context,
@@ -63,13 +64,12 @@ class SeekBarPlus @JvmOverloads constructor(
                 tickMark.setBounds(-right, -bottom, right, bottom)
                 val paddingLeft = paddingLeft
                 val width = (width - paddingLeft - paddingRight - tickWidth * 2) / 2.0f
-                val save = canvas.save()
-                canvas.translate((paddingLeft + tickWidth).toFloat(), height / 2.0f)
-                for (i in 0..2) {
-                    tickMark.draw(canvas)
-                    canvas.translate(width, 0.0f)
+                canvas.withTranslation((paddingLeft + tickWidth).toFloat(), height / 2.0f) {
+                    for (i in 0..2) {
+                        tickMark.draw(canvas)
+                        canvas.translate(width, 0.0f)
+                    }
                 }
-                canvas.restoreToCount(save)
             }
         } else {
             super.drawTickMarks(canvas)

@@ -12,6 +12,7 @@ import androidx.annotation.Px
 import androidx.core.content.res.use
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.qr.QREncoder
+import androidx.core.graphics.toColorInt
 
 @RemoteView
 class QRImageView @JvmOverloads constructor(
@@ -40,7 +41,7 @@ class QRImageView @JvmOverloads constructor(
                 defStyleRes
             ).use {a ->
                 content = a.getString(R.styleable.QRImageView_qrContent)
-                bgColor = a.getColor(R.styleable.QRImageView_qrBackgroundColor, Color.parseColor("#fcfcfc"))
+                bgColor = a.getColor(R.styleable.QRImageView_qrBackgroundColor, "#fcfcfc".toColorInt())
                 fgColor = a.getColor(R.styleable.QRImageView_qrForegroundColor, Color.BLACK)
                 icon = a.getDrawable(R.styleable.QRImageView_qrIcon)
                 roundedFrame = a.getBoolean(R.styleable.QRImageView_qrRoundedFrame, true)

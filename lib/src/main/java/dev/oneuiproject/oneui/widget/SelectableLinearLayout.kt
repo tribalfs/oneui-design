@@ -2,7 +2,6 @@ package dev.oneuiproject.oneui.widget
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.util.AttributeSet
@@ -14,6 +13,8 @@ import android.widget.LinearLayout
 import androidx.annotation.Px
 import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.core.content.res.use
+import androidx.core.graphics.drawable.toDrawable
+import androidx.core.graphics.toColorInt
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import dev.oneuiproject.oneui.design.R
@@ -47,9 +48,8 @@ class SelectableLinearLayout @JvmOverloads constructor(
 
     init {
         context.obtainStyledAttributes(attrs, R.styleable.SelectableLinearLayout).use {
-            val color = it.getColor(R.styleable.SelectableLinearLayout_selectedHighlightColor,
-                Color.parseColor("#08000000"))
-            selectedHighlightColor = ColorDrawable(color)
+            val color = it.getColor(R.styleable.SelectableLinearLayout_selectedHighlightColor, "#08000000".toColorInt())
+            selectedHighlightColor = color.toDrawable()
 
             checkMode = it.getInt(R.styleable.SelectableLinearLayout_checkMode, CHECK_MODE_CHECKBOX)
 

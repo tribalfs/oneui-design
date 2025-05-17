@@ -11,7 +11,7 @@ import dev.oneuiproject.oneui.utils.toBadge
 
 @SuppressLint("RestrictedApi")
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-inline fun MenuItemImpl.toGridDialogItem(): GridMenuDialog.GridItem{
+internal inline fun MenuItemImpl.toGridDialogItem(): GridMenuDialog.GridItem{
    return GridMenuDialog.GridItem(
        itemId = this.itemId,
        title = this.title,

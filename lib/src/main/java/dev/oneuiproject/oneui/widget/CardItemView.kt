@@ -33,9 +33,9 @@ class CardItemView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
 ) : LinearLayout(context, attrs) {
 
-    private lateinit var containerView: LinearLayout
-    private lateinit var titleTextView: TextView
-    private lateinit var summaryTextView: TextView
+    private var containerView: LinearLayout
+    private var titleTextView: TextView
+    private var summaryTextView: TextView
     private var dividerViewTop: View? = null
     private var dividerViewBottom: View? = null
     private var iconImageView: ImageView? = null

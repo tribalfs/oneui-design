@@ -4,10 +4,12 @@ package dev.oneuiproject.oneui.dialog.internal
 
 import android.content.Context
 import android.util.AttributeSet
+import androidx.annotation.RestrictTo
 import com.google.android.material.tabs.TabLayout
 import dev.oneuiproject.oneui.design.R
 import java.util.Locale
 
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 class StartEndTabLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

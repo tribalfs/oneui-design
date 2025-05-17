@@ -26,7 +26,6 @@ import androidx.annotation.MenuRes
 import androidx.appcompat.view.SupportMenuInflater
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuItemImpl
-import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
 import androidx.core.view.isGone
 import androidx.core.view.isVisible

@@ -9,8 +9,8 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.LinearLayout
-import android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.appcompat.view.ContextThemeWrapper
@@ -207,7 +207,7 @@ class RelativeLinksCard @JvmOverloads constructor(
 
     private fun createLinkParams() =
         with(resources) {
-            LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
+           LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
                 marginStart = getDimensionPixelSize(R.dimen.oui_des_relative_link_view_margin_start_end) -
                             getDimensionPixelSize(R.dimen.oui_des_relative_link_text_padding_side)
             }

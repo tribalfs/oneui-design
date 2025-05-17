@@ -410,6 +410,7 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
 
     @RequiresApi(33)
     private fun shouldRegisterDummy(x: Float): Boolean {
+        @SuppressLint("PrivateResource")
         val scrollViewWidth = resources.getDimensionPixelSize(androidx.indexscroll.R.dimen.sesl_indexbar_textmode_width)
         val (startX, endX) = if (layoutDirection == LAYOUT_DIRECTION_LTR) {
             val end = width - computeGestureAllowance(true)
