@@ -132,7 +132,7 @@ class SwitchItemView @JvmOverloads constructor(
             }
         }
 
-    fun setTiTle(value: SpannableString) {
+    fun setTitle(value: SpannableString) {
         titleView.text = value
     }
 
