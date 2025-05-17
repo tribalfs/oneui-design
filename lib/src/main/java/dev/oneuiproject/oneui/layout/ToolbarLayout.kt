@@ -407,8 +407,8 @@ open class ToolbarLayout @JvmOverloads constructor(
                 R.styleable.ToolbarLayout_android_layout,
                 getDefaultLayoutResource()
             )
-            it.getDimension(R.styleable.ToolbarLayout_edgeInsetHorizontal, 0f).let{px ->
-                if (px != 0f) edgeInsetHorizontal = px.pxToDp(resources)
+            it.getDimension(R.styleable.ToolbarLayout_edgeInsetHorizontal, 10f).let{px ->
+                if (px != 10f) edgeInsetHorizontal = px.pxToDp(resources)
             }
             toolbarGravity = it.getInt(R.styleable.ToolbarLayout_toolbarGravity, Gravity.BOTTOM)
 
