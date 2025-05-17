@@ -187,8 +187,25 @@
             android:layout_height="wrap_content"
             android:text="Custom item views" />
 
-        <include
-            layout="@layout/sample3_fragment_widgets_itemviews"/>
+        <dev.oneuiproject.oneui.widget.RoundedLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:colorBackground"
+            android:orientation="vertical">
+
+            <dev.oneuiproject.oneui.widget.CardItemView
+                android:id="@+id/cardItemView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:showTopDivider="false"
+                app:title="CardItemView" />
+
+            <dev.oneuiproject.oneui.widget.SwitchItemView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="SwitchItemView" />
+
+        </dev.oneuiproject.oneui.widget.RoundedLinearLayout>
 
         <dev.oneuiproject.oneui.widget.Separator
             android:layout_width="match_parent"
