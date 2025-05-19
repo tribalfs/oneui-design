@@ -5,6 +5,7 @@ package dev.oneuiproject.oneui.widget
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.Rect
 import android.os.Build
 import android.text.SpannableString
 import android.util.AttributeSet
@@ -349,7 +350,11 @@ class SwitchItemView @JvmOverloads constructor(
 
     override fun dispatchTouchEvent(motionEvent: MotionEvent): Boolean {
         if (Build.VERSION.SDK_INT >= 29) {
-            semTouchFeedbackAnimator.animate(motionEvent)
+            val switchBounds = Rect().apply { switchView.getHitRect(this) }
+            val isTouchOnSwitch = switchBounds.contains(motionEvent.x.toInt(), motionEvent.y.toInt())
+            if (!isTouchOnSwitch) {
+                semTouchFeedbackAnimator.animate(motionEvent)
+            }
         }
         return super.dispatchTouchEvent(motionEvent)
     }
