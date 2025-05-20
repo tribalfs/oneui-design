@@ -42,7 +42,7 @@ internal class DrawerMenuItemView @JvmOverloads constructor(
 
     private var iconSize = context.resources.getDimensionPixelSize(R.dimen.oui_des_drawer_menu_item_icon_size)
     private var needsEmptyIcon = true
-    private var mOffset: Float = 1f
+    private var offset: Float = 1f
 
     @JvmField
     var checkable: Boolean = false
@@ -282,8 +282,8 @@ internal class DrawerMenuItemView @JvmOverloads constructor(
     }
 
     fun applyOffset(offset: Float) {
-        if (mOffset == offset) return
-        mOffset = offset
+        if (this@DrawerMenuItemView.offset == offset) return
+        this@DrawerMenuItemView.offset = offset
         if (isAttachedToWindow) updateOffset()
     }
 
@@ -312,12 +312,12 @@ internal class DrawerMenuItemView @JvmOverloads constructor(
                     rippleBackgroundView.alpha = it
                 }
                 iconBackgroundView?.apply {
-                    isVisible = mOffset < .5
+                    isVisible = offset < .5
                     if (isSelected) {
                         alpha = (1f - min(interpolatedAlpha * 12f, 1f))
                     }
                 }
-                actionArea?.setOffset(mOffset)
+                actionArea?.setOffset(offset)
 
             }
             MENU_TYPE_CATEGORY -> {
@@ -331,7 +331,7 @@ internal class DrawerMenuItemView @JvmOverloads constructor(
                 }
 
                 iconBackgroundView?.apply {
-                    isVisible = mOffset == 0f
+                    isVisible = offset == 0f
                     val offsetX = iconView.marginStart - ((width - iconView.width) / 2f) - marginStart
                     iconView.translationX =  (offsetX * (1f - interpolatedAlpha).coerceIn(0f, 1f) * (if (isRtl) 1f else -1f))
                 }
@@ -349,7 +349,7 @@ internal class DrawerMenuItemView @JvmOverloads constructor(
     }
 
     private fun interpolatedAlpha(maxAlpha: Float = 1f): Float =
-        ((mOffset - (1 - .95F)) / .95F).coerceIn(0f, 1f).run {
+        ((offset - (1 - .95F)) / .95F).coerceIn(0f, 1f).run {
             if (isEnabled) minOf(this, maxAlpha) else minOf(0.5f, this)
         }
 

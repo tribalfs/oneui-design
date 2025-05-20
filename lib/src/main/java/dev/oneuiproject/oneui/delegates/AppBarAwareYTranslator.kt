@@ -34,8 +34,8 @@ import java.lang.ref.WeakReference
  */
 class AppBarAwareYTranslator: ViewYTranslator, DefaultLifecycleObserver {
 
-    private lateinit var mAppBarLayout: AppBarLayout
-    private var mTranslationViews: MutableSet<View>? = null
+    private lateinit var appBarLayout: AppBarLayout
+    private var translationViews: MutableSet<View>? = null
     private var lifecycleOwnerWR: WeakReference<LifecycleOwner>? = null
 
     override fun translateYWithAppBar(
@@ -43,11 +43,11 @@ class AppBarAwareYTranslator: ViewYTranslator, DefaultLifecycleObserver {
         appBarLayout: AppBarLayout,
         lifecycleOwner: LifecycleOwner
     ) {
-        mAppBarLayout = appBarLayout
-        if (mTranslationViews == null){
-            mTranslationViews = mutableSetOf()
+        this@AppBarAwareYTranslator.appBarLayout = appBarLayout
+        if (translationViews == null){
+            translationViews = mutableSetOf()
         }
-        mTranslationViews!!.addAll(translatingViews)
+        translationViews!!.addAll(translatingViews)
 
 
         val currentLifeCycleOwner = lifecycleOwnerWR?.get()
@@ -56,7 +56,7 @@ class AppBarAwareYTranslator: ViewYTranslator, DefaultLifecycleObserver {
         currentLifeCycleOwner?.lifecycle?.removeObserver(this@AppBarAwareYTranslator)
         lifecycleOwnerWR = WeakReference(lifecycleOwner)
 
-        for (v in mTranslationViews!!) {
+        for (v in translationViews!!) {
             if (v.isAttachedToWindow) {
                 lifecycleOwner.lifecycle.addObserver(this@AppBarAwareYTranslator)
             }
@@ -78,7 +78,7 @@ class AppBarAwareYTranslator: ViewYTranslator, DefaultLifecycleObserver {
     }
 
     override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
-        for (v in mTranslationViews!!) {
+        for (v in translationViews!!) {
             if (v.isVisible) {
                 v.translationY = (verticalOffset + appBarLayout.totalScrollRange) * SENSITIVITY * -1f
             }
@@ -87,12 +87,12 @@ class AppBarAwareYTranslator: ViewYTranslator, DefaultLifecycleObserver {
 
     override fun onStart(owner: LifecycleOwner) {
         super.onStart(owner)
-        mAppBarLayout.addOnOffsetChangedListener(this)
+        appBarLayout.addOnOffsetChangedListener(this)
     }
 
     override fun onStop(owner: LifecycleOwner) {
         super.onStop(owner)
-        mAppBarLayout.removeOnOffsetChangedListener(this)
+        appBarLayout.removeOnOffsetChangedListener(this)
     }
 
     companion object{

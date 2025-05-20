@@ -90,14 +90,14 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
 
     private var mainButtonClickListener: OnClickListener? = null
 
-    private val mAILContainer: LinearLayout?
-    private val mAppNameTextView: TextView
-    private val mVersionTextView: TextView
-    private val mUpdateNotice: TextView
-    private val mUpdateButton: Button
-    private var mProgressCircle: SeslProgressBar
+    private val ailContainer: LinearLayout?
+    private val appNameTextView: TextView
+    private val versionTextView: TextView
+    private val updateNotice: TextView
+    private val updateButton: Button
+    private var progressCircle: SeslProgressBar
 
-    private var mInfoTextColor: Int = 0
+    private var infoTextColor: Int = 0
     private val optionalTextParent: LinearLayout
 
     /**
@@ -115,53 +115,53 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
             field = status
             when (status) {
                 Status.NotUpdatable -> {
-                    mProgressCircle.isGone = true
-                    mUpdateNotice.isGone = true
-                    mUpdateButton.isGone = true
+                    progressCircle.isGone = true
+                    updateNotice.isGone = true
+                    updateButton.isGone = true
                 }
 
                 Status.Loading -> {
-                    mProgressCircle.isVisible = true
-                    mUpdateNotice.isGone = true
-                    mUpdateButton.isGone = true
+                    progressCircle.isVisible = true
+                    updateNotice.isGone = true
+                    updateButton.isGone = true
                 }
 
                 Status.UpdateAvailable,
                 Status.UpdateDownloaded -> {
-                    mProgressCircle.isGone = true
-                    mUpdateNotice.isGone = false
-                    mUpdateButton.isGone = false
-                    mUpdateNotice.text = context.getText(R.string.oui_des_new_version_is_available)
-                    mUpdateButton.text = context.getText(R.string.oui_des_update)
+                    progressCircle.isGone = true
+                    updateNotice.isGone = false
+                    updateButton.isGone = false
+                    updateNotice.text = context.getText(R.string.oui_des_new_version_is_available)
+                    updateButton.text = context.getText(R.string.oui_des_update)
                 }
 
                 Status.NoUpdate -> {
-                    mProgressCircle.isGone = true
-                    mUpdateNotice.isGone = false
-                    mUpdateButton.isGone = true
-                    mUpdateNotice.text = context.getText(R.string.oui_des_latest_version)
+                    progressCircle.isGone = true
+                    updateNotice.isGone = false
+                    updateButton.isGone = true
+                    updateNotice.text = context.getText(R.string.oui_des_latest_version)
                 }
 
                 Status.NoConnection -> {
-                    mProgressCircle.isGone = true
-                    mUpdateNotice.isGone = false
-                    mUpdateButton.isGone = false
-                    mUpdateNotice.text = context.getText(R.string.oui_des_network_connect_is_not_stable)
-                    mUpdateButton.text = context.getText(R.string.oui_des_retry)
+                    progressCircle.isGone = true
+                    updateNotice.isGone = false
+                    updateButton.isGone = false
+                    updateNotice.text = context.getText(R.string.oui_des_network_connect_is_not_stable)
+                    updateButton.text = context.getText(R.string.oui_des_retry)
                 }
 
                 is Status.Failed -> {
-                    mProgressCircle.isGone = true
-                    mUpdateNotice.isGone = false
-                    mUpdateButton.isGone = false
-                    mUpdateNotice.text = status.message
-                    mUpdateButton.text = context.getText(R.string.oui_des_retry)
+                    progressCircle.isGone = true
+                    updateNotice.isGone = false
+                    updateButton.isGone = false
+                    updateNotice.text = status.message
+                    updateButton.text = context.getText(R.string.oui_des_retry)
                 }
 
                 Status.Unset -> {
-                    mProgressCircle.isGone = true
-                    mUpdateNotice.isGone = true
-                    mUpdateButton.isGone = true
+                    progressCircle.isGone = true
+                    updateNotice.isGone = true
+                    updateButton.isGone = true
                 }
             }
         }
@@ -183,7 +183,7 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
                     R.color.oui_des_appinfolayout_app_label_text_color
                 )
             )
-            mInfoTextColor = ta.getColor(
+            infoTextColor = ta.getColor(
                 R.styleable.AppInfoLayout_appInfoTextColor,
                 ContextCompat.getColor(
                     context,
@@ -197,24 +197,24 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
         activity?.setSupportActionBar(null)
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
         LayoutInflater.from(context).inflate(R.layout.oui_des_layout_app_info, mainContainer, true)
-        mAILContainer = findViewById(R.id.app_info_lower_layout)
-        mAppNameTextView = findViewById(R.id.app_info_name)
-        mVersionTextView = findViewById(R.id.app_info_version)
-        mUpdateNotice = findViewById(R.id.app_info_update_notice)
-        mUpdateButton = findViewById(R.id.app_info_update)
-        mProgressCircle = findViewById(R.id.app_info_progress)
+        ailContainer = findViewById(R.id.app_info_lower_layout)
+        appNameTextView = findViewById(R.id.app_info_name)
+        versionTextView = findViewById(R.id.app_info_version)
+        updateNotice = findViewById(R.id.app_info_update_notice)
+        updateButton = findViewById(R.id.app_info_update)
+        progressCircle = findViewById(R.id.app_info_progress)
 
         optionalTextParent = findViewById(R.id.app_info_upper_layout)
 
         setLayoutMargins()
         with(context) {
             setTitle(context.getApplicationName())
-            mVersionTextView.text = getString(R.string.oui_des_version_info, getAppVersion())
+            versionTextView.text = getString(R.string.oui_des_version_info, getAppVersion())
         }
 
-        mAppNameTextView.setTextColor(titleTextColor)
-        mVersionTextView.setTextColor(mInfoTextColor)
-        mUpdateNotice.setTextColor(mInfoTextColor)
+        appNameTextView.setTextColor(titleTextColor)
+        versionTextView.setTextColor(infoTextColor)
+        updateNotice.setTextColor(infoTextColor)
 
         toolbar.apply {
             post { setupMenu() }
@@ -251,21 +251,21 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
      */
     @RestrictTo(RestrictTo.Scope.LIBRARY)
     override fun setTitle(title: CharSequence?) {
-        mAppNameTextView.apply {
+        appNameTextView.apply {
             if (text == title) return
             text = title
         }
     }
 
     override fun addView(child: View, index: Int, params: ViewGroup.LayoutParams) {
-        if (mAILContainer == null) {
+        if (ailContainer == null) {
             super.addView(child, index, params)
         } else {
             if ((params as ToolbarLayoutParams).layoutLocation == MAIN_CONTENT/*default*/) {
                 when (child) {
                     is Button -> {
-                        mAILContainer.addView(child, params)
-                        if (mAILContainer.indexOfChild(child) > 0) {
+                        ailContainer.addView(child, params)
+                        if (ailContainer.indexOfChild(child) > 0) {
                             child.updateLayoutParams<LayoutParams> {
                                 topMargin = 15.dpToPx(resources)
                             }
@@ -274,7 +274,7 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
                     is CardItemView -> {
                         optionalTextParent.addView(
                             child,
-                            optionalTextParent.indexOfChild(mAILContainer).ifNegative { optionalTextParent.childCount },
+                            optionalTextParent.indexOfChild(ailContainer).ifNegative { optionalTextParent.childCount },
                             params)
                     }
                 }
@@ -288,7 +288,7 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
     fun setMainButtonClickListener(listener: OnClickListener?) {
         if (mainButtonClickListener == listener) return
         mainButtonClickListener = listener
-        mUpdateButton.setOnClickListener(mainButtonClickListener)
+        updateButton.setOnClickListener(mainButtonClickListener)
     }
 
 
@@ -302,16 +302,16 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
         return TextView(context).apply {
             setText(text)
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 13f)
-            setTextColor(mInfoTextColor)
+            setTextColor(infoTextColor)
             textAlignment = TEXT_ALIGNMENT_CENTER
-            layoutParams = mUpdateNotice.layoutParams
-            optionalTextParent.addView(this, optionalTextParent.indexOfChild(mUpdateNotice))
+            layoutParams = updateNotice.layoutParams
+            optionalTextParent.addView(this, optionalTextParent.indexOfChild(updateNotice))
         }
     }
 
     override fun onFinishInflate() {
         super.onFinishInflate()
-        mAILContainer!!.post {
+        ailContainer!!.post {
             updateButtonsWidth()
         }
     }
@@ -320,19 +320,19 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
         if (activity == null || activity!!.isDestroyed) return
 
         var widthButtons = 0
-        mAILContainer!!.children.forEach {
+        ailContainer!!.children.forEach {
             it.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED)
             widthButtons = maxOf(widthButtons, it.measuredWidth)
         }
 
-        val containerWidth = mAILContainer.width
+        val containerWidth = ailContainer.width
 
-        mUpdateButton.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED)
-        widthButtons = maxOf(widthButtons, mUpdateButton.measuredWidth)
+        updateButton.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED)
+        widthButtons = maxOf(widthButtons, updateButton.measuredWidth)
             .coerceIn((containerWidth * 0.6f).toInt(), (containerWidth * 0.9f).toInt())
 
-        mUpdateButton.width = widthButtons
-        mAILContainer.children.forEach {
+        updateButton.width = widthButtons
+        ailContainer.children.forEach {
             (it as Button).width = widthButtons
         }
     }
@@ -350,7 +350,7 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
 
     @JvmOverloads
     fun setTitleMultiClickListener(clickCount: Int = 7, listener: View.OnClickListener) =
-        mAppNameTextView.onMultiClick(clickCount) { listener.onClick(mAppNameTextView) }
+        appNameTextView.onMultiClick(clickCount) { listener.onClick(appNameTextView) }
 
     /**
      * This does nothing in AppInfoLayout.

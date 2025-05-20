@@ -20,16 +20,16 @@ import dev.oneuiproject.oneui.design.R;
  */
 public class SplashLayout extends LinearLayout {
 
-    private boolean animated;
-    private Drawable mImage_foreground;
-    private Drawable mImage_background;
-    private String mText;
-    private Animation splash_anim;
-    private TextView textView;
+    private final boolean animated;
+    private Drawable imageForeground;
+    private Drawable imageBackground;
+    private String title;
+    private Animation splashAnim;
+    private final TextView textView;
     private ImageView imageview;
-    private ImageView imageview_foreground;
-    private ImageView imageview_background;
-    private Drawable mImage;
+    private ImageView imageviewForeground;
+    private ImageView imageviewBackground;
+    private Drawable image;
 
     public SplashLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -37,15 +37,15 @@ public class SplashLayout extends LinearLayout {
 
         try {
             animated = attr.getBoolean(R.styleable.SplashLayout_animated, true);
-            mText = attr.getString(R.styleable.SplashLayout_title);
-            if (mText == null) mText = context.getString(R.string.app_name);
+            title = attr.getString(R.styleable.SplashLayout_title);
+            if (title == null) title = context.getString(R.string.app_name);
 
             if (animated) {
-                mImage_foreground = attr.getDrawable(R.styleable.SplashLayout_foreground_image);
-                mImage_background = attr.getDrawable(R.styleable.SplashLayout_background_image);
-                splash_anim = AnimationUtils.loadAnimation(context, attr.getResourceId(R.styleable.SplashLayout_animation, R.anim.oui_des_splash_animation));
+                imageForeground = attr.getDrawable(R.styleable.SplashLayout_foreground_image);
+                imageBackground = attr.getDrawable(R.styleable.SplashLayout_background_image);
+                splashAnim = AnimationUtils.loadAnimation(context, attr.getResourceId(R.styleable.SplashLayout_animation, R.anim.oui_des_splash_animation));
             } else {
-                mImage = attr.getDrawable(R.styleable.SplashLayout_image);
+                image = attr.getDrawable(R.styleable.SplashLayout_image);
             }
 
         } finally {
@@ -57,17 +57,17 @@ public class SplashLayout extends LinearLayout {
 
 
         textView = findViewById(R.id.oui_des_splash_text);
-        textView.setText(mText);
+        textView.setText(title);
 
         if (animated) {
-            imageview_foreground = findViewById(R.id.oui_des_splash_image_foreground);
-            imageview_background = findViewById(R.id.oui_des_splash_image_background);
+            imageviewForeground = findViewById(R.id.oui_des_splash_image_foreground);
+            imageviewBackground = findViewById(R.id.oui_des_splash_image_background);
 
-            imageview_foreground.setImageDrawable(mImage_foreground);
-            imageview_background.setImageDrawable(mImage_background);
+            imageviewForeground.setImageDrawable(imageForeground);
+            imageviewBackground.setImageDrawable(imageBackground);
         } else {
             imageview = findViewById(R.id.oui_des_splash_image);
-            imageview.setImageDrawable(mImage);
+            imageview.setImageDrawable(image);
         }
 
 
@@ -77,32 +77,32 @@ public class SplashLayout extends LinearLayout {
      * Set the animation listener.
      */
     public void setSplashAnimationListener(Animation.AnimationListener listener) {
-        if (animated) splash_anim.setAnimationListener(listener);
+        if (animated) splashAnim.setAnimationListener(listener);
     }
 
     /**
      * Start the animation.
      */
     public void startSplashAnimation() {
-        if (animated) imageview_foreground.startAnimation(splash_anim);
+        if (animated) imageviewForeground.startAnimation(splashAnim);
     }
 
     /**
      * Stop the animation.
      */
     public void clearSplashAnimation() {
-        if (animated) imageview_foreground.clearAnimation();
+        if (animated) imageviewForeground.clearAnimation();
     }
 
     public String getText() {
-        return mText;
+        return title;
     }
 
     /**
      * Set a custom text. The default will be your App's name.
      */
     public void setText(String mText) {
-        this.mText = mText;
+        this.title = mText;
         textView.setText(mText);
     }
 
@@ -111,10 +111,10 @@ public class SplashLayout extends LinearLayout {
      */
     public void setImage(Drawable foreground, Drawable background) {
         if (animated) {
-            this.mImage_foreground = foreground;
-            this.mImage_background = background;
-            imageview_foreground.setImageDrawable(foreground);
-            imageview_background.setImageDrawable(background);
+            this.imageForeground = foreground;
+            this.imageBackground = background;
+            imageviewForeground.setImageDrawable(foreground);
+            imageviewBackground.setImageDrawable(background);
         }
     }
 
@@ -123,7 +123,7 @@ public class SplashLayout extends LinearLayout {
      */
     public void setImage(Drawable image) {
         if (!animated) {
-            this.mImage = image;
+            this.image = image;
             imageview.setImageDrawable(image);
         }
     }

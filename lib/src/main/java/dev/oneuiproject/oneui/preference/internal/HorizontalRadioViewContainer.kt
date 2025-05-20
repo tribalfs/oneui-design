@@ -9,6 +9,7 @@ import androidx.core.view.children
 import androidx.core.view.isVisible
 import dev.oneuiproject.oneui.design.R
 import kotlin.math.roundToInt
+import androidx.core.graphics.withTranslation
 
 
 class HorizontalRadioViewContainer @JvmOverloads constructor(
@@ -17,7 +18,7 @@ class HorizontalRadioViewContainer @JvmOverloads constructor(
     defStyleAttr: Int = 0,
     defStyleRes: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr, defStyleRes) {
-    private var mIsDividerEnabled: Boolean? = null
+    private var isDividerEnabled: Boolean? = null
 
     private val resources = context.resources
     private val divider = AppCompatResources.getDrawable(context, R.drawable.oui_des_preference_horizontal_radio_divider_vertical)
@@ -27,22 +28,21 @@ class HorizontalRadioViewContainer @JvmOverloads constructor(
 
     override fun dispatchDraw(canvas: Canvas) {
         super.dispatchDraw(canvas)
-        if (mIsDividerEnabled!!) {
+        if (isDividerEnabled!!) {
             val visibleChildCount = children.filter { it.isVisible }.count()
             if (visibleChildCount == 0) return
 
             val width = width
             for (i in 0 until visibleChildCount - 1) {
                 divider!!.setBounds(0, 0, dividerWidth, dividerBottom)
-                canvas.save()
-                canvas.translate(width / visibleChildCount * (i + 1f), marginTop)
-                divider.draw(canvas)
-                canvas.restore()
+                canvas.withTranslation(width / visibleChildCount * (i + 1f), marginTop) {
+                    divider.draw(this)
+                }
             }
         }
     }
 
     fun setDividerEnabled(enabled: Boolean) {
-        mIsDividerEnabled = enabled
+        isDividerEnabled = enabled
     }
 }

@@ -70,76 +70,76 @@ class TipPopup(parentView: View, mode: Mode) {
 
     constructor(parentView: View): this(parentView, Mode.NORMAL)
 
-    private val mParentView: View = parentView
-    private val mContext: Context = parentView.context
-    private val mResources: Resources = mContext.resources
-    private val mWindowManager: WindowManager = mContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+    private val parentView: View = parentView
+    private val context: Context = parentView.context
+    private val resources: Resources = context.resources
+    private val windowManager: WindowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
-    private val mActionView: Button
-    private var mActionClickListener: View.OnClickListener? = null
-    private var mActionText: CharSequence? = null
-    private var mActionTextColor: Int? = null
+    private val actionView: Button
+    private var actionClickListener: View.OnClickListener? = null
+    private var actionText: CharSequence? = null
+    private var actionTextColor: Int? = null
 
-    private var mArrowDirection: Direction = DEFAULT
-    private var mArrowPositionX: Int = -1
-    private var mArrowPositionY: Int = -1
-    private val mArrowHeight = mResources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_balloon_arrow_height)
-    private val mArrowWidth = mResources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_balloon_arrow_width)
+    private var arrowDirection: Direction = DEFAULT
+    private var arrowPositionX: Int = -1
+    private var arrowPositionY: Int = -1
+    private val arrowHeight = resources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_balloon_arrow_height)
+    private val arrowWidth = resources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_balloon_arrow_width)
 
-    private val mMessageView: TextView
+    private val messageView: TextView
 
-    private var mBackgroundColor: Int = Color.BLACK
-    private var mBalloonBg1: ImageView? = null
-    private var mBalloonBg2: ImageView? = null
-    private var mBalloonBubble: FrameLayout? = null
-    private var mBalloonBubbleHint: ImageView? = null
-    private var mBalloonBubbleIcon: ImageView? = null
-    private var mBalloonContent: FrameLayout? = null
-    private var mBalloonHeight = 0
-    private var mBalloonPanel: FrameLayout? = null
-    private var mBalloonPopup: TipWindow? = null
-    private var mBalloonPopupX = 0
-    private var mBalloonPopupY = 0
-    private val mBalloonView: View
-    private var mBalloonWidth = 0
-    private var mBalloonX: Int = -1
-    private var mBalloonY = 0
-    private var mBorderColor: Int? = null
-    private var mBubbleBackground: ImageView? = null
-    private var mBubbleHeight = 0
-    private var mBubbleIcon: ImageView? = null
-    private var mBubblePopup: TipWindow? = null
-    private var mBubblePopupX = 0
-    private var mBubblePopupY = 0
-    private val mBubbleView: View
-    private var mBubbleWidth = 0
-    private var mBubbleX = 0
-    private var mBubbleY = 0
+    private var backgroundColor: Int = Color.BLACK
+    private var balloonBg1: ImageView? = null
+    private var balloonBg2: ImageView? = null
+    private var balloonBubble: FrameLayout? = null
+    private var balloonBubbleHint: ImageView? = null
+    private var balloonBubbleIcon: ImageView? = null
+    private var balloonContent: FrameLayout? = null
+    private var balloonHeight = 0
+    private var balloonPanel: FrameLayout? = null
+    private var balloonPopup: TipWindow? = null
+    private var balloonPopupX = 0
+    private var balloonPopupY = 0
+    private val balloonView: View
+    private var balloonWidth = 0
+    private var balloonX: Int = -1
+    private var balloonY = 0
+    private var borderColor: Int? = null
+    private var bubbleBackground: ImageView? = null
+    private var bubbleHeight = 0
+    private var bubbleIcon: ImageView? = null
+    private var bubblePopup: TipWindow? = null
+    private var bubblePopupX = 0
+    private var bubblePopupY = 0
+    private val bubbleView: View
+    private var bubbleWidth = 0
+    private var bubbleX = 0
+    private var bubbleY = 0
 
-    private var mDisplayMetrics = mResources.displayMetrics
-    private var mForceRealDisplay = false
-    private var mHintDescription: CharSequence? = null
+    private var displayMetrics = resources.displayMetrics
+    private var forceRealDisplay = false
+    private var hintDescription: CharSequence? = null
 
-    private var mInitialmMessageViewWidth = 0
-    private var mIsDefaultPosition = true
-    private var mIsMessageViewMeasured = false
-    private var mMessageText: CharSequence? = null
-    private var mMessageTextColor: Int? = null
+    private var initialMessageViewWidth = 0
+    private var isDefaultPosition = true
+    private var isMessageViewMeasured = false
+    private var messageText: CharSequence? = null
+    private var messageTextColor: Int? = null
 
-    private val mMode: Mode = mode
-    private var mNeedToCallParentViewsOnClick = false
-    private var mOnDismissListener: OnDismissListener? = null
-    private var mOnStateChangeListener: OnStateChangeListener? = null
+    private val mode: Mode = mode
+    private var needToCallParentViewsOnClick = false
+    private var onDismissListener: OnDismissListener? = null
+    private var onStateChangeListener: OnStateChangeListener? = null
 
-    private var mScaleMargin = mResources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_scale_margin)
-    private var mSideMargin = mResources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_side_margin)
+    private var scaleMargin = resources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_scale_margin)
+    private var sideMargin = resources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_side_margin)
 
-    private var mState: State = State.HINT
-    private var mType: Type = Type.BALLOON_SIMPLE
+    private var state: State = State.HINT
+    private var type: Type = Type.BALLOON_SIMPLE
 
-    private val mDisplayFrame: Rect = Rect()
-    private val mHorizontalTextMargin = mResources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_balloon_message_margin_horizontal)
-    private val mVerticalTextMargin= mResources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_balloon_message_margin_vertical)
+    private val displayFrame: Rect = Rect()
+    private val horizontalTextMargin = resources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_balloon_message_margin_horizontal)
+    private val verticalTextMargin= resources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_balloon_message_margin_vertical)
 
     /**
      * Choose either [NORMAL] or [TRANSLUCENT].
@@ -181,23 +181,23 @@ class TipPopup(parentView: View, mode: Mode) {
     }
 
     fun setOnStateChangeListener(changeListener: OnStateChangeListener?) {
-        mOnStateChangeListener = changeListener
+        onStateChangeListener = changeListener
     }
 
     init {
-        debugLog("mDisplayMetrics = $mDisplayMetrics")
+        debugLog("mDisplayMetrics = $displayMetrics")
 
-        mContext.obtainStyledAttributes(null as AttributeSet?, R.styleable.TipPopup).use {
-            mBackgroundColor = it.getColor(R.styleable.TipPopup_tipPopupBackgroundColor, Color.BLACK)
+        context.obtainStyledAttributes(null as AttributeSet?, R.styleable.TipPopup).use {
+            backgroundColor = it.getColor(R.styleable.TipPopup_tipPopupBackgroundColor, Color.BLACK)
         }
 
         initInterpolator()
 
-        LayoutInflater.from(mContext).apply {
-            mBubbleView = inflate(R.layout.oui_des_tip_popup_bubble, null)
-            mBalloonView = inflate(R.layout.oui_des_tip_popup_balloon, null).also {
-                mMessageView = (it.findViewById<TextView>(R.id.oui_des_tip_popup_message)).apply { isVisible = false }
-                mActionView = (it.findViewById<Button>(R.id.oui_des_tip_popup_action)).apply { isVisible = false }
+        LayoutInflater.from(context).apply {
+            bubbleView = inflate(R.layout.oui_des_tip_popup_bubble, null)
+            balloonView = inflate(R.layout.oui_des_tip_popup_balloon, null).also {
+                messageView = (it.findViewById<TextView>(R.id.oui_des_tip_popup_message)).apply { isVisible = false }
+                actionView = (it.findViewById<Button>(R.id.oui_des_tip_popup_action)).apply { isVisible = false }
             }
         }
 
@@ -205,25 +205,25 @@ class TipPopup(parentView: View, mode: Mode) {
         initBalloonPopup(mode)
 
         if (mode == Mode.TRANSLUCENT) {
-            mMessageView.setTextColor(
+            messageView.setTextColor(
                 ContextCompat.getColor(
-                    mContext,
+                    context,
                     R.color.oui_des_tip_popup_text_color_translucent
                 )
             )
-            mActionView.setTextColor(
+            actionView.setTextColor(
                 ContextCompat.getColor(
-                    mContext,
+                    context,
                     R.color.oui_des_tip_popup_text_color_translucent
                 )
             )
         }
 
-        mBubblePopup!!.setOnDismissListener {
-            if (mState == State.HINT) {
-                mState = State.DISMISSED
-                if (mOnStateChangeListener != null) {
-                    mOnStateChangeListener!!.onStateChanged(mState)
+        bubblePopup!!.setOnDismissListener {
+            if (state == State.HINT) {
+                state = State.DISMISSED
+                if (onStateChangeListener != null) {
+                    onStateChangeListener!!.onStateChanged(state)
                     debugLog("mIsShowing : $isShowing")
                 }
                 if (mHandler != null) {
@@ -234,10 +234,10 @@ class TipPopup(parentView: View, mode: Mode) {
             }
         }
 
-        mBalloonPopup!!.setOnDismissListener {
-            mState = State.DISMISSED
-            if (mOnStateChangeListener != null) {
-                mOnStateChangeListener!!.onStateChanged(mState)
+        balloonPopup!!.setOnDismissListener {
+            state = State.DISMISSED
+            if (onStateChangeListener != null) {
+                onStateChangeListener!!.onStateChanged(state)
                 debugLog("mIsShowing : $isShowing")
             }
             debugLog("onDismiss - BalloonPopup")
@@ -248,13 +248,13 @@ class TipPopup(parentView: View, mode: Mode) {
             }
         }
 
-        mBalloonView.accessibilityDelegate = object : View.AccessibilityDelegate() {
+        balloonView.accessibilityDelegate = object : View.AccessibilityDelegate() {
             override fun onInitializeAccessibilityNodeInfo(
                 host: View,
                 info: AccessibilityNodeInfo
             ) {
                 super.onInitializeAccessibilityNodeInfo(host, info)
-                info.addAction(AccessibilityAction(ACTION_CLICK, mContext.getString(R.string.oui_des_common_close)))
+                info.addAction(AccessibilityAction(ACTION_CLICK, context.getString(R.string.oui_des_common_close)))
             }
         }
     }
@@ -276,26 +276,26 @@ class TipPopup(parentView: View, mode: Mode) {
     }
 
     private fun initBubblePopup(mode: Mode) {
-        mBubbleBackground = mBubbleView.findViewById(R.id.oui_des_tip_popup_bubble_bg)
-        mBubbleIcon = mBubbleView.findViewById(R.id.oui_des_tip_popup_bubble_icon)
+        bubbleBackground = bubbleView.findViewById(R.id.oui_des_tip_popup_bubble_bg)
+        bubbleIcon = bubbleView.findViewById(R.id.oui_des_tip_popup_bubble_icon)
 
         if (mode == Mode.TRANSLUCENT) {
-            mBubbleBackground!!.setImageResource(R.drawable.oui_des_tip_popup_hint_bg_translucent)
-            mBubbleBackground!!.imageTintList = null
+            bubbleBackground!!.setImageResource(R.drawable.oui_des_tip_popup_hint_bg_translucent)
+            bubbleBackground!!.imageTintList = null
             if (isRTL && locale != "iw_IL") {
-                mBubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon_translucent_rtl)
+                bubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon_translucent_rtl)
             } else {
-                mBubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon_translucent)
+                bubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon_translucent)
             }
-            mBubbleIcon!!.imageTintList = null
-            mBubbleWidth = mResources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_bubble_width_translucent)
-            mBubbleHeight = mResources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_bubble_height_translucent)
+            bubbleIcon!!.imageTintList = null
+            bubbleWidth = resources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_bubble_width_translucent)
+            bubbleHeight = resources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_bubble_height_translucent)
         } else {
-            mBubbleWidth = mResources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_bubble_width)
-            mBubbleHeight = mResources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_bubble_height)
+            bubbleWidth = resources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_bubble_width)
+            bubbleHeight = resources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_bubble_height)
         }
 
-        mBubblePopup = TipWindowBubble(mBubbleView, mBubbleWidth, mBubbleHeight, false).apply {
+        bubblePopup = TipWindowBubble(bubbleView, bubbleWidth, bubbleHeight, false).apply {
             isTouchable = true
             isOutsideTouchable = true
             if (Build.VERSION.SDK_INT >= 22) isAttachedInDecor = false
@@ -304,38 +304,38 @@ class TipPopup(parentView: View, mode: Mode) {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initBalloonPopup(mode: Mode) {
-        mBalloonBubble = mBalloonView.findViewById<FrameLayout>(R.id.oui_des_tip_popup_balloon_bubble).apply { isVisible = true }
-        mBalloonBubbleHint = mBalloonView.findViewById(R.id.oui_des_tip_popup_balloon_bubble_hint)
-        mBalloonBubbleIcon = mBalloonView.findViewById(R.id.oui_des_tip_popup_balloon_bubble_icon)
-        mBalloonPanel = mBalloonView.findViewById<FrameLayout>(R.id.oui_des_tip_popup_balloon_panel).apply { isVisible = false }
-        mBalloonContent = mBalloonView.findViewById(R.id.oui_des_tip_popup_balloon_content)
-        mBalloonBg1 = mBalloonView.findViewById(R.id.oui_des_tip_popup_balloon_bg_01)
-        mBalloonBg2 = mBalloonView.findViewById(R.id.oui_des_tip_popup_balloon_bg_02)
+        balloonBubble = balloonView.findViewById<FrameLayout>(R.id.oui_des_tip_popup_balloon_bubble).apply { isVisible = true }
+        balloonBubbleHint = balloonView.findViewById(R.id.oui_des_tip_popup_balloon_bubble_hint)
+        balloonBubbleIcon = balloonView.findViewById(R.id.oui_des_tip_popup_balloon_bubble_icon)
+        balloonPanel = balloonView.findViewById<FrameLayout>(R.id.oui_des_tip_popup_balloon_panel).apply { isVisible = false }
+        balloonContent = balloonView.findViewById(R.id.oui_des_tip_popup_balloon_content)
+        balloonBg1 = balloonView.findViewById(R.id.oui_des_tip_popup_balloon_bg_01)
+        balloonBg2 = balloonView.findViewById(R.id.oui_des_tip_popup_balloon_bg_02)
         if (mode == Mode.TRANSLUCENT) {
-            mBalloonBg1!!.setBackgroundResource(R.drawable.oui_des_tip_popup_balloon_bg_left_translucent)
-            mBalloonBg1!!.backgroundTintList = null
-            mBalloonBg2!!.setBackgroundResource(R.drawable.oui_des_tip_popup_balloon_bg_right_translucent)
-            mBalloonBg2!!.backgroundTintList = null
+            balloonBg1!!.setBackgroundResource(R.drawable.oui_des_tip_popup_balloon_bg_left_translucent)
+            balloonBg1!!.backgroundTintList = null
+            balloonBg2!!.setBackgroundResource(R.drawable.oui_des_tip_popup_balloon_bg_right_translucent)
+            balloonBg2!!.backgroundTintList = null
         }
 
-        mBalloonPopup = TipWindowBalloon(mBalloonView, mBalloonWidth, mBalloonHeight, true).apply {
+        balloonPopup = TipWindowBalloon(balloonView, balloonWidth, balloonHeight, true).apply {
             isFocusable = true
             isTouchable = true
             isOutsideTouchable = true
             if (Build.VERSION.SDK_INT >= 22) isAttachedInDecor = false
             setTouchInterceptor { _, event ->
-                if (mNeedToCallParentViewsOnClick && mParentView.hasOnClickListeners()
+                if (needToCallParentViewsOnClick && parentView.hasOnClickListeners()
                     && (event.action == ACTION_DOWN || event.action == ACTION_OUTSIDE)) {
                     val parentViewBounds = Rect()
                     val outLocation = IntArray(2)
-                    mParentView.getLocationOnScreen(outLocation)
-                    parentViewBounds[outLocation[0], outLocation[1], outLocation[0] + mParentView.width] =
-                        outLocation[1] + mParentView.height
+                    parentView.getLocationOnScreen(outLocation)
+                    parentViewBounds[outLocation[0], outLocation[1], outLocation[0] + parentView.width] =
+                        outLocation[1] + parentView.height
                     val isTouchContainedInParentView =
                         parentViewBounds.contains(event.rawX.toInt(), event.rawY.toInt())
                     if (isTouchContainedInParentView) {
                         debugLog("callOnClick for parent view")
-                        mParentView.callOnClick()
+                        parentView.callOnClick()
                     }
                 }
                 false
@@ -345,13 +345,13 @@ class TipPopup(parentView: View, mode: Mode) {
 
     fun show(direction: Direction) {
         setInternal()
-        if (mArrowPositionX == -1 || mArrowPositionY == -1) {
+        if (arrowPositionX == -1 || arrowPositionY == -1) {
             calculateArrowPosition()
         }
         if (direction == DEFAULT) {
-            calculateArrowDirection(mArrowPositionX, mArrowPositionY)
+            calculateArrowDirection(arrowPositionX, arrowPositionY)
         } else {
-            mArrowDirection = direction
+            arrowDirection = direction
         }
         calculatePopupSize()
         calculatePopupPosition()
@@ -361,12 +361,12 @@ class TipPopup(parentView: View, mode: Mode) {
     }
 
     fun setMessage(message: CharSequence?) {
-        mMessageText = message
+        messageText = message
     }
 
     fun setAction(actionText: CharSequence?, listener: View.OnClickListener?) {
-        mActionText = actionText
-        mActionClickListener = listener
+        this@TipPopup.actionText = actionText
+        actionClickListener = listener
     }
 
     /**
@@ -376,29 +376,29 @@ class TipPopup(parentView: View, mode: Mode) {
      * @param needToCall
      */
     fun semCallParentViewsOnClick(needToCall: Boolean) {
-        mNeedToCallParentViewsOnClick = needToCall
+        needToCallParentViewsOnClick = needToCall
     }
 
     /**
      * Returns whether the pop-up, either as hint or expanded, is currently showing.
      */
     val isShowing: Boolean
-        get() = mBubblePopup?.isShowing == true || mBalloonPopup?.isShowing == true
+        get() = bubblePopup?.isShowing == true || balloonPopup?.isShowing == true
 
     fun dismiss(withAnimation: Boolean) {
-        val tipWindow = mBubblePopup
+        val tipWindow = bubblePopup
         if (tipWindow != null) {
             tipWindow.setUseDismissAnimation(withAnimation)
-            debugLog("mBubblePopup.mIsDismissing = " + mBubblePopup!!.mIsDismissing)
-            mBubblePopup!!.dismiss()
+            debugLog("mBubblePopup.mIsDismissing = " + bubblePopup!!.mIsDismissing)
+            bubblePopup!!.dismiss()
         }
-        val tipWindow2 = mBalloonPopup
+        val tipWindow2 = balloonPopup
         if (tipWindow2 != null) {
             tipWindow2.setUseDismissAnimation(withAnimation)
-            debugLog("mBalloonPopup.mIsDismissing = " + mBalloonPopup!!.mIsDismissing)
-            mBalloonPopup!!.dismiss()
+            debugLog("mBalloonPopup.mIsDismissing = " + balloonPopup!!.mIsDismissing)
+            balloonPopup!!.dismiss()
         }
-        val onDismissListener = mOnDismissListener
+        val onDismissListener = onDismissListener
         onDismissListener?.onDismiss()
         val handler = mHandler
         if (handler != null) {
@@ -409,24 +409,24 @@ class TipPopup(parentView: View, mode: Mode) {
 
     fun setExpanded(expanded: Boolean) {
         if (expanded) {
-            mState = State.EXPANDED
-            mScaleMargin = 0
+            state = State.EXPANDED
+            scaleMargin = 0
             return
         }
-        mScaleMargin = mResources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_scale_margin)
+        scaleMargin = resources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_scale_margin)
     }
 
     fun setTargetPosition(x: Int, y: Int) {
         if (x < 0 || y < 0) {
             return
         }
-        mIsDefaultPosition = false
-        mArrowPositionX = x
-        mArrowPositionY = y
+        isDefaultPosition = false
+        arrowPositionX = x
+        arrowPositionY = y
     }
 
     fun setHintDescription(hintDescription: CharSequence?) {
-        mHintDescription = hintDescription
+        this@TipPopup.hintDescription = hintDescription
     }
 
     /**
@@ -436,39 +436,39 @@ class TipPopup(parentView: View, mode: Mode) {
      * @param resetHintTimer (Optional) Defaults to false.
      */
     @JvmOverloads
-    fun update(direction: Direction = mArrowDirection, resetHintTimer: Boolean = false) {
+    fun update(direction: Direction = arrowDirection, resetHintTimer: Boolean = false) {
         if (!isShowing/* || mParentView == null*/) {
             return
         }
         setInternal()
-        mBalloonX = -1
-        mBalloonY = -1
-        if (mIsDefaultPosition) {
+        balloonX = -1
+        balloonY = -1
+        if (isDefaultPosition) {
             debugLog("update - default position")
             calculateArrowPosition()
         }
         if (direction == DEFAULT) {
-            calculateArrowDirection(mArrowPositionX, mArrowPositionY)
+            calculateArrowDirection(arrowPositionX, arrowPositionY)
         } else {
-            mArrowDirection = direction
+            arrowDirection = direction
         }
         calculatePopupSize()
         calculatePopupPosition()
         setBubblePanel()
         setBalloonPanel()
 
-        if (mState == State.HINT) {
-            mBubblePopup!!.update(mBubblePopupX, mBubblePopupY, mBubblePopup!!.width, mBubblePopup!!.height)
+        if (state == State.HINT) {
+            bubblePopup!!.update(bubblePopupX, bubblePopupY, bubblePopup!!.width, bubblePopup!!.height)
             if (resetHintTimer) {
                 debugLog("Timer Reset!")
                 scheduleTimeout()
             }
-        } else if (mState == State.EXPANDED) {
-            mBalloonPopup!!.update(
-                mBalloonPopupX,
-                mBalloonPopupY,
-                mBalloonPopup!!.width,
-                mBalloonPopup!!.height
+        } else if (state == State.EXPANDED) {
+            balloonPopup!!.update(
+                balloonPopupX,
+                balloonPopupY,
+                balloonPopup!!.width,
+                balloonPopup!!.height
             )
         }
     }
@@ -480,7 +480,7 @@ class TipPopup(parentView: View, mode: Mode) {
      * is ignored, and the color will be applied as fully opaque.
      */
     fun setMessageTextColor(@ColorInt color: Int) {
-        mMessageTextColor = Color.BLACK or color
+        messageTextColor = Color.BLACK or color
     }
 
     /**
@@ -490,7 +490,7 @@ class TipPopup(parentView: View, mode: Mode) {
      * is ignored, and the color will be applied as fully opaque.
      */
     fun setActionTextColor(@ColorInt color: Int) {
-        mActionTextColor = Color.BLACK or color
+        actionTextColor = Color.BLACK or color
     }
 
     /**
@@ -502,7 +502,7 @@ class TipPopup(parentView: View, mode: Mode) {
      * @see setBackgroundColorWithAlpha
      */
     fun setBackgroundColor(@ColorInt color: Int) {
-        mBackgroundColor = Color.BLACK or color
+        backgroundColor = Color.BLACK or color
     }
 
     /**
@@ -511,7 +511,7 @@ class TipPopup(parentView: View, mode: Mode) {
      * @param color The color to set including the alpha channel.
      */
     fun setBackgroundColorWithAlpha(@ColorInt  color: Int) {
-        mBackgroundColor = color
+        backgroundColor = color
     }
 
     /**
@@ -524,14 +524,14 @@ class TipPopup(parentView: View, mode: Mode) {
      * is ignored, and the color will be applied as fully opaque.
      */
     fun setBorderColor(@ColorInt  color: Int) {
-        mBorderColor = Color.BLACK or color
+        borderColor = Color.BLACK or color
     }
 
     fun setOutsideTouchEnabled(enabled: Boolean) {
-        mBubblePopup!!.isFocusable = enabled
-        mBubblePopup!!.isOutsideTouchable = enabled
-        mBalloonPopup!!.isFocusable = enabled
-        mBalloonPopup!!.isOutsideTouchable = enabled
+        bubblePopup!!.isFocusable = enabled
+        bubblePopup!!.isOutsideTouchable = enabled
+        balloonPopup!!.isFocusable = enabled
+        balloonPopup!!.isOutsideTouchable = enabled
         debugLog("outside enabled : $enabled")
     }
 
@@ -542,11 +542,11 @@ class TipPopup(parentView: View, mode: Mode) {
      * allowed to extend outside of the screen
      */
     fun setPopupWindowClippingEnabled(enabled: Boolean) {
-        mBubblePopup!!.isClippingEnabled = enabled
-        mBalloonPopup!!.isClippingEnabled = enabled
-        mForceRealDisplay = !enabled
-        mSideMargin =
-            if (enabled) mResources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_side_margin) else 0
+        bubblePopup!!.isClippingEnabled = enabled
+        balloonPopup!!.isClippingEnabled = enabled
+        forceRealDisplay = !enabled
+        sideMargin =
+            if (enabled) resources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_side_margin) else 0
         debugLog("clipping enabled : $enabled")
     }
 
@@ -576,84 +576,84 @@ class TipPopup(parentView: View, mode: Mode) {
             }
         }
 
-        val currentFontScale = mResources.configuration.fontScale
-        val messageTextSize = mResources.getDimensionPixelOffset(R.dimen.oui_des_tip_popup_balloon_message_text_size)
-        val actionTextSize = mResources.getDimensionPixelOffset(R.dimen.oui_des_tip_popup_balloon_action_text_size)
+        val currentFontScale = resources.configuration.fontScale
+        val messageTextSize = resources.getDimensionPixelOffset(R.dimen.oui_des_tip_popup_balloon_message_text_size)
+        val actionTextSize = resources.getDimensionPixelOffset(R.dimen.oui_des_tip_popup_balloon_action_text_size)
 
         if (currentFontScale > 1.2f) {
-            mMessageView.setTextSize(TypedValue.COMPLEX_UNIT_PX, floor(ceil(messageTextSize / currentFontScale) * 1.2f))
-            mActionView.setTextSize(TypedValue.COMPLEX_UNIT_PX, floor(ceil(actionTextSize / currentFontScale) * 1.2f))
+            messageView.setTextSize(TypedValue.COMPLEX_UNIT_PX, floor(ceil(messageTextSize / currentFontScale) * 1.2f))
+            actionView.setTextSize(TypedValue.COMPLEX_UNIT_PX, floor(ceil(actionTextSize / currentFontScale) * 1.2f))
         }
 
-        mMessageView.text = mMessageText
+        messageView.text = messageText
 
-        if (TextUtils.isEmpty(mActionText) || mActionClickListener == null) {
-            mActionView.visibility = View.GONE
-            mActionView.setOnClickListener(null)
-            mType = Type.BALLOON_SIMPLE
+        if (TextUtils.isEmpty(actionText) || actionClickListener == null) {
+            actionView.visibility = View.GONE
+            actionView.setOnClickListener(null)
+            type = Type.BALLOON_SIMPLE
         } else {
-            mActionView.visibility = View.VISIBLE
-            mActionView.semSetButtonShapeEnabled(true, mBackgroundColor)
-            mActionView.text = mActionText
-            mActionView.setOnClickListener { view ->
-                mActionClickListener?.onClick(view)
+            actionView.visibility = View.VISIBLE
+            actionView.semSetButtonShapeEnabled(true, backgroundColor)
+            actionView.text = actionText
+            actionView.setOnClickListener { view ->
+                actionClickListener?.onClick(view)
                 dismiss(true)
             }
-            mType = Type.BALLOON_ACTION
+            type = Type.BALLOON_ACTION
         }
 
-        mBubbleIcon?.contentDescription = mHintDescription
+        bubbleIcon?.contentDescription = hintDescription
 
-        if (mMode == Mode.TRANSLUCENT
-            || mBubbleIcon == null
-            || mBubbleBackground == null
-            || mBalloonBubble == null
-            || mBalloonBg1 == null
-            || mBalloonBg2 == null) {
+        if (mode == Mode.TRANSLUCENT
+            || bubbleIcon == null
+            || bubbleBackground == null
+            || balloonBubble == null
+            || balloonBg1 == null
+            || balloonBg2 == null) {
             return
         }
 
-        mMessageTextColor?.let {
-            mMessageView.setTextColor(it)
+        messageTextColor?.let {
+            messageView.setTextColor(it)
         }
 
-        mActionTextColor?.let {
-            mActionView.setTextColor(it)
+        actionTextColor?.let {
+            actionView.setTextColor(it)
         }
 
-        mBubbleBackground!!.setColorFilter(mBackgroundColor)
-        mBalloonBubbleHint!!.setColorFilter(mBackgroundColor)
+        bubbleBackground!!.setColorFilter(backgroundColor)
+        balloonBubbleHint!!.setColorFilter(backgroundColor)
 
-        mBalloonBg1!!.backgroundTintList = ColorStateList.valueOf(mBackgroundColor)
-        mBalloonBg2!!.backgroundTintList = ColorStateList.valueOf(mBackgroundColor)
+        balloonBg1!!.backgroundTintList = ColorStateList.valueOf(backgroundColor)
+        balloonBg2!!.backgroundTintList = ColorStateList.valueOf(backgroundColor)
 
-        mBorderColor?.let {
-            mBubbleIcon!!.setColorFilter(it)
-            mBalloonBubbleIcon!!.setColorFilter(it)
+        borderColor?.let {
+            bubbleIcon!!.setColorFilter(it)
+            balloonBubbleIcon!!.setColorFilter(it)
         }
 
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private fun showInternal() {
-        if (mState != State.EXPANDED) {
-            mState = State.HINT
-            mOnStateChangeListener?.onStateChanged(State.HINT)?.also {
+        if (state != State.EXPANDED) {
+            state = State.HINT
+            onStateChangeListener?.onStateChanged(State.HINT)?.also {
                 debugLog("mIsShowing : $isShowing")
             }
 
-            mBubblePopup?.showAtLocation(mParentView, 0, mBubblePopupX, mBubblePopupY)?.also {
+            bubblePopup?.showAtLocation(parentView, 0, bubblePopupX, bubblePopupY)?.also {
                 animateViewIn()
             }
 
-            mBubbleView.setOnTouchListener { _, _ ->
-                mState = State.EXPANDED
-                mOnStateChangeListener?.onStateChanged(mState)
-                mBalloonPopup?.showAtLocation(
-                    mParentView,
+            bubbleView.setOnTouchListener { _, _ ->
+                state = State.EXPANDED
+                onStateChangeListener?.onStateChanged(state)
+                balloonPopup?.showAtLocation(
+                    parentView,
                     0,
-                    mBalloonPopupX,
-                    mBalloonPopupY
+                    balloonPopupX,
+                    balloonPopupY
                 )
                 mHandler?.apply {
                     removeMessages(0)
@@ -663,16 +663,16 @@ class TipPopup(parentView: View, mode: Mode) {
                 false
             }
         } else {
-            mBalloonBubble!!.visibility = View.GONE
-            mBalloonPanel!!.visibility = View.VISIBLE
-            mMessageView.visibility = View.VISIBLE
-            mOnStateChangeListener?.onStateChanged(mState)
-            mBalloonPopup?.showAtLocation(mParentView, 0, mBalloonPopupX, mBalloonPopupY)
+            balloonBubble!!.visibility = View.GONE
+            balloonPanel!!.visibility = View.VISIBLE
+            messageView.visibility = View.VISIBLE
+            onStateChangeListener?.onStateChanged(state)
+            balloonPopup?.showAtLocation(parentView, 0, balloonPopupX, balloonPopupY)
             animateBalloonScaleUp()
         }
-        mBalloonView.setOnTouchListener(object : OnTouchListener {
+        balloonView.setOnTouchListener(object : OnTouchListener {
             override fun onTouch(v: View, event: MotionEvent): Boolean {
-                if (mType == Type.BALLOON_SIMPLE) {
+                if (type == Type.BALLOON_SIMPLE) {
                     dismiss(true)
                     return false
                 }
@@ -682,93 +682,93 @@ class TipPopup(parentView: View, mode: Mode) {
     }
 
     private fun setBubblePanel() {
-        if (mBubblePopup == null) {
+        if (bubblePopup == null) {
             return
         }
-        val paramBubblePanel = mBubbleBackground!!.layoutParams as FrameLayout.LayoutParams
-        if (mMode == Mode.TRANSLUCENT) {
+        val paramBubblePanel = bubbleBackground!!.layoutParams as FrameLayout.LayoutParams
+        if (mode == Mode.TRANSLUCENT) {
             paramBubblePanel.width =
-                mResources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_bubble_width_translucent)
+                resources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_bubble_width_translucent)
             paramBubblePanel.height =
-                mResources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_bubble_height_translucent)
+                resources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_bubble_height_translucent)
         }
-        when (mArrowDirection) {
+        when (arrowDirection) {
             TOP_LEFT -> {
-                val tipWindow = mBubblePopup
-                tipWindow!!.setPivot(tipWindow.width.toFloat(), mBubblePopup!!.height.toFloat())
+                val tipWindow = bubblePopup
+                tipWindow!!.setPivot(tipWindow.width.toFloat(), bubblePopup!!.height.toFloat())
                 paramBubblePanel.gravity = 85
-                val i = mBubbleX
-                val i2 = mScaleMargin
-                mBubblePopupX = i - (i2 * 2)
-                mBubblePopupY = mBubbleY - (i2 * 2)
-                if (mMode == Mode.NORMAL) {
-                    mBubbleBackground!!.setImageResource(R.drawable.oui_des_tip_popup_hint_bg03)
+                val i = bubbleX
+                val i2 = scaleMargin
+                bubblePopupX = i - (i2 * 2)
+                bubblePopupY = bubbleY - (i2 * 2)
+                if (mode == Mode.NORMAL) {
+                    bubbleBackground!!.setImageResource(R.drawable.oui_des_tip_popup_hint_bg03)
                     if (isRTL && locale != "iw_IL") {
-                        mBubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon_rtl)
+                        bubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon_rtl)
                     } else {
-                        mBubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon)
+                        bubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon)
                     }
                 } else {
-                    mBubbleBackground!!.rotationX = 180.0f
+                    bubbleBackground!!.rotationX = 180.0f
                 }
             }
 
             TOP_RIGHT -> {
-                val tipWindow2 = mBubblePopup
+                val tipWindow2 = bubblePopup
                 tipWindow2!!.setPivot(0.0f, tipWindow2.height.toFloat())
                 paramBubblePanel.gravity = 83
-                mBubblePopupX = mBubbleX
-                mBubblePopupY = mBubbleY - (mScaleMargin * 2)
-                if (mMode == Mode.NORMAL) {
-                    mBubbleBackground!!.setImageResource(R.drawable.oui_des_tip_popup_hint_bg04)
+                bubblePopupX = bubbleX
+                bubblePopupY = bubbleY - (scaleMargin * 2)
+                if (mode == Mode.NORMAL) {
+                    bubbleBackground!!.setImageResource(R.drawable.oui_des_tip_popup_hint_bg04)
                     if (isRTL && locale != "iw_IL") {
-                        mBubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon_rtl)
+                        bubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon_rtl)
                     } else {
-                        mBubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon)
+                        bubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon)
                     }
                 } else {
-                    mBubbleBackground!!.rotation = 180.0f
+                    bubbleBackground!!.rotation = 180.0f
                 }
             }
 
             BOTTOM_LEFT -> {
-                val tipWindow3 = mBubblePopup
+                val tipWindow3 = bubblePopup
                 tipWindow3!!.setPivot(tipWindow3.width.toFloat(), 0.0f)
                 paramBubblePanel.gravity = 53
-                mBubblePopupX = mBubbleX - (mScaleMargin * 2)
-                mBubblePopupY = mBubbleY
-                if (mMode == Mode.NORMAL) {
-                    mBubbleBackground!!.setImageResource(R.drawable.oui_des_tip_popup_hint_bg01)
+                bubblePopupX = bubbleX - (scaleMargin * 2)
+                bubblePopupY = bubbleY
+                if (mode == Mode.NORMAL) {
+                    bubbleBackground!!.setImageResource(R.drawable.oui_des_tip_popup_hint_bg01)
                     if (isRTL && locale != "iw_IL") {
-                        mBubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon_rtl)
+                        bubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon_rtl)
                     } else {
-                        mBubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon)
+                        bubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon)
                     }
                 }
             }
 
             BOTTOM_RIGHT -> {
-                mBubblePopup!!.setPivot(0.0f, 0.0f)
+                bubblePopup!!.setPivot(0.0f, 0.0f)
                 paramBubblePanel.gravity = 51
-                mBubblePopupX = mBubbleX
-                mBubblePopupY = mBubbleY
-                if (mMode == Mode.NORMAL) {
-                    mBubbleBackground!!.setImageResource(R.drawable.oui_des_tip_popup_hint_bg02)
+                bubblePopupX = bubbleX
+                bubblePopupY = bubbleY
+                if (mode == Mode.NORMAL) {
+                    bubbleBackground!!.setImageResource(R.drawable.oui_des_tip_popup_hint_bg02)
                     if (isRTL && locale != "iw_IL") {
-                        mBubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon_rtl)
+                        bubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon_rtl)
                     } else {
-                        mBubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon)
+                        bubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon)
                     }
                 } else {
-                    mBubbleBackground!!.rotationY = 180.0f
+                    bubbleBackground!!.rotationY = 180.0f
                 }
             }
             DEFAULT -> {}
         }
-        mBubbleBackground!!.layoutParams = paramBubblePanel
-        mBubbleIcon!!.layoutParams = paramBubblePanel
-        mBubblePopup!!.width = mBubbleWidth + (mScaleMargin * 2)
-        mBubblePopup!!.height = mBubbleHeight + (mScaleMargin * 2)
+        bubbleBackground!!.layoutParams = paramBubblePanel
+        bubbleIcon!!.layoutParams = paramBubblePanel
+        bubblePopup!!.width = bubbleWidth + (scaleMargin * 2)
+        bubblePopup!!.height = bubbleHeight + (scaleMargin * 2)
     }
 
     private fun setBalloonPanel() {
@@ -776,74 +776,74 @@ class TipPopup(parentView: View, mode: Mode) {
         val f: Float
         val paramBalloonContent: FrameLayout.LayoutParams
         val f2: Float
-        if (mBalloonPopup != null) {
+        if (balloonPopup != null) {
             debugLog("setBalloonPanel()")
-            val i = mBubbleX
-            val i2 = mBalloonX
+            val i = bubbleX
+            val i2 = balloonX
             val leftMargin = i - i2
-            val rightMargin = (i2 + mBalloonWidth) - i
-            val i3 = mBubbleY
-            val i4 = mBalloonY
+            val rightMargin = (i2 + balloonWidth) - i
+            val i3 = bubbleY
+            val i4 = balloonY
             val topMargin = i3 - i4
-            val bottomMargin = (i4 + mBalloonHeight) - (i3 + mBubbleHeight)
+            val bottomMargin = (i4 + balloonHeight) - (i3 + bubbleHeight)
             val realMetrics = DisplayMetrics()
             @Suppress("DEPRECATION")
-            mWindowManager.defaultDisplay.getRealMetrics(realMetrics)
+            windowManager.defaultDisplay.getRealMetrics(realMetrics)
             val scaleFactor2 = ceil(realMetrics.density.toDouble()).toInt()
             val minBackgroundWidth =
-                mResources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_balloon_background_minwidth)
+                resources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_balloon_background_minwidth)
             debugLog("leftMargin[$leftMargin]")
-            debugLog("rightMargin[$rightMargin] mBalloonWidth[$mBalloonWidth]")
-            val horizontalContentMargin = mHorizontalTextMargin - mResources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_button_padding_horizontal)
-            val verticalButtonPadding = if (mActionView.isVisible) mResources.getDimensionPixelSize(
+            debugLog("rightMargin[$rightMargin] mBalloonWidth[$balloonWidth]")
+            val horizontalContentMargin = horizontalTextMargin - resources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_button_padding_horizontal)
+            val verticalButtonPadding = if (actionView.isVisible) resources.getDimensionPixelSize(
                 R.dimen.oui_des_tip_popup_button_padding_vertical) else 0
-            val paramBalloonBubble = mBalloonBubble!!.layoutParams as FrameLayout.LayoutParams
-            val paramBalloonPanel = mBalloonPanel!!.layoutParams as FrameLayout.LayoutParams
-            val paramBalloonContent2 = mBalloonContent!!.layoutParams as FrameLayout.LayoutParams
-            val paramBalloonBg1 = mBalloonBg1!!.layoutParams as FrameLayout.LayoutParams
-            val paramBalloonBg2 = mBalloonBg2!!.layoutParams as FrameLayout.LayoutParams
-            if (mMode == Mode.TRANSLUCENT) {
-                mBalloonBubbleHint!!.setImageResource(R.drawable.oui_des_tip_popup_hint_bg_translucent)
-                mBalloonBubbleHint!!.imageTintList = null
+            val paramBalloonBubble = balloonBubble!!.layoutParams as FrameLayout.LayoutParams
+            val paramBalloonPanel = balloonPanel!!.layoutParams as FrameLayout.LayoutParams
+            val paramBalloonContent2 = balloonContent!!.layoutParams as FrameLayout.LayoutParams
+            val paramBalloonBg1 = balloonBg1!!.layoutParams as FrameLayout.LayoutParams
+            val paramBalloonBg2 = balloonBg2!!.layoutParams as FrameLayout.LayoutParams
+            if (mode == Mode.TRANSLUCENT) {
+                balloonBubbleHint!!.setImageResource(R.drawable.oui_des_tip_popup_hint_bg_translucent)
+                balloonBubbleHint!!.imageTintList = null
                 if (isRTL && locale != "iw_IL") {
-                    mBalloonBubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon_translucent_rtl)
+                    balloonBubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon_translucent_rtl)
                 } else {
-                    mBalloonBubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon_translucent)
+                    balloonBubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon_translucent)
                 }
-                mBalloonBubbleIcon!!.imageTintList = null
+                balloonBubbleIcon!!.imageTintList = null
                 paramBalloonBubble.width =
-                    mResources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_bubble_width_translucent)
+                    resources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_bubble_width_translucent)
                 paramBalloonBubble.height =
-                    mResources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_bubble_height_translucent)
+                    resources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_bubble_height_translucent)
                 scaleFactor = 0
-            } else if (Color.alpha(mBackgroundColor) < 255) {
+            } else if (Color.alpha(backgroundColor) < 255) {
                 debugLog("Updating scaleFactor to 0 because transparency is applied to background.")
                 scaleFactor = 0
             } else {
                 scaleFactor = scaleFactor2
             }
-            when (mArrowDirection) {
+            when (arrowDirection) {
                 TOP_LEFT -> {
-                    val tipWindow = mBalloonPopup
-                    val i5 = mArrowPositionX - mBalloonX
-                    val i6 = mScaleMargin
-                    tipWindow!!.setPivot((i5 + i6).toFloat(), (mBalloonHeight + i6).toFloat())
-                    if (mMode == Mode.NORMAL) {
-                        mBalloonBubbleHint!!.setImageResource(R.drawable.oui_des_tip_popup_hint_bg03)
-                        mBalloonBubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon)
+                    val tipWindow = balloonPopup
+                    val i5 = arrowPositionX - balloonX
+                    val i6 = scaleMargin
+                    tipWindow!!.setPivot((i5 + i6).toFloat(), (balloonHeight + i6).toFloat())
+                    if (mode == Mode.NORMAL) {
+                        balloonBubbleHint!!.setImageResource(R.drawable.oui_des_tip_popup_hint_bg03)
+                        balloonBubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon)
                         f = 180.0f
                     } else {
                         f = 180.0f
-                        mBalloonBubbleHint!!.rotationX = 180.0f
+                        balloonBubbleHint!!.rotationX = 180.0f
                     }
-                    mBalloonBg1!!.rotationX = f
-                    mBalloonBg2!!.rotationX = f
+                    balloonBg1!!.rotationX = f
+                    balloonBg2!!.rotationX = f
                     paramBalloonBg2.gravity = 85
                     paramBalloonBg1.gravity = 85
                     paramBalloonBubble.gravity = 85
-                    val i7 = mBubbleWidth
+                    val i7 = bubbleWidth
                     if (rightMargin - i7 < minBackgroundWidth) {
-                        val scaledLeftMargin = mBalloonWidth - minBackgroundWidth
+                        val scaledLeftMargin = balloonWidth - minBackgroundWidth
                         paramBalloonBg1.setMargins(0, 0, minBackgroundWidth, 0)
                         paramBalloonBg2.setMargins(scaledLeftMargin - scaleFactor, 0, 0, 0)
                         debugLog("Right Margin is less then minimum background width!")
@@ -851,42 +851,42 @@ class TipPopup(parentView: View, mode: Mode) {
                     } else {
                         paramBalloonBg1.setMargins(0, 0, rightMargin - i7, 0)
                         paramBalloonBg2.setMargins(
-                            (mBubbleWidth + leftMargin) - scaleFactor,
+                            (bubbleWidth + leftMargin) - scaleFactor,
                             0,
                             0,
                             0
                         )
                     }
-                    val i8 = mVerticalTextMargin
+                    val i8 = verticalTextMargin
                     paramBalloonContent = paramBalloonContent2
                     paramBalloonContent.setMargins(
                         horizontalContentMargin,
                         i8,
                         horizontalContentMargin,
-                        (mArrowHeight + i8) - verticalButtonPadding
+                        (arrowHeight + i8) - verticalButtonPadding
                     )
                 }
 
                 TOP_RIGHT -> {
-                    val tipWindow2 = mBalloonPopup
-                    val i9 = mArrowPositionX - mBalloonX
-                    val i10 = mScaleMargin
-                    tipWindow2!!.setPivot((i9 + i10).toFloat(), (mBalloonHeight + i10).toFloat())
-                    if (mMode == Mode.NORMAL) {
-                        mBalloonBubbleHint!!.setImageResource(R.drawable.oui_des_tip_popup_hint_bg04)
-                        mBalloonBubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon)
+                    val tipWindow2 = balloonPopup
+                    val i9 = arrowPositionX - balloonX
+                    val i10 = scaleMargin
+                    tipWindow2!!.setPivot((i9 + i10).toFloat(), (balloonHeight + i10).toFloat())
+                    if (mode == Mode.NORMAL) {
+                        balloonBubbleHint!!.setImageResource(R.drawable.oui_des_tip_popup_hint_bg04)
+                        balloonBubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon)
                         f2 = 180.0f
                     } else {
                         f2 = 180.0f
-                        mBalloonBubbleHint!!.rotation = 180.0f
+                        balloonBubbleHint!!.rotation = 180.0f
                     }
-                    mBalloonBg1!!.rotation = f2
-                    mBalloonBg2!!.rotation = f2
+                    balloonBg1!!.rotation = f2
+                    balloonBg2!!.rotation = f2
                     paramBalloonBg2.gravity = 83
                     paramBalloonBg1.gravity = 83
                     paramBalloonBubble.gravity = 83
                     if (leftMargin < minBackgroundWidth) {
-                        val scaledRightMargin = mBalloonWidth - minBackgroundWidth
+                        val scaledRightMargin = balloonWidth - minBackgroundWidth
                         paramBalloonBg1.setMargins(minBackgroundWidth, 0, 0, 0)
                         paramBalloonBg2.setMargins(0, 0, scaledRightMargin - scaleFactor, 0)
                         debugLog("Left Margin is less then minimum background width!")
@@ -895,32 +895,32 @@ class TipPopup(parentView: View, mode: Mode) {
                         paramBalloonBg1.setMargins(leftMargin, 0, 0, 0)
                         paramBalloonBg2.setMargins(0, 0, rightMargin - scaleFactor, 0)
                     }
-                    val i11 = mVerticalTextMargin
+                    val i11 = verticalTextMargin
                     paramBalloonContent = paramBalloonContent2
                     paramBalloonContent.setMargins(
                         horizontalContentMargin,
                         i11,
                         horizontalContentMargin,
-                        (mArrowHeight + i11) - verticalButtonPadding
+                        (arrowHeight + i11) - verticalButtonPadding
                     )
                 }
 
                 BOTTOM_LEFT -> {
-                    val tipWindow3 = mBalloonPopup
-                    val i12 = mArrowPositionX - mBalloonX
-                    val i13 = mScaleMargin
+                    val tipWindow3 = balloonPopup
+                    val i12 = arrowPositionX - balloonX
+                    val i13 = scaleMargin
                     tipWindow3!!.setPivot((i12 + i13).toFloat(), i13.toFloat())
-                    if (mMode == Mode.NORMAL) {
-                        mBalloonBubbleHint!!.setImageResource(R.drawable.oui_des_tip_popup_hint_bg01)
-                        mBalloonBubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon)
+                    if (mode == Mode.NORMAL) {
+                        balloonBubbleHint!!.setImageResource(R.drawable.oui_des_tip_popup_hint_bg01)
+                        balloonBubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon)
                     }
                     paramBalloonBg2.gravity = 53
                     paramBalloonBg1.gravity = 53
                     paramBalloonBubble.gravity = 53
-                    paramBalloonBg1.setMargins(0, 0, rightMargin - mBubbleWidth, 0)
-                    paramBalloonBg2.setMargins((mBubbleWidth + leftMargin) - scaleFactor, 0, 0, 0)
-                    val i14 = mArrowHeight
-                    val i15 = mVerticalTextMargin
+                    paramBalloonBg1.setMargins(0, 0, rightMargin - bubbleWidth, 0)
+                    paramBalloonBg2.setMargins((bubbleWidth + leftMargin) - scaleFactor, 0, 0, 0)
+                    val i14 = arrowHeight
+                    val i15 = verticalTextMargin
                     paramBalloonContent2.setMargins(
                         horizontalContentMargin,
                         i14 + i15,
@@ -931,25 +931,25 @@ class TipPopup(parentView: View, mode: Mode) {
                 }
 
                 BOTTOM_RIGHT -> {
-                    val tipWindow4 = mBalloonPopup
-                    val i16 = mArrowPositionX - mBalloonX
-                    val i17 = mScaleMargin
+                    val tipWindow4 = balloonPopup
+                    val i16 = arrowPositionX - balloonX
+                    val i17 = scaleMargin
                     tipWindow4!!.setPivot((i16 + i17).toFloat(), i17.toFloat())
-                    if (mMode == Mode.NORMAL) {
-                        mBalloonBubbleHint!!.setImageResource(R.drawable.oui_des_tip_popup_hint_bg02)
-                        mBalloonBubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon)
+                    if (mode == Mode.NORMAL) {
+                        balloonBubbleHint!!.setImageResource(R.drawable.oui_des_tip_popup_hint_bg02)
+                        balloonBubbleIcon!!.setImageResource(R.drawable.oui_des_tip_popup_hint_icon)
                     } else {
-                        mBalloonBubbleHint!!.rotationY = 180.0f
+                        balloonBubbleHint!!.rotationY = 180.0f
                     }
-                    mBalloonBg1!!.rotationY = 180.0f
-                    mBalloonBg2!!.rotationY = 180.0f
+                    balloonBg1!!.rotationY = 180.0f
+                    balloonBg2!!.rotationY = 180.0f
                     paramBalloonBg2.gravity = 51
                     paramBalloonBg1.gravity = 51
                     paramBalloonBubble.gravity = 51
                     paramBalloonBg1.setMargins(leftMargin, 0, 0, 0)
                     paramBalloonBg2.setMargins(0, 0, rightMargin - scaleFactor, 0)
-                    val i18 = mArrowHeight
-                    val i19 = mVerticalTextMargin
+                    val i18 = arrowHeight
+                    val i19 = verticalTextMargin
                     paramBalloonContent2.setMargins(
                         horizontalContentMargin,
                         i18 + i19,
@@ -961,41 +961,41 @@ class TipPopup(parentView: View, mode: Mode) {
 
                 else -> paramBalloonContent = paramBalloonContent2
             }
-            val i20 = mScaleMargin
+            val i20 = scaleMargin
             paramBalloonBubble.setMargins(
                 leftMargin + i20,
                 topMargin + i20,
-                (rightMargin - mBubbleWidth) + i20,
+                (rightMargin - bubbleWidth) + i20,
                 bottomMargin + i20
             )
-            val balloonPanelMargin = mScaleMargin
+            val balloonPanelMargin = scaleMargin
             paramBalloonPanel.setMargins(
                 balloonPanelMargin,
                 balloonPanelMargin,
                 balloonPanelMargin,
                 balloonPanelMargin
             )
-            val i21 = mBalloonX
-            val i22 = mScaleMargin
-            mBalloonPopupX = i21 - i22
-            mBalloonPopupY = mBalloonY - i22
-            mBalloonBubble!!.layoutParams = paramBalloonBubble
-            mBalloonPanel!!.layoutParams = paramBalloonPanel
-            mBalloonBg1!!.layoutParams = paramBalloonBg1
-            mBalloonBg2!!.layoutParams = paramBalloonBg2
-            mBalloonContent!!.layoutParams = paramBalloonContent
-            mBalloonPopup!!.width = mBalloonWidth + (mScaleMargin * 2)
-            mBalloonPopup!!.height = mBalloonHeight + (mScaleMargin * 2)
+            val i21 = balloonX
+            val i22 = scaleMargin
+            balloonPopupX = i21 - i22
+            balloonPopupY = balloonY - i22
+            balloonBubble!!.layoutParams = paramBalloonBubble
+            balloonPanel!!.layoutParams = paramBalloonPanel
+            balloonBg1!!.layoutParams = paramBalloonBg1
+            balloonBg2!!.layoutParams = paramBalloonBg2
+            balloonContent!!.layoutParams = paramBalloonContent
+            balloonPopup!!.width = balloonWidth + (scaleMargin * 2)
+            balloonPopup!!.height = balloonHeight + (scaleMargin * 2)
         }
     }
 
     private fun calculateArrowDirection(arrowX: Int, arrowY: Int) {
-        if (mIsDefaultPosition) {
+        if (isDefaultPosition) {
             val location = IntArray(2)
-            mParentView.getLocationInWindow(location)
-            val parentY = location[1] + (mParentView.height / 2)
+            parentView.getLocationInWindow(location)
+            val parentY = location[1] + (parentView.height / 2)
 
-            mArrowDirection = if (arrowX * 2 <= mDisplayMetrics.widthPixels) {
+            arrowDirection = if (arrowX * 2 <= displayMetrics.widthPixels) {
                 if (arrowY <= parentY) {
                     TOP_RIGHT
                 } else {
@@ -1006,38 +1006,38 @@ class TipPopup(parentView: View, mode: Mode) {
             } else {
                 BOTTOM_LEFT
             }
-        } else if (arrowX * 2 <= mDisplayMetrics.widthPixels && arrowY * 2 <= mDisplayMetrics.heightPixels) {
-            mArrowDirection = BOTTOM_RIGHT
-        } else if (arrowX * 2 > mDisplayMetrics.widthPixels && arrowY * 2 <= mDisplayMetrics.heightPixels) {
-            mArrowDirection = TOP_LEFT
-        } else if (arrowX * 2 <= mDisplayMetrics.widthPixels && arrowY * 2 > mDisplayMetrics.heightPixels) {
-            mArrowDirection = TOP_RIGHT
-        } else if (arrowX * 2 > mDisplayMetrics.widthPixels && arrowY * 2 > mDisplayMetrics.heightPixels) {
-            mArrowDirection = TOP_LEFT
+        } else if (arrowX * 2 <= displayMetrics.widthPixels && arrowY * 2 <= displayMetrics.heightPixels) {
+            arrowDirection = BOTTOM_RIGHT
+        } else if (arrowX * 2 > displayMetrics.widthPixels && arrowY * 2 <= displayMetrics.heightPixels) {
+            arrowDirection = TOP_LEFT
+        } else if (arrowX * 2 <= displayMetrics.widthPixels && arrowY * 2 > displayMetrics.heightPixels) {
+            arrowDirection = TOP_RIGHT
+        } else if (arrowX * 2 > displayMetrics.widthPixels && arrowY * 2 > displayMetrics.heightPixels) {
+            arrowDirection = TOP_LEFT
         }
-        debugLog("calculateArrowDirection : arrow position ($arrowX, $arrowY) / mArrowDirection = $mArrowDirection")
+        debugLog("calculateArrowDirection : arrow position ($arrowX, $arrowY) / mArrowDirection = $arrowDirection")
     }
 
     private fun calculateArrowPosition() {
         val location = IntArray(2)
-        mParentView.getLocationInWindow(location)
+        parentView.getLocationInWindow(location)
         debugLog("calculateArrowPosition anchor location : " + location[0] + ", " + location[1])
 
-        mArrowPositionX = location[0] + (mParentView.width / 2)
-        val y = location[1] + (mParentView.height / 2)
-        mArrowPositionY = if (y * 2 <= mDisplayMetrics.heightPixels) {
-            (mParentView.height / 2) + y
+        arrowPositionX = location[0] + (parentView.width / 2)
+        val y = location[1] + (parentView.height / 2)
+        arrowPositionY = if (y * 2 <= displayMetrics.heightPixels) {
+            (parentView.height / 2) + y
         } else {
-            y - (mParentView.height / 2)
+            y - (parentView.height / 2)
         }
-        debugLog("calculateArrowPosition mArrowPosition : $mArrowPositionX, $mArrowPositionY")
+        debugLog("calculateArrowPosition mArrowPosition : $arrowPositionX, $arrowPositionY")
     }
 
     private fun calculatePopupSize() {
-        mDisplayMetrics = mResources.displayMetrics
+        displayMetrics = resources.displayMetrics
 
-        val balloonMaxWidth = if (DeviceLayoutUtil.isDeskTopMode(mResources)) {
-            val windowWidthInDexMode = mParentView.rootView.run {
+        val balloonMaxWidth = if (DeviceLayoutUtil.isDeskTopMode(resources)) {
+            val windowWidthInDexMode = parentView.rootView.run {
                 val windowLocation = IntArray(2)
                 getLocationOnScreen(windowLocation)
                 measuredWidth + minOf(windowLocation[0], 0)
@@ -1050,8 +1050,8 @@ class TipPopup(parentView: View, mode: Mode) {
                 else -> (windowWidthInDexMode * 0.25f).toInt()
             }
         } else {
-            val screenWidthDp = mResources.configuration.screenWidthDp
-            val screenWidthPixels = mDisplayMetrics.widthPixels
+            val screenWidthDp = resources.configuration.screenWidthDp
+            val screenWidthPixels = displayMetrics.widthPixels
 
             debugLog("screen width DP $screenWidthDp")
             when {
@@ -1062,62 +1062,62 @@ class TipPopup(parentView: View, mode: Mode) {
             }
         }
 
-        if (!mIsMessageViewMeasured) {
-            mInitialmMessageViewWidth = mMessageView.run{
+        if (!isMessageViewMeasured) {
+            initialMessageViewWidth = messageView.run{
                 measure(0, 0)
                 measuredWidth
             }
-            mIsMessageViewMeasured = true
+            isMessageViewMeasured = true
         }
 
-        val balloonMinWidth = mArrowWidth + (mHorizontalTextMargin * 2)
+        val balloonMinWidth = arrowWidth + (horizontalTextMargin * 2)
 
-        mBalloonWidth = (mInitialmMessageViewWidth + (mHorizontalTextMargin * 2))
+        balloonWidth = (initialMessageViewWidth + (horizontalTextMargin * 2))
             .coerceIn(balloonMinWidth, balloonMaxWidth)
 
-        mBalloonHeight = mMessageView.run {
-            width = mBalloonWidth - (mHorizontalTextMargin * 2)
+        balloonHeight = messageView.run {
+            width = balloonWidth - (horizontalTextMargin * 2)
             measure(0, 0)
-            measuredHeight + (mVerticalTextMargin * 2) + mArrowHeight
+            measuredHeight + (verticalTextMargin * 2) + arrowHeight
         }
 
-        if (mType == Type.BALLOON_ACTION) {
-            mActionView.apply {
+        if (type == Type.BALLOON_ACTION) {
+            actionView.apply {
                 measure(UNSPECIFIED, UNSPECIFIED)
-                mBalloonWidth = mBalloonWidth.coerceAtLeast(
-                    measuredWidth+ (mResources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_button_padding_horizontal) * 2))
-                mBalloonHeight += (measuredHeight - mResources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_button_padding_vertical))
+                balloonWidth = balloonWidth.coerceAtLeast(
+                    measuredWidth+ (resources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_button_padding_horizontal) * 2))
+                balloonHeight += (measuredHeight - resources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_button_padding_vertical))
             }
         }
     }
 
     @SuppressLint("RestrictedApi")
     private fun calculatePopupPosition() {
-        getDisplayFrame(mDisplayFrame)
+        getDisplayFrame(displayFrame)
 
-        if (mBalloonX < 0) {
-            mBalloonX = if (mArrowDirection == BOTTOM_RIGHT || mArrowDirection == TOP_RIGHT) {
-                (mArrowPositionX + mArrowWidth) - (mBalloonWidth / 2)
+        if (balloonX < 0) {
+            balloonX = if (arrowDirection == BOTTOM_RIGHT || arrowDirection == TOP_RIGHT) {
+                (arrowPositionX + arrowWidth) - (balloonWidth / 2)
             } else {
-                (mArrowPositionX - mArrowWidth) - (mBalloonWidth / 2)
+                (arrowPositionX - arrowWidth) - (balloonWidth / 2)
             }
         }
 
-        mArrowPositionX = if (mArrowDirection == BOTTOM_RIGHT || mArrowDirection == TOP_RIGHT) {
-            mArrowPositionX.coerceIn(
-                mDisplayFrame.left + mSideMargin + mHorizontalTextMargin,
-                (mDisplayFrame.right - mSideMargin) - mHorizontalTextMargin - mArrowWidth
+        arrowPositionX = if (arrowDirection == BOTTOM_RIGHT || arrowDirection == TOP_RIGHT) {
+            arrowPositionX.coerceIn(
+                displayFrame.left + sideMargin + horizontalTextMargin,
+                (displayFrame.right - sideMargin) - horizontalTextMargin - arrowWidth
             )
         } else {
-            mArrowPositionX.coerceIn(
-                mDisplayFrame.left + mSideMargin + mHorizontalTextMargin + mArrowWidth,
-                (mDisplayFrame.right - mSideMargin) - mHorizontalTextMargin
+            arrowPositionX.coerceIn(
+                displayFrame.left + sideMargin + horizontalTextMargin + arrowWidth,
+                (displayFrame.right - sideMargin) - horizontalTextMargin
             )
         }
 
-        mBalloonX = if (isDeskTopMode(mContext.resources)) {
+        balloonX = if (isDeskTopMode(context.resources)) {
             val windowLocation = IntArray(2)
-            val windowWidthInDexMode = mParentView.rootView.run {
+            val windowWidthInDexMode = parentView.rootView.run {
                 getLocationOnScreen(windowLocation)
                 if (windowLocation[0] < 0) {
                     measuredWidth + windowLocation[0]
@@ -1125,55 +1125,55 @@ class TipPopup(parentView: View, mode: Mode) {
                     measuredWidth
                 }
             }
-            mBalloonX.coerceIn(
-                mDisplayFrame.left + mSideMargin,
-                (windowWidthInDexMode - mSideMargin) - mBalloonWidth - minOf(windowLocation[0], 0)
+            balloonX.coerceIn(
+                displayFrame.left + sideMargin,
+                (windowWidthInDexMode - sideMargin) - balloonWidth - minOf(windowLocation[0], 0)
             )
         } else {
-            mBalloonX.coerceIn(
-                mDisplayFrame.left + mSideMargin,
-                (mDisplayFrame.right - mSideMargin) - mBalloonWidth
+            balloonX.coerceIn(
+                displayFrame.left + sideMargin,
+                (displayFrame.right - sideMargin) - balloonWidth
             )
         }
 
-        when (mArrowDirection) {
+        when (arrowDirection) {
             TOP_LEFT -> {
-                mBubbleX = mArrowPositionX - mBubbleWidth
-                mBubbleY = mArrowPositionY - mBubbleHeight
-                mBalloonY = mArrowPositionY - mBalloonHeight
+                bubbleX = arrowPositionX - bubbleWidth
+                bubbleY = arrowPositionY - bubbleHeight
+                balloonY = arrowPositionY - balloonHeight
             }
 
             TOP_RIGHT -> {
-                mBubbleX = mArrowPositionX
-                mBubbleY = mArrowPositionY - mBubbleHeight
-                mBalloonY = mArrowPositionY - mBalloonHeight
+                bubbleX = arrowPositionX
+                bubbleY = arrowPositionY - bubbleHeight
+                balloonY = arrowPositionY - balloonHeight
             }
 
             BOTTOM_LEFT -> {
-                mBubbleX = mArrowPositionX - mBubbleWidth
-                mBubbleY = mArrowPositionY
-                mBalloonY = mArrowPositionY
+                bubbleX = arrowPositionX - bubbleWidth
+                bubbleY = arrowPositionY
+                balloonY = arrowPositionY
             }
 
             BOTTOM_RIGHT -> {
-                mBubbleX = mArrowPositionX
-                mBubbleY = mArrowPositionY
-                mBalloonY = mArrowPositionY
+                bubbleX = arrowPositionX
+                bubbleY = arrowPositionY
+                balloonY = arrowPositionY
             }
 
             DEFAULT -> Unit
         }
 
-        debugLog("QuestionPopup : $mBubbleX, $mBubbleY, $mBubbleWidth, $mBubbleHeight")
-        debugLog("BalloonPopup : $mBalloonX, $mBalloonY, $mBalloonWidth, $mBalloonHeight")
+        debugLog("QuestionPopup : $bubbleX, $bubbleY, $bubbleWidth, $bubbleHeight")
+        debugLog("BalloonPopup : $balloonX, $balloonY, $balloonWidth, $balloonHeight")
     }
 
     private fun dismissBubble(withAnimation: Boolean) {
-        mBubblePopup?.apply {
+        bubblePopup?.apply {
             setUseDismissAnimation(withAnimation)
             dismiss()
         }
-        mOnDismissListener?.onDismiss()
+        onDismissListener?.onDismiss()
     }
 
     private fun scheduleTimeout() {
@@ -1186,7 +1186,7 @@ class TipPopup(parentView: View, mode: Mode) {
     private fun animateViewIn() {
         val pivotX: Float
         val pivotY: Float
-        when (mArrowDirection) {
+        when (arrowDirection) {
             TOP_LEFT -> {
                 pivotX = 1.0f
                 pivotY = 1.0f
@@ -1217,25 +1217,25 @@ class TipPopup(parentView: View, mode: Mode) {
                 animateBounce()
             }
         }
-        mBubbleView.startAnimation(animScale)
+        bubbleView.startAnimation(animScale)
     }
 
     private fun animateBounce() {
         val pivotX: Float
         val pivotY: Float
-        when (mArrowDirection) {
+        when (arrowDirection) {
             TOP_LEFT -> {
-                pivotX = mBubblePopup!!.width.toFloat()
-                pivotY = mBubblePopup!!.height.toFloat()
+                pivotX = bubblePopup!!.width.toFloat()
+                pivotY = bubblePopup!!.height.toFloat()
             }
 
             TOP_RIGHT -> {
                 pivotX = 0.0f
-                pivotY = mBubblePopup!!.height.toFloat()
+                pivotY = bubblePopup!!.height.toFloat()
             }
 
             BOTTOM_LEFT -> {
-                pivotX = mBubblePopup!!.width.toFloat()
+                pivotX = bubblePopup!!.width.toFloat()
                 pivotY = 0.0f
             }
             BOTTOM_RIGHT,
@@ -1261,7 +1261,7 @@ class TipPopup(parentView: View, mode: Mode) {
                 onStart = { count++ },
                 onEnd = {
                     debugLog("repeat count $count")
-                    mBubbleView.startAnimation(animationSet)
+                    bubbleView.startAnimation(animationSet)
                 }
             )
         }
@@ -1269,41 +1269,41 @@ class TipPopup(parentView: View, mode: Mode) {
         animationSet.addAnimation(scaleAnimation1)
         animationSet.addAnimation(scaleAnimation2)
         animationSet.startOffset = ANIMATION_OFFSET_BOUNCE_SCALE
-        mBubbleView.startAnimation(animationSet)
+        bubbleView.startAnimation(animationSet)
     }
 
     private fun animateScaleUp() {
         val deltaHintY: Float
         val pivotHintX: Float
         val pivotHintY: Float
-        when (mArrowDirection) {
+        when (arrowDirection) {
             TOP_LEFT -> {
-                pivotHintX = mBalloonBubble!!.width.toFloat()
-                pivotHintY = mBalloonBubble!!.height.toFloat()
-                deltaHintY = 0.0f - (mArrowHeight / 2.0f)
+                pivotHintX = balloonBubble!!.width.toFloat()
+                pivotHintY = balloonBubble!!.height.toFloat()
+                deltaHintY = 0.0f - (arrowHeight / 2.0f)
             }
 
             TOP_RIGHT -> {
                 pivotHintX = 0.0f
-                pivotHintY = mBalloonBubble!!.height.toFloat()
-                deltaHintY = 0.0f - (mArrowHeight / 2.0f)
+                pivotHintY = balloonBubble!!.height.toFloat()
+                deltaHintY = 0.0f - (arrowHeight / 2.0f)
             }
 
             BOTTOM_LEFT -> {
-                pivotHintX = mBalloonBubble!!.width.toFloat()
+                pivotHintX = balloonBubble!!.width.toFloat()
                 pivotHintY = 0.0f
-                deltaHintY = mArrowHeight / 2.0f
+                deltaHintY = arrowHeight / 2.0f
             }
 
             BOTTOM_RIGHT -> {
                 pivotHintX = 0.0f
                 pivotHintY = 0.0f
-                deltaHintY = mArrowHeight / 2.0f
+                deltaHintY = arrowHeight / 2.0f
             }
             DEFAULT -> {
                 pivotHintX = 0.0f
                 pivotHintY = 0.0f
-                deltaHintY = mArrowHeight / 2.0f
+                deltaHintY = arrowHeight / 2.0f
             }
         }
 
@@ -1325,34 +1325,34 @@ class TipPopup(parentView: View, mode: Mode) {
                 }
             )
             it.setListener(
-                onStart = {mBalloonPanel!!.isVisible = true},
-                onEnd = {mBalloonBubble!!.isVisible = false}
+                onStart = {balloonPanel!!.isVisible = true},
+                onEnd = {balloonBubble!!.isVisible = false}
             )
         }
 
-        mBalloonBubble!!.startAnimation(animationBubble)
+        balloonBubble!!.startAnimation(animationBubble)
         animateBalloonScaleUp()
     }
 
     private fun animateBalloonScaleUp() {
         val pivotPanelX: Float
         val pivotPanelY: Float
-        val questionHeight = mResources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_bubble_height)
-        val panelScale = (questionHeight / mBalloonHeight).toFloat()
+        val questionHeight = resources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_bubble_height)
+        val panelScale = (questionHeight / balloonHeight).toFloat()
 
-        when (mArrowDirection) {
+        when (arrowDirection) {
             TOP_RIGHT -> {
-                pivotPanelX = (mArrowPositionX - mBalloonX).toFloat()
-                pivotPanelY = mBalloonHeight.toFloat()
+                pivotPanelX = (arrowPositionX - balloonX).toFloat()
+                pivotPanelY = balloonHeight.toFloat()
             }
 
             BOTTOM_LEFT -> {
-                pivotPanelX = (mArrowPositionX - mBalloonX).toFloat()
+                pivotPanelX = (arrowPositionX - balloonX).toFloat()
                 pivotPanelY = 0.0f
             }
 
             BOTTOM_RIGHT -> {
-                pivotPanelX = (mBubbleX - mBalloonX).toFloat()
+                pivotPanelX = (bubbleX - balloonX).toFloat()
                 pivotPanelY = 0.0f
             }
 
@@ -1376,24 +1376,24 @@ class TipPopup(parentView: View, mode: Mode) {
                 }
             )
         }
-        mBalloonPanel!!.startAnimation(animationPanel)
+        balloonPanel!!.startAnimation(animationPanel)
 
         val animationText: Animation = AlphaAnimation(0.0f, 1.0f).apply {
             interpolator = INTERPOLATOR_SINE_IN_OUT_33
             startOffset = ANIMATION_OFFSET_EXPAND_TEXT
             duration = ANIMATION_DURATION_EXPAND_TEXT
             setListener(
-                onStart = { mMessageView.isVisible = true},
+                onStart = { messageView.isVisible = true},
                 onEnd = { dismissBubble(false) }
             )
         }
-        mMessageView.startAnimation(animationText)
-        mActionView.startAnimation(animationText)
+        messageView.startAnimation(animationText)
+        actionView.startAnimation(animationText)
     }
 
     private val isNavigationbarHide: Boolean
         get() {
-            val context: Context = mContext
+            val context: Context = context
             return Settings.Global.getInt(
                 context.contentResolver,
                 "navigationbar_hide_bar_enabled",
@@ -1401,9 +1401,9 @@ class TipPopup(parentView: View, mode: Mode) {
             ) == 1
         }
 
-    private val navagationbarHeight: Int get() = DeviceLayoutUtil.getNavigationBarHeight(mResources)
+    private val navagationbarHeight: Int get() = DeviceLayoutUtil.getNavigationBarHeight(resources)
 
-    private val isTablet: Boolean get() = DeviceLayoutUtil.isTabletLayout(mResources)
+    private val isTablet: Boolean get() = DeviceLayoutUtil.isTabletLayout(resources)
 
     private fun getDisplayFrame(screenRect: Rect) {
         //var displayCutout: DisplayCutout
@@ -1411,35 +1411,35 @@ class TipPopup(parentView: View, mode: Mode) {
         val navigationbarHide = isNavigationbarHide
 
         @Suppress("DEPRECATION")
-        val displayRotation = mWindowManager.defaultDisplay.rotation
+        val displayRotation = windowManager.defaultDisplay.rotation
 
         val realMetrics = DisplayMetrics()
         @Suppress("DEPRECATION")
-        mWindowManager.defaultDisplay.getRealMetrics(realMetrics)
+        windowManager.defaultDisplay.getRealMetrics(realMetrics)
 
         debugLog("realMetrics = $realMetrics")
         debugLog("is tablet? = $isTablet")
 
-        if (mForceRealDisplay) {
+        if (forceRealDisplay) {
             screenRect.left = 0
             screenRect.top = 0
             screenRect.right = realMetrics.widthPixels
             screenRect.bottom = realMetrics.heightPixels
-            debugLog("Screen Rect = $screenRect mForceRealDisplay = $mForceRealDisplay")
+            debugLog("Screen Rect = $screenRect mForceRealDisplay = $forceRealDisplay")
             return
         }
         screenRect.left = 0
         screenRect.top = 0
-        screenRect.right = mDisplayMetrics.widthPixels
-        screenRect.bottom = mDisplayMetrics.heightPixels
+        screenRect.right = displayMetrics.widthPixels
+        screenRect.bottom = displayMetrics.heightPixels
 
         val bounds = Rect()
-        mParentView.rootView!!.getWindowVisibleDisplayFrame(bounds)
+        parentView.rootView!!.getWindowVisibleDisplayFrame(bounds)
         debugLog("Bounds = $bounds")
         if (isTablet) {
             debugLog("tablet")
-            if ((realMetrics.widthPixels == mDisplayMetrics.widthPixels)
-                && (realMetrics.heightPixels - mDisplayMetrics.heightPixels == navigationbarHeight)
+            if ((realMetrics.widthPixels == displayMetrics.widthPixels)
+                && (realMetrics.heightPixels - displayMetrics.heightPixels == navigationbarHeight)
                 && navigationbarHide) {
                 screenRect.bottom += navigationbarHeight
             }
@@ -1447,8 +1447,8 @@ class TipPopup(parentView: View, mode: Mode) {
             debugLog("phone")
             when (displayRotation) {
                 Surface.ROTATION_0 -> {
-                    if (realMetrics.widthPixels == mDisplayMetrics.widthPixels
-                        && realMetrics.heightPixels - mDisplayMetrics.heightPixels == navigationbarHeight
+                    if (realMetrics.widthPixels == displayMetrics.widthPixels
+                        && realMetrics.heightPixels - displayMetrics.heightPixels == navigationbarHeight
                         && navigationbarHide
                     ) {
                         screenRect.bottom += navigationbarHeight
@@ -1456,13 +1456,13 @@ class TipPopup(parentView: View, mode: Mode) {
                 }
 
                 Surface.ROTATION_90 -> {
-                    if (realMetrics.heightPixels == mDisplayMetrics.heightPixels
-                        && realMetrics.widthPixels - mDisplayMetrics.widthPixels == navigationbarHeight
+                    if (realMetrics.heightPixels == displayMetrics.heightPixels
+                        && realMetrics.widthPixels - displayMetrics.widthPixels == navigationbarHeight
                         && navigationbarHide
                     ) {
                         screenRect.right += navigationbarHeight
                     }
-                    val windowInsets = ViewCompat.getRootWindowInsets(mParentView)
+                    val windowInsets = ViewCompat.getRootWindowInsets(parentView)
                     if (windowInsets != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
                         && windowInsets.displayCutout != null
                     ) {
@@ -1475,8 +1475,8 @@ class TipPopup(parentView: View, mode: Mode) {
                 }
 
                 Surface.ROTATION_180 -> {
-                    if (realMetrics.widthPixels == mDisplayMetrics.widthPixels
-                        && realMetrics.heightPixels - mDisplayMetrics.heightPixels == navigationbarHeight
+                    if (realMetrics.widthPixels == displayMetrics.widthPixels
+                        && realMetrics.heightPixels - displayMetrics.heightPixels == navigationbarHeight
                     ) {
                         if (navigationbarHide) {
                             screenRect.bottom += navigationbarHeight
@@ -1484,7 +1484,7 @@ class TipPopup(parentView: View, mode: Mode) {
                             screenRect.top += navigationbarHeight
                             screenRect.bottom += navigationbarHeight
                         }
-                    } else if (realMetrics.widthPixels == mDisplayMetrics.widthPixels && bounds.top == navigationbarHeight) {
+                    } else if (realMetrics.widthPixels == displayMetrics.widthPixels && bounds.top == navigationbarHeight) {
                         debugLog("Top Docked")
                         screenRect.top += navigationbarHeight
                         screenRect.bottom += navigationbarHeight
@@ -1492,8 +1492,8 @@ class TipPopup(parentView: View, mode: Mode) {
                 }
 
                 Surface.ROTATION_270 -> {
-                    if (realMetrics.heightPixels == mDisplayMetrics.heightPixels
-                        && realMetrics.widthPixels - mDisplayMetrics.widthPixels == navigationbarHeight
+                    if (realMetrics.heightPixels == displayMetrics.heightPixels
+                        && realMetrics.widthPixels - displayMetrics.widthPixels == navigationbarHeight
                     ) {
                         if (navigationbarHide) {
                             screenRect.right += navigationbarHeight
@@ -1501,7 +1501,7 @@ class TipPopup(parentView: View, mode: Mode) {
                             screenRect.left += navigationbarHeight
                             screenRect.right += navigationbarHeight
                         }
-                    } else if (realMetrics.heightPixels == mDisplayMetrics.heightPixels && bounds.left == navigationbarHeight) {
+                    } else if (realMetrics.heightPixels == displayMetrics.heightPixels && bounds.left == navigationbarHeight) {
                         debugLog("Left Docked")
                         screenRect.left += navigationbarHeight
                         screenRect.right += navigationbarHeight
@@ -1513,7 +1513,7 @@ class TipPopup(parentView: View, mode: Mode) {
     }
 
     fun setOnDismissListener(onDismissListener: OnDismissListener?) {
-        mOnDismissListener = onDismissListener
+        this@TipPopup.onDismissListener = onDismissListener
     }
 
     open class TipWindow(
@@ -1603,21 +1603,21 @@ class TipPopup(parentView: View, mode: Mode) {
     }
 
     private val isRTL: Boolean
-        get() = mContext.resources.configuration.layoutDirection == 1
+        get() = context.resources.configuration.layoutDirection == 1
 
     private val locale: String
-        get() = ConfigurationCompat.getLocales(mContext.resources.configuration).get(0).toString()
+        get() = ConfigurationCompat.getLocales(context.resources.configuration).get(0).toString()
 
     private fun debugLog(msg: String) {
         Log.d(TAG, " #### $msg")
     }
 
     fun semGetBubblePopupWindow(): PopupWindow? {
-        return mBubblePopup
+        return bubblePopup
     }
 
     fun semGetBalloonPopupWindow(): PopupWindow? {
-        return mBalloonPopup
+        return balloonPopup
     }
 
     companion object {

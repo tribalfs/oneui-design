@@ -34,32 +34,34 @@ class ProgressDialog @JvmOverloads constructor(
     @StyleRes theme: Int = 0
 ) : AlertDialog(context, theme) {
 
-    private var mContentView: View? = null
-    private var mProgress: SeslProgressBar? = null
-    private var mMessageView: TextView? = null
-    private var mProgressStyle = STYLE_SPINNER
-    private var mProgressNumber: TextView? = null
-    private var mProgressNumberFormat: String = "%1d/%1d"
-    private var mProgressPercent: TextView? = null
-    private var mProgressPercentFormat: NumberFormat = NumberFormat.getPercentInstance().apply { maximumFractionDigits = 0 }
-    private var mMax = 0
-    private var mProgressVal = 0
-    private var mSecondaryProgressVal = 0
-    private var mIncrementBy = 0
-    private var mIncrementSecondaryBy = 0
-    private var mProgressDrawable: Drawable? = null
-    private var mIndeterminateDrawable: Drawable? = null
-    private var mMessage: CharSequence? = null
-    private var mIndeterminate = false
-    private var mHasStarted = false
-    private var mViewUpdateHandler: Handler? = null
+    private var contentView: View? = null
+    private var progressBar: SeslProgressBar? = null
+    private var messageView: TextView? = null
+    private var progressNumberView: TextView? = null
+    private var progressPercentView: TextView? = null
+
+    private var progressStyle = STYLE_SPINNER
+    private var progressNumberFormat = "%1d/%1d"
+    private var progressPercentFormat = NumberFormat.getPercentInstance().apply { maximumFractionDigits = 0 }
+    private var maxProgress = 0
+    private var progressVal = 0
+    private var secondaryProgressVal = 0
+    private var incrementBy = 0
+    private var incrementSecondaryBy = 0
+    private var progressDrawable: Drawable? = null
+    private var indeterminateDrawable: Drawable? = null
+    private var message: CharSequence? = null
+    private var indeterminate = false
+    private var hasStarted = false
+    private var viewUpdateHandler: Handler? = null
 
 
     override fun show() {
         super.show()
         val dialogTitle = findViewById<DialogTitle>(appcompatR.id.alertTitle)
         if (dialogTitle?.text?.isNotEmpty() == true) {
-            mContentView?.updatePadding(top = context.resources.getDimensionPixelSize(
+            @SuppressLint("PrivateResource")
+            contentView?.updatePadding(top = context.resources.getDimensionPixelSize(
                 appcompatR.dimen.sesl_dialog_title_padding_bottom))
         }
     }
@@ -69,73 +71,74 @@ class ProgressDialog @JvmOverloads constructor(
     override fun onCreate(savedInstanceState: Bundle?) {
         val context = context
         val inflater = LayoutInflater.from(context)
-        when (mProgressStyle) {
+        when (progressStyle) {
             STYLE_HORIZONTAL -> {
 
                 /* Use a separate handler to update the text views as they
                  * must be updated on the same thread that created them.
                  */
-                mViewUpdateHandler = PgHandler(this)
-                mContentView = inflater.inflate(R.layout.oui_des_dialog_progress_dialog_horizontal, null).apply {
-                    mProgress = findViewById<View>(R.id.progress) as SeslProgressBar
-                    mProgressNumber = findViewById<View>(R.id.progress_number) as TextView
-                    mProgressPercent = findViewById<View>(R.id.progress_percent) as TextView
-                    mMessageView = findViewById<View>(R.id.message) as TextView
+                viewUpdateHandler = PgHandler(this)
+                contentView = inflater.inflate(R.layout.oui_des_dialog_progress_dialog_horizontal, null).apply {
+                    progressBar = findViewById<View>(R.id.progress) as SeslProgressBar
+                    progressNumberView = findViewById<View>(R.id.progress_number) as TextView
+                    progressPercentView = findViewById<View>(R.id.progress_percent) as TextView
+                    messageView = findViewById<View>(R.id.message) as TextView
                 }
-                setView(mContentView)
+                setView(contentView)
             }
             STYLE_CIRCLE -> {
                 setTitle(null)
                 window!!.setBackgroundDrawableResource(android.R.color.transparent)
                 val view = inflater.inflate(R.layout.oui_des_dialog_progress_dialog_circle, null)
-                mProgress = view.findViewById<View>(R.id.progress) as SeslProgressBar
-                mMessageView = view.findViewById<View>(R.id.message) as TextView
+                progressBar = view.findViewById<View>(R.id.progress) as SeslProgressBar
+                messageView = view.findViewById<View>(R.id.message) as TextView
                 setView(view)
             }
             else -> {
                 val view = inflater.inflate(R.layout.oui_des_dialog_progress_dialog_spinner, null)
-                mProgress = view.findViewById<View>(R.id.progress) as SeslProgressBar
-                mMessageView = view.findViewById<View>(R.id.message) as TextView
+                progressBar = view.findViewById<View>(R.id.progress) as SeslProgressBar
+                messageView = view.findViewById<View>(R.id.message) as TextView
                 setView(view)
             }
         }
 
-        if (mMax > 0) {
-            max = mMax
+        if (maxProgress > 0) {
+            max = maxProgress
         }
 
-        if (mProgressVal > 0) {
-            progress = mProgressVal
+        if (progressVal > 0) {
+            progress = progressVal
         }
 
-        if (mSecondaryProgressVal > 0) {
-            secondaryProgress = mSecondaryProgressVal
+        if (secondaryProgressVal > 0) {
+            secondaryProgress = secondaryProgressVal
         }
 
-        if (mIncrementBy > 0) {
-            incrementProgressBy(mIncrementBy)
+        if (incrementBy > 0) {
+            incrementProgressBy(incrementBy)
         }
 
-        if (mIncrementSecondaryBy > 0) {
-            incrementSecondaryProgressBy(mIncrementSecondaryBy)
+        if (incrementSecondaryBy > 0) {
+            incrementSecondaryProgressBy(incrementSecondaryBy)
         }
 
-        if (mProgressDrawable != null) {
-            setProgressDrawable(mProgressDrawable)
+        if (progressDrawable != null) {
+            setProgressDrawable(progressDrawable)
         }
 
-        if (mIndeterminateDrawable != null) {
-            setIndeterminateDrawable(mIndeterminateDrawable)
+        if (indeterminateDrawable != null) {
+            setIndeterminateDrawable(indeterminateDrawable)
         }
 
-        if (mMessage != null) {
-            setMessage(mMessage!!)
+        if (message != null) {
+            setMessage(message!!)
         }
-        isIndeterminate = mIndeterminate
+        isIndeterminate = indeterminate
         onProgressChanged()
         super.onCreate(savedInstanceState)
 
-        if (mProgressStyle == STYLE_CIRCLE) {
+        if (progressStyle == STYLE_CIRCLE) {
+            @SuppressLint("PrivateResource")
             val size = context.resources.getDimensionPixelSize(
                 appcompatR.dimen.sesl_progress_dialog_circle_size)
             window!!.apply {
@@ -147,12 +150,12 @@ class ProgressDialog @JvmOverloads constructor(
 
     public override fun onStart() {
         super.onStart()
-        mHasStarted = true
+        hasStarted = true
     }
 
     override fun onStop() {
         super.onStop()
-        mHasStarted = false
+        hasStarted = false
     }
 
     var progress: Int
@@ -161,9 +164,9 @@ class ProgressDialog @JvmOverloads constructor(
          *
          * @return the current progress, a value between 0 and [max]
          */
-        get() = if (mProgress != null) {
-            mProgress!!.progress
-        } else mProgressVal
+        get() = if (progressBar != null) {
+            progressBar!!.progress
+        } else progressVal
 
         /**
          * Sets the current progress.
@@ -173,11 +176,11 @@ class ProgressDialog @JvmOverloads constructor(
          * @see SeslProgressBar.setProgress
          */
         set(value) {
-            if (mHasStarted) {
-                mProgress!!.progress = value
+            if (hasStarted) {
+                progressBar!!.progress = value
                 onProgressChanged()
             } else {
-                mProgressVal = value
+                progressVal = value
             }
         }
 
@@ -187,9 +190,9 @@ class ProgressDialog @JvmOverloads constructor(
          *
          * @return the current secondary progress, a value between 0 and [max]
          */
-        get() = if (mProgress != null) {
-            mProgress!!.secondaryProgress
-        } else mSecondaryProgressVal
+        get() = if (progressBar != null) {
+            progressBar!!.secondaryProgress
+        } else secondaryProgressVal
 
         /**
          * Sets the secondary progress.
@@ -199,11 +202,11 @@ class ProgressDialog @JvmOverloads constructor(
          * @see SeslProgressBar.setSecondaryProgress
          */
         set(secondaryProgress) {
-            if (mProgress != null) {
-                mProgress!!.secondaryProgress = secondaryProgress
+            if (progressBar != null) {
+                progressBar!!.secondaryProgress = secondaryProgress
                 onProgressChanged()
             } else {
-                mSecondaryProgressVal = secondaryProgress
+                secondaryProgressVal = secondaryProgress
             }
         }
 
@@ -213,19 +216,19 @@ class ProgressDialog @JvmOverloads constructor(
          *
          * @return the maximum value
          */
-        get() = if (mProgress != null) {
-            mProgress!!.max
-        } else mMax
+        get() = if (progressBar != null) {
+            progressBar!!.max
+        } else maxProgress
 
         /**
          * Sets the maximum allowed progress value.
          */
         set(max) {
-            if (mProgress != null) {
-                mProgress!!.max = max
+            if (progressBar != null) {
+                progressBar!!.max = max
                 onProgressChanged()
             } else {
-                mMax = max
+                maxProgress = max
             }
         }
 
@@ -236,11 +239,11 @@ class ProgressDialog @JvmOverloads constructor(
      * up to [max]
      */
     fun incrementProgressBy(diff: Int) {
-        if (mProgress != null) {
-            mProgress!!.incrementProgressBy(diff)
+        if (progressBar != null) {
+            progressBar!!.incrementProgressBy(diff)
             onProgressChanged()
         } else {
-            mIncrementBy += diff
+            incrementBy += diff
         }
     }
 
@@ -251,11 +254,11 @@ class ProgressDialog @JvmOverloads constructor(
      * up to [max]
      */
     fun incrementSecondaryProgressBy(diff: Int) {
-        if (mProgress != null) {
-            mProgress!!.incrementSecondaryProgressBy(diff)
+        if (progressBar != null) {
+            progressBar!!.incrementSecondaryProgressBy(diff)
             onProgressChanged()
         } else {
-            mIncrementSecondaryBy += diff
+            incrementSecondaryBy += diff
         }
     }
 
@@ -267,10 +270,10 @@ class ProgressDialog @JvmOverloads constructor(
      * @see SeslProgressBar.setProgressDrawable
      */
     fun setProgressDrawable(d: Drawable?) {
-        if (mProgress != null) {
-            mProgress!!.progressDrawable = d
+        if (progressBar != null) {
+            progressBar!!.progressDrawable = d
         } else {
-            mProgressDrawable = d
+            progressDrawable = d
         }
     }
 
@@ -283,10 +286,10 @@ class ProgressDialog @JvmOverloads constructor(
      * @see .setIndeterminate
      */
     fun setIndeterminateDrawable(d: Drawable?) {
-        if (mProgress != null) {
-            mProgress!!.indeterminateDrawable = d
+        if (progressBar != null) {
+            progressBar!!.indeterminateDrawable = d
         } else {
-            mIndeterminateDrawable = d
+            indeterminateDrawable = d
         }
     }
 
@@ -296,9 +299,9 @@ class ProgressDialog @JvmOverloads constructor(
          *
          * @return true if the dialog is in indeterminate mode, false otherwise
          */
-        get() = if (mProgress != null) {
-            mProgress!!.isIndeterminate
-        } else mIndeterminate
+        get() = if (progressBar != null) {
+            progressBar!!.isIndeterminate
+        } else indeterminate
 
         /**
          * Change the indeterminate mode for this ProgressDialog. In indeterminate
@@ -314,31 +317,32 @@ class ProgressDialog @JvmOverloads constructor(
          * @see [setProgressStyle]
          */
         set(indeterminate) {
-            if (mProgress != null) {
-                mProgress!!.isIndeterminate = indeterminate
+            if (progressBar != null) {
+                progressBar!!.isIndeterminate = indeterminate
             } else {
-                mIndeterminate = indeterminate
+                this@ProgressDialog.indeterminate = indeterminate
             }
         }
 
     override fun setTitle(title: CharSequence?) {
         super.setTitle(title)
-        if (mContentView != null) {
+        if (contentView != null) {
+            @SuppressLint("PrivateResource")
             val paddingTop = context.resources
                 .getDimensionPixelSize(
                     if (title.toString().isEmpty())  {
                         appcompatR.dimen.sesl_dialog_padding_vertical
                     } else appcompatR.dimen.sesl_dialog_title_padding_bottom
                 )
-            mContentView!!.updatePadding(top = paddingTop)
+            contentView!!.updatePadding(top = paddingTop)
         }
     }
 
     override fun setMessage(message: CharSequence) {
-        if (mProgress != null) {
-            when (mProgressStyle) {
+        if (progressBar != null) {
+            when (progressStyle) {
                 STYLE_HORIZONTAL -> {
-                    mMessageView?.apply {
+                    messageView?.apply {
                         text = message
                         isVisible = message !== ""
                     } ?: run{
@@ -346,17 +350,17 @@ class ProgressDialog @JvmOverloads constructor(
                     }
                 }
                 STYLE_CIRCLE -> {
-                    mMessageView!!.apply {
+                    messageView?.apply {
                         text = message
                         isVisible = message !== ""
                     }
                 }
                 else -> {
-                    mMessageView!!.text = message
+                    messageView?.text = message
                 }
             }
         } else {
-            mMessage = message
+            this@ProgressDialog.message = message
         }
     }
 
@@ -372,7 +376,7 @@ class ProgressDialog @JvmOverloads constructor(
      * [STYLE_HORIZONTAL]
      */
     fun setProgressStyle(style: Int) {
-        mProgressStyle = style
+        progressStyle = style
     }
 
     /**
@@ -384,7 +388,7 @@ class ProgressDialog @JvmOverloads constructor(
      * nothing will be shown.
      */
     fun setProgressNumberFormat(format: String) {
-        mProgressNumberFormat = format
+        progressNumberFormat = format
         onProgressChanged()
     }
 
@@ -397,14 +401,14 @@ class ProgressDialog @JvmOverloads constructor(
      * percentage text.  If null, nothing will be shown.
      */
     fun setProgressPercentFormat(format: NumberFormat) {
-        mProgressPercentFormat = format
+        progressPercentFormat = format
         onProgressChanged()
     }
 
     private fun onProgressChanged() {
-        if (mProgressStyle == STYLE_HORIZONTAL) {
-            if (mViewUpdateHandler != null && !mViewUpdateHandler!!.hasMessages(0)) {
-                mViewUpdateHandler!!.sendEmptyMessage(0)
+        if (progressStyle == STYLE_HORIZONTAL) {
+            if (viewUpdateHandler != null && !viewUpdateHandler!!.hasMessages(0)) {
+                viewUpdateHandler!!.sendEmptyMessage(0)
             }
         }
     }
@@ -453,17 +457,17 @@ class ProgressDialog @JvmOverloads constructor(
 
                 with(outerClass) {
                     /* Update the number and percent */
-                    val progress = mProgress!!.progress
-                    val max = mProgress!!.max
+                    val progress = progressBar!!.progress
+                    val max = progressBar!!.max
 
-                    mProgressNumber!!.text =  if (mProgressNumber!!.layoutDirection == View.LAYOUT_DIRECTION_RTL) {
-                        String.format(mProgressNumberFormat, max, progress)
+                    progressNumberView!!.text =  if (progressNumberView!!.layoutDirection == View.LAYOUT_DIRECTION_RTL) {
+                        String.format(progressNumberFormat, max, progress)
                     } else {
-                        String.format(mProgressNumberFormat, progress, max)
+                        String.format(progressNumberFormat, progress, max)
                     }
 
                     val percent = progress / max.toDouble()
-                    mProgressPercent!!.text = SpannableString(mProgressPercentFormat.format(percent)).apply {
+                    progressPercentView!!.text = SpannableString(progressPercentFormat.format(percent)).apply {
                         setSpan(
                             StyleSpan(Typeface.NORMAL),
                             0, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE

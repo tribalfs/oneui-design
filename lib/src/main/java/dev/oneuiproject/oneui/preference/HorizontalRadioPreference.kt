@@ -31,40 +31,40 @@ import kotlin.math.roundToInt
 class HorizontalRadioPreference(context: Context, attrs: AttributeSet?) :
     Preference(context, attrs) {
 
-    private lateinit var mEntriesImage: IntArray
-    private lateinit var mEntries: Array<CharSequence>
-    private var mEntriesSubTitle: Array<CharSequence>? = null
-    private lateinit var mEntryValues: Array<CharSequence>
+    private lateinit var entriesImage: IntArray
+    private lateinit var entries: Array<CharSequence>
+    private var entriesSubTitle: Array<CharSequence>? = null
+    private lateinit var entryValues: Array<CharSequence>
     private var titleSize: Int = -1
 
-    private var mType: Int = IMAGE
-    private var mIsDividerEnabled = false
-    private var mIsColorFilterEnabled = false
-    private var mIsTouchEffectEnabled = true
+    private var type: Int = IMAGE
+    private var isDividerEnabled = false
+    private var isColorFilterEnabled = false
+    private var isTouchEffectEnabled = true
     private val paddingStartEnd: Int
     private val paddingTop: Int
     private val paddingBottom: Int
-    private var mContainerLayout: HorizontalRadioViewContainer? = null
-    private val mIsItemEnabledMap = MutableScatterMap<CharSequence, Boolean>()
-    private val mIsItemHiddenMap = MutableScatterMap<CharSequence, Boolean>()
+    private var containerLayout: HorizontalRadioViewContainer? = null
+    private val isItemEnabledMap = MutableScatterMap<CharSequence, Boolean>()
+    private val isItemHiddenMap = MutableScatterMap<CharSequence, Boolean>()
 
     private val selectedColor: Int = context.getThemeAttributeValue(androidx.appcompat.R.attr.colorPrimaryDark)!!.data
     private val unselectedColor: Int = ContextCompat.getColor(context, R.color.oui_des_horizontalradiopref_text_unselected_color)
 
     init {
         context.obtainStyledAttributes(attrs, R.styleable.HorizontalRadioPreference).use{
-            mType = it.getInt(R.styleable.HorizontalRadioPreference_viewType, IMAGE)
-            mEntries = it.getTextArray(R.styleable.HorizontalRadioPreference_entries)
-            mEntryValues = it.getTextArray(R.styleable.HorizontalRadioPreference_entryValues)
+            type = it.getInt(R.styleable.HorizontalRadioPreference_viewType, IMAGE)
+            entries = it.getTextArray(R.styleable.HorizontalRadioPreference_entries)
+            entryValues = it.getTextArray(R.styleable.HorizontalRadioPreference_entryValues)
 
-            when (mType) {
+            when (type) {
                 IMAGE -> {
                     val entriesImageResId = it.getResourceId(R.styleable.HorizontalRadioPreference_entriesImage, 0)
                     if (entriesImageResId != 0) {
                         context.resources.obtainTypedArray(entriesImageResId).use { ta ->
-                            mEntriesImage = IntArray(ta.length())
+                            entriesImage = IntArray(ta.length())
                             for (i in 0 until ta.length()) {
-                                mEntriesImage[i] = ta.getResourceId(i, 0)
+                                entriesImage[i] = ta.getResourceId(i, 0)
                             }
                         }
                     }
@@ -72,7 +72,7 @@ class HorizontalRadioPreference(context: Context, attrs: AttributeSet?) :
                 NO_IMAGE -> {
                     val entriesSubtitle = it.getResourceId(R.styleable.HorizontalRadioPreference_entriesSubtitle, 0)
                     if (entriesSubtitle != 0) {
-                        mEntriesSubTitle = it.getTextArray(R.styleable.HorizontalRadioPreference_entriesSubtitle)
+                        entriesSubTitle = it.getTextArray(R.styleable.HorizontalRadioPreference_entriesSubtitle)
                     }
                 }
             }
@@ -94,20 +94,20 @@ class HorizontalRadioPreference(context: Context, attrs: AttributeSet?) :
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
 
-        val itemSize = mEntries.size
+        val itemSize = entries.size
 
         require(itemSize <= 3) { "Out of index" }
 
-        mContainerLayout = holder.itemView.findViewById(R.id.horizontal_radio_layout)
+        containerLayout = holder.itemView.findViewById(R.id.horizontal_radio_layout)
 
-        for ((mIndex, mValue) in mEntryValues.withIndex()) {
+        for ((mIndex, mValue) in entryValues.withIndex()) {
 
-            val itemLayout = mContainerLayout!!.findViewById<ViewGroup>(getResId(mIndex))
-            when (mType) {
+            val itemLayout = containerLayout!!.findViewById<ViewGroup>(getResId(mIndex))
+            when (type) {
                 IMAGE -> {
-                    itemLayout.findViewById<ImageView>(R.id.icon).setImageResource(mEntriesImage[mIndex])
+                    itemLayout.findViewById<ImageView>(R.id.icon).setImageResource(entriesImage[mIndex])
                     itemLayout.findViewById<TextView>(R.id.icon_title).apply {
-                        text = mEntries[mIndex]
+                        text = entries[mIndex]
                     }
                     itemLayout.findViewById<View>(R.id.image_frame).visibility = View.VISIBLE
                 }
@@ -116,13 +116,13 @@ class HorizontalRadioPreference(context: Context, attrs: AttributeSet?) :
                         if (titleSize != -1){
                             textSize = titleSize.toFloat()
                         }
-                        text = mEntries[mIndex]
+                        text = entries[mIndex]
                     }
                     val subTitleView = itemLayout.findViewById<TextView>(R.id.sub_title)
-                    if (mEntriesSubTitle == null){
+                    if (entriesSubTitle == null){
                         subTitleView.visibility = View.GONE
                     }else{
-                        subTitleView.text = mEntriesSubTitle!![mIndex]
+                        subTitleView.text = entriesSubTitle!![mIndex]
                     }
                     itemLayout.findViewById<View>(R.id.text_frame).visibility = View.VISIBLE
                 }
@@ -130,21 +130,21 @@ class HorizontalRadioPreference(context: Context, attrs: AttributeSet?) :
 
             itemLayout.visibility = View.VISIBLE
 
-            if (!mIsTouchEffectEnabled) {
+            if (!isTouchEffectEnabled) {
                 itemLayout.background = null
             }
 
             itemLayout.setOnTouchListener { v: View, event: MotionEvent ->
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
-                        if (!mIsTouchEffectEnabled) {
+                        if (!isTouchEffectEnabled) {
                             v.alpha = 0.6f
                         }
                         return@setOnTouchListener true
                     }
 
                     MotionEvent.ACTION_UP -> {
-                        if (!mIsTouchEffectEnabled) {
+                        if (!isTouchEffectEnabled) {
                             v.alpha = 1.0f
                         }
                         v.callOnClick()
@@ -152,7 +152,7 @@ class HorizontalRadioPreference(context: Context, attrs: AttributeSet?) :
                     }
 
                     MotionEvent.ACTION_CANCEL -> {
-                        if (!mIsTouchEffectEnabled) {
+                        if (!isTouchEffectEnabled) {
                             v.alpha = 1.0f
                         }
                         return@setOnTouchListener false
@@ -165,14 +165,14 @@ class HorizontalRadioPreference(context: Context, attrs: AttributeSet?) :
                 if (keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_NUMPAD_ENTER || keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
                     when (event.action) {
                         KeyEvent.ACTION_DOWN -> {
-                            if (!mIsTouchEffectEnabled) {
+                            if (!isTouchEffectEnabled) {
                                 v.alpha = 0.6f
                             }
                             return@setOnKeyListener true
                         }
 
                         KeyEvent.ACTION_UP -> {
-                            if (!mIsTouchEffectEnabled) {
+                            if (!isTouchEffectEnabled) {
                                 v.alpha = 1.0f
                             }
                             v.playSoundEffect(SoundEffectConstants.CLICK)
@@ -192,7 +192,7 @@ class HorizontalRadioPreference(context: Context, attrs: AttributeSet?) :
 
             var itemPadding = paddingStartEnd
 
-            if (!mIsDividerEnabled) {
+            if (!isDividerEnabled) {
                 itemPadding = (itemPadding / 2f).roundToInt()
             }
 
@@ -238,13 +238,13 @@ class HorizontalRadioPreference(context: Context, attrs: AttributeSet?) :
     }
 
     fun setViewType(viewType: Int) {
-        mType = viewType
+        type = viewType
     }
 
     val entry: CharSequence?
         get() {
             val index = valueIndex
-            return if (index >= 0) mEntries[index] else null
+            return if (index >= 0) entries[index] else null
         }
 
     var value: String? = null
@@ -260,43 +260,43 @@ class HorizontalRadioPreference(context: Context, attrs: AttributeSet?) :
     private val valueIndex: Int get() = findIndexOfValue(value)
 
     fun setEntryEnabled(entry: String, enabled: Boolean) {
-        mIsItemEnabledMap[entry] = enabled
+        isItemEnabledMap[entry] = enabled
         invalidate()
     }
 
     fun setEntryHidden(entry: String, enabled: Boolean) {
-        mIsItemHiddenMap[entry] = enabled
+        isItemHiddenMap[entry] = enabled
         invalidate()
     }
 
     fun setDividerEnabled(enabled: Boolean) {
-        mIsDividerEnabled = enabled
+        isDividerEnabled = enabled
     }
 
     fun setColorFilterEnabled(enabled: Boolean) {
-        mIsColorFilterEnabled = enabled
+        isColorFilterEnabled = enabled
     }
 
     fun setTouchEffectEnabled(enabled: Boolean) {
-        mIsTouchEffectEnabled = enabled
+        isTouchEffectEnabled = enabled
     }
 
     fun findIndexOfValue(value: String?): Int {
         if (value != null) {
-            return mEntryValues.apply { reverse() }.indexOf(value)
+            return entryValues.apply { reverse() }.indexOf(value)
         }
         return -1
     }
 
     private fun invalidate() {
-        if (mContainerLayout == null) return
-        for ((mIndex, mValue) in mEntryValues.withIndex()) {
-            val itemLayout = mContainerLayout!!.findViewById<ViewGroup>(getResId(mIndex))
+        if (containerLayout == null) return
+        for ((mIndex, mValue) in entryValues.withIndex()) {
+            val itemLayout = containerLayout!!.findViewById<ViewGroup>(getResId(mIndex))
             val selected = mValue == this@HorizontalRadioPreference.value
-            when (mType) {
+            when (type) {
                 IMAGE -> {
                     with(itemLayout.findViewById<ImageView>(R.id.icon)) {
-                        if (mIsColorFilterEnabled ) {
+                        if (isColorFilterEnabled ) {
                             setColorFilter(if (selected) { selectedColor } else { unselectedColor })
                         }
                     }
@@ -319,15 +319,15 @@ class HorizontalRadioPreference(context: Context, attrs: AttributeSet?) :
 
             itemLayout.findViewById<RadioButton>(R.id.radio_button).apply {
                 isChecked = selected
-                if (!mIsTouchEffectEnabled) jumpDrawablesToCurrentState()
+                if (!isTouchEffectEnabled) jumpDrawablesToCurrentState()
             }
 
             with( itemLayout) {
-                mIsItemHiddenMap[mValue]?.let { visibility = if (it) View.GONE else View.VISIBLE }
-                isEnabled = (mIsItemEnabledMap[mValue] != false && isEnabled)
+                isItemHiddenMap[mValue]?.let { visibility = if (it) View.GONE else View.VISIBLE }
+                isEnabled = (isItemEnabledMap[mValue] != false && isEnabled)
                 alpha = if (isEnabled) 1.0f else .6f
             }
-            mContainerLayout!!.setDividerEnabled(mIsDividerEnabled)
+            containerLayout!!.setDividerEnabled(isDividerEnabled)
         }
     }
 

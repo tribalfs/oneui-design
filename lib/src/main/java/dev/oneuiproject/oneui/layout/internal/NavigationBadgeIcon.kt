@@ -24,7 +24,7 @@ import androidx.appcompat.R as appcompatR
 @SuppressLint("PrivateResource")
 class NavigationBadgeIcon(private val context: Context) : Drawable() {
 
-    private val mCirclePaint = Paint().apply {
+    private val circlePaint = Paint().apply {
         color = ContextCompat.getColor(context, appcompatR.color.sesl_badge_background_color)
         isAntiAlias = true
     }
@@ -39,7 +39,7 @@ class NavigationBadgeIcon(private val context: Context) : Drawable() {
     }
 
     private var badge: Badge = Badge.NONE
-    private var mIsLandscape = false
+    private var isLandscape = false
     private val cornerRadius = 9f * context.dpToPxFactor
     private val dotBadgeRadius = res.getDimensionPixelSize(appcompatR.dimen.sesl_menu_item_badge_size)/2f
     private val defaultWidth = res.getDimensionPixelSize(appcompatR.dimen.sesl_badge_default_width)
@@ -53,7 +53,7 @@ class NavigationBadgeIcon(private val context: Context) : Drawable() {
         if (badge is Badge.DOT) {
             val x = (if (isRTL) DOT_BADGE_OFFSET else width - DOT_BADGE_OFFSET).toFloat()
             val y = DOT_BADGE_OFFSET + 2
-            canvas.drawCircle(x, y, dotBadgeRadius, mCirclePaint)
+            canvas.drawCircle(x, y, dotBadgeRadius, circlePaint)
         } else if (badge is Badge.NUMERIC) {
             val mBadgeText = (badge as Badge.NUMERIC).count.badgeCountToText()!!
             val x = (if (isRTL) N_BADGE_OFFSET else width - N_BADGE_OFFSET).toFloat()
@@ -65,7 +65,7 @@ class NavigationBadgeIcon(private val context: Context) : Drawable() {
             val right = x + halfWidth
             val top = y - halfHeight
             val bottom = y + halfHeight
-            canvas.drawRoundRect(left, top, right, bottom, cornerRadius, cornerRadius, mCirclePaint)
+            canvas.drawRoundRect(left, top, right, bottom, cornerRadius, cornerRadius, circlePaint)
 
             val textBounds = Rect()
             mTextPaint.textSize = originalTextSize
@@ -85,14 +85,15 @@ class NavigationBadgeIcon(private val context: Context) : Drawable() {
     }
 
     override fun setAlpha(alpha: Int) {
-        mCirclePaint.alpha = alpha
+        circlePaint.alpha = alpha
         mTextPaint.alpha = alpha
     }
 
     override fun setColorFilter(colorFilter: ColorFilter?) {
-        mCirclePaint.setColorFilter(colorFilter)
+        circlePaint.setColorFilter(colorFilter)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun getOpacity(): Int {
         return PixelFormat.TRANSLUCENT
     }

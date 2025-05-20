@@ -13,7 +13,7 @@ import dev.oneuiproject.oneui.layout.internal.backapi.BackHandler
 
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-open class ToolbarLayoutBackHandler(private val mToolbarLayout: ToolbarLayout
+open class ToolbarLayoutBackHandler(private val toolbarLayout: ToolbarLayout
 ): BackHandler {
     override fun startBackProgress(backEvent: BackEventCompat) {}
 
@@ -21,25 +21,25 @@ open class ToolbarLayoutBackHandler(private val mToolbarLayout: ToolbarLayout
 
     @CallSuper
     override fun handleBackInvoked() {
-        if (mToolbarLayout.isInEditMode) return
+        if (toolbarLayout.isInEditMode) return
 
-        with (mToolbarLayout) {
+        with (toolbarLayout) {
             when {
                 isActionMode -> {
-                    if (mToolbarLayout.isSofInputShowing) {
+                    if (toolbarLayout.isSofInputShowing) {
                         activity?.hideSoftInput()
                     } else endActionMode()
                 }
                 isSearchMode -> {
                     when (searchModeOBPBehavior) {
                         DISMISS -> {
-                            if (mToolbarLayout.isSofInputShowing) {
+                            if (toolbarLayout.isSofInputShowing) {
                                 activity?.hideSoftInput()
                             } else endSearchMode()
                         }
 
                         CLEAR_CLOSE -> {
-                            if (mToolbarLayout.isSofInputShowing) {
+                            if (toolbarLayout.isSofInputShowing) {
                                 activity?.hideSoftInput()
                             } else {
                                 searchView?.setQuery("", true)
@@ -48,7 +48,7 @@ open class ToolbarLayoutBackHandler(private val mToolbarLayout: ToolbarLayout
                         }
 
                         CLEAR_DISMISS -> {
-                            if (mToolbarLayout.isSofInputShowing) {
+                            if (toolbarLayout.isSofInputShowing) {
                                 activity?.hideSoftInput()
                             } else if (searchView?.query?.isNotEmpty() == true) {
                                 searchView?.setQuery("", true)

@@ -17,8 +17,8 @@ class StartEndTabLayout @JvmOverloads constructor(
 ) : TabLayout(
     context, attrs, defStyleAttr
 ) {
-    private var mTabIndex = 0
-    private var mTimeFormatter: ((Int) -> String)? = null
+    private var tabIndex = 0
+    private var timeFormatter: ((Int) -> String)? = null
     @JvmField
     val times: IntArray = IntArray(2)
 
@@ -42,24 +42,24 @@ class StartEndTabLayout @JvmOverloads constructor(
             override fun onTabUnselected(tab: Tab) {}
             override fun onTabSelected(tab: Tab) {
                 onTabSelectedListener.onPreTabSelected()
-                mTabIndex = tab.position
-                onTabSelectedListener.onTabSelected(mTabIndex, times[mTabIndex])
+                tabIndex = tab.position
+                onTabSelectedListener.onTabSelected(tabIndex, times[tabIndex])
             }
         })
         times[0] = startTime
         times[1] = endTime
-        mTimeFormatter = timeFormatter
+        this@StartEndTabLayout.timeFormatter = timeFormatter
         reload()
-        val tab = getTabAt(mTabIndex)
+        val tab = getTabAt(tabIndex)
         if (tab!!.isSelected) {
-            onTabSelectedListener.onTabSelected(mTabIndex, times[mTabIndex])
+            onTabSelectedListener.onTabSelected(tabIndex, times[tabIndex])
             return
         }
         tab.select()
     }
 
     fun updateTime(time: Int) {
-        updateTime(mTabIndex, time)
+        updateTime(tabIndex, time)
     }
 
     fun select(index: Int) {
@@ -80,8 +80,8 @@ class StartEndTabLayout @JvmOverloads constructor(
             if (value){
                 val startTime = times[0]
                 val endTime = times[1]
-                getTabAt(0)!!.seslSetSubText(mTimeFormatter?.invoke(startTime) ?: defaultFormatter(startTime))
-                getTabAt(1)!!.seslSetSubText(mTimeFormatter?.invoke(endTime) ?: defaultFormatter(endTime))
+                getTabAt(0)!!.seslSetSubText(timeFormatter?.invoke(startTime) ?: defaultFormatter(startTime))
+                getTabAt(1)!!.seslSetSubText(timeFormatter?.invoke(endTime) ?: defaultFormatter(endTime))
             }else{
                 getTabAt(0)!!.seslSetSubText("")
                 getTabAt(1)!!.seslSetSubText("")
@@ -93,7 +93,7 @@ class StartEndTabLayout @JvmOverloads constructor(
         times[index] = time
         if (!showSubText) return
         val tabAt = getTabAt(index)
-        tabAt!!.seslSetSubText(mTimeFormatter?.invoke(time) ?: defaultFormatter(time))
+        tabAt!!.seslSetSubText(timeFormatter?.invoke(time) ?: defaultFormatter(time))
     }
 
     private fun defaultFormatter(time: Int): String {

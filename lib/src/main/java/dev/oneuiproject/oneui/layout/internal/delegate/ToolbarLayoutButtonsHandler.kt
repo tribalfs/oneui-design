@@ -16,9 +16,9 @@ import androidx.appcompat.R as appcompatR
 
 internal open class ToolbarLayoutButtonsHandler(private val toolbar: Toolbar):
     NavButtonsHandler {
-    private var mNavDrawerButtonTooltip: CharSequence? = null
-    private var mNavigationOnClickList: View.OnClickListener? = null
-    private var mNavigationBadgeIcon: LayerDrawable? = null
+    private var navDrawerButtonTooltip: CharSequence? = null
+    private var navigationOnClickList: View.OnClickListener? = null
+    private var navigationBadgeIcon: LayerDrawable? = null
 
     private val mActivity by lazy(LazyThreadSafetyMode.NONE) { toolbar.context.appCompatActivity }
 
@@ -37,7 +37,7 @@ internal open class ToolbarLayoutButtonsHandler(private val toolbar: Toolbar):
         }
 
     override fun setNavigationButtonOnClickListener(listener: View.OnClickListener?) {
-        mNavigationOnClickList = listener
+        navigationOnClickList = listener
         updateNavButton()
     }
 
@@ -49,22 +49,22 @@ internal open class ToolbarLayoutButtonsHandler(private val toolbar: Toolbar):
 
     override fun setNavigationButtonBadge(badge: Badge) {
         badgeIcon.setBadge(badge)
-        if (badge != Badge.NONE && mNavigationBadgeIcon == null) {
+        if (badge != Badge.NONE && navigationBadgeIcon == null) {
             Log.w(TAG, "setNavigationButtonBadge: Unable to show badge, no navigation icon has been set.")
         }
     }
 
     override fun setNavigationButtonIcon(icon: Drawable?) {
         if (icon != null) {
-            if (mNavigationBadgeIcon == null) {
-                mNavigationBadgeIcon = LayerDrawable(arrayOf(icon, badgeIcon)).apply {
+            if (navigationBadgeIcon == null) {
+                navigationBadgeIcon = LayerDrawable(arrayOf(icon, badgeIcon)).apply {
                     setId(0, R.id.nav_button_icon_layer_id)
                 }
             }else {
-                mNavigationBadgeIcon!!.setDrawableByLayerId(R.id.nav_button_icon_layer_id, icon)
+                navigationBadgeIcon!!.setDrawableByLayerId(R.id.nav_button_icon_layer_id, icon)
             }
         }else {
-            mNavigationBadgeIcon = null
+            navigationBadgeIcon = null
         }
         updateNavButton()
     }
@@ -83,7 +83,7 @@ internal open class ToolbarLayoutButtonsHandler(private val toolbar: Toolbar):
                 }
                 //Backup current tooltip to restore later
                 //before setting the mBackButtonTooltip as the current one
-                mNavDrawerButtonTooltip = navigationContentDescription
+                navDrawerButtonTooltip = navigationContentDescription
                 mActivity?.apply {
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
                     setNavigationOnClickListener {
@@ -97,13 +97,13 @@ internal open class ToolbarLayoutButtonsHandler(private val toolbar: Toolbar):
                     mActivity?.apply {
                         supportActionBar?.setDisplayHomeAsUpEnabled(false)
                         setNavigationOnClickListener {
-                            mNavigationOnClickList?.onClick(it)
+                            navigationOnClickList?.onClick(it)
                         }
-                        navigationContentDescription = mNavDrawerButtonTooltip
+                        navigationContentDescription = navDrawerButtonTooltip
                     }
 
-                    if (navigationIcon != mNavigationBadgeIcon) {
-                        navigationIcon = mNavigationBadgeIcon
+                    if (navigationIcon != navigationBadgeIcon) {
+                        navigationIcon = navigationBadgeIcon
                     }
                 }
             }else {

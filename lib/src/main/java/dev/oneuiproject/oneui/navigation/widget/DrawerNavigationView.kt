@@ -40,10 +40,10 @@ class DrawerNavigationView @JvmOverloads constructor(
 ) : FrameLayout(context, attrs, defStyleAttr), MenuView {
 
     private var navigationItemSelectedListener: NavigationView.OnNavigationItemSelectedListener? = null
-    private var mMenuPresenter: DrawerMenuPresenter
-    private var mNavDrawerMenu: NavigationMenu
+    private var menuPresenter: DrawerMenuPresenter
+    private var navDrawerMenu: NavigationMenu
     @MenuRes
-    private var mNavMenuRes: Int = 0
+    private var navMenuRes: Int = 0
     private var lastTimeClicked = 0L
 
     private val drawerLayout by lazy(LazyThreadSafetyMode.NONE) {
@@ -53,22 +53,22 @@ class DrawerNavigationView @JvmOverloads constructor(
     init {
         context.theme
             .obtainStyledAttributes(attrs, NavigationView, 0, 0).use { a ->
-                mNavMenuRes = a.getResourceId(NavigationView_menu, 0)
+                navMenuRes = a.getResourceId(NavigationView_menu, 0)
             }
 
 
-        mNavDrawerMenu = NavigationMenu(context).apply {
+        navDrawerMenu = NavigationMenu(context).apply {
             isGroupDividerEnabled = true
         }
 
-        mMenuPresenter = DrawerMenuPresenter { (drawerLayout as? NavDrawerLayout)?.getNavRailSlideRange() ?: 1 }
+        menuPresenter = DrawerMenuPresenter { (drawerLayout as? NavDrawerLayout)?.getNavRailSlideRange() ?: 1 }
 
 
-        if (mNavMenuRes != 0) {
-            inflateMenu(mNavMenuRes)
+        if (navMenuRes != 0) {
+            inflateMenu(navMenuRes)
         }
 
-        mNavDrawerMenu.setCallback(
+        navDrawerMenu.setCallback(
             object : MenuBuilder.Callback {
                 override fun onMenuItemSelected(menu: MenuBuilder, item: MenuItem): Boolean {
                     return isClickAllowed() && navigationItemSelectedListener?.onNavigationItemSelected(item) == true
@@ -77,8 +77,8 @@ class DrawerNavigationView @JvmOverloads constructor(
                 override fun onMenuModeChange(menu: MenuBuilder) {}
             })
 
-        mNavDrawerMenu.addMenuPresenter(mMenuPresenter)
-        addView(mMenuPresenter.getMenuView(this))
+        navDrawerMenu.addMenuPresenter(menuPresenter)
+        addView(menuPresenter.getMenuView(this))
     }
 
     //Workaround https://issuetracker.google.com/issues/340202276
@@ -95,11 +95,11 @@ class DrawerNavigationView @JvmOverloads constructor(
             when (it){
                 DrawerState.OPEN -> {
                     offsetUpdaterJob?.cancel()
-                    mMenuPresenter.adapter!!.updateOffset(1f)
+                    menuPresenter.adapter!!.updateOffset(1f)
                 }
                 DrawerState.CLOSE-> {
                     offsetUpdaterJob?.cancel()
-                    mMenuPresenter.adapter!!.updateOffset(0f)
+                    menuPresenter.adapter!!.updateOffset(0f)
                 }
 
                 DrawerState.CLOSING,
@@ -115,7 +115,7 @@ class DrawerNavigationView @JvmOverloads constructor(
         if (offsetUpdaterJob?.isActive == true) return
         offsetUpdaterJob = CoroutineScope(Dispatchers.Main).launch {
             while(isActive) {
-                mMenuPresenter.adapter!!.updateOffset(drawerLayout.drawerOffset)
+                menuPresenter.adapter!!.updateOffset(drawerLayout.drawerOffset)
                 delay(20)
             }
         }
@@ -133,7 +133,7 @@ class DrawerNavigationView @JvmOverloads constructor(
             (drawerLayout as? NavDrawerLayout)?.apply {
                 if (isLargeScreenMode) setDrawerStateListener(drawerStateListener)
             }
-            mMenuPresenter.adapter!!.updateOffset(getInitialOffset())
+            menuPresenter.adapter!!.updateOffset(getInitialOffset())
         }
     }
 
@@ -147,13 +147,13 @@ class DrawerNavigationView @JvmOverloads constructor(
     override fun getWindowAnimations(): Int = 0
 
     private fun inflateMenu(@MenuRes resId: Int) {
-        mMenuPresenter.setUpdateSuspended(true)
-        SupportMenuInflater(context).inflate(resId, mNavDrawerMenu)
-        mMenuPresenter.setUpdateSuspended(false)
-        mMenuPresenter.updateMenuView(false)
+        menuPresenter.setUpdateSuspended(true)
+        SupportMenuInflater(context).inflate(resId, navDrawerMenu)
+        menuPresenter.setUpdateSuspended(false)
+        menuPresenter.updateMenuView(false)
 
         if(isAttachedToWindow){
-            doOnLayout { mMenuPresenter.adapter!!.updateOffset(getInitialOffset()) }
+            doOnLayout { menuPresenter.adapter!!.updateOffset(getInitialOffset()) }
         }
     }
 
@@ -168,10 +168,10 @@ class DrawerNavigationView @JvmOverloads constructor(
         this.navigationItemSelectedListener = listener
     }
 
-    fun getDrawerMenu() = mNavDrawerMenu
+    fun getDrawerMenu() = navDrawerMenu
 
     fun updateSelectedItem(destination: NavDestination){
-        mNavDrawerMenu.forEach { item ->
+        navDrawerMenu.forEach { item ->
             @Suppress("RestrictedApi")
             (item as MenuItemImpl).isChecked = destination.matchDestination(item.itemId)
         }

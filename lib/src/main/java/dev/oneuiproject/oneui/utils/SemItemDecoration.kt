@@ -31,7 +31,7 @@ open class SemItemDecoration @JvmOverloads constructor(
     private val subHeaderRule: ItemDecorRule = ALL,
 ) : RecyclerView.ItemDecoration() {
 
-    private var mDivider: Drawable? = null
+    private var divider: Drawable? = null
     @Px
     private var defaultDividerInset: Int = 0
     @Px
@@ -41,12 +41,12 @@ open class SemItemDecoration @JvmOverloads constructor(
     @Px
     private var dividerHeight: Int? = null
 
-    private var mSubheaderRoundedCorner: SeslSubheaderRoundedCorner? = null
+    private var subheaderRoundedCorner: SeslSubheaderRoundedCorner? = null
 
     init {
         when {
             dividerRule !is NONE && subHeaderRule !is NONE -> {
-                mSubheaderRoundedCorner = SeslSubheaderRoundedCorner(context).apply {
+                subheaderRoundedCorner = SeslSubheaderRoundedCorner(context).apply {
                     roundedCorners = SeslRoundedCorner.ROUNDED_CORNER_ALL
                 }
 
@@ -56,8 +56,8 @@ open class SemItemDecoration @JvmOverloads constructor(
                         androidx.appcompat.R.attr.roundedCornerColor
                     )
                 ).use {
-                    mDivider = it.getDrawable(0)
-                    mSubheaderRoundedCorner!!.setRoundedCornerColor(
+                    divider = it.getDrawable(0)
+                    subheaderRoundedCorner!!.setRoundedCornerColor(
                         SeslRoundedCorner.ROUNDED_CORNER_ALL,
                         it.getColor(1, 0)
                     )
@@ -71,7 +71,7 @@ open class SemItemDecoration @JvmOverloads constructor(
                 }
             }
             subHeaderRule !is NONE -> {
-                mSubheaderRoundedCorner = SeslSubheaderRoundedCorner(context).apply {
+                subheaderRoundedCorner = SeslSubheaderRoundedCorner(context).apply {
                     roundedCorners = SeslRoundedCorner.ROUNDED_CORNER_ALL
                     setRoundedCornerColor(
                         SeslRoundedCorner.ROUNDED_CORNER_ALL,
@@ -81,7 +81,7 @@ open class SemItemDecoration @JvmOverloads constructor(
             }
 
             dividerRule !is NONE -> {
-                mDivider = AppCompatResources.getDrawable(context, context.getThemeAttributeValue(android.R.attr.listDivider)!!.resourceId)!!
+                divider = AppCompatResources.getDrawable(context, context.getThemeAttributeValue(android.R.attr.listDivider)!!.resourceId)!!
                 context.resources.apply {
                     defaultDividerInset =  getDimensionPixelSize(androidx.appcompat.R.dimen.sesl_list_divider_inset)
                     getDimensionPixelSize(androidx.appcompat.R.dimen.sesl_list_item_padding_horizontal).let {
@@ -134,9 +134,9 @@ open class SemItemDecoration @JvmOverloads constructor(
         canvas: Canvas, recyclerView: RecyclerView,
         state: RecyclerView.State
     ) {
-        if (mDivider == null) return
+        if (divider == null) return
 
-        val dividerHeight = dividerHeight ?:mDivider!!.intrinsicHeight
+        val dividerHeight = dividerHeight ?:divider!!.intrinsicHeight
         val rvPaddingStart = recyclerView.paddingStart
         val rvPaddingEnd = recyclerView.paddingEnd
         val rvWidth = recyclerView.width
@@ -167,7 +167,7 @@ open class SemItemDecoration @JvmOverloads constructor(
             if (applyDecor) {
                 top = child.bottom + child.marginBottom
                 bottom = dividerHeight + top
-                mDivider!!.apply {
+                divider!!.apply {
                     setBounds(start, top, end, bottom)
                     draw(canvas)
                 }
@@ -181,7 +181,7 @@ open class SemItemDecoration @JvmOverloads constructor(
         state: RecyclerView.State
     ) {
 
-        if (mSubheaderRoundedCorner == null) return
+        if (subheaderRoundedCorner == null) return
 
         var child: View
         for (i in 0 until recyclerView.childCount) {
@@ -194,7 +194,7 @@ open class SemItemDecoration @JvmOverloads constructor(
                 else -> false//not expected here
             }
             if (applyDecor) {
-                mSubheaderRoundedCorner!!.drawRoundedCorner(child, canvass)
+                subheaderRoundedCorner!!.drawRoundedCorner(child, canvass)
             }
         }
     }

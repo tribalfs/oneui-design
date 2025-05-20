@@ -21,15 +21,15 @@ class StartEndTimePickerDialog(
     startTime: Int,
     /**End time in minutes*/
     endTime: Int,
-    private val mIs24HourFormat: Boolean = DateFormat.is24HourFormat(context),
-    private val mTimePickerChangeListener: TimePickerChangeListener?,
+    private val is24HourFormat: Boolean = DateFormat.is24HourFormat(context),
+    private val timePickerChangeListener: TimePickerChangeListener?,
 ) : AlertDialog(context, R.style.OneUI_StartEndTimePickerDialog),
     SeslTimePicker.OnTimeChangedListener,
     SeslTimePicker.OnEditTextModeChangedListener {
 
-    private var mTabLayout: StartEndTabLayout? = null
-    private var mTimePicker: SeslTimePicker? = null
-    private var mTimePickerDialog: View? = null
+    private var tabLayout: StartEndTabLayout? = null
+    private var timePicker: SeslTimePicker? = null
+    private var timePickerDialog: View? = null
 
     fun interface TimePickerChangeListener {
         fun onTimeSet(startTime: Int, endTime: Int)
@@ -48,12 +48,12 @@ class StartEndTimePickerDialog(
         initDialogButton()
         onUpdateHourFormat()
 
-        mTabLayout!!.init(
+        tabLayout!!.init(
             startTime,
             endTime,
             onTabSelectedListener = object: StartEndTabLayout.OnTabSelectedListener {
                 override fun onPreTabSelected() {
-                    mTimePicker!!.isEditTextMode = false
+                    timePicker!!.isEditTextMode = false
                 }
 
                 override fun onTabSelected(index: Int, time: Int) {
@@ -65,26 +65,26 @@ class StartEndTimePickerDialog(
                 timeFormatter(it)
             }
         )
-        mTabLayout!!.select(0)
+        tabLayout!!.select(0)
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
             onUpdateHourFormat()
-            mTimePickerDialog?.requestLayout()
+            timePickerDialog?.requestLayout()
         }
     }
 
     private fun initMainView() {
         LayoutInflater.from(context).inflate(R.layout.oui_des_dialog_start_end_time_picker, null).also {
             setView(it)
-            mTimePickerDialog = it
-            mTimePicker = it.findViewById<SeslTimePicker>(R.id.time_picker).apply {
+            timePickerDialog = it
+            timePicker = it.findViewById<SeslTimePicker>(R.id.time_picker).apply {
                 setOnEditTextModeChangedListener(this@StartEndTimePickerDialog)
                 setOnTimeChangedListener(this@StartEndTimePickerDialog)
             }
-            mTabLayout = it.findViewById(R.id.time_picker_tab)
+            tabLayout = it.findViewById(R.id.time_picker_tab)
         }
     }
 
@@ -94,37 +94,37 @@ class StartEndTimePickerDialog(
             BUTTON_POSITIVE,
             resources.getString(R.string.oui_des_common_done)
         ) { _, _ ->
-            mTimePicker!!.clearFocus()
-            mTabLayout!!.times.let{
-                mTimePickerChangeListener?.onTimeSet(it[0], it[1])
+            timePicker!!.clearFocus()
+            tabLayout!!.times.let{
+                timePickerChangeListener?.onTimeSet(it[0], it[1])
             }
         }
         setButton(
             BUTTON_NEGATIVE,
             resources.getString(R.string.oui_des_common_cancel)
-        ) { _, _ -> mTimePicker!!.clearFocus() }
+        ) { _, _ -> timePicker!!.clearFocus() }
     }
 
     override fun onTimeChanged(view: SeslTimePicker, hourOfDay: Int, minute: Int) {
-        mTabLayout!!.updateTime(getTimeInt(hourOfDay, minute))
+        tabLayout!!.updateTime(getTimeInt(hourOfDay, minute))
     }
 
     private fun updatePicker(time: Int) {
-        mTimePicker!!.apply {
+        timePicker!!.apply {
             hour = time / 60
             minute = time % 60
         }
     }
 
     private fun onUpdateHourFormat() {
-        mTimePicker!!.setIs24HourView(mIs24HourFormat)
-        mTabLayout!!.reload()
+        timePicker!!.setIs24HourView(is24HourFormat)
+        tabLayout!!.reload()
     }
 
     private fun timeFormatter(i: Int): String = getTimeText(
         context,
-        getCustomCalendarInstance(i / 60, i % 60, mIs24HourFormat),
-        mIs24HourFormat
+        getCustomCalendarInstance(i / 60, i % 60, is24HourFormat),
+        is24HourFormat
     )
 
     private fun getTimeInt(hourOfDay: Int, minute: Int): Int {
@@ -132,19 +132,19 @@ class StartEndTimePickerDialog(
     }
 
     fun setStartTimeTitle(title: String) {
-        mTabLayout!!.getTabAt(0)!!.setText(title)
+        tabLayout!!.getTabAt(0)!!.setText(title)
     }
 
     fun setEndTimeTitle(title: String) {
-        mTabLayout!!.getTabAt(1)!!.setText(title)
+        tabLayout!!.getTabAt(1)!!.setText(title)
     }
 
     fun setShowSubText(show: Boolean) {
-        mTabLayout!!.showSubText = show
+        tabLayout!!.showSubText = show
     }
 
     fun selectTabAtIndex(@IntRange(0,1) index: Int){
-        mTabLayout!!.select(index)
+        tabLayout!!.select(index)
     }
 
 }

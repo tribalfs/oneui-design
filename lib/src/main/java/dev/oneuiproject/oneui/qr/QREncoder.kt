@@ -23,20 +23,22 @@ import com.google.zxing.qrcode.encoder.Encoder
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.dpToPxFactor
 import java.util.Hashtable
+import androidx.core.graphics.toColorInt
+import androidx.core.graphics.createBitmap
 
 class QREncoder(private val mContext: Context, private val mContent: String) {
 
     private val dpToPx = mContext.dpToPxFactor
 
-    private var mSize = (200 * dpToPx).toInt()
-    private var mIcon: Drawable? = null
-    private val mIconSize = (48 * dpToPx).toInt()
-    private var mFrame = true
+    private var qrSize = (200 * dpToPx).toInt()
+    private var qrIcon: Drawable? = null
+    private val qrIconSize = (48 * dpToPx).toInt()
+    private var qrFrame = true
 
-    private var mFGColor = Color.BLACK
-    private var mBGColor = Color.parseColor("#fcfcfc")
-    private var mTintAnchor = false
-    private var mTintBorder = false
+    private var qrFGColor = Color.BLACK
+    private var qrBGColor = "#fcfcfc".toColorInt()
+    private var qrTintAnchor = false
+    private var qrTintBorder = false
 
     /**
      * Sets the size of the QR code.
@@ -44,7 +46,7 @@ class QREncoder(private val mContext: Context, private val mContent: String) {
      * @param size The size in pixels.
      * @return The current [QREncoder] instance for chaining.
      */
-    fun setSize(@Px size: Int) = apply { this.mSize = size }
+    fun setSize(@Px size: Int) = apply { this.qrSize = size }
 
     /**
      * Sets the icon to be placed at the center of the QR code.
@@ -60,7 +62,7 @@ class QREncoder(private val mContext: Context, private val mContent: String) {
      * @param icon The drawable icon.
      * @return The current [QREncoder] instance for chaining.
      */
-    fun setIcon(icon: Drawable?) = apply { this.mIcon = icon }
+    fun setIcon(icon: Drawable?) = apply { this.qrIcon = icon }
 
     /**
      * Sets the background color of the QR code.
@@ -68,7 +70,7 @@ class QREncoder(private val mContext: Context, private val mContent: String) {
      * @param color The color int.
      * @return The current [QREncoder] instance for chaining.
      */
-    fun setBackgroundColor(@ColorInt color: Int) = apply { this.mBGColor = color }
+    fun setBackgroundColor(@ColorInt color: Int) = apply { this.qrBGColor = color }
 
     /**
      * Sets whether to add a rounded border around the QR code.
@@ -76,7 +78,7 @@ class QREncoder(private val mContext: Context, private val mContent: String) {
      * @param apply True to add a rounded border, false otherwise.
      * @return The current [QREncoder] instance for chaining.
      */
-    fun roundedFrame(apply: Boolean) = apply { this.mFrame = apply }
+    fun roundedFrame(apply: Boolean) = apply { this.qrFrame = apply }
 
 
     /**
@@ -88,9 +90,9 @@ class QREncoder(private val mContext: Context, private val mContent: String) {
      * @return The current [QREncoder] instance for chaining.
      */
     fun setForegroundColor(color: Int, tintAnchor: Boolean, tintBorder: Boolean) = apply {
-        this.mFGColor = color
-        this.mTintAnchor = tintAnchor
-        this.mTintBorder = tintBorder
+        this.qrFGColor = color
+        this.qrTintAnchor = tintAnchor
+        this.qrTintBorder = tintBorder
     }
 
     fun generate(): Bitmap? {
@@ -98,14 +100,14 @@ class QREncoder(private val mContext: Context, private val mContent: String) {
             val hashtable = Hashtable<EncodeHintType, String>()
             hashtable[EncodeHintType.CHARACTER_SET] = "utf-8"
             val matrix = Encoder.encode(mContent, ErrorCorrectionLevel.H, hashtable).matrix
-            val qrcode = Bitmap.createBitmap(mSize, mSize, Bitmap.Config.ARGB_8888)
-            qrcode.eraseColor(mBGColor)
+            val qrcode = createBitmap(qrSize, qrSize)
+            qrcode.eraseColor(qrBGColor)
 
             drawQrImage(qrcode, matrix)
             drawAnchor(qrcode, matrix)
-            if (mIcon != null) drawIcon(qrcode)
+            if (qrIcon != null) drawIcon(qrcode)
 
-            if (mFrame) return addFrame(qrcode)
+            if (qrFrame) return addFrame(qrcode)
             return qrcode
         } catch (e: WriterException) {
             Log.e("QREncoder", "Exception in encoding QR code")
@@ -117,7 +119,7 @@ class QREncoder(private val mContext: Context, private val mContent: String) {
     private fun drawQrImage(qrcode: Bitmap, byteMatrix: ByteMatrix) {
         val canvas = Canvas(qrcode)
         val paint = paint
-        paint.color = mFGColor
+        paint.color = qrFGColor
         val width = (qrcode.width * 1.0f) / byteMatrix.width
         val radius = 0.382f * width
         val offset = width / 2.0f
@@ -160,8 +162,8 @@ class QREncoder(private val mContext: Context, private val mContent: String) {
         val anchorTint = Paint()
         anchorTint.isAntiAlias = true
         anchorTint.style = Paint.Style.FILL
-        if (mTintAnchor) {
-            anchorTint.setColorFilter(PorterDuffColorFilter(mFGColor, PorterDuff.Mode.SRC_IN))
+        if (qrTintAnchor) {
+            anchorTint.setColorFilter(PorterDuffColorFilter(qrFGColor, PorterDuff.Mode.SRC_IN))
         }
 
         val scaleBitmap = getScaleBitmap(anchor, (anchorWidth) / anchor.width)
@@ -181,12 +183,12 @@ class QREncoder(private val mContext: Context, private val mContent: String) {
     }
 
     private fun drawIcon(qrCode: Bitmap) {
-        val height = mIconSize
-        val width = mIconSize
+        val height = qrIconSize
+        val width = qrIconSize
 
         val iconTop = (qrCode.height / 2) - (height / 2)
         val iconLeft = (qrCode.width / 2) - (width / 2)
-        val iconRadius = mIconSize/2
+        val iconRadius = qrIconSize/2
         val iconPadding = (5f * dpToPx).toInt()
         val canvas = Canvas(qrCode)
         val paint = paint
@@ -197,8 +199,8 @@ class QREncoder(private val mContext: Context, private val mContent: String) {
             ((height + iconTop + iconPadding).toFloat())
         )
         canvas.drawRoundRect(rectF, iconRadius.toFloat(), iconRadius.toFloat(), paint)
-        mIcon!!.setBounds(iconLeft, iconTop, iconLeft + width, iconTop + height)
-        mIcon!!.draw(canvas)
+        qrIcon!!.setBounds(iconLeft, iconTop, iconLeft + width, iconTop + height)
+        qrIcon!!.draw(canvas)
     }
 
     private fun addFrame(qrcode: Bitmap): Bitmap {
@@ -207,7 +209,7 @@ class QREncoder(private val mContext: Context, private val mContent: String) {
 
         val newWidth = qrcode.width + border * 2
         val newHeight = qrcode.height + border * 2
-        val output = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888)
+        val output = createBitmap(newWidth, newHeight)
         val canvas = Canvas(output)
 
         val paint = paint
@@ -216,7 +218,7 @@ class QREncoder(private val mContext: Context, private val mContent: String) {
 
         canvas.drawBitmap(qrcode, border.toFloat(), border.toFloat(), null)
 
-        paint.color = if (mTintBorder) mFGColor else Color.parseColor("#d0d0d0")
+        paint.color = if (qrTintBorder) qrFGColor else "#d0d0d0".toColorInt()
         paint.strokeWidth = 2f
         paint.style = Paint.Style.STROKE
         rectF[1.0f, 1.0f, (newWidth - 1).toFloat()] = (newHeight - 1).toFloat()
@@ -231,7 +233,7 @@ class QREncoder(private val mContext: Context, private val mContent: String) {
             val paint = Paint()
             paint.isAntiAlias = true
             paint.style = Paint.Style.FILL
-            paint.color = mBGColor
+            paint.color = qrBGColor
             return paint
         }
 
@@ -240,11 +242,7 @@ class QREncoder(private val mContext: Context, private val mContent: String) {
     }
 
     private fun getBitmap(drawable: Drawable): Bitmap {
-        val createBitmap = Bitmap.createBitmap(
-            drawable.intrinsicWidth,
-            drawable.intrinsicHeight,
-            Bitmap.Config.ARGB_8888
-        )
+        val createBitmap = createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight)
         val canvas = Canvas(createBitmap)
         drawable.setBounds(0, 0, canvas.width, canvas.height)
         drawable.draw(canvas)

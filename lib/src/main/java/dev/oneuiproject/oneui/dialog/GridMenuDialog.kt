@@ -56,13 +56,13 @@ class GridMenuDialog @JvmOverloads constructor(
     @StyleRes theme: Int = R.style.MoreMenuDialogStyle
 ) : AppCompatDialog(context, theme) {
 
-    private var mMessage: CharSequence? = null
-    private var mSpanCount = SPAN_COUNT
-    private val mGridItems: ArrayList<GridItem> = ArrayList()
-    private lateinit var mContentView: LinearLayout
-    private lateinit var mGridListView: RecyclerView
-    private val mAdapter: GridListAdapter = GridListAdapter()
-    private var mCurrentAnchorView: View? = null
+    private var message: CharSequence? = null
+    private var spanCount = SPAN_COUNT
+    private val gridItems: ArrayList<GridItem> = ArrayList()
+    private lateinit var contentView: LinearLayout
+    private lateinit var gridListView: RecyclerView
+    private val adapter: GridListAdapter = GridListAdapter()
+    private var currentAnchorView: View? = null
 
     fun interface OnItemClickListener {
         fun onClick(item: GridItem): Boolean
@@ -79,13 +79,13 @@ class GridMenuDialog @JvmOverloads constructor(
         supportRequestWindowFeature(FEATURE_NO_TITLE)
         val context = context
         val inflater = LayoutInflater.from(context)
-        mContentView = inflater.inflate(R.layout.oui_des_dialog_grid_menu, null) as LinearLayout
-        setContentView(mContentView)
+        contentView = inflater.inflate(R.layout.oui_des_dialog_grid_menu, null) as LinearLayout
+        setContentView(contentView)
         super.onCreate(savedInstanceState)
 
         resetContentPadding()
         setOnShowListener {
-            val layoutManager = mGridListView.layoutManager!!
+            val layoutManager = gridListView.layoutManager!!
             val childCount = layoutManager.childCount
             for (i in 0 until childCount) {
                 layoutManager.getChildAt(i)?.apply {
@@ -102,14 +102,14 @@ class GridMenuDialog @JvmOverloads constructor(
     }
 
     fun updateDialog(){
-        mSpanCount = calculateColumnCount().coerceAtMost(mGridItems.size)
-        mGridListView = mContentView.findViewById<RecyclerView>(R.id.grid_menu_view).apply {
-            layoutManager = GridLayoutManager(context, mSpanCount).apply {
+        spanCount = calculateColumnCount().coerceAtMost(gridItems.size)
+        gridListView = contentView.findViewById<RecyclerView>(R.id.grid_menu_view).apply {
+            layoutManager = GridLayoutManager(context, spanCount).apply {
                 spanSizeLookup = object : SpanSizeLookup() {
                     override fun getSpanSize(position: Int) = 1
                 }
             }
-            adapter = mAdapter
+            this.adapter = this@GridMenuDialog.adapter
             (itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
         }
 
@@ -168,13 +168,13 @@ class GridMenuDialog @JvmOverloads constructor(
     }
 
     private fun updateDialogMaxHeight() {
-        val gridViewLP = mGridListView.layoutParams
-        val isOverMaxRow = isOverMaxRow(mSpanCount)
+        val gridViewLP = gridListView.layoutParams
+        val isOverMaxRow = isOverMaxRow(spanCount)
 
         val plus = if (isOverMaxRow) {
             if (!isTabletStyle(context) && isLandscapeView(context)) 3 else 4
         } else {
-            ((mAdapter.itemCount - 1) / mSpanCount) + 1
+            ((adapter.itemCount - 1) / spanCount) + 1
         }
 
         val moreMenuItemHeight: Int = getMoreMenuItemHeight() * plus
@@ -187,7 +187,7 @@ class GridMenuDialog @JvmOverloads constructor(
         } else {
             gridViewLP.height = WRAP_CONTENT
         }
-        mGridListView.setLayoutParams(gridViewLP)
+        gridListView.setLayoutParams(gridViewLP)
     }
 
     private val updateDialogWidthAndPositionRunnable = Runnable {
@@ -196,7 +196,7 @@ class GridMenuDialog @JvmOverloads constructor(
     }
 
     private val mOnLayoutChangeListener = View.OnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
-        mCurrentAnchorView?.apply {
+        currentAnchorView?.apply {
             removeCallbacks(updateDialogWidthAndPositionRunnable)
             hide()
             postDelayed(updateDialogWidthAndPositionRunnable,500)
@@ -204,14 +204,14 @@ class GridMenuDialog @JvmOverloads constructor(
     }
 
     fun setAnchor(anchor: View) {
-        mCurrentAnchorView?.removeOnLayoutChangeListener(mOnLayoutChangeListener)
-        mCurrentAnchorView = anchor
+        currentAnchorView?.removeOnLayoutChangeListener(mOnLayoutChangeListener)
+        currentAnchorView = anchor
         anchor.addOnLayoutChangeListener(mOnLayoutChangeListener)
         updateDialogWidthAndPosition()
     }
 
     private fun getAnchorViewHorizontalCenter(): Float? {
-        return mCurrentAnchorView?.let { view ->
+        return currentAnchorView?.let { view ->
             val location = IntArray(2)
             if (SDK_INT >= 29) {
                 view.getLocationInSurface(location)
@@ -223,8 +223,8 @@ class GridMenuDialog @JvmOverloads constructor(
     }
 
     override fun dismiss() {
-        mCurrentAnchorView?.removeOnLayoutChangeListener(mOnLayoutChangeListener)
-        mCurrentAnchorView = null
+        currentAnchorView?.removeOnLayoutChangeListener(mOnLayoutChangeListener)
+        currentAnchorView = null
         super.dismiss()
     }
 
@@ -252,8 +252,8 @@ class GridMenuDialog @JvmOverloads constructor(
 
     private fun isOverMaxRow(rows: Int): Boolean {
         return if ((isDeskTopMode(context.resources) || !isLandscapeView(context))) {
-            mAdapter.itemCount > rows * 4
-        } else mAdapter.itemCount > rows * 3
+            adapter.itemCount > rows * 4
+        } else adapter.itemCount > rows * 3
     }
 
     private fun calculateColumnCount(): Int {
@@ -273,14 +273,14 @@ class GridMenuDialog @JvmOverloads constructor(
         return (if (isPhoneLandscape) SPAN_COUNT_LANDSCAPE else SPAN_COUNT).coerceAtMost(maxColumns)
     }
 
-    fun addTopCustomView(view: View) = mContentView.addView(view, 0)
+    fun addTopCustomView(view: View) = contentView.addView(view, 0)
 
     private fun resetContentPadding() {
         val res = context.resources
         val horizontalPadding = res.getDimensionPixelSize(R.dimen.oui_des_grid_menu_dialog_horizontal_padding)
         val verticalPadding = res.getDimensionPixelSize(R.dimen.oui_des_grid_menu_dialog_vertical_padding)
-        val hasMessage = mMessage != null && mMessage!!.isNotEmpty()
-        mContentView.setPaddingRelative(
+        val hasMessage = message != null && message!!.isNotEmpty()
+        contentView.setPaddingRelative(
             horizontalPadding,
             if (hasMessage) 0 else verticalPadding,
             horizontalPadding,
@@ -292,11 +292,11 @@ class GridMenuDialog @JvmOverloads constructor(
     fun inflateMenu(@MenuRes menuRes: Int) {
         val context = context
         val menu = MenuBuilder(context).also { SupportMenuInflater(context).inflate(menuRes, it) }
-        mGridItems.clear()
+        gridItems.clear()
         for (i in 0 until menu.size()) {
             (menu.getItem(i) as? MenuItemImpl)?.let {
                 if (it.isVisible) {
-                    mGridItems.add(it.toGridDialogItem())
+                    gridItems.add(it.toGridDialogItem())
                 }
             }
         }
@@ -304,23 +304,23 @@ class GridMenuDialog @JvmOverloads constructor(
     }
 
     fun updateItems(gridItems: List<GridItem>) {
-        this.mGridItems.clear()
-        this.mGridItems.addAll(gridItems)
+        this.gridItems.clear()
+        this.gridItems.addAll(gridItems)
         notifyDataSetChanged()
     }
 
     fun addItem(gridItem: GridItem) {
-        mGridItems.add(gridItem)
+        gridItems.add(gridItem)
         notifyDataSetChanged()
     }
 
     fun addItem(index: Int, gridItem: GridItem) {
-        mGridItems.add(index, gridItem)
+        gridItems.add(index, gridItem)
         notifyDataSetChanged()
     }
 
     fun findItem(itemId: Int): GridItem? {
-        return mGridItems.find { it.itemId == itemId }.also {
+        return gridItems.find { it.itemId == itemId }.also {
             if (it == null) {
                 Log.e(TAG, "findItem: couldn't find item with id 0x${Integer.toHexString(itemId)}")
             }
@@ -328,13 +328,13 @@ class GridMenuDialog @JvmOverloads constructor(
     }
 
     fun removeItem(index: Int) {
-        mGridItems.removeAt(index)
+        gridItems.removeAt(index)
         notifyDataSetChanged()
     }
 
     fun removeItemWithId(@IdRes id: Int) {
         findItem(id)?.let {
-            mGridItems.remove(it)
+            gridItems.remove(it)
             notifyDataSetChanged()
         } ?: Log.e(
             TAG, "removeItemWithId: couldn't find item with id 0x"
@@ -343,9 +343,9 @@ class GridMenuDialog @JvmOverloads constructor(
     }
 
     fun setEnableItem(itemId: Int, enabled: Boolean) {
-        mGridItems.findWithIndex({ it.itemId == itemId }) { index, item ->
-            mGridItems[index] = item.copy(isEnabled = enabled)
-            mAdapter.notifyItemChanged(index)
+        gridItems.findWithIndex({ it.itemId == itemId }) { index, item ->
+            gridItems[index] = item.copy(isEnabled = enabled)
+            adapter.notifyItemChanged(index)
         }
     }
 
@@ -353,17 +353,17 @@ class GridMenuDialog @JvmOverloads constructor(
      * @hide
      */
     @RestrictTo(RestrictTo.Scope.LIBRARY)
-    internal fun isShowingBadge() = mGridItems.count { it.badge != Badge.NONE } > 0
+    internal fun isShowingBadge() = gridItems.count { it.badge != Badge.NONE } > 0
 
     fun setBadge(itemId: Int, badge: Badge) {
-        mGridItems.findWithIndex({ it.itemId == itemId }) { index, item ->
-            mGridItems[index] = item.copy(badge = badge)
-            mAdapter.notifyItemChanged(index)
+        gridItems.findWithIndex({ it.itemId == itemId }) { index, item ->
+            gridItems[index] = item.copy(badge = badge)
+            adapter.notifyItemChanged(index)
         }
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun notifyDataSetChanged() = mAdapter.notifyDataSetChanged()
+    private fun notifyDataSetChanged() = adapter.notifyDataSetChanged()
 
     private inner class GridListAdapter : RecyclerView.Adapter<GridListViewHolder>() {
         @SuppressLint("InflateParams")
@@ -374,7 +374,7 @@ class GridMenuDialog @JvmOverloads constructor(
 
             return GridListViewHolder(view).apply {
                 itemView.setOnClickListener {
-                    val gridItem = mGridItems[bindingAdapterPosition]
+                    val gridItem = gridItems[bindingAdapterPosition]
                     val result = onClickMenuItem?.onClick(gridItem) ?: false
                     if (result) {
                         parent.postDelayed({ dismiss()}, 240)
@@ -384,7 +384,7 @@ class GridMenuDialog @JvmOverloads constructor(
         }
 
         override fun onBindViewHolder(holder: GridListViewHolder, position: Int) {
-            val gridItem = mGridItems[position]
+            val gridItem = gridItems[position]
             holder.apply {
                 iconView.setImageDrawable(gridItem.icon)
                 titleView.text = gridItem.title
@@ -394,7 +394,7 @@ class GridMenuDialog @JvmOverloads constructor(
             }
         }
 
-        override fun getItemCount(): Int = mGridItems.size
+        override fun getItemCount(): Int = gridItems.size
     }
 
     private class GridListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

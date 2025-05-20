@@ -29,19 +29,19 @@ class SuggestionCardPreference @JvmOverloads constructor(
     defStyleRes: Int = 0
 ) : Preference(context, attrs, defStyleAttr, defStyleRes) {
 
-    private var mClosedListener: View.OnClickListener? = null
+    private var closedListener: View.OnClickListener? = null
 
-    private var mCloseButtonClickListener = View.OnClickListener{
-        mClosedListener?.onClick(it)
+    private var closeButtonClickListener = View.OnClickListener{
+        closedListener?.onClick(it)
         parent?.removePreference(this)
     }
 
-    private var mActionButtonClickListener: View.OnClickListener? = null
-    private lateinit var mItemView: View
-    private var mLottieAnimationView: LottieAnimationView? = null
-    private var mActionButtonContainer: LinearLayout? = null
-    private var mActionButtonTextView: TextView? = null
-    private var mActionButtonText: String? = null
+    private var actionButtonClickListener: View.OnClickListener? = null
+    private lateinit var itemView: View
+    private var lottieAnimationView: LottieAnimationView? = null
+    private var actionButtonContainer: LinearLayout? = null
+    private var actionButtonTextView: TextView? = null
+    private var actionButtonText: String? = null
 
     @RawRes
     private var animationResId: Int? = null
@@ -67,57 +67,57 @@ class SuggestionCardPreference @JvmOverloads constructor(
 
     override fun onBindViewHolder(preferenceViewHolder: PreferenceViewHolder) {
         super.onBindViewHolder(preferenceViewHolder)
-        mItemView = preferenceViewHolder.itemView
+        itemView = preferenceViewHolder.itemView
 
-        with(mItemView) {
+        with(itemView) {
             findViewById<ImageView>(R.id.exit_button).apply {
-                setOnClickListener(mCloseButtonClickListener)
+                setOnClickListener(closeButtonClickListener)
             }
-            mLottieAnimationView = findViewById(R.id.lottie_view)
-            mActionButtonContainer = findViewById<LinearLayout>(R.id.action_button_container).apply {
-                setOnClickListener(mActionButtonClickListener)
+            lottieAnimationView = findViewById(R.id.lottie_view)
+            actionButtonContainer = findViewById<LinearLayout>(R.id.action_button_container).apply {
+                setOnClickListener(actionButtonClickListener)
             }
-            mActionButtonTextView = findViewById<TextView>(R.id.action_button_text).apply {
-                text = mActionButtonText
+            actionButtonTextView = findViewById<TextView>(R.id.action_button_text).apply {
+                text = actionButtonText
             }
         }
     }
 
     fun setOnClosedClickedListener(listener: View.OnClickListener?) {
-        mClosedListener = listener
+        closedListener = listener
     }
 
     fun setActionButtonText(str: String?) {
-        mActionButtonText = str
-        mActionButtonTextView?.apply {
-            isVisible = !mActionButtonText.isNullOrEmpty()
+        actionButtonText = str
+        actionButtonTextView?.apply {
+            isVisible = !actionButtonText.isNullOrEmpty()
             text = str
         }
     }
 
     fun setActionButtonOnClickListener(onClickListener: View.OnClickListener) {
-        mActionButtonClickListener = onClickListener
-        mActionButtonContainer?.setOnClickListener(onClickListener)
+        actionButtonClickListener = onClickListener
+        actionButtonContainer?.setOnClickListener(onClickListener)
     }
 
     @JvmOverloads
     fun startTurnOnAnimation(postAnimationButtonText: String? = null) {
-        if (mLottieAnimationView == null || mActionButtonTextView == null) return
+        if (lottieAnimationView == null || actionButtonTextView == null) return
 
-        mActionButtonTextView!!.animate()
+        actionButtonTextView!!.animate()
             .alpha(0.0f)
             .setDuration(100L)
             .setInterpolator(CachedInterpolatorFactory.getOrCreate(LINEAR_INTERPOLATOR))
             .withEndAction{
                 postAnimationButtonText?.let{setActionButtonText(it)}
-                mActionButtonTextView!!.apply {
+                actionButtonTextView!!.apply {
                     animate()
                         .alpha(1.0f)
                         .setDuration(200L)
                         .setInterpolator(CachedInterpolatorFactory.getOrCreate(LINEAR_INTERPOLATOR))
                         .start()
 
-                    translationX -= mLottieAnimationView!!.layoutParams.width
+                    translationX -= lottieAnimationView!!.layoutParams.width
 
                     animate()
                         .translationX(0.0f)
@@ -125,7 +125,7 @@ class SuggestionCardPreference @JvmOverloads constructor(
                         .setInterpolator(CachedInterpolatorFactory.getOrCreate(PATH_0_22_0_25_0_0_1_0))
                         .start()
                 }
-                mLottieAnimationView!!.apply {
+                lottieAnimationView!!.apply {
                     setVisibility(View.VISIBLE)
                     setAnimation("sec_suggestions_done.json")
                     setRepeatCount(0)

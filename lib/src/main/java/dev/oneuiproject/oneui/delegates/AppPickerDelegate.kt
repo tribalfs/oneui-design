@@ -25,19 +25,18 @@ import kotlin.coroutines.CoroutineContext
  */
 class AppPickerDelegate : AppPickerOp, AppPickerView.OnBindListener, CoroutineScope {
 
-    private var mListType: Int? = null
-    private lateinit var mGetCurrentList: (() -> ArrayList<String>)
-    private val mSelectedItems = mutableScatterSetOf<CharSequence>()
-    private var mIsInitialized = AtomicBoolean(false)
-    private var mOnItemClicked: ((pos: Int, packageName: CharSequence, appLabel:CharSequence) -> Unit)? = null
-    private var mOnItemCheckChange: ((pos: Int, packageName: CharSequence, appLabel:CharSequence, isChecked: Boolean) -> Unit)? = null
-    private var mOnItemActionClicked: ((pos: Int, packageName: CharSequence, appLabel:CharSequence) -> Unit)? = null
+    private var listType: Int? = null
+    private var getCurrentList: (() -> ArrayList<String>)? = null
+    private val selectedItems = mutableScatterSetOf<CharSequence>()
+    private var isInitialized = AtomicBoolean(false)
+    private var onItemClicked: ((pos: Int, packageName: CharSequence, appLabel:CharSequence) -> Unit)? = null
+    private var onItemCheckChange: ((pos: Int, packageName: CharSequence, appLabel:CharSequence, isChecked: Boolean) -> Unit)? = null
+    private var onItemActionClicked: ((pos: Int, packageName: CharSequence, appLabel:CharSequence) -> Unit)? = null
 
-
-    private var mOnSelectAllChange: ((selectAllButton: CompoundButton, isChecked: Boolean) -> Unit)? = null
-    private var mOnLongClicked: ((pos: Int, packageName: CharSequence, appLabel:CharSequence) -> Unit)? = null
-    private lateinit var mContext: Context
-    private lateinit var mAppPickerView: AppPickerView
+    private var onSelectAllChange: ((selectAllButton: CompoundButton, isChecked: Boolean) -> Unit)? = null
+    private var onLongClicked: ((pos: Int, packageName: CharSequence, appLabel:CharSequence) -> Unit)? = null
+    private lateinit var context: Context
+    private lateinit var appPickerView: AppPickerView
 
     private val masterJob = SupervisorJob()
     override val coroutineContext: CoroutineContext
@@ -51,16 +50,16 @@ class AppPickerDelegate : AppPickerOp, AppPickerView.OnBindListener, CoroutineSc
         onItemCheckChanged: ((position: Int, packageName: CharSequence, appLabel: CharSequence, isChecked: Boolean) -> Unit)?,
         onSelectAllChanged: ((selectAllButton: CompoundButton, isChecked: Boolean) -> Unit)?,
         onItemActionClicked: ((pos: Int, packageName: CharSequence, appLabel: CharSequence) -> Unit)?,
-        onLongClick: ((position: Int, packageName: CharSequence, appLabel: CharSequence) -> Unit)?
+        onLongClicked: ((position: Int, packageName: CharSequence, appLabel: CharSequence) -> Unit)?
     ) {
-        mAppPickerView = this@configure
-        mContext = mAppPickerView.context
-        mOnItemClicked = onItemClicked
-        mOnItemCheckChange = onItemCheckChanged
-        mOnItemActionClicked = onItemActionClicked
-        mOnLongClicked = onLongClick
-        mOnSelectAllChange = onSelectAllChanged
-        mGetCurrentList = onGetCurrentList ?: { AppPickerView.getInstalledPackages(mContext) as ArrayList<String>}
+        appPickerView = this@configure
+        this@AppPickerDelegate.context = appPickerView.context
+        this@AppPickerDelegate.onItemClicked = onItemClicked
+        onItemCheckChange = onItemCheckChanged
+        this@AppPickerDelegate.onItemActionClicked = onItemActionClicked
+        this@AppPickerDelegate.onLongClicked = onLongClicked
+        onSelectAllChange = onSelectAllChanged
+        getCurrentList = onGetCurrentList
 
         lifecycleOwner.lifecycle.addObserver(
             object: DefaultLifecycleObserver{
@@ -75,13 +74,13 @@ class AppPickerDelegate : AppPickerOp, AppPickerView.OnBindListener, CoroutineSc
     @SuppressLint("RestrictedApi")
     override fun refreshAppList() {
         launch(Dispatchers.IO) {
-            mGetCurrentList().let {
-                if (!mIsInitialized.getAndSet(true) || mAppPickerView.adapter == null) {
+            getCurrentList().let {
+                if (!isInitialized.getAndSet(true) || appPickerView.adapter == null) {
                     withContext(Dispatchers.Main) {
-                        with(mAppPickerView) {
+                        with(appPickerView) {
                             clearItemDecorations()
                             setAppPickerView(
-                                mListType ?: AppPickerView.TYPE_LIST,
+                                listType ?: AppPickerView.TYPE_LIST,
                                 it,
                                 AppPickerView.ORDER_ASCENDING_IGNORE_CASE
                             )
@@ -89,7 +88,7 @@ class AppPickerDelegate : AppPickerOp, AppPickerView.OnBindListener, CoroutineSc
                         }
                     }
                 } else {
-                    withContext(Dispatchers.Main) { mAppPickerView.resetPackages(it) }
+                    withContext(Dispatchers.Main) { appPickerView.resetPackages(it) }
                 }
             }
         }
@@ -97,14 +96,14 @@ class AppPickerDelegate : AppPickerOp, AppPickerView.OnBindListener, CoroutineSc
 
 
     override fun setListType(@AppPickerView.AppPickerType listType: Int) {
-        if (mListType == listType) return
-        mListType = listType
-        mIsInitialized.set(false)
+        if (this@AppPickerDelegate.listType == listType) return
+        this@AppPickerDelegate.listType = listType
+        isInitialized.set(false)
         refreshAppList()
     }
 
     override fun clearSelectedItems() {
-        mSelectedItems.clear()
+        selectedItems.clear()
     }
 
     /**
@@ -114,7 +113,7 @@ class AppPickerDelegate : AppPickerOp, AppPickerView.OnBindListener, CoroutineSc
         holder: AppPickerView.ViewHolder,
         position: Int, packageName: String
     ) {
-        when (mListType) {
+        when (listType) {
             AppPickerView.TYPE_LIST -> doOnBind( position, packageName, holder, null)
             AppPickerView.TYPE_LIST_ACTION_BUTTON -> doOnBind( position, packageName, holder, holder.actionButton)
             AppPickerView.TYPE_GRID -> doOnBind( position, packageName, holder, null)
@@ -137,7 +136,7 @@ class AppPickerDelegate : AppPickerOp, AppPickerView.OnBindListener, CoroutineSc
 
     @SuppressLint("RestrictedApi")
     private fun getAbsAdapter(): AbsAdapter{
-        return (mAppPickerView.adapter!! as AbsAdapter)
+        return (appPickerView.adapter!! as AbsAdapter)
     }
 
 
@@ -145,25 +144,25 @@ class AppPickerDelegate : AppPickerOp, AppPickerView.OnBindListener, CoroutineSc
                                                 packageName: CharSequence, holder: AppPickerView.ViewHolder) {
         if (position == 0) {
             if (AppPickerView.ALL_APPS_STRING != packageName) return
-            holder.appLabel.text = mContext.getString(R.string.oui_des_action_mode_all_checkbox)
+            holder.appLabel.text = context.getString(R.string.oui_des_action_mode_all_checkbox)
             switchWidget.apply {
-                isChecked = mSelectedItems.size == mGetCurrentList().size
+                isChecked = selectedItems.size == appListCache.size
                 holder.itemView.setOnClickListener {
                     isChecked = !isChecked
                     if (isChecked) {
-                        mSelectedItems.addAll(mGetCurrentList())
+                        selectedItems.addAll(appListCache)
                     } else {
-                        mSelectedItems.clear()
+                        selectedItems.clear()
                     }
-                    mAppPickerView.refreshUI()
-                    mOnSelectAllChange?.invoke(switchWidget, isChecked)
+                    appPickerView.refreshUI()
+                    onSelectAllChange?.invoke(switchWidget, isChecked)
                 }
             }
         } else {
-            with(switchWidget) {
-                isChecked = mSelectedItems.contains(packageName)
+            switchWidget.apply {
+                isChecked = selectedItems.contains(packageName)
                 setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                    mOnItemCheckChange?.invoke(
+                    onItemCheckChange?.invoke(
                         position,
                         packageName,
                         holder.appLabel.text.toString(),
@@ -173,15 +172,15 @@ class AppPickerDelegate : AppPickerOp, AppPickerView.OnBindListener, CoroutineSc
                 holder.itemView.setOnClickListener {
                     isChecked = !isChecked
                     if (isChecked) {
-                        if (mSelectedItems.add(packageName)) {
-                            if (mSelectedItems.size == mGetCurrentList().size) {
-                                mAppPickerView.refreshUI(0)
+                        if (selectedItems.add(packageName)) {
+                            if (selectedItems.size == appListCache.size) {
+                                appPickerView.refreshUI(0)
                             }
                         }
                     } else {
-                        val refreshAll = mSelectedItems.size == mGetCurrentList().size
-                        if (mSelectedItems.remove(packageName)){
-                            if (refreshAll) mAppPickerView.refreshUI(0)
+                        val refreshAll = selectedItems.size == appListCache.size
+                        if (selectedItems.remove(packageName)){
+                            if (refreshAll) appPickerView.refreshUI(0)
                         }
                     }
                 }
@@ -193,15 +192,15 @@ class AppPickerDelegate : AppPickerOp, AppPickerView.OnBindListener, CoroutineSc
     private fun doOnBindCheckable(switchWidget: CompoundButton, position: Int,
                                          packageName: CharSequence, holder: AppPickerView.ViewHolder) {
         with(switchWidget) {
-            isChecked = mSelectedItems.contains(packageName)
+            isChecked = selectedItems.contains(packageName)
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 if (isChecked) {
-                    mSelectedItems.add(packageName)
+                    selectedItems.add(packageName)
                 } else {
-                    mSelectedItems.remove(packageName)
+                    selectedItems.remove(packageName)
                 }
-                mAppPickerView.refreshUI(position)
-                mOnItemCheckChange?.invoke(
+                appPickerView.refreshUI(position)
+                onItemCheckChange?.invoke(
                     position,
                     packageName,
                     holder.appLabel.text.toString(),
@@ -214,25 +213,25 @@ class AppPickerDelegate : AppPickerOp, AppPickerView.OnBindListener, CoroutineSc
     private inline fun doOnBind(position: Int, packageName: CharSequence, holder: AppPickerView.ViewHolder,
                                 actionButton: ImageButton?) {
         holder.itemView.setOnClickListener {
-            mOnItemClicked?.invoke(position, packageName, holder.appLabel.text.toString())
+            onItemClicked?.invoke(position, packageName, holder.appLabel.text.toString())
         }
         actionButton?.setOnClickListener {
-            mOnItemActionClicked?.invoke(position, packageName, holder.appLabel.text.toString())
+            onItemActionClicked?.invoke(position, packageName, holder.appLabel.text.toString())
         }
     }
 
     private fun doOnBindCheckOnClick(switchWidget: CompoundButton, position: Int,
                                             packageName: CharSequence, holder: AppPickerView.ViewHolder) {
         with(switchWidget) {
-            isChecked = mSelectedItems.contains(packageName)
+            isChecked = selectedItems.contains(packageName)
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 if (isChecked) {
-                    mSelectedItems.add(packageName)
+                    selectedItems.add(packageName)
                 } else {
-                    mSelectedItems.remove(packageName)
+                    selectedItems.remove(packageName)
                 }
-                mAppPickerView.refreshUI(position)
-                mOnItemCheckChange?.invoke(
+                appPickerView.refreshUI(position)
+                onItemCheckChange?.invoke(
                     position,
                     packageName,
                     holder.appLabel.text.toString(),
@@ -256,7 +255,7 @@ interface AppPickerOp{
      * @param onItemClicked Lambda function to handle item click.
      * @param onItemCheckChanged Lambda function to handle item check change.
      * @param onItemActionClicked Lambda function to handle item action click.
-     * @param onLongClick Lambda function to handle item long click.
+     * @param onLongClicked Lambda function to handle item long click.
      */
     fun AppPickerView.configure(
         lifecycleOwner: LifecycleOwner,
@@ -269,7 +268,7 @@ interface AppPickerOp{
         onItemCheckChanged: ((position: Int, packageName: CharSequence, appLabel:CharSequence, isChecked: Boolean) -> Unit)? = null,
         onSelectAllChanged: ((selectAllButton: CompoundButton, isChecked: Boolean) -> Unit)? = null,
         onItemActionClicked: ((pos: Int, packageName: CharSequence, appLabel:CharSequence) -> Unit)? = null,
-        onLongClick: ((position: Int, packageName: CharSequence, appLabel: CharSequence) -> Unit)? = null
+        onLongClicked: ((position: Int, packageName: CharSequence, appLabel: CharSequence) -> Unit)? = null
     )
 
     /**

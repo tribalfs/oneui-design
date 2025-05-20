@@ -10,41 +10,41 @@ import dev.oneuiproject.oneui.layout.internal.backapi.BackAnimator
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 open class DrawerLayoutBackHandler<T: DrawerLayout>(
-    private val mDrawerLayout: T,
-    private val mDrawerBackAnimator: BackAnimator
-): ToolbarLayoutBackHandler(mDrawerLayout) {
+    private val drawerLayout: T,
+    private val drawerBackAnimator: BackAnimator
+): ToolbarLayoutBackHandler(drawerLayout) {
 
     override fun startBackProgress(backEvent: BackEventCompat) {
-        if (mDrawerLayout.shouldAnimateDrawer) {
-            mDrawerBackAnimator.startBackProgress(backEvent)
+        if (drawerLayout.shouldAnimateDrawer) {
+            drawerBackAnimator.startBackProgress(backEvent)
         }
     }
 
     override fun updateBackProgress(backEvent: BackEventCompat) {
-        if (mDrawerBackAnimator.isBackProgressStarted()) {
-            mDrawerBackAnimator.updateBackProgress(backEvent)
-        }else if (mDrawerLayout.shouldAnimateDrawer) {
-            mDrawerBackAnimator.startBackProgress(backEvent)
+        if (drawerBackAnimator.isBackProgressStarted()) {
+            drawerBackAnimator.updateBackProgress(backEvent)
+        }else if (drawerLayout.shouldAnimateDrawer) {
+            drawerBackAnimator.startBackProgress(backEvent)
         }
     }
 
     @CallSuper
     override fun handleBackInvoked() {
-        if (mDrawerBackAnimator.isBackProgressStarted() || mDrawerLayout.shouldCloseDrawer) {
-            mDrawerLayout.setDrawerOpen(false, animate = true)
-            mDrawerBackAnimator.handleBackInvoked()
+        if (drawerBackAnimator.isBackProgressStarted() || drawerLayout.shouldCloseDrawer) {
+            drawerLayout.setDrawerOpen(false, animate = true)
+            drawerBackAnimator.handleBackInvoked()
         }else {
             super.handleBackInvoked()
         }
     }
 
     override fun cancelBackProgress() {
-        if (mDrawerBackAnimator.isBackProgressStarted()) {
-            mDrawerBackAnimator.cancelBackProgress()
-            mDrawerLayout.updateOnBackCallbackState()
+        if (drawerBackAnimator.isBackProgressStarted()) {
+            drawerBackAnimator.cancelBackProgress()
+            drawerLayout.updateOnBackCallbackState()
         }
     }
 
-    fun isBackProgressStarted() = mDrawerBackAnimator.isBackProgressStarted()
+    fun isBackProgressStarted() = drawerBackAnimator.isBackProgressStarted()
 
 }

@@ -13,7 +13,7 @@ internal class DrawerActionViewContainer @JvmOverloads constructor(
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     private var originalHeight: Int? = null
-    private var mOffset: Float = 1f
+    private var offset: Float = 1f
 
     private companion object{
         private const val ACCELERATION_FACTOR = 0.5f
@@ -24,13 +24,13 @@ internal class DrawerActionViewContainer @JvmOverloads constructor(
         if (originalHeight == null) {
             originalHeight = measuredHeight
         }
-        val newHeight = (originalHeight!! * mOffset).toInt()
+        val newHeight = (originalHeight!! * offset).toInt()
         setMeasuredDimension(measuredWidth, newHeight)
     }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
-        val alphaFraction = ((mOffset - (1 - ACCELERATION_FACTOR)) / ACCELERATION_FACTOR).coerceIn(0f, 1f)
+        val alphaFraction = ((offset - (1 - ACCELERATION_FACTOR)) / ACCELERATION_FACTOR).coerceIn(0f, 1f)
         val transY = (height - originalHeight!!).toFloat() * ACCELERATION_FACTOR
         for (child in children){
             child.translationY = transY
@@ -39,8 +39,8 @@ internal class DrawerActionViewContainer @JvmOverloads constructor(
     }
 
     fun setOffset(offset: Float) {
-        if (mOffset == offset) return
-        mOffset = offset
+        if (this@DrawerActionViewContainer.offset == offset) return
+        this@DrawerActionViewContainer.offset = offset
         //Call requestLayout() on the next UI thread cycle
         //to help avoid conflicts with ongoing animations.
         post { requestLayout() }

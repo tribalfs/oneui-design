@@ -63,9 +63,9 @@ class SeekBarPreferencePro @JvmOverloads constructor(
 
     private val longPressHandler: Handler = LongPressHandler(this)
 
-    private var mSeekbarMode: Int = MODE_LEVEL_BAR
-    private var mSeamLess: Boolean = false
-    private var mSeekBar: SeekBarPlus? = null
+    private var seekbarMode: Int = MODE_LEVEL_BAR
+    private var isSeamLess: Boolean = false
+    private var seekBarPlus: SeekBarPlus? = null
 
     /**
      * If true, this sets [SeslSeekBar] to only put tick marks at the start, middle and end
@@ -131,31 +131,31 @@ class SeekBarPreferencePro @JvmOverloads constructor(
         }
 
 
-    private var mOverlapPoint: Int = NO_OVERLAP
-    private var mIsLongKeyProcessing = false
-    private var mSeekBarValueTextView: TextView? = null
-    private var mUnits: String? = null
-    private var mAddButton: ImageView? = null
-    private var mDeleteButton: ImageView? = null
-    private var mOnSeekBarPreferenceChangeListener: OnSeekBarPreferenceChangeListener? = null
+    private var overlapPoint: Int = NO_OVERLAP
+    private var isLongKeyProcessing = false
+    private var seekBarValueTextView: TextView? = null
+    private var units: String? = null
+    private var addButton: ImageView? = null
+    private var deleteButton: ImageView? = null
+    private var onSeekBarPreferenceChangeListener: OnSeekBarPreferenceChangeListener? = null
 
     init {
         context.obtainStyledAttributes(attrs, R.styleable.SeekBarPreferencePro).use { a ->
             centerBasedSeekBar = a.getBoolean(R.styleable.SeekBarPreferencePro_centerBasedSeekBar, false)
             leftLabel = a.getString(R.styleable.SeekBarPreferencePro_leftLabelName)
-            mOverlapPoint = a.getInt(R.styleable.SeekBarPreferencePro_overlapPoint, NO_OVERLAP)
+            overlapPoint = a.getInt(R.styleable.SeekBarPreferencePro_overlapPoint, NO_OVERLAP)
             rightLabel = a.getString(R.styleable.SeekBarPreferencePro_rightLabelName)
-            mSeamLess = a.getBoolean(R.styleable.SeekBarPreferencePro_seamlessSeekBar, false)
-            mSeekbarMode = a.getInt(R.styleable.SeekBarPreferencePro_seekBarMode, MODE_LEVEL_BAR)
+            isSeamLess = a.getBoolean(R.styleable.SeekBarPreferencePro_seamlessSeekBar, false)
+            seekbarMode = a.getInt(R.styleable.SeekBarPreferencePro_seekBarMode, MODE_LEVEL_BAR)
             showTickMarks = a.getBoolean(R.styleable.SeekBarPreferencePro_showTickMark, true)
-            mUnits = a.getString(R.styleable.SeekBarPreferencePro_units)
+            units = a.getString(R.styleable.SeekBarPreferencePro_units)
         }
         setOnSeekBarPreferenceChangeListener(null)
     }
 
 
     override fun setOnSeekBarPreferenceChangeListener(onSeekBarPreferenceChangeListener: OnSeekBarPreferenceChangeListener?) {
-        mOnSeekBarPreferenceChangeListener = object: OnSeekBarPreferenceChangeListener{
+        this@SeekBarPreferencePro.onSeekBarPreferenceChangeListener = object: OnSeekBarPreferenceChangeListener{
             override fun onProgressChanged(
                 seekBar: SeslSeekBar?,
                 progress: Int,
@@ -175,29 +175,29 @@ class SeekBarPreferencePro @JvmOverloads constructor(
             }
 
         }
-        super.setOnSeekBarPreferenceChangeListener(mOnSeekBarPreferenceChangeListener)
+        super.setOnSeekBarPreferenceChangeListener(this@SeekBarPreferencePro.onSeekBarPreferenceChangeListener)
     }
 
 
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
 
-        mSeekBar = (holder.findViewById(R.id.seekbar) as? SeekBarPlus)?.apply sbp@{
-            setSeamless(mSeamLess)
+        seekBarPlus = (holder.findViewById(R.id.seekbar) as? SeekBarPlus)?.apply sbp@{
+            setSeamless(isSeamLess)
             if (!centerBasedSeekBar) {
                 centerBasedBar = false
-                setMode(mSeekbarMode)
-                if (mOverlapPoint != NO_OVERLAP) {
-                     updateDualColorRange(mOverlapPoint - this@SeekBarPreferencePro.min,
+                setMode(seekbarMode)
+                if (overlapPoint != NO_OVERLAP) {
+                     updateDualColorRange(overlapPoint - this@SeekBarPreferencePro.min,
                          SeslSeekBarDualColors.Custom())
                 }
                 setShowTickMarks(showTickMarks)
             }
         }
-        mSeekBarValueTextView = (holder.findViewById(R.id.seekbar_value) as? TextView)
+        seekBarValueTextView = (holder.findViewById(R.id.seekbar_value) as? TextView)
         if (showSeekBarValue) {
-            mSeekBarValueTextView!!.isVisible = true
-            updateValueLabel(mSeekBar!!.progress)
+            seekBarValueTextView!!.isVisible = true
+            updateValueLabel(seekBarPlus!!.progress)
         }
 
         if (leftLabel != null || rightLabel != null) {
@@ -208,7 +208,7 @@ class SeekBarPreferencePro @JvmOverloads constructor(
             }
         }
 
-        mAddButton = (holder.findViewById(R.id.add_button) as? ImageView)?.apply add@{
+        addButton = (holder.findViewById(R.id.add_button) as? ImageView)?.apply add@{
             if (this@SeekBarPreferencePro.isAdjustable) {
                 visibility = View.VISIBLE
                 isEnabled = this@SeekBarPreferencePro.isEnabled
@@ -222,7 +222,7 @@ class SeekBarPreferencePro @JvmOverloads constructor(
             }
         }
 
-        mDeleteButton = (holder.findViewById(R.id.delete_button) as? ImageView)?.apply del@{
+        deleteButton = (holder.findViewById(R.id.delete_button) as? ImageView)?.apply del@{
             if (this@SeekBarPreferencePro.isAdjustable) {
                 visibility = View.VISIBLE
                 setOnClickListener(this@SeekBarPreferencePro)
@@ -238,10 +238,10 @@ class SeekBarPreferencePro @JvmOverloads constructor(
 
 
     private fun updateValueLabel(progress: Int) {
-        if (mSeekBarValueTextView != null) {
+        if (seekBarValueTextView != null) {
             val value = progress + min
-            val valueStr = "$value${mUnits?:""}"
-            mSeekBarValueTextView!!.text = valueStr
+            val valueStr = "$value${units?:""}"
+            seekBarValueTextView!!.text = valueStr
         }
     }
 
@@ -254,11 +254,11 @@ class SeekBarPreferencePro @JvmOverloads constructor(
     }
 
     override fun onLongClick(view: View): Boolean {
-        mIsLongKeyProcessing = true
+        isLongKeyProcessing = true
         val id = view.id
         if (id == R.id.delete_button || id == R.id.add_button) {
             Thread {
-                while (mIsLongKeyProcessing) {
+                while (isLongKeyProcessing) {
                     longPressHandler.sendEmptyMessage(if (view.id == R.id.delete_button) MSG_DELETE else MSG_ADD)
                     try {
                         Thread.sleep(300L)
@@ -275,7 +275,7 @@ class SeekBarPreferencePro @JvmOverloads constructor(
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(view: View, event: MotionEvent): Boolean {
         if (event.action == MotionEvent.ACTION_UP) {
-            mIsLongKeyProcessing = false
+            isLongKeyProcessing = false
             longPressHandler.removeMessages(MSG_DELETE)
             longPressHandler.removeMessages(MSG_ADD)
         }
