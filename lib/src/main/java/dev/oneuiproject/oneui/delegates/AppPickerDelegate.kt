@@ -21,7 +21,30 @@ import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.coroutines.CoroutineContext
 
 /**
- * Convenience class to handle [AppPickerView] ops.
+ * Delegate for managing [AppPickerView] operations
+ *
+ * - Call [AppPickerView.configure] in your Activity or Fragment to set up the delegate.
+ * - Use [setListType] to change the picker type.
+ * - Use [refreshAppList] to load or reload the app list.
+ *
+ * Sample usage:
+ * ```
+ * class AppPickerFragment : Fragment(),
+ *                       AppPickerOp by AppPickerDelegate() {
+ *
+ *    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+ *        binding.appPickerView.configure(
+ *                 this@AppPickerFragment,
+ *                 onGetCurrentList = { appsViewModel.appPickerUiStateFlow.value.appList },
+ *                 onItemClicked = { _, _, appLabel ->  toast("$appLabel clicked!") },
+ *                 onItemCheckChanged = { _, _, appLabel, isChecked ->  },
+ *                 onSelectAllChanged = { _, isChecked -> },
+ *                 onItemActionClicked = { _, _, appLabel ->
+ *                     toast("$appLabel action button clicked!")
+ *                 }
+ *             )
+ *    }
+ * ```
  */
 class AppPickerDelegate : AppPickerOp, AppPickerView.OnBindListener, CoroutineScope {
 

@@ -158,23 +158,14 @@ class ProgressDialog @JvmOverloads constructor(
         hasStarted = false
     }
 
+    /**
+     * The current progress, a value between 0 and [max]
+     */
     var progress: Int
-        /**
-         * Gets the current progress.
-         *
-         * @return the current progress, a value between 0 and [max]
-         */
         get() = if (progressBar != null) {
             progressBar!!.progress
         } else progressVal
 
-        /**
-         * Sets the current progress.
-         *
-         * @param value the current progress, a value between 0 and [max]
-         *
-         * @see SeslProgressBar.setProgress
-         */
         set(value) {
             if (hasStarted) {
                 progressBar!!.progress = value
@@ -184,23 +175,14 @@ class ProgressDialog @JvmOverloads constructor(
             }
         }
 
+    /**
+     * The current secondary progress, a value between 0 and [max]
+     */
     var secondaryProgress: Int
-        /**
-         * Gets the current secondary progress.
-         *
-         * @return the current secondary progress, a value between 0 and [max]
-         */
         get() = if (progressBar != null) {
             progressBar!!.secondaryProgress
         } else secondaryProgressVal
 
-        /**
-         * Sets the secondary progress.
-         *
-         * @param secondaryProgress the current secondary progress, a value between 0 and [max]
-         *
-         * @see SeslProgressBar.setSecondaryProgress
-         */
         set(secondaryProgress) {
             if (progressBar != null) {
                 progressBar!!.secondaryProgress = secondaryProgress
@@ -210,19 +192,14 @@ class ProgressDialog @JvmOverloads constructor(
             }
         }
 
+    /**
+     * The maximum allowed progress value. The default value is 100.
+     */
     var max: Int
-        /**
-         * Gets the maximum allowed progress value. The default value is 100.
-         *
-         * @return the maximum value
-         */
         get() = if (progressBar != null) {
             progressBar!!.max
         } else maxProgress
 
-        /**
-         * Sets the maximum allowed progress value.
-         */
         set(max) {
             if (progressBar != null) {
                 progressBar!!.max = max
@@ -293,29 +270,21 @@ class ProgressDialog @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Whether this ProgressDialog is in indeterminate mode.
+     * In indeterminate mode, the progress is ignored and the dialog shows an infinite
+     * animation instead.
+     *
+     * **Note:** A ProgressDialog with style [STYLE_SPINNER]
+     * is always indeterminate and will ignore this setting.
+     *
+     * @see [setProgressStyle]
+     */
     var isIndeterminate: Boolean
-        /**
-         * Whether this ProgressDialog is in indeterminate mode.
-         *
-         * @return true if the dialog is in indeterminate mode, false otherwise
-         */
         get() = if (progressBar != null) {
             progressBar!!.isIndeterminate
         } else indeterminate
 
-        /**
-         * Change the indeterminate mode for this ProgressDialog. In indeterminate
-         * mode, the progress is ignored and the dialog shows an infinite
-         * animation instead.
-         *
-         *
-         * **Note:** A ProgressDialog with style [STYLE_SPINNER]
-         * is always indeterminate and will ignore this setting.
-         *
-         * @param indeterminate true to enable indeterminate mode, false otherwise
-         *
-         * @see [setProgressStyle]
-         */
         set(indeterminate) {
             if (progressBar != null) {
                 progressBar!!.isIndeterminate = indeterminate

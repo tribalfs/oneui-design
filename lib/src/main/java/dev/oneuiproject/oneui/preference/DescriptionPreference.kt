@@ -1,5 +1,6 @@
 package dev.oneuiproject.oneui.preference
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
@@ -23,6 +24,7 @@ class DescriptionPreference @JvmOverloads constructor(
 
         if (attrs != null) {
             context.obtainStyledAttributes(attrs, androidx.preference.R.styleable.Preference).use {
+                @SuppressLint("PrivateResource")
                 layoutResource = it.getResourceId(
                     androidx.preference.R.styleable.Preference_android_layout,
                     R.layout.oui_des_preference_unclickable_layout

@@ -1,5 +1,6 @@
 package dev.oneuiproject.oneui.preference
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
@@ -19,6 +20,7 @@ class InsetPreferenceCategory @JvmOverloads constructor(
     private var customHeight = 0
 
     init {
+        @SuppressLint("PrivateResource")
         customHeight = context.resources
             .getDimensionPixelSize(androidx.appcompat.R.dimen.sesl_list_subheader_min_height)
 

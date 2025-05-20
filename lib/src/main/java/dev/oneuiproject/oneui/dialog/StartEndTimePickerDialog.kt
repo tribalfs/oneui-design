@@ -2,6 +2,7 @@
 
 package dev.oneuiproject.oneui.dialog
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.text.format.DateFormat
 import android.view.LayoutInflater
@@ -15,11 +16,24 @@ import dev.oneuiproject.oneui.dialog.internal.getCustomCalendarInstance
 import dev.oneuiproject.oneui.dialog.internal.getTimeText
 import dev.oneuiproject.oneui.utils.internal.updateWidth
 
+/**
+ * A dialog that allows users to pick a start and end time using a tabbed interface.
+ *
+ * This dialog presents two tabs (Start and End), each with a time picker. The user can switch between
+ * the tabs to set the start and end times independently. The dialog supports both 24-hour and 12-hour formats.
+ *
+ * @constructor Creates a new [StartEndTimePickerDialog].
+ * @param context The context to use for building the dialog.
+ * @param startTime The initial start time in minutes from midnight (0-1439).
+ * @param endTime The initial end time in minutes from midnight (0-1439).
+ * @param is24HourFormat Whether to use 24-hour time format. Defaults to the system setting.
+ * @param timePickerChangeListener Listener to receive the selected start and end times when the user confirms.
+ *
+ * @see TimePickerChangeListener
+ */
 class StartEndTimePickerDialog(
     context: Context,
-    /**Start time in minutes*/
     startTime: Int,
-    /**End time in minutes*/
     endTime: Int,
     private val is24HourFormat: Boolean = DateFormat.is24HourFormat(context),
     private val timePickerChangeListener: TimePickerChangeListener?,
@@ -77,6 +91,7 @@ class StartEndTimePickerDialog(
     }
 
     private fun initMainView() {
+        @SuppressLint("InflateParams")
         LayoutInflater.from(context).inflate(R.layout.oui_des_dialog_start_end_time_picker, null).also {
             setView(it)
             timePickerDialog = it
