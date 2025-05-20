@@ -94,25 +94,28 @@ class AppPickerDelegate : AppPickerOp, AppPickerView.OnBindListener, CoroutineSc
         )
     }
 
+    private var appListCache: ArrayList<String> = arrayListOf()
+
     @SuppressLint("RestrictedApi")
     override fun refreshAppList() {
         launch(Dispatchers.IO) {
-            getCurrentList().let {
-                if (!isInitialized.getAndSet(true) || appPickerView.adapter == null) {
-                    withContext(Dispatchers.Main) {
-                        with(appPickerView) {
-                            clearItemDecorations()
-                            setAppPickerView(
-                                listType ?: AppPickerView.TYPE_LIST,
-                                it,
-                                AppPickerView.ORDER_ASCENDING_IGNORE_CASE
-                            )
-                            setOnBindListener(this@AppPickerDelegate)
-                        }
+            appListCache = getCurrentList?.invoke()
+                ?: AppPickerView.getInstalledPackages(this@AppPickerDelegate.context) as ArrayList<String>
+
+            if (!isInitialized.getAndSet(true) || appPickerView.adapter == null) {
+                withContext(Dispatchers.Main) {
+                    with(appPickerView) {
+                        clearItemDecorations()
+                        setAppPickerView(
+                            listType ?: AppPickerView.TYPE_LIST,
+                            appListCache,
+                            AppPickerView.ORDER_ASCENDING_IGNORE_CASE
+                        )
+                        setOnBindListener(this@AppPickerDelegate)
                     }
-                } else {
-                    withContext(Dispatchers.Main) { appPickerView.resetPackages(it) }
                 }
+            } else {
+                withContext(Dispatchers.Main) { appPickerView.resetPackages(appListCache) }
             }
         }
     }
@@ -169,6 +172,7 @@ class AppPickerDelegate : AppPickerOp, AppPickerView.OnBindListener, CoroutineSc
             if (AppPickerView.ALL_APPS_STRING != packageName) return
             holder.appLabel.text = context.getString(R.string.oui_des_action_mode_all_checkbox)
             switchWidget.apply {
+                setOnCheckedChangeListener(null)
                 isChecked = selectedItems.size == appListCache.size
                 holder.itemView.setOnClickListener {
                     isChecked = !isChecked
@@ -183,6 +187,7 @@ class AppPickerDelegate : AppPickerOp, AppPickerView.OnBindListener, CoroutineSc
             }
         } else {
             switchWidget.apply {
+                setOnCheckedChangeListener(null)
                 isChecked = selectedItems.contains(packageName)
                 setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                     onItemCheckChange?.invoke(
@@ -208,13 +213,13 @@ class AppPickerDelegate : AppPickerOp, AppPickerView.OnBindListener, CoroutineSc
                     }
                 }
             }
-
         }
     }
 
     private fun doOnBindCheckable(switchWidget: CompoundButton, position: Int,
                                          packageName: CharSequence, holder: AppPickerView.ViewHolder) {
         with(switchWidget) {
+            setOnCheckedChangeListener(null)
             isChecked = selectedItems.contains(packageName)
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 if (isChecked) {
@@ -246,6 +251,7 @@ class AppPickerDelegate : AppPickerOp, AppPickerView.OnBindListener, CoroutineSc
     private fun doOnBindCheckOnClick(switchWidget: CompoundButton, position: Int,
                                             packageName: CharSequence, holder: AppPickerView.ViewHolder) {
         with(switchWidget) {
+            setOnCheckedChangeListener(null)
             isChecked = selectedItems.contains(packageName)
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 if (isChecked) {
