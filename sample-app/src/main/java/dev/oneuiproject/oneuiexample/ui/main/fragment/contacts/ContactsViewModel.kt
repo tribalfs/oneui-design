@@ -62,11 +62,13 @@ class ContactsViewModel (
     }.stateIn(viewModelScope, Lazily, ContactsUiState())
 
 
-    val allSelectorStateFlow: MutableStateFlow <AllSelectorState> = MutableStateFlow(AllSelectorState())
-    val isActionModeStateFlow: StateFlow<Boolean> = savedStateHandle.getStateFlow(KEY_IS_ACTION_MODE, false)
+    val allSelectorStateFlow = MutableStateFlow(AllSelectorState())
+    private val isActionModeStateFlow: StateFlow<Boolean> = savedStateHandle.getStateFlow(KEY_IS_ACTION_MODE, false)
+
     var isActionMode
         get() = isActionModeStateFlow.value
         set(value) { savedStateHandle[KEY_IS_ACTION_MODE] = value }
+
     var initialSelectedIds
         get() = savedStateHandle.get<Array<Long>>(KEY_ACTION_MODE_SELECTED_IDS)
         set(value) {savedStateHandle[KEY_ACTION_MODE_SELECTED_IDS] = value}
@@ -80,7 +82,9 @@ class ContactsViewModel (
             _queryStateFlow.value = query ?: ""
         }
     }
-    val isSearchModeStateFlow: StateFlow<Boolean> = savedStateHandle.getStateFlow(KEY_IS_SEARCH_MODE, false)
+
+    private val isSearchModeStateFlow: StateFlow<Boolean> = savedStateHandle.getStateFlow(KEY_IS_SEARCH_MODE, false)
+
     var isSearchMode
         get() = isSearchModeStateFlow.value
         set(value) { savedStateHandle[KEY_IS_SEARCH_MODE] = value }

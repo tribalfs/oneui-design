@@ -1,6 +1,5 @@
 package dev.oneuiproject.oneuiexample.ui.main.fragment.contacts
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -11,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SeslProgressBar
+import androidx.core.graphics.toColorInt
 import androidx.core.view.MenuProvider
 import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
@@ -79,7 +79,7 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ) =  super.onCreateView(inflater, container, savedInstanceState).also {
+    ) = super.onCreateView(inflater, container, savedInstanceState).also {
         //Cast to directly to MainActivity since we are not reusing
         //this fragment elsewhere
         drawerLayout = (requireActivity() as MainActivity).drawerLayout
@@ -100,15 +100,16 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
             )
         }
 
-        if (contactsViewModel.isSearchMode){
+        if (contactsViewModel.isSearchMode) {
             drawerLayout.launchSearchMode(CLEAR_DISMISS)
         }
 
-        if (contactsViewModel.isActionMode){
-            launchActionMode()
+        if (contactsViewModel.isActionMode) {
+            launchActionMode(contactsViewModel.initialSelectedIds)
+            contactsViewModel.initialSelectedIds = null //not anymore needed
         }
 
-        if (savedInstanceState == null){
+        if (savedInstanceState == null) {
             showTipPopup()
         }
     }
@@ -122,7 +123,7 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
         }
     }
 
-    private fun initViews(view: View){
+    private fun initViews(view: View) {
         mIndexScrollView = view.findViewById(R.id.indexscroll_view)
         mContactsListRv = view.findViewById(R.id.contacts_list)
         nsvNoItem = view.findViewById(R.id.nsvNoItem)
@@ -143,10 +144,10 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
             addItemDecoration(
                 SemItemDecoration(
                     requireContext(),
-                    dividerRule = ItemDecorRule.SELECTED{
+                    dividerRule = ItemDecorRule.SELECTED {
                         it.itemViewType == ContactsListItemUiModel.ContactItem.VIEW_TYPE
                     },
-                    subHeaderRule = ItemDecorRule.SELECTED{
+                    subHeaderRule = ItemDecorRule.SELECTED {
                         it.itemViewType == ContactsListItemUiModel.SeparatorItem.VIEW_TYPE
                     }
                 ).apply {
@@ -192,12 +193,12 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
     }
 
 
-    private fun observeUIState(){
+    private fun observeUIState() {
         val contactsRepo = ContactsRepo(requireContext())
         val viewModelFactory = ContactsViewModelFactory(contactsRepo)
         contactsViewModel = ViewModelProvider(this, viewModelFactory)[ContactsViewModel::class.java]
 
-        launchAndRepeatWithViewLifecycle{
+        launchAndRepeatWithViewLifecycle {
             launch {
                 contactsViewModel.contactsListStateFlow
                     .collectLatest {
@@ -205,7 +206,7 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
                         if (itemsList.isNotEmpty()) {
                             updateRecyclerViewVisibility(true, it.noItemText)
                             mIndexScrollView.updateIndexer(itemsList)
-                        }else{
+                        } else {
                             updateRecyclerViewVisibility(false, it.noItemText)
                         }
                         contactsAdapter.submitList(itemsList)
@@ -219,18 +220,6 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
             }
 
             launch {
-                contactsViewModel.isActionModeStateFlow
-                    .collectLatest {
-                        if (it){
-                            contactsAdapter.onToggleActionMode(true, contactsViewModel.initialSelectedIds)
-                            contactsViewModel.initialSelectedIds = null //not anymore needed
-                        }else{
-                            contactsAdapter.onToggleActionMode(false)
-                        }
-                    }
-            }
-
-            launch {
                 contactsViewModel.contactsSettingsStateFlow
                     .collectLatest {
                         mIndexScrollView.apply {
@@ -239,16 +228,19 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
                         }
                         menuProvider.apply {
                             autoHideMenuItemTitle = if (it.autoHideIndexScroll) {
-                                "Always show indexscroll" } else "Autohide indexscroll"
+                                "Always show indexscroll"
+                            } else "Autohide indexscroll"
                             showLettersMenuItemTitle = if (it.isTextModeIndexScroll) {
-                                "Hide index letters" } else "Show index letters"
+                                "Hide index letters"
+                            } else "Show index letters"
                             keepSearchMenuItemTitle = when (it.searchOnActionMode) {
                                 ActionModeSearch.DISMISS -> "ActionModeSearch.DISMISS"
                                 ActionModeSearch.NO_DISMISS -> "ActionModeSearch.NO_DISMISS"
                                 ActionModeSearch.CONCURRENT -> "ActionModeSearch.CONCURRENT"
                             }
-                            showCancelMenuItemTitle = if (it.actionModeShowCancel){
-                                "No cancel button" } else "Show cancel button"
+                            showCancelMenuItemTitle = if (it.actionModeShowCancel) {
+                                "No cancel button"
+                            } else "Show cancel button"
                         }
                     }
             }
@@ -256,12 +248,12 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
     }
 
 
-    private fun updateRecyclerViewVisibility(visible: Boolean, noItemText: String){
-        if (visible){
+    private fun updateRecyclerViewVisibility(visible: Boolean, noItemText: String) {
+        if (visible) {
             nsvNoItem.isVisible = false
             mContactsListRv.isVisible = true
             mIndexScrollView.isVisible = true
-        }else{
+        } else {
             tvNoItem.text = noItemText
             nsvNoItem.isVisible = true
             mContactsListRv.isVisible = false
@@ -270,31 +262,36 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
     }
 
 
-    private fun ContactsAdapter.setupOnClickListeners(){
+    private fun ContactsAdapter.setupOnClickListeners() {
         onClickItem = { contact, position ->
             if (isActionMode) {
                 onToggleItem(contact.toStableId(), position)
-            }else {
+            } else {
                 requireActivity().hideSoftInput()
 
-                when(contact){
+                when (contact) {
                     is ContactsListItemUiModel.ContactItem -> {
                         suggestiveSnackBar("${contact.contact.name} clicked!").apply {
                             setAction("Dismiss") { dismiss() }
                         }
                     }
+
                     is ContactsListItemUiModel.GroupItem -> {
                         suggestiveSnackBar("${contact.groupName} clicked!").apply {
                             setAction("Dismiss") { dismiss() }
                         }
                     }
+
                     else -> Unit
                 }
             }
         }
 
         onLongClickItem = {
-            if (!isActionMode) launchActionMode()
+            if (!isActionMode) {
+                contactsViewModel.isActionMode = true
+                launchActionMode()
+            }
             mContactsListRv.seslStartLongPressMultiSelection()
         }
     }
@@ -303,20 +300,21 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
         mContactsListRv.configureItemSwipeAnimator(
             leftToRightLabel = "Call",
             rightToLeftLabel = "Message",
-            leftToRightColor = Color.parseColor("#11a85f"),
-            rightToLeftColor = Color.parseColor("#31a5f3"),
+            leftToRightColor = "#11a85f".toColorInt(),
+            rightToLeftColor = "#31a5f3".toColorInt(),
             leftToRightDrawableRes = dev.oneuiproject.oneui.R.drawable.ic_oui_wifi_call,
             rightToLeftDrawableRes = dev.oneuiproject.oneui.R.drawable.ic_oui_message,
-            isLeftSwipeEnabled = {viewHolder ->
+            isLeftSwipeEnabled = { viewHolder ->
                 viewHolder.itemViewType == ContactsListItemUiModel.ContactItem.VIEW_TYPE
                         && !contactsAdapter.isActionMode
             },
-            isRightSwipeEnabled = {viewHolder ->
+            isRightSwipeEnabled = { viewHolder ->
                 viewHolder.itemViewType == ContactsListItemUiModel.ContactItem.VIEW_TYPE
                         && !contactsAdapter.isActionMode
             },
             onSwiped = { position, swipeDirection, _ ->
-                val contact = (contactsAdapter.getItemByPosition(position) as ContactsListItemUiModel.ContactItem).contact
+                val contact =
+                    (contactsAdapter.getItemByPosition(position) as ContactsListItemUiModel.ContactItem).contact
                 if (swipeDirection == START) {
                     toast("Messaging ${(contact.name)}... ")
                 }
@@ -329,15 +327,18 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
     }
 
 
-    private fun launchActionMode() {
-        val contactsSettings = contactsViewModel.contactsSettingsStateFlow.value
-        contactsViewModel.isActionMode = true
+    private fun launchActionMode(selectedIds: Array<Long>? = null) {
+        contactsAdapter.onToggleActionMode(true, selectedIds)
 
+        val contactsSettings = contactsViewModel.contactsSettingsStateFlow.value
         drawerLayout.startActionMode(
-            onInflateMenu = {menu, menuInflater ->
-                menuInflater.inflate( R.menu.menu_contacts_am, menu)
+            onInflateMenu = { menu, menuInflater ->
+                menuInflater.inflate(R.menu.menu_contacts_am, menu)
             },
-            onEnd = { contactsViewModel.isActionMode = false },
+            onEnd = {
+                contactsViewModel.isActionMode = false
+                contactsAdapter.onToggleActionMode(false)
+            },
             onSelectMenuItem = {
                 requireActivity().toast(it.title.toString())
                 drawerLayout.endActionMode()
@@ -345,7 +346,9 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
             },
             onSelectAll = { isChecked -> contactsAdapter.onToggleSelectAll(isChecked) },
             allSelectorStateFlow = contactsViewModel.allSelectorStateFlow,
-            searchOnActionMode = contactsSettings.searchOnActionMode.toSearchOnActionMode(searchModeListener),
+            searchOnActionMode = contactsSettings.searchOnActionMode.toSearchOnActionMode(
+                searchModeListener
+            ),
             showCancel = contactsSettings.actionModeShowCancel
         )
     }
@@ -408,7 +411,7 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
         }
     }
 
-    private val searchModeListener by lazy{
+    private val searchModeListener by lazy {
         object : ToolbarLayout.SearchModeListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 contactsViewModel.setQuery(query)
@@ -423,7 +426,7 @@ class ContactsFragment : BaseFragment(), ViewYTranslator by AppBarAwareYTranslat
             override fun onSearchModeToggle(searchView: SearchView, isActive: Boolean) {
                 if (isActive) {
                     searchView.queryHint = "Search contact"
-                }else{
+                } else {
                     contactsViewModel.setQuery("")
                 }
                 //Ignore if it's action mode search

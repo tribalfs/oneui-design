@@ -203,52 +203,46 @@
             <dev.oneuiproject.oneui.widget.SwitchItemView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:showBottomDivider="true"
                 app:title="SwitchItemView" />
 
+            <dev.oneuiproject.oneui.widget.RadioItemViewGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <dev.oneuiproject.oneui.widget.RadioItemView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="RadioItemView 1" />
+
+                <dev.oneuiproject.oneui.widget.RadioItemView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="RadioItemView 2" />
+
+                <dev.oneuiproject.oneui.widget.RadioItemView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="RadioItemView 3" />
+            </dev.oneuiproject.oneui.widget.RadioItemViewGroup>
         </dev.oneuiproject.oneui.widget.RoundedLinearLayout>
 
         <dev.oneuiproject.oneui.widget.Separator
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <dev.oneuiproject.oneui.widget.RadioItemViewGroup
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <dev.oneuiproject.oneui.widget.RadioItemView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:title="RadioItemView 1"/>
-
-            <dev.oneuiproject.oneui.widget.RadioItemView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:title="RadioItemView 2"/>
-
-            <dev.oneuiproject.oneui.widget.RadioItemView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:title="RadioItemView 3"/>
-        </dev.oneuiproject.oneui.widget.RadioItemViewGroup>
-
-        <dev.oneuiproject.oneui.widget.Separator
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <include
-            layout="@layout/relative_links_card_layout"/>
+        <include layout="@layout/relative_links_card_layout" />
 
         <dev.oneuiproject.oneui.widget.BottomTipView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title="Tip"
-            app:summary="This is a sample bottom tip description."
             app:linkText="More details"
-            />
+            app:summary="This is a sample bottom tip description."
+            app:title="Tip" />
 
         <Space
             android:layout_width="1dp"
-            android:layout_height="8dp"/>
+            android:layout_height="8dp" />
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

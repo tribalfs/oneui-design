@@ -260,7 +260,7 @@ public class MainActivity extends AppCompatActivity
         if (fragmentItem.showBottomTab()) {
             mBinding.bottomTab.show(true);
         } else {
-            mBinding.bottomTab.hide(true);
+            mBinding.bottomTab.hide(false);
         }
 
         boolean isHomeSelected = selectedClassName.equals(ContactsFragment.class.getName());

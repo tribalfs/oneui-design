@@ -25,7 +25,7 @@ class AppsViewModel (
     private val appsRepo: AppsRepo
 ): ViewModel() {
 
-    val appPickerScreenStateFlow = combine(
+    val appPickerUiStateFlow = combine(
         appsRepo.appsFlow,
         appsRepo.appPreferenceFlow
     ){ apps, prefs ->
@@ -52,7 +52,7 @@ class AppsViewModel (
         )
 
     fun toggleShowSystem() = viewModelScope.launch {
-        val current =  appPickerScreenStateFlow.value.showSystem
+        val current =  appPickerUiStateFlow.value.showSystem
         appsRepo.setShowSystemApps(!current)
     }
 }

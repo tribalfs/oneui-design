@@ -73,7 +73,7 @@ class AppPickerFragment : BaseFragment(),
             seslSetSmoothScrollEnabled(true)
             configure(
                 this@AppPickerFragment,
-                onGetCurrentList = { appsViewModel.appPickerScreenStateFlow.value.appList },
+                onGetCurrentList = { appsViewModel.appPickerUiStateFlow.value.appList },
                 onItemClicked = { _, _, appLabel ->
                     toast("$appLabel clicked!")
                 },
@@ -89,8 +89,8 @@ class AppPickerFragment : BaseFragment(),
 
         initSpinner()
 
-        launchAndRepeatWithViewLifecycle(Lifecycle.State.CREATED){
-            appsViewModel.appPickerScreenStateFlow
+        launchAndRepeatWithViewLifecycle{
+            appsViewModel.appPickerUiStateFlow
                 .collectLatest {
                     showProgressBar(it.isLoading)
                     refreshAppList()
