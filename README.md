@@ -30,7 +30,7 @@ dependencies {
   implementation("io.github.tribalfs:oneui-design:0.5.16+oneui7")
     
   //For OneUI 6 - must use sesl6 dependencies
-  implementation("io.github.tribalfs:oneui-design:0.5.13+oneui6")
+  implementation("io.github.tribalfs:oneui-design:0.5.14+oneui6")
 }
 ```
 
