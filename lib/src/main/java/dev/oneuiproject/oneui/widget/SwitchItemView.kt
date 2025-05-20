@@ -265,7 +265,7 @@ class SwitchItemView @JvmOverloads constructor(
         updateSwitchPosition()
     }
 
-    private val responsiveSwitchUpdater = {
+    private val responsiveSwitchUpdater = Runnable {
         val res = context.resources
         val configuration = res.configuration
         val swDp = configuration.screenWidthDp
