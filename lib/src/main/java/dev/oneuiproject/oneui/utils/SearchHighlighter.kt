@@ -1,7 +1,6 @@
 package dev.oneuiproject.oneui.utils
 
 import android.content.Context
-import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
@@ -12,6 +11,8 @@ import androidx.annotation.ColorInt
 import androidx.core.text.clearSpans
 import dev.oneuiproject.oneui.design.R
 import java.util.StringTokenizer
+import androidx.core.graphics.toColorInt
+import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
 
 /**
  * A Util class intended for highlighting text based on a search string.
@@ -22,12 +23,19 @@ import java.util.StringTokenizer
  * if neither context nor custom highlightColor is provided, the color will be set to #2196F3.
  *
  */
-class SearchHighlighter @JvmOverloads constructor(@JvmField val context: Context? = null,
-                        @JvmField @ColorInt var highlightColor: Int = -1) {
+class SearchHighlighter @JvmOverloads constructor(
+    @JvmField val context: Context? = null,
+    @JvmField @ColorInt var highlightColor: Int = -1
+) {
 
     init {
-        if (context == null && highlightColor == -1) {
-            highlightColor =  Color.parseColor("#2196F3")
+        if (context == null) {
+            if (highlightColor == -1) highlightColor = "#2196F3".toColorInt()
+        } else {
+            context.getThemeAttributeValue(androidx.appcompat.R.attr.colorPrimaryDark)?.data
+                ?: throw IllegalArgumentException(
+                    "Context theme must contain @attr/colorPrimaryDark when no custom highlightColor is provided."
+                )
         }
     }
 
@@ -120,12 +128,20 @@ class SearchHighlighter @JvmOverloads constructor(@JvmField val context: Context
 
                 context?.let {
                     spannableString.setSpan(
-                        TextAppearanceSpan(it, R.style.OneUI_SearchHighlightedTextAppearance), offsetStart,
-                        offsetEnd, SPAN_MARK_MARK)
+                        TextAppearanceSpan(it, R.style.OneUI_SearchHighlightedTextAppearance),
+                        offsetStart,
+                        offsetEnd,
+                        SPAN_MARK_MARK
+                    )
                 }
 
                 if (highlightColor != -1) {
-                    spannableString.setSpan(ForegroundColorSpan(highlightColor), offsetStart, offsetEnd, SPAN_MARK_MARK)
+                    spannableString.setSpan(
+                        ForegroundColorSpan(highlightColor),
+                        offsetStart,
+                        offsetEnd,
+                        SPAN_MARK_MARK
+                    )
                 }
 
                 remainingString = remainingString.substring(length)
@@ -136,7 +152,7 @@ class SearchHighlighter @JvmOverloads constructor(@JvmField val context: Context
         }
     }
 
-    companion object{
+    companion object {
         const val MAX_OFFSET = 200
     }
 

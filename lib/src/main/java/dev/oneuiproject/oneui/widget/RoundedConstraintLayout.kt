@@ -28,7 +28,7 @@ open class RoundedConstraintLayout @JvmOverloads constructor(
 ), ViewRoundedCorner by ViewRoundedCornerDelegate(context, attrs, defStyleAttr, defStyleRes) {
 
     override fun dispatchDraw(canvas: Canvas) {
-        if(fillHorizontalPadding){
+        if (fillHorizontalPadding) {
             if (paddingStart > 0 || paddingEnd > 0) {
                 edgeInsets = Insets.of(paddingStart, edgeInsets.top, paddingEnd, edgeInsets.bottom)
             }

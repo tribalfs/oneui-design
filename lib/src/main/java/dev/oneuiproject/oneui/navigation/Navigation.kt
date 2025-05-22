@@ -40,20 +40,19 @@ fun NavDrawerLayout.setupNavigation(
             return@setNavigationItemSelectedListener false
         }
 
-        onNavDestinationSelected(item, navController, startDestination.id).also{ handled ->
+        onNavDestinationSelected(item, navController, startDestination.id).also { handled ->
             if (handled) {
                 if (isActionMode) endActionMode()
                 if (isSearchMode) endSearchMode()
                 setDrawerOpen(false, animate = true, ignoreOnNavRailMode = true)
                 closeNavRailOnBack = item.itemId == startDestination.id
-            }else{
+            } else {
                 navController.currentDestination?.let {
-                   drawerNavigationView.updateSelectedItem(it)
+                    drawerNavigationView.updateSelectedItem(it)
                 }
             }
         }
     }
-
 
     navController.addOnDestinationChangedListener(
         object : NavController.OnDestinationChangedListener {
@@ -71,10 +70,11 @@ fun NavDrawerLayout.setupNavigation(
 }
 
 
-private inline fun onNavDestinationSelected(item: MenuItem,
-                                            navController: NavController,
-                                            startDestinationId: Int): Boolean {
-
+private inline fun onNavDestinationSelected(
+    item: MenuItem,
+    navController: NavController,
+    startDestinationId: Int
+): Boolean {
     val options = NavOptions.Builder()
         .setLaunchSingleTop(true)
         .setRestoreState(true)
@@ -84,7 +84,7 @@ private inline fun onNavDestinationSelected(item: MenuItem,
     return try {
         navController.navigate(item.itemId, null, options)
         true
-    }catch (_: IllegalArgumentException){
+    } catch (_: IllegalArgumentException) {
         false
     }
 }

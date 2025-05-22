@@ -25,6 +25,8 @@ import androidx.appcompat.widget.SeslProgressBar
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import dev.oneuiproject.oneui.design.R
+import dev.oneuiproject.oneui.dialog.ProgressDialog.Companion.STYLE_HORIZONTAL
+import dev.oneuiproject.oneui.dialog.ProgressDialog.Companion.STYLE_SPINNER
 import java.lang.ref.WeakReference
 import java.text.NumberFormat
 import androidx.appcompat.R as appcompatR

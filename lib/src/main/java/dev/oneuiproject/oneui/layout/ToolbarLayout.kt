@@ -285,8 +285,7 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     private lateinit var _mainToolbar: Toolbar
 
-    /**@return the main [Toolbar].*/
-    @get:RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    /**@return The main [Toolbar] use by this view.*/
     val toolbar: Toolbar get() = _mainToolbar
 
     private lateinit var adpCoordinatorLayout: AdaptiveCoordinatorLayout

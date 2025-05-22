@@ -39,8 +39,7 @@ class SemTouchFeedbackAnimator(private val animateView: View) {
                 recoilAnimator.setRelease()
             }
 
-            else -> {}
-
+            else -> Unit
         }
     }
 }

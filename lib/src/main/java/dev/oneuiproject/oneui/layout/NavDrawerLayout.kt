@@ -36,7 +36,7 @@ import dev.oneuiproject.oneui.layout.DrawerLayout as OneUIDrawerLayout
  */
 class NavDrawerLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
-) : OneUIDrawerLayout(context, attrs), Openable {
+) : OneUIDrawerLayout(context, attrs) {
 
     @Px private var navRailContentMinSideMargin: Int = 0
     @Px private var navRailContentPreferredWidth: Int = DEFAULT_NAV_RAIL_DETAILS_WIDTH

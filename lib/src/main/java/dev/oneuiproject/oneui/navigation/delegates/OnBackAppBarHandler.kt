@@ -40,9 +40,7 @@ internal class OnBackAppBarHandler(
     @JvmField
     var startDestination: NavDestination? = null
 
-    override fun onBackStackChanged() {
-        isBackFragmentLabelSet = false
-    }
+    override fun onBackStackChanged() { isBackFragmentLabelSet = false }
 
     override fun onBackStackChangeProgressed(backEventCompat: BackEventCompat) {
         if (updateTitleOnBackProgress) {

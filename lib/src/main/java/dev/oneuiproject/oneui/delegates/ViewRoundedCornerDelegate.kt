@@ -12,7 +12,7 @@ import androidx.core.graphics.Insets
 import dev.oneuiproject.oneui.design.R
 
 class ViewRoundedCornerDelegate(
-    private val context: Context,
+    context: Context,
     attrs: AttributeSet?,
     defStyleAttr: Int,
     defStyleRes: Int

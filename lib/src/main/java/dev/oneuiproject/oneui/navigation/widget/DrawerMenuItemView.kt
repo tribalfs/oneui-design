@@ -100,8 +100,6 @@ internal class DrawerMenuItemView @JvmOverloads constructor(
         }
     }
 
-
-
     override fun initialize(itemData: MenuItemImpl, menuType: Int) {
         this.menuItemType = menuType
 
@@ -122,8 +120,6 @@ internal class DrawerMenuItemView @JvmOverloads constructor(
         if (itemData.itemId > 0) {
             id = itemData.itemId
         }
-
-        //visibility = if (itemData.isVisible) VISIBLE else GONE
 
         isEnabled = itemData.isEnabled
         setTitle(itemData.title)
@@ -146,7 +142,7 @@ internal class DrawerMenuItemView @JvmOverloads constructor(
         }
         contentDescription = itemData.contentDescription
         TooltipCompat.setTooltipText(this, itemData.tooltipText)
-        doOnLayout { updateOffset() }
+        updateOffset()
     }
 
     fun initialize(itemData: MenuItemImpl, isBold: Boolean) {
@@ -154,9 +150,7 @@ internal class DrawerMenuItemView @JvmOverloads constructor(
         initialize(itemData, MENU_TYPE_NORMAL)
     }
 
-    fun recycle() {
-        actionArea?.removeAllViews()
-    }
+    fun recycle() = actionArea?.removeAllViews()
 
     private fun setActionView(actionView: View) {
         if (actionArea == null) {
@@ -172,9 +166,7 @@ internal class DrawerMenuItemView @JvmOverloads constructor(
         }
     }
 
-    override fun getItemData(): MenuItemImpl {
-        return itemData!!
-    }
+    override fun getItemData(): MenuItemImpl = itemData!!
 
     override fun setTitle(title: CharSequence?) {
         titleView.apply {
@@ -228,17 +220,11 @@ internal class DrawerMenuItemView @JvmOverloads constructor(
         iconView.setImageDrawable(mIcon)
     }
 
-    fun setIconSize(@Dimension iconSize: Int) {
-        this.iconSize = iconSize
-    }
+    fun setIconSize(@Dimension iconSize: Int) { this.iconSize = iconSize }
 
-    override fun prefersCondensedTitle(): Boolean {
-        return false
-    }
+    override fun prefersCondensedTitle() = false
 
-    override fun showsIcon(): Boolean {
-        return true
-    }
+    override fun showsIcon() = true
 
     override fun onCreateDrawableState(extraSpace: Int): IntArray {
         val drawableState = super.onCreateDrawableState(extraSpace + 1)
@@ -256,25 +242,17 @@ internal class DrawerMenuItemView @JvmOverloads constructor(
         }
     }
 
-    fun setTextAppearance(textAppearance: Int) {
+    fun setTextAppearance(textAppearance: Int) =
         TextViewCompat.setTextAppearance(titleView, textAppearance)
-    }
 
-    fun setTextColor(colors: ColorStateList?) {
-        titleView.setTextColor(colors)
-    }
+    fun setTextColor(colors: ColorStateList?) = titleView.setTextColor(colors)
 
-    fun setNeedsEmptyIcon(needsEmptyIcon: Boolean) {
-        this.needsEmptyIcon = needsEmptyIcon
-    }
+    fun setNeedsEmptyIcon(needsEmptyIcon: Boolean) { this.needsEmptyIcon = needsEmptyIcon }
 
-    fun setHorizontalPadding(padding: Int) {
+    fun setHorizontalPadding(padding: Int) =
         setPadding(padding, paddingTop, padding, paddingBottom)
-    }
 
-    fun setMaxLines(maxLines: Int) {
-        titleView.maxLines = maxLines
-    }
+    fun setMaxLines(maxLines: Int) { titleView.maxLines = maxLines }
 
     override fun setEnabled(enabled: Boolean) {
         super.setEnabled(enabled)
@@ -352,7 +330,6 @@ internal class DrawerMenuItemView @JvmOverloads constructor(
         ((offset - (1 - .95F)) / .95F).coerceIn(0f, 1f).run {
             if (isEnabled) minOf(this, maxAlpha) else minOf(0.5f, this)
         }
-
 
     companion object {
         private const val TAG = "NavDrawerMenuItemView"

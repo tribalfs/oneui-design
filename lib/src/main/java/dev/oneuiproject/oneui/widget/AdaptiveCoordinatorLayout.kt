@@ -16,7 +16,6 @@ import dev.oneuiproject.oneui.ktx.pxToDp
 import dev.oneuiproject.oneui.ktx.windowHeight
 import dev.oneuiproject.oneui.ktx.windowWidthNetOfInsets
 import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.updateStatusBarVisibility
-import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout.MarginProvider
 
 /**
  * Extension of [CoordinatorLayout]  which automatically hides the status bar based

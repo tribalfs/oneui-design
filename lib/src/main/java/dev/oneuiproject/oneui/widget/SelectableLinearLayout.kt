@@ -1,6 +1,5 @@
 package dev.oneuiproject.oneui.widget
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
@@ -27,7 +26,6 @@ import dev.oneuiproject.oneui.widget.internal.SelectableAnimatedDrawable
  * either a [CheckBox] or an animated check overlay. It also supports highlighting
  * to visually distinguish selected items.
  */
-@SuppressLint("ResourceType")
 class SelectableLinearLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

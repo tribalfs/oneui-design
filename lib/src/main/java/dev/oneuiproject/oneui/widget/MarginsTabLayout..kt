@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewParent
 import androidx.annotation.CallSuper
-import androidx.core.content.res.use
 import com.google.android.material.tabs.TabLayout
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.findAncestorOfType

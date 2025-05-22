@@ -58,11 +58,14 @@ import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type.ELAS
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type.ELASTIC_CUSTOM
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type.SINE_IN_OUT_33
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type.SINE_IN_OUT_70
+import dev.oneuiproject.oneui.widget.TipPopup.Companion.TIMEOUT_DURATION_MS
 import dev.oneuiproject.oneui.widget.TipPopup.Direction.BOTTOM_LEFT
 import dev.oneuiproject.oneui.widget.TipPopup.Direction.BOTTOM_RIGHT
 import dev.oneuiproject.oneui.widget.TipPopup.Direction.DEFAULT
 import dev.oneuiproject.oneui.widget.TipPopup.Direction.TOP_LEFT
 import dev.oneuiproject.oneui.widget.TipPopup.Direction.TOP_RIGHT
+import dev.oneuiproject.oneui.widget.TipPopup.Mode.NORMAL
+import dev.oneuiproject.oneui.widget.TipPopup.Mode.TRANSLUCENT
 import kotlin.math.ceil
 import kotlin.math.floor
 

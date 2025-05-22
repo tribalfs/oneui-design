@@ -15,6 +15,8 @@
         android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
         android:gravity="center_vertical"
         android:background="?attr/listChoiceBackgroundIndicator"
+        android:clickable="true"
+        android:focusable="true"
         android:baselineAligned="false">
 
         <ViewStub

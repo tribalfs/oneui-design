@@ -154,7 +154,7 @@ class AppPickerDelegate : AppPickerOp, AppPickerView.OnBindListener, CoroutineSc
 
     private inline fun AppPickerView.clearItemDecorations(){
         if (itemDecorationCount > 0) {
-            for (i in 0 until itemDecorationCount) {
+            for (i in itemDecorationCount - 1 downTo 0) {
                 removeItemDecorationAt(i)
             }
         }

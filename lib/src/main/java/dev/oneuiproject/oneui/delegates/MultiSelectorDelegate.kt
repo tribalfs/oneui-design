@@ -4,7 +4,7 @@ import android.graphics.Rect
 import android.util.Log
 import androidx.collection.ScatterSet
 import androidx.collection.mutableScatterSetOf
-import androidx.core.view.WindowInsetsCompat.Type.*
+import androidx.core.view.WindowInsetsCompat.Type.navigationBars
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import dev.oneuiproject.oneui.ktx.MultiSelectionState

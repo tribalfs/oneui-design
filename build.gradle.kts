@@ -13,7 +13,25 @@ plugins {
 
 apply(from = "manifest.gradle")
 
+/**
+ * Converts a camelCase or mixedCase string to ENV_VAR_STYLE (uppercase with underscores).
+ * Example: githubAccessToken -> GITHUB_ACCESS_TOKEN
+ */
+fun String.toEnvVarStyle(): String =
+    this.replace(Regex("([a-z])([A-Z])"), "$1_$2")
+        .uppercase()
 
+/**
+ * Note: To configure GitHub credentials, you have to generate an access token with at least
+ * `read:packages` scope at https://github.com/settings/tokens/new and then
+ * add it to any of the following:
+ *
+ * - Add `githubUsername` and `githubAccessToken` to Global Gradle Properties
+ * - Set `GITHUB_USERNAME` and `GITHUB_ACCESS_TOKEN` in your environment variables or
+ * - Create a `github.properties` file in your project folder with the following content:
+ *      githubUsername=&lt;YOUR_GITHUB_USERNAME&gt;
+ *      githubAccessToken=&lt;YOUR_GITHUB_ACCESS_TOKEN&gt;
+ */
 // Load GitHub credentials from properties file, gradle properties, or environment variables
 fun getGithubProperty(key: String): String {
     val githubProperties = Properties().apply {
@@ -24,7 +42,7 @@ fun getGithubProperty(key: String): String {
     }
     return githubProperties.getProperty(key)
         ?: rootProject.findProperty(key)?.toString()
-        ?: System.getenv(key.uppercase())
+        ?: System.getenv(key.toEnvVarStyle())
         ?: throw GradleException("GitHub $key not found")
 }
 
@@ -92,7 +110,7 @@ subprojects {
                 defaultConfig.targetSdk = (artifactVersionInfo[2] as Number).toInt()
                 buildFeatures.buildConfig = true
                 defaultConfig.versionCode = 1
-                
+
                 when (this) {
                     is AppExtension -> {
                         defaultConfig.buildConfigField(

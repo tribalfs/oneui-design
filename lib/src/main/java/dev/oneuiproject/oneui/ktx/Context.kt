@@ -9,7 +9,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.TypedValue
-import android.view.View.LAYOUT_DIRECTION_RTL
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes

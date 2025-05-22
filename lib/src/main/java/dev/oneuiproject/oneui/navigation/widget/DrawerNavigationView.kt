@@ -11,13 +11,11 @@ import androidx.appcompat.view.SupportMenuInflater
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuItemImpl
 import androidx.appcompat.view.menu.MenuView
-import androidx.core.content.res.use
+import androidx.core.content.withStyledAttributes
 import androidx.core.view.doOnLayout
 import androidx.core.view.forEach
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
-import com.google.android.material.R.styleable.NavigationView
-import com.google.android.material.R.styleable.NavigationView_menu
 import com.google.android.material.internal.NavigationMenu
 import com.google.android.material.navigation.NavigationView
 import dev.oneuiproject.oneui.layout.DrawerLayout
@@ -31,6 +29,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import com.google.android.material.R as materialR
 
 @SuppressLint("RestrictedApi")
 class DrawerNavigationView @JvmOverloads constructor(
@@ -51,11 +50,9 @@ class DrawerNavigationView @JvmOverloads constructor(
     }
 
     init {
-        context.theme
-            .obtainStyledAttributes(attrs, NavigationView, 0, 0).use { a ->
-                navMenuRes = a.getResourceId(NavigationView_menu, 0)
-            }
-
+        context.withStyledAttributes(attrs, materialR.styleable.NavigationView, 0, 0) {
+            navMenuRes = getResourceId(materialR.styleable.NavigationView_menu, 0)
+        }
 
         navDrawerMenu = NavigationMenu(context).apply {
             isGroupDividerEnabled = true
@@ -163,8 +160,7 @@ class DrawerNavigationView @JvmOverloads constructor(
      * @param listener The listener to notify
      */
     fun setNavigationItemSelectedListener(
-        listener: NavigationView.OnNavigationItemSelectedListener?
-    ) {
+        listener: NavigationView.OnNavigationItemSelectedListener?) {
         this.navigationItemSelectedListener = listener
     }
 

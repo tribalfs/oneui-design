@@ -1,7 +1,6 @@
 package androidx.appcompat.widget
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
@@ -13,6 +12,7 @@ import androidx.core.content.res.use
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.isLightMode
 import androidx.appcompat.R as appcompatR
+import androidx.core.graphics.toColorInt
 
 //We are placing this here to avoid using reflection
 internal class SemSearchView @JvmOverloads constructor (
@@ -46,9 +46,9 @@ internal fun SearchView.applyActionModeSearchStyle(){
     }
 
     val backgroundColor = if (context.isLightMode()) {
-        Color.parseColor("#0D000000")
+        "#0D000000".toColorInt()
     } else {
-        Color.parseColor("#26ffffff")
+        "#26ffffff".toColorInt()
     }
     background = GradientDrawable().apply {
         shape = GradientDrawable.RECTANGLE

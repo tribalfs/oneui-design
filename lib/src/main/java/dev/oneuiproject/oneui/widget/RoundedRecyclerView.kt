@@ -26,7 +26,7 @@ open class RoundedRecyclerView @JvmOverloads constructor(
 
     override fun onFinishInflate() {
         seslSetFillHorizontalPaddingEnabled(fillHorizontalPadding)
-        if (fillHorizontalPadding){
+        if (fillHorizontalPadding) {
             edgeInsets = Insets.NONE
         }
         super.onFinishInflate()

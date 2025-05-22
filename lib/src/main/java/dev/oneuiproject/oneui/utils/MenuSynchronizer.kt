@@ -12,7 +12,6 @@ import androidx.core.view.MenuItemCompat
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import dev.oneuiproject.oneui.utils.MenuSynchronizer.State
 
 /**
  * Handles the synchronization of menu items between a BottomNavigationView and a Toolbar,

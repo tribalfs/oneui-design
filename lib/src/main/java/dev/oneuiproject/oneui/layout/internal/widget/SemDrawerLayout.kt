@@ -82,7 +82,7 @@ internal class SemDrawerLayout @JvmOverloads constructor(
 
     private val activity by lazy(LazyThreadSafetyMode.NONE) {  context.appCompatActivity }
 
-    init{
+    init {
         ContextCompat.getColor(context, R.color.oui_des_drawerlayout_drawer_dim_color).let {
             setScrimColor(it)
             scrimAlpha = ((it shr 24) and 0xFF) / 255f
@@ -112,9 +112,7 @@ internal class SemDrawerLayout @JvmOverloads constructor(
         setDrawerCornerRadius(DEFAULT_DRAWER_RADIUS)
 
         mNavButtonsHandlerDelegate = ToolbarLayoutButtonsHandler(findViewById(R.id.toolbarlayout_main_toolbar))
-        mNavButtonsHandlerDelegate.setNavigationButtonOnClickListener{
-            openDrawer(mDrawerPane, true)
-        }
+        mNavButtonsHandlerDelegate.setNavigationButtonOnClickListener{ openDrawer(mDrawerPane, true) }
 
         removeDrawerListener(mDrawerListener)
         addDrawerListener(mDrawerListener)
@@ -151,7 +149,7 @@ internal class SemDrawerLayout @JvmOverloads constructor(
         }
     }
 
-    private val ensureDrawerOpenState = Runnable{
+    private val ensureDrawerOpenState = Runnable {
         if (isOpen) {
             openDrawer(mDrawerPane, false)
             updateContentTranslation(mDrawerPane, 1f)
@@ -175,7 +173,7 @@ internal class SemDrawerLayout @JvmOverloads constructor(
         }
     }
 
-    private fun ensureOpenDrawerPreview(){
+    private fun ensureOpenDrawerPreview() {
         val width = mDrawerPane.width.ifNegativeOrZero { 356.dpToPx(resources) }
         mDrawerPane.updateLayoutParams { this.width = width }
         mSlideViewPane.translationX = width * if (isLayoutRTL) -1f else 1f
@@ -204,7 +202,7 @@ internal class SemDrawerLayout @JvmOverloads constructor(
         }
     }
 
-    override fun setCustomHeader(headerView: View, params: ViewGroup.LayoutParams){
+    override fun setCustomHeader(headerView: View, params: ViewGroup.LayoutParams) {
         mDrawerPane.removeView(mHeaderView)
         mDrawerHeaderButton = null
         mDrawerHeaderBadgeView = null
@@ -212,7 +210,7 @@ internal class SemDrawerLayout @JvmOverloads constructor(
         mHeaderView = mDrawerPane.getChildAt(0)
     }
 
-    override fun addDrawerContent(child: View, params: ViewGroup.LayoutParams){
+    override fun addDrawerContent(child: View, params: ViewGroup.LayoutParams) {
         mDrawerItemsContainer.addView(child, params)
     }
 
@@ -253,12 +251,12 @@ internal class SemDrawerLayout @JvmOverloads constructor(
     }
 
     private fun updateNavBadgeVisibility() {
-        if (mCurrentState != DrawerState.CLOSE){
+        if (mCurrentState != DrawerState.CLOSE) {
             mNavButtonsHandlerDelegate.setNavigationButtonBadge(Badge.NONE)
-        }else {
+        } else {
             if (navDrawerButtonBadge != Badge.NONE) {
                 mNavButtonsHandlerDelegate.setNavigationButtonBadge(navDrawerButtonBadge)
-            }else {
+            } else {
                 mNavButtonsHandlerDelegate.setNavigationButtonBadge(headerButtonBadge)
             }
         }
@@ -399,9 +397,9 @@ internal class SemDrawerLayout @JvmOverloads constructor(
             val bottomInset = maxOf(baseInsets.bottom, imeInsetBottom)
             updateLayoutParams<MarginLayoutParams> {
                 leftMargin = baseInsets.left; rightMargin = baseInsets.right }
-            if (isImmersiveActive){
+            if (isImmersiveActive) {
                 mSlideViewPane.updatePadding(top = 0, bottom = imeInsetBottom)
-            }else{
+            } else {
                 mSlideViewPane.updatePadding(top = baseInsetTop, bottom = bottomInset )
             }
             mDrawerPane.updateLayoutParams<MarginLayoutParams> {

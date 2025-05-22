@@ -11,7 +11,6 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.content.res.AppCompatResources
 import com.google.android.material.tabs.TabLayout
-import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.layout.Badge
 import dev.oneuiproject.oneui.utils.badgeCountToText
 
@@ -250,7 +249,7 @@ inline fun <T: TabLayout>T.clearBadge(tabIndex: Int) = setBadge(tabIndex, Badge.
 
 
 @JvmName("setTabBadge")
-inline fun <T: TabLayout.Tab>T.setBadge(badge: Badge) =parent?.setBadge(position, badge)
+inline fun <T: TabLayout.Tab>T.setBadge(badge: Badge) = parent?.setBadge(position, badge)
 
 @JvmName("clearTabBadge")
 inline fun <T: TabLayout.Tab>T.clearBadge() = parent?.clearBadge(position)

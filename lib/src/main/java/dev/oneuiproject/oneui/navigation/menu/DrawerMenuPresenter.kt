@@ -91,7 +91,6 @@ internal class DrawerMenuPresenter(
     var adapter: NavigationMenuAdapter? = null
     private var layoutInflater: LayoutInflater? = null
 
-
     override fun initForMenu(context: Context, menu: MenuBuilder) {
         layoutInflater = LayoutInflater.from(context)
         this.menu = menu
@@ -122,30 +121,19 @@ internal class DrawerMenuPresenter(
         callback = cb
     }
 
-    override fun onSubMenuSelected(subMenu: SubMenuBuilder): Boolean {
-        return false
-    }
+    override fun onSubMenuSelected(subMenu: SubMenuBuilder) = false
 
     override fun onCloseMenu(menu: MenuBuilder, allMenusAreClosing: Boolean) {
         callback?.onCloseMenu(menu, allMenusAreClosing)
     }
 
-    override fun flagActionItems(): Boolean {
-        return false
-    }
+    override fun flagActionItems() = false
 
-    override fun expandItemActionView(menu: MenuBuilder, item: MenuItemImpl): Boolean {
-        return false
-    }
+    override fun expandItemActionView(menu: MenuBuilder, item: MenuItemImpl) = false
 
-    override fun collapseItemActionView(menu: MenuBuilder, item: MenuItemImpl): Boolean {
-        return false
-    }
+    override fun collapseItemActionView(menu: MenuBuilder, item: MenuItemImpl)= false
 
-    override fun getId(): Int {
-        return id
-    }
-
+    override fun getId() = id
 
     override fun onSaveInstanceState(): Parcelable {
         val state = Bundle()
@@ -219,16 +207,13 @@ internal class DrawerMenuPresenter(
     }
 
     inner class NavigationMenuAdapter internal constructor() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
         private var checkedItem: MenuItemImpl? = null
         private var updateSuspended = false
         private var mIsLocked = false
 
         private val items: MutableList<NavigationMenuItem> = mutableListOf()
 
-        init {
-            prepareMenuItems()
-        }
+        init { prepareMenuItems() }
 
         fun updateLock(isLocked: Boolean) {
             if (mIsLocked == isLocked) return
@@ -242,13 +227,9 @@ internal class DrawerMenuPresenter(
             notifyItemRangeChanged(0, itemCount, Payload.OFFSET(slideOffset))
         }
 
-        override fun getItemId(position: Int): Long {
-            return items[position].getItemId()
-        }
+        override fun getItemId(position: Int) = items[position].getItemId()
 
-        override fun getItemCount(): Int {
-            return items.size
-        }
+        override fun getItemCount()  = items.size
 
         override fun getItemViewType(position: Int): Int {
             return when(val item = items[position]){
