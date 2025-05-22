@@ -51,7 +51,7 @@ import dev.oneuiproject.oneui.layout.internal.util.NavButtonsHandler
 typealias OneUIDrawerLayout = dev.oneuiproject.oneui.layout.DrawerLayout
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-class SemDrawerLayout @JvmOverloads constructor(
+internal class SemDrawerLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0

@@ -6,7 +6,7 @@ import java.lang.reflect.InvocationTargetException
 
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 @SuppressLint("PrivateApi")
-fun getSystemProp(key: String?): String? {
+internal fun getSystemProp(key: String?): String? {
     val value: String? = try {
         Class.forName("android.os.SystemProperties")
             .getMethod("get", java.lang.String::class.java).invoke(null, key) as String

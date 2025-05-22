@@ -11,7 +11,7 @@ import java.lang.ref.SoftReference
 import java.util.concurrent.ConcurrentHashMap
 
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-object CachedInterpolatorFactory {
+internal object CachedInterpolatorFactory {
     private val interpolatorCache = ConcurrentHashMap<Type, SoftReference<Interpolator>>()
 
     enum class Type {

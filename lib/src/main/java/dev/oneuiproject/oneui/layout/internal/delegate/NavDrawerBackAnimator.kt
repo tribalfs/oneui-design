@@ -23,7 +23,7 @@ import dev.oneuiproject.oneui.layout.internal.util.DrawerLayoutInterface
 
 @SuppressLint("RestrictedApi")
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-class NavDrawerBackAnimator(drawerLayoutInterface: DrawerLayoutInterface): BackAnimator {
+internal class NavDrawerBackAnimator(drawerLayoutInterface: DrawerLayoutInterface): BackAnimator {
 
     companion object{
         private const val TAG = "DrawerBackAnimDel"

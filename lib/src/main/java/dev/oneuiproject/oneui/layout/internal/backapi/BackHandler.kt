@@ -4,7 +4,7 @@ import androidx.activity.BackEventCompat
 import androidx.annotation.RestrictTo
 
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-interface BackHandler{
+internal interface BackHandler{
     fun startBackProgress(backEvent: BackEventCompat)
     fun updateBackProgress(backEvent: BackEventCompat)
     fun handleBackInvoked()

@@ -27,9 +27,9 @@ import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isScreenWidthLarge
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isTabletBuildOrIsDeskTopMode
 import android.view.SemWindowManager.LayoutParams.SEM_EXTENSION_FLAG_RESIZE_FULLSCREEN_WINDOW_ON_SOFT_INPUT as FLAG_RESIZE_FULLSCREEN_WINDOW_ON_SOFT_INPUT
 
+@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 internal object ToolbarLayoutUtils {
 
-    @RestrictTo(RestrictTo.Scope.LIBRARY)
     inline fun Activity.updateStatusBarVisibility() {
         if (isTabletBuildOrIsDeskTopMode(this)) return
         if (Build.VERSION.SDK_INT >= 30){

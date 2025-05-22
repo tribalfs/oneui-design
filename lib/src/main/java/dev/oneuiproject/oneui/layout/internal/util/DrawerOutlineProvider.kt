@@ -4,8 +4,10 @@ import android.graphics.Outline
 import android.view.View
 import android.view.ViewOutlineProvider
 import androidx.annotation.Px
+import androidx.annotation.RestrictTo
 import androidx.drawerlayout.widget.DrawerLayout.LAYOUT_DIRECTION_RTL
 
+@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 internal class DrawerOutlineProvider(@param:Px var cornerRadius: Int) :
         ViewOutlineProvider() {
 

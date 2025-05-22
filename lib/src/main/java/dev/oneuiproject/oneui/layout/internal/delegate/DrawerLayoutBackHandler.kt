@@ -9,7 +9,7 @@ import dev.oneuiproject.oneui.layout.internal.backapi.BackAnimator
 
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-open class DrawerLayoutBackHandler<T: DrawerLayout>(
+internal open class DrawerLayoutBackHandler<T: DrawerLayout>(
     private val drawerLayout: T,
     private val drawerBackAnimator: BackAnimator
 ): ToolbarLayoutBackHandler(drawerLayout) {

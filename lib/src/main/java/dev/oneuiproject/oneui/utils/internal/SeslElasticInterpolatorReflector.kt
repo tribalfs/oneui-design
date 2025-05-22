@@ -10,7 +10,7 @@ import java.lang.reflect.Constructor
 
 @SuppressLint("RestrictedApi")
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-inline fun createSeslElasticInterpolator(amplitude: Float, period: Float): Interpolator? {
+internal inline fun createSeslElasticInterpolator(amplitude: Float, period: Float): Interpolator? {
         val constructor: Constructor<*> = SeslBaseReflector.getConstructor(
             "androidx.appcompat.animation.SeslElasticInterpolator", Float::class.java, Float::class.java) ?: return null
         constructor.isAccessible = true

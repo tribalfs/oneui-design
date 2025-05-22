@@ -13,7 +13,7 @@ import dev.oneuiproject.oneui.layout.internal.backapi.BackHandler
 
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-open class ToolbarLayoutBackHandler(private val toolbarLayout: ToolbarLayout
+internal open class ToolbarLayoutBackHandler(private val toolbarLayout: ToolbarLayout
 ): BackHandler {
     override fun startBackProgress(backEvent: BackEventCompat) {}
 

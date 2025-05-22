@@ -216,7 +216,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     internal var isSofInputShowing: Boolean = isSoftKeyboardShowing
         private set
 
-    open val backHandler: BackHandler by lazy(LazyThreadSafetyMode.NONE) {
+    internal open val backHandler: BackHandler by lazy(LazyThreadSafetyMode.NONE) {
         ToolbarLayoutBackHandler(this@ToolbarLayout)
     }
 
@@ -394,7 +394,7 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     override fun generateLayoutParams(attrs: AttributeSet) = ToolbarLayoutParams(context, attrs)
 
-    open val navButtonsHandler: NavButtonsHandler by lazy(LazyThreadSafetyMode.NONE) {
+    internal open val navButtonsHandler: NavButtonsHandler by lazy(LazyThreadSafetyMode.NONE) {
         ToolbarLayoutButtonsHandler(_mainToolbar)
     }
 

@@ -3,7 +3,6 @@
 package dev.oneuiproject.oneui.layout
 
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Parcel
@@ -16,12 +15,12 @@ import androidx.core.view.doOnLayout
 import androidx.customview.view.AbsSavedState
 import androidx.customview.widget.Openable
 import dev.oneuiproject.oneui.design.R
+import dev.oneuiproject.oneui.layout.NavDrawerLayout.Companion.DEFAULT_NAV_RAIL_DETAILS_WIDTH
 import dev.oneuiproject.oneui.layout.internal.delegate.DrawerLayoutBackHandler
 import dev.oneuiproject.oneui.layout.internal.util.DrawerLayoutInterface
 import dev.oneuiproject.oneui.layout.internal.util.NavButtonsHandler
 import dev.oneuiproject.oneui.layout.internal.widget.SemSlidingPaneLayout
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isTabletLayout
-import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout
 import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout.MarginProvider
 import dev.oneuiproject.oneui.layout.DrawerLayout as OneUIDrawerLayout
 
@@ -35,7 +34,6 @@ import dev.oneuiproject.oneui.layout.DrawerLayout as OneUIDrawerLayout
  * - To use this layout, ensure your activity does *not* handle `smallestScreenSize` in `android:configChanges`.
  * Otherwise, layout changes based on screen size will not function correctly.
  */
-@SuppressLint("RestrictedApi", "PrivateResource")
 class NavDrawerLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : OneUIDrawerLayout(context, attrs), Openable {

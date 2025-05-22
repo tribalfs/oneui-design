@@ -26,7 +26,7 @@ import org.xmlpull.v1.XmlPullParserException
 import java.io.IOException
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-class SelectableAnimatedDrawable : AnimatedStateListDrawableCompat() {
+internal class SelectableAnimatedDrawable : AnimatedStateListDrawableCompat() {
 
     @Px
     private var radius = -1f

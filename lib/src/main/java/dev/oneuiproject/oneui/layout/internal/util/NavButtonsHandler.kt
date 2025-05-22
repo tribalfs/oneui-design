@@ -6,7 +6,7 @@ import android.view.View.OnClickListener
 import androidx.annotation.ColorInt
 import dev.oneuiproject.oneui.layout.Badge
 
-interface NavButtonsHandler {
+internal interface NavButtonsHandler {
     var showNavigationButtonAsBack: Boolean
     var showNavigationButton: Boolean
     fun setNavigationButtonOnClickListener(listener: OnClickListener?)

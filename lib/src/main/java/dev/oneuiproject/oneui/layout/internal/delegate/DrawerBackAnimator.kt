@@ -23,10 +23,10 @@ import dev.oneuiproject.oneui.layout.internal.util.DrawerLayoutInterface
 
 @SuppressLint("RestrictedApi")
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-class DrawerBackAnimator(drawerLayoutInterface: DrawerLayoutInterface): BackAnimator {
+internal class DrawerBackAnimator(drawerLayoutInterface: DrawerLayoutInterface): BackAnimator {
 
     companion object{
-        private const val TAG = "DrawerBackAnimationDelegate"
+        private const val TAG = "DrawerBackAnimator"
         private const val RESET_ANIMATION_DURATION = 100L
 
     }

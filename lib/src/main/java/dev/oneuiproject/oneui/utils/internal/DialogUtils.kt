@@ -11,7 +11,7 @@ import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
 
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 @JvmOverloads
-inline fun Dialog.updateWidth(centerX: Int? = null){
+internal inline fun Dialog.updateWidth(centerX: Int? = null){
     val dialogWidth = semGetDialogWidth()
     val dialogWindowLp = this.window!!.attributes
     dialogWindowLp.width = dialogWidth
@@ -22,7 +22,7 @@ inline fun Dialog.updateWidth(centerX: Int? = null){
 }
 
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-fun Dialog.semGetDialogWidth(): Int {
+internal fun Dialog.semGetDialogWidth(): Int {
     val context= context
     val res = context.resources
     val config = res.configuration

@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
 import android.widget.LinearLayout
+import androidx.annotation.RestrictTo
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.children
 import androidx.core.view.isVisible
@@ -12,8 +13,8 @@ import dev.oneuiproject.oneui.design.R
 import kotlin.math.roundToInt
 import androidx.core.graphics.withTranslation
 
-
-class HorizontalRadioViewContainer @JvmOverloads constructor(
+@RestrictTo(RestrictTo.Scope.LIBRARY)
+internal class HorizontalRadioViewContainer @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,

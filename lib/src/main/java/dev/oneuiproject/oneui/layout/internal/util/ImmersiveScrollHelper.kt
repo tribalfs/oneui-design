@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout.LayoutParams
 import androidx.annotation.FloatRange
 import androidx.annotation.RequiresApi
+import androidx.annotation.RestrictTo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -21,6 +22,7 @@ import com.google.android.material.appbar.SeslImmersiveScrollBehavior
 import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
 import kotlinx.parcelize.Parcelize
 
+@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 @RequiresApi(Build.VERSION_CODES.R)
 internal class ImmersiveScrollHelper(
     private val activity: AppCompatActivity,

@@ -4,6 +4,7 @@ package dev.oneuiproject.oneui.layout.internal.util
 
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.TextView
+import androidx.annotation.RestrictTo
 import androidx.appcompat.R as appcompatR
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isGone
@@ -14,9 +15,10 @@ import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.layout.Badge
 import dev.oneuiproject.oneui.layout.DrawerLayout.DrawerState
 
-object DrawerLayoutUtils {
+@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+internal object DrawerLayoutUtils {
 
-    internal fun TextView.updateBadgeView(badge: Badge, marginOffset: Int = 0){
+     fun TextView.updateBadgeView(badge: Badge, marginOffset: Int = 0){
 
         val badgeText = badge.toBadgeText()
         if (badgeText == getTag(R.id.tag_badge_text)) return

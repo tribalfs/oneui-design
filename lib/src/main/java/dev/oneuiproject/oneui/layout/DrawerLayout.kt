@@ -79,13 +79,13 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         }
     }
 
-    private val mSemDrawerLayout by lazy<SemDrawerLayout>(LazyThreadSafetyMode.NONE) {
+    private val semDrawerLayout by lazy<SemDrawerLayout>(LazyThreadSafetyMode.NONE) {
         findViewById(R.id.drawer_layout)
     }
 
-    open val containerLayout: DrawerLayoutInterface get() = mSemDrawerLayout
+    internal open val containerLayout: DrawerLayoutInterface get() = semDrawerLayout
 
-    override val navButtonsHandler: NavButtonsHandler get() = mSemDrawerLayout
+    override val navButtonsHandler: NavButtonsHandler get() = semDrawerLayout
 
     override fun onFinishInflate() {
         super.onFinishInflate()

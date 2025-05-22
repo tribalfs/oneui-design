@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.util.Log
 import android.view.View
+import androidx.annotation.RestrictTo
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
 import dev.oneuiproject.oneui.design.R
@@ -13,7 +14,7 @@ import dev.oneuiproject.oneui.layout.internal.NavigationBadgeIcon
 import dev.oneuiproject.oneui.layout.internal.util.NavButtonsHandler
 import androidx.appcompat.R as appcompatR
 
-
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 internal open class ToolbarLayoutButtonsHandler(private val toolbar: Toolbar):
     NavButtonsHandler {
     private var navDrawerButtonTooltip: CharSequence? = null

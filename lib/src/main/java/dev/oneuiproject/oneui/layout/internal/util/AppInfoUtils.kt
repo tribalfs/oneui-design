@@ -6,7 +6,7 @@ import android.content.Context
 import androidx.annotation.RestrictTo
 
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-inline fun Context.getApplicationName(): CharSequence?{
+internal inline fun Context.getApplicationName(): CharSequence?{
     return try {
         applicationInfo.loadLabel(packageManager)
     } catch (_: Exception){
@@ -15,7 +15,7 @@ inline fun Context.getApplicationName(): CharSequence?{
 }
 
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-inline fun Context.getAppVersion(): CharSequence?{
+internal inline fun Context.getAppVersion(): CharSequence?{
     return try {
         packageManager.getPackageInfo(packageName, 0).versionName
     } catch (_: Exception){

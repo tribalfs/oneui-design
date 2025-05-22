@@ -22,7 +22,7 @@ import androidx.appcompat.R as appcompatR
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 @SuppressLint("PrivateResource")
-class NavigationBadgeIcon(private val context: Context) : Drawable() {
+internal class NavigationBadgeIcon(private val context: Context) : Drawable() {
 
     private val circlePaint = Paint().apply {
         color = ContextCompat.getColor(context, appcompatR.color.sesl_badge_background_color)

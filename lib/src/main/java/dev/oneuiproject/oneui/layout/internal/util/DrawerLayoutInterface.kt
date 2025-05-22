@@ -10,8 +10,8 @@ import dev.oneuiproject.oneui.layout.DrawerLayout
 import dev.oneuiproject.oneui.layout.DrawerLayout.DrawerState
 import dev.oneuiproject.oneui.layout.internal.delegate.DrawerLayoutBackHandler
 
-@RestrictTo(RestrictTo.Scope.LIBRARY)
-interface DrawerLayoutInterface{
+@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+internal interface DrawerLayoutInterface{
     fun applyWindowInsets(insets: WindowInsetsCompat, isImmersiveActive: Boolean)
     fun open(animate: Boolean = true)
     fun close(animate: Boolean = true)

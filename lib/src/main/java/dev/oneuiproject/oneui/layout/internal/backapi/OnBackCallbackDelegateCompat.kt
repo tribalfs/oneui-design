@@ -15,7 +15,7 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.RestrictTo
 
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-class OnBackCallbackDelegateCompat(activity: ComponentActivity,
+internal class OnBackCallbackDelegateCompat(activity: ComponentActivity,
                                    private val view: View,
                                    private val backHandler: BackHandler
 ){
