@@ -107,7 +107,7 @@ class BottomTabLayout(
 
     override fun calculateMargins(){
         if (isPopulatingTabs) return
-        if (mRecalculateTextWidths) {
+        if (recalculateTextWidths) {
             updatePointerAndDescription()
         }
         super.calculateMargins()
@@ -231,7 +231,7 @@ class BottomTabLayout(
         }
 
         isPopulatingTabs = false
-        mRecalculateTextWidths = true
+        recalculateTextWidths = true
     }
 
     private fun addTabForMenu(menuItem: MenuItemImpl) {

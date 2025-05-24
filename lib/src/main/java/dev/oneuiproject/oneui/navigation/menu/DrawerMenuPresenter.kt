@@ -209,15 +209,15 @@ internal class DrawerMenuPresenter(
     inner class NavigationMenuAdapter internal constructor() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private var checkedItem: MenuItemImpl? = null
         private var updateSuspended = false
-        private var mIsLocked = false
+        private var isLocked = false
 
         private val items: MutableList<NavigationMenuItem> = mutableListOf()
 
         init { prepareMenuItems() }
 
         fun updateLock(isLocked: Boolean) {
-            if (mIsLocked == isLocked) return
-            mIsLocked = isLocked
+            if (this@NavigationMenuAdapter.isLocked == isLocked) return
+            this@NavigationMenuAdapter.isLocked = isLocked
             notifyItemRangeChanged(0, itemCount, Payload.LOCK)
         }
 
@@ -360,7 +360,7 @@ internal class DrawerMenuPresenter(
             }
 
             fun updateLock(menuItem: MenuItemImpl){
-                menuItemView.isEnabled = !mIsLocked && menuItem.isEnabled
+                menuItemView.isEnabled = !isLocked && menuItem.isEnabled
             }
         }
 
@@ -380,7 +380,7 @@ internal class DrawerMenuPresenter(
             }
 
             fun updateLock(menuItem: MenuItemImpl){
-                menuItemView.isEnabled = !mIsLocked && menuItem.isEnabled
+                menuItemView.isEnabled = !isLocked && menuItem.isEnabled
             }
         }
 
@@ -411,7 +411,7 @@ internal class DrawerMenuPresenter(
             }
 
             fun updateLock(menuItem: MenuItemImpl){
-                menuItemView.isEnabled = !mIsLocked && menuItem.isEnabled
+                menuItemView.isEnabled = !isLocked && menuItem.isEnabled
             }
         }
 

@@ -26,10 +26,10 @@ import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isLandscape
  * [setCustomTabDimen] method, allowing for flexible layout adjustments.
  */
 open class MarginsTabLayout @JvmOverloads constructor(
-    mContext: Context,
+    context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = com.google.android.material.R.attr.tabStyle
-) : TabLayout(mContext, attrs, defStyleAttr) {
+) : TabLayout(context, attrs, defStyleAttr) {
 
     @JvmField
     internal var tabDimens: TabDimen? = null
@@ -45,7 +45,7 @@ open class MarginsTabLayout @JvmOverloads constructor(
     internal var containerWidth: Int? = null
 
     @JvmField
-    internal var mRecalculateTextWidths = false
+    internal var recalculateTextWidths = false
 
     private var referenceContainer: ViewParent? = null
 
@@ -69,12 +69,12 @@ open class MarginsTabLayout @JvmOverloads constructor(
 
 
     override fun addTab(tab: Tab, position: Int, setSelected: Boolean) {
-        mRecalculateTextWidths = true
+        recalculateTextWidths = true
         super.addTab(tab, position, setSelected)
     }
 
     override fun removeTab(tab: Tab) {
-        mRecalculateTextWidths = true
+        recalculateTextWidths = true
         super.removeTab(tab)
     }
 
@@ -146,9 +146,9 @@ open class MarginsTabLayout @JvmOverloads constructor(
 
     @CallSuper
     internal open fun calculateMargins(){
-        if (mRecalculateTextWidths || isInEditMode) {
+        if (recalculateTextWidths || isInEditMode) {
             recalculateTextWidths()
-            mRecalculateTextWidths = false
+            recalculateTextWidths = false
         }
 
         tabDimens!!.getSideMargin(this, containerWidth!!, tabTextWidthsList.sum()).toInt().let {

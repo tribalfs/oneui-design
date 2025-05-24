@@ -29,9 +29,9 @@ import dev.oneuiproject.oneui.design.R
 
 
 class RadioItemViewGroup @JvmOverloads constructor(
-    private val mContext: Context,
+    private val context: Context,
     attrs: AttributeSet? = null
-) : LinearLayout(mContext, attrs) {
+) : LinearLayout(context, attrs) {
     /**
      *
      * Returns the identifier of the selected checked text in this group.
@@ -283,7 +283,7 @@ class RadioItemViewGroup @JvmOverloads constructor(
             onCheckedChangeListener!!.onCheckedChanged(this, _checkedRadioButtonId)
         }
         if (changed && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            mContext.getSystemService(AutofillManager::class.java).notifyValueChanged(this)
+            context.getSystemService(AutofillManager::class.java).notifyValueChanged(this)
         }
     }
 

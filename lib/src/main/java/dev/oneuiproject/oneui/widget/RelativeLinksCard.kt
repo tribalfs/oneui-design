@@ -112,11 +112,11 @@ import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
  * @see [dev.oneuiproject.oneui.ktx.removeRelativeLinksCard]
  */
 class RelativeLinksCard @JvmOverloads constructor(
-    mContext: Context,
+    context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
     defStyleRes: Int = 0
-) : LinearLayout(mContext, attrs, defStyleAttr, defStyleRes) {
+) : LinearLayout(context, attrs, defStyleAttr, defStyleRes) {
     private var parentView: View? = null
     private var cardTitleText: TextView
     private var linkContainer: ViewGroup
@@ -124,7 +124,6 @@ class RelativeLinksCard @JvmOverloads constructor(
 
     init {
         orientation = VERTICAL
-        val context = context
         parentView =
             LayoutInflater.from(context).inflate(R.layout.oui_des_widget_relative_links_card, this)
                 .apply {

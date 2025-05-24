@@ -18,7 +18,7 @@ class ViewRoundedCornerDelegate(
     defStyleRes: Int
 ): ViewRoundedCorner {
 
-    private var mRoundedCorner: SeslRoundedCorner = SeslRoundedCorner(context)
+    private var seslRoundedCorner: SeslRoundedCorner = SeslRoundedCorner(context)
 
     override var edgeInsets = Insets.NONE
 
@@ -27,10 +27,10 @@ class ViewRoundedCornerDelegate(
     override var fillHorizontalPadding: Boolean = false
 
     override var roundedCorners: Int
-        get() = mRoundedCorner.roundedCorners
+        get() = seslRoundedCorner.roundedCorners
         set(value) {
-            if (mRoundedCorner.roundedCorners == value) return
-            mRoundedCorner.roundedCorners = value
+            if (seslRoundedCorner.roundedCorners == value) return
+            seslRoundedCorner.roundedCorners = value
         }
 
     @ColorInt
@@ -39,7 +39,7 @@ class ViewRoundedCornerDelegate(
             if (field == value) return
             field = value
             if (roundedCorners != SeslRoundedCorner.ROUNDED_CORNER_NONE) {
-                mRoundedCorner.setRoundedCornerColor(roundedCorners, value)
+                seslRoundedCorner.setRoundedCornerColor(roundedCorners, value)
             }
         }
 
@@ -58,8 +58,8 @@ class ViewRoundedCornerDelegate(
     }
 
     override fun drawRoundedCorners(canvas: Canvas) {
-        if (edgeInsets != Insets.NONE || mRoundedCorner.roundedCorners != SeslRoundedCorner.ROUNDED_CORNER_NONE) {
-            mRoundedCorner.drawRoundedCorner(canvas, edgeInsets)
+        if (edgeInsets != Insets.NONE || seslRoundedCorner.roundedCorners != SeslRoundedCorner.ROUNDED_CORNER_NONE) {
+            seslRoundedCorner.drawRoundedCorner(canvas, edgeInsets)
         }
     }
 

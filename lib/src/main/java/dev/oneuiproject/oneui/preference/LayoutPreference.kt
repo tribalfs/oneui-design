@@ -16,13 +16,13 @@ import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.widget.RelativeLinksCard
 
 class LayoutPreference : Preference {
-    private var mRootView: View? = null
-    private var mAllowDividerAbove = false
-    private var mAllowDividerBelow = false
+    private var rootView: View? = null
+    private var allowDividerAbove = false
+    private var allowDividerBelow = false
     private var isRelativeLinkView = false
 
     @SuppressLint("RestrictedApi")
-    private val mClickListener = View.OnClickListener { this.performClick(it) }
+    private val clickListener = View.OnClickListener { this.performClick(it) }
 
     constructor(context: Context, attrs: AttributeSet) : this(context, attrs, 0)
 
@@ -49,11 +49,11 @@ class LayoutPreference : Preference {
     @SuppressLint("RestrictedApi", "PrivateResource")
     private fun init(context: Context, attrs: AttributeSet, defStyleAttr: Int) {
         context.withStyledAttributes(attrs, androidx.preference.R.styleable.Preference) {
-            mAllowDividerAbove = getBoolean(
+            allowDividerAbove = getBoolean(
                 androidx.preference.R.styleable.Preference_allowDividerAbove,
                 false
             )
-            mAllowDividerBelow = getBoolean(
+            allowDividerBelow = getBoolean(
                 androidx.preference.R.styleable.Preference_allowDividerBelow,
                 false
             )
@@ -76,11 +76,11 @@ class LayoutPreference : Preference {
 
     private fun setView(view: View) {
         layoutResource = R.layout.oui_des_preference_layout_frame
-        mRootView = view
+        rootView = view
         shouldDisableView = false
     }
 
-    fun getView(): View? = mRootView
+    fun getView(): View? = rootView
 
     override fun onBindViewHolder(view: PreferenceViewHolder) {
         if (isRelativeLinkView) {
@@ -91,30 +91,30 @@ class LayoutPreference : Preference {
             }
         } else {
             view.itemView.apply {
-                setOnClickListener(mClickListener)
+                setOnClickListener(clickListener)
                 val isSelectable = isSelectable
                 isFocusable = isSelectable
                 isClickable = isSelectable
             }
-            view.isDividerAllowedAbove = mAllowDividerAbove
-            view.isDividerAllowedBelow = mAllowDividerBelow
+            view.isDividerAllowedAbove = allowDividerAbove
+            view.isDividerAllowedBelow = allowDividerBelow
         }
         val layout = view.itemView as FrameLayout
         layout.removeAllViews()
-        val parent = mRootView?.parent as? ViewGroup
-        parent?.removeView(mRootView)
-        layout.addView(mRootView)
+        val parent = rootView?.parent as? ViewGroup
+        parent?.removeView(rootView)
+        layout.addView(rootView)
     }
 
     fun <T : View?> findViewById(id: Int): T {
-        return mRootView!!.findViewById(id)
+        return rootView!!.findViewById(id)
     }
 
     fun setAllowDividerAbove(allowed: Boolean) {
-        mAllowDividerAbove = allowed
+        allowDividerAbove = allowed
     }
 
     fun setAllowDividerBelow(allowed: Boolean) {
-        mAllowDividerBelow = allowed
+        allowDividerBelow = allowed
     }
 }
