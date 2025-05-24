@@ -18,6 +18,7 @@ import dev.oneuiproject.oneui.utils.badgeCountToText
  * Selects the tab at the specified index.
  *
  * @param index The index of the tab to be selected.
+ * @param updateIndicator (Optional) Whether to update the indicator for the selected tab.
  */
 @JvmOverloads
 inline fun <T: TabLayout>T.selectTabAt(index: Int, updateIndicator: Boolean = true){
@@ -29,8 +30,8 @@ inline fun <T: TabLayout>T.selectTabAt(index: Int, updateIndicator: Boolean = tr
  * Adds a tab to this TabLayout.
  *
  * @param tabTitleRes The resource id of the string to set as title for the tab.
- * @param tabIconRes The resource id of the drawable to display on the tab.
- * @param listener [View.OnClickListener] to be set to the tab.
+ * @param tabIconRes (Optional) The resource id of the drawable to display on the tab.
+ * @param listener (Optional) [View.OnClickListener] to be set to the tab.
  *
  * @return The added [TabLayout.Tab] instance for further configuration, if needed.
  *
@@ -65,8 +66,8 @@ inline fun <T: TabLayout>T.addTab(
  * Adds a tab to this TabLayout.
  *
  * @param tabTitle The title text to display on the tab.
- * @param tabIcon The drawable to display as the tab's icon.
- * @param listener [View.OnClickListener] to be set to the tab.
+ * @param tabIcon (Optional) The drawable to display as the tab's icon.
+ * @param listener (Optional) [View.OnClickListener] to be set to the tab.
  *
  * @return The added [TabLayout.Tab] instance for further configuration, if needed.
  *
@@ -231,7 +232,19 @@ inline fun <T: TabLayout>T.setTabsEnabled(enabled: Boolean, vararg tabIndex: Int
     }
 }
 
-
+/**
+ * Sets a badge on the tab at the specified index.
+ *
+ * @param tabIndex The index of the tab to set the badge on.
+ * @param badge The [Badge] to display. Use [Badge.NUMERIC] for a number, [Badge.DOT] for a dot, or [Badge.NONE] to remove the badge.
+ *
+ * Example usage:
+ * ```
+ * tabLayout.setBadge(0, Badge.NUMERIC(5))
+ * tabLayout.setBadge(1, Badge.DOT)
+ * tabLayout.setBadge(2, Badge.NONE)
+ * ```
+ */
 @JvmName("setTabBadge")
 inline fun <T: TabLayout>T.setBadge(tabIndex: Int, badge: Badge){
     if (getTabAt(tabIndex) == null) {
@@ -248,13 +261,44 @@ inline fun <T: TabLayout>T.setBadge(tabIndex: Int, badge: Badge){
     }
 }
 
+/**
+ * Removes any badge from the tab at the specified index.
+ * This is a shorthand for invoking [TabLayout.setBadge] with [Badge.NONE] parameter.
+ *
+ * @param tabIndex The index of the tab to clear the badge from.
+ *
+ * Example usage:
+ * ```
+ * tabLayout.clearBadge(0)
+ * ```
+ */
 @JvmName("clearTabBadge")
 inline fun <T: TabLayout>T.clearBadge(tabIndex: Int) = setBadge(tabIndex, Badge.NONE)
 
-
+/**
+ * Sets a badge on this [TabLayout.Tab].
+ *
+ * @param badge The [Badge] to display. Use [Badge.NUMERIC] for a number, [Badge.DOT] for a dot, or [Badge.NONE] to remove the badge.
+ *
+ * Example usage:
+ * ```
+ * tab.setBadge(Badge.NUMERIC(3))
+ * tab.setBadge(Badge.DOT)
+ * tab.setBadge(Badge.NONE)
+ * ```
+ */
 @JvmName("setTabBadge")
 inline fun <T: TabLayout.Tab>T.setBadge(badge: Badge) = parent?.setBadge(position, badge)
 
+/**
+ * Removes any badge from this [TabLayout.Tab].
+ *  This is a shorthand for invoking [TabLayout.Tab.setBadge] with [Badge.NONE] parameter.
+ *
+ * Example usage:
+ * ```
+ * tab.clearBadge()
+ * ```
+ */
 @JvmName("clearTabBadge")
 inline fun <T: TabLayout.Tab>T.clearBadge() = parent?.clearBadge(position)
 

@@ -26,6 +26,22 @@ import kotlin.reflect.KClass
 /**
  * Sets up navigation for [NavDrawerLayout] with a [DrawerNavigationView] and [NavHostFragment].
  * Supports both XML and programmatically created navigation graphs (NavGraphBuilder DSL).
+ *
+ * @param drawerNavigationView The [DrawerNavigationView] containing the [navigation menu][dev.oneuiproject.oneui.navigation.widget.DrawerMenuView] to be linked with navigation actions.
+ * @param navHostFragment The [NavHostFragment] that hosts the navigation graph and manages navigation transactions.
+ * @param configuration Optional [AppBarConfiguration] to customize top-level destinations and drawer behavior.
+ *                      By default, uses the menu from [drawerNavigationView] and this [NavDrawerLayout] as the drawer layout.
+ * @param toolbarBackThreshold The threshold (from 0.0 to 1.0) at which the [NavDrawerLayout] toolbar switches its title, subtitle and navigation icon
+ * to those of the back destination during predictive back animation progress. Defaults to 0.75f.
+ *
+ * Usage example:
+ * ```
+ * navDrawerLayout.setupNavigation(drawerNavigationView, navHostFragment)
+ * ```
+ *
+ * @see DrawerNavigationView
+ * @see NavHostFragment
+ * @see AppBarConfiguration
  */
 @JvmName("setup")
 @JvmOverloads

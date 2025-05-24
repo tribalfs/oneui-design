@@ -113,10 +113,9 @@
         <attr name="expanded" format="boolean" />
         <!--The toolbar's collapsed and expanded title.-->
         <attr name="title" format="string" />
-        <!--The toolbar's expanded title.-->
+        <!--The toolbar's collapsed and expanded subtitle.-->
         <attr name="subtitle" format="string" />
-        <!--Handle system insets and ime insets internally.
-         By default, it is set to true when getFitsSystemWindows() is false. -->
+        <!--Handle system insets and ime insets internally. The default is true -->
         <attr name="handleInsets" format="boolean"/>
         <!--Sets whether the toolbar navigation button should be displayed as a 'back/up' affordance.
          Set this to true if clicking the navigation button returns the user up by a single level in your UI;
@@ -126,7 +125,7 @@
         <!--The toolbar's navigation icon when showNavButtonAsBack is false (default).
         Don't forget to also set tooltip programmatically with setNavigationButtonTooltip(CharSequence).-->
         <attr name="navigationIcon" format="reference" />
-        <!-- Set to true to show a SeslSwitchBar right below the AppBarLayout. Default is false-->
+        <!-- Set to true to show a SeslSwitchBar right below the AppBarLayout. Default is false.-->
         <attr name="showSwitchBar" format="boolean"/>
         <!-- Sets rounded corners around the main content. Default is all.-->
         <attr name="mainRoundedCorners">
@@ -135,10 +134,9 @@
             <enum name="bottom" value="2" />
             <enum name="none" value="3" />
         </attr>
-        <!--Applies horizontal insets to the edges and rounded corners
-        of the main content.  Note that this method does not add any
-        horizontal padding or margin.  It is the responsibility of the content
-        to set the appropriate padding or margin as needed..-->
+        <!--The dimen value to be set as the inset to the horizontal edges and
+         rounded corners of the main content. This doesn't changed horizontal padding.
+         Default is 10dp. -->
         <attr format="dimension" name="edgeInsetHorizontal"/>
         <!--Gravity to be set on the toolbar(s).
         This is set to bottom by default.-->
@@ -166,15 +164,15 @@
         <!--The location of the ToolbarLayout children views.
         This defaults to main_content if not provided.-->
         <attr name="layout_location">
-            <!--Represents the primary content of the layout.
-            This view will have adaptive margins applied,
+            <!-- The child will be added as the primary content of this layout
+            located right below the app bar and will have adaptive margins applied,
             which are managed by the layout.-->
             <enum name="main_content" value="0" />
             <!--Sets this view as the custom title view for the expanded AppBarLayout.
             This is equivalent to invoking the `setCustomTitleView` method.-->
             <enum name="appbar_header" value="1" />
-            <!--Adds the view to the bottom of the layout.
-            Ensures it does not overlap with other content.
+            <!--Adds the view to the bottom of the layout
+            ensuring it does not overlap with other content.
             This view will also have adaptive margins applied.-->
             <enum name="footer" value="2" />
             <!--Adds the view as a direct child of the CoordinatorLayout.

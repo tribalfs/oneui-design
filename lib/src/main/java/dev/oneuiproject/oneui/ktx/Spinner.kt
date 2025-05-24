@@ -41,6 +41,24 @@ inline fun <T : Spinner> T.onItemSelected(
     return this
 }
 
+/**
+ * Sets the entries for this [Spinner] using the provided list and attaches a selection listener.
+ *
+ * @param entries The list of items to display in the spinner.
+ * @param onSelect Lambda function to be invoked when an item is selected or nothing is selected.
+ *                 Receives the `position` of the selected item and the row id (or null if nothing is selected).
+ *
+ * Example usage:
+ * ```
+ * spinner.setEntries(listOf("One", "Two", "Three")) { position, id ->
+ *     if (position != null) {
+ *         // Handle item selection
+ *     } else {
+ *         // Handle no item selected
+ *     }
+ * }
+ * ```
+ */
 @JvmName("setupSpinner")
 inline fun <T : Spinner> T.setEntries(
     entries: List<Any>,

@@ -435,10 +435,11 @@ class TipPopup(parentView: View, mode: Mode) {
      * Updates the pop-up's size, position and arrow position if currently showing.
      *
      * @param direction (Optional) The new [Direction] of the arrow.
-     * @param resetHintTimer (Optional) Defaults to false.
+     * @param dismissOnTimeout (Optional) Dismisses the hint after
+     * a [timeout][TIMEOUT_DURATION_MS]. Defaults to false.
      */
     @JvmOverloads
-    fun update(direction: Direction = arrowDirection, resetHintTimer: Boolean = false) {
+    fun update(direction: Direction = arrowDirection, dismissOnTimeout: Boolean = false) {
         if (!isShowing/* || mParentView == null*/) {
             return
         }
@@ -461,7 +462,7 @@ class TipPopup(parentView: View, mode: Mode) {
 
         if (state == State.HINT) {
             bubblePopup!!.update(bubblePopupX, bubblePopupY, bubblePopup!!.width, bubblePopup!!.height)
-            if (resetHintTimer) {
+            if (dismissOnTimeout) {
                 debugLog("Timer Reset!")
                 scheduleTimeout()
             }

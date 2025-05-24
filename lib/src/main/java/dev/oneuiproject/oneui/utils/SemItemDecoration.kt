@@ -20,9 +20,27 @@ import dev.oneuiproject.oneui.utils.ItemDecorRule.SELECTED
 
 
 /**
- * @param context
- * @param dividerRule [ItemDecorRule] to apply to dividers.
- * @param subHeaderRule [ItemDecorRule] to apply to rounded sub-headers.
+ * An item decoration for RecyclerView that provides Samsung OneUI-style dividers and rounded sub-header backgrounds.
+ *
+ * This decoration allows you to customize the appearance of list item dividers and sub-header backgrounds
+ * using [ItemDecorRule]s. You can specify whether decorations should be applied to all items, only selected viewholder or view types,
+ * or not at all.
+ *
+ * @constructor Creates a new [SemItemDecoration] with the specified rules.
+ * @param context The context used to resolve theme attributes and resources for drawing dividers and sub-headers.
+ * @param dividerRule The [ItemDecorRule] that determines which items receive a divider. Defaults to [ItemDecorRule.ALL].
+ * @param subHeaderRule The [ItemDecorRule] that determines which items receive a rounded sub-header background. Defaults to [ItemDecorRule.ALL].
+ *
+ * Example usage:
+ * ```
+ * recyclerView.addItemDecoration(
+ *     SemItemDecoration(
+ *         context = requireContext(),
+ *         dividerRule = ItemDecorRule.ALL,
+ *         subHeaderRule = ItemDecorRule.SELECTED { vh -> vh is MySubHeaderViewHolder }
+ *     )
+ * )
+ * ```
  */
 @SuppressLint("PrivateResource", "ResourceType")
 open class SemItemDecoration @JvmOverloads constructor(

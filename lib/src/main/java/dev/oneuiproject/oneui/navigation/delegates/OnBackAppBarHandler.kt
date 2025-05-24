@@ -13,6 +13,10 @@ import androidx.navigation.ui.AppBarConfiguration
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.layout.NavDrawerLayout
 
+/**
+ * Delegate for updating the toolbar titles and navigation icon
+ * on destination changes and during predictive back animation progress.
+ */
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 internal class OnBackAppBarHandler(
     private val navDrawerLayout: NavDrawerLayout,

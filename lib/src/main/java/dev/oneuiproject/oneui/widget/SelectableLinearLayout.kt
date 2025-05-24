@@ -22,9 +22,19 @@ import dev.oneuiproject.oneui.widget.internal.SelectableAnimatedDrawable
 /**
  * A custom [LinearLayout] designed to be used as a selectable item within a
  * [RecyclerView][androidx.recyclerview.widget.RecyclerView]. This layout provides
- * functionality to display an action mode and a selected indicator, which can be
- * either a [CheckBox] or an animated check overlay. It also supports highlighting
- * to visually distinguish selected items.
+ * functionality to display OneUI-styled action mode and check mode (for selected state) indicators.
+ * The latter indicator can be either a [CheckBox] or an animated check overlay drawable.
+ *
+ * The check mode can be set using the `app:checkMode` attribute.
+ * - When `app:checkMode:checkBox` is set, `app:checkableButtonSpacing` attribute
+ * can also be set to adjust the spacing (in pixels) between the [CheckBox] and the content.
+ * - When `app:checkMode:overlayCircle` is set, `app:cornerRadius` attribute
+ * can also be set to adjust the corner radius of the check drawable overlay. This
+ * can also be set dynamically using [setOverlayCornerRadius].
+ *
+ *  This view also supports highlighting when selected for additional visual distinction.
+ *  A custom highlight color can be set using the `app:selectedHighlightColor` attribute.
+ *  This color is set to `#08000000` by default.
  */
 class SelectableLinearLayout @JvmOverloads constructor(
     context: Context,
@@ -133,6 +143,12 @@ class SelectableLinearLayout @JvmOverloads constructor(
         background = if (isSelected) selectedHighlightColor else null
     }
 
+    /**
+     * Sets the corner radius of the check drawable overlay
+     * when `app:checkMode:overlayCircle` is set
+     *
+     * By default, this is set to 50% of the height of the target view
+     */
     fun setOverlayCornerRadius(@Px radius: Float){
         when (checkMode){
             1 -> checkDrawable!!.setCornerRadius(radius)

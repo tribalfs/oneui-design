@@ -13,7 +13,6 @@ import androidx.annotation.Px
 import androidx.annotation.RestrictTo
 import androidx.core.view.doOnLayout
 import androidx.customview.view.AbsSavedState
-import androidx.customview.widget.Openable
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.layout.NavDrawerLayout.Companion.DEFAULT_NAV_RAIL_DETAILS_WIDTH
 import dev.oneuiproject.oneui.layout.internal.delegate.DrawerLayoutBackHandler
@@ -33,6 +32,20 @@ import dev.oneuiproject.oneui.layout.DrawerLayout as OneUIDrawerLayout
  * Otherwise, it will result to runtime exceptions.
  * - To use this layout, ensure your activity does *not* handle `smallestScreenSize` in `android:configChanges`.
  * Otherwise, layout changes based on screen size will not function correctly.
+ *
+ * ## XML Attributes
+ * The following XML attributes are supported in addition to attributes of [ToolbarLayout]:
+ *
+ * - `app:drawerBackAnimation`: Enable or disable drawer's predictive back animation.
+ *       This applies only to api34+. This is set to false by default.
+ *
+ *  ## Setting the locations of the direct child views
+ *  The locations of direct child views can be set by setting any of the following values to the
+ *  `app:layout_location` attribute of the child view in addition to the location values allowed in [ToolbarLayout]:
+ *
+ * - `drawer_header` - Sets the view as a custom header row within the drawer panel.
+ *    Serves as the topmost element in the drawer.
+ * - `drawer_panel` - Adds the view to inside the drawer panel below the `drawer_header`.
  */
 class NavDrawerLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null

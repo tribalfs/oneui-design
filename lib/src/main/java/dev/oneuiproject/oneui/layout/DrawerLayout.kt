@@ -29,6 +29,20 @@ import dev.oneuiproject.oneui.layout.internal.widget.SemDrawerLayout
  * **Important:**
  * - This view must be hosted within an [AppCompatActivity][androidx.appcompat.app.AppCompatActivity]
  * as it relies on AppCompat-specific features and theming. Otherwise, it will result to runtime exceptions.
+ *
+ * ## XML Attributes
+ * The following XML attributes are supported in addition to attributes of [ToolbarLayout]:
+ *
+ * - `app:drawerBackAnimation`: Enable or disable drawer's predictive back animation.
+ *       This applies only to api34+. This is set to false by default.
+ *
+ *  ## Setting the locations of the direct child views
+ *  The locations of direct child views can be set by setting any of the following values to the
+ *  `app:layout_location` attribute of the child view in addition to the location values allowed in [ToolbarLayout]:
+ *
+ * - `drawer_header` - Sets the view as a custom header row within the drawer panel.
+ *    Serves as the topmost element in the drawer.
+ * - `drawer_panel` - Adds the view to inside the drawer panel below the `drawer_header`.
  */
 open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     ToolbarLayout(context, attrs), Openable {
@@ -64,7 +78,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     override fun getDefaultLayoutResource() = R.layout.oui_des_layout_drawerlayout_main
     override fun getDefaultNavigationIconResource(): Int = R.drawable.oui_des_ic_ab_drawer
 
-    private var mDrawerPreviewOpen = false
+    private var drawerPreviewOpen = false
 
     private fun initLayoutAttrs(attrs: AttributeSet?) {
         setWillNotDraw(background == null)
@@ -72,7 +86,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         context.withStyledAttributes(attrs, R.styleable.DrawerLayout, 0, 0) {
             enableDrawerBackAnimation = getBoolean(R.styleable.DrawerLayout_drawerBackAnimation, false)
             if (isInEditMode) {
-                mDrawerPreviewOpen = getBoolean(R.styleable.DrawerLayout_isOpen, false)
+                drawerPreviewOpen = getBoolean(R.styleable.DrawerLayout_isOpen, false)
             }
         }
     }
@@ -92,7 +106,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        if (isInEditMode && mDrawerPreviewOpen) {
+        if (isInEditMode && drawerPreviewOpen) {
             containerLayout.open(false)
         }
         updateDrawerState()

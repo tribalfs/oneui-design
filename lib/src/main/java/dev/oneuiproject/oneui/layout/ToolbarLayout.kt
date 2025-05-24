@@ -124,6 +124,41 @@ import androidx.appcompat.R as appcompatR
  * **Important:**
  * - This view must be hosted within an [AppCompatActivity][androidx.appcompat.app.AppCompatActivity]
  * as it relies on AppCompat-specific features and theming. Otherwise, it will result to runtime exceptions.
+ *
+ * ## XML Attributes
+ * The following XML attributes are supported:
+ *
+ * - `app:title`: Sets the toolbar's collapsed and expanded title.
+ *    Can also be set programmatically via [setTitle].
+ * - `app:subtitle`: Sets the toolbar's collapsed and expanded subtitle.
+ *    Can also be set programmatically via [setSubtitle].
+ * - `app:expandable`: Enables or disables the expanding toolbar.
+ *    Also accessible via the [isExpandable] property. Default is `true`.
+ * - `app:expanded`: Sets the initial expanded/collapsed state when `app:expandable` is `true`.
+ *    Also accessible via the [isExpanded] property. Default is `true`.
+ * - `app:navigationIcon`: Sets the toolbar's navigation icon when [showNavigationButtonAsBack] is `false` (default).
+ *    Tooltip should be set programmatically using [setNavigationButtonTooltip].
+ * - `app:showNavButtonAsBack`: Displays the navigation button as a "back/up" affordance.
+ *    When `true`, the button shows a back icon, sets the tooltip to "Navigate up", and invokes [androidx.activity.OnBackPressedDispatcher.onBackPressed] when clicked.
+ *    Also accessible via the [showNavigationButtonAsBack] property. Default is `false`.
+ * - `app:showSwitchBar`: Shows a [SeslSwitchBar] below the AppBarLayout.
+ *    Accessing the [switchBar] property automatically sets this to `true`. Default is `false`.
+ * - `app:handleInsets`: Handles system and IME insets internally. Default is `true`.
+ * - `app:edgeInsetHorizontal`: Sets the horizontal edge inset and rounded corner radius for the main content.
+ *    Does not affect horizontal padding. Default is `10dp`.
+ * - `app:toolbarGravity`: Sets the gravity for the toolbar(s). Default is `bottom`.
+ *
+ *  ## Setting the locations of the direct child views
+ *  The locations of direct child views can be set by setting any of the following values to the
+ *  `app:layout_location` attribute of the child view
+ *
+ * - `main_content` (default): The child will be added as the primary content of this layout.
+ *    This view will have adaptive margins applied, which are managed by the layout.
+ * - `appbar_header`" Sets this view as the custom title view for the expanded AppBarLayout.
+ *     This is equivalent to invoking the `setCustomTitleView` method.
+ * - `footer`: Adds the view to the bottom of the layout.
+ * - `root`: Adds the view as a direct child of the CoordinatorLayout.
+ *    Typically overlaps with the `main_content` view.
  */
 open class ToolbarLayout @JvmOverloads constructor(
     @JvmField protected var context: Context,
@@ -183,9 +218,13 @@ open class ToolbarLayout @JvmOverloads constructor(
      * - [NONE]
      */
     enum class MainRoundedCorners {
+        /** @see MainRoundedCorners*/
         ALL,
+        /** @see MainRoundedCorners*/
         TOP,
+        /** @see MainRoundedCorners*/
         BOTTOM,
+        /** @see MainRoundedCorners*/
         NONE
     }
 
@@ -280,7 +319,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     private lateinit var mainContainerParent: LinearLayout
     private lateinit var collapsingToolbarLayout: CollapsingToolbarLayout
 
-    /**@return the [AppBarLayout].*/
+    /**@return The [AppBarLayout] use by this view.*/
     lateinit var appBarLayout: AppBarLayout
         private set
 
@@ -332,6 +371,10 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     private var _showSwitchBar = false
 
+    /**
+     * The (SeslSwitchbar)[androidx.appcompat.widget.SeslSwitchBar] shown below the app bar.
+     * Invoking this will automatically inflate and add the switch bar to the layout.
+     */
     open val switchBar by lazy {
         mainContainerParent.findViewById<ViewStub>(R.id.viewstub_tbl_switchbar)
             .inflate() as SeslSwitchBar
@@ -1723,9 +1766,26 @@ open class ToolbarLayout @JvmOverloads constructor(
 
         @RestrictTo(RestrictTo.Scope.LIBRARY)
         internal const val AMT_GROUP_MENU_ID: Int = 9999
+        /**
+         * The child will be added as the primary content of this layout located
+         * right below the app bar and will have the adaptive margins applied,
+         * which are managed by the layout.
+         */
         internal const val MAIN_CONTENT = 0
+        /**
+         * Sets this view as the custom title view for the expanded AppBarLayout.
+         * This is equivalent to invoking the `setCustomTitleView` method.
+         */
         private const val APPBAR_HEADER = 1
+        /**
+         * Adds the view to the bottom of the layout ensuring it does not overlap with other content.
+         * This view will also have adaptive margins applied.
+         */
         private const val FOOTER = 2
+        /**
+         * Adds the view as a direct child of the CoordinatorLayout.
+         * Typically overlaps with the `main_content` view.
+         */
         private const val ROOT = 3
         private const val ROOT_BOUNDED = 6
 

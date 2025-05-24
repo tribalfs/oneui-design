@@ -8,6 +8,14 @@ import android.view.Window
 import androidx.reflect.DeviceInfo
 import dev.rikka.tools.refine.Refine
 
+/**
+ * Adds the specified Samsung extension flags to this [Window]'s layout parameters.
+ * This function only has an effect on devices running OneUI.
+ *
+ * @param flags The extension flags to add.
+ *
+ * @see semClearExtensionFlags
+ */
 inline fun Window.semAddExtensionFlags(flags: Int) {
     if (DeviceInfo.isOneUI()) {
         try {
@@ -21,6 +29,14 @@ inline fun Window.semAddExtensionFlags(flags: Int) {
     }
 }
 
+/**
+ * Clears the specified Samsung extension flags from this [Window]'s layout parameters.
+ * This function only has an effect on devices running OneUI.
+ *
+ * @param flags The extension flags to clear.
+ *
+ * @see semAddExtensionFlags
+ */
 inline fun Window.semClearExtensionFlags(flags: Int) {
     if (DeviceInfo.isOneUI()) {
         try {
