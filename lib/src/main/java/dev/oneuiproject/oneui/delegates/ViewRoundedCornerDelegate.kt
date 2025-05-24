@@ -7,7 +7,7 @@ import android.graphics.Canvas
 import android.util.AttributeSet
 import androidx.annotation.ColorInt
 import androidx.appcompat.util.SeslRoundedCorner
-import androidx.core.content.res.use
+import androidx.core.content.withStyledAttributes
 import androidx.core.graphics.Insets
 import dev.oneuiproject.oneui.design.R
 
@@ -44,16 +44,16 @@ class ViewRoundedCornerDelegate(
         }
 
     init {
-        context.obtainStyledAttributes(attrs, R.styleable.RoundedCornerView, defStyleAttr, defStyleRes).use {
-            val topCornerInset = it.getDimensionPixelSize(R.styleable.RoundedCornerView_edgeInsetTop, 0)
-            val rightCornerInset = it.getDimensionPixelSize(R.styleable.RoundedCornerView_edgeInsetRight, 0)
-            val bottomCornerInset = it.getDimensionPixelSize(R.styleable.RoundedCornerView_edgeInsetBottom, 0)
-            val leftCornerInset = it.getDimensionPixelSize(R.styleable.RoundedCornerView_edgeInsetLeft, 0)
-            drawOverEdge = it.getBoolean(R.styleable.RoundedCornerView_drawOverEdge, true)
+        context.withStyledAttributes(attrs, R.styleable.RoundedCornerView, defStyleAttr, defStyleRes) {
+            val topCornerInset = getDimensionPixelSize(R.styleable.RoundedCornerView_edgeInsetTop, 0)
+            val rightCornerInset = getDimensionPixelSize(R.styleable.RoundedCornerView_edgeInsetRight, 0)
+            val bottomCornerInset = getDimensionPixelSize(R.styleable.RoundedCornerView_edgeInsetBottom, 0)
+            val leftCornerInset = getDimensionPixelSize(R.styleable.RoundedCornerView_edgeInsetLeft, 0)
+            drawOverEdge = getBoolean(R.styleable.RoundedCornerView_drawOverEdge, true)
             edgeInsets = Insets.of(leftCornerInset, topCornerInset, rightCornerInset, bottomCornerInset)
-            roundedCorners = it.getInt(R.styleable.RoundedCornerView_roundedCorners, SeslRoundedCorner.ROUNDED_CORNER_ALL)
-            roundedCornersColor = it.getColor(R.styleable.RoundedCornerView_roundedCornerColor, -1)
-            fillHorizontalPadding = it.getBoolean(R.styleable.RoundedCornerView_fillHorizontalPadding, false)
+            roundedCorners = getInt(R.styleable.RoundedCornerView_roundedCorners, SeslRoundedCorner.ROUNDED_CORNER_ALL)
+            roundedCornersColor = getColor(R.styleable.RoundedCornerView_roundedCornerColor, -1)
+            fillHorizontalPadding = getBoolean(R.styleable.RoundedCornerView_fillHorizontalPadding, false)
         }
     }
 

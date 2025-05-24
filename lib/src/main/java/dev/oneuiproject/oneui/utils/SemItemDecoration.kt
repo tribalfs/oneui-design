@@ -9,7 +9,7 @@ import androidx.annotation.Px
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.util.SeslRoundedCorner
 import androidx.appcompat.util.SeslSubheaderRoundedCorner
-import androidx.core.content.res.use
+import androidx.core.content.withStyledAttributes
 import androidx.core.view.marginBottom
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -50,17 +50,12 @@ open class SemItemDecoration @JvmOverloads constructor(
                     roundedCorners = SeslRoundedCorner.ROUNDED_CORNER_ALL
                 }
 
-                context.obtainStyledAttributes(
-                    intArrayOf(
-                        android.R.attr.listDivider,
-                        androidx.appcompat.R.attr.roundedCornerColor
-                    )
-                ).use {
-                    divider = it.getDrawable(0)
-                    subheaderRoundedCorner!!.setRoundedCornerColor(
-                        SeslRoundedCorner.ROUNDED_CORNER_ALL,
-                        it.getColor(1, 0)
-                    )
+                context.withStyledAttributes(
+                    null,
+                    attrs = intArrayOf(android.R.attr.listDivider, androidx.appcompat.R.attr.roundedCornerColor)
+                ) {
+                    divider = getDrawable(0)
+                    subheaderRoundedCorner!!.setRoundedCornerColor(SeslRoundedCorner.ROUNDED_CORNER_ALL, getColor(1, 0))
                 }
                 context.resources.apply {
                     defaultDividerInset =  getDimensionPixelSize(androidx.appcompat.R.dimen.sesl_list_divider_inset)

@@ -8,7 +8,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.TextView
 import androidx.annotation.StringRes
-import androidx.core.content.res.use
+import androidx.core.content.withStyledAttributes
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
 import dev.oneuiproject.oneui.ktx.dpToPx
@@ -39,13 +39,13 @@ class BottomTipView @JvmOverloads constructor(
         linkTextView = findViewById(R.id.tv_tip_link)
 
         if (attrs != null) {
-            context.obtainStyledAttributes(
+            context.withStyledAttributes(
                 attrs,
                 R.styleable.BottomTipView
-            ).use {a ->
-                a.getText(R.styleable.BottomTipView_title)?.let { setTitle(it) }
-                a.getText(R.styleable.BottomTipView_summary)?.let { setSummary(it) }
-                a.getText(R.styleable.BottomTipView_linkText)?.let { setLinkText(it) }
+            ) {
+                getText(R.styleable.BottomTipView_title)?.let { setTitle(it) }
+                getText(R.styleable.BottomTipView_summary)?.let { setSummary(it) }
+                getText(R.styleable.BottomTipView_linkText)?.let { setLinkText(it) }
             }
         }
     }

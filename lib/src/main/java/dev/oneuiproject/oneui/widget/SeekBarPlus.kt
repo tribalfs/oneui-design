@@ -6,7 +6,7 @@ import android.graphics.Canvas
 import android.graphics.PorterDuff
 import android.util.AttributeSet
 import androidx.appcompat.widget.SeslSeekBar
-import androidx.core.content.res.use
+import androidx.core.content.withStyledAttributes
 import dev.oneuiproject.oneui.design.R
 import androidx.core.graphics.withTranslation
 
@@ -31,9 +31,9 @@ class SeekBarPlus @JvmOverloads constructor(
         }
 
     init {
-        context.obtainStyledAttributes(attrs, R.styleable.SeekBarPlus).use{ a ->
-            setSeamless(a.getBoolean(R.styleable.SeekBarPlus_seamless, true))
-            centerBasedBar = a.getBoolean(R.styleable.SeekBarPlus_centerBasedBar, true)
+        context.withStyledAttributes(attrs, R.styleable.SeekBarPlus) {
+            setSeamless(getBoolean(R.styleable.SeekBarPlus_seamless, true))
+            centerBasedBar = getBoolean(R.styleable.SeekBarPlus_centerBasedBar, true)
             if (centerBasedBar) setMode(MODE_LEVEL_BAR)
         }
         progressTintMode = PorterDuff.Mode.SRC

@@ -19,6 +19,7 @@ import android.widget.TextView
 import androidx.collection.MutableScatterMap
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
+import androidx.core.content.withStyledAttributes
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import dev.oneuiproject.oneui.design.R
@@ -52,14 +53,14 @@ class HorizontalRadioPreference(context: Context, attrs: AttributeSet?) :
     private val unselectedColor: Int = ContextCompat.getColor(context, R.color.oui_des_horizontalradiopref_text_unselected_color)
 
     init {
-        context.obtainStyledAttributes(attrs, R.styleable.HorizontalRadioPreference).use{
-            type = it.getInt(R.styleable.HorizontalRadioPreference_viewType, IMAGE)
-            entries = it.getTextArray(R.styleable.HorizontalRadioPreference_entries)
-            entryValues = it.getTextArray(R.styleable.HorizontalRadioPreference_entryValues)
+        context.withStyledAttributes(attrs, R.styleable.HorizontalRadioPreference) {
+            type = getInt(R.styleable.HorizontalRadioPreference_viewType, IMAGE)
+            entries = getTextArray(R.styleable.HorizontalRadioPreference_entries)
+            entryValues = getTextArray(R.styleable.HorizontalRadioPreference_entryValues)
 
             when (type) {
                 IMAGE -> {
-                    val entriesImageResId = it.getResourceId(R.styleable.HorizontalRadioPreference_entriesImage, 0)
+                    val entriesImageResId = getResourceId(R.styleable.HorizontalRadioPreference_entriesImage, 0)
                     if (entriesImageResId != 0) {
                         context.resources.obtainTypedArray(entriesImageResId).use { ta ->
                             entriesImage = IntArray(ta.length())
@@ -70,9 +71,9 @@ class HorizontalRadioPreference(context: Context, attrs: AttributeSet?) :
                     }
                 }
                 NO_IMAGE -> {
-                    val entriesSubtitle = it.getResourceId(R.styleable.HorizontalRadioPreference_entriesSubtitle, 0)
+                    val entriesSubtitle = getResourceId(R.styleable.HorizontalRadioPreference_entriesSubtitle, 0)
                     if (entriesSubtitle != 0) {
-                        entriesSubTitle = it.getTextArray(R.styleable.HorizontalRadioPreference_entriesSubtitle)
+                        entriesSubTitle = getTextArray(R.styleable.HorizontalRadioPreference_entriesSubtitle)
                     }
                 }
             }

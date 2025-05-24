@@ -21,7 +21,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.use
+import androidx.core.content.withStyledAttributes
 import androidx.core.graphics.ColorUtils
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -187,21 +187,21 @@ class SwitchItemView @JvmOverloads constructor(
         isClickable = true
 
 
-        context.obtainStyledAttributes(
+        context.withStyledAttributes(
             attrs,
             R.styleable.SwitchItemView,
             defStyleAttr,
             defStyleRes
-        ).use {a ->
-            isEnabled = a.getBoolean(R.styleable.SwitchItemView_android_enabled, true)
-            isChecked = a.getBoolean(R.styleable.SwitchItemView_android_checked, false)
-            title = a.getText(R.styleable.SwitchItemView_title)
-            summaryOn = a.getText(R.styleable.SwitchItemView_summaryOn)
-            summaryOff = a.getText(R.styleable.SwitchItemView_summaryOff)
-            separateSwitch = a.getBoolean(R.styleable.SwitchItemView_separateSwitch, false)
-            showTopDivider = a.getBoolean(R.styleable.SwitchItemView_showTopDivider, true)
-            showBottomDivider = a.getBoolean(R.styleable.SwitchItemView_showBottomDivider, false)
-            if (a.getBoolean(R.styleable.SwitchItemView_userUpdatableSummary, false)){
+        ) {
+            isEnabled = getBoolean(R.styleable.SwitchItemView_android_enabled, true)
+            isChecked = getBoolean(R.styleable.SwitchItemView_android_checked, false)
+            title = getText(R.styleable.SwitchItemView_title)
+            summaryOn = getText(R.styleable.SwitchItemView_summaryOn)
+            summaryOff = getText(R.styleable.SwitchItemView_summaryOff)
+            separateSwitch = getBoolean(R.styleable.SwitchItemView_separateSwitch, false)
+            showTopDivider = getBoolean(R.styleable.SwitchItemView_showTopDivider, true)
+            showBottomDivider = getBoolean(R.styleable.SwitchItemView_showBottomDivider, false)
+            if (getBoolean(R.styleable.SwitchItemView_userUpdatableSummary, false)){
                 val colorEnabled = ContextCompat.getColor(context,
                     context.getThemeAttributeValue(androidx.appcompat.R.attr.colorPrimaryDark)!!.resourceId)
                 val states = arrayOf(
@@ -214,8 +214,6 @@ class SwitchItemView @JvmOverloads constructor(
                 )
                 summaryView.setTextColor(ColorStateList(states, colors))
             }
-
-
         }
 
         contentFrame.setOnClickListener {

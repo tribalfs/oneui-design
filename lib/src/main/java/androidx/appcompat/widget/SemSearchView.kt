@@ -8,7 +8,7 @@ import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.RestrictTo
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.use
+import androidx.core.content.withStyledAttributes
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.isLightMode
 import androidx.appcompat.R as appcompatR
@@ -34,13 +34,12 @@ internal class SemSearchView @JvmOverloads constructor (
 
 
 internal fun SearchView.applyActionModeSearchStyle(){
-    context.theme.obtainStyledAttributes(intArrayOf(
-        appcompatR.attr.searchViewHintTextColor,
-        android.R.attr.textColorPrimary
-    )).use {
-        val hintColor = it.getColor(0, ContextCompat.getColor(context,
+    context.withStyledAttributes(
+        attrs =  intArrayOf(appcompatR.attr.searchViewHintTextColor, android.R.attr.textColorPrimary)
+    ) {
+        val hintColor = getColor(0, ContextCompat.getColor(context,
             android.R.color.darker_gray))
-        val textColor = it.getColor( @Suppress("ResourceType") 1,
+        val textColor = getColor( @Suppress("ResourceType") 1,
             ContextCompat.getColor(context, R.color.oui_des_primary_text_color))
         setSearchViewColors(textColor, textColor, hintColor)
     }

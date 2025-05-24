@@ -48,6 +48,7 @@ import androidx.appcompat.widget.applyThemeColors
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
+import androidx.core.content.withStyledAttributes
 import androidx.core.graphics.Insets
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsCompat.Type.displayCutout
@@ -401,37 +402,37 @@ open class ToolbarLayout @JvmOverloads constructor(
         setWillNotDraw(true)
         activity?.applyEdgeToEdge()
         orientation = VERTICAL
-        context.theme.obtainStyledAttributes(attrs, R.styleable.ToolbarLayout, 0, 0).use {
-            layoutRes = it.getResourceId(
+        context.withStyledAttributes(attrs, R.styleable.ToolbarLayout, 0, 0) {
+            layoutRes = getResourceId(
                 R.styleable.ToolbarLayout_android_layout,
                 getDefaultLayoutResource()
             )
-            it.getDimension(R.styleable.ToolbarLayout_edgeInsetHorizontal, 10f).let{px ->
+            getDimension(R.styleable.ToolbarLayout_edgeInsetHorizontal, 10f).let{px ->
                 if (px != 10f) edgeInsetHorizontal = px.pxToDp(resources)
             }
-            toolbarGravity = it.getInt(R.styleable.ToolbarLayout_toolbarGravity, Gravity.BOTTOM)
+            toolbarGravity = getInt(R.styleable.ToolbarLayout_toolbarGravity, Gravity.BOTTOM)
 
             inflateChildren()
             initViews()
 
-            _expandable = it.getBoolean(R.styleable.ToolbarLayout_expandable, true)
-            expandedPortrait = it.getBoolean(R.styleable.ToolbarLayout_expanded, _expandable)
+            _expandable = getBoolean(R.styleable.ToolbarLayout_expandable, true)
+            expandedPortrait = getBoolean(R.styleable.ToolbarLayout_expanded, _expandable)
             _showNavigationButtonAsBack =
-                it.getBoolean(R.styleable.ToolbarLayout_showNavButtonAsBack, false)
-            navigationIcon = it.getDrawable(R.styleable.ToolbarLayout_navigationIcon)
+                getBoolean(R.styleable.ToolbarLayout_showNavButtonAsBack, false)
+            navigationIcon = getDrawable(R.styleable.ToolbarLayout_navigationIcon)
                 ?: getDefaultNavigationIconResource()?.let { d ->
                     ContextCompat.getDrawable(
                         context,
                         d
                     )
                 }
-            _collapsedTitle = it.getString(R.styleable.ToolbarLayout_title)
+            _collapsedTitle = getString(R.styleable.ToolbarLayout_title)
             _titleExpanded = _collapsedTitle
-            _subtitleExpanded = it.getString(R.styleable.ToolbarLayout_subtitle)
+            _subtitleExpanded = getString(R.styleable.ToolbarLayout_subtitle)
             _collapsedSubtitle = _subtitleExpanded
-            _handleInsets = it.getBoolean(R.styleable.ToolbarLayout_handleInsets, true)
-            _showSwitchBar = it.getBoolean(R.styleable.ToolbarLayout_showSwitchBar, false)
-            _mainRoundedCorners = MainRoundedCorners.entries[it.getInteger(
+            _handleInsets = getBoolean(R.styleable.ToolbarLayout_handleInsets, true)
+            _showSwitchBar = getBoolean(R.styleable.ToolbarLayout_showSwitchBar, false)
+            _mainRoundedCorners = MainRoundedCorners.entries[getInteger(
                 R.styleable.ToolbarLayout_mainRoundedCorners,
                 0
             )]

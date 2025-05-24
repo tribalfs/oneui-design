@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.annotation.Px
 import androidx.appcompat.util.SeslRoundedCorner
-import androidx.core.content.res.use
+import androidx.core.content.withStyledAttributes
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceViewHolder
 import dev.oneuiproject.oneui.design.R
@@ -25,10 +25,10 @@ class InsetPreferenceCategory @JvmOverloads constructor(
             .getDimensionPixelSize(androidx.appcompat.R.dimen.sesl_list_subheader_min_height)
 
         attrs?.let {
-            context.obtainStyledAttributes(attrs, R.styleable.InsetPreferenceCategory).use {a ->
-                customHeight = a.getDimensionPixelSize(R.styleable.InsetPreferenceCategory_height, customHeight)
+            context.withStyledAttributes(attrs, R.styleable.InsetPreferenceCategory) {
+                customHeight = getDimensionPixelSize(R.styleable.InsetPreferenceCategory_height, customHeight)
                 seslSetSubheaderRoundedBackground(
-                    a.getInt(R.styleable.InsetPreferenceCategory_roundedCorners, SeslRoundedCorner.ROUNDED_CORNER_ALL)
+                    getInt(R.styleable.InsetPreferenceCategory_roundedCorners, SeslRoundedCorner.ROUNDED_CORNER_ALL)
                 )
             }
         }

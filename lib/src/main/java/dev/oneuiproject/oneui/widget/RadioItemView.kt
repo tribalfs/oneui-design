@@ -8,7 +8,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.widget.SeslCheckedTextView
-import androidx.core.content.res.use
+import androidx.core.content.withStyledAttributes
 import androidx.core.view.isVisible
 import dev.oneuiproject.oneui.design.R
 
@@ -54,8 +54,8 @@ class RadioItemView @JvmOverloads constructor(
         checkedTextView.text = value
     }
 
-    fun setOnCheckedChangeWidgetListener(listener: OnCheckedChangeListener?){
-        onCheckedChangeListener =  listener
+    fun setOnCheckedChangeWidgetListener(listener: OnCheckedChangeListener?) {
+        onCheckedChangeListener = listener
     }
 
     init {
@@ -67,17 +67,17 @@ class RadioItemView @JvmOverloads constructor(
 
         topDivider = findViewById(R.id.top_divider)
 
-        attrs?.let{
-            context.obtainStyledAttributes(
+        attrs?.let {
+            context.withStyledAttributes(
                 attrs,
                 R.styleable.RadioItemView,
                 defStyleAttr,
                 defStyleRes
-            ).use {a ->
-                isEnabled = a.getBoolean(R.styleable.RadioItemView_android_enabled, true)
-                isChecked = a.getBoolean(R.styleable.RadioItemView_android_checked, false)
-                title = a.getText(R.styleable.RadioItemView_title)
-                showTopDivider = a.getBoolean(R.styleable.RadioItemView_showTopDivider, true).also {
+            ) {
+                isEnabled = getBoolean(R.styleable.RadioItemView_android_enabled, true)
+                isChecked = getBoolean(R.styleable.RadioItemView_android_checked, false)
+                title = getText(R.styleable.RadioItemView_title)
+                showTopDivider = getBoolean(R.styleable.RadioItemView_showTopDivider, true).also {
                     topDivider.isVisible = it
                 }
             }

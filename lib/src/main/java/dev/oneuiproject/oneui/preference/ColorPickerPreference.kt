@@ -15,7 +15,7 @@ import android.os.SystemClock
 import android.util.AttributeSet
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.use
+import androidx.core.content.withStyledAttributes
 import androidx.picker3.app.SeslColorPickerDialog
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
@@ -45,11 +45,11 @@ class ColorPickerPreference @JvmOverloads constructor(
         widgetLayoutResource = R.layout.oui_des_preference_color_picker_widget
         onPreferenceClickListener = this
 
-        context.obtainStyledAttributes(attrs, R.styleable.ColorPickerPreference).use {
+        context.withStyledAttributes(attrs, R.styleable.ColorPickerPreference) {
             mAlphaSliderEnabled =
-                it.getBoolean(R.styleable.ColorPickerPreference_showAlphaSlider, false)
+                getBoolean(R.styleable.ColorPickerPreference_showAlphaSlider, false)
             mPersistRecentColors =
-                it.getBoolean(R.styleable.ColorPickerPreference_persistRecentColors, true)
+                getBoolean(R.styleable.ColorPickerPreference_persistRecentColors, true)
         }
     }
 

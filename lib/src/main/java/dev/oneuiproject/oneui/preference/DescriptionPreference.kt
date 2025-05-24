@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.util.SeslRoundedCorner
-import androidx.core.content.res.use
+import androidx.core.content.withStyledAttributes
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import dev.oneuiproject.oneui.design.R
@@ -23,19 +23,19 @@ class DescriptionPreference @JvmOverloads constructor(
         isSelectable = false
 
         if (attrs != null) {
-            context.obtainStyledAttributes(attrs, androidx.preference.R.styleable.Preference).use {
+            context.withStyledAttributes(attrs, androidx.preference.R.styleable.Preference) {
                 @SuppressLint("PrivateResource")
-                layoutResource = it.getResourceId(
+                layoutResource = getResourceId(
                     androidx.preference.R.styleable.Preference_android_layout,
                     R.layout.oui_des_preference_unclickable_layout
                 )
             }
 
-            context.obtainStyledAttributes(attrs, R.styleable.DescriptionPreference).use {
+            context.withStyledAttributes(attrs, R.styleable.DescriptionPreference) {
                 seslSetSubheaderRoundedBackground(
-                    it.getInt(R.styleable.DescriptionPreference_roundedCorners, SeslRoundedCorner.ROUNDED_CORNER_ALL)
+                    getInt(R.styleable.DescriptionPreference_roundedCorners, SeslRoundedCorner.ROUNDED_CORNER_ALL)
                 )
-                mPositionMode = it.getInt(R.styleable.DescriptionPreference_positionMode, POSITION_NORMAL)
+                mPositionMode = getInt(R.styleable.DescriptionPreference_positionMode, POSITION_NORMAL)
             }
         } else {
             layoutResource = R.layout.oui_des_preference_unclickable_layout

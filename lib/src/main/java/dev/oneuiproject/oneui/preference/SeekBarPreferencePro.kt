@@ -21,7 +21,7 @@ import androidx.appcompat.widget.SeslAbsSeekBar.NO_OVERLAP
 import androidx.appcompat.widget.SeslProgressBar.MODE_LEVEL_BAR
 import androidx.appcompat.widget.SeslSeekBar
 import androidx.core.content.res.TypedArrayUtils
-import androidx.core.content.res.use
+import androidx.core.content.withStyledAttributes
 import androidx.core.view.isVisible
 import androidx.preference.PreferenceViewHolder
 import androidx.preference.SeekBarPreference
@@ -140,15 +140,15 @@ class SeekBarPreferencePro @JvmOverloads constructor(
     private var onSeekBarPreferenceChangeListener: OnSeekBarPreferenceChangeListener? = null
 
     init {
-        context.obtainStyledAttributes(attrs, R.styleable.SeekBarPreferencePro).use { a ->
-            centerBasedSeekBar = a.getBoolean(R.styleable.SeekBarPreferencePro_centerBasedSeekBar, false)
-            leftLabel = a.getString(R.styleable.SeekBarPreferencePro_leftLabelName)
-            overlapPoint = a.getInt(R.styleable.SeekBarPreferencePro_overlapPoint, NO_OVERLAP)
-            rightLabel = a.getString(R.styleable.SeekBarPreferencePro_rightLabelName)
-            isSeamLess = a.getBoolean(R.styleable.SeekBarPreferencePro_seamlessSeekBar, false)
-            seekbarMode = a.getInt(R.styleable.SeekBarPreferencePro_seekBarMode, MODE_LEVEL_BAR)
-            showTickMarks = a.getBoolean(R.styleable.SeekBarPreferencePro_showTickMark, true)
-            units = a.getString(R.styleable.SeekBarPreferencePro_units)
+        context.withStyledAttributes(attrs, R.styleable.SeekBarPreferencePro) {
+            centerBasedSeekBar = getBoolean(R.styleable.SeekBarPreferencePro_centerBasedSeekBar, false)
+            leftLabel = getString(R.styleable.SeekBarPreferencePro_leftLabelName)
+            overlapPoint = getInt(R.styleable.SeekBarPreferencePro_overlapPoint, NO_OVERLAP)
+            rightLabel = getString(R.styleable.SeekBarPreferencePro_rightLabelName)
+            isSeamLess = getBoolean(R.styleable.SeekBarPreferencePro_seamlessSeekBar, false)
+            seekbarMode = getInt(R.styleable.SeekBarPreferencePro_seekBarMode, MODE_LEVEL_BAR)
+            showTickMarks = getBoolean(R.styleable.SeekBarPreferencePro_showTickMark, true)
+            units = getString(R.styleable.SeekBarPreferencePro_units)
         }
         setOnSeekBarPreferenceChangeListener(null)
     }

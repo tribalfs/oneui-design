@@ -17,7 +17,7 @@ import androidx.annotation.RestrictTo
 import androidx.appcompat.widget.SeslProgressBar
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.use
+import androidx.core.content.withStyledAttributes
 import androidx.core.view.children
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -171,19 +171,17 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
 
         var titleTextColor = 0
 
-        context.theme.obtainStyledAttributes(
-            attrs,
-            R.styleable.AppInfoLayout,
-            R.attr.appInfoLayoutStyle, R.style.OneUI_AppInfoStyle
-        ).use { ta ->
-            titleTextColor = ta.getColor(
+        context.withStyledAttributes(
+            attrs, R.styleable.AppInfoLayout, R.attr.appInfoLayoutStyle, R.style.OneUI_AppInfoStyle
+        ) {
+            titleTextColor = getColor(
                 R.styleable.AppInfoLayout_appTitleTextColor,
                 ContextCompat.getColor(
                     context,
                     R.color.oui_des_appinfolayout_app_label_text_color
                 )
             )
-            infoTextColor = ta.getColor(
+            infoTextColor = getColor(
                 R.styleable.AppInfoLayout_appInfoTextColor,
                 ContextCompat.getColor(
                     context,

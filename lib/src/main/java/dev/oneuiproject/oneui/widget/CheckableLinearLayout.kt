@@ -5,7 +5,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.Checkable
 import android.widget.LinearLayout
-import androidx.core.content.res.use
+import androidx.core.content.withStyledAttributes
 
 /**
  * Custom LinearLayout that you can set a check state
@@ -23,18 +23,17 @@ open class CheckableLinearLayout @JvmOverloads constructor(
     private var _checked = false
 
     init {
-        context.theme.obtainStyledAttributes(
-            intArrayOf(
+        context.withStyledAttributes(
+            attrs = intArrayOf(
                 android.R.attr.disabledAlpha,
                 android.R.attr.listPreferredItemHeightSmall,
                 android.R.attr.selectableItemBackground,
             )
-        )
-            .use {
-                disabledAlpha = it.getFloat(0, .4f)
-                minimumHeight = it.getDimension(1, 0f).toInt()
-                setBackgroundResource(it.getResourceId(2, 0))
-            }
+        ) {
+            disabledAlpha = getFloat(0, .4f)
+            minimumHeight = getDimension(1, 0f).toInt()
+            setBackgroundResource(getResourceId(2, 0))
+        }
 
         isClickable = true
         isLongClickable = true
@@ -62,7 +61,7 @@ open class CheckableLinearLayout @JvmOverloads constructor(
 
     private fun updateCheckableChildViews() {
         for (i in 0 until childCount) {
-            ( getChildAt(i) as? Checkable)?.isChecked = _checked
+            (getChildAt(i) as? Checkable)?.isChecked = _checked
         }
     }
 }

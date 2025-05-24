@@ -9,7 +9,7 @@ import android.widget.RemoteViews.RemoteView
 import androidx.annotation.ColorInt
 import androidx.annotation.IntRange
 import androidx.annotation.Px
-import androidx.core.content.res.use
+import androidx.core.content.withStyledAttributes
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.qr.QREncoder
 import androidx.core.graphics.toColorInt
@@ -34,20 +34,20 @@ class QRImageView @JvmOverloads constructor(
 
     init {
         attrs?.let{
-            context.obtainStyledAttributes(
+            context.withStyledAttributes(
                 attrs,
                 R.styleable.QRImageView,
                 defStyleAttr,
                 defStyleRes
-            ).use {a ->
-                content = a.getString(R.styleable.QRImageView_qrContent)
-                bgColor = a.getColor(R.styleable.QRImageView_qrBackgroundColor, "#fcfcfc".toColorInt())
-                fgColor = a.getColor(R.styleable.QRImageView_qrForegroundColor, Color.BLACK)
-                icon = a.getDrawable(R.styleable.QRImageView_qrIcon)
-                roundedFrame = a.getBoolean(R.styleable.QRImageView_qrRoundedFrame, true)
-                size = a.getDimensionPixelSize(R.styleable.QRImageView_qrSize, -1)
-                tintAnchor = a.getBoolean(R.styleable.QRImageView_qrTintAnchor, false)
-                tintFrame = a.getBoolean(R.styleable.QRImageView_qrTintFrame, false)
+            ) {
+                content = getString(R.styleable.QRImageView_qrContent)
+                bgColor = getColor(R.styleable.QRImageView_qrBackgroundColor, "#fcfcfc".toColorInt())
+                fgColor = getColor(R.styleable.QRImageView_qrForegroundColor, Color.BLACK)
+                icon = getDrawable(R.styleable.QRImageView_qrIcon)
+                roundedFrame = getBoolean(R.styleable.QRImageView_qrRoundedFrame, true)
+                size = getDimensionPixelSize(R.styleable.QRImageView_qrSize, -1)
+                tintAnchor = getBoolean(R.styleable.QRImageView_qrTintAnchor, false)
+                tintFrame = getBoolean(R.styleable.QRImageView_qrTintFrame, false)
 
                 updateImage()
             }

@@ -23,7 +23,7 @@ import androidx.annotation.IdRes
 import androidx.annotation.RequiresApi
 import androidx.appcompat.animation.SeslRecoilAnimator
 import androidx.appcompat.graphics.drawable.SeslRecoilDrawable
-import androidx.core.content.res.use
+import androidx.core.content.withStyledAttributes
 import androidx.core.view.isVisible
 import dev.oneuiproject.oneui.design.R
 
@@ -76,13 +76,13 @@ class RadioItemViewGroup @JvmOverloads constructor(
 
         // retrieve selected checked text as requested by the user in the
         // XML layout file
-        context.obtainStyledAttributes(
+        context.withStyledAttributes(
             attrs,
             R.styleable.RadioItemViewGroup,
             R.attr.radioItemViewGroupStyle,
             0
-        ).use {values ->
-            values.getResourceId(R.styleable.RadioItemViewGroup_checkedButton, View.NO_ID).let { checkedButtonId ->
+        ) {
+            getResourceId(R.styleable.RadioItemViewGroup_checkedButton, View.NO_ID).let { checkedButtonId ->
                 if (checkedButtonId != View.NO_ID) {
                     _checkedRadioButtonId = checkedButtonId
                     initialCheckedId = checkedButtonId

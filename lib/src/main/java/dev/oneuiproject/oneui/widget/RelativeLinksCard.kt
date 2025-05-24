@@ -14,7 +14,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.appcompat.view.ContextThemeWrapper
-import androidx.core.content.res.use
+import androidx.core.content.withStyledAttributes
 import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
 import androidx.preference.PreferenceScreen
@@ -145,14 +145,14 @@ class RelativeLinksCard @JvmOverloads constructor(
                     linkContainer = it.findViewById(R.id.link_container)
                     topDivider = it.findViewById(R.id.link_divider)
                 }
-        context.theme.obtainStyledAttributes(
+        context.withStyledAttributes(
             attrs,
             R.styleable.RelativeLinksCard,
             defStyleAttr,
             defStyleRes
-        ).use {
-            val cardTitle = it.getString(R.styleable.RelativeLinksCard_title)
-            showTopDivider = it.getBoolean(R.styleable.RelativeLinksCard_showTopDivider, false)
+        ) {
+            val cardTitle = getString(R.styleable.RelativeLinksCard_title)
+            showTopDivider = getBoolean(R.styleable.RelativeLinksCard_showTopDivider, false)
             cardTitle?.let { t -> cardTitleText.text = t }
         }
 

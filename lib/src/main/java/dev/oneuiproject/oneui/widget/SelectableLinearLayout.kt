@@ -11,7 +11,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.annotation.Px
 import androidx.appcompat.widget.AppCompatCheckBox
-import androidx.core.content.res.use
+import androidx.core.content.withStyledAttributes
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.graphics.toColorInt
 import androidx.core.view.isGone
@@ -45,15 +45,15 @@ class SelectableLinearLayout @JvmOverloads constructor(
     private var imageTarget: ImageView? = null
 
     init {
-        context.obtainStyledAttributes(attrs, R.styleable.SelectableLinearLayout).use {
-            val color = it.getColor(R.styleable.SelectableLinearLayout_selectedHighlightColor, "#08000000".toColorInt())
+        context.withStyledAttributes(attrs, R.styleable.SelectableLinearLayout) {
+            val color = getColor(R.styleable.SelectableLinearLayout_selectedHighlightColor, "#08000000".toColorInt())
             selectedHighlightColor = color.toDrawable()
 
-            checkMode = it.getInt(R.styleable.SelectableLinearLayout_checkMode, CHECK_MODE_CHECKBOX)
+            checkMode = getInt(R.styleable.SelectableLinearLayout_checkMode, CHECK_MODE_CHECKBOX)
 
             when (checkMode){
                 0 ->{
-                    val spacing = it.getDimensionPixelSize(
+                    val spacing = getDimensionPixelSize(
                         R.styleable.SelectableLinearLayout_checkableButtonSpacing, 14)
                     checkBox = AppCompatCheckBox(context).apply {
                         layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
@@ -70,12 +70,12 @@ class SelectableLinearLayout @JvmOverloads constructor(
                 }
                 1 -> {
                     checkDrawable = SelectableAnimatedDrawable.create(context, R.drawable.oui_des_list_item_selection_anim_selector, context.theme)
-                    if (it.hasValue(R.styleable.SelectableLinearLayout_cornerRadius)){
+                    if (hasValue(R.styleable.SelectableLinearLayout_cornerRadius)){
                         checkDrawable!!.setCornerRadius(
-                            it.getDimension(R.styleable.SelectableLinearLayout_cornerRadius, 0f)
+                            getDimension(R.styleable.SelectableLinearLayout_cornerRadius, 0f)
                         )
                     }
-                    imageTargetId = it.getResourceId(R.styleable.SelectableLinearLayout_targetImage, 0)
+                    imageTargetId = getResourceId(R.styleable.SelectableLinearLayout_targetImage, 0)
                 }
             }
         }

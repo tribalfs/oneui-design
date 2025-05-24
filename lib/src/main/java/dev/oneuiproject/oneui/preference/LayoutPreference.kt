@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import androidx.core.content.res.use
+import androidx.core.content.withStyledAttributes
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import dev.oneuiproject.oneui.design.R
@@ -48,21 +48,19 @@ class LayoutPreference : Preference {
 
     @SuppressLint("RestrictedApi", "PrivateResource")
     private fun init(context: Context, attrs: AttributeSet, defStyleAttr: Int) {
-        context.obtainStyledAttributes(attrs, androidx.preference.R.styleable.Preference).use {
-            mAllowDividerAbove = it.getBoolean(
+        context.withStyledAttributes(attrs, androidx.preference.R.styleable.Preference) {
+            mAllowDividerAbove = getBoolean(
                 androidx.preference.R.styleable.Preference_allowDividerAbove,
                 false
             )
-            mAllowDividerBelow = it.getBoolean(
+            mAllowDividerBelow = getBoolean(
                 androidx.preference.R.styleable.Preference_allowDividerBelow,
                 false
             )
         }
 
-        context.obtainStyledAttributes(
-            attrs, androidx.preference.R.styleable.Preference, defStyleAttr, 0
-        ).use {
-            val layoutResource = it.getResourceId(
+        context.withStyledAttributes(attrs, androidx.preference.R.styleable.Preference, defStyleAttr, 0) {
+            val layoutResource = getResourceId(
                 androidx.preference.R.styleable.Preference_android_layout,
                 0
             )

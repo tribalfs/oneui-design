@@ -10,7 +10,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RawRes
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.content.res.use
+import androidx.core.content.withStyledAttributes
 import androidx.core.view.isVisible
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
@@ -51,11 +51,11 @@ class SuggestionCardPreference @JvmOverloads constructor(
         isSelectable = false
         layoutResource = R.layout.oui_des_preference_suggestion_card
         if (attrs != null) {
-            context.obtainStyledAttributes(
+            context.withStyledAttributes(
                 attrs,
                 R.styleable.SuggestionCardPreference
-            ).use {a ->
-                setActionButtonText(a.getText(R.styleable.SuggestionCardPreference_actionButtonText)?.toString())
+            ) {
+                setActionButtonText(getText(R.styleable.SuggestionCardPreference_actionButtonText)?.toString())
             }
         }
         setIcon(R.drawable.oui_des_preference_suggestion_card_icon)

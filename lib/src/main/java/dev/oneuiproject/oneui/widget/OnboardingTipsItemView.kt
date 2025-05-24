@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.withStyledAttributes
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import dev.oneuiproject.oneui.design.R
@@ -71,15 +72,15 @@ class OnboardingTipsItemView @JvmOverloads constructor(
         }
 
         attrs?.let{
-            context.obtainStyledAttributes(
+            context.withStyledAttributes(
                 attrs,
                 R.styleable.OnboardingTipsItemView,
                 defStyleAttr,
                 defStyleRes
-            ).use {a ->
-                a.getDrawable(R.styleable.OnboardingTipsItemView_icon)?.let { icon = it }
-                title = a.getText(R.styleable.OnboardingTipsItemView_title)
-                summary = a.getText(R.styleable.OnboardingTipsItemView_summary)
+            ) {
+                getDrawable(R.styleable.OnboardingTipsItemView_icon)?.let { icon = it }
+                title = getText(R.styleable.OnboardingTipsItemView_title)
+                summary = getText(R.styleable.OnboardingTipsItemView_summary)
             }
         }
         updatePadding()

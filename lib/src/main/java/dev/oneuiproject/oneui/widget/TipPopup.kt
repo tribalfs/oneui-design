@@ -14,7 +14,6 @@ import android.os.Looper
 import android.os.Message
 import android.provider.Settings
 import android.text.TextUtils
-import android.util.AttributeSet
 import android.util.DisplayMetrics
 import android.util.Log
 import android.util.TypedValue
@@ -43,7 +42,7 @@ import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.use
+import androidx.core.content.withStyledAttributes
 import androidx.core.os.ConfigurationCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
@@ -190,8 +189,8 @@ class TipPopup(parentView: View, mode: Mode) {
     init {
         debugLog("mDisplayMetrics = $displayMetrics")
 
-        context.obtainStyledAttributes(null as AttributeSet?, R.styleable.TipPopup).use {
-            backgroundColor = it.getColor(R.styleable.TipPopup_tipPopupBackgroundColor, Color.BLACK)
+        context.withStyledAttributes(null, R.styleable.TipPopup) {
+            backgroundColor = getColor(R.styleable.TipPopup_tipPopupBackgroundColor, Color.BLACK)
         }
 
         initInterpolator()

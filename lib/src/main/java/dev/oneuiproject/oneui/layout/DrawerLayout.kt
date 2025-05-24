@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
 import androidx.annotation.Px
-import androidx.core.content.res.use
+import androidx.core.content.withStyledAttributes
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.doOnLayout
 import androidx.customview.view.AbsSavedState
@@ -69,12 +69,10 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     private fun initLayoutAttrs(attrs: AttributeSet?) {
         setWillNotDraw(background == null)
 
-        context.theme.obtainStyledAttributes(
-            attrs, R.styleable.DrawerLayout, 0, 0
-        ).use {
-            enableDrawerBackAnimation = it.getBoolean(R.styleable.DrawerLayout_drawerBackAnimation, false)
+        context.withStyledAttributes(attrs, R.styleable.DrawerLayout, 0, 0) {
+            enableDrawerBackAnimation = getBoolean(R.styleable.DrawerLayout_drawerBackAnimation, false)
             if (isInEditMode) {
-                mDrawerPreviewOpen = it.getBoolean(R.styleable.DrawerLayout_isOpen, false)
+                mDrawerPreviewOpen = getBoolean(R.styleable.DrawerLayout_isOpen, false)
             }
         }
     }

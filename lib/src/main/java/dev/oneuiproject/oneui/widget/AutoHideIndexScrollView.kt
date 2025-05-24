@@ -19,7 +19,7 @@ import android.window.OnBackInvokedDispatcher
 import android.window.OnBackInvokedDispatcher.PRIORITY_DEFAULT
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.res.use
+import androidx.core.content.withStyledAttributes
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
@@ -74,7 +74,7 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
 
     init{
         sSetVisibility = visibility
-        context.obtainStyledAttributes(attrs, R.styleable.AutoHideIndexScrollView).use {
+        context.withStyledAttributes(attrs, R.styleable.AutoHideIndexScrollView) {
             setIndexer(
                 SeslCursorIndexer(
                     MatrixCursor(arrayOf("")),
@@ -82,12 +82,12 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
                     getIndexes(),
                     0
                 ).apply {
-                    setGroupItemsCount(it.getInt(R.styleable.AutoHideIndexScrollView_groupItems, 0))
-                    setMiscItemsCount(it.getInt(R.styleable.AutoHideIndexScrollView_otherItems, 0))
+                    setGroupItemsCount(getInt(R.styleable.AutoHideIndexScrollView_groupItems, 0))
+                    setMiscItemsCount(getInt(R.styleable.AutoHideIndexScrollView_otherItems, 0))
                 }
             )
-            setIndexBarTextMode(it.getBoolean(R.styleable.AutoHideIndexScrollView_textMode, true))
-            setAutoHideInternal(it.getBoolean(R.styleable.AutoHideIndexScrollView_autoHide, true))
+            setIndexBarTextMode(getBoolean(R.styleable.AutoHideIndexScrollView_textMode, true))
+            setAutoHideInternal(getBoolean(R.styleable.AutoHideIndexScrollView_autoHide, true))
         }
     }
 

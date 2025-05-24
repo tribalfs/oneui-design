@@ -26,7 +26,7 @@ import androidx.annotation.MenuRes
 import androidx.appcompat.view.SupportMenuInflater
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuItemImpl
-import androidx.core.content.res.use
+import androidx.core.content.withStyledAttributes
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.customview.view.AbsSavedState
@@ -71,11 +71,10 @@ class BottomTabLayout(
         isFocusable = false
         tabMode = if (isInEditMode) MODE_FIXED else MODE_SCROLLABLE
         tabGravity = GRAVITY_FILL
-        context.theme
-            .obtainStyledAttributes(attrs, R.styleable.BottomTabLayout, 0, 0).use { a ->
-                minSideMargin = a.getDimensionPixelSize(R.styleable.BottomTabLayout_minSideMargin, 0)
-                if (a.hasValue(R.styleable.BottomTabLayout_menu)) {
-                    inflateMenu((a.getResourceId(R.styleable.BottomTabLayout_menu, 0)))
+        context.withStyledAttributes(attrs, R.styleable.BottomTabLayout, 0, 0) {
+                minSideMargin = getDimensionPixelSize(R.styleable.BottomTabLayout_minSideMargin, 0)
+                if (hasValue(R.styleable.BottomTabLayout_menu)) {
+                    inflateMenu((getResourceId(R.styleable.BottomTabLayout_menu, 0)))
                 }
             }
         addOnTabSelectedListener(this)
