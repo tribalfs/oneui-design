@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="AppCompatResource">
+    tools:ignore="AppCompatResource,HardcodedText,AlwaysShowAction">
 
     <item
         android:id="@+id/menu_apppicker_search"
         android:title="Search apps"
-        android:icon="@drawable/ic_oui_search"
+        android:icon="@drawable/oui_des_ic_ab_search"
         app:iconTint="?actionMenuTextColor"
         app:showAsAction="always" />
 

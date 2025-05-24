@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingVertical="24dp">
+
+        <dev.oneuiproject.oneui.widget.SwitchItemView
+            android:id="@+id/swShowLetters"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:showTopDivider="false"
+            app:title="Show index letters" />
+
+        <dev.oneuiproject.oneui.widget.SwitchItemView
+            android:id="@+id/swAutohide"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:showTopDivider="false"
+            app:title="Autohide IndexScrollView" />
+
+        <dev.oneuiproject.oneui.widget.SwitchItemView
+            android:id="@+id/swShowCancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:showTopDivider="false"
+            app:title="Show cancel button" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="16dp"
+            android:orientation="horizontal"
+            android:paddingHorizontal="24dp">
+
+            <TextView
+                android:id="@+id/tv_ams_options"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ActionModeSearch options"
+                android:textColor="?android:textColorSecondaryInverseNoDisable"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/divider_ams"
+                android:layout_width="0dp"
+                android:layout_height="5dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:layout_marginHorizontal="12dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:src="@drawable/drawer_item_separator_bg" />
+        </LinearLayout>
+
+        <dev.oneuiproject.oneui.widget.RadioItemViewGroup
+            android:id="@+id/amsOptionsRg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <dev.oneuiproject.oneui.widget.RadioItemView
+                android:id="@+id/amsDismiss"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="DISMISS" />
+
+            <dev.oneuiproject.oneui.widget.RadioItemView
+                android:id="@+id/amsNoDismiss"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="NO_DISMISS" />
+
+            <dev.oneuiproject.oneui.widget.RadioItemView
+                android:id="@+id/amsConcurrent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="CONCURRENT" />
+        </dev.oneuiproject.oneui.widget.RadioItemViewGroup>
+
+    </LinearLayout>
+
+
+</androidx.core.widget.NestedScrollView>

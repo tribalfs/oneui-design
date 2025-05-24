@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="AppCompatResource,HardcodedText,AlwaysShowAction">
+
+    <item
+        android:id="@+id/bottomsheet_dest"
+        android:icon="@drawable/ic_oui_category_location"
+        android:title="Bottom Sheet"
+        app:actionViewClass="dev.oneuiproject.oneui.navigation.widget.DrawerCategoryItemView" />
+
+    <group android:id="@+id/group1">
+
+        <item
+            android:id="@+id/progressbar_dest"
+            android:icon="@drawable/drawer_page_icon_progressbar"
+            android:title="ProgressBar"
+            app:showAsAction="always"
+            app:tint="#ff909090"
+            tools:ignore="" />
+
+        <item
+            android:id="@+id/seekbar_dest"
+            android:icon="@drawable/drawer_page_icon_seekbar"
+            android:title="SeekBar"
+            app:showAsAction="always"
+            app:tint="#ff909090" />
+
+
+        <item
+            android:id="@+id/picker_dest"
+            android:icon="@drawable/ic_oui_calendar"
+            android:title="Pickers"
+            app:showAsAction="always"
+            app:tint="#ff909090" />
+
+
+        <item
+            android:id="@+id/qrcode_dest"
+            android:icon="@drawable/ic_oui_qr_code"
+            android:title="QRCode"
+            app:showAsAction="always"
+            app:tint="#ff909090" />
+
+        <item
+            android:id="@+id/tabs_dest"
+            android:icon="@drawable/ic_oui_navigationbar"
+            android:title="Navigation"
+            app:showAsAction="always"
+            app:tint="#ff909090" />
+
+        <item
+            android:id="@+id/recyclerview_dest"
+            android:icon="@drawable/ic_oui_refresh"
+            android:title="RecyclerViews"
+            app:showAsAction="always"
+            app:tint="#ff909090" />
+
+        <item
+            android:id="@+id/widgets_dest"
+            android:icon="@drawable/ic_oui_widget_outline"
+            android:title="Misc. Widgets"
+            app:showAsAction="always"
+            app:tint="#ff909090" />
+    </group>
+
+    <item
+        android:id="@+id/custom_about_dest"
+        android:icon="@drawable/ic_oui_info"
+        android:title="Custom About"
+        app:showAsAction="always"
+        app:tint="#ff909090" />
+
+</menu>

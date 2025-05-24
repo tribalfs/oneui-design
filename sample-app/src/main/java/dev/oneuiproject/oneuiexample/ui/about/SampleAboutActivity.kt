@@ -2,15 +2,14 @@ package dev.oneuiproject.oneuiexample.ui.about
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import com.sec.sesl.tester.BuildConfig
 import com.sec.sesl.tester.R
 import dev.oneuiproject.oneui.layout.AppInfoLayout
 import dev.oneuiproject.oneui.layout.AppInfoLayout.Status
-import dev.oneuiproject.oneui.widget.Toast
 import dev.oneuiproject.oneuiexample.ui.main.core.util.semToast
 
 class SampleAboutActivity : AppCompatActivity() {
@@ -18,7 +17,7 @@ class SampleAboutActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.sample3_activity_about)
+        setContentView(R.layout.activity_about)
 
         appInfoLayout = findViewById<AppInfoLayout?>(R.id.appInfoLayout).apply {
             addOptionalText("OneUI Design version " + BuildConfig.ONEUI_DESIGN_VERSION)
@@ -45,12 +44,10 @@ class SampleAboutActivity : AppCompatActivity() {
     fun openGitHubPage(v: View?) {
         try {
             val intent = Intent(Intent.ACTION_VIEW)
-            intent.setData(Uri.parse("https://github.com/tribalfs/oneui-design"))
+            intent.setData("https://github.com/tribalfs/oneui-design".toUri())
             startActivity(intent)
         } catch (e: ActivityNotFoundException) {
-            Toast.makeText(
-                this, "No suitable activity found", Toast.LENGTH_SHORT
-            ).show()
+            semToast("No suitable activity found")
         }
     }
 }

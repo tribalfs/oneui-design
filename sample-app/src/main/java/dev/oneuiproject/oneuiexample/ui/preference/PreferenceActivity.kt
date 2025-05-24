@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.sec.sesl.tester.databinding.ActivityPreferencesBinding
 
-
 class PreferenceActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPreferencesBinding
 

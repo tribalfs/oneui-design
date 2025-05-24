@@ -19,7 +19,6 @@ import dev.oneuiproject.oneui.ktx.isInMultiWindowModeCompat
 import dev.oneuiproject.oneui.ktx.semSetToolTipText
 import dev.oneuiproject.oneui.ktx.setEnableRecursive
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil
-import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout
 import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout.Companion.MARGIN_PROVIDER_ADP_DEFAULT
 import dev.oneuiproject.oneuiexample.ui.customabout.CustomAboutActivity.ContentState.DISABLED
 import dev.oneuiproject.oneuiexample.ui.customabout.CustomAboutActivity.ContentState.ENABLED
@@ -118,7 +117,7 @@ class CustomAboutActivity : AppCompatActivity(){
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.sample3_menu_about, menu)
+        inflater.inflate(R.menu.menu_custom_about, menu)
         return true
     }
 

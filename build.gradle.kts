@@ -11,6 +11,8 @@ plugins {
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.dokka) apply false
     alias(libs.plugins.dokka.javadoc) apply false
+    alias(libs.plugins.hilt.android) apply false
+    alias(libs.plugins.ksp) apply false
 }
 
 apply(from = "manifest.gradle")

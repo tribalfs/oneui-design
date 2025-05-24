@@ -1,0 +1,24 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="0dp"
+    android:orientation="vertical"
+    android:paddingVertical="0dp"
+    android:transitionGroup="true">
+
+    <dev.oneuiproject.oneui.widget.MarginsTabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:seslTabStyle="Sub"
+        app:tabMode="sesl_fixed_auto"
+        app:tabGravity="fill" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" />
+
+</LinearLayout>

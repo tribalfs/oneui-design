@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
+    app:startDestination="@+id/progressbar_dest">
+
+    <dialog
+        android:id="@+id/bottomsheet_dest"
+        android:name="dev.oneuiproject.oneuiexample.ui.main.fragments.bottomsheet.FragmentBottomSheet"
+        android:label="Bottom Sheet"
+        tools:layout="@layout/fragment_bottomsheet" />
+
+    <fragment
+        android:id="@+id/progressbar_dest"
+        android:name="dev.oneuiproject.oneuiexample.ui.main.fragments.progress.ProgressBarFragment"
+        android:label="OneUI design"
+        tools:layout="@layout/fragment_progress">
+
+        <argument
+            android:name="@string/navArg_subtitle"
+            android:defaultValue="ProgressBars"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/seekbar_dest"
+        android:name="dev.oneuiproject.oneuiexample.ui.main.fragments.seekbar.SeekBarFragment"
+        android:label="OneUI design"
+        tools:layout="@layout/fragment_seek_bar">
+
+        <argument
+            android:name="@string/navArg_subtitle"
+            android:defaultValue="SeekBars"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/picker_dest"
+        android:name="dev.oneuiproject.oneuiexample.ui.main.fragments.pickers.PickersFragment"
+        android:label="OneUI design"
+        tools:layout="@layout/fragment_pickers">
+
+        <argument
+            android:name="@string/navArg_subtitle"
+            android:defaultValue="Pickers"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/qrcode_dest"
+        android:name="dev.oneuiproject.oneuiexample.ui.main.fragments.qrcode.QRCodeFragment"
+        android:label="OneUI design"
+        tools:layout="@layout/fragment_qr_code">
+
+        <argument
+            android:name="@string/navArg_subtitle"
+            android:defaultValue="QRCodes"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/tabs_dest"
+        android:name="dev.oneuiproject.oneuiexample.ui.main.fragments.navi.NaviFragment"
+        android:label="OneUI design"
+        tools:layout="@layout/fragment_navi">
+
+        <argument
+            android:name="@string/navArg_subtitle"
+            android:defaultValue="Navigation"
+            app:argType="string" />
+    </fragment>
+
+<!--    <fragment
+        android:id="@+id/constacts_dest"
+        android:name="dev.oneuiproject.oneuiexample.ui.main.fragments.recyclerview.contacts.ContactsFragment"
+        android:label="OneUI design"
+        tools:layout="@layout/fragment_contacts">
+
+        <argument
+            android:name="@string/navArg_subtitle"
+            android:defaultValue="Contacts"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/icons_dest"
+        android:name="dev.oneuiproject.oneuiexample.ui.main.fragments.recyclerview.icons.IconsFragment"
+        android:label="OneUI design"
+        tools:layout="@layout/fragment_icons">
+
+        <argument
+            android:name="@string/navArg_subtitle"
+            android:defaultValue="Icons"
+            app:argType="string" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/apppicker_dest"
+        android:name="dev.oneuiproject.oneuiexample.ui.main.fragments.recyclerview.apppicker.AppPickerFragment"
+        android:label="OneUI design"
+        tools:layout="@layout/fragment_apppicker">
+
+        <argument
+            android:name="@string/navArg_subtitle"
+            android:defaultValue="AppPickerView"
+            app:argType="string" />
+    </fragment>-->
+
+    <fragment
+        android:id="@+id/recyclerview_dest"
+        android:name="dev.oneuiproject.oneuiexample.ui.main.fragments.recyclerview.RvParentFragment"
+        android:label="OneUI design"
+        tools:layout="@layout/fragment_recycler">
+
+        <argument
+            android:name="@string/navArg_subtitle"
+            android:defaultValue="RecyclerViews"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/widgets_dest"
+        android:name="dev.oneuiproject.oneuiexample.ui.main.fragments.widgets.WidgetsFragment"
+        android:label="OneUI design"
+        tools:layout="@layout/fragment_widgets">
+
+        <argument
+            android:name="@string/navArg_subtitle"
+            android:defaultValue="Misc. Widgets"
+            app:argType="string" />
+    </fragment>
+
+    <activity
+        android:id="@+id/custom_about_dest"
+        android:name="dev.oneuiproject.oneuiexample.ui.customabout.CustomAboutActivity"
+        android:label="OneUI design" />
+
+</navigation>

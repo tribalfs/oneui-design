@@ -5,16 +5,17 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
+import androidx.core.net.toUri
 
 @JvmOverloads
 fun Context.openUrl(urlString: String, onException: ((Exception) -> Unit)? = null ){
     try {
-        val url = Uri.parse(urlString)
+        val url = urlString.toUri()
 
         val browserSelectorIntent = Intent()
             .setAction(Intent.ACTION_VIEW)
             .addCategory(Intent.CATEGORY_BROWSABLE)
-            .setData(Uri.parse("http:"))
+            .setData("http:".toUri())
 
         val targetIntent = Intent()
             .setAction(Intent.ACTION_VIEW)

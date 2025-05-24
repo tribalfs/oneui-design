@@ -2,35 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="AppCompatResource">
+    tools:ignore="AppCompatResource,HardcodedText,AlwaysShowAction">
 
     <item
         android:id="@+id/menu_contacts_search"
         android:title="Search"
         android:visible="true"
-        android:icon="@drawable/ic_oui_search"
+        android:icon="@drawable/oui_des_ic_ab_search"
         app:iconTint="?actionMenuTextColor"
         app:showAsAction="always" />
 
 
     <item
-        android:id="@+id/menu_contacts_indexscroll_show_letters"
-        android:title="Show indexscroller letters"
+        android:id="@+id/menu_contacts_options"
+        android:title="Options"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/menu_contacts_indexscroll_autohide"
-        android:title="Enable indexscroller autohide"
-        app:showAsAction="never" />
-
-
-    <item
-        android:id="@+id/menu_contacts_keep_search"
-        android:title="Keep search on action mode"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/menu_contacts_show_cancel"
-        android:title="Show cancel button on action mode"
-        app:showAsAction="never" />
 </menu>

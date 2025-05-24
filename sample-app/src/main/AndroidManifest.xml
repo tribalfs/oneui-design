@@ -9,6 +9,7 @@
     <uses-sdk tools:overrideLibrary="dev.oneuiproject.oneui"/>
 
     <application
+        android:name="dev.oneuiproject.oneuiexample.OneUIApp"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -30,11 +31,11 @@
 
         <meta-data
             android:name="theming-meta"
-            android:value="meta_998_sesl_app" />
+            android:value="theming_meta_sample_app" />
 
         <meta-data
             android:name="theming-meta-xml"
-            android:value="@xml/meta_998_sesl_app" />
+            android:value="@xml/theming_meta_sample_app" />
 
         <activity
             android:name="dev.oneuiproject.oneuiexample.ui.main.MainActivity"

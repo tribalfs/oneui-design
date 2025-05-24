@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:paddingHorizontal="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="5000dp"
+        android:nestedScrollingEnabled="true"
+        android:orientation="vertical">
+
+        <dev.oneuiproject.oneui.widget.Separator
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="MarginsTabLayout"
+            tools:ignore="TextContrastCheck" />
+
+        <dev.oneuiproject.oneui.widget.RoundedLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="?android:colorBackground">
+
+            <dev.oneuiproject.oneui.widget.MarginsTabLayout
+                android:id="@+id/tabs_subtab"
+                app:seslTabStyle="Sub"
+                android:layout_width="match_parent"
+                app:tabMode="scrollable"
+                app:tabGravity="center"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Subtab 1"/>
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Subtab 2"/>
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Subtab 3"/>
+
+            </dev.oneuiproject.oneui.widget.MarginsTabLayout>
+
+            <dev.oneuiproject.oneui.widget.MarginsTabLayout
+                android:id="@+id/tabs_main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabMode="sesl_weight_auto"
+                app:tabGravity="fill">
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:icon="@drawable/ic_clock_alarm_tab"
+                    android:text="Main tab 1" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:icon="@drawable/ic_clock_timer_tab"
+                    android:layout_height="wrap_content"
+                    android:text="Main tab 2" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:icon="@drawable/ic_clock_stopwatch_tab"
+                    android:text="Main tab 3" />
+
+            </dev.oneuiproject.oneui.widget.MarginsTabLayout>
+        </dev.oneuiproject.oneui.widget.RoundedLinearLayout>
+
+        <dev.oneuiproject.oneui.widget.Separator
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="BottomNavigationView"
+            android:layout_marginTop="24dp"/>
+
+        <dev.oneuiproject.oneui.widget.RoundedLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="?android:colorBackground">
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/tabs_bottomnav"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:colorBackground"
+                app:menu="@menu/menu_tabs_bnv_icon_menu" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"/>
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/tabs_bottomnav_text"
+                style="?bottomNavigationTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:colorBackground"
+                app:menu="@menu/menu_tabs_bnv_text_menu" />
+        </dev.oneuiproject.oneui.widget.RoundedLinearLayout>
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

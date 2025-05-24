@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<dev.oneuiproject.oneui.layout.NavDrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<dev.oneuiproject.oneui.layout.NavDrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:drawerBackAnimation="true"
     app:expanded="false"
+    app:drawerBackAnimation="true"
     app:title="@string/app_name"
     tools:isOpen="true">
 
-    <FrameLayout
-        android:id="@+id/main_content"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_main"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_location="main_content" />
+        app:defaultNavHost="true"
+        app:layout_location="main_content"
+        app:navGraph="@navigation/main_navigation"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        app:layout_location="drawer_panel"
-        android:id="@+id/drawer_list_view"
+    <dev.oneuiproject.oneui.navigation.widget.DrawerNavigationView
+        android:id="@+id/navigation_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginVertical="10dp"
-        android:scrollbars="vertical"
-        tools:listitem="@layout/sample3_view_drawer_list_item" />
+        android:layout_height="wrap_content"
+        app:layout_location="drawer_panel"
+        app:menu="@menu/menu_navigation"/>
 
     <dev.oneuiproject.oneui.widget.BottomTabLayout
         android:id="@+id/bottomTab"

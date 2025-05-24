@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true"
+    android:overScrollMode="always"
+    android:scrollbars="vertical"
+    android:paddingHorizontal="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <dev.oneuiproject.oneui.widget.Separator
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Horizontal" />
+
+        <dev.oneuiproject.oneui.widget.RoundedLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:colorBackground"
+            android:orientation="vertical"
+            android:paddingVertical="12dp">
+
+            <androidx.appcompat.widget.SeslSeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginVertical="12dp"
+                app:seslSeekBarMode="standard" />
+
+            <androidx.appcompat.widget.SeslSeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginVertical="12dp"
+                app:seslSeekBarMode="expand" />
+
+            <androidx.appcompat.widget.SeslSeekBar
+                android:id="@+id/fragment_seekbar_overlap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginVertical="12dp"
+                app:seslSeekBarMode="expand" />
+
+            <androidx.appcompat.widget.SeslSeekBar
+                android:id="@+id/seekbar_level"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="14dp"
+                android:layout_marginHorizontal="24dp"
+                android:max="20"
+                android:min="10"
+                app:seslSeekBarMode="level_bar"
+                />
+
+
+            <androidx.appcompat.widget.SeslSeekBar
+                android:id="@+id/seekbar_level_seamless"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="14dp"
+                android:layout_marginHorizontal="24dp"
+                android:max="7"
+                android:min="0"
+                app:seslSeekBarMode="level_bar" />
+
+
+            <dev.oneuiproject.oneui.widget.SeekBarPlus
+                android:layout_marginVertical="14dp"
+                android:layout_marginHorizontal="24dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="20"
+                android:min="0"
+                app:seamless="true"/>
+
+            <dev.oneuiproject.oneui.widget.SeekBarPlus
+                android:layout_marginVertical="14dp"
+                android:layout_marginHorizontal="24dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="2"
+                android:min="0"
+                app:seamless="false"/>
+
+        </dev.oneuiproject.oneui.widget.RoundedLinearLayout>
+
+        <dev.oneuiproject.oneui.widget.Separator
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Vertical" />
+
+        <dev.oneuiproject.oneui.widget.RoundedLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:colorBackground"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingVertical="12dp">
+
+            <androidx.appcompat.widget.SeslSeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:layout_marginHorizontal="12dp"
+                app:seslSeekBarMode="vertical" />
+
+            <androidx.appcompat.widget.SeslSeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:minWidth="20dp"
+                android:layout_marginHorizontal="12dp"
+                app:seslSeekBarMode="expand_vertical" />
+
+        </dev.oneuiproject.oneui.widget.RoundedLinearLayout>
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

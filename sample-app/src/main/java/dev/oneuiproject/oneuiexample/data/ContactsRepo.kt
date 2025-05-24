@@ -6,17 +6,21 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 data class Contact(
     val name: String,
     val number: String
 )
 
-enum class ActionModeSearch{
+enum class ActionModeSearch {
     DISMISS,
     NO_DISMISS,
     CONCURRENT
@@ -29,11 +33,11 @@ data class ContactsSettings(
     val actionModeShowCancel: Boolean = false
 )
 
-class ContactsRepo (context: Context) {
+class ContactsRepo @Inject constructor(@ApplicationContext context: Context) {
 
     private val dataStore: DataStore<Preferences> = context.sampleAppPreferences
 
-    val contactsFlow: Flow<List<Contact>>  = flow {
+    val contactsFlow: Flow<List<Contact>> = flow {
         emit(
             personsList.map {
                 Contact(
@@ -42,38 +46,34 @@ class ContactsRepo (context: Context) {
                 )
             }
         )
-    }
+    }.flowOn(Dispatchers.Default)
 
 
-    suspend fun setIndexScrollMode(isTextMode: Boolean){
+    suspend fun setIndexScrollMode(isTextMode: Boolean) {
         dataStore.edit {
             it[PREF_KEY_CONTACT_INDEXSCROLL_TEXT_MODE] = isTextMode
         }
     }
 
-    suspend fun setIndexScrollAutoHide(autoHide: Boolean){
+    suspend fun setIndexScrollAutoHide(autoHide: Boolean) {
         dataStore.edit {
             it[PREF_KEY_CONTACT_INDEXSCROLL_AUTO_HIDE] = autoHide
         }
     }
 
-    suspend fun toggleKeepSearch(){
+    suspend fun setActionModeSearchMode(searchMode: ActionModeSearch) {
         dataStore.edit {
-            it[PREF_KEY_CONTACT_ACTIONMODE_KEEP_SEARCH] = when(contactsSettingsFlow.first().searchOnActionMode){
-                ActionModeSearch.DISMISS -> ActionModeSearch.NO_DISMISS.ordinal
-                ActionModeSearch.NO_DISMISS -> ActionModeSearch.CONCURRENT.ordinal
-                ActionModeSearch.CONCURRENT -> ActionModeSearch.DISMISS.ordinal
-            }
+            it[PREF_KEY_CONTACT_ACTIONMODE_KEEP_SEARCH] = searchMode.ordinal
         }
     }
 
-    suspend fun toggleShowCancel(){
+    suspend fun setShowCancel(showCancel: Boolean) {
         dataStore.edit {
-            it[PREF_KEY_CONTACT_ACTIONMODE_SHOW_CANCEL] = !contactsSettingsFlow.first().actionModeShowCancel
+            it[PREF_KEY_CONTACT_ACTIONMODE_SHOW_CANCEL] = showCancel
         }
     }
 
-    val contactsSettingsFlow: Flow<ContactsSettings>  = dataStore.data.map {
+    val contactsSettingsFlow: Flow<ContactsSettings> = dataStore.data.map {
         ContactsSettings(
             it[PREF_KEY_CONTACT_INDEXSCROLL_TEXT_MODE] ?: false,
             it[PREF_KEY_CONTACT_INDEXSCROLL_AUTO_HIDE] ?: true,
@@ -82,7 +82,7 @@ class ContactsRepo (context: Context) {
         )
     }
 
-    private companion object{
+    private companion object {
         val PREF_KEY_CONTACT_INDEXSCROLL_TEXT_MODE = booleanPreferencesKey("indexScrollTextMode")
         val PREF_KEY_CONTACT_INDEXSCROLL_AUTO_HIDE = booleanPreferencesKey("indexScrollAutoHide")
         val PREF_KEY_CONTACT_ACTIONMODE_KEEP_SEARCH = intPreferencesKey("actionModeSearch")

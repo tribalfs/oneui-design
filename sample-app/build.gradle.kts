@@ -1,6 +1,10 @@
+import org.jetbrains.kotlin.gradle.internal.config.LanguageFeature
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -29,6 +33,8 @@ android {
     }
 
     lint { baseline = file("lint-baseline.xml") }
+
+    kotlinOptions{ jvmTarget = "21" }
 }
 
 dependencies {
@@ -46,28 +52,14 @@ dependencies {
 
     implementation(libs.bundles.androidx.datastore)
     implementation(libs.bundles.androidx.navigation)
-
+    implementation(libs.bundles.hilt)
+    ksp(libs.bundles.hilt.compilers)
 }
 
-configurations.implementation {
-    // Exclude official android jetpack modules
-    exclude("androidx.core", "core")
-    exclude("androidx.core", "core-ktx")
-    exclude("androidx.customview", "customview")
-    exclude("androidx.coordinatorlayout", "coordinatorlayout")
-    exclude("androidx.drawerlayout", "drawerlayout")
-    exclude("androidx.viewpager2", "viewpager2")
-    exclude("androidx.viewpager", "viewpager")
-    exclude("androidx.appcompat", "appcompat")
-    exclude("androidx.fragment", "fragment")
-    exclude("androidx.preference", "preference")
-    exclude("androidx.recyclerview", "recyclerview")
-    exclude("androidx.slidingpanelayout", "slidingpanelayout")
-    exclude("androidx.swiperefreshlayout", "swiperefreshlayout")
-    // Exclude official material components lib
-    exclude("com.google.android.material", "material")
+kotlin {
+    sourceSets.all {
+        languageSettings.enableLanguageFeature(LanguageFeature.ExplicitBackingFields.name)
+        languageSettings.enableLanguageFeature(LanguageFeature.WhenGuards.name)
+    }
 }
 
-configurations.configureEach {
-    resolutionStrategy.cacheChangingModulesFor(30, "seconds")
-}

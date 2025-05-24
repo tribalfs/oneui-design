@@ -4,6 +4,7 @@ kotlin = "2.1.20"
 rikka-refine = "4.4.0"
 ksp = "2.1.20-2.0.0"
 dokka = "2.0.0"
+hiltAndroid = "2.55"
 
 androidx-annotation = "1.9.1"
 sesl-core = "1.16.0+1.0.15-sesl7+rev0"
@@ -70,6 +71,8 @@ androidx-navigation-runtimeKtx = { module = "androidx.navigation:navigation-runt
 androidx-navigation-fragmentKtx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "androidx-navigation" }
 androidx-navigation-uiKtx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "androidx-navigation" }
 
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle" }
@@ -82,6 +85,7 @@ maven-publish = { id = "maven-publish"}
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka"}
 dokka-javadoc = { id = "org.jetbrains.dokka-javadoc", version.ref = "dokka"}
+hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }
 
 [bundles]
 sesl-androidx = ["sesl-appcompat",
@@ -103,3 +107,5 @@ sesl-androidx = ["sesl-appcompat",
 androidx-datastore = ["androidx-datastoreCore", "androidx-datastorePreferences"]
 
 androidx-navigation = ["androidx-navigation-runtimeKtx", "androidx-navigation-fragmentKtx", "androidx-navigation-uiKtx"]
+hilt = ["hilt-android"]
+hilt-compilers = ["hilt-android-compiler"]
