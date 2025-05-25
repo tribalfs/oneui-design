@@ -68,7 +68,7 @@ class DrawerNavigationView @JvmOverloads constructor(
         navDrawerMenu.setCallback(
             object : MenuBuilder.Callback {
                 override fun onMenuItemSelected(menu: MenuBuilder, item: MenuItem): Boolean {
-                    return isClickAllowed() && navigationItemSelectedListener?.onNavigationItemSelected(item) == true
+                    return navigationItemSelectedListener?.onNavigationItemSelected(item) == true
                 }
 
                 override fun onMenuModeChange(menu: MenuBuilder) {}
@@ -78,14 +78,10 @@ class DrawerNavigationView @JvmOverloads constructor(
         addView(menuPresenter.getMenuView(this))
     }
 
-    //Workaround https://issuetracker.google.com/issues/340202276
-    private fun isClickAllowed(): Boolean{
-        System.currentTimeMillis().let {
-            if (it - lastTimeClicked < 400)  return false
-            lastTimeClicked = it
-            return true
-        }
-    }
+    /**
+     * Update lock state of the navigation view items.
+     */
+    fun updateLock(isLock: Boolean) = menuPresenter.adapter!!.updateLock(isLock)
 
     private val drawerStateListener by lazy(LazyThreadSafetyMode.NONE) {
         DrawerLayout.DrawerStateListener {
