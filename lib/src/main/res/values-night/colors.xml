@@ -51,6 +51,7 @@
     <color name="oui_des_drawer_menu_category_stroke_color">#47E4E4E4</color>
     <color name="oui_des_drawer_menu_category_fg_color">@color/sesl_list_ripple_color_light</color>
     <color name="oui_des_drawer_menu_expand_indicator_color">#fafafa</color>
+    <color name="oui_des_drawer_menu_category_recoil_color">@color/sesl_list_ripple_color_dark</color>
 
     <!-- AppInfoLayout -->
     <color name="oui_des_appinfolayout_app_label_text_color">@color/sesl_action_bar_text_color_title_dark</color>

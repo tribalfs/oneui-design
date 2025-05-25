@@ -7,12 +7,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginBottom="@dimen/oui_des_drawer_menu_category_margin_bottom"
     android:minHeight="@dimen/oui_des_drawer_menu_category_min_height"
-    tools:viewBindingIgnore="true">
+    tools:viewBindingIgnore="true"
+    android:addStatesFromChildren="true"
+    android:stateListAnimator="?attr/seslMediumTouchAnimator">
 
     <View android:id="@+id/ripple_background"
         android:background="@drawable/oui_des_drawer_menu_category_bg_navrail"
         android:layout_width="0dp"
-        android:layout_height="@dimen/oui_des_drawer_menu_category_min_height"
+        android:layout_height="0dp"
         android:layout_marginStart="@dimen/oui_des_drawer_menu_category_view_margin_start"
         android:layout_marginEnd="@dimen/oui_des_drawer_menu_category_view_margin_end"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -22,7 +24,6 @@
 
     <View android:id="@+id/icon_background"
         android:background="@drawable/oui_des_drawer_menu_item_bg"
-
         android:layout_width="@dimen/oui_des_drawer_menu_item_selected_layout_width_collapsed"
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/oui_des_drawer_menu_category_view_margin_start"

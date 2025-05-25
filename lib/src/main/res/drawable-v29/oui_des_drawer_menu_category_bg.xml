@@ -5,11 +5,17 @@
     app:seslRecoilColor="@color/oui_des_drawer_menu_category_recoil_color">
     <item>
         <shape android:shape="rectangle">
-            <corners android:radius="26dp" />
-            <solid android:color="?roundedCornerColor" />
+            <corners android:radius="@dimen/oui_des_drawer_menu_category_view_background_radius"/>
+            <solid android:color="@color/oui_des_drawerlayout_drawer_bg_color"/>
             <stroke
                 android:width="@dimen/oui_des_drawer_menu_category_view_stroke"
                 android:color="@color/oui_des_drawer_menu_category_stroke_selector" />
         </shape>
+    </item>
+    <item android:id="@android:id/mask">
+        <androidx.appcompat.util.SeslShapeDrawable android:shape="rectangle">
+            <corners android:radius="@dimen/oui_des_drawer_menu_category_view_background_radius" />
+            <solid android:color="#000000" />
+        </androidx.appcompat.util.SeslShapeDrawable>
     </item>
 </androidx.appcompat.graphics.drawable.SeslRecoilDrawable>
