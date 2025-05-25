@@ -203,8 +203,7 @@
         <item name="android:minWidth">@dimen/mtrl_min_touch_target_size</item>
         <item name="android:minHeight">@dimen/mtrl_min_touch_target_size</item>
         <item name="android:paddingBottom">@dimen/m3_bottom_sheet_drag_handle_bottom_padding</item>
-        <item name="android:alpha">0.85</item>
-        <item name="tint">?colorControlNormal</item>
+        <item name="tint">@color/oui_des_bottomsheet_drag_handle_tint</item>
     </style>
 
     <style name="OneUI.SearchHighlightedTextAppearance" parent="RobotoMedium">

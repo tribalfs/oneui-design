@@ -80,6 +80,7 @@
 
     <!--BottomSheet-->
     <color name="oui_des_bottomsheet_bg_color">@color/sesl_gray_L2</color>
+    <color name="oui_des_bottomsheet_drag_handle_tint">#66505050</color>
 
     <!--SelectableLinearLayout-->
     <color name="oui_des_list_item_selection_anim_bg_color">@color/sesl_primary_color_light</color>
