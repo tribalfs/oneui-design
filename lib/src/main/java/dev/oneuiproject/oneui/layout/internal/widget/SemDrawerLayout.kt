@@ -5,6 +5,8 @@ import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.os.Handler
+import android.os.Looper
 import android.util.AttributeSet
 import android.util.Log
 import android.view.Gravity
@@ -18,13 +20,11 @@ import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
 import androidx.annotation.Px
 import androidx.annotation.RestrictTo
-import androidx.appcompat.R.dimen.sesl_action_bar_top_padding
 import androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_NONE
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.Insets
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsCompat.Type.displayCutout
 import androidx.core.view.WindowInsetsCompat.Type.ime
-import androidx.core.view.WindowInsetsCompat.Type.systemBars
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
@@ -47,6 +47,7 @@ import dev.oneuiproject.oneui.layout.internal.util.DrawerLayoutUtils.getDrawerSt
 import dev.oneuiproject.oneui.layout.internal.util.DrawerLayoutUtils.updateBadgeView
 import dev.oneuiproject.oneui.layout.internal.util.DrawerOutlineProvider
 import dev.oneuiproject.oneui.layout.internal.util.NavButtonsHandler
+import androidx.appcompat.R as appcompatR
 
 typealias OneUIDrawerLayout = dev.oneuiproject.oneui.layout.DrawerLayout
 
@@ -61,6 +62,10 @@ internal class SemDrawerLayout @JvmOverloads constructor(
     private var scrimAlpha = 0f
     private var systemBarsColor = context.getThemeAttributeValue(androidx.appcompat.R.attr.roundedCornerColor)?.data!!
     private val hsv = FloatArray(3)
+    //This changes with size and orientation
+    @Suppress("PrivateResource")
+    private val defaultActionBarTopPadding get() =
+        resources.getDimensionPixelSize(appcompatR.dimen.sesl_action_bar_top_padding)
 
     private lateinit var mDrawerPane: LinearLayout
     private lateinit var mSlideViewPane: FrameLayout
@@ -81,6 +86,9 @@ internal class SemDrawerLayout @JvmOverloads constructor(
     private lateinit var mNavButtonsHandlerDelegate: NavButtonsHandler
 
     private val activity by lazy(LazyThreadSafetyMode.NONE) {  context.appCompatActivity }
+
+    private val updateHandler = Handler(Looper.getMainLooper())
+    private var lastScreenWidthDp: Int = 0
 
     init {
         ContextCompat.getColor(context, R.color.oui_des_drawerlayout_drawer_dim_color).let {
@@ -166,7 +174,9 @@ internal class SemDrawerLayout @JvmOverloads constructor(
             }.dpToPx(resources)
         }
 
-        mDrawerPane.updateLayoutParams{ width = drawerWidth }
+        if (mDrawerPane.layoutParams.width != drawerWidth) {
+            mDrawerPane.updateLayoutParams { width = drawerWidth }
+        }
 
         if (isInEditMode && isOpen){
             ensureOpenDrawerPreview()
@@ -194,10 +204,14 @@ internal class SemDrawerLayout @JvmOverloads constructor(
      * Set to -1 to reset the default.
      */
     override fun setDrawerCornerRadius(@Px px: Int) {
+        val targetRadius = if (px == -1) DEFAULT_DRAWER_RADIUS.dpToPx(resources) else px
         (mDrawerPane.outlineProvider as? DrawerOutlineProvider)?.let {
-            it.cornerRadius = if (px == -1) DEFAULT_DRAWER_RADIUS.dpToPx(resources) else px
+            if (it.cornerRadius != targetRadius) {
+                it.cornerRadius = targetRadius
+                mDrawerPane.invalidateOutline()
+            }
         } ?: run {
-            mDrawerPane.outlineProvider = DrawerOutlineProvider(px)
+            mDrawerPane.outlineProvider = DrawerOutlineProvider(targetRadius)
             mDrawerPane.clipToOutline = true
         }
     }
@@ -380,31 +394,73 @@ internal class SemDrawerLayout @JvmOverloads constructor(
                 .also { _backHandler = it }
     }
 
-    override fun applyWindowInsets(insets: WindowInsetsCompat, isImmersiveActive: Boolean){
-        val activity = activity ?: return
-        val baseInsets = insets.getInsets(systemBars() or displayCutout())
+    override fun applyWindowInsets(
+        insets: WindowInsetsCompat,
+        isImmersiveActive: Boolean
+    ) {
+        val currentActivity = activity ?: return
+        val systemAndCutoutInsets = insets.getInsets(
+            WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
+        )
         val imeInsetBottom = insets.getInsets(ime()).bottom
-        val baseInsetTop = baseInsets.top
-        val defaultTopPadding = resources.getDimensionPixelSize(sesl_action_bar_top_padding)
 
-        if (activity.fitsSystemWindows) {
+        if (currentActivity.fitsSystemWindows) {
+            applyInsetsForFitSystemWindows(imeInsetBottom)
+        } else {
+            applyInsetsForEdgeToEdge(systemAndCutoutInsets, imeInsetBottom, isImmersiveActive)
+        }
+    }
+
+    private fun applyInsetsForFitSystemWindows(imeInsetBottom: Int) {
+
+        val rootLp = layoutParams as MarginLayoutParams
+        if (rootLp.leftMargin != 0 || rootLp.rightMargin != 0) {
             updateLayoutParams<MarginLayoutParams> { leftMargin = 0; rightMargin = 0 }
-            mSlideViewPane.updatePadding(top = 0, bottom = imeInsetBottom)
+        }
+        updateSlideViewPanePadding(top = 0, bottom = imeInsetBottom)
+        val actionBarTopPadding = defaultActionBarTopPadding
+        val drawerLp = mDrawerPane.layoutParams as MarginLayoutParams
+        if (drawerLp.topMargin != actionBarTopPadding || drawerLp.bottomMargin != imeInsetBottom) {
             mDrawerPane.updateLayoutParams<MarginLayoutParams> {
-                topMargin = defaultTopPadding; bottomMargin = imeInsetBottom }
+                topMargin = actionBarTopPadding; bottomMargin = imeInsetBottom
+            }
+        }
+    }
 
-        }else{
-            val bottomInset = maxOf(baseInsets.bottom, imeInsetBottom)
+    private fun applyInsetsForEdgeToEdge(
+        systemAndCutoutInsets: Insets,
+        imeInsetBottom: Int,
+        isImmersiveActive: Boolean
+    ) {
+        val finalBottomInset = maxOf(systemAndCutoutInsets.bottom, imeInsetBottom)
+        val systemTopInset = systemAndCutoutInsets.top
+
+        val rootLp = layoutParams as MarginLayoutParams
+        if (rootLp.leftMargin != systemAndCutoutInsets.left || rootLp.rightMargin != systemAndCutoutInsets.right) {
             updateLayoutParams<MarginLayoutParams> {
-                leftMargin = baseInsets.left; rightMargin = baseInsets.right }
-            if (isImmersiveActive) {
-                mSlideViewPane.updatePadding(top = 0, bottom = imeInsetBottom)
-            } else {
-                mSlideViewPane.updatePadding(top = baseInsetTop, bottom = bottomInset )
+                leftMargin = systemAndCutoutInsets.left
+                rightMargin = systemAndCutoutInsets.right
             }
+        }
+
+        if (isImmersiveActive) {
+            updateSlideViewPanePadding(top = 0, bottom = imeInsetBottom)
+        } else {
+            updateSlideViewPanePadding(top = systemTopInset, bottom = finalBottomInset)
+        }
+
+        val actionBarTopPadding = systemTopInset + defaultActionBarTopPadding
+        val drawerLp = mDrawerPane.layoutParams as MarginLayoutParams
+        if (drawerLp.topMargin != actionBarTopPadding || drawerLp.bottomMargin != finalBottomInset) {
             mDrawerPane.updateLayoutParams<MarginLayoutParams> {
-                topMargin = baseInsetTop + defaultTopPadding; bottomMargin = bottomInset
+                topMargin = actionBarTopPadding; bottomMargin = finalBottomInset
             }
+        }
+    }
+
+    private fun updateSlideViewPanePadding(top: Int, bottom: Int) {
+        if (mSlideViewPane.paddingTop != top || mSlideViewPane.paddingBottom != bottom) {
+            mSlideViewPane.updatePadding(top = top, bottom = bottom)
         }
     }
 
