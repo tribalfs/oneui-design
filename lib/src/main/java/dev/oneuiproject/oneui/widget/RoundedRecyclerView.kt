@@ -26,13 +26,15 @@ open class RoundedRecyclerView @JvmOverloads constructor(
 
     override fun onFinishInflate() {
         seslSetFillHorizontalPaddingEnabled(fillHorizontalPadding)
-        if (fillHorizontalPadding) {
-            edgeInsets = Insets.NONE
-        }
         super.onFinishInflate()
     }
 
     override fun dispatchDraw(canvas: Canvas) {
+        if (fillHorizontalPadding) {
+            if (paddingStart > 0 || paddingEnd > 0) {
+                edgeInsets = Insets.of(paddingStart, edgeInsets.top, paddingEnd, edgeInsets.bottom)
+            }
+        }
         if (drawOverEdge) {
             super.dispatchDraw(canvas)
             drawRoundedCorners(canvas)
