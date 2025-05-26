@@ -236,6 +236,10 @@ inline fun <T: TabLayout>T.setTabsEnabled(enabled: Boolean, vararg tabIndex: Int
 
 @JvmName("setTabBadge")
 inline fun <T: TabLayout>T.setBadge(tabIndex: Int, badge: Badge){
+    if (getTabAt(tabIndex) == null) {
+        Log.e(this::class.simpleName, "setBadge($tabIndex, $badge): This tabLayout currently has no tab at index $tabIndex")
+        return
+    }
     when (badge){
         Badge.DOT -> seslShowDotBadge(tabIndex, true)
         Badge.NONE -> {
