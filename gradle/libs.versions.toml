@@ -52,7 +52,7 @@ sesl-coordinatorlayout = { module = "sesl.androidx.coordinatorlayout:coordinator
 sesl-swiperefreshlayout = { module = "sesl.androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "sesl-swiperefreshlayout" }
 sesl-fragment = { module = "sesl.androidx.fragment:fragment", version.ref = "sesl-fragment" }
 
-oneuiDesign = { module = "io.github.tribalfs:oneui-design", version = "0.5.16+oneui7" }
+oneuiDesign = { module = "io.github.tribalfs:oneui-design", version = "0.6.0+oneui7" }
 oneuiIcons = { module = "io.github.oneuiproject:icons", version = "1.1.0" }
 
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidx-constraintlayout" }
