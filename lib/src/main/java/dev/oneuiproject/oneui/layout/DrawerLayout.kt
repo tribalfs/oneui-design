@@ -134,6 +134,27 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
      */
     fun setDrawerCornerRadius(@Px px: Int) = containerLayout.setDrawerCornerRadius(px)
 
+    /**
+     * Setup the drawer header button,
+     * located at the top right corner of the drawer panel.
+     *
+     * @param icon The drawable to use as the icon.
+     * @param tint An optional tint to apply to the icon.
+     * @param tooltipText The tooltip text to set for the button.
+     * @param listener The click listener to set for the button.
+     */
+     fun setupHeaderButton(
+        icon: Drawable,
+        @ColorInt tint: Int? = null,
+        tooltipText: CharSequence,
+        listener: OnClickListener
+    ){
+        navButtonsHandler.apply {
+            setHeaderButtonIcon(icon, tint)
+            setHeaderButtonTooltip(tooltipText)
+            setHeaderButtonOnClickListener(listener)
+        }
+    }
 
     /**
      * Sets the icon for the drawer header button,
