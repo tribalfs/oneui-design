@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.maven.publish)
+    alias(libs.plugins.dokka)
+    alias(libs.plugins.dokka.javadoc)
 }
 
 android {
@@ -13,15 +15,7 @@ android {
             useSupportLibrary = true
         }
     }
-
     buildTypes.all { consumerProguardFiles("consumer-rules.pro") }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
-    }
-
-    kotlinOptions { jvmTarget = "21" }
 }
 
 dependencies {
@@ -39,21 +33,31 @@ dependencies {
     implementation(libs.bundles.androidx.navigation)
 }
 
-configurations.all {
-    // Exclude official android jetpack modules
-    exclude(group = "androidx.core", module = "core")
-    exclude(group = "androidx.core", module = "core-ktx")
-    exclude(group = "androidx.customview", module = "customview")
-    exclude(group = "androidx.coordinatorlayout", module = "coordinatorlayout")
-    exclude(group = "androidx.drawerlayout", module = "drawerlayout")
-    exclude(group = "androidx.viewpager2", module = "viewpager2")
-    exclude(group = "androidx.viewpager", module = "viewpager")
-    exclude(group = "androidx.appcompat", module = "appcompat")
-    exclude(group = "androidx.fragment", module = "fragment")
-    exclude(group = "androidx.preference", module = "preference")
-    exclude(group = "androidx.recyclerview", module = "recyclerview")
-    exclude(group = "androidx.slidingpanelayout", module = "slidingpanelayout")
-    exclude(group = "androidx.swiperefreshlayout", module = "swiperefreshlayout")
-    // Exclude official material components lib
-    exclude(group = "com.google.android.material", module = "material")
+
+tasks.register("releaseJavadocJar", Jar::class.java) {
+    dependsOn(tasks.dokkaGeneratePublicationJavadoc)
+    archiveClassifier.set("javadoc")
+    from(layout.buildDirectory.dir("dokka/javadoc"))
+}
+
+val dokkaHtmlJar by tasks.registering(Jar::class) {
+    dependsOn(tasks.dokkaGeneratePublicationHtml)
+    archiveClassifier.set("html-docs")
+    from(layout.buildDirectory.dir("dokka/html"))
+}
+
+dokka {
+    dokkaSourceSets.main {
+        sourceLink {
+            localDirectory.set(file("src/main/java"))
+            remoteUrl("https://github.com/oneui-design")
+            remoteLineSuffix.set("#L")
+        }
+
+        pluginsConfiguration.html {
+            /*customStyleSheets.from("styles.css")
+            customAssets.from("logo.png")*/
+            footerMessage.set("(c) Tribalfs")
+        }
+    }
 }

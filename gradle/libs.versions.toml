@@ -2,6 +2,8 @@
 android-gradle = "8.9.3"
 kotlin = "2.1.20"
 rikka-refine = "4.4.0"
+ksp = "2.1.20-2.0.0"
+dokka = "2.0.0"
 
 androidx-annotation = "1.9.1"
 sesl-core = "1.16.0+1.0.15-sesl7+rev0"
@@ -77,6 +79,9 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 rikka-refine = { id = "dev.rikka.tools.refine", version.ref = "rikka-refine" }
 kotlin-parcelize = { id = "kotlin-parcelize"}
 maven-publish = { id = "maven-publish"}
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka"}
+dokka-javadoc = { id = "org.jetbrains.dokka-javadoc", version.ref = "dokka"}
 
 [bundles]
 sesl-androidx = ["sesl-appcompat",

@@ -9,6 +9,8 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.rikka.refine) apply false
     alias(libs.plugins.kotlin.serialization) apply false
+    alias(libs.plugins.dokka) apply false
+    alias(libs.plugins.dokka.javadoc) apply false
 }
 
 apply(from = "manifest.gradle")
@@ -26,11 +28,11 @@ fun String.toEnvVarStyle(): String =
  * `read:packages` scope at https://github.com/settings/tokens/new and then
  * add it to any of the following:
  *
- * - Add `githubUsername` and `githubAccessToken` to Global Gradle Properties
- * - Set `GITHUB_USERNAME` and `GITHUB_ACCESS_TOKEN` in your environment variables or
+ * - Add `ghUsername` and `ghAccessToken` to Global Gradle Properties
+ * - Set `GH_USERNAME` and `GH_ACCESS_TOKEN` in your environment variables or
  * - Create a `github.properties` file in your project folder with the following content:
- *      githubUsername=&lt;YOUR_GITHUB_USERNAME&gt;
- *      githubAccessToken=&lt;YOUR_GITHUB_ACCESS_TOKEN&gt;
+ *      ghUsername=&lt;YOUR_GITHUB_USERNAME&gt;
+ *      ghAccessToken=&lt;YOUR_GITHUB_ACCESS_TOKEN&gt;
  */
 // Load GitHub credentials from properties file, gradle properties, or environment variables
 fun getGithubProperty(key: String): String {
@@ -46,8 +48,8 @@ fun getGithubProperty(key: String): String {
         ?: throw GradleException("GitHub $key not found")
 }
 
-val githubUsername = getGithubProperty("githubUsername")
-val githubAccessToken = getGithubProperty("githubAccessToken")
+val githubUsername = getGithubProperty("ghUsername")
+val githubAccessToken = getGithubProperty("ghAccessToken")
 
 allprojects {
     repositories {
@@ -83,6 +85,29 @@ allprojects {
 subprojects {
     plugins.withId("com.android.base") {
         plugins.apply("dev.rikka.tools.refine")
+        project.extensions.findByType(BaseExtension::class.java)?.apply {
+            compileOptions {
+                sourceCompatibility = JavaVersion.VERSION_21
+                targetCompatibility = JavaVersion.VERSION_21
+            }
+            configurations.all{
+                exclude(group = "androidx.core", module = "core")
+                exclude(group = "androidx.core", module = "core-ktx")
+                exclude(group = "androidx.customview", module = "customview")
+                exclude(group = "androidx.coordinatorlayout", module = "coordinatorlayout")
+                exclude(group = "androidx.drawerlayout", module = "drawerlayout")
+                exclude(group = "androidx.viewpager2", module = "viewpager2")
+                exclude(group = "androidx.viewpager", module = "viewpager")
+                exclude(group = "androidx.appcompat", module = "appcompat")
+                exclude(group = "androidx.fragment", module = "fragment")
+                exclude(group = "androidx.preference", module = "preference")
+                exclude(group = "androidx.recyclerview", module = "recyclerview")
+                exclude(group = "androidx.slidingpanelayout", module = "slidingpanelayout")
+                exclude(group = "androidx.swiperefreshlayout", module = "swiperefreshlayout")
+                // Exclude official material components lib
+                exclude(group = "com.google.android.material", module = "material")
+            }
+        }
     }
 
     val group = "io.github.tribalfs"
@@ -121,7 +146,6 @@ subprojects {
                     }
 
                     is LibraryExtension -> {
-
                         publishing {
                             singleVariant("release") {
                                 withSourcesJar()
