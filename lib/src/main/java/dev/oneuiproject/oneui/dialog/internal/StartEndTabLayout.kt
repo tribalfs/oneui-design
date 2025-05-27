@@ -10,7 +10,7 @@ import dev.oneuiproject.oneui.design.R
 import java.util.Locale
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-class StartEndTabLayout @JvmOverloads constructor(
+internal class StartEndTabLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = R.style.OneUI_StartEndTimePickerTab

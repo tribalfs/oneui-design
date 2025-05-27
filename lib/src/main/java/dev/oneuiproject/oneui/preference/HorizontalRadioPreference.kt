@@ -378,7 +378,7 @@ class HorizontalRadioPreference(context: Context, attrs: AttributeSet?) :
         }
     }
 
-    companion object {
+    private companion object {
         private const val IMAGE = 0
         private const val NO_IMAGE = 1
     }

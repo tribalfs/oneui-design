@@ -3,7 +3,6 @@ package dev.oneuiproject.oneui.delegates
 import android.graphics.Canvas
 import android.os.Handler
 import android.os.Looper
-import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.view.View.LAYOUT_DIRECTION_RTL
@@ -15,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.recyclerview.widget.SeslSwipeListAnimator
 import java.util.Locale
+import androidx.core.text.layoutDirection
 
 
 /**
@@ -36,13 +36,13 @@ class SwipeItemCallbackDelegate(
         private const val TAG = "SemSwipeCallback"
     }
 
-    private val mIsRTL = TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) == LAYOUT_DIRECTION_RTL
+    private val isRTL = Locale.getDefault().layoutDirection == LAYOUT_DIRECTION_RTL
 
-    private var mSwipeItemView: View? = null
+    private var swipeItemView: View? = null
     private var isSwipeInProgress = false
     private var isDelayedActionPending = false
 
-    private var mStartX = 0f
+    private var startX = 0f
     private var allowAction = false
 
     override fun onSelectedChanged(viewholder: ViewHolder?, actionState: Int) {
@@ -53,17 +53,14 @@ class SwipeItemCallbackDelegate(
             when (actionState) {
                 ACTION_STATE_SWIPE -> {
                     allowAction = true
-                    if (isSwipeInProgress && mSwipeItemView != null) {
-                        seslSwipeListAnimator.clearSwipeAnimation(mSwipeItemView!!)
-                        mSwipeItemView!!.translationX = 0.0f
-                        mSwipeItemView!!.setAlpha(1.0f)
+                    if (isSwipeInProgress && swipeItemView != null) {
+                        seslSwipeListAnimator.clearSwipeAnimation(swipeItemView!!)
+                        swipeItemView!!.translationX = 0.0f
+                        swipeItemView!!.setAlpha(1.0f)
                     }
-                    mSwipeItemView = viewholder.itemView
+                    swipeItemView = viewholder.itemView
                     isSwipeInProgress = true
 
-                }
-                ACTION_STATE_DRAG -> {
-                    //TODO: Implement drag action
                 }
             }
         }
@@ -71,7 +68,7 @@ class SwipeItemCallbackDelegate(
 
     override fun onSwiped(viewholder: ViewHolder, direction: Int) {
         if (allowAction) {
-            val state = if (mStartX > 0.0f) ACTION_STATE_IDLE else ACTION_STATE_SWIPE
+            val state = if (startX > 0.0f) ACTION_STATE_IDLE else ACTION_STATE_SWIPE
             if (swipeActionCallback.onSwiped(viewholder.layoutPosition, direction, state)) {
                 Handler(Looper.getMainLooper()).postDelayed(
                     { isDelayedActionPending = false },
@@ -79,7 +76,7 @@ class SwipeItemCallbackDelegate(
                 )
             }
 
-            seslSwipeListAnimator.onSwiped(mSwipeItemView!!)
+            seslSwipeListAnimator.onSwiped(swipeItemView!!)
             isSwipeInProgress = false
         }
         allowAction = false
@@ -90,7 +87,7 @@ class SwipeItemCallbackDelegate(
         viewholder: ViewHolder
     ) {
         Log.d(TAG, "clearView")
-        seslSwipeListAnimator.clearSwipeAnimation(mSwipeItemView!!)
+        seslSwipeListAnimator.clearSwipeAnimation(swipeItemView!!)
         isSwipeInProgress = true
         super.clearView(recyclerView, viewholder)
         swipeActionCallback.onCleared()
@@ -135,18 +132,18 @@ class SwipeItemCallbackDelegate(
     ) {
         Log.d(TAG, "onChildDrawOver")
         if (allowAction && !isDelayedActionPending) {
-            mStartX = dX
-            seslSwipeListAnimator.doMoveAction(canvas, mSwipeItemView!!, dX, isCurrentlyActive)
+            startX = dX
+            seslSwipeListAnimator.doMoveAction(canvas, swipeItemView!!, dX, isCurrentlyActive)
         }
     }
 
     private fun getSwipeDir(isLeftSwipeEnabled: Boolean, isRightSwipeEnabled: Boolean): Int {
         var flags = 0
         if (isRightSwipeEnabled) {
-            flags += if (mIsRTL) ItemTouchHelper.END else ItemTouchHelper.START
+            flags += if (isRTL) ItemTouchHelper.END else ItemTouchHelper.START
         }
         if (isLeftSwipeEnabled) {
-            flags += if (mIsRTL) ItemTouchHelper.START else ItemTouchHelper.END
+            flags += if (isRTL) ItemTouchHelper.START else ItemTouchHelper.END
         }
         return flags
     }

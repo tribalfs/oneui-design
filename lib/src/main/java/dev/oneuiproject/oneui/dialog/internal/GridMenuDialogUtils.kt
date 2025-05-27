@@ -7,7 +7,7 @@ import androidx.annotation.RestrictTo
 import androidx.appcompat.view.menu.MenuItemImpl
 import androidx.core.view.MenuItemCompat
 import dev.oneuiproject.oneui.dialog.GridMenuDialog
-import dev.oneuiproject.oneui.utils.toBadge
+import dev.oneuiproject.oneui.utils.internal.toBadge
 
 @SuppressLint("RestrictedApi")
 @RestrictTo(RestrictTo.Scope.LIBRARY)

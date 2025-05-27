@@ -49,7 +49,7 @@ import dev.oneuiproject.oneui.layout.internal.util.DrawerOutlineProvider
 import dev.oneuiproject.oneui.layout.internal.util.NavButtonsHandler
 import androidx.appcompat.R as appcompatR
 
-typealias OneUIDrawerLayout = dev.oneuiproject.oneui.layout.DrawerLayout
+internal typealias OneUIDrawerLayout = dev.oneuiproject.oneui.layout.DrawerLayout
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 internal class SemDrawerLayout @JvmOverloads constructor(

@@ -12,7 +12,7 @@ import androidx.annotation.StringRes
 import androidx.appcompat.content.res.AppCompatResources
 import com.google.android.material.tabs.TabLayout
 import dev.oneuiproject.oneui.layout.Badge
-import dev.oneuiproject.oneui.utils.badgeCountToText
+import dev.oneuiproject.oneui.utils.internal.badgeCountToText
 
 /**
  * Selects the tab at the specified index.
@@ -246,7 +246,7 @@ inline fun <T: TabLayout>T.setTabsEnabled(enabled: Boolean, vararg tabIndex: Int
  * ```
  */
 @JvmName("setTabBadge")
-inline fun <T: TabLayout>T.setBadge(tabIndex: Int, badge: Badge){
+fun <T: TabLayout>T.setBadge(tabIndex: Int, badge: Badge) {
     if (getTabAt(tabIndex) == null) {
         Log.e(this::class.simpleName, "setBadge($tabIndex, $badge): This tabLayout currently has no tab at index $tabIndex")
         return

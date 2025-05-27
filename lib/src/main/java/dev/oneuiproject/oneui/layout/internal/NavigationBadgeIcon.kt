@@ -13,7 +13,7 @@ import androidx.annotation.RestrictTo
 import androidx.core.content.ContextCompat
 import dev.oneuiproject.oneui.ktx.dpToPxFactor
 import dev.oneuiproject.oneui.layout.Badge
-import dev.oneuiproject.oneui.utils.badgeCountToText
+import dev.oneuiproject.oneui.utils.internal.badgeCountToText
 import dev.oneuiproject.oneui.utils.getRegularFont
 import androidx.appcompat.R as appcompatR
 

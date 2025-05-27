@@ -19,7 +19,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
-import android.view.View.OnLayoutChangeListener
 import android.view.ViewGroup
 import android.view.ViewStub
 import android.view.WindowInsets
@@ -97,12 +96,12 @@ import dev.oneuiproject.oneui.layout.internal.util.NavButtonsHandler
 import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.hasShowingChild
 import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.navBarCanImmScroll
 import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.setVisibility
-import dev.oneuiproject.oneui.utils.BADGE_LIMIT_NUMBER
+import dev.oneuiproject.oneui.utils.internal.BADGE_LIMIT_NUMBER
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil
 import dev.oneuiproject.oneui.utils.MenuSynchronizer
 import dev.oneuiproject.oneui.utils.MenuSynchronizer.State
 import dev.oneuiproject.oneui.utils.applyEdgeToEdge
-import dev.oneuiproject.oneui.utils.badgeCountToText
+import dev.oneuiproject.oneui.utils.internal.badgeCountToText
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type
 import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout
@@ -259,13 +258,13 @@ open class ToolbarLayout @JvmOverloads constructor(
         data class Concurrent(internal val searchModeListener: SearchModeListener?) : SearchOnActionMode
     }
 
-    val activity by lazy(LazyThreadSafetyMode.NONE) { context.appCompatActivity }
+    internal val activity by lazy(LazyThreadSafetyMode.NONE) { context.appCompatActivity }
 
     private var allSelectorItemsCount = SELECTED_ITEMS_UNSET
     private var allSelectorEnabled = true
     private var allSelectorChecked: Boolean? = null
 
-    private var mActionModeListener: ActionModeListener? = null
+    private var actionModeListener: ActionModeListener? = null
 
     internal var isSofInputShowing: Boolean = isSoftKeyboardShowing
         private set
@@ -333,13 +332,13 @@ open class ToolbarLayout @JvmOverloads constructor(
     private lateinit var mainContainerParent: LinearLayout
     private lateinit var collapsingToolbarLayout: CollapsingToolbarLayout
 
-    /**@return The [AppBarLayout] use by this view.*/
+    /** The [AppBarLayout] use by this view.*/
     lateinit var appBarLayout: AppBarLayout
         private set
 
     private lateinit var _mainToolbar: Toolbar
 
-    /**@return The main [Toolbar] use by this view.*/
+    /** The main [Toolbar] use by this view.*/
     val toolbar: Toolbar get() = _mainToolbar
 
     private lateinit var adpCoordinatorLayout: AdaptiveCoordinatorLayout
@@ -447,7 +446,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
     }
 
-    public override fun generateDefaultLayoutParams() = ToolbarLayoutParams(context, null)
+    override fun generateDefaultLayoutParams() = ToolbarLayoutParams(context, null)
 
     override fun generateLayoutParams(attrs: AttributeSet) = ToolbarLayoutParams(context, attrs)
 
@@ -574,7 +573,7 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     private fun refreshLayout(newConfig: Configuration) {
         val isLandscape = newConfig.orientation == ORIENTATION_LANDSCAPE
-        isExpanded = !isLandscape and expandedPortrait
+        isExpanded = !isLandscape && expandedPortrait
     }
 
     private var marginProviderImpl: MarginProvider = MARGIN_PROVIDER_ADP_DEFAULT
@@ -1243,7 +1242,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         isActionMode = true
         updateAllSelectorJob?.cancel()
         ensureActionModeViews()
-        mActionModeListener = listener
+        actionModeListener = listener
         this.searchOnActionMode = searchOnActionMode
 
         when (searchOnActionMode) {
@@ -1413,14 +1412,14 @@ open class ToolbarLayout @JvmOverloads constructor(
             customFooterContainer!!.setVisibility(VISIBLE, true, 0)
         }
         bottomActionModeBar.setVisibility(GONE, true, 0)
-        mActionModeListener!!.onEndActionMode()
+        actionModeListener!!.onEndActionMode()
         //This clears menu including the common action mode menu
         //items - search and cancel
         menuSynchronizer!!.clear()
         actionModeSelectAll.setOnClickListener(null)
         actionModeCheckBox.isChecked = false
         allSelectorItemsCount = SELECTED_ITEMS_UNSET
-        mActionModeListener = null
+        actionModeListener = null
         menuSynchronizer = null
         updateAllSelectorJob = null
         searchOnActionMode = null
@@ -1431,7 +1430,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         actionModeSelectAll.setOnClickListener {
             actionModeCheckBox.apply {
                 isChecked = !isChecked
-                mActionModeListener!!.onSelectAll(isChecked)
+                actionModeListener!!.onSelectAll(isChecked)
             }
         }
     }
@@ -1460,11 +1459,11 @@ open class ToolbarLayout @JvmOverloads constructor(
             bottomActionModeBar,
             actionModeToolbar!!,
             onMenuItemClick = {
-                mActionModeListener!!.onMenuItemClicked(it)
+                actionModeListener!!.onMenuItemClicked(it)
             },
             null
         ).apply {
-            mActionModeListener!!.onInflateActionMenu(this.menu, activity!!.menuInflater)
+            actionModeListener!!.onInflateActionMenu(this.menu, activity!!.menuInflater)
         }
     }
 
@@ -1778,7 +1777,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
     }
 
-    companion object {
+    internal companion object {
         private const val TAG = "ToolbarLayout"
 
         @RestrictTo(RestrictTo.Scope.LIBRARY)
