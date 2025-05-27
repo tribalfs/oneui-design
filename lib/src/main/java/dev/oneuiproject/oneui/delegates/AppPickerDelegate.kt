@@ -21,13 +21,13 @@ import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.coroutines.CoroutineContext
 
 /**
- * Delegate for managing [AppPickerView] operations
+ * Delegate for managing [AppPickerView][androidx.apppickerview.widget.AppPickerView] operations
  *
- * - Call [AppPickerView.configure] in your Activity or Fragment to set up the delegate.
+ * - Call [configure] in the Activity#onCreate or Fragment#onViewCreated to initialize and set up the AppPickerView
  * - Use [setListType] to change the picker type.
  * - Use [refreshAppList] to load or reload the app list.
  *
- * Sample usage:
+ * ## Example usage:
  * ```
  * class AppPickerFragment : Fragment(),
  *                       AppPickerOp by AppPickerDelegate() {
@@ -274,10 +274,13 @@ class AppPickerDelegate : AppPickerOp, AppPickerView.OnBindListener, CoroutineSc
     }
 }
 
-
+/**
+ * Interface for managing [AppPickerView][androidx.apppickerview.widget.AppPickerView] operations.
+ * This interface defines the core functionalities for interacting with an AppPickerView.
+*/
 interface AppPickerOp{
     /**
-     * Should be called on [Activity.onCreate] or [Fragment.onViewCreated]
+     * Call this on the Activity#onCreate or Fragment#onViewCreated to initialize and set up the AppPickerView
      *
      * @param onGetCurrentList Lambda function to provide own app list.
      * If not set or set to `null`, it will use the [default implementation][AppPickerView.getInstalledPackages].
@@ -300,14 +303,13 @@ interface AppPickerOp{
         onLongClicked: ((position: Int, packageName: CharSequence, appLabel: CharSequence) -> Unit)? = null
     )
 
-    /**
-     * Updates the apps list. This is also called internally when [AppPickerView.AppPickerType] is updated by [setListType].
-     */
+    /** Updates the apps list. This is also called internally when [AppPickerView.AppPickerType] is updated by [setListType]. */
     fun refreshAppList()
-    /**
-     * Sets the [AppPickerView.AppPickerType] to use.
-     */
+
+    /** Sets the [AppPickerView.AppPickerType] to use. */
     fun setListType(listType: Int)
 
+
+    /** Clears all selected items from the list. */
     fun clearSelectedItems()
 }

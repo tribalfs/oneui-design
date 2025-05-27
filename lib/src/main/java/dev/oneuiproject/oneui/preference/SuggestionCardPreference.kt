@@ -22,6 +22,10 @@ import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type.LINEAR_INTERPOLATOR
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type.PATH_0_22_0_25_0_0_1_0
 
+/**
+ * A Preference that provides a layout that looks like a suggestion card.
+ * @attr ref R.styleable#SuggestionCardPreference_actionButtonText
+ */
 class SuggestionCardPreference @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

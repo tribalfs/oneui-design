@@ -12,6 +12,28 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import dev.oneuiproject.oneui.design.R
 
+/**
+ * A Preference that is used to show a description.
+ * It is not selectable and has no icon.
+ *
+ * It can be used to show a description for a PreferenceCategory or a PreferenceScreen.
+ *
+ * It has three position modes:
+ * - POSITION_NORMAL: The description is shown with normal margins.
+ * - POSITION_FIRST_ITEM: The description is shown with larger top margin. Used when it's the first item in a category.
+ * - POSITION_SUBHEADER: The description is shown with smaller top margin. Used when it's a subheader.
+ *
+ * It also has a roundedCorners attribute that can be used to set the rounded corners of the background.
+ * The default value is SeslRoundedCorner.ROUNDED_CORNER_ALL.
+ *
+ * Example usage in XML:
+ * ```xml
+ * <DescriptionPreference
+ *     app:title="This is a description"
+ *     app:positionMode="firstItem"
+ *     app:roundedCorners="all" />
+ * ```
+ */
 class DescriptionPreference @JvmOverloads constructor(
     private val context: Context, attrs: AttributeSet? = null,
     defStyleAttr: Int = 0, defStyleRes: Int = 0

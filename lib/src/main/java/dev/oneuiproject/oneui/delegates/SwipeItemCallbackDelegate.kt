@@ -17,6 +17,16 @@ import androidx.recyclerview.widget.SeslSwipeListAnimator
 import java.util.Locale
 
 
+/**
+ * A delegate class that extends [ItemTouchHelper.Callback] to handle swipe gestures on RecyclerView items.
+ *
+ * This class works in conjunction with [SeslSwipeListAnimator] and a [SwipeActionListener]
+ * to provide swipe-to-action functionality for RecyclerView items. It manages the swipe states,
+ * animations, and communicates swipe events to the [SwipeActionListener].
+ *
+ * @property seslSwipeListAnimator The animator responsible for swipe animations.
+ * @property swipeActionCallback The listener for swipe actions.
+ */
 class SwipeItemCallbackDelegate(
     private val seslSwipeListAnimator: SeslSwipeListAnimator,
     private val swipeActionCallback: SwipeActionListener

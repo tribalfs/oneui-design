@@ -129,6 +129,13 @@ class SectionIndexerDelegate<T>(
     }
 }
 
+/**
+ * An interface that extends [SectionIndexer] to provide additional functionality for managing
+ * sections in a list, particularly for use with RecyclerView adapters.
+ * This is designed to work with generic data types and introduces a method to update the sections dynamically.
+ *
+ * @param T The type of data items in the list that this indexer will manage.
+ */
 interface SemSectionIndexer<T> : SectionIndexer {
     /**
      * Updates the section indexer with a new or modified list of data items. This method should

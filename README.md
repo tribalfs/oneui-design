@@ -61,9 +61,10 @@ android:value="meta_998_sesl_app" />
   </AppMetaData>
 </ThemeMetaData>
 ```
+- <a href="https://tribalfs.github.io/oneui-design/">API docs(wip)</a>
 
 ### Sample apps
-- <a href="https://github.com/tribalfs/oneui-design/tree/main/sample-app"> OneUI7 Sample (widgets showcase)</a> <a href="https://github.com/tribalfs/oneui-design/raw/main/sample-app/release/sample-app-release.apk">Download APK</a>
+- <a href="https://github.com/tribalfs/oneui-design/tree/main/sample-app"> OneUI7 Sample (widgets showcase)</a> | <a href="https://github.com/tribalfs/oneui-design/raw/main/sample-app/release/sample-app-release.apk">Download APK</a>
 - <a href="https://github.com/tribalfs/Stargazers">Stargazers (OneUI6)</a>
 
 ### Credits

@@ -315,7 +315,7 @@ class SeekBarPreferencePro @JvmOverloads constructor(
     }
 
 
-    companion object{
+    private companion object{
         private const val TAG = "SeekBarPreferencePro"
 
         private val HAPTIC_CONSTANT_CURSOR_MOVE by lazy {

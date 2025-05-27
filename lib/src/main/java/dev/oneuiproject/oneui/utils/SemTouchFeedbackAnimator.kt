@@ -6,6 +6,14 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.animation.SeslRecoilAnimator
 import androidx.appcompat.widget.SeslLinearLayoutCompat
 
+/**
+ * A utility class for animating touch feedback on a View.
+ *
+ * This class uses `SeslRecoilAnimator` and `SeslLinearLayoutCompat.ItemBackgroundHolder`
+ * to provide touch feedback animations.
+ *
+ * @param animateView The View to which the touch feedback animations will be applied.
+ */
 @RequiresApi(29)
 class SemTouchFeedbackAnimator(private val animateView: View) {
     companion object {

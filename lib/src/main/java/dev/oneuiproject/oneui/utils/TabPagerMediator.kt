@@ -18,6 +18,20 @@ import dev.oneuiproject.oneui.utils.TabPagerMediator.Companion.NO_POSITION
  * - Enable or disable user interaction with both the [TabLayout] and [ViewPager2].
  * - Automatically attached and detached the [[TabLayoutMediator]] as needed based on the [LifecycleOwner]'s state.
  *
+ * ## Example usage:
+ * ```
+ * class TabPagerFragment: Fragment() {
+ *     fun initTabbedViewPager(){
+ *          val titles = listOf("Icons", "Contacts", "Apps")
+ *          val tabPagerMediator = TabPagerMediator(
+ *              lifecycleOwner = this,
+ *              tabLayout = binding.tabs,
+ *              viewPager2 = binding.vp2
+ *          ) { tab, pos ->  tab.text = titles[pos] }
+ *      }
+ *  }
+ * ```
+ *
  * @param lifecycleOwner The [LifecycleOwner] whose lifecycle will be observed to manage the
  * attachment and detachment of the mediator.
  * @param tabLayout The [TabLayout] instance to be synchronized with the [ViewPager2].
@@ -31,19 +45,6 @@ import dev.oneuiproject.oneui.utils.TabPagerMediator.Companion.NO_POSITION
  * @param tabConfigurationCallback The [TabConfigurationStrategy] in which you set the text of the tab,
  * and/or perform any styling of the tabs that you require.
  *
- * Sample usage:
- * ```
- * class TabPagerFragment: Fragment() {
- *     fun initTabbedViewPager(){
- *          val titles = listOf("Icons", "Contacts", "Apps")
- *          val tabPagerMediator = TabPagerMediator(
- *              lifecycleOwner = this,
- *              tabLayout = binding.tabs,
- *              viewPager2 = binding.vp2
- *          ) { tab, pos ->  tab.text = titles[pos] }
- *      }
- *  }
- * ```
  */
 class TabPagerMediator(
     lifecycleOwner: LifecycleOwner,

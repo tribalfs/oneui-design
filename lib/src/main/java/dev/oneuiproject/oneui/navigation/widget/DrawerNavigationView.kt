@@ -31,6 +31,26 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import com.google.android.material.R as materialR
 
+/**
+ * DrawerNavigationView is a custom view that displays a navigation menu in a drawer.
+ * for [DrawerLayout] and [NavDrawerLayout].
+ *
+ * The menu contents can be populated by a menu resource file.
+ *
+ * Example usage:
+ * ```xml
+ * <dev.oneuiproject.oneui.navigation.widget.DrawerNavigationView
+ *     android:id="@+id/nav_view"
+ *     android:layout_width="wrap_content"
+ *     android:layout_height="match_parent"
+ *     android:layout_gravity="start"
+ *     app:menu="@menu/drawer_menu" />
+ * ```
+ *
+ * @param context The context for the view.
+ * @param attrs (Optional) The attributes for the view.
+ * @param defStyleAttr (Optional) The default style attribute for the view.
+ */
 @SuppressLint("RestrictedApi")
 class DrawerNavigationView @JvmOverloads constructor(
     context: Context,

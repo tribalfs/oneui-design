@@ -22,6 +22,7 @@ import dev.oneuiproject.oneui.layout.internal.widget.SemSlidingPaneLayout
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isTabletLayout
 import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout.MarginProvider
 import dev.oneuiproject.oneui.layout.DrawerLayout as OneUIDrawerLayout
+import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout as AdaptiveCoordinatorLayout
 
 /**
  * OneUI-styled layout that implements a DrawerLayout interface on smaller devices and a Navigation Rail interface on larger devices,
@@ -188,11 +189,11 @@ class NavDrawerLayout @JvmOverloads constructor(
      * This will override the default behavior provided by
      * [MARGIN_PROVIDER_ADP_DEFAULT][AdaptiveCoordinatorLayout.MARGIN_PROVIDER_ADP_DEFAULT].
      *
-     *
      * @param provider The custom [MarginProvider] implementation to use.
      * Set [MARGIN_PROVIDER_ADP_DEFAULT][AdaptiveCoordinatorLayout.MARGIN_PROVIDER_ADP_DEFAULT] to restore default.
      *
-     * @see [AdaptiveCoordinatorLayout.MARGIN_PROVIDER_ZERO].
+     * @see AdaptiveCoordinatorLayout.MARGIN_PROVIDER_ADP_DEFAULT
+     * @see AdaptiveCoordinatorLayout.MARGIN_PROVIDER_ZERO
      * @see setNavRailContentPreferredWidth
      * @see setNavRailContentMinSideMargin
      *
@@ -353,9 +354,12 @@ class NavDrawerLayout @JvmOverloads constructor(
     }
 
     companion object {
-        private const val TAG = "NavDrawerLayout"
-        private const val DRAWER_HEADER = 4
         const val DEFAULT_NAV_RAIL_DETAILS_WIDTH = -1
+    }
+
+    private object Constants{
+        const val TAG = "NavDrawerLayout"
+        const val DRAWER_HEADER = 4
     }
 
 }

@@ -146,18 +146,38 @@ class StartEndTimePickerDialog(
         return hourOfDay * 60 + minute
     }
 
+    /**
+     * Sets the title for the start time tab.
+     *
+     * @param title The title to be set for the start time tab.
+     */
     fun setStartTimeTitle(title: String) {
         tabLayout!!.getTabAt(0)!!.setText(title)
     }
 
+    /**
+     * Sets the title for the "End" time tab.
+     *
+     * @param title The title to display for the end time tab.
+     */
     fun setEndTimeTitle(title: String) {
         tabLayout!!.getTabAt(1)!!.setText(title)
     }
 
+    /**
+     * Sets whether to show the sub-text (time) below the tab titles.
+     *
+     * @param show `true` to show the sub-text, `false` to hide it.
+     */
     fun setShowSubText(show: Boolean) {
         tabLayout!!.showSubText = show
     }
 
+    /**
+     * Selects the tab at the specified index.
+     *
+     * @param index The index of the tab to select (0 for start time, 1 for end time).
+     */
     fun selectTabAtIndex(@IntRange(0,1) index: Int){
         tabLayout!!.select(index)
     }

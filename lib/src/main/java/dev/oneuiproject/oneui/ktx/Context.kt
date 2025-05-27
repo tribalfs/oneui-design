@@ -25,9 +25,22 @@ import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.getWindowHeight
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.getWindowWidthNet
 import java.util.Calendar
 
+/**
+ * The logical density of the display. This is a scaling factor for the Density
+ * Independent Pixel unit, where one DIP is one pixel on an approximately 160 dpi
+ * screen (for example a 240x320, 1.5"x2" screen), providing the baseline of
+ * the system's display. Thus on a 160dpi screen this density value will be 1;
+ * on a 120 dpi screen it would be .75; etc.
+ */
 @get:JvmName("getDpToPxFactor")
 inline val Context.dpToPxFactor get() = resources.displayMetrics.density
 
+/**
+ * Retrieves the value of a theme attribute.
+ *
+ * @param attr The attribute to retrieve.
+ * @return The value of the attribute, or null if the attribute could not be resolved.
+ */
 inline fun Context.getThemeAttributeValue(attr: Int): TypedValue? =
     TypedValue().run {
         if (theme.resolveAttribute(attr, this, true)) { this } else null
@@ -183,13 +196,7 @@ inline fun Context.showTimePickerDialog(
 
 /**
  * Starts an activity in PopOver mode. This mode is only available to large display Samsung device with OneUI.
- *
- * @param activityClass The activity class to start.
- * @param popOverOptions See [PopOverOptions]
- * @param activityOptions (Optional) Additional options for how the Activity should be started.
- * See [android.app.ActivityOptions]
- *
- * Example usage:
+ * ## Example usage:
  * ```
  * startPopOverActivity(
  *     activityClass = SearchActivity::class.java,
@@ -208,6 +215,10 @@ inline fun Context.showTimePickerDialog(
  *   )
  * )
  * ```
+ * @param activityClass The activity class to start.
+ * @param popOverOptions See [PopOverOptions]
+ * @param activityOptions (Optional) Additional options for how the Activity should be started.
+ * See [android.app.ActivityOptions]
  */
 @JvmOverloads
 inline fun <T : Activity> Context.startPopOverActivity(
@@ -224,12 +235,7 @@ inline fun <T : Activity> Context.startPopOverActivity(
 
 /**
  * Starts an activity in PopOver mode. This mode is only available to large display Samsung device with OneUI.
- *
- * @param intent The Intent for the activity to start.
- * @param popOverOptions See [PopOverOptions]
- * @param activityOptions (Optional) Additional options for how the Activity should be started.
- *
- * Example usage:
+ * ## Example usage:
  * ```
  * startPopOverActivity(
  *     intent = Intent(context, SearchActivity::class.java),
@@ -247,6 +253,10 @@ inline fun <T : Activity> Context.startPopOverActivity(
  *        }
  *    )
  * )
+ * ```
+ * @param intent The Intent for the activity to start.
+ * @param popOverOptions See [PopOverOptions]
+ * @param activityOptions (Optional) Additional options for how the Activity should be started.
  */
 @JvmOverloads
 fun Context.startPopOverActivity(
@@ -272,6 +282,39 @@ fun Context.startPopOverActivity(
     )
 }
 
+/**
+ * Starts an activity in PopOver mode for a result. This mode is only available to large display Samsung device with OneUI.
+ * ## Example usage:
+ * ```
+ * val searchLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+ *     // Handle the result
+ * }
+ *
+ * startPopOverActivityForResult(
+ *     intent = Intent(context, SearchActivity::class.java),
+ *     popOverOptions = PopOverOptions(
+ *         popOverSize = PopOverSize(
+ *               731,
+ *               360,
+ *               if (context.isTablet) 731 else 574,
+ *               360
+ *        ),
+ *        anchorPositions = if (resources.configuration.layoutDirection == LAYOUT_DIRECTION_RTL) {
+ *            PopOverPositions(TOP_LEFT, TOP_LEFT)
+ *        } else {
+ *            PopOverPositions(TOP_RIGHT, TOP_RIGHT)
+ *        }
+ *     ),
+ *     resultLauncher = searchLauncher
+ * )
+ * ```
+ * @param intent The Intent for the activity to start.
+ * @param popOverOptions See [PopOverOptions]
+ * @param activityOptions (Optional) Additional options for how the Activity should be started.
+ * See [ActivityOptionsCompat]
+ * @param resultLauncher The [ActivityResultLauncher] to handle the activity result.
+
+ */
 @JvmOverloads
 fun startPopOverActivityForResult(
     intent: Intent,

@@ -190,21 +190,25 @@ open class ToolbarLayout @JvmOverloads constructor(
     }
 
     /**
-     * Options for the 'on back' behavior of search mode:
-     *
-     * - [DISMISS]: Swipe gesture or back button press ends the search mode
-     * and then unregisters it's on back callback. This is intended to be used
-     * in a search fragment of a multi-fragment activity.
-     * - [CLEAR_DISMISS]: Similar to [DISMISS] but checks and clears the non-empty input query first.
-     * - [CLEAR_CLOSE]: Similar to [CLEAR_DISMISS] but it unregisters it's onBackPressed callback
-     * without ending the search mode. Intended to be  used on a dedicated search activity.
+     * Options for the 'on back' behavior of when on search mode.
+     * @property DISMISS
+     * @property CLEAR_DISMISS]
+     * @property CLEAR_CLOSE]
      *
      * @see startSearchMode
      * @see endSearchMode
      */
     enum class SearchModeOnBackBehavior {
+        /**
+         * Swipe gesture or back button press ends the search mode
+         * and then unregisters it's on back callback. This is intended to be used
+         * in a search fragment of a multi-fragment activity
+         */
         DISMISS,
+        /** Similar to [DISMISS] but checks and clears the non-empty input query first. */
         CLEAR_DISMISS,
+        /** Similar to [CLEAR_DISMISS] but it unregisters it's onBackPressed callback
+         * without ending the search mode. Intended to be  used on a dedicated search activity. */
         CLEAR_CLOSE
     }
 
@@ -212,37 +216,47 @@ open class ToolbarLayout @JvmOverloads constructor(
     /**
      * The configuration for rounded corners that can be applied to the main content
      * located between the app bar and the footer.
-     * - [ALL]
-     * - [TOP]
-     * - [BOTTOM]
-     * - [NONE]
+     * @property ALL
+     * @property TOP
+     * @property BOTTOM
+     * @property NONE
      */
     enum class MainRoundedCorners {
-        /** @see MainRoundedCorners*/
+        /** Rounded corners on all corners */
         ALL,
-        /** @see MainRoundedCorners*/
+        /** Rounded corners only on top corners */
         TOP,
-        /** @see MainRoundedCorners*/
+        /** Rounded corners only on bottom corners */
         BOTTOM,
-        /** @see MainRoundedCorners*/
+        /** No rounded corners on all corners */
         NONE
     }
 
     /**
      * Options for search mode behavior when [starting action mode][startActionMode]:
-     * - [Dismiss]: Search mode will be dismissed if active.
-     * - [NoDismiss]: Search mode will not be dismissed if active.
-     * It will return to search interface once action mode is ended.
-     * - [Concurrent]: Same as [NoDismiss] but also show the search interface while on action mode.
-     * The [searchModeListener][SearchModeListener] is required if the search mode is inactive when initiating action mode.
-     * If the search mode is active and no [SearchModeListener] is specified,
-     * the existing listener for the current search mode will be used.
-     * If specified, it overrides the current search mode listener.
+     *  Choose either [Dismiss], [NoDismiss] or [Concurrent].
      */
     sealed interface SearchOnActionMode {
+        /**
+         * Search mode will be dismissed if active. This is the default behavior if not specified.
+         */
         data object Dismiss : SearchOnActionMode
+        /**
+         * Search mode will not be dismissed if active. It will return to search interface once action mode is ended.
+         */
         data object NoDismiss : SearchOnActionMode
-        data class Concurrent(val searchModeListener: SearchModeListener?) : SearchOnActionMode
+        /**
+         * Same as [NoDismiss] but also show the search interface while in action mode.
+         *
+         * The [searchModeListener] is required if the search mode is inactive when initiating action mode.
+         * If the search mode is active and no [SearchModeListener] is specified,
+         * the existing listener for the current search mode will be used.
+         * If specified, it overrides the current search mode listener.
+         *
+         * @property searchModeListener The listener for search mode events.
+         * This is nullable, but a non-null listener is required if search mode is inactive.
+         */
+        data class Concurrent(internal val searchModeListener: SearchModeListener?) : SearchOnActionMode
     }
 
     val activity by lazy(LazyThreadSafetyMode.NONE) { context.appCompatActivity }
@@ -930,7 +944,7 @@ open class ToolbarLayout @JvmOverloads constructor(
      * Indicates whether the toolbar navigation button should be displayed as a "back/up" affordance.
      * Set this to `true` if clicking the navigation button returns the user up by a single level in your UI;
      * the navigation button will display a back icon, set the tooltip to 'Navigate up', and
-     * invoke [OnBackPressedDispatcher.onBackPressed] when clicked.
+     * invoke OnBackPressedDispatcher#onBackPressed when clicked.
      *
      * This is `false` by default.
      *
@@ -1827,15 +1841,9 @@ sealed class Badge {
  * Starts the search mode for this [ToolbarLayout].
  *
  * This method sets up the search mode with the specified behaviors and callbacks.
- * It handles dismissing the soft keyboard when the query is submitted.
+ * This handles dismissing the soft keyboard when the query is submitted.
  *
- * @param onBackBehavior Defines the [behavior][ToolbarLayout.SearchModeOnBackBehavior] when the back button is pressed during search mode.
- * @param onQuery Lambda function to be invoked when the query text changes or is submitted.
- *               Return true if the query has been handled, false otherwise.
- * @param onStart Lambda function to be invoked when search mode starts.
- * @param onEnd Lambda function to be invoked when search mode ends.
- *
- * Example usage:
+ * ## Example usage:
  * ```
  * toolbarLayout.startSearchMode(
  *     ToolbarLayout.SearchModeOnBackBehavior.CLEAR_SEARCH,
@@ -1851,6 +1859,12 @@ sealed class Badge {
  *     }
  * )
  * ```
+ * @param onBackBehavior Defines the [behavior][ToolbarLayout.SearchModeOnBackBehavior] when the back button is pressed during search mode.
+ * @param onQuery Lambda function to be invoked when the query text changes or is submitted.
+ *               Return true if the query has been handled, false otherwise.
+ * @param onStart Lambda function to be invoked when search mode starts.
+ * @param onEnd Lambda function to be invoked when search mode ends.
+ *
  * @see ToolbarLayout.endSearchMode
  */
 inline fun <T : ToolbarLayout> T.startSearchMode(
@@ -1883,26 +1897,9 @@ inline fun <T : ToolbarLayout> T.startSearchMode(
 
 /**
  * Starts the action mode for this [ToolbarLayout].
- *
  * This method sets up the action mode with the specified callbacks and options.
- **
- * @param onInflateMenu Lambda function called at the start of [startActionMode].
- * Inflate the menu items for this action mode session using this menu.
  *
- * @param onEnd Lambda function to be invoked when action mode ends.
- *
- * @param onSelectMenuItem Lambda function to be invoked when an action menu item is selected.
- * Return true if the item click is handled, false otherwise.
- *
- * @param onSelectAll Lambda function to be invoked when the `All` selector is clicked.
- * This will not be triggered with [ToolbarLayout.updateAllSelector].
- *
- * @param searchOnActionMode (optional) The [SearchOnActionMode] option to set for this action mode.
- * Defaults to [SearchOnActionMode.Dismiss].
- *
- * @param allSelectorStateFlow (Optional) StateFlow of [AllSelectorState] that updates the `All` selector state and count.
- *
- * Example usage:
+ * ## Example usage:
  * ```
  * toolbarLayout.startActionMode(
  *     onInflateMenu = { menu, menuInflater ->
@@ -1922,9 +1919,23 @@ inline fun <T : ToolbarLayout> T.startSearchMode(
  *     allSelectorStateFlow = viewModel.allSelectorStateFlow
  * )
  * ```
+ * @param onInflateMenu Lambda function called at the start of [startActionMode].
+ * Inflate the menu items for this action mode session using this menu.
+ *
+ * @param onEnd Lambda function to be invoked when action mode ends.
+ *
+ * @param onSelectMenuItem Lambda function to be invoked when an action menu item is selected.
+ * Return true if the item click is handled, false otherwise.
+ *
+ * @param onSelectAll Lambda function to be invoked when the `All` selector is clicked.
+ * This will not be triggered with [ToolbarLayout.updateAllSelector].
+ *
+ * @param searchOnActionMode (optional) The [SearchOnActionMode] option to set for this action mode.
+ * Defaults to [SearchOnActionMode.Dismiss].
+ *
+ * @param allSelectorStateFlow (Optional) StateFlow of [AllSelectorState] that updates the `All` selector state and count.
  *
  * @see ToolbarLayout.endActionMode
- *
  */
 inline fun <T : ToolbarLayout> T.startActionMode(
     crossinline onInflateMenu: (menu: Menu, menuInflater: MenuInflater) -> Unit,
@@ -1950,12 +1961,32 @@ inline fun <T : ToolbarLayout> T.startActionMode(
     )
 }
 
+/**
+ * Sets the title of both the collapsed and expanded Toolbar from a string resource.
+ * The expanded title might not be visible in landscape or on devices with small DPI.
+ *
+ * @param titleRes The string resource ID for the title.
+ * @see setTitle
+ * @see ToolbarLayout.expandedTitle
+ * @see ToolbarLayout.collapsedTitle
+ */
 inline fun <T : ToolbarLayout> T.setTitle(@StringRes titleRes: Int) =
     context.getString(titleRes).let {
         expandedTitle = it
         collapsedTitle = it
     }
 
+/**
+ * Set the title of the collapsed and expanded Toolbar independently.
+ * The expanded title might not be visible in landscape or on devices with small dpi.
+ *
+ * @param expandedTitleRes The string resource for the expanded title.
+ * @param collapsedTitleRes The string resource for the collapsed title.
+ *
+ * @see ToolbarLayout.setTitle
+ * @see ToolbarLayout.expandedTitle
+ * @see ToolbarLayout.collapsedTitle
+ */
 inline fun <T : ToolbarLayout> T.setTitle(
     @StringRes expandedTitleRes: Int,
     @StringRes collapsedTitleRes: Int
@@ -1965,12 +1996,31 @@ inline fun <T : ToolbarLayout> T.setTitle(
         collapsedTitle = getString(collapsedTitleRes)
     }
 
+/**
+ * Sets the subtitle of both the collapsed and expanded toolbar using a string resource.
+ * The expanded subtitle may not be visible in landscape mode or on devices with small screens.
+ *
+ * @param titleRes The string resource ID for the subtitle.
+ * @see ToolbarLayout.setSubTitle
+ * @see ToolbarLayout.expandedSubtitle
+ * @see ToolbarLayout.collapsedSubtitle
+ */
 inline fun <T : ToolbarLayout> T.setSubTitle(@StringRes titleRes: Int) =
     context.getString(titleRes).let {
         expandedSubtitle = it
         collapsedSubtitle = it
     }
 
+/**
+ * Sets the subtitle of both the collapsed and expanded toolbar using string resources.
+ *
+ * @param expandedTitleRes The string resource ID for the expanded subtitle.
+ * @param collapsedTitleRes The string resource ID for the collapsed subtitle.
+ *
+ * @see ToolbarLayout.setSubtitle
+ * @see ToolbarLayout.expandedSubtitle
+ * @see ToolbarLayout.collapsedSubtitle
+ */
 inline fun <T : ToolbarLayout> T.setSubTitle(
     @StringRes expandedTitleRes: Int,
     @StringRes collapsedTitleRes: Int

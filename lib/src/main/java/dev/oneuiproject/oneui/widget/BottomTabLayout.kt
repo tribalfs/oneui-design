@@ -47,6 +47,23 @@ import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type.SINE_IN_OUT_90
 import com.google.android.material.R as materialR
 
+/**
+ * A widget that displays a row of tabs with an optional overflow menu for additional items.
+ *
+ * It is designed to be used as a bottom navigation bar, providing quick access to different
+ * sections or actions within an application.
+ *
+ * Features:
+ * - Supports up to 4 visible tabs, with additional items accessible through an overflow menu.
+ * - Customizable appearance with attributes for minimum side margin and menu resource.
+ * - Integrates with [GridMenuDialog] for displaying overflow items in a grid layout.
+ * - Handles visibility animations (slide up/down) for a smooth user experience.
+ * - Supports badges on tabs and overflow items to indicate notifications or updates.
+ * - Persists its state, including the visibility of the grid dialog, across configuration changes.
+ *
+ * @param context The context in which the view is operating.
+ * @param attrs The attributes of the XML tag that is inflating the view.
+ */
 @SuppressLint("NewApi", "RestrictedApi")
 class BottomTabLayout(
     context: Context,

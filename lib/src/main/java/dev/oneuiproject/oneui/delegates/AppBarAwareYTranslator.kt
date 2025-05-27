@@ -10,14 +10,14 @@ import java.lang.ref.WeakReference
 
 /**
  * An implementation of [ViewYTranslator] designed to center a "No items" view or similar views
- * when the RecyclerView adapter is empty. This class translates the Y position
+ * to show when the RecyclerView is empty. This class translates the Y position
  * of the provided view(s) in the opposite scroll direction of the `AppBarLayout`
  * with a sensitivity of 50%.
 
  * This behavior ensures that the view remains visible and centered even as the
  * `AppBarLayout` is scrolled.
  *
- * ## Sample usage:
+ * ## Example usage:
  * ```
  * class IconsFragment : Fragment(),
  *                       ViewYTranslator by AppBarAwareYTranslator() {
@@ -118,8 +118,9 @@ interface ViewYTranslator {
     /**
      * Translates the Y position of a view with the given AppBarLayout and LifecycleOwner.
      *
-     * @param appBarLayout The AppBarLayout to translate the view with.
-     * @param lifecycleOwner The LifecycleOwner that controls the observer lifecycle.
+     * @param appBarLayout The [AppBarLayout] to translate the view with.
+     * @param lifecycleOwner The [LifecycleOwner] to be the basis of adding and removing
+     * an offset listener to the provided AppBarLayout.
      */
     fun View.translateYWithAppBar(appBarLayout: AppBarLayout, lifecycleOwner: LifecycleOwner)
 

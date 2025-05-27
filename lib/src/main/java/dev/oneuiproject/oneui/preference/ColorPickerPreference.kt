@@ -22,8 +22,21 @@ import androidx.preference.PreferenceManager
 import androidx.preference.PreferenceViewHolder
 import androidx.preference.internal.PreferenceImageView
 import dev.oneuiproject.oneui.design.R
+import androidx.core.content.edit
+import androidx.core.graphics.toColorInt
 
 
+/**
+ * A Preference that allows the user to pick a color.
+ * The color is stored as an integer.
+ *
+ * This preference will store an [Int] into the SharedPreferences.
+ *
+ * @param context The Context this preference is associated with.
+ * @param attrs The attributes of the XML tag that is inflating the preference.
+ * @param defStyleAttr An attribute in the current theme that contains a reference to a style resource
+ * that supplies default values for the view. Can be 0 to not look for defaults.
+ */
 class ColorPickerPreference @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -31,24 +44,24 @@ class ColorPickerPreference @JvmOverloads constructor(
 ) : Preference(context, attrs, defStyleAttr), Preference.OnPreferenceClickListener,
     SeslColorPickerDialog.OnColorSetListener {
 
-    private var mColorPickerDialog: SeslColorPickerDialog? = null
+    private var colorPickerDialog: SeslColorPickerDialog? = null
 
     @SuppressLint("RestrictedApi")
-    private var mPreview: PreferenceImageView? = null
-    private var mValue = Color.BLACK
-    private val mUsedColors = ArrayList<Int>(5)
-    private var mLastClickTime: Long = 0
-    private var mAlphaSliderEnabled = false
-    private var mPersistRecentColors = true
+    private var preview: PreferenceImageView? = null
+    private var _value = Color.BLACK
+    private val usedColors = ArrayList<Int>(5)
+    private var lastClickTime: Long = 0
+    private var alphaSliderEnabled = false
+    private var persistRecentColors = true
 
     init {
         widgetLayoutResource = R.layout.oui_des_preference_color_picker_widget
         onPreferenceClickListener = this
 
         context.withStyledAttributes(attrs, R.styleable.ColorPickerPreference) {
-            mAlphaSliderEnabled =
+            alphaSliderEnabled =
                 getBoolean(R.styleable.ColorPickerPreference_showAlphaSlider, false)
-            mPersistRecentColors =
+            persistRecentColors =
                 getBoolean(R.styleable.ColorPickerPreference_persistRecentColors, true)
         }
     }
@@ -63,8 +76,8 @@ class ColorPickerPreference @JvmOverloads constructor(
     }
 
     override fun onSetInitialValue(defaultValue: Any?) {
-        onColorSet(getPersistedInt(defaultValue as? Int ?: mValue))
-        if (mPersistRecentColors) {
+        onColorSet(getPersistedInt(defaultValue as? Int ?: _value))
+        if (persistRecentColors) {
             loadRecentColors()
         }
     }
@@ -72,16 +85,16 @@ class ColorPickerPreference @JvmOverloads constructor(
     @SuppressLint("RestrictedApi")
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
-        mPreview = holder.findViewById(R.id.imageview_widget) as PreferenceImageView
+        preview = holder.findViewById(R.id.imageview_widget) as PreferenceImageView
         setPreviewColor()
     }
 
     private fun setPreviewColor() {
-        if (mPreview == null) return
-        mPreview!!.background =
+        if (preview == null) return
+        preview!!.background =
             (ContextCompat.getDrawable(context, R.drawable.oui_des_preference_color_picker_preview)!!
                 .mutate() as GradientDrawable)
-                .apply { setColor(mValue) }
+                .apply { setColor(_value) }
     }
 
     override fun onColorSet(color: Int) {
@@ -92,7 +105,7 @@ class ColorPickerPreference @JvmOverloads constructor(
         if (isPersistent) {
             persistInt(color)
         }
-        mValue = color
+        _value = color
 
         addRecentColor(color)
         setPreviewColor()
@@ -100,48 +113,48 @@ class ColorPickerPreference @JvmOverloads constructor(
 
     override fun onPreferenceClick(preference: Preference): Boolean {
         val uptimeMillis = SystemClock.uptimeMillis()
-        if (uptimeMillis - mLastClickTime > 600L) {
+        if (uptimeMillis - lastClickTime > 600L) {
             showDialog(null)
         }
-        mLastClickTime = uptimeMillis
+        lastClickTime = uptimeMillis
         return false
     }
 
     private fun showDialog(state: Bundle?) {
-        mColorPickerDialog = SeslColorPickerDialog(
-            context, this, mValue, recentColors, mAlphaSliderEnabled
+        colorPickerDialog = SeslColorPickerDialog(
+            context, this, _value, recentColors, alphaSliderEnabled
         ).apply {
-            setNewColor(mValue)
-            setTransparencyControlEnabled(mAlphaSliderEnabled)
+            setNewColor(_value)
+            setTransparencyControlEnabled(alphaSliderEnabled)
             if (state != null) onRestoreInstanceState(state)
             show()
         }
     }
 
     fun setAlphaSliderEnabled(enable: Boolean) {
-        mAlphaSliderEnabled = enable
+        alphaSliderEnabled = enable
     }
 
     private fun addRecentColor(color: Int) {
-        mUsedColors.removeAll { it == color }
-        if (mUsedColors.size > 5) {
-            mUsedColors.removeAt(0)
+        usedColors.removeAll { it == color }
+        if (usedColors.size > 5) {
+            usedColors.removeAt(0)
         }
-        mUsedColors.add(color)
+        usedColors.add(color)
     }
 
     private val recentColors: IntArray
-        get() = ArrayList(mUsedColors).apply { reverse() }.toIntArray()
+        get() = ArrayList(usedColors).apply { reverse() }.toIntArray()
 
-    val value: Int get() = mValue
+    val value: Int get() = _value
 
     override fun onSaveInstanceState(): Parcelable? {
         val superState = super.onSaveInstanceState()
-        if (mColorPickerDialog == null || !mColorPickerDialog!!.isShowing) {
+        if (colorPickerDialog == null || !colorPickerDialog!!.isShowing) {
             return superState
         }
         val myState = SavedState(superState)
-        myState.dialogBundle = mColorPickerDialog!!.onSaveInstanceState()
+        myState.dialogBundle = colorPickerDialog!!.onSaveInstanceState()
         return myState
     }
 
@@ -195,7 +208,7 @@ class ColorPickerPreference @JvmOverloads constructor(
 
         if (recentColorsString.isEmpty()) return
 
-        mUsedColors.apply {
+        usedColors.apply {
             clear()
             addAll(recentColorsString.split(":").map { convertToColorInt(it) })
         }
@@ -203,7 +216,7 @@ class ColorPickerPreference @JvmOverloads constructor(
 
     override fun onDetached() {
         super.onDetached()
-        if (mPersistRecentColors) {
+        if (persistRecentColors) {
             saveRecentColors()
         }
     }
@@ -211,19 +224,19 @@ class ColorPickerPreference @JvmOverloads constructor(
     @OptIn(ExperimentalStdlibApi::class)
     private fun saveRecentColors() {
         //Saving it as String instead of String set to preserve its order
-        val recentColorsStringSet = mUsedColors.joinToString(":") { "#${it.toHexString()}" }
+        val recentColorsStringSet = usedColors.joinToString(":") { "#${it.toHexString()}" }
         preferenceDataStore
             ?.putString(KEY_RECENT_COLORS, recentColorsStringSet)
-            ?: PreferenceManager.getDefaultSharedPreferences(context)!!.edit()
-                .putString(KEY_RECENT_COLORS, recentColorsStringSet).apply()
+            ?: PreferenceManager.getDefaultSharedPreferences(context)!!.edit {
+                putString(KEY_RECENT_COLORS, recentColorsStringSet)
+            }
     }
 
     companion object {
         private const val KEY_RECENT_COLORS: String = "oneui:color_picker:recent5_colors"
 
-        @Throws(IllegalArgumentException::class)
         @ColorInt
         fun convertToColorInt(argb: String) =
-            Color.parseColor(if (argb.startsWith("#")) argb else "#$argb")
+            (if (argb.startsWith("#")) argb else "#$argb").toColorInt()
     }
 }

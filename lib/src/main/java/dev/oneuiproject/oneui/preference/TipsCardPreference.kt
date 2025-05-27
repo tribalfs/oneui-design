@@ -14,6 +14,21 @@ import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
 import dev.oneuiproject.oneui.widget.TipsCard
 
+/**
+ * A Preference that displays a TipsCard.
+ *
+ * This preference is used to display a TipsCard typically at the upper portion of a PreferenceScreen.
+ * It allows setting a title, summary, and a cancel button with a custom listener.
+ * Additionally, it provides functionality to add custom buttons to the bottom bar of the TipsCard.
+ *
+ * @param context The Context this preference is associated with.
+ * @param attrs The attributes of the XML tag that is inflating the preference.
+ * @param defStyleAttr An attribute in the current theme that contains a reference to a style resource
+ *                     that supplies default values for the view. Can be 0 to not look for defaults.
+ * @param defStyleRes A resource identifier of a style resource that supplies default values for the view,
+ *                    used only if defStyleAttr is 0 or can not be found in the theme. Can be 0
+ *                    to not look for defaults.
+ */
 class TipsCardPreference @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

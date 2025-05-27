@@ -26,9 +26,37 @@ import java.util.Hashtable
 import androidx.core.graphics.toColorInt
 import androidx.core.graphics.createBitmap
 
-class QREncoder(private val mContext: Context, private val mContent: String) {
+/**
+ * A utility class for generating QR codes with various customization options.
+ *
+ * This class allows you to:
+ * - Set the content (data) to be encoded in the QR code.
+ * - Customize the size of the QR code.
+ * - Add an icon to the center of the QR code.
+ * - Set the foreground and background colors.
+ * - Apply a rounded frame around the QR code.
+ * - Tint the anchor points and border of the QR code.
+ *
+ * Example usage:
+ * ```kotlin
+ * val qrEncoder = QREncoder(context, "https://example.com")
+ *     .setSize(300)
+ *     .setIcon(R.drawable.my_icon)
+ *     .setBackgroundColor(Color.WHITE)
+ *     .setForegroundColor(Color.BLUE, true, true)
+ *     .roundedFrame(true)
+ * val qrBitmap = qrEncoder.generate()
+ *
+ * myImageView.setImageBitmap(qrBitmap)
+ * ```
+ *
+ * @property context The Android [Context] used for resource access and density calculations.
+ * @property content The string content to be encoded in the QR code.
+ * @see dev.oneuiproject.oneui.widget.QRImageView
+ */
+class QREncoder(private val context: Context, private val content: String) {
 
-    private val dpToPx = mContext.dpToPxFactor
+    private val dpToPx = context.dpToPxFactor
 
     private var qrSize = (200 * dpToPx).toInt()
     private var qrIcon: Drawable? = null
@@ -99,7 +127,7 @@ class QREncoder(private val mContext: Context, private val mContent: String) {
         try {
             val hashtable = Hashtable<EncodeHintType, String>()
             hashtable[EncodeHintType.CHARACTER_SET] = "utf-8"
-            val matrix = Encoder.encode(mContent, ErrorCorrectionLevel.H, hashtable).matrix
+            val matrix = Encoder.encode(content, ErrorCorrectionLevel.H, hashtable).matrix
             val qrcode = createBitmap(qrSize, qrSize)
             qrcode.eraseColor(qrBGColor)
 
@@ -238,7 +266,7 @@ class QREncoder(private val mContext: Context, private val mContent: String) {
         }
 
     private fun getDrawable(@DrawableRes id: Int): Drawable? {
-        return AppCompatResources.getDrawable(mContext, id)
+        return AppCompatResources.getDrawable(context, id)
     }
 
     private fun getBitmap(drawable: Drawable): Bitmap {

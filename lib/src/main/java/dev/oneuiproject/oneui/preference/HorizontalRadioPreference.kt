@@ -29,6 +29,18 @@ import dev.oneuiproject.oneui.utils.getRegularFont
 import dev.oneuiproject.oneui.utils.getSemiBoldFont
 import kotlin.math.roundToInt
 
+/**
+ * A Preference that allows the user to choose an option from a list of up to 3 items
+ * displayed horizontally. Each item can optionally have an icon.
+ *
+ * This preference will store a string into the SharedPreferences.
+ *
+ * @attr ref R.styleable#HorizontalRadioPreference_viewType
+ * @attr ref R.styleable#HorizontalRadioPreference_entries
+ * @attr ref R.styleable#HorizontalRadioPreference_entryValues
+ * @attr ref R.styleable#HorizontalRadioPreference_entriesImage
+ * @attr ref R.styleable#HorizontalRadioPreference_entriesSubtitle
+ */
 class HorizontalRadioPreference(context: Context, attrs: AttributeSet?) :
     Preference(context, attrs) {
 

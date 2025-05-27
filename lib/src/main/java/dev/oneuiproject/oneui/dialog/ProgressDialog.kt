@@ -31,6 +31,21 @@ import java.lang.ref.WeakReference
 import java.text.NumberFormat
 import androidx.appcompat.R as appcompatR
 
+/**
+ * A dialog showing a progress indicator and an optional text message or view.
+ * Only a text message or a view can be used at the same time.
+ *
+ * The dialog can be made cancelable on back key press.
+ *
+ * The progress range is 0..10000.
+ *
+ * This version also supports the OneUI Design progress dialogs.
+ *
+ * @param context The context the dialog is to run in.
+ * @param theme (Optional) Theme resource to use
+ *
+ * @see AlertDialog
+ */
 class ProgressDialog @JvmOverloads constructor(
     context: Context,
     @StyleRes theme: Int = 0
@@ -295,6 +310,11 @@ class ProgressDialog @JvmOverloads constructor(
             }
         }
 
+    /**
+     * Sets the title text for this dialog's window.
+     *
+     * @param title the title text for the dialog's window
+     */
     override fun setTitle(title: CharSequence?) {
         super.setTitle(title)
         if (contentView != null) {
@@ -309,6 +329,11 @@ class ProgressDialog @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Sets the message to be displayed in the progress dialog.
+     *
+     * @param message the message to be displayed
+     */
     override fun setMessage(message: CharSequence) {
         if (progressBar != null) {
             when (progressStyle) {

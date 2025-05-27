@@ -26,12 +26,7 @@ import dev.oneuiproject.oneui.utils.ItemDecorRule.SELECTED
  * using [ItemDecorRule]s. You can specify whether decorations should be applied to all items, only selected viewholder or view types,
  * or not at all.
  *
- * @constructor Creates a new [SemItemDecoration] with the specified rules.
- * @param context The context used to resolve theme attributes and resources for drawing dividers and sub-headers.
- * @param dividerRule The [ItemDecorRule] that determines which items receive a divider. Defaults to [ItemDecorRule.ALL].
- * @param subHeaderRule The [ItemDecorRule] that determines which items receive a rounded sub-header background. Defaults to [ItemDecorRule.ALL].
- *
- * Example usage:
+ * ## Example usage:
  * ```
  * recyclerView.addItemDecoration(
  *     SemItemDecoration(
@@ -41,6 +36,11 @@ import dev.oneuiproject.oneui.utils.ItemDecorRule.SELECTED
  *     )
  * )
  * ```
+ *
+ * @constructor Creates a new [SemItemDecoration] with the specified rules.
+ * @param context The context used to resolve theme attributes and resources for drawing dividers and sub-headers.
+ * @param dividerRule The [ItemDecorRule] that determines which items receive a divider. Defaults to [ItemDecorRule.ALL].
+ * @param subHeaderRule The [ItemDecorRule] that determines which items receive a rounded sub-header background. Defaults to [ItemDecorRule.ALL].
  */
 @SuppressLint("PrivateResource", "ResourceType")
 open class SemItemDecoration @JvmOverloads constructor(
@@ -214,7 +214,14 @@ open class SemItemDecoration @JvmOverloads constructor(
 }
 
 /**
- * Choose either [ALL], [SELECTED], [NONE]
+ * Defines rules for applying item decorations in a RecyclerView.
+ * This sealed class allows specifying whether a decoration (like a divider or sub-header background)
+ * should be applied to all items, only to selected items based on a condition, or not at all.
+ *
+ * Choose one of the following implementations:
+ * - [ALL]: Apply the decoration to all view holders.
+ * - [SELECTED]: Apply the decoration only to specific view holders that satisfy the provided lambda.
+ * - [NONE]: Do not apply the decoration.
  */
 sealed class ItemDecorRule{
     /**
@@ -234,8 +241,11 @@ sealed class ItemDecorRule{
 }
 
 /**
- * @param start Start inset in pixels.
- * @param end End inset in pixels.
+ * Represents the insets for a divider in a RecyclerView.
+ * This class is used to specify the start and end margins for a divider line.
+ *
+ * @property start The inset from the start edge of the RecyclerView item in pixels.
+ * @property end The inset from the end edge of the RecyclerView item in pixels.
  */
 data class DividerInsets(
 

@@ -51,6 +51,25 @@ import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isTabletStyle
 import dev.oneuiproject.oneui.utils.TypedValueUtils
 
 
+/**
+ * A dialog that displays a grid of menu items.
+ * It can be used to display a list of actions or options to the user in a visually appealing way.
+ * Each action item can have an icon, a title, and a tooltip and supports showing a badge.
+ *
+ * ## Example usage:
+ * ```
+ * val dialog = GridMenuDialog(context)
+ * dialog.inflateMenu(R.menu.my_menu)
+ * dialog.setOnItemClickListener { item ->
+ *     // Handle item click
+ *     true // Return true to dismiss the dialog
+ * }
+ * dialog.show()
+ * ```
+ *
+ * @param context The context in which the dialog should be displayed.
+ * @param theme (Optional) The custom theme to use for the dialog.
+ */
 class GridMenuDialog @JvmOverloads constructor(
     context: Context,
     @StyleRes theme: Int = R.style.MoreMenuDialogStyle
@@ -64,12 +83,21 @@ class GridMenuDialog @JvmOverloads constructor(
     private val adapter: GridListAdapter = GridListAdapter()
     private var currentAnchorView: View? = null
 
+    /**
+     * Interface definition for a callback to be invoked when an item in this
+     * [GridMenuDialog] has been clicked.
+     */
     fun interface OnItemClickListener {
         fun onClick(item: GridItem): Boolean
     }
 
     private var onClickMenuItem: OnItemClickListener? = null
 
+    /**
+     * Sets a listener to be invoked when an item in this dialog is clicked.
+     *
+     * @param listener The listener that will be invoked.
+     */
     fun setOnItemClickListener(listener: OnItemClickListener?) {
         onClickMenuItem = listener
     }
@@ -101,6 +129,13 @@ class GridMenuDialog @JvmOverloads constructor(
         updateDialog()
     }
 
+    /**
+     * Updates the dialog's layout and appearance.
+     *
+     * This function recalculates the number of columns in the grid,
+     * initializes or updates the RecyclerView for displaying grid items,
+     * and adjusts the dialog's maximum height.
+     */
     fun updateDialog(){
         spanCount = calculateColumnCount().coerceAtMost(gridItems.size)
         gridListView = contentView.findViewById<RecyclerView>(R.id.grid_menu_view).apply {
@@ -195,7 +230,7 @@ class GridMenuDialog @JvmOverloads constructor(
         show()
     }
 
-    private val mOnLayoutChangeListener = View.OnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+    private val onLayoutChangeListener = View.OnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
         currentAnchorView?.apply {
             removeCallbacks(updateDialogWidthAndPositionRunnable)
             hide()
@@ -203,10 +238,16 @@ class GridMenuDialog @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Sets the anchor view for the dialog.
+     * Typically, the dialog will be positioned at the center and above this view.
+     *
+     * @param anchor The view to anchor the dialog to.
+     */
     fun setAnchor(anchor: View) {
-        currentAnchorView?.removeOnLayoutChangeListener(mOnLayoutChangeListener)
+        currentAnchorView?.removeOnLayoutChangeListener(onLayoutChangeListener)
         currentAnchorView = anchor
-        anchor.addOnLayoutChangeListener(mOnLayoutChangeListener)
+        anchor.addOnLayoutChangeListener(onLayoutChangeListener)
         updateDialogWidthAndPosition()
     }
 
@@ -223,7 +264,7 @@ class GridMenuDialog @JvmOverloads constructor(
     }
 
     override fun dismiss() {
-        currentAnchorView?.removeOnLayoutChangeListener(mOnLayoutChangeListener)
+        currentAnchorView?.removeOnLayoutChangeListener(onLayoutChangeListener)
         currentAnchorView = null
         super.dismiss()
     }
@@ -273,6 +314,11 @@ class GridMenuDialog @JvmOverloads constructor(
         return (if (isPhoneLandscape) SPAN_COUNT_LANDSCAPE else SPAN_COUNT).coerceAtMost(maxColumns)
     }
 
+    /**
+     * Add a custom view to the top of the dialog.
+     *
+     * @param view The view to add.
+     */
     fun addTopCustomView(view: View) = contentView.addView(view, 0)
 
     private fun resetContentPadding() {
@@ -288,6 +334,12 @@ class GridMenuDialog @JvmOverloads constructor(
         )
     }
 
+    /**
+     * Inflates a menu resource into this dialog.
+     * This will clear the existing items and add all items from the provided menu resource.
+     *
+     * @param menuRes The menu resource to inflate.
+     */
     @SuppressLint("RestrictedApi")
     fun inflateMenu(@MenuRes menuRes: Int) {
         val context = context
@@ -303,22 +355,46 @@ class GridMenuDialog @JvmOverloads constructor(
         notifyDataSetChanged()
     }
 
+    /**
+     * Updates the list of items displayed in the grid menu.
+     * This will clear the existing items and add all items from the provided list.
+     * The adapter is then notified of the data set change to refresh the UI.
+     *
+     * @param gridItems The new list of [GridItem]s to display.
+     */
     fun updateItems(gridItems: List<GridItem>) {
         this.gridItems.clear()
         this.gridItems.addAll(gridItems)
         notifyDataSetChanged()
     }
 
+    /**
+     * Adds a [GridItem] to the end of the list of items in the dialog.
+     *
+     * @param gridItem The item to add.
+     */
     fun addItem(gridItem: GridItem) {
         gridItems.add(gridItem)
         notifyDataSetChanged()
     }
 
+    /**
+     * Adds a [GridItem] to the list of items at the specified [index].
+     *
+     * @param index The index at which to add the item.
+     * @param gridItem The item to add.
+     */
     fun addItem(index: Int, gridItem: GridItem) {
         gridItems.add(index, gridItem)
         notifyDataSetChanged()
     }
 
+    /**
+     * Finds a [GridItem] by its ID.
+     *
+     * @param itemId The ID of the item to find.
+     * @return The [GridItem] if found, or null if no item with the given ID exists.
+     */
     fun findItem(itemId: Int): GridItem? {
         return gridItems.find { it.itemId == itemId }.also {
             if (it == null) {
@@ -327,6 +403,13 @@ class GridMenuDialog @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Removes the item at the specified position in this list.
+     * Shifts any subsequent elements to the left (subtracts one from their indices).
+     *
+     * @param index the index of the element to remove.
+     * @throws IndexOutOfBoundsException if the index is out of bounds (index < 0 || index >= size).
+     */
     fun removeItem(index: Int) {
         gridItems.removeAt(index)
         notifyDataSetChanged()
@@ -342,6 +425,12 @@ class GridMenuDialog @JvmOverloads constructor(
         )
     }
 
+    /**
+     * Sets the enabled state of an item in the grid menu.
+     *
+     * @param itemId The ID of the item to enable or disable.
+     * @param enabled True to enable the item, false to disable it.
+     */
     fun setEnableItem(itemId: Int, enabled: Boolean) {
         gridItems.findWithIndex({ it.itemId == itemId }) { index, item ->
             gridItems[index] = item.copy(isEnabled = enabled)
@@ -355,6 +444,12 @@ class GridMenuDialog @JvmOverloads constructor(
     @RestrictTo(RestrictTo.Scope.LIBRARY)
     internal fun isShowingBadge() = gridItems.count { it.badge != Badge.NONE } > 0
 
+    /**
+     * Sets the badge for a specific grid item.
+     *
+     * @param itemId The ID of the item to set the badge for.
+     * @param badge The badge to set.
+     */
     fun setBadge(itemId: Int, badge: Badge) {
         gridItems.findWithIndex({ it.itemId == itemId }) { index, item ->
             gridItems[index] = item.copy(badge = badge)
@@ -415,6 +510,17 @@ class GridMenuDialog @JvmOverloads constructor(
         fun setTooltipText(tooltipText: CharSequence?) = itemView.semSetToolTipText(tooltipText)
     }
 
+    /**
+     * Represents an item in the grid menu.
+     *
+     * @property itemId The unique identifier for the item.
+     * @property title The title of the item.
+     * @property icon The icon for the item.
+     * @property tooltipText Optional tooltip text for the item.
+     * @property isEnabled Whether the item is enabled and interactive. Defaults to `true`.
+     * @property isVisible Whether the item is visible in the grid. Defaults to `true`.
+     * @property badge The badge to display on the item. Defaults to [Badge.NONE].
+     */
     data class GridItem(
         @JvmField
         val itemId: Int,
@@ -424,15 +530,18 @@ class GridMenuDialog @JvmOverloads constructor(
         val icon: Drawable?,
         @JvmField
         val tooltipText: CharSequence? = null,
+        @JvmField
         val isEnabled: Boolean = true,
+        @JvmField
         val isVisible: Boolean = true,
+        @JvmField
         val badge: Badge = Badge.NONE
     )
 
-    companion object {
-        private const val TAG = "GridMenuDialog"
-        private const val SPAN_COUNT = 4
-        private const val SPAN_COUNT_LANDSCAPE = 5
+    private companion object {
+        const val TAG = "GridMenuDialog"
+        const val SPAN_COUNT = 4
+        const val SPAN_COUNT_LANDSCAPE = 5
     }
 }
 

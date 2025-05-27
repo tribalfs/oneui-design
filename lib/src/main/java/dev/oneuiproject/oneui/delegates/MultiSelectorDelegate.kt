@@ -16,15 +16,9 @@ import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type
 
 /**
- * Delegate for multi-selection in OneUI style.
+ * Delegate for multi-selection for use with the [RecyclerView.Adapter].
  *
- * @param T Type of selectionId to be used. This should be set to `Long` when using [RecyclerView.Adapter.getItemId] as the selection id.  See [configure].
- *
- * @param isSelectable (Optional) lambda to be checked if not all [RecyclerView.ViewHolder] view types are selectable.
- * Required for adapter with multiple view types where not all view types are selectable. This returns `true` to all by default.
- *
- *
- * Example usage:
+ * ## Example usage:
  *```
  * class IconsAdapter (
  *    private val context: Context
@@ -70,6 +64,10 @@ import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type
  *   //rest of the fragment's implementations
  * }
  * ```
+ * @param T Type of selectionId to be used. This should be set to `Long` when using [RecyclerView.Adapter.getItemId] as the selection id.  See [configure].
+ *
+ * @param isSelectable (Optional) lambda to be checked if not all [RecyclerView.ViewHolder] view types are selectable.
+ * Required for adapter with multiple view types where not all view types are selectable. This returns `true` to all by default.
  */
 class MultiSelectorDelegate<T>(
     private val isSelectable: (viewType: Int) -> Boolean = { true },
@@ -300,11 +298,20 @@ class MultiSelectorDelegate<T>(
         )
     }
 
-    companion object{
-        private const val TAG = "MultiSelectorDelegate"
+    private companion object{
+        const val TAG = "MultiSelectorDelegate"
     }
 }
 
+/**
+ * Interface for implementing multi-selection in a [RecyclerView.Adapter].
+ *
+ * This interface provides methods for configuring multi-selection, managing the selection state,
+ * and interacting with the selection mode.
+ *
+ * @param T The type of the selection ID. This should typically be a stable identifier for your items,
+ *          such as `Long` when using [RecyclerView.Adapter.getItemId].
+ */
 interface MultiSelector<T> {
     /**
      * Configure the multi selector.
@@ -323,17 +330,19 @@ interface MultiSelector<T> {
     )
 
     /**
-     * Set the current  list of selectable stable Ids for items submitted to the adapter.
+     * Set the current list of selectable Ids for items submitted to the adapter.
      * Call this everytime a new list is submitted to the adapter.
      */
     fun updateSelectableIds(selectableIds: List<T>)
 
     /**
-     * Invoke this everytime [ToolbarLayout.startActionMode][dev.oneuiproject.oneui.layout.ToolbarLayout.startActionMode] or
-     * [ToolbarLayout.endActionMode][dev.oneuiproject.oneui.layout.ToolbarLayout.endActionMode] is invoked.
+     * Use to notify the adapter of the action/selection mode state.
+     * This will trigger the adapter to rebind its views, using the `selectionPayload`, if provided.
      *
-     * This automatically notifies the adapter, using the `selectionPayload` if provided, for it to rebind its views.
-     * This also updates `isActionMode` property value.
+     * This also updates this delegate's `isActionMode` property value.
+     *
+     * Typically, this should be invoked on [ToolbarLayout.startActionMode][dev.oneuiproject.oneui.layout.ToolbarLayout.startActionMode] and
+     * [ToolbarLayout.endActionMode][dev.oneuiproject.oneui.layout.ToolbarLayout.endActionMode].
      *
      * @param isActionMode Whether action mode is turned on `true` or not `false`.
      * @param initialSelectedIds (Optional) Array of selection ids of initially selected items if [isActionMode] is true
@@ -341,31 +350,43 @@ interface MultiSelector<T> {
     fun onToggleActionMode(isActionMode: Boolean, initialSelectedIds: Array<T>? = null)
 
     /**
-     * Invoke this to toggles item selected state - selects if unselected, unselects if selected.
+     * Invoke this to toggle an item's selected state - selects if unselected, unselects if selected.
+     *
      * @param selectionId Selection Id of the item selected/unselected
      * @param position Adapter position of the item selected/unselected
      */
     fun onToggleItem(selectionId: T, position: Int)
 
     /**
+     * Invoke this to toggle all items' selected state - selects if unselected, unselects if selected.
      *
+     * @param isSelectAll Whether to select all items `true` or not `false`.
      */
     fun onToggleSelectAll(isSelectAll: Boolean)
 
+    /**
+     * Check if an item is selected.
+     *
+     * @param selectionId Selection Id of the item to check
+     */
     fun isSelected(selectionId: T): Boolean
 
+    /** Get the current list of selected Ids. */
     fun getSelectedIds(): ScatterSet<T>
 
-    /**
-     * This property is set by [onToggleActionMode]
-     */
+    /** This property is set by [onToggleActionMode] */
     val isActionMode: Boolean
 }
 
 /**
- * @param totalSelected Number of selected items.
- * @param isChecked Set to true if all visible items are selected. Otherwise, false. Set to `null` to keep the existing state.
- * @param isEnabled (Optional) Set to enable/disable all selector button. Is set to `true` by default.
+ * Model to represent the state of an "All" selector button for an action/selection mode.
+ *
+ * @property totalSelected The total number of items currently selected.
+ * @property isChecked Indicates whether the "select all" checkbox should be checked.
+ * Set to `true` if all visible items are selected. Set to `false` if not all visible items are selected.
+ * Set to `null` if the state of the checkbox should remain unchanged.
+ * @property isEnabled (Optional) Determines if the "select all" button is enabled.
+ * Defaults to `true`. Set to `false` to disable the button.
  */
 data class AllSelectorState(
     @JvmField

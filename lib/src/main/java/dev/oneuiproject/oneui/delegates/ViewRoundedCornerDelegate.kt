@@ -11,6 +11,51 @@ import androidx.core.content.withStyledAttributes
 import androidx.core.graphics.Insets
 import dev.oneuiproject.oneui.design.R
 
+/**
+ * Delegate class to implement rounded corners for a view.
+ *
+ * This class handles the initialization of rounded corner attributes from XML and provides
+ * a method to draw the rounded corners on a canvas. It relies on [SeslRoundedCorner]
+ * for the actual drawing logic.
+ *
+ * It implements the [ViewRoundedCorner] interface, allowing views to delegate
+ * rounded corner functionality to this class.
+ *
+ * ## Example usage:
+ * ```
+ * open class RoundedFrameLayout @JvmOverloads constructor(
+ *     context: Context,
+ *     attrs: AttributeSet? = null,
+ *     defStyleAttr: Int = 0,
+ *     defStyleRes: Int = 0
+ * ) : FrameLayout(context, attrs, defStyleAttr, defStyleRes),
+ *     ViewRoundedCorner by ViewRoundedCornerDelegate(context, attrs, defStyleAttr, defStyleRes) {
+ *
+ *     override fun dispatchDraw(canvas: Canvas) {
+ *         if (fillHorizontalPadding) {
+ *             if (paddingStart > 0 || paddingEnd > 0) {
+ *                 edgeInsets = Insets.of(paddingStart, edgeInsets.top, paddingEnd, edgeInsets.bottom)
+ *             }
+ *         }
+ *         if (drawOverEdge) {
+ *             super.dispatchDraw(canvas)
+ *             drawRoundedCorners(canvas)
+ *         }else{
+ *             drawRoundedCorners(canvas)
+ *             super.dispatchDraw(canvas)
+ *         }
+ *     }
+ * }
+ * ```
+ *
+ * @param context The Context the view is running in, through which it can access the current theme, resources, etc.
+ * @param attrs The attributes of the XML tag that is inflating the view.
+ * @param defStyleAttr An attribute in the current theme that contains a reference to a style resource
+ *                     that supplies default values for the view. Can be 0 to not look for defaults.
+ * @param defStyleRes A resource identifier of a style resource that supplies default values for the view,
+ *                    used only if defStyleAttr is 0 or can not be found in the theme. Can be 0 to not
+ *                    look for defaults.
+ */
 class ViewRoundedCornerDelegate(
     context: Context,
     attrs: AttributeSet?,

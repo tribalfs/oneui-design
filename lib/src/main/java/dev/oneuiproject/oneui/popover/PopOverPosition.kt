@@ -1,5 +1,10 @@
 package dev.oneuiproject.oneui.popover
 
+/**
+ * Represents the possible positions of a PopOver window.
+ * @see dev.oneuiproject.oneui.ktx.startPopOverActivityForResult
+ * @see dev.oneuiproject.oneui.ktx.startPopOverActivity
+ */
 enum class PopOverPosition(val flag: Int) {
     @JvmField
     CENTER(68),
