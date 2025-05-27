@@ -108,7 +108,7 @@
   <div class="breadcrumbs"><a href="../../../index.html">oneui-design</a><span class="delimiter">/</span><a href="../index.html">dev.oneuiproject.oneui.delegates</a><span class="delimiter">/</span><span class="current">AppBarAwareYTranslator</span></div>
   <div class="cover ">
     <h1 class="cover"><span>App</span><wbr></wbr><span>Bar</span><wbr></wbr><span>Aware</span><wbr></wbr><span><span>YTranslator</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">AppBarAwareYTranslator</a> : <a href="../-view-y-translator/index.html">ViewYTranslator</a>, <a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/DefaultLifecycleObserver.html">DefaultLifecycleObserver</a></div><p class="paragraph">An implementation of <a href="../-view-y-translator/index.html">ViewYTranslator</a> designed to center a &quot;No items&quot; view or similar views when the RecyclerView adapter is empty. This class translates the Y position of the provided view(s) in the opposite scroll direction of the <code class="lang-kotlin">AppBarLayout</code> with a sensitivity of 50%.</p><p class="paragraph">This behavior ensures that the view remains visible and centered even as the <code class="lang-kotlin">AppBarLayout</code> is scrolled.</p><p class="paragraph">Sample usage:</p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">class IconsFragment : Fragment(),<br>                      ViewYTranslator by AppBarAwareYTranslator() {<br><br>   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {<br>       // Configure the translation for single view<br>       binding.noItemView.translateYWithAppBar(appBarLayout, viewLifecycleOwner)<br>       // or for multiple views<br>       translateYWithAppBar(setOf(binding.noItemView, binding.progressBar), appBarLayout, viewLifecycleOwner)<br>   }<br><br>}</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">AppBarAwareYTranslator</a> : <a href="../-view-y-translator/index.html">ViewYTranslator</a>, <span data-unresolved-link="com.google.android.material.appbar/AppBarLayout.OnOffsetChangedListener///PointingToDeclaration/">AppBarLayout.OnOffsetChangedListener</span></div><p class="paragraph">An implementation of <a href="../-view-y-translator/index.html">ViewYTranslator</a> designed to center a &quot;No items&quot; view or similar views to show when the RecyclerView is empty. This class translates the Y position of the provided view(s) in the opposite scroll direction of the <code class="lang-kotlin">AppBarLayout</code> with a sensitivity of 50%.</p><p class="paragraph">This behavior ensures that the view remains visible and centered even as the <code class="lang-kotlin">AppBarLayout</code> is scrolled.</p><h2 class="">Example usage:</h2><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">class IconsFragment : Fragment(),<br>                      ViewYTranslator by AppBarAwareYTranslator() {<br><br>   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {<br>       // Configure the translation for single view<br>       binding.noItemView.translateYWithAppBar(appBarLayout, viewLifecycleOwner)<br><br>       // or for multiple views<br>       translateYWithAppBar(setOf(binding.noItemView, binding.progressBar), appBarLayout, viewLifecycleOwner)<br>   }<br><br>}</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
@@ -132,58 +132,9 @@
           </div>
         </div>
       </div>
-      <div data-togglable="TYPE">
-        <h2 class="">Types</h2>
-        <div class="table"><a data-name="848176353%2FClasslikes%2F1925756284" anchor-label="Companion" id="848176353%2FClasslikes%2F1925756284" data-filterable-set=":oneui-design/release"></a>
-          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="-companion/index.html"><span><span>Companion</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="848176353%2FClasslikes%2F1925756284"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">object </span><a href="-companion/index.html">Companion</a></div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       <div data-togglable="FUNCTION">
         <h2 class="">Functions</h2>
-        <div class="table"><a data-name="139941652%2FFunctions%2F1925756284" anchor-label="onCreate" id="139941652%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
-          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="index.html#139941652%2FFunctions%2F1925756284"><span>on</span><wbr></wbr><span><span>Create</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="139941652%2FFunctions%2F1925756284"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#139941652%2FFunctions%2F1925756284"><span class="token function">onCreate</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">owner<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/LifecycleOwner.html">LifecycleOwner</a></span></span><span class="token punctuation">)</span></div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="1057561704%2FFunctions%2F1925756284" anchor-label="onDestroy" id="1057561704%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
-          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="index.html#1057561704%2FFunctions%2F1925756284"><span>on</span><wbr></wbr><span><span>Destroy</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1057561704%2FFunctions%2F1925756284"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#1057561704%2FFunctions%2F1925756284"><span class="token function">onDestroy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">owner<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/LifecycleOwner.html">LifecycleOwner</a></span></span><span class="token punctuation">)</span></div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="975631531%2FFunctions%2F1925756284" anchor-label="onOffsetChanged" id="975631531%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+        <div class="table"><a data-name="975631531%2FFunctions%2F1925756284" anchor-label="onOffsetChanged" id="975631531%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
           <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
@@ -194,66 +145,6 @@
               <div>
                 <div class="title">
                   <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="on-offset-changed.html"><span class="token function">onOffsetChanged</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">appBarLayout<span class="token operator">: </span><span data-unresolved-link="com.google.android.material.appbar/AppBarLayout///PointingToDeclaration/">AppBarLayout</span><span class="token punctuation">, </span></span><span class="parameter ">verticalOffset<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="187777572%2FFunctions%2F1925756284" anchor-label="onPause" id="187777572%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
-          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="index.html#187777572%2FFunctions%2F1925756284"><span>on</span><wbr></wbr><span><span>Pause</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="187777572%2FFunctions%2F1925756284"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#187777572%2FFunctions%2F1925756284"><span class="token function">onPause</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">owner<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/LifecycleOwner.html">LifecycleOwner</a></span></span><span class="token punctuation">)</span></div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="-1807945979%2FFunctions%2F1925756284" anchor-label="onResume" id="-1807945979%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
-          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="index.html#-1807945979%2FFunctions%2F1925756284"><span>on</span><wbr></wbr><span><span>Resume</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1807945979%2FFunctions%2F1925756284"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-1807945979%2FFunctions%2F1925756284"><span class="token function">onResume</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">owner<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/LifecycleOwner.html">LifecycleOwner</a></span></span><span class="token punctuation">)</span></div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="1441707833%2FFunctions%2F1925756284" anchor-label="onStart" id="1441707833%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
-          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="on-start.html"><span>on</span><wbr></wbr><span><span>Start</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1441707833%2FFunctions%2F1925756284"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="on-start.html"><span class="token function">onStart</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">owner<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/LifecycleOwner.html">LifecycleOwner</a></span></span><span class="token punctuation">)</span></div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="-1030467311%2FFunctions%2F1925756284" anchor-label="onStop" id="-1030467311%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
-          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="on-stop.html"><span>on</span><wbr></wbr><span><span>Stop</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1030467311%2FFunctions%2F1925756284"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="on-stop.html"><span class="token function">onStop</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">owner<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/LifecycleOwner.html">LifecycleOwner</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
