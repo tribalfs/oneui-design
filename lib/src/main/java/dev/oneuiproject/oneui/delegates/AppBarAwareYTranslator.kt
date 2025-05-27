@@ -3,9 +3,9 @@ package dev.oneuiproject.oneui.delegates
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import com.google.android.material.appbar.AppBarLayout
-import dev.oneuiproject.oneui.ktx.doOnAttachedStateChanged
 import java.lang.ref.WeakReference
 
 /**
@@ -17,7 +17,7 @@ import java.lang.ref.WeakReference
  * This behavior ensures that the view remains visible and centered even as the
  * `AppBarLayout` is scrolled.
  *
- * Sample usage:
+ * ## Sample usage:
  * ```
  * class IconsFragment : Fragment(),
  *                       ViewYTranslator by AppBarAwareYTranslator() {
@@ -25,6 +25,7 @@ import java.lang.ref.WeakReference
  *    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
  *        // Configure the translation for single view
  *        binding.noItemView.translateYWithAppBar(appBarLayout, viewLifecycleOwner)
+ *
  *        // or for multiple views
  *        translateYWithAppBar(setOf(binding.noItemView, binding.progressBar), appBarLayout, viewLifecycleOwner)
  *    }
@@ -32,43 +33,54 @@ import java.lang.ref.WeakReference
  * }
  * ```
  */
-class AppBarAwareYTranslator: ViewYTranslator, DefaultLifecycleObserver {
+class AppBarAwareYTranslator: ViewYTranslator, AppBarLayout.OnOffsetChangedListener  {
 
-    private lateinit var appBarLayout: AppBarLayout
-    private var translationViews: MutableSet<View>? = null
+    private var appBarLayout: AppBarLayout? = null
+    private val translationViews: MutableSet<View> = mutableSetOf()
     private var lifecycleOwnerWR: WeakReference<LifecycleOwner>? = null
+    private var isObserverAddedToLifecycle = false
+
+    private val lifecycleObserver = object: DefaultLifecycleObserver{
+        override fun onStart(owner: LifecycleOwner) {
+            appBarLayout?.addOnOffsetChangedListener(this@AppBarAwareYTranslator)
+        }
+
+        override fun onStop(owner: LifecycleOwner) {
+            appBarLayout?.removeOnOffsetChangedListener(this@AppBarAwareYTranslator)
+        }
+
+        override fun onDestroy(owner: LifecycleOwner) = clearReferences()
+    }
 
     override fun translateYWithAppBar(
         translatingViews: Set<View>,
         appBarLayout: AppBarLayout,
         lifecycleOwner: LifecycleOwner
     ) {
-        this@AppBarAwareYTranslator.appBarLayout = appBarLayout
-        if (translationViews == null){
-            translationViews = mutableSetOf()
+        // If appBarLayout changes, remove listener from the old one
+        if (this.appBarLayout != null && this.appBarLayout != appBarLayout) {
+            this.appBarLayout?.removeOnOffsetChangedListener(this)
         }
-        translationViews!!.addAll(translatingViews)
+        this.appBarLayout = appBarLayout
+        this.translationViews.addAll(translatingViews)
 
+        val currentLifecycleOwner = lifecycleOwnerWR?.get()
+        if (currentLifecycleOwner != lifecycleOwner) {
+            // Remove observer from previous lifecycle owner
+            currentLifecycleOwner?.lifecycle?.removeObserver(lifecycleObserver)
+            isObserverAddedToLifecycle = false
 
-        val currentLifeCycleOwner = lifecycleOwnerWR?.get()
-        if (currentLifeCycleOwner == lifecycleOwner) return
-
-        currentLifeCycleOwner?.lifecycle?.removeObserver(this@AppBarAwareYTranslator)
-        lifecycleOwnerWR = WeakReference(lifecycleOwner)
-
-        for (v in translationViews!!) {
-            if (v.isAttachedToWindow) {
-                lifecycleOwner.lifecycle.addObserver(this@AppBarAwareYTranslator)
+            this.lifecycleOwnerWR = WeakReference(lifecycleOwner)
+            // Add observer only once to the new lifecycle owner
+            if (!isObserverAddedToLifecycle) {
+                lifecycleOwner.lifecycle.addObserver(lifecycleObserver)
+                isObserverAddedToLifecycle = true
             }
-            v.doOnAttachedStateChanged { _, isAttached ->
-                lifecycleOwnerWR?.get()?.lifecycle?.apply {
-                    if (isAttached) {
-                        addObserver(this@AppBarAwareYTranslator)
-                    } else {
-                        removeObserver(this@AppBarAwareYTranslator)
-                    }
-                }
-            }
+        } else if (!isObserverAddedToLifecycle && lifecycleOwner.lifecycle.currentState.isAtLeast(
+                Lifecycle.State.STARTED)) {
+            // If same owner but observer wasn't added (e.g., config change and re-init)
+            lifecycleOwner.lifecycle.addObserver(lifecycleObserver)
+            isObserverAddedToLifecycle = true
         }
     }
 
@@ -78,24 +90,23 @@ class AppBarAwareYTranslator: ViewYTranslator, DefaultLifecycleObserver {
     }
 
     override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
-        for (v in translationViews!!) {
+        for (v in translationViews) {
             if (v.isVisible) {
                 v.translationY = (verticalOffset + appBarLayout.totalScrollRange) * SENSITIVITY * -1f
             }
         }
     }
 
-    override fun onStart(owner: LifecycleOwner) {
-        super.onStart(owner)
-        appBarLayout.addOnOffsetChangedListener(this)
+    private fun clearReferences() {
+        appBarLayout?.removeOnOffsetChangedListener(this)
+        appBarLayout = null
+        translationViews.clear()
+        lifecycleOwnerWR?.get()?.lifecycle?.removeObserver(lifecycleObserver)
+        lifecycleOwnerWR = null
+        isObserverAddedToLifecycle = false
     }
 
-    override fun onStop(owner: LifecycleOwner) {
-        super.onStop(owner)
-        appBarLayout.removeOnOffsetChangedListener(this)
-    }
-
-    companion object{
+    private companion object{
         private const val SENSITIVITY = 0.5f
     }
 }
@@ -103,7 +114,7 @@ class AppBarAwareYTranslator: ViewYTranslator, DefaultLifecycleObserver {
 /**
  * Interface to facilitate translating a view's Y position with an AppBarLayout.
  */
-interface ViewYTranslator: AppBarLayout.OnOffsetChangedListener{
+interface ViewYTranslator {
     /**
      * Translates the Y position of a view with the given AppBarLayout and LifecycleOwner.
      *

@@ -15,16 +15,13 @@ import java.util.Locale
  * Delegate class for implementing [SemSectionIndexer] in RecyclerView.Adapter instance
  * that accepts generic type of list items.
  *
- * @param context
- * @param labelExtractor lambda function to be invoked to get the item's label.
- * This should directly return index chars for api level <24.
- * Example usage:
+ * ## Example usage:
  *```
  * class IconsAdapter (
  *    private val context: Context
  * ) : RecyclerView.Adapter<IconsAdapter.ViewHolder>(),
  *     SemSectionIndexer<Int> by SectionIndexerDelegate(
- *           mContext,
+ *           context,
  *           labelExtractor = {iconId -> getLabel(mContext, iconId)}){
  *
  *
@@ -37,84 +34,102 @@ import java.util.Locale
  *
  *   //rest of the adapter's implementations
  * }
- *
  * ```
+ * @param context
+ * @param labelExtractor lambda function to be invoked to get the item's label.
+ * This should directly return index chars for api level <24.
  */
-class SectionIndexerDelegate<T>(private val context: Context,
-                                private val labelExtractor: (T) -> CharSequence
+class SectionIndexerDelegate<T>(
+    context: Context,
+    private val labelExtractor: (T) -> CharSequence
 ) : SemSectionIndexer<T> {
 
-    private val mSectionMap: MutableScatterMap<CharSequence?, Int> = mutableScatterMapOf()
-    private var mSections = arrayOf<CharSequence?>()
-    private lateinit var mPositionToSectionIndex: IntArray
-    private var cachedIndexes: AlphabeticIndex.ImmutableIndex<Int>? = null // Cached value
+    private val sectionMap: MutableScatterMap<String, Int> = mutableScatterMapOf()
+    private var _sections: Array<String> = emptyArray()
+    private var positionToSectionIndex: IntArray = IntArray(0)
+    private var cachedAlphabeticIndex: AlphabeticIndex.ImmutableIndex<Int>? = null
+
+    private companion object {
+        const val TAG = "SectionIndexerDelegate"
+    }
 
     override fun updateSections(list: List<T>, useAlphabeticIndex: Boolean) {
-        synchronized(mSections){
-            mSectionMap.clear()
-            val sections = mutableListOf<CharSequence>()
-            mPositionToSectionIndex = IntArray(list.size)
+        val localSectionMap = mutableScatterMapOf<String, Int>()
+        val localSectionsList = mutableListOf<String>()
+        val localPositionToSectionIndex = IntArray(list.size)
 
-            val indexFunction: (Int) -> CharSequence =
-                if (!useAlphabeticIndex || Build.VERSION.SDK_INT < 24) {
-                    { i -> labelExtractor(list[i]) }
-                } else {
-                    { i ->
-                        val label = labelExtractor(list[i])
-                        with(getIndexes()) { getBucket(getBucketIndex(label)).label }
-                    }
+        val indexFunction: (Int) -> CharSequence =
+            if (!useAlphabeticIndex || Build.VERSION.SDK_INT < 24) {
+                { i -> labelExtractor(list[i]) }
+            } else {
+                { i ->
+                    val label = labelExtractor(list[i])
+                    with(getAlphabeticIndex()) { getBucket(getBucketIndex(label)).label }
                 }
-
-            for (i in list.indices) {
-                val label = indexFunction(i)
-                if (!mSectionMap.containsKey(label)) {
-                    sections.add(label)
-                    mSectionMap[label] = i
-                }
-                mPositionToSectionIndex[i] = sections.size - 1
             }
 
-            mSections = sections.toTypedArray()
+        for (i in list.indices) {
+            val currentLabel = indexFunction(i).toString()
+            if (!localSectionMap.containsKey(currentLabel)) {
+                localSectionsList.add(currentLabel)
+                localSectionMap[currentLabel] = i
+            }
+            localPositionToSectionIndex[i] = localSectionsList.size - 1
         }
-        mSectionMap.trim()
+
+        synchronized(this) {
+            sectionMap.clear()
+            sectionMap.putAll(localSectionMap)
+            _sections = localSectionsList.toTypedArray()
+            positionToSectionIndex = localPositionToSectionIndex
+        }
+        sectionMap.trim()
     }
 
 
     @RequiresApi(Build.VERSION_CODES.N)
-    private fun getIndexes():  AlphabeticIndex.ImmutableIndex<Int> {
-        if (cachedIndexes == null) {
+    private fun getAlphabeticIndex(): AlphabeticIndex.ImmutableIndex<Int> {
+        cachedAlphabeticIndex?.let { return it }
+        synchronized(this) {
+            cachedAlphabeticIndex?.let { return it }
             val locales = AppCompatDelegate.getApplicationLocales()
-            val alphabeticIndex = AlphabeticIndex<Int>(locales[0])
-            for (i in 1 until locales.size()) {
-                alphabeticIndex.addLabels(locales[i])
-            }
-            alphabeticIndex.addLabels(Locale.ENGLISH)
+            val primaryLocale = if (!locales.isEmpty) locales[0] else Locale.getDefault()
+            val alphabeticIndexBuilder = AlphabeticIndex<Int>(primaryLocale)
 
-            cachedIndexes = alphabeticIndex.buildImmutableIndex()
+            for (i in 0 until locales.size()) {
+                locales[i]?.let { alphabeticIndexBuilder.addLabels(it) }
+            }
+            alphabeticIndexBuilder.addLabels(Locale.ENGLISH)
+            val newIndex = alphabeticIndexBuilder.buildImmutableIndex()
+            cachedAlphabeticIndex = newIndex
+            return newIndex
         }
-        return cachedIndexes!!
     }
 
     override fun getPositionForSection(sectionIndex: Int): Int {
-        return if (sectionIndex >= mSections.size) {
-            0
-        } else mSectionMap[mSections[sectionIndex]]!!
+        val currentSections = synchronized(this) { _sections }
+        return if (sectionIndex < 0 || sectionIndex >= currentSections.size) {
+            if (positionToSectionIndex.isNotEmpty()) positionToSectionIndex.size - 1 else 0
+        } else {
+            sectionMap[currentSections[sectionIndex]] ?: 0
+        }
     }
 
     override fun getSectionForPosition(position: Int): Int {
-        return if (position >= mPositionToSectionIndex.size) {
-            0
-        } else mPositionToSectionIndex[position]
+        val currentPositionToSectionIndex = synchronized(this) { positionToSectionIndex }
+        return if (position < 0 || position >= currentPositionToSectionIndex.size) {
+            if (currentPositionToSectionIndex.isNotEmpty()) currentPositionToSectionIndex.size - 1 else 0
+        } else {
+            currentPositionToSectionIndex[position]
+        }
     }
 
-    override fun getSections(): Array<CharSequence?> {
-        synchronized(mSections){
-            return mSections
-        }
+    override fun getSections(): Array<String> {
+        return synchronized(this) { _sections.copyOf() }
     }
 }
 
-interface SemSectionIndexer<T>: SectionIndexer{
+interface SemSectionIndexer<T> : SectionIndexer {
     /**
      * Updates the section indexer with a new or modified list of data items. This method should
      * be called every time the data set is updated.
