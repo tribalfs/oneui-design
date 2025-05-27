@@ -6,6 +6,9 @@ on:
 
 jobs:
   publish:
+    env:
+      GH_USERNAME: ${{ secrets.GH_USERNAME }}
+      GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -24,4 +27,4 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           BRANCH: gh-pages
-          FOLDER: build/dokka/html
+          FOLDER: lib/build/dokka/html
