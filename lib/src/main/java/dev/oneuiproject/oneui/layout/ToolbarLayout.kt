@@ -1132,7 +1132,10 @@ open class ToolbarLayout @JvmOverloads constructor(
             }
         }
 
-        animatedVisibility(_mainToolbar, GONE)
+        //Note: Using INVISIBLE, instead of GONE because
+        //to workaround the incorrect top inset issue when
+        //swapping Toolbars on landscape.
+        animatedVisibility(_mainToolbar, INVISIBLE)
         showActionModeToolbarAnimate()
         setupActionModeMenu(showCancel)
 
