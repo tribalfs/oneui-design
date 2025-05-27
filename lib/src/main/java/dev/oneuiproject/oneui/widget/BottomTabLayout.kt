@@ -184,10 +184,11 @@ class BottomTabLayout(
         val overflowItems = ArrayList<MenuItemImpl>()
 
         var tabItemsAdded = 0
-        for (i in 0 until menu.size()) {
+        val menuSize = menu.size()
+        for (i in 0 until menuSize) {
             val menuItem = menu.getItem(i) as MenuItemImpl
             if (menuItem.isVisible) {
-                if (tabItemsAdded < 3) {
+                if (tabItemsAdded < 3 || menuSize == 4) {
                     tabItems.add(menuItem)
                     tabItemsAdded++
                 }else{
