@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>dev.oneuiproject.oneui.widget</title>
+    <link href="../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../styles/style.css" rel="Stylesheet">
+<link href="../../styles/main.css" rel="Stylesheet">
+<link href="../../styles/prism.css" rel="Stylesheet">
+<link href="../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<link href="../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../ui-kit/ui-kit.min.js" defer="defer"></script>
+<script type="text/javascript" src="../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+    <div class="root">
+    <nav class="navigation theme-dark" id="navigation-wrapper">
+            <a class="library-name--link" href="../../index.html">
+                    oneui-design
+            </a>
+        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle"
+                type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+        <div class="navigation-controls">
+        <div class="filter-section filter-section_loading" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active=""
+                        data-filter=":oneui-design/release">androidJvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox"
+                        data-role="dropdown-toggle"
+                        aria-controls="platform-tags-listbox"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                        aria-label="Toggle source sets"
+                ></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
+                    <div class="dropdown--header"><span>Platform filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":oneui-design/release"
+                                       data-filter=":oneui-design/release"/>
+                                <span class="checkbox--icon"></span>
+                                androidJvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </div>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button"
+                    type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list"
+                        data-role="dropdown-listbox">
+                        <div class="dropdown--header">
+                            <span>
+                                    oneui-design
+                            </span>
+                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                            </button>
+                        </div>
+                        <div class="sidebar--inner" id="sideMenu"></div>
+                    </ul>
+                    <div class="dropdown--overlay"></div>
+                </div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="package" id="content" pageIds="oneui-design::dev.oneuiproject.oneui.widget////PointingToDeclaration//1925756284">
+  <div class="breadcrumbs"><a href="../../index.html">oneui-design</a><span class="delimiter">/</span><span class="current">dev.oneuiproject.oneui.widget</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button><button class="section-tab" data-togglable="FUNCTION,EXTENSION_FUNCTION">Functions</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="-48727538%2FClasslikes%2F1925756284" anchor-label="AdaptiveCoordinatorLayout" id="-48727538%2FClasslikes%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-adaptive-coordinator-layout/index.html"><span>Adaptive</span><wbr></wbr><span>Coordinator</span><wbr></wbr><span><span>Layout</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-48727538%2FClasslikes%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-adaptive-coordinator-layout/index.html">AdaptiveCoordinatorLayout</a> <span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a> </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">defStyleAttr<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>androidx.coordinatorlayout.R.attr.coordinatorLayoutStyle</span></span><span class="token punctuation">)</span> : <a href="https://developer.android.com/reference/kotlin/androidx/coordinatorlayout/widget/CoordinatorLayout.html">CoordinatorLayout</a></div><div class="brief "><p class="paragraph">Extension of <a href="https://developer.android.com/reference/kotlin/androidx/coordinatorlayout/widget/CoordinatorLayout.html">CoordinatorLayout</a>  which automatically hides the status bar based on the display size and orientation and dynamically updates the side margins of the specified child views.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1170713057%2FClasslikes%2F1925756284" anchor-label="AutoHideIndexScrollView" id="-1170713057%2FClasslikes%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-auto-hide-index-scroll-view/index.html"><span>Auto</span><wbr></wbr><span>Hide</span><wbr></wbr><span>Index</span><wbr></wbr><span>Scroll</span><wbr></wbr><span><span>View</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1170713057%2FClasslikes%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-auto-hide-index-scroll-view/index.html">AutoHideIndexScrollView</a> <span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a> </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span> : <span data-unresolved-link="androidx.indexscroll.widget/SeslIndexScrollView///PointingToDeclaration/">SeslIndexScrollView</span></div><div class="brief "><p class="paragraph">Extension of <span data-unresolved-link="androidx.indexscroll.widget/SeslIndexScrollView///PointingToDeclaration/">SeslIndexScrollView</span> with auto-hide feature and supports RTL</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1370942786%2FClasslikes%2F1925756284" anchor-label="BottomTabLayout" id="-1370942786%2FClasslikes%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-bottom-tab-layout/index.html"><span>Bottom</span><wbr></wbr><span>Tab</span><wbr></wbr><span><span>Layout</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1370942786%2FClasslikes%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-bottom-tab-layout/index.html">BottomTabLayout</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span> : <a href="-margins-tab-layout/index.html">MarginsTabLayout</a>, <span data-unresolved-link="com.google.android.material.tabs/TabLayout.OnTabSelectedListener///PointingToDeclaration/">TabLayout.OnTabSelectedListener</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-972752355%2FClasslikes%2F1925756284" anchor-label="BottomTipView" id="-972752355%2FClasslikes%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-bottom-tip-view/index.html"><span>Bottom</span><wbr></wbr><span>Tip</span><wbr></wbr><span><span>View</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-972752355%2FClasslikes%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-bottom-tip-view/index.html">BottomTipView</a> <span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a> </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">defStyleAttr<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter ">defStyleRes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></span></span><span class="token punctuation">)</span> : <a href="-rounded-linear-layout/index.html">RoundedLinearLayout</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1210348552%2FClasslikes%2F1925756284" anchor-label="CardItemView" id="1210348552%2FClasslikes%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-card-item-view/index.html"><span>Card</span><wbr></wbr><span>Item</span><wbr></wbr><span><span>View</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1210348552%2FClasslikes%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-card-item-view/index.html">CardItemView</a> <span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a> </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span> : <a href="https://developer.android.com/reference/kotlin/android/widget/LinearLayout.html">LinearLayout</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1272062047%2FClasslikes%2F1925756284" anchor-label="CheckableLinearLayout" id="-1272062047%2FClasslikes%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-checkable-linear-layout/index.html"><span>Checkable</span><wbr></wbr><span>Linear</span><wbr></wbr><span><span>Layout</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1272062047%2FClasslikes%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-checkable-linear-layout/index.html">CheckableLinearLayout</a> <span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a> </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">defStyleAttr<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter ">defStyleRes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></span></span><span class="token punctuation">)</span> : <a href="https://developer.android.com/reference/kotlin/android/widget/LinearLayout.html">LinearLayout</a>, <a href="https://developer.android.com/reference/kotlin/android/widget/Checkable.html">Checkable</a></div><div class="brief "><p class="paragraph">Custom LinearLayout that you can set a check state and propagates this state to its checkable children</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-731302858%2FClasslikes%2F1925756284" anchor-label="MarginsTabLayout" id="-731302858%2FClasslikes%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-margins-tab-layout/index.html"><span>Margins</span><wbr></wbr><span>Tab</span><wbr></wbr><span><span>Layout</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-731302858%2FClasslikes%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-margins-tab-layout/index.html">MarginsTabLayout</a> <span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a> </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">defStyleAttr<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>com.google.android.material.R.attr.tabStyle</span></span><span class="token punctuation">)</span> : <span data-unresolved-link="com.google.android.material.tabs/TabLayout///PointingToDeclaration/">TabLayout</span></div><div class="brief "><p class="paragraph">An extension of <span data-unresolved-link="com.google.android.material.tabs/TabLayout///PointingToDeclaration/">TabLayout</span> that dynamically adjusts its width to fit the parent by setting appropriate side margins. It ensures that the selected tab is always visible by automatically scrolling to it.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2040449851%2FClasslikes%2F1925756284" anchor-label="OnboardingTipsItemView" id="-2040449851%2FClasslikes%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-onboarding-tips-item-view/index.html"><span>Onboarding</span><wbr></wbr><span>Tips</span><wbr></wbr><span>Item</span><wbr></wbr><span><span>View</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2040449851%2FClasslikes%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-onboarding-tips-item-view/index.html">OnboardingTipsItemView</a> <span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a> </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">defStyleAttr<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter ">defStyleRes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></span></span><span class="token punctuation">)</span> : <a href="https://developer.android.com/reference/kotlin/android/widget/LinearLayout.html">LinearLayout</a></div><div class="brief "><p class="paragraph">OneUI tip item views for on-boarding screens</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1334555341%2FClasslikes%2F1925756284" anchor-label="QRImageView" id="-1334555341%2FClasslikes%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-q-r-image-view/index.html"><span>QRImage</span><wbr></wbr><span><span>View</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1334555341%2FClasslikes%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-q-r-image-view/index.html">QRImageView</a> <span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a> </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">defStyleAttr<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter ">defStyleRes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></span></span><span class="token punctuation">)</span> : <a href="https://developer.android.com/reference/kotlin/android/widget/ImageView.html">ImageView</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="382064543%2FClasslikes%2F1925756284" anchor-label="RadioItemView" id="382064543%2FClasslikes%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-radio-item-view/index.html"><span>Radio</span><wbr></wbr><span>Item</span><wbr></wbr><span><span>View</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="382064543%2FClasslikes%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-radio-item-view/index.html">RadioItemView</a> <span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a> </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">defStyleAttr<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter ">defStyleRes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></span></span><span class="token punctuation">)</span> : <a href="-checkable-linear-layout/index.html">CheckableLinearLayout</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-66642940%2FClasslikes%2F1925756284" anchor-label="RadioItemViewGroup" id="-66642940%2FClasslikes%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-radio-item-view-group/index.html"><span>Radio</span><wbr></wbr><span>Item</span><wbr></wbr><span>View</span><wbr></wbr><span><span>Group</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-66642940%2FClasslikes%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-radio-item-view-group/index.html">RadioItemViewGroup</a> <span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a> </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span> : <a href="https://developer.android.com/reference/kotlin/android/widget/LinearLayout.html">LinearLayout</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="390559850%2FClasslikes%2F1925756284" anchor-label="RelativeLink" id="390559850%2FClasslikes%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-relative-link/index.html"><span>Relative</span><wbr></wbr><span><span>Link</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="390559850%2FClasslikes%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-relative-link/index.html">RelativeLink</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>title<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-char-sequence/index.html">CharSequence</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>onClick<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.OnClickListener.html">View.OnClickListener</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="543313621%2FClasslikes%2F1925756284" anchor-label="RelativeLinksCard" id="543313621%2FClasslikes%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-relative-links-card/index.html"><span>Relative</span><wbr></wbr><span>Links</span><wbr></wbr><span><span>Card</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="543313621%2FClasslikes%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-relative-links-card/index.html">RelativeLinksCard</a> <span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a> </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">defStyleAttr<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter ">defStyleRes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></span></span><span class="token punctuation">)</span> : <a href="https://developer.android.com/reference/kotlin/android/widget/LinearLayout.html">LinearLayout</a></div><div class="brief "><p class="paragraph">Widget to display relative links which is intended to be added at the bottom of a <a href="https://developer.android.com/reference/kotlin/androidx/preference/PreferenceScreen.html">PreferenceScreen</a> or on other layouts.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="64522942%2FClasslikes%2F1925756284" anchor-label="RoundedConstraintLayout" id="64522942%2FClasslikes%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-rounded-constraint-layout/index.html"><span>Rounded</span><wbr></wbr><span>Constraint</span><wbr></wbr><span><span>Layout</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="64522942%2FClasslikes%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-rounded-constraint-layout/index.html">RoundedConstraintLayout</a> <span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a> </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">defStyleAttr<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter ">defStyleRes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></span></span><span class="token punctuation">)</span> : <a href="https://developer.android.com/reference/kotlin/androidx/constraintlayout/widget/ConstraintLayout.html">ConstraintLayout</a>, <a href="../dev.oneuiproject.oneui.delegates/-view-rounded-corner/index.html">ViewRoundedCorner</a></div><div class="brief "><p class="paragraph"><a href="https://developer.android.com/reference/kotlin/androidx/constraintlayout/widget/ConstraintLayout.html">ConstraintLayout</a>  which rounded corners can be set.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1922989190%2FClasslikes%2F1925756284" anchor-label="RoundedFrameLayout" id="1922989190%2FClasslikes%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-rounded-frame-layout/index.html"><span>Rounded</span><wbr></wbr><span>Frame</span><wbr></wbr><span><span>Layout</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1922989190%2FClasslikes%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-rounded-frame-layout/index.html">RoundedFrameLayout</a> <span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a> </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">defStyleAttr<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter ">defStyleRes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></span></span><span class="token punctuation">)</span> : <a href="https://developer.android.com/reference/kotlin/android/widget/FrameLayout.html">FrameLayout</a>, <a href="../dev.oneuiproject.oneui.delegates/-view-rounded-corner/index.html">ViewRoundedCorner</a></div><div class="brief "><p class="paragraph"><a href="https://developer.android.com/reference/kotlin/android/widget/FrameLayout.html">FrameLayout</a> which rounded corners can be set.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-782357329%2FClasslikes%2F1925756284" anchor-label="RoundedHorizontalScrollView" id="-782357329%2FClasslikes%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-rounded-horizontal-scroll-view/index.html"><span>Rounded</span><wbr></wbr><span>Horizontal</span><wbr></wbr><span>Scroll</span><wbr></wbr><span><span>View</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-782357329%2FClasslikes%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-rounded-horizontal-scroll-view/index.html">RoundedHorizontalScrollView</a> <span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a> </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">defStyleAttr<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter ">defStyleRes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></span></span><span class="token punctuation">)</span> : <a href="https://developer.android.com/reference/kotlin/android/widget/HorizontalScrollView.html">HorizontalScrollView</a>, <a href="../dev.oneuiproject.oneui.delegates/-view-rounded-corner/index.html">ViewRoundedCorner</a></div><div class="brief "><p class="paragraph"><a href="https://developer.android.com/reference/kotlin/android/widget/HorizontalScrollView.html">HorizontalScrollView</a> which rounded corners can be set.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="939135606%2FClasslikes%2F1925756284" anchor-label="RoundedLinearLayout" id="939135606%2FClasslikes%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-rounded-linear-layout/index.html"><span>Rounded</span><wbr></wbr><span>Linear</span><wbr></wbr><span><span>Layout</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="939135606%2FClasslikes%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-rounded-linear-layout/index.html">RoundedLinearLayout</a> <span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a> </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">defStyleAttr<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter ">defStyleRes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></span></span><span class="token punctuation">)</span> : <a href="https://developer.android.com/reference/kotlin/android/widget/LinearLayout.html">LinearLayout</a>, <a href="../dev.oneuiproject.oneui.delegates/-view-rounded-corner/index.html">ViewRoundedCorner</a></div><div class="brief "><p class="paragraph"><a href="https://developer.android.com/reference/kotlin/android/widget/LinearLayout.html">LinearLayout</a>  which rounded corners can be set.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2107472124%2FClasslikes%2F1925756284" anchor-label="RoundedNestedScrollView" id="2107472124%2FClasslikes%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-rounded-nested-scroll-view/index.html"><span>Rounded</span><wbr></wbr><span>Nested</span><wbr></wbr><span>Scroll</span><wbr></wbr><span><span>View</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2107472124%2FClasslikes%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-rounded-nested-scroll-view/index.html">RoundedNestedScrollView</a> <span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a> </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">defStyleAttr<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>androidx.core.R.attr.nestedScrollViewStyle</span></span><span class="token punctuation">)</span> : <a href="https://developer.android.com/reference/kotlin/androidx/core/widget/NestedScrollView.html">NestedScrollView</a>, <a href="../dev.oneuiproject.oneui.delegates/-view-rounded-corner/index.html">ViewRoundedCorner</a></div><div class="brief "><p class="paragraph"><a href="https://developer.android.com/reference/kotlin/androidx/core/widget/NestedScrollView.html">NestedScrollView</a>  which rounded corners can be set.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1048619841%2FClasslikes%2F1925756284" anchor-label="RoundedRecyclerView" id="1048619841%2FClasslikes%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-rounded-recycler-view/index.html"><span>Rounded</span><wbr></wbr><span>Recycler</span><wbr></wbr><span><span>View</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1048619841%2FClasslikes%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-rounded-recycler-view/index.html">RoundedRecyclerView</a> <span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a> </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">defStyleAttr<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></span></span><span class="token punctuation">)</span> : <a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.html">RecyclerView</a>, <a href="../dev.oneuiproject.oneui.delegates/-view-rounded-corner/index.html">ViewRoundedCorner</a></div><div class="brief "><p class="paragraph"><a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.html">RecyclerView</a>  which rounded corners can be set.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1327678225%2FClasslikes%2F1925756284" anchor-label="RoundedRelativeLayout" id="-1327678225%2FClasslikes%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-rounded-relative-layout/index.html"><span>Rounded</span><wbr></wbr><span>Relative</span><wbr></wbr><span><span>Layout</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1327678225%2FClasslikes%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-rounded-relative-layout/index.html">RoundedRelativeLayout</a> <span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a> </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">defStyleAttr<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter ">defStyleRes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></span></span><span class="token punctuation">)</span> : <a href="https://developer.android.com/reference/kotlin/android/widget/RelativeLayout.html">RelativeLayout</a>, <a href="../dev.oneuiproject.oneui.delegates/-view-rounded-corner/index.html">ViewRoundedCorner</a></div><div class="brief "><p class="paragraph"><a href="https://developer.android.com/reference/kotlin/android/widget/RelativeLayout.html">RelativeLayout</a>  which rounded corners can be set.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1121493261%2FClasslikes%2F1925756284" anchor-label="ScrollAwareFloatingActionButton" id="-1121493261%2FClasslikes%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-scroll-aware-floating-action-button/index.html"><span>Scroll</span><wbr></wbr><span>Aware</span><wbr></wbr><span>Floating</span><wbr></wbr><span>Action</span><wbr></wbr><span><span>Button</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1121493261%2FClasslikes%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-scroll-aware-floating-action-button/index.html">ScrollAwareFloatingActionButton</a> <span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a> </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span> : <span data-unresolved-link="com.google.android.material.floatingactionbutton/FloatingActionButton///PointingToDeclaration/">FloatingActionButton</span>, <a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.OnItemTouchListener.html">RecyclerView.OnItemTouchListener</a></div><div class="brief "><p class="paragraph">An extension of <span data-unresolved-link="com.google.android.material.floatingactionbutton/FloatingActionButton///PointingToDeclaration/">FloatingActionButton</span> designed for integration with <a href="../dev.oneuiproject.oneui.layout/-toolbar-layout/index.html">ToolbarLayout</a>. This specialized FAB provides functionality to automatically hide itself during scrolling events within a <a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.html">RecyclerView</a> and with <a href="-auto-hide-index-scroll-view/index.html">AutoHideIndexScrollView</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1686812893%2FClasslikes%2F1925756284" anchor-label="SeekBarPlus" id="1686812893%2FClasslikes%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-seek-bar-plus/index.html"><span>Seek</span><wbr></wbr><span>Bar</span><wbr></wbr><span><span>Plus</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1686812893%2FClasslikes%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-seek-bar-plus/index.html">SeekBarPlus</a> <span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a> </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span> : <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2117761717%2FClasslikes%2F1925756284" anchor-label="SelectableLinearLayout" id="-2117761717%2FClasslikes%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-selectable-linear-layout/index.html"><span>Selectable</span><wbr></wbr><span>Linear</span><wbr></wbr><span><span>Layout</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2117761717%2FClasslikes%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-selectable-linear-layout/index.html">SelectableLinearLayout</a> <span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a> </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">defStyleAttr<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter ">defStyleRes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></span></span><span class="token punctuation">)</span> : <a href="https://developer.android.com/reference/kotlin/android/widget/LinearLayout.html">LinearLayout</a></div><div class="brief "><p class="paragraph">A custom <a href="https://developer.android.com/reference/kotlin/android/widget/LinearLayout.html">LinearLayout</a> designed to be used as a selectable item within a <a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.html">RecyclerView</a>. This layout provides functionality to display OneUI-styled action mode and check mode (for selected state) indicators. The latter indicator can be either a <a href="https://developer.android.com/reference/kotlin/android/widget/CheckBox.html">CheckBox</a> or an animated check overlay drawable.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1687745796%2FClasslikes%2F1925756284" anchor-label="SemToast" id="1687745796%2FClasslikes%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-sem-toast/index.html"><span>Sem</span><wbr></wbr><span><span>Toast</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1687745796%2FClasslikes%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-sem-toast/index.html">SemToast</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span> : <a href="https://developer.android.com/reference/kotlin/android/widget/Toast.html">Toast</a></div><div class="brief "><p class="paragraph">Custom <a href="https://developer.android.com/reference/kotlin/android/widget/Toast.html">Toast</a> widget with no icon.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1535428883%2FClasslikes%2F1925756284" anchor-label="Separator" id="-1535428883%2FClasslikes%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-separator/index.html"><span><span>Separator</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1535428883%2FClasslikes%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-separator/index.html">Separator</a> <span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a> </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">defStyleAttr<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>android.R.attr.listSeparatorTextViewStyle<span class="token punctuation">, </span></span><span class="parameter ">defStyleRes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>appcompatR.style.Widget_AppCompat_Light_TextView_ListSeparator</span></span><span class="token punctuation">)</span> : <a href="https://developer.android.com/reference/kotlin/android/widget/TextView.html">TextView</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-893079388%2FClasslikes%2F1925756284" anchor-label="SwitchItemView" id="-893079388%2FClasslikes%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-switch-item-view/index.html"><span>Switch</span><wbr></wbr><span>Item</span><wbr></wbr><span><span>View</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-893079388%2FClasslikes%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-switch-item-view/index.html">SwitchItemView</a> <span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a> </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">defStyleAttr<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter ">defStyleRes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></span></span><span class="token punctuation">)</span> : <a href="https://developer.android.com/reference/kotlin/android/widget/LinearLayout.html">LinearLayout</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-961175969%2FClasslikes%2F1925756284" anchor-label="TipPopup" id="-961175969%2FClasslikes%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-tip-popup/index.html"><span>Tip</span><wbr></wbr><span><span>Popup</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-961175969%2FClasslikes%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-tip-popup/index.html">TipPopup</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">parentView<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">mode<span class="token operator">: </span><a href="-tip-popup/-mode/index.html">TipPopup.Mode</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-432846680%2FClasslikes%2F1925756284" anchor-label="TipsCard" id="-432846680%2FClasslikes%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-tips-card/index.html"><span>Tips</span><wbr></wbr><span><span>Card</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-432846680%2FClasslikes%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-tips-card/index.html">TipsCard</a> <span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a> </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span> : <a href="https://developer.android.com/reference/kotlin/android/widget/LinearLayout.html">LinearLayout</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1703049835%2FClasslikes%2F1925756284" anchor-label="Toast" id="1703049835%2FClasslikes%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-toast/index.html"><span><span>Toast</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1703049835%2FClasslikes%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">typealias </span><strike><a href="-toast/index.html">Toast</a></strike><span class="token operator"> = </span><a href="-sem-toast/index.html">SemToast</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="EXTENSION_FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="603906362%2FFunctions%2F1925756284" anchor-label="addLinks" id="603906362%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="add-links.html"><span>add</span><wbr></wbr><span><span>Links</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="603906362%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="-relative-links-card/index.html">RelativeLinksCard</a><span class="token punctuation">.</span><a href="add-links.html"><span class="token function">addLinks</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>relativeLinks<span class="token operator">: </span><a href="-relative-link/index.html">RelativeLink</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-236887033%2FFunctions%2F1925756284" anchor-label="replaceLinks" id="-236887033%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="replace-links.html"><span>replace</span><wbr></wbr><span><span>Links</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-236887033%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="-relative-links-card/index.html">RelativeLinksCard</a><span class="token punctuation">.</span><a href="replace-links.html"><span class="token function">replaceLinks</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>relativeLinks<span class="token operator">: </span><a href="-relative-link/index.html">RelativeLink</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-406470908%2FFunctions%2F1925756284" anchor-label="setIconTint" id="-406470908%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-icon-tint.html"><span>set</span><wbr></wbr><span>Icon</span><wbr></wbr><span><span>Tint</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-406470908%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="-tip-popup/index.html">TipPopup</a><span class="token punctuation">.</span><a href="set-icon-tint.html"><span class="token function">setIconTint</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ColorInt.html"><span class="token annotation builtin">ColorInt</span></a> </span>color<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Set the tint color of the icon for both <a href="-tip-popup/-state/-h-i-n-t/index.html">TipPopup.State.HINT</a> and <a href="-tip-popup/-state/-e-x-p-a-n-d-e-d/index.html">TipPopup.State.EXPANDED</a> when on <a href="-tip-popup/-mode/-n-o-r-m-a-l/index.html">TipPopup.Mode.NORMAL</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+        <span>(c) Tribalfs</span>
+        <span class="pull-right">
+            <span>Generated by </span>
+            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                <span>dokka</span>
+            </a>
+        </span>
+    </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

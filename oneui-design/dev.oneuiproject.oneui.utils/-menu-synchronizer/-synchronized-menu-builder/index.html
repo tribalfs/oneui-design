@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>SynchronizedMenuBuilder</title>
+    <link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async="async"></script>
+<script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<link href="../../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../../ui-kit/ui-kit.min.js" defer="defer"></script>
+<script type="text/javascript" src="../../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+    <div class="root">
+    <nav class="navigation theme-dark" id="navigation-wrapper">
+            <a class="library-name--link" href="../../../../index.html">
+                    oneui-design
+            </a>
+        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle"
+                type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+        <div class="navigation-controls">
+        <div class="filter-section filter-section_loading" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active=""
+                        data-filter=":oneui-design/release">androidJvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox"
+                        data-role="dropdown-toggle"
+                        aria-controls="platform-tags-listbox"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                        aria-label="Toggle source sets"
+                ></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
+                    <div class="dropdown--header"><span>Platform filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":oneui-design/release"
+                                       data-filter=":oneui-design/release"/>
+                                <span class="checkbox--icon"></span>
+                                androidJvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </div>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button"
+                    type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list"
+                        data-role="dropdown-listbox">
+                        <div class="dropdown--header">
+                            <span>
+                                    oneui-design
+                            </span>
+                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                            </button>
+                        </div>
+                        <div class="sidebar--inner" id="sideMenu"></div>
+                    </ul>
+                    <div class="dropdown--overlay"></div>
+                </div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="oneui-design::dev.oneuiproject.oneui.utils/MenuSynchronizer.SynchronizedMenuBuilder///PointingToDeclaration//1925756284">
+  <div class="breadcrumbs"><a href="../../../../index.html">oneui-design</a><span class="delimiter">/</span><a href="../../index.html">dev.oneuiproject.oneui.utils</a><span class="delimiter">/</span><a href="../index.html">MenuSynchronizer</a><span class="delimiter">/</span><span class="current">SynchronizedMenuBuilder</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Synchronized</span><wbr></wbr><span>Menu</span><wbr></wbr><span><span>Builder</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">SynchronizedMenuBuilder</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">toolbar<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/Toolbar.html">Toolbar</a><span class="token punctuation">, </span></span><span class="parameter ">bottomNavView<span class="token operator">: </span><span data-unresolved-link="com.google.android.material.bottomnavigation/BottomNavigationView///PointingToDeclaration/">BottomNavigationView</span><span class="token punctuation">, </span></span><span class="parameter ">maxActionItems<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="androidx.appcompat.view.menu/MenuBuilder///PointingToDeclaration/">MenuBuilder</span></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="901693549%2FConstructors%2F1925756284" anchor-label="SynchronizedMenuBuilder" id="901693549%2FConstructors%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-synchronized-menu-builder.html"><span>Synchronized</span><wbr></wbr><span>Menu</span><wbr></wbr><span><span>Builder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="901693549%2FConstructors%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">toolbar<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/Toolbar.html">Toolbar</a><span class="token punctuation">, </span></span><span class="parameter ">bottomNavView<span class="token operator">: </span><span data-unresolved-link="com.google.android.material.bottomnavigation/BottomNavigationView///PointingToDeclaration/">BottomNavigationView</span><span class="token punctuation">, </span></span><span class="parameter ">maxActionItems<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="853608748%2FFunctions%2F1925756284" anchor-label="add" id="853608748%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-1162643432%2FFunctions%2F1925756284"><span><span>add</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="853608748%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-1162643432%2FFunctions%2F1925756284"><span class="token function">add</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-char-sequence/index.html">CharSequence</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/MenuItem.html">MenuItem</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-1490738588%2FFunctions%2F1925756284"><span class="token function">add</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/MenuItem.html">MenuItem</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#796028547%2FFunctions%2F1925756284"><span class="token function">add</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">p1<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">p2<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">p3<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-char-sequence/index.html">CharSequence</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/MenuItem.html">MenuItem</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-2071840871%2FFunctions%2F1925756284"><span class="token function">add</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">p1<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">p2<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">p3<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/MenuItem.html">MenuItem</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="545623619%2FFunctions%2F1925756284" anchor-label="addIntentOptions" id="545623619%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#545623619%2FFunctions%2F1925756284"><span>add</span><wbr></wbr><span>Intent</span><wbr></wbr><span><span>Options</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="545623619%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#545623619%2FFunctions%2F1925756284"><span class="token function">addIntentOptions</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">p1<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">p2<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">p3<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/ComponentName.html">ComponentName</a><span class="token punctuation">, </span></span><span class="parameter ">p4<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-array/index.html">Array</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">p5<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a><span class="token punctuation">, </span></span><span class="parameter ">p6<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">p7<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-array/index.html">Array</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/android/view/MenuItem.html">MenuItem</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1951479220%2FFunctions%2F1925756284" anchor-label="addMenuPresenter" id="-1951479220%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#1356934520%2FFunctions%2F1925756284"><span>add</span><wbr></wbr><span>Menu</span><wbr></wbr><span><span>Presenter</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1951479220%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#1356934520%2FFunctions%2F1925756284"><span class="token function">addMenuPresenter</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><span data-unresolved-link="androidx.appcompat.view.menu/MenuPresenter///PointingToDeclaration/">MenuPresenter</span></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#1522541920%2FFunctions%2F1925756284"><span class="token function">addMenuPresenter</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><span data-unresolved-link="androidx.appcompat.view.menu/MenuPresenter///PointingToDeclaration/">MenuPresenter</span><span class="token punctuation">, </span></span><span class="parameter ">p1<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2143239090%2FFunctions%2F1925756284" anchor-label="addSubMenu" id="-2143239090%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-639857751%2FFunctions%2F1925756284"><span>add</span><wbr></wbr><span>Sub</span><wbr></wbr><span><span>Menu</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2143239090%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-639857751%2FFunctions%2F1925756284"><span class="token function">addSubMenu</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-char-sequence/index.html">CharSequence</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/SubMenu.html">SubMenu</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-975595597%2FFunctions%2F1925756284"><span class="token function">addSubMenu</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/SubMenu.html">SubMenu</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#1408618770%2FFunctions%2F1925756284"><span class="token function">addSubMenu</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">p1<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">p2<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">p3<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-char-sequence/index.html">CharSequence</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/SubMenu.html">SubMenu</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#1841162282%2FFunctions%2F1925756284"><span class="token function">addSubMenu</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">p1<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">p2<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">p3<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/SubMenu.html">SubMenu</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-240245695%2FFunctions%2F1925756284" anchor-label="changeMenuMode" id="-240245695%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-240245695%2FFunctions%2F1925756284"><span>change</span><wbr></wbr><span>Menu</span><wbr></wbr><span><span>Mode</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-240245695%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-240245695%2FFunctions%2F1925756284"><span class="token function">changeMenuMode</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-289330790%2FFunctions%2F1925756284" anchor-label="clear" id="-289330790%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-289330790%2FFunctions%2F1925756284"><span><span>clear</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-289330790%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-289330790%2FFunctions%2F1925756284"><span class="token function">clear</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1505125123%2FFunctions%2F1925756284" anchor-label="clearAll" id="-1505125123%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="clear-all.html"><span>clear</span><wbr></wbr><span><span>All</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1505125123%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="clear-all.html"><span class="token function">clearAll</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1909566925%2FFunctions%2F1925756284" anchor-label="clearHeader" id="1909566925%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#1909566925%2FFunctions%2F1925756284"><span>clear</span><wbr></wbr><span><span>Header</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1909566925%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#1909566925%2FFunctions%2F1925756284"><span class="token function">clearHeader</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2016545585%2FFunctions%2F1925756284" anchor-label="close" id="2016545585%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#1184196687%2FFunctions%2F1925756284"><span><span>close</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2016545585%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#1184196687%2FFunctions%2F1925756284"><span class="token function">close</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#530651476%2FFunctions%2F1925756284"><span class="token function">close</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-184138430%2FFunctions%2F1925756284" anchor-label="collapseItemActionView" id="-184138430%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-184138430%2FFunctions%2F1925756284"><span>collapse</span><wbr></wbr><span>Item</span><wbr></wbr><span>Action</span><wbr></wbr><span><span>View</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-184138430%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-184138430%2FFunctions%2F1925756284"><span class="token function">collapseItemActionView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><span data-unresolved-link="androidx.appcompat.view.menu/MenuItemImpl///PointingToDeclaration/">MenuItemImpl</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1500240047%2FFunctions%2F1925756284" anchor-label="expandItemActionView" id="1500240047%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#1500240047%2FFunctions%2F1925756284"><span>expand</span><wbr></wbr><span>Item</span><wbr></wbr><span>Action</span><wbr></wbr><span><span>View</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1500240047%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#1500240047%2FFunctions%2F1925756284"><span class="token function">expandItemActionView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><span data-unresolved-link="androidx.appcompat.view.menu/MenuItemImpl///PointingToDeclaration/">MenuItemImpl</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1529035953%2FFunctions%2F1925756284" anchor-label="findGroupIndex" id="1529035953%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-512982619%2FFunctions%2F1925756284"><span>find</span><wbr></wbr><span>Group</span><wbr></wbr><span><span>Index</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1529035953%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-512982619%2FFunctions%2F1925756284"><span class="token function">findGroupIndex</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#553980568%2FFunctions%2F1925756284"><span class="token function">findGroupIndex</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">p1<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="245844739%2FFunctions%2F1925756284" anchor-label="findItem" id="245844739%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="find-item.html"><span>find</span><wbr></wbr><span><span>Item</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="245844739%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="find-item.html"><span class="token function">findItem</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">id<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/MenuItem.html">MenuItem</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1334722401%2FFunctions%2F1925756284" anchor-label="findItemIndex" id="-1334722401%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-1334722401%2FFunctions%2F1925756284"><span>find</span><wbr></wbr><span>Item</span><wbr></wbr><span><span>Index</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1334722401%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-1334722401%2FFunctions%2F1925756284"><span class="token function">findItemIndex</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-161251223%2FFunctions%2F1925756284" anchor-label="flagActionItems" id="-161251223%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-161251223%2FFunctions%2F1925756284"><span>flag</span><wbr></wbr><span>Action</span><wbr></wbr><span><span>Items</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-161251223%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-161251223%2FFunctions%2F1925756284"><span class="token function">flagActionItems</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-367612929%2FFunctions%2F1925756284" anchor-label="getActionItems" id="-367612929%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-367612929%2FFunctions%2F1925756284"><span>get</span><wbr></wbr><span>Action</span><wbr></wbr><span><span>Items</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-367612929%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-367612929%2FFunctions%2F1925756284"><span class="token function">getActionItems</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/ArrayList.html">ArrayList</a><span class="token operator">&lt;</span><span data-unresolved-link="androidx.appcompat.view.menu/MenuItemImpl///PointingToDeclaration/">MenuItemImpl</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1068120294%2FFunctions%2F1925756284" anchor-label="getContext" id="-1068120294%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-1068120294%2FFunctions%2F1925756284"><span>get</span><wbr></wbr><span><span>Context</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1068120294%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-1068120294%2FFunctions%2F1925756284"><span class="token function">getContext</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1542198053%2FFunctions%2F1925756284" anchor-label="getExpandedItem" id="1542198053%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#1542198053%2FFunctions%2F1925756284"><span>get</span><wbr></wbr><span>Expanded</span><wbr></wbr><span><span>Item</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1542198053%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#1542198053%2FFunctions%2F1925756284"><span class="token function">getExpandedItem</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="androidx.appcompat.view.menu/MenuItemImpl///PointingToDeclaration/">MenuItemImpl</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="613998635%2FFunctions%2F1925756284" anchor-label="getHeaderIcon" id="613998635%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#613998635%2FFunctions%2F1925756284"><span>get</span><wbr></wbr><span>Header</span><wbr></wbr><span><span>Icon</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="613998635%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#613998635%2FFunctions%2F1925756284"><span class="token function">getHeaderIcon</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/drawable/Drawable.html">Drawable</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-222724482%2FFunctions%2F1925756284" anchor-label="getHeaderTitle" id="-222724482%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-222724482%2FFunctions%2F1925756284"><span>get</span><wbr></wbr><span>Header</span><wbr></wbr><span><span>Title</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-222724482%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-222724482%2FFunctions%2F1925756284"><span class="token function">getHeaderTitle</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-char-sequence/index.html">CharSequence</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1241060481%2FFunctions%2F1925756284" anchor-label="getHeaderView" id="-1241060481%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-1241060481%2FFunctions%2F1925756284"><span>get</span><wbr></wbr><span>Header</span><wbr></wbr><span><span>View</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1241060481%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-1241060481%2FFunctions%2F1925756284"><span class="token function">getHeaderView</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2039432836%2FFunctions%2F1925756284" anchor-label="getItem" id="-2039432836%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-2039432836%2FFunctions%2F1925756284"><span>get</span><wbr></wbr><span><span>Item</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2039432836%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-2039432836%2FFunctions%2F1925756284"><span class="token function">getItem</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/MenuItem.html">MenuItem</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1619314836%2FFunctions%2F1925756284" anchor-label="getNonActionItems" id="1619314836%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#1619314836%2FFunctions%2F1925756284"><span>get</span><wbr></wbr><span>Non</span><wbr></wbr><span>Action</span><wbr></wbr><span><span>Items</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1619314836%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#1619314836%2FFunctions%2F1925756284"><span class="token function">getNonActionItems</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/ArrayList.html">ArrayList</a><span class="token operator">&lt;</span><span data-unresolved-link="androidx.appcompat.view.menu/MenuItemImpl///PointingToDeclaration/">MenuItemImpl</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="152459472%2FFunctions%2F1925756284" anchor-label="getRootMenu" id="152459472%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#152459472%2FFunctions%2F1925756284"><span>get</span><wbr></wbr><span>Root</span><wbr></wbr><span><span>Menu</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="152459472%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#152459472%2FFunctions%2F1925756284"><span class="token function">getRootMenu</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="androidx.appcompat.view.menu/MenuBuilder///PointingToDeclaration/">MenuBuilder</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-354373021%2FFunctions%2F1925756284" anchor-label="getVisibleItems" id="-354373021%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-354373021%2FFunctions%2F1925756284"><span>get</span><wbr></wbr><span>Visible</span><wbr></wbr><span><span>Items</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-354373021%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-354373021%2FFunctions%2F1925756284"><span class="token function">getVisibleItems</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/ArrayList.html">ArrayList</a><span class="token operator">&lt;</span><span data-unresolved-link="androidx.appcompat.view.menu/MenuItemImpl///PointingToDeclaration/">MenuItemImpl</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1129829985%2FFunctions%2F1925756284" anchor-label="hasVisibleItems" id="-1129829985%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-1129829985%2FFunctions%2F1925756284"><span>has</span><wbr></wbr><span>Visible</span><wbr></wbr><span><span>Items</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1129829985%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-1129829985%2FFunctions%2F1925756284"><span class="token function">hasVisibleItems</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1143691531%2FFunctions%2F1925756284" anchor-label="isDispatchingItemsChanged" id="-1143691531%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-1143691531%2FFunctions%2F1925756284"><span>is</span><wbr></wbr><span>Dispatching</span><wbr></wbr><span>Items</span><wbr></wbr><span><span>Changed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1143691531%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-1143691531%2FFunctions%2F1925756284"><span class="token function">isDispatchingItemsChanged</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="846944554%2FFunctions%2F1925756284" anchor-label="isGroupDividerEnabled" id="846944554%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#846944554%2FFunctions%2F1925756284"><span>is</span><wbr></wbr><span>Group</span><wbr></wbr><span>Divider</span><wbr></wbr><span><span>Enabled</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="846944554%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#846944554%2FFunctions%2F1925756284"><span class="token function">isGroupDividerEnabled</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-51055660%2FFunctions%2F1925756284" anchor-label="isShortcutKey" id="-51055660%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-51055660%2FFunctions%2F1925756284"><span>is</span><wbr></wbr><span>Shortcut</span><wbr></wbr><span><span>Key</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-51055660%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-51055660%2FFunctions%2F1925756284"><span class="token function">isShortcutKey</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">p1<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/KeyEvent.html">KeyEvent</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-549489852%2FFunctions%2F1925756284" anchor-label="isShortcutsVisible" id="-549489852%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-549489852%2FFunctions%2F1925756284"><span>is</span><wbr></wbr><span>Shortcuts</span><wbr></wbr><span><span>Visible</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-549489852%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-549489852%2FFunctions%2F1925756284"><span class="token function">isShortcutsVisible</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-979991709%2FFunctions%2F1925756284" anchor-label="onItemsChanged" id="-979991709%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-items-changed.html"><span>on</span><wbr></wbr><span>Items</span><wbr></wbr><span><span>Changed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-979991709%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="on-items-changed.html"><span class="token function">onItemsChanged</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">structureChanged<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1954315176%2FFunctions%2F1925756284" anchor-label="performIdentifierAction" id="-1954315176%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-1954315176%2FFunctions%2F1925756284"><span>perform</span><wbr></wbr><span>Identifier</span><wbr></wbr><span><span>Action</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1954315176%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-1954315176%2FFunctions%2F1925756284"><span class="token function">performIdentifierAction</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">p1<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1559159290%2FFunctions%2F1925756284" anchor-label="performItemAction" id="-1559159290%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#1151506644%2FFunctions%2F1925756284"><span>perform</span><wbr></wbr><span>Item</span><wbr></wbr><span><span>Action</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1559159290%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#1151506644%2FFunctions%2F1925756284"><span class="token function">performItemAction</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/MenuItem.html">MenuItem</a><span class="token punctuation">, </span></span><span class="parameter ">p1<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-661998310%2FFunctions%2F1925756284"><span class="token function">performItemAction</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/MenuItem.html">MenuItem</a><span class="token punctuation">, </span></span><span class="parameter ">p1<span class="token operator">: </span><span data-unresolved-link="androidx.appcompat.view.menu/MenuPresenter///PointingToDeclaration/">MenuPresenter</span><span class="token punctuation">, </span></span><span class="parameter ">p2<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1949170081%2FFunctions%2F1925756284" anchor-label="performShortcut" id="1949170081%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#1949170081%2FFunctions%2F1925756284"><span>perform</span><wbr></wbr><span><span>Shortcut</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1949170081%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#1949170081%2FFunctions%2F1925756284"><span class="token function">performShortcut</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">p1<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/KeyEvent.html">KeyEvent</a><span class="token punctuation">, </span></span><span class="parameter ">p2<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1676851606%2FFunctions%2F1925756284" anchor-label="removeGroup" id="-1676851606%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-1676851606%2FFunctions%2F1925756284"><span>remove</span><wbr></wbr><span><span>Group</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1676851606%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-1676851606%2FFunctions%2F1925756284"><span class="token function">removeGroup</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2059320122%2FFunctions%2F1925756284" anchor-label="removeItem" id="2059320122%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#2059320122%2FFunctions%2F1925756284"><span>remove</span><wbr></wbr><span><span>Item</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2059320122%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#2059320122%2FFunctions%2F1925756284"><span class="token function">removeItem</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1839206841%2FFunctions%2F1925756284" anchor-label="removeItemAt" id="-1839206841%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-1839206841%2FFunctions%2F1925756284"><span>remove</span><wbr></wbr><span>Item</span><wbr></wbr><span><span>At</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1839206841%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-1839206841%2FFunctions%2F1925756284"><span class="token function">removeItemAt</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="299081263%2FFunctions%2F1925756284" anchor-label="removeMenuPresenter" id="299081263%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#299081263%2FFunctions%2F1925756284"><span>remove</span><wbr></wbr><span>Menu</span><wbr></wbr><span><span>Presenter</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="299081263%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#299081263%2FFunctions%2F1925756284"><span class="token function">removeMenuPresenter</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><span data-unresolved-link="androidx.appcompat.view.menu/MenuPresenter///PointingToDeclaration/">MenuPresenter</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2136778471%2FFunctions%2F1925756284" anchor-label="restoreActionViewStates" id="-2136778471%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-2136778471%2FFunctions%2F1925756284"><span>restore</span><wbr></wbr><span>Action</span><wbr></wbr><span>View</span><wbr></wbr><span><span>States</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2136778471%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-2136778471%2FFunctions%2F1925756284"><span class="token function">restoreActionViewStates</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="386120830%2FFunctions%2F1925756284" anchor-label="restorePresenterStates" id="386120830%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#386120830%2FFunctions%2F1925756284"><span>restore</span><wbr></wbr><span>Presenter</span><wbr></wbr><span><span>States</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="386120830%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#386120830%2FFunctions%2F1925756284"><span class="token function">restorePresenterStates</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="308853404%2FFunctions%2F1925756284" anchor-label="saveActionViewStates" id="308853404%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#308853404%2FFunctions%2F1925756284"><span>save</span><wbr></wbr><span>Action</span><wbr></wbr><span>View</span><wbr></wbr><span><span>States</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="308853404%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#308853404%2FFunctions%2F1925756284"><span class="token function">saveActionViewStates</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1474650469%2FFunctions%2F1925756284" anchor-label="savePresenterStates" id="-1474650469%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-1474650469%2FFunctions%2F1925756284"><span>save</span><wbr></wbr><span>Presenter</span><wbr></wbr><span><span>States</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1474650469%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-1474650469%2FFunctions%2F1925756284"><span class="token function">savePresenterStates</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="874265493%2FFunctions%2F1925756284" anchor-label="setCallback" id="874265493%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#874265493%2FFunctions%2F1925756284"><span>set</span><wbr></wbr><span><span>Callback</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="874265493%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#874265493%2FFunctions%2F1925756284"><span class="token function">setCallback</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><span data-unresolved-link="androidx.appcompat.view.menu/MenuBuilder.Callback///PointingToDeclaration/">MenuBuilder.Callback</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1766647133%2FFunctions%2F1925756284" anchor-label="setCurrentMenuInfo" id="1766647133%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#1766647133%2FFunctions%2F1925756284"><span>set</span><wbr></wbr><span>Current</span><wbr></wbr><span>Menu</span><wbr></wbr><span><span>Info</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1766647133%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#1766647133%2FFunctions%2F1925756284"><span class="token function">setCurrentMenuInfo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/ContextMenu.ContextMenuInfo.html">ContextMenu.ContextMenuInfo</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="369493133%2FFunctions%2F1925756284" anchor-label="setDefaultShowAsAction" id="369493133%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#369493133%2FFunctions%2F1925756284"><span>set</span><wbr></wbr><span>Default</span><wbr></wbr><span>Show</span><wbr></wbr><span>As</span><wbr></wbr><span><span>Action</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="369493133%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#369493133%2FFunctions%2F1925756284"><span class="token function">setDefaultShowAsAction</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="androidx.appcompat.view.menu/MenuBuilder///PointingToDeclaration/">MenuBuilder</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="920719072%2FFunctions%2F1925756284" anchor-label="setGroupCheckable" id="920719072%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#920719072%2FFunctions%2F1925756284"><span>set</span><wbr></wbr><span>Group</span><wbr></wbr><span><span>Checkable</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="920719072%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#920719072%2FFunctions%2F1925756284"><span class="token function">setGroupCheckable</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">p1<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter ">p2<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1940131155%2FFunctions%2F1925756284" anchor-label="setGroupDividerEnabled" id="1940131155%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#1940131155%2FFunctions%2F1925756284"><span>set</span><wbr></wbr><span>Group</span><wbr></wbr><span>Divider</span><wbr></wbr><span><span>Enabled</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1940131155%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#1940131155%2FFunctions%2F1925756284"><span class="token function">setGroupDividerEnabled</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="222851459%2FFunctions%2F1925756284" anchor-label="setGroupEnabled" id="222851459%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#222851459%2FFunctions%2F1925756284"><span>set</span><wbr></wbr><span>Group</span><wbr></wbr><span><span>Enabled</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="222851459%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#222851459%2FFunctions%2F1925756284"><span class="token function">setGroupEnabled</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">p1<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="619202676%2FFunctions%2F1925756284" anchor-label="setGroupVisible" id="619202676%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#619202676%2FFunctions%2F1925756284"><span>set</span><wbr></wbr><span>Group</span><wbr></wbr><span><span>Visible</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="619202676%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#619202676%2FFunctions%2F1925756284"><span class="token function">setGroupVisible</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">p1<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1463735406%2FFunctions%2F1925756284" anchor-label="setOptionalIconsVisible" id="-1463735406%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-1463735406%2FFunctions%2F1925756284"><span>set</span><wbr></wbr><span>Optional</span><wbr></wbr><span>Icons</span><wbr></wbr><span><span>Visible</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1463735406%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#-1463735406%2FFunctions%2F1925756284"><span class="token function">setOptionalIconsVisible</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="555690096%2FFunctions%2F1925756284" anchor-label="setOverrideVisibleItems" id="555690096%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#555690096%2FFunctions%2F1925756284"><span>set</span><wbr></wbr><span>Override</span><wbr></wbr><span>Visible</span><wbr></wbr><span><span>Items</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="555690096%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#555690096%2FFunctions%2F1925756284"><span class="token function">setOverrideVisibleItems</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1455304399%2FFunctions%2F1925756284" anchor-label="setQwertyMode" id="1455304399%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#1455304399%2FFunctions%2F1925756284"><span>set</span><wbr></wbr><span>Qwerty</span><wbr></wbr><span><span>Mode</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1455304399%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#1455304399%2FFunctions%2F1925756284"><span class="token function">setQwertyMode</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="535326629%2FFunctions%2F1925756284" anchor-label="setShortcutsVisible" id="535326629%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#535326629%2FFunctions%2F1925756284"><span>set</span><wbr></wbr><span>Shortcuts</span><wbr></wbr><span><span>Visible</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="535326629%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#535326629%2FFunctions%2F1925756284"><span class="token function">setShortcutsVisible</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="385614354%2FFunctions%2F1925756284" anchor-label="size" id="385614354%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#385614354%2FFunctions%2F1925756284"><span><span>size</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="385614354%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#385614354%2FFunctions%2F1925756284"><span class="token function">size</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1068623065%2FFunctions%2F1925756284" anchor-label="startDispatchingItemsChanged" id="1068623065%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#1068623065%2FFunctions%2F1925756284"><span>start</span><wbr></wbr><span>Dispatching</span><wbr></wbr><span>Items</span><wbr></wbr><span><span>Changed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1068623065%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#1068623065%2FFunctions%2F1925756284"><span class="token function">startDispatchingItemsChanged</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="662574925%2FFunctions%2F1925756284" anchor-label="stopDispatchingItemsChanged" id="662574925%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#662574925%2FFunctions%2F1925756284"><span>stop</span><wbr></wbr><span>Dispatching</span><wbr></wbr><span>Items</span><wbr></wbr><span><span>Changed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="662574925%2FFunctions%2F1925756284"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../dev.oneuiproject.oneui.widget/-bottom-tab-layout/-bottom-tab-layout-menu/index.html#662574925%2FFunctions%2F1925756284"><span class="token function">stopDispatchingItemsChanged</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+        <span>(c) Tribalfs</span>
+        <span class="pull-right">
+            <span>Generated by </span>
+            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                <span>dokka</span>
+            </a>
+        </span>
+    </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
