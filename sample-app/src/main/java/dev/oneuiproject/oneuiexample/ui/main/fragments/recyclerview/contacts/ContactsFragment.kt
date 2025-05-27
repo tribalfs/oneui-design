@@ -25,6 +25,8 @@ import com.sec.sesl.tester.databinding.ViewContactsOptionsDialogBinding
 import dagger.hilt.android.AndroidEntryPoint
 import dev.oneuiproject.oneui.delegates.AppBarAwareYTranslator
 import dev.oneuiproject.oneui.delegates.ViewYTranslator
+import dev.oneuiproject.oneui.dialog.ProgressDialog
+import dev.oneuiproject.oneui.dialog.ProgressDialog.ProgressStyle
 import dev.oneuiproject.oneui.ktx.configureItemSwipeAnimator
 import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.ktx.enableCoreSeslFeatures
@@ -299,11 +301,26 @@ class ContactsFragment : AbsBaseFragment(R.layout.fragment_contacts),
                     semToast("Messaging ${(contact.name)}... ")
                 }
                 if (swipeDirection == END) {
-                    semToast("Calling ${(contact.name)}... ")
+                    showCallingProgressDialog(contact.name)
                 }
                 true
             }
         )
+    }
+
+    private fun showCallingProgressDialog(name: String){
+        val dialog = ProgressDialog(requireContext()).apply {
+            setMessage("Calling $name...")
+            isIndeterminate = false
+            setProgressStyle(ProgressStyle.HORIZONTAL)
+            show()
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            dialog.apply {
+                for (p in 0..100) { progress = p; delay(50) }
+                dismiss()
+            }
+        }
     }
 
 
