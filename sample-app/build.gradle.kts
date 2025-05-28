@@ -63,3 +63,9 @@ kotlin {
     }
 }
 
+tasks.register("generateReleaseApk", Copy::class.java) {
+    dependsOn(tasks.assemble)
+    from(layout.buildDirectory.dir("outputs/apk/release"))
+    into("$rootDir/sample-app/release/")
+}
+

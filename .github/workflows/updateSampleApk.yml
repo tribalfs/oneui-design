@@ -42,21 +42,14 @@ jobs:
         if: steps.check_sample_app.outputs.changed == 'true'
         run: chmod +x ./gradlew
 
-      - name: Build debug APK
+      - name: Build release APK
         if: steps.check_sample_app.outputs.changed == 'true'
-        run: ./gradlew assembleDebug
+        run: ./gradlew generateReleaseApk
 
-      - name: Find generated APK path
-        id: apk_path
-        if: steps.check_sample_app.outputs.changed == 'true'
+      - name: Commit generated sample-app/release artifacts
         run: |
-          APK_PATH=$(find . -name "*.apk" | grep debug | head -n 1)
-          echo "apk_path=$APK_PATH" >> $GITHUB_OUTPUT
-
-      - name: Commit and push APK
-        if: steps.check_sample_app.outputs.changed == 'true'
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "chore: update debug APK [skip ci]"
-          file_pattern: ${{ steps.apk_path.outputs.apk_path }}
-          branch: main
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add sample-app/release/*
+          git commit -m "Update sample apk" || echo "No changes to commit"
+          git push
