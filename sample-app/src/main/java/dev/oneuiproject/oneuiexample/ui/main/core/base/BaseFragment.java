@@ -40,7 +40,7 @@ public abstract class BaseFragment extends Fragment
     }
 
     @Override
-    public  boolean showDrawerModeButton() {
+    public  boolean showBottomTab() {
         return false;
     }
 

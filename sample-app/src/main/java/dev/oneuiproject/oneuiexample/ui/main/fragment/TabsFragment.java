@@ -18,15 +18,12 @@ import dev.oneuiproject.oneuiexample.ui.main.core.base.BaseFragment;
 public class TabsFragment extends BaseFragment {
     private TabLayout mSubTabs;
     private BottomNavigationView mBottomNavView;
-    private BottomNavigationView mBottomNavViewText;
-    private TabLayout mTabs;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initSubTabs(view);
         initBNV(view);
-//        initMainTabs(view);
     }
 
     @Override
@@ -54,18 +51,13 @@ public class TabsFragment extends BaseFragment {
     }
 
     @Override
-    public boolean showDrawerModeButton() {
+    public boolean showBottomTab() {
         return true;
     }
 
-    @Override
-    public boolean isImmersiveMode() {
-        return true;
-    }
 
     private void initSubTabs(@NonNull View view) {
         mSubTabs = view.findViewById(R.id.tabs_subtab);
-        //mSubTabs.seslSetSubTabStyle();//Already set in xml
         mSubTabs.addTab(mSubTabs.newTab().setText("Subtab 4"));
         mSubTabs.addTab(mSubTabs.newTab().setText("Subtab 5"));
         mSubTabs.addTab(mSubTabs.newTab().setText("Subtab 6"));
@@ -77,20 +69,5 @@ public class TabsFragment extends BaseFragment {
         mBottomNavView = view.findViewById(R.id.tabs_bottomnav);
         mBottomNavView.seslSetGroupDividerEnabled(true);
     }
-
-//    private void initMainTabs(@NonNull View view) {
-//        mTabs = view.findViewById(R.id.tabs_tabs);
-//        mTabs.addTab(mTabs.newTab().setText("Tab 1"));
-//        mTabs.addTab(mTabs.newTab().setText("Tab 2"));
-//        mTabs.addTab(mTabs.newTab().setText("Tab 3"));
-//
-//        GridMenuDialog gridMenuDialog = new GridMenuDialog(mContext);
-//        gridMenuDialog.inflateMenu(R.menu.sample3_tabs_grid_menu);
-//        gridMenuDialog.setOnItemClickListener(item -> true);
-//
-//        addCustomTab(mTabs, null, dev.oneuiproject.oneui.R.drawable.ic_oui_drawer,
-//                v -> gridMenuDialog.show());
-//    }
-
 
 }

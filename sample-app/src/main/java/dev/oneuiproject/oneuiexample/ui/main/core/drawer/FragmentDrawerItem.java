@@ -1,6 +1,5 @@
 package dev.oneuiproject.oneuiexample.ui.main.core.drawer;
 
-import dev.oneuiproject.oneui.layout.ToolbarLayout;
 import dev.oneuiproject.oneui.layout.ToolbarLayout.MainRoundedCorners;
 
 public interface FragmentDrawerItem extends DrawerItem {
@@ -12,7 +11,7 @@ public interface FragmentDrawerItem extends DrawerItem {
 
     boolean isImmersiveMode();
 
-    boolean showDrawerModeButton();
+    boolean showBottomTab();
 
     boolean showSwitchBar();
 

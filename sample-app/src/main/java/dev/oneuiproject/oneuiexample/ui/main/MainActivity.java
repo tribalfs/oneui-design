@@ -5,7 +5,6 @@ import static android.view.View.VISIBLE;
 import static dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout.MARGIN_PROVIDER_ADP_DEFAULT;
 import static dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout.MARGIN_PROVIDER_ZERO;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -52,7 +51,6 @@ public class MainActivity extends AppCompatActivity
         implements DrawerListAdapter.DrawerListener {
     private ActivityMainBinding mBinding;
     DrawerListAdapter adapter;
-    Boolean mIsDrawerMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,15 +65,6 @@ public class MainActivity extends AppCompatActivity
         getOnBackPressedDispatcher().addCallback(this, mBackPressedCallback);
     }
 
-    @Override
-    public void attachBaseContext(Context context) {
-        // pre-OneUI
-        if (Build.VERSION.SDK_INT <= 28) {
-            super.attachBaseContext(DarkModeUtils.createDarkModeContextWrapper(context));
-        } else {
-            super.attachBaseContext(context);
-        }
-    }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -87,10 +76,6 @@ public class MainActivity extends AppCompatActivity
     private OnBackPressedCallback mBackPressedCallback = new OnBackPressedCallback(false) {
         @Override
         public void handleOnBackPressed() {
-            if (!mIsDrawerMode){
-                configureNavigationMode(true);
-                return;
-            }
             adapter.setSelectedItem(0);
         }
     };
@@ -139,9 +124,6 @@ public class MainActivity extends AppCompatActivity
 
         if (savedInstanceState != null) {
             adapter.setSelectedItem(savedInstanceState.getInt(KEY_SELECTED_POSITION, 0));
-            int bottomTabVisibility = savedInstanceState.getBoolean(KEY_BOTTOM_TAB_SHOWN) ? VISIBLE : GONE;
-            mBinding.bottomTab.setVisibility(bottomTabVisibility);
-            mBinding.drawerShowBtn.setVisibility(bottomTabVisibility);
         }else{
             adapter.setSelectedItem(0);
         }
@@ -180,9 +162,6 @@ public class MainActivity extends AppCompatActivity
         float initialOffset = mBinding.drawerLayout.isLargeScreenMode()
                 ? mBinding.drawerLayout.getDrawerOffset() : 1;
         adapter.setOffset(initialOffset);
-
-        mBinding.drawerHideBtn.setOnClickListener(v -> configureNavigationMode(false));
-        mBinding.drawerShowBtn.setOnClickListener(v -> configureNavigationMode(true));
     }
 
     private void initFragments() {
@@ -239,10 +218,10 @@ public class MainActivity extends AppCompatActivity
         mBinding.drawerLayout.setTitle(fragmentItem.getTitle());
         mBinding.drawerLayout.setSubtitle(fragmentItem.getSubtitle());
 
-        if (fragmentItem.showDrawerModeButton()) {
-            mBinding.drawerHideBtn.setVisibility(VISIBLE);
+        if (fragmentItem.showBottomTab()) {
+            mBinding.bottomTab.show();
         }else{
-            mBinding.drawerHideBtn.setVisibility(GONE);
+            mBinding.bottomTab.hide(false);
         }
 
         if (fragmentItem.showSwitchBar()) {
@@ -267,23 +246,6 @@ public class MainActivity extends AppCompatActivity
         mBackPressedCallback.setEnabled(!isHomeSelected);
 
         return true;
-    }
-
-    private void configureNavigationMode(boolean isDrawerMode){
-        mIsDrawerMode = isDrawerMode;
-        if (isDrawerMode){
-            mBinding.drawerLayout.setDrawerEnabled(true);
-            mBinding.bottomTab.hide();
-            mBinding.drawerShowBtn.setVisibility(GONE);
-            mBinding.drawerLayout.postDelayed(() ->
-                    mBinding.drawerLayout.setNavRailContentPaneResizeOff(false), 400);
-        }else {
-            mBinding.drawerLayout.setNavRailContentPaneResizeOff(true);
-            mBinding.drawerLayout.setDrawerEnabled(false);
-            mBinding.bottomTab.show();
-            mBinding.drawerLayout.postDelayed(() ->
-                    mBinding.drawerShowBtn.setVisibility(VISIBLE), 400);
-        }
     }
 
     private void configureImmersiveMode(boolean immersiveMode){
