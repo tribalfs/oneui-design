@@ -51,6 +51,10 @@ class WidgetsFragment : AbsBaseFragment(R.layout.fragment_widgets) {
             seslSetFillHorizontalPaddingEnabled(true)
             seslSetGoToTopEnabled(true)
         }
+
+        binding.bottomTip.setOnLinkClickListener {
+            semToast("More details clicked!")
+        }
     }
 
     private val listener =

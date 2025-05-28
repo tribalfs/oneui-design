@@ -13,8 +13,6 @@
         android:background="?android:colorBackground"
         android:clipToPadding="false"
         android:paddingHorizontal="10dp"
-        app:edgeInsetLeft="10dp"
-        app:edgeInsetRight="10dp"
         app:fillHorizontalPadding="true"
         android:scrollbarStyle="outsideOverlay"
         tools:visibility="visible" />

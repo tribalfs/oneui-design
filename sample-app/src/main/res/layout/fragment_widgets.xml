@@ -229,6 +229,7 @@
         <include layout="@layout/relative_links_card_layout" />
 
         <dev.oneuiproject.oneui.widget.BottomTipView
+            android:id="@+id/bottomTip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:linkText="More details"
