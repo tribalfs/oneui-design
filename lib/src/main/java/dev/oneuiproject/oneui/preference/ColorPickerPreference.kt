@@ -95,7 +95,7 @@ class ColorPickerPreference @JvmOverloads constructor(
         mValue = color
 
         addRecentColor(color)
-        setPreviewColor()
+        notifyChanged()
     }
 
     override fun onPreferenceClick(preference: Preference): Boolean {
