@@ -1,0 +1,45 @@
+name: Publish OneUI Design Package
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'manifest.gradle'
+
+jobs:
+  check-and-publish:
+    env:
+      GH_USERNAME: ${{ secrets.GH_USERNAME }}
+      GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Check if oneui-design version changed
+        id: check_oneui
+        run: |
+          # Get the previous commit hash on main
+          PREV_COMMIT=$(git rev-parse HEAD^)
+          # Extract the oneui-design line from both versions
+          OLD_LINE=$(git show $PREV_COMMIT:manifest.gradle | grep '"oneui-design"')
+          NEW_LINE=$(grep '"oneui-design"' manifest.gradle)
+          echo "Old: $OLD_LINE"
+          echo "New: $NEW_LINE"
+          if [ "$OLD_LINE" != "$NEW_LINE" ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Publish to GitHub Packages
+        if: steps.check_oneui.outputs.changed == 'true'
+        run: ./gradlew publishAllPublicationsToGitHubPackagesRepository

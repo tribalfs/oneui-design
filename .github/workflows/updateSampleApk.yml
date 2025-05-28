@@ -1,0 +1,62 @@
+name: Build and Commit APK
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'manifest.gradle'
+
+jobs:
+  check-and-publish:
+    env:
+      GH_USERNAME: ${{ secrets.GH_USERNAME }}
+      GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Check if sample-app version changed
+        id: check_sample_app
+        run: |
+          PREV_COMMIT=$(git rev-parse HEAD^)
+          OLD_LINE=$(git show $PREV_COMMIT:manifest.gradle | grep '"sample-app"')
+          NEW_LINE=$(grep '"sample-app"' manifest.gradle)
+          echo "Old: $OLD_LINE"
+          echo "New: $NEW_LINE"
+          if [ "$OLD_LINE" != "$NEW_LINE" ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Grant execute permission for gradlew
+        if: steps.check_sample_app.outputs.changed == 'true'
+        run: chmod +x ./gradlew
+
+      - name: Build debug APK
+        if: steps.check_sample_app.outputs.changed == 'true'
+        run: ./gradlew assembleDebug
+
+      - name: Find generated APK path
+        id: apk_path
+        if: steps.check_sample_app.outputs.changed == 'true'
+        run: |
+          APK_PATH=$(find . -name "*.apk" | grep debug | head -n 1)
+          echo "apk_path=$APK_PATH" >> $GITHUB_OUTPUT
+
+      - name: Commit and push APK
+        if: steps.check_sample_app.outputs.changed == 'true'
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: update debug APK [skip ci]"
+          file_pattern: ${{ steps.apk_path.outputs.apk_path }}
+          branch: main
