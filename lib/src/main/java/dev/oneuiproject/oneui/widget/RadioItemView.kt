@@ -3,14 +3,18 @@
 package dev.oneuiproject.oneui.widget
 
 import android.content.Context
+import android.os.Build
 import android.text.SpannableString
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SeslCheckedTextView
 import androidx.core.content.withStyledAttributes
 import androidx.core.view.isVisible
 import dev.oneuiproject.oneui.design.R
+import dev.oneuiproject.oneui.utils.SemTouchFeedbackAnimator
 
 class RadioItemView @JvmOverloads constructor(
     context: Context,
@@ -32,6 +36,9 @@ class RadioItemView @JvmOverloads constructor(
     private var checkedTextView: SeslCheckedTextView
     private var topDivider: View
     private var onCheckedChangeListener: OnCheckedChangeListener? = null
+
+    @RequiresApi(29)
+    private lateinit var semTouchFeedbackAnimator: SemTouchFeedbackAnimator
 
     /**
      *  Show divider on top. True by default
@@ -82,11 +89,22 @@ class RadioItemView @JvmOverloads constructor(
                 }
             }
         }
+
+        if (Build.VERSION.SDK_INT >= 29) {
+            semTouchFeedbackAnimator = SemTouchFeedbackAnimator(this)
+        }
     }
 
     override fun setChecked(checked: Boolean) {
         if (isChecked == checked) return
         super.setChecked(checked)
         onCheckedChangeListener?.onCheckedChanged(this, isChecked)
+    }
+
+    override fun dispatchTouchEvent(motionEvent: MotionEvent): Boolean {
+        if (Build.VERSION.SDK_INT >= 29) {
+            semTouchFeedbackAnimator.animate(motionEvent)
+        }
+        return super.dispatchTouchEvent(motionEvent)
     }
 }

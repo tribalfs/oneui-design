@@ -2,16 +2,13 @@
 
 package dev.oneuiproject.oneui.widget
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.Rect
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.Log
-import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -21,8 +18,6 @@ import android.view.autofill.AutofillValue
 import android.widget.LinearLayout
 import androidx.annotation.IdRes
 import androidx.annotation.RequiresApi
-import androidx.appcompat.animation.SeslRecoilAnimator
-import androidx.appcompat.graphics.drawable.SeslRecoilDrawable
 import androidx.core.content.withStyledAttributes
 import androidx.core.view.isVisible
 import dev.oneuiproject.oneui.design.R
@@ -61,9 +56,6 @@ class RadioItemViewGroup @JvmOverloads constructor(
     // to sanitize autofill requests.
     private var initialCheckedId = View.NO_ID
 
-    private var mItemBackgroundHolder: ItemBackgroundHolder? = null
-    private var mRecoilAnimatorHolder: SeslRecoilAnimator.Holder? = null
-
     init {
         orientation = VERTICAL
         // RadioGroup is important by default, unless app developer overrode attribute.
@@ -92,10 +84,6 @@ class RadioItemViewGroup @JvmOverloads constructor(
 
         super.setOnHierarchyChangeListener(passThroughListener)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            mItemBackgroundHolder = ItemBackgroundHolder()
-            mRecoilAnimatorHolder = SeslRecoilAnimator.Holder(context)
-        }
     }
 
     private fun findChildViewUnder(view: View, x: Int, y: Int): View? {
@@ -159,55 +147,6 @@ class RadioItemViewGroup @JvmOverloads constructor(
 
         return childUnder
     }
-
-    @SuppressLint("NewApi")
-    override fun dispatchKeyEvent(keyEvent: KeyEvent): Boolean {
-        if (keyEvent.keyCode == 66) {
-            if (keyEvent.action == 0) {
-                val focusedChild = focusedChild
-                if (focusedChild != null) {
-                    mRecoilAnimatorHolder?.setPress(focusedChild)
-                }
-            } else {
-                mRecoilAnimatorHolder?.setRelease()
-            }
-        }
-        return super.dispatchKeyEvent(keyEvent)
-    }
-
-
-    @SuppressLint("NewApi")
-    override fun dispatchTouchEvent(motionEvent: MotionEvent): Boolean {
-        val action = motionEvent.action
-        when (action) {
-            MotionEvent.ACTION_DOWN, MOTION_EVENT_ACTION_PEN_DOWN -> {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    findClickableChildUnder(motionEvent)?.let {
-                        mItemBackgroundHolder?.setPress(it)
-                        mRecoilAnimatorHolder?.setPress(it)
-                    }
-                }
-            }
-
-            MotionEvent.ACTION_UP, MOTION_EVENT_ACTION_PEN_UP -> {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    mItemBackgroundHolder?.setRelease()
-                    mRecoilAnimatorHolder?.setRelease()
-                }
-            }
-
-            MotionEvent.ACTION_CANCEL -> {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    mItemBackgroundHolder?.setCancel()
-                    mRecoilAnimatorHolder?.setRelease()
-                }
-            }
-
-            else -> Unit
-        }
-        return super.dispatchTouchEvent(motionEvent)
-    }
-
 
     override fun setOnHierarchyChangeListener(listener: OnHierarchyChangeListener) {
         // the user listener is delegated to our pass-through listener
@@ -540,35 +479,6 @@ class RadioItemViewGroup @JvmOverloads constructor(
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.Q)
-    class ItemBackgroundHolder {
-        var activeBg: Drawable? = null
-
-        fun setCancel() {
-            if (activeBg != null) {
-                if (activeBg is SeslRecoilDrawable) {
-                    (activeBg as SeslRecoilDrawable).setCancel()
-                } else {
-                    activeBg!!.setState(IntArray(0))
-                }
-                this.activeBg = null
-            }
-        }
-
-        fun setPress(view: View) {
-            setRelease()
-            val background = view.background
-            this.activeBg = background
-            background?.setState(intArrayOf(android.R.attr.state_pressed))
-        }
-
-        fun setRelease() {
-            if (activeBg != null) {
-                activeBg!!.setState(IntArray(0))
-                activeBg = null
-            }
-        }
-    }
     companion object {
         private const val LOG_TAG: String = "RadioItemViewGroup"
 
