@@ -14,14 +14,14 @@ apply from: "manifest.gradle"
  * `read:packages` scope at https://github.com/settings/tokens/new and then
  * add it to any of the following:
  * <ul>
- *      <li>Add `githubUsername` and `githubAccessToken` to Global Gradle Properties</li>
- *      <li>Set `GITHUB_USERNAME` and `GITHUB_ACCESS_TOKEN` in your environment variables</li>
+ *      <li>Add `ghUsername` and `ghAccessToken` to Global Gradle Properties</li>
+ *      <li>Set `GH_USERNAME` and `GH_ACCESS_TOKEN` in your environment variables</li>
  *      <li>Create a `github.properties` file in your project folder with the following content:</li>
  * </ul>
  *
  * <pre>
- *   githubUsername=&lt;YOUR_GITHUB_USERNAME&gt;
- *   githubAccessToken=&lt;YOUR_GITHUB_ACCESS_TOKEN&gt;
+ *   ghUsername=&lt;YOUR_GITHUB_USERNAME&gt;
+ *   ghAccessToken=&lt;YOUR_GITHUB_ACCESS_TOKEN&gt;
  * </pre>
  */
 def githubProperties = new Properties().with {
@@ -29,14 +29,14 @@ def githubProperties = new Properties().with {
     if (file?.exists()) file.withInputStream { load(it) }
     it
 }
-def githubUsername = githubProperties.getProperty("githubUsername") // github.properties file
-        ?: rootProject.findProperty("githubUsername") // Global Gradle Properties
-        ?: System.getenv("GITHUB_USERNAME") // Environment variable
+def githubUsername = githubProperties.getProperty("ghUsername") // github.properties file
+        ?: rootProject.findProperty("ghUsername") // Global Gradle Properties
+        ?: System.getenv("GH_USERNAME") // Environment variable
         ?: { throw new GradleException("GitHub username not found") }()
 
-def githubAccessToken = githubProperties.getProperty("githubAccessToken") // github.properties file
-        ?: rootProject.findProperty("githubAccessToken") // Global Gradle Properties
-        ?: System.getenv("GITHUB_ACCESS_TOKEN") // Environment variable
+def githubAccessToken = githubProperties.getProperty("ghAccessToken") // github.properties file
+        ?: rootProject.findProperty("ghAccessToken") // Global Gradle Properties
+        ?: System.getenv("GH_ACCESS_TOKEN") // Environment variable
         ?: { throw new GradleException("GitHub access token not found") }()
 
 

@@ -1,6 +1,6 @@
 ext {
     // Library version.
-    lib_version = "0.5.14+oneui6"
+    lib_version = "0.6.0+oneui6"
 
     // Sample App version.
     sample_version_code = 1
