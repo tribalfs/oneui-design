@@ -3,6 +3,8 @@ name: Publish Dokka Docs
 on:
   push:
     branches: [main]
+    paths:
+      - 'oneui-design/**'
 
 jobs:
   publish:
