@@ -27,10 +27,10 @@ dependencies {
   //sesl and other dependencies
 
   //For OneUI 7 - must use sesl7 dependencies
-  implementation("io.github.tribalfs:oneui-design:0.6.1+oneui7")
+  implementation("io.github.tribalfs:oneui-design:0.6.2+oneui7")
     
   //For OneUI 6 - must use sesl6 dependencies
-  implementation("io.github.tribalfs:oneui-design:0.5.14+oneui6")
+  implementation("io.github.tribalfs:oneui-design:0.6.0+oneui6")
 }
 ```
 
@@ -43,11 +43,11 @@ dependencies {
         <!-- This enables your app to apply the OneUI device's color pallete.
          Note: android:value corresponds to the filename of the xml file
          that needs to be added to the res/xml folder. Filename can be different.-->
-<meta-data
-android:name="theming-meta"
-android:value="meta_998_sesl_app" />
+        <meta-data
+            android:name="theming-meta"
+            android:value="meta_998_sesl_app" />
 
-        </application>
+</application>
 ```
 
 - Create theme mata data xml file (e.g. meta_998_sesl_app.xml) with the following content and add it to the app's res/xml folder:
@@ -61,10 +61,11 @@ android:value="meta_998_sesl_app" />
   </AppMetaData>
 </ThemeMetaData>
 ```
-- <a href="https://tribalfs.github.io/oneui-design/">API docs(wip)</a>
+- <a href="https://tribalfs.github.io/oneui-design/">API documentation (WIP)</a>
 
 ### Sample apps
 - <a href="https://github.com/tribalfs/oneui-design/tree/main/sample-app"> OneUI7 Sample (widgets showcase)</a> | <a href="https://github.com/tribalfs/oneui-design/raw/main/sample-app/release/sample-app-release.apk">Download APK</a>
+- <a href="https://github.com/tribalfs/oneui-design/tree/oneui6/sample-app"> OneUI6 Sample (widgets showcase)</a> | <a href="https://github.com/tribalfs/oneui-design/raw/oneui6/sample-app/release/sample-app-release.apk">Download APK</a>
 - <a href="https://github.com/tribalfs/Stargazers">Stargazers (OneUI6)</a>
 
 ### Credits
