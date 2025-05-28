@@ -212,11 +212,16 @@ class RelativeLinksCard @JvmOverloads constructor(
             }
         }
 
+    /**
+     * Removes all links from the card.
+     * The card title remains unchanged.
+     */
     fun clearLinks() {
         if (linkContainer.childCount < 2) return
         linkContainer.removeViews(1, linkContainer.childCount - 1)
     }
 
+    /** Shows or hides the top divider of the card. */
     var showTopDivider: Boolean
         get() = topDivider?.isVisible == true
         set(value) {
@@ -231,13 +236,20 @@ class RelativeLinksCard @JvmOverloads constructor(
             addView(topDivider, 0)
         }
     }
-    companion object {
-        private const val TAG = "RelativeLinksCard"
+
+    private companion object {
+        const val TAG = "RelativeLinksCard"
     }
 
 }
 
 
+/**
+ * Data class representing a relative link.
+ * Used to add or replace links in [RelativeLinksCard]
+ * @param title The title of the link.
+ * @param onClick The click listener for the link.
+ */
 data class RelativeLink(
     @JvmField
     val title: CharSequence,
@@ -246,12 +258,24 @@ data class RelativeLink(
 )
 
 
+/**
+ * Add multiple relative links to the card.
+ *
+ * @param relativeLinks Vararg of [RelativeLink] objects to be added.
+ * @see [replaceLinks]
+ */
 inline fun RelativeLinksCard.addLinks(vararg relativeLinks: RelativeLink) {
     relativeLinks.forEach {
         addLink(it.title, it.onClick)
     }
 }
 
+/**
+ * Clears all existing links and adds the new links.
+ *
+ * @param relativeLinks The links to replace the existing ones.
+ * @see addLinks
+ */
 inline fun RelativeLinksCard.replaceLinks(vararg relativeLinks: RelativeLink) {
     clearLinks()
     addLinks(*relativeLinks)

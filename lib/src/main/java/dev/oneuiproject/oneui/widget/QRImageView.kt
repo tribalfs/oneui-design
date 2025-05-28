@@ -10,10 +10,76 @@ import androidx.annotation.ColorInt
 import androidx.annotation.IntRange
 import androidx.annotation.Px
 import androidx.core.content.withStyledAttributes
+import androidx.core.graphics.toColorInt
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.qr.QREncoder
-import androidx.core.graphics.toColorInt
 
+/**
+ * An [ImageView] subclass that displays a QR code.
+ *
+ * This view renders a QR code based on the provided content and allows for
+ * customization of its appearance.
+ * - `qrContent`: The content to be encoded in the QR code.
+ * - `qrBackgroundColor`: The background color of the QR code.
+ * - `qrForegroundColor`: The foreground color of the QR code.
+ * - `qrIcon`: An icon to be displayed at the center of the QR code.
+ * - `qrRoundedFrame`: Whether the QR code should have a rounded frame.
+ * - `qrSize`: The size of the QR code in pixels.
+ * - `qrTintAnchor`: Whether the anchor points of the QR code should be tinted with the foreground color.
+ * - `qrTintFrame`: Whether the frame of the QR code should be tinted with the foreground color.
+ *
+ * **Important:** To apply changes made to these properties programmatically after the
+ * view has been initially displayed, you must call [invalidate] to show the changes.
+ * If `qrSize` is changed, calling [requestLayout] before [invalidate] may also be necessary
+ * to ensure the view's dimensions are correctly updated
+ * # Example usage:
+ * **1. XML Layout:**
+ * ```xml
+ * <dev.oneuiproject.oneui.widget.QRImageView
+ *    android:id="@+id/qr_image_1"
+ *    android:layout_width="wrap_content"
+ *    android:layout_height="wrap_content"
+ *    app:qrIcon="@mipmap/ic_launcher"
+ *    app:qrContent="https://github.com/tribalfs/sesl-androidx"/>
+ * ```
+ * **2. Programmatically:**
+ * ```kotlin
+ * // In your Activity or Fragment
+ * // Instantiate a QRImageView
+ * val qrImageView = QRImageView(context).apply {
+ *      layoutParams = ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+ *      // Set mandatory content equivalent to app:qrContent
+ *      setContent("Hello, OneUI!")
+ *      // Customize size equivalent to app:qrSize
+ *      setSize(300)
+ *      // Equivalent to app:qrForegroundColor
+ *      setForegroundColor(Color.parseColor("#3DDC84"))
+ *      // Equivalent to app:qrBackgroundColor
+ *      setBackgroundColor(Color.WHITE)
+ *      // Equivalent to app:qrIcon
+ *      setIcon(ContextCompat.getDrawable(context, R.drawable.my_icon))
+ *      // Equivalent to app:qrRoundedFrame
+ *      setRoundedFrame(true)
+ *      // Equivalent to app:qrTintAnchor
+ *      tintAnchor(false)
+ *  }
+ *
+ *  // Add to your layout
+ *  yourLinearLayout.addView(qrImageView)
+ *
+ *  // To update content later:
+ *  qrImageView.setContent("New QR Data")
+ *  qrImageView.invalidate()
+ *  ```
+ * @param context The Context the view is running in, through which it can access the
+ * current theme, resources, etc.
+ * @param attrs (Optional) The attributes of the XML tag that is inflating the view.
+ * @param defStyleAttr (Optional) An attribute in the current theme that contains a
+ * reference to a style resource that supplies default values for the view.
+ * @param defStyleRes (Optional) A resource identifier of a style resource that
+ * supplies default values for the view, used only if defStyleAttr is not provided
+ * or cannot be found in the theme.
+ */
 @RemoteView
 class QRImageView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null,
@@ -55,21 +121,16 @@ class QRImageView @JvmOverloads constructor(
     }
 
     private fun updateImage(){
-        val qrEncoder = QREncoder(context, content ?: "")
-            .apply {
-                if (size != -1) {
-                    setSize(size)
-                }
-                setIcon(icon)
-                roundedFrame(roundedFrame)
-                setBackgroundColor(bgColor)
-                setForegroundColor(fgColor, tintAnchor, tintFrame)
-            }
+        val qrEncoder = QREncoder(context, content ?: "").apply {
+            if (size != -1) setSize(size)
+            setIcon(icon)
+            roundedFrame(roundedFrame)
+            setBackgroundColor(bgColor)
+            setForegroundColor(fgColor, tintAnchor, tintFrame)
+        }
         regenerate = false
         //This internally calls super.invalidate()
-        setImageBitmap(
-            qrEncoder.generate()
-        )
+        setImageBitmap(qrEncoder.generate())
     }
 
     /**
@@ -189,6 +250,10 @@ class QRImageView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Invalidates the view. This is required to be invoked when any properties of the QR code have been changed
+     * (e.g., content, icon, size, colors) to reflect the changes visually.
+     */
     override fun invalidate(){
         if (regenerate) {
             updateImage()

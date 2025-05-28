@@ -21,6 +21,19 @@ import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.updateStat
  * Extension of [CoordinatorLayout]  which automatically hides the status bar based
  * on the display size and orientation and dynamically updates the side margins
  * of the specified child views.
+ *
+ * @param context The Context the view is running in, through which it can access the
+ * current theme, resources, etc.
+ * @param attrs (Optional) The attributes of the XML tag that is inflating the view.
+ * @param defStyleAttr (Optional) An attribute in the current theme that contains a
+ * reference to a style resource that supplies default values for the view.
+ * @param defStyleRes (Optional) A resource identifier of a style resource that
+ * supplies default values for the view, used only if defStyleAttr is not provided
+ * or cannot be found in the theme.
+ *
+ * @see configureAdaptiveMargin
+ * @see MARGIN_PROVIDER_ADP_DEFAULT
+ * @see MARGIN_PROVIDER_ZERO
  */
 open class AdaptiveCoordinatorLayout @JvmOverloads constructor(
     context: Context,
@@ -28,11 +41,22 @@ open class AdaptiveCoordinatorLayout @JvmOverloads constructor(
     defStyleAttr: Int = androidx.coordinatorlayout.R.attr.coordinatorLayoutStyle,
 ) : CoordinatorLayout(context, attrs, defStyleAttr) {
 
+    /**
+     * Data class to store the side margin parameters for child views.
+     *
+     * @property sideMargin The side margin value in pixels.
+     * @property matchParent Whether the child view should match the parent's width.
+     */
     data class SideMarginParams(
         @JvmField @Px var sideMargin: Int,
         @JvmField var matchParent: Boolean = true
     )
 
+    /**
+     * Interface for providing side margin parameters to [AdaptiveCoordinatorLayout].
+     * Can be used to implement custom logic for determining the side margins
+     * of child views.
+     */
     fun interface MarginProvider {
         fun getSideMarginParams(context: Context): SideMarginParams
     }
@@ -44,11 +68,22 @@ open class AdaptiveCoordinatorLayout @JvmOverloads constructor(
     private val activity by lazy(LazyThreadSafetyMode.NONE) { context.appCompatActivity }
 
     /**
-     * Provide a custom implementation of [MarginProvider] to be used
-     * for determining the side margins of the specified [childViews].
+     * This function allows you to define custom logic for calculating
+     * side margins for specified [childViews] within this layout.
+     *
+     * When this function is called:
+     * - Any previously applied adaptive margins on the `childViews` (or views
+     * that were previously part of `adaptiveMarginViews` but are not in the
+     * new `childViews` set) are restored to their initial values.
+     * - The `adaptiveMarginViews` set is updated with the new `childViews`.
      *
      * @param provider The custom [MarginProvider] implementation to use.
-     * @param childViews The childViews to apply the side margins to.
+     * To remove adaptive margins entirely for these views, you might
+     * pass `null` for `childViews` or use [MARGIN_PROVIDER_ZERO]
+     * if you want them to match parent with zero margins.
+     * @param childViews The set of child [View]s to apply the side margins to.
+     * If `null`, previously tracked views will have their margins restored,
+     * and no new views will be tracked for adaptive margins.
      */
     fun configureAdaptiveMargin(provider: MarginProvider?, childViews: Set<View>?) {
         restoreMargins(childViews)
@@ -67,7 +102,7 @@ open class AdaptiveCoordinatorLayout @JvmOverloads constructor(
      * @param provider The custom [MarginProvider] implementation to use.
      * @param childView The childView to apply the side margins to.
      */
-   inline fun configureAdaptiveMargin(provider: MarginProvider?, childView: View) {
+    inline fun configureAdaptiveMargin(provider: MarginProvider?, childView: View) {
         configureAdaptiveMargin(provider, setOf(childView))
     }
 
@@ -166,6 +201,17 @@ open class AdaptiveCoordinatorLayout @JvmOverloads constructor(
     companion object{
         private const val TAG = "ADPCoordinatorLayout"
 
+        /**
+         * Default margin provider for adaptive layout.
+         *
+         * The margin is calculated based on the screen width and height:
+         * - If screen width < 589dp, margin is 0.
+         * - If screen height > 411dp and screen width <= 959dp, margin is 5% of screen width.
+         * - If screen width >= 960dp and screen height <= 1919dp, margin is 12.5% of screen width.
+         * - If screen width >= 1920dp, margin is 25% of screen width.
+         *
+         * The view width will be set to MATCH_PARENT if screen width >= 589dp.
+         */
         @JvmField
         val MARGIN_PROVIDER_ADP_DEFAULT = MarginProvider { context ->
             val widthXInsets = context.windowWidthNetOfInsets
@@ -190,6 +236,7 @@ open class AdaptiveCoordinatorLayout @JvmOverloads constructor(
             )
         }
 
+        /** A [MarginProvider] that provides zero side margins and match_parent width. */
         @JvmField
         val MARGIN_PROVIDER_ZERO = MarginProvider { _ -> SideMarginParams(0, true) }
     }

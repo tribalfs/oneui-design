@@ -31,6 +31,36 @@ import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
 import dev.oneuiproject.oneui.utils.SemTouchFeedbackAnimator
 import kotlinx.coroutines.Runnable
 
+/**
+ * A custom view that displays a title, summary, and a switch.
+ * This view can be used to represent a setting or option that can be toggled on or off.
+ *
+ * The SwitchItemView supports the following custom attributes:
+ * - `app:title`: The main text displayed in the view.
+ * - `app:summaryOn`: The summary text displayed when the switch is checked.
+ * - `app:summaryOff`: The summary text displayed when the switch is unchecked.
+ * - `app:separateSwitch`: Whether to separate the click and check change events.
+ *       If true, the switch can be clicked independently of the rest of the view.
+ * - `app:showTopDivider`: Whether to display a divider line above the view.
+ * - `app:showBottomDivider`: Whether to display a divider line below the view.
+ * - `app:userUpdatableSummary`: Whether the summary text color should change based on the switch state.
+ *
+ * # Example usage:
+ * ```xml
+ * <dev.oneuiproject.oneui.widget.SwitchItemView
+ *     android:id="@+id/my_switch_item"
+ *     android:layout_width="match_parent"
+ *     android:layout_height="wrap_content"
+ *     app:title="Enable Feature"
+ *     app:summaryOn="Feature is enabled"
+ *     app:summaryOff="Feature is disabled"
+ *     android:checked="true" />;
+ * ```
+
+ * @param context The Context the view is running in, through which it can access the current theme, resources, etc.
+ * @param attrs The attributes of the XML tag that is inflating the view.
+ * @param defStyleAttr An attribute in the current theme that contains a reference to a style resource that supplies default values for the view. Can be 0 to not look for defaults.
+ */
 class SwitchItemView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -54,15 +84,17 @@ class SwitchItemView @JvmOverloads constructor(
     private lateinit var semTouchFeedbackAnimator: SemTouchFeedbackAnimator
 
     /**
-     * @param viewId The view id of SwitchItemView
-     * @param checked
+     * Function lambda that is called when the checked state of the switch changes.
+     *
+     * @param viewId The ID of the SwitchItemView whose switch state changed.
+     * @param checked True if the switch is now checked, false otherwise.
      */
     var onCheckedChangedListener: ((viewId: Int, checked: Boolean) -> Unit)? = null
 
     /**
-     *  Makes click and check change events separate. Allows you to register
-     *  separate callbacks for click and check change events.
-     *  false by default.
+     *  Makes click and check change events separate.
+     *  This allows you to register separate callbacks for click and check change events.
+     *  `false` by default.
      */
     var separateSwitch: Boolean
         get() = verticalDivider.isVisible
@@ -73,8 +105,11 @@ class SwitchItemView @JvmOverloads constructor(
             }
         }
 
+
     /**
-     *  Show divider on top. True by default
+     * Whether to show a divider at the top of the item.
+     *
+     * Default value is `true`.
      */
     var showTopDivider: Boolean
         get() = dividerViewTop?.isVisible == true
@@ -84,7 +119,9 @@ class SwitchItemView @JvmOverloads constructor(
         }
 
     /**
-     *  Show divider at the bottom. False by default
+     * Whether to show a divider at the bottom of the item.
+     *
+     * Default value is `false`.
      */
     var showBottomDivider: Boolean
         get() = dividerViewBottom?.isVisible == true
@@ -109,6 +146,10 @@ class SwitchItemView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * The summary for the switch when it's checked.
+     * If the value is null, the summary view will be hidden.
+     */
     var summaryOn: CharSequence? = null
         set(value) {
             if (field != value) {
@@ -117,6 +158,12 @@ class SwitchItemView @JvmOverloads constructor(
             }
         }
 
+    /**
+     * The summary to be displayed when the switch is OFF.
+     * Setting this value updates the summary text if the switch is OFF, otherwise it will be
+     * updated when the switch state changes.
+     * To set the same summary for both states, use [setSummary].
+     */
     var summaryOff: CharSequence? = null
         set(value) {
             if (field != value) {
@@ -133,6 +180,9 @@ class SwitchItemView @JvmOverloads constructor(
         summaryOff = summary
     }
 
+    /**
+     * The title of the switch item.
+     */
     var title: CharSequence?
         get() = titleView.text?.toString()
         set(value) {
@@ -141,10 +191,16 @@ class SwitchItemView @JvmOverloads constructor(
             }
         }
 
+    /**
+     * Sets the title of this item using a [SpannableString]
+     *
+     * @param value The [SpannableString] to set as title.
+     */
     fun setTitle(value: SpannableString) {
         titleView.text = value
     }
 
+    /** Returns whether the Switch is checked. */
     var isChecked: Boolean
         get() = switchView.isChecked
         set(checked) {
@@ -152,6 +208,7 @@ class SwitchItemView @JvmOverloads constructor(
             switchView.isChecked = checked
         }
 
+    /** Shows a badge on the right of the title. */
     var showBadge: Boolean
         get() = badgeFrame?.isVisible == true
         set(value) {

@@ -10,6 +10,15 @@ import androidx.core.content.withStyledAttributes
 /**
  * Custom LinearLayout that you can set a check state
  * and propagates this state to its checkable children
+ *
+ * @param context The Context the view is running in, through which it can access the
+ * current theme, resources, etc.
+ * @param attrs (Optional) The attributes of the XML tag that is inflating the view.
+ * @param defStyleAttr (Optional) An attribute in the current theme that contains a
+ * reference to a style resource that supplies default values for the view.
+ * @param defStyleRes (Optional) A resource identifier of a style resource that
+ * supplies default values for the view, used only if defStyleAttr is not provided
+ * or cannot be found in the theme.
  */
 @SuppressLint("ResourceType")
 open class CheckableLinearLayout @JvmOverloads constructor(

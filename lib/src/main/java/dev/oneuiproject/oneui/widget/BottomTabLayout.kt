@@ -57,12 +57,21 @@ import com.google.android.material.R as materialR
  * - Supports up to 4 visible tabs, with additional items accessible through an overflow menu.
  * - Customizable appearance with attributes for minimum side margin and menu resource.
  * - Integrates with [GridMenuDialog] for displaying overflow items in a grid layout.
- * - Handles visibility animations (slide up/down) for a smooth user experience.
+ * - Supports visibility animations (slide up/down) .
  * - Supports badges on tabs and overflow items to indicate notifications or updates.
- * - Persists its state, including the visibility of the grid dialog, across configuration changes.
  *
- * @param context The context in which the view is operating.
- * @param attrs The attributes of the XML tag that is inflating the view.
+ * ## Example usage:
+ * ```xml
+ * <dev.oneuiproject.oneui.widget.BottomTabLayout
+ *     android:layout_width="match_parent"
+ *     android:layout_height="wrap_content"
+ *     app:layout_location="footer"
+ *     app:menu="@menu/menu_bottom_tabs"/>
+ * ```
+ *
+ * @param context The Context the view is running in, through which it can access the
+ * current theme, resources, etc.
+ * @param attrs (Optional) The attributes of the XML tag that is inflating the view.
  */
 @SuppressLint("NewApi", "RestrictedApi")
 class BottomTabLayout(
@@ -97,6 +106,19 @@ class BottomTabLayout(
         addOnTabSelectedListener(this)
     }
 
+    /**
+     * A custom [MenuBuilder] for the [BottomTabLayout].
+     *
+     * This class extends [MenuBuilder] to provide specific functionality for managing menu items
+     * within the [BottomTabLayout].
+     *
+     * @param context The context in which the menu is operating.
+     * @param onItemsChanged A callback function to be invoked when the menu items change.
+     * The `structureChanged` parameter indicates whether the structure
+     * of the menu (e.g., number of items, order) has changed.
+     *
+     * @see setBadge
+     */
     class BottomTabLayoutMenu(
         context: Context,
         private var onItemsChanged: ((structureChanged: Boolean) -> Unit)? = null
@@ -177,6 +199,15 @@ class BottomTabLayout(
         post(requestLayoutRunnable)
     }
 
+    /**
+     * Inflates a menu resource into this BottomTabLayout.
+     *
+     * This method clears any existing tabs and populates the layout with items from the specified menu resource.
+     * It also sets up an optional listener for menu item clicks.
+     *
+     * @param menuResId The resource ID of the menu to inflate.
+     * @param onMenuItemClicked An optional listener to be notified when a menu item is clicked.
+     */
     fun inflateMenu(
         @MenuRes menuResId: Int,
         onMenuItemClicked: MenuItem.OnMenuItemClickListener? = null
@@ -430,8 +461,21 @@ class BottomTabLayout(
         }
     }
 
+    /**
+     * Applies a show or hide animation to the BottomTabLayout.
+     *
+     * @param show `true` to show the BottomTabLayout, `false` to hide it.
+     * @see show
+     * @see hide
+     */
     inline fun applyAnimation(show: Boolean) = if (show) show() else hide()
 
+    /**
+     * Shows the BottomTabLayout.
+     *
+     * @param animate `true` to animate the appearance (slide up), `false` to show it immediately.
+     * Defaults to `true`.
+     */
     @JvmOverloads
     fun show(animate: Boolean = true) {
         if (animate) {
@@ -441,6 +485,12 @@ class BottomTabLayout(
         }
     }
 
+    /**
+     * Hides the BottomTabLayout.
+     *
+     * @param animate True to animate the transition, false to hide immediately.
+     * Defaults to true.
+     */
     @JvmOverloads
     fun hide(animate: Boolean = true) {
         if (animate) {
@@ -451,6 +501,15 @@ class BottomTabLayout(
     }
 
 
+    /**
+     * Sets whether this [BottomTabLayout] should block focus for its descendants.
+     *
+     * When focus is blocked, this view group will prevent its descendant views from receiving focus.
+     * This can be useful in scenarios where you want to temporarily disable interaction with the
+     * tabs.
+     *
+     * @param block `true` to block descendant focus, `false` to allow descendant focus.
+     */
     fun blockFocus(block: Boolean) {
         setDescendantFocusability(if (block) FOCUS_BLOCK_DESCENDANTS else FOCUS_AFTER_DESCENDANTS)
     }
@@ -475,12 +534,22 @@ class BottomTabLayout(
         }
     }
 
+    /**
+     * Refreshes the BottomTabLayout's visibility and clears any badges.
+     *
+     * @param show `true` to make the BottomTabLayout visible, `false` to hide it.
+     */
     fun refresh(show: Boolean) {
         isVisible = show
         clearBadge()
         invalidate()
     }
 
+    /**
+     * Selects the tab at the specified position.
+     *
+     * @param position The position of the tab to select.
+     */
     fun setTabSelected(position: Int) {
         val tabCount = tabCount
         for (i in 0 until tabCount) {
@@ -499,18 +568,43 @@ class BottomTabLayout(
         Log.w(TAG, "setTabSelected:  $position is an invalid position.")
     }
 
+    /**
+     * Sets a badge on a specific menu item.
+     *
+     * @param itemId The ID of the menu item to set the badge on.
+     * @param badge The [Badge] to display on the menu item.
+     * @see BottomTabLayoutMenu.setBadge
+     */
     fun setItemBadge(itemId: Int, badge: Badge) = menu.setBadge(itemId, badge)
 
+    /**
+     * Sets the enabled state of a menu item.
+     *
+     * @param itemId The ID of the menu item to update.
+     * @param enabled `true` to enable the item, `false` to disable it.
+     */
     fun setItemEnabled(itemId: Int, enabled: Boolean){
         menu.findItem(itemId)?.setEnabled(enabled)
             ?: Log.w(TAG, "setItemEnabled: ${context.resources.getResourceEntryName(itemId)} item id is invalid.")
     }
 
+    /**
+     * Sets the visibility of a menu item in the BottomTabLayout.
+     *
+     * @param itemId The resource ID of the menu item to modify.
+     * @param visible `true` to make the item visible, `false` to make it invisible.
+     */
     fun setItemVisible(itemId: Int, visible: Boolean){
         menu.findItem(itemId)?.setVisible(visible)
             ?: Log.w(TAG, "`setItemVisible`, ${context.resources.getResourceEntryName(itemId)} item id is invalid.")
     }
 
+    /**
+     * Finds a tab by its ID.
+     *
+     * @param tabId The ID of the tab to find.
+     * @return The [Tab] with the specified ID, or `null` if not found.
+     */
     fun findTab(tabId: Int): Tab? {
         for (i in 0 until tabCount) {
             val tab = getTabAt(i)
@@ -533,6 +627,14 @@ class BottomTabLayout(
 
     override fun onTabReselected(tab: Tab) = Unit
 
+    /**
+     * Sets a listener to be notified when a menu item is clicked.
+     *
+     * This listener will be invoked when a tab representing a menu item is selected
+     * or when an item in the overflow [GridMenuDialog] is clicked.
+     *
+     * @param onMenuItemClickedListener The listener to set.
+     */
     fun setOnMenuItemClickListener(onMenuItemClickedListener: MenuItem.OnMenuItemClickListener){
         this.itemClickedListener = onMenuItemClickedListener
     }
@@ -576,10 +678,10 @@ class BottomTabLayout(
         //No op
     }
 
-    companion object{
-        private const val TAG = "BottomTabLayout"
-        private const val ABOUT_TO_HIDE = 1
-        private const val ABOUT_TO_SHOW = 2
-        private const val TRANSIENT_NONE = 0
+    private companion object{
+        const val TAG = "BottomTabLayout"
+        const val ABOUT_TO_HIDE = 1
+        const val ABOUT_TO_SHOW = 2
+        const val TRANSIENT_NONE = 0
     }
 }

@@ -30,8 +30,6 @@ import androidx.core.graphics.toColorInt
  * A Preference that allows the user to pick a color.
  * The color is stored as an integer.
  *
- * This preference will store an [Int] into the SharedPreferences.
- *
  * @param context The Context this preference is associated with.
  * @param attrs The attributes of the XML tag that is inflating the preference.
  * @param defStyleAttr An attribute in the current theme that contains a reference to a style resource

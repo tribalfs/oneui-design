@@ -45,8 +45,45 @@ import kotlin.LazyThreadSafetyMode.NONE
 import kotlin.math.abs
 
 /**
- * Extension of [SeslIndexScrollView] with auto-hide feature
- * and supports RTL
+ * An extension of [SeslIndexScrollView] that adds an auto-hide feature for the index bar,
+ * supports multiple [OnIndexBarEventListener]s, and provides full RTL (right-to-left) layout support.
+ *
+ * This view is designed to be used alongside a [RecyclerView] to display an index bar
+ * (typically for fast scrolling through large lists) at the side of the [RecyclerView].
+ *
+ * This view adds the following features:
+ * - Automatically hides and shows the index bar based on user interaction and scroll state.
+ * - Allows registration of multiple [OnIndexBarEventListener]s for handling index bar events.
+ * - Fully supports RTL layouts for languages that require it.
+ *
+ * ## Example usage:
+ * ```xml
+ *  <dev.oneuiproject.oneui.widget.RoundedFrameLayout
+ *      android:layout_width="match_parent"
+ *      android:layout_height="match_parent"
+ *      tools:viewBindingIgnore="true">
+ *
+ *      <dev.oneuiproject.oneui.widget.AutoHideIndexScrollView
+ *          android:layout_width="match_parent"
+ *          android:layout_height="match_parent"
+ *          app:autoHide="true"
+ *          app:textMode="true"
+ *          android:layout_marginHorizontal="10dp"/>
+ *
+ *      <androidx.recyclerview.widget.RecyclerView
+ *          android:layout_width="match_parent"
+ *          android:layout_height="match_parent"
+ *          android:paddingHorizontal="10dp"
+ *          android:background="?android:colorBackground" />
+ *  </dev.oneuiproject.oneui.widget.RoundedFrameLayout>
+ * ```
+ * @param context The Context the view is running in, through which it can access the
+ * current theme, resources, etc.
+ * @param attrs (Optional) The attributes of the XML tag that is inflating the view.
+ *
+ * @see setAutoHide
+ * @see addOnIndexEventListener
+ * @see removeOnIndexEventListener
  */
 class AutoHideIndexScrollView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
@@ -213,6 +250,12 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Add a listener that will be notified of any changes in "section index", "pressed", or "released" events for the index bar.
+     * @param listener The listener that will be notified.
+     * @see OnIndexBarEventListener
+     * @see removeOnIndexEventListener
+     */
     fun addOnIndexEventListener(listener: OnIndexBarEventListener){
         if (indexEventListeners == null) {
             indexEventListeners = mutableSetOf(listener)
@@ -221,6 +264,12 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
         indexEventListeners?.add(listener)
     }
 
+    /**
+     * Unregisters the callback to be invoked when the index has been changed or pressed/released.
+     * Multiple listeners can be added and will be called in the order they are added
+     * @param listener The listener to remove
+     * @see addOnIndexEventListener
+     */
     fun removeOnIndexEventListener(listener: OnIndexBarEventListener) {
         indexEventListeners?.forEach {
             if (it == listener) {
@@ -287,6 +336,11 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Whether the index scrollbar autohides or not.
+     * Default is true.
+     * @attr ref dev.oneuiproject.oneui.design.R.styleable#AutoHideIndexScrollView_autoHide
+     */
     fun setAutoHide(autoHide: Boolean){
         if (this.autoHide == autoHide) return
         setAutoHideInternal(autoHide)
@@ -318,11 +372,7 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
         return alphabeticIndex.buildImmutableIndex().toSet().map { it.toString() }.toTypedArray()
     }
 
-    private enum class AppBarState{
-        COLLAPSED,
-        LITTLE_EXPANDED,
-        SUBSTANTIALLY_EXPANDED
-    }
+    private enum class AppBarState{ COLLAPSED, LITTLE_EXPANDED, SUBSTANTIALLY_EXPANDED }
 
     private var topMargin = 0
     private var bottomMargin = 0
@@ -440,8 +490,8 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
         return 0
     }
 
-    companion object{
-        private var sSetVisibility: Int = -1
-        private const val TAG = "AutoHideIndexScrollView"
+    private companion object{
+        var sSetVisibility: Int = -1
+        const val TAG = "AutoHideIndexScrollView"
     }
 }

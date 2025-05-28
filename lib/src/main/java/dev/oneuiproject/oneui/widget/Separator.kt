@@ -6,6 +6,21 @@ import android.view.View.MeasureSpec.makeMeasureSpec
 import android.widget.TextView
 import androidx.appcompat.R as appcompatR
 
+/**
+ * This widget is a TextView that can be used to visually separate sections of content.
+ * This is typically used to separate groups of rounded-corner views in a list.
+ *
+ * @param context The Context the view is running in, through which it can
+ *        access the current theme, resources, etc.
+ * @param attrs The attributes of the XML tag that is inflating the view.
+ * @param defStyleAttr An attribute in the current theme that contains a
+ *        reference to a style resource that supplies default values for
+ *        the view. Can be 0 to not look for defaults.
+ * @param defStyleRes A resource identifier of a style resource that
+ *        supplies default values for the view, used only if
+ *        defStyleAttr is 0 or can not be found in the theme. Can be 0
+ *        to not look for defaults.
+ */
 class Separator @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

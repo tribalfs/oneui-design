@@ -24,6 +24,12 @@ import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isLandscape
  *
  * This class provides a mechanism to customize the tab dimensions through the
  * [setCustomTabDimen] method, allowing for flexible layout adjustments.
+ *
+ * @param context The Context the view is running in, through which it can access the
+ * current theme, resources, etc.
+ * @param attrs (Optional) The attributes of the XML tag that is inflating the view.
+ * @param defStyleAttr (Optional) An attribute in the current theme that contains a
+ * reference to a style resource that supplies default values for the view.
  */
 open class MarginsTabLayout @JvmOverloads constructor(
     context: Context,

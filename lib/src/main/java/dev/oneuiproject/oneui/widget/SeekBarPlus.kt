@@ -5,11 +5,25 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.PorterDuff
 import android.util.AttributeSet
+import android.util.Log
 import androidx.appcompat.widget.SeslSeekBar
 import androidx.core.content.withStyledAttributes
 import dev.oneuiproject.oneui.design.R
 import androidx.core.graphics.withTranslation
+import androidx.appcompat.widget.SeslProgressBar as SeslProgressBar
 
+/**
+ * A SeekBar that has a center based mode and seamless mode by default.
+ * The seamless mode allows the thumb to be draggable seamlessly
+ *
+ * @attr ref dev.oneuiproject.oneui.design.R.styleable#SeekBarPlus_centerBasedBar
+ * @attr ref dev.oneuiproject.oneui.design.R.styleable#SeekBarPlus_seamless
+ *
+ * @see centerBasedBar
+ * @see setSeamless
+ * @see setMode
+ *
+ */
 class SeekBarPlus @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
@@ -37,9 +51,6 @@ class SeekBarPlus @JvmOverloads constructor(
             if (centerBasedBar) setMode(MODE_LEVEL_BAR)
         }
         progressTintMode = PorterDuff.Mode.SRC
-        // This will make the view animate with recoil anim
-        // when inside SeslLinearLayoutCompat
-        isClickable = true
     }
 
     override fun performHapticFeedback(feedbackConstant: Int): Boolean {
@@ -75,6 +86,34 @@ class SeekBarPlus @JvmOverloads constructor(
             super.drawTickMarks(canvas)
         }
     }
+    /**
+     * Gets the current mode of the SeekBar.
+     *
+     * @return The current mode.
+     * @see setMode
+     */
     @SuppressLint("RestrictedApi")
     fun getCurrentMode(): Int = mCurrentMode
+
+    /**
+     * Set the current mode. Ensure to set [centerBasedBar] to `false` first before invoking this.
+     * Otherwise, the passed value will be ignored.
+     *
+     * Supported modes:
+     * - [MODE_STANDARD][SeslProgressBar.MODE_STANDARD]: For progress selection; shows no tick mark.
+     * - [MODE_EXPAND][SeslProgressBar.MODE_EXPAND]: Similar to MODE_STANDARD but with thicker track.
+     * - [MODE_LEVEL_BAR][SeslProgressBar.MODE_LEVEL_BAR]: For levels selection; shows tick marks on selectable levels.
+     * - [MODE_DUAL_COLOR][SeslProgressBar.MODE_DUAL_COLOR]: Similar MODE_EXPAND but shows dual colors which can be use to indicate a warning range
+     * - [MODE_VERTICAL][SeslProgressBar.MODE_VERTICAL]: For vertical progress selection; shows no tick mark.
+     * - [MODE_EXPAND_VERTICAL][SeslProgressBar.MODE_EXPAND_VERTICAL]:  Similar to MODE_VERTICAL but with thicker track.
+     *
+     * @param mode the mode to set.
+     */
+    override fun setMode(mode: Int) {
+        if (centerBasedBar) {
+            Log.w("SeekBarPlus", "Ensure to set `centerBasedBar` to false first before invoking setMode()." )
+            return
+        }
+        super.setMode(mode)
+    }
 }

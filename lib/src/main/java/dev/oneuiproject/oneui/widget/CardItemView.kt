@@ -28,6 +28,32 @@ import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
 import dev.oneuiproject.oneui.utils.SemTouchFeedbackAnimator
 
+/**
+ * A custom view that displays a card item with a title, summary, icon, and dividers.
+ * It is designed to be used as a row item in a list or similar container.
+ *
+ * Features:
+ * - Displays a title and summary.
+ * - Optionally displays an icon on the left.
+ * - Optionally displays top and bottom dividers.
+ * - Supports showing a badge on the right.
+ *
+ * ## Example usage:
+ * ```xml
+ * <dev.oneuiproject.oneui.widget.CardItemView
+ *     android:layout_width="match_parent"
+ *     android:layout_height="wrap_content"
+ *     app:title="Card Title"
+ *     app:summary="Card summary text."
+ *     app:icon="@drawable/ic_some_icon"
+ *     app:showTopDivider="true"
+ *     app:showBottomDivider="true" />
+ * ```
+ *
+ * @param context The Context the view is running in, through which it can access the
+ * current theme, resources, etc.
+ * @param attrs (Optional) The attributes of the XML tag that is inflating the view.
+ */
 class CardItemView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -97,6 +123,9 @@ class CardItemView @JvmOverloads constructor(
             updateLayoutParams()
         }
 
+    /**
+     * The title of the card item.
+     */
     var title: CharSequence?
         get() = titleTextView.text
         set(value) {
@@ -104,6 +133,10 @@ class CardItemView @JvmOverloads constructor(
             titleTextView.text = value
         }
 
+    /**
+     * The summary for the item.
+     * This will be shown below the title.
+     */
     var summary: CharSequence?
         get() = summaryTextView.text
         set(value) {
@@ -112,6 +145,7 @@ class CardItemView @JvmOverloads constructor(
             summaryTextView.text = value
         }
 
+    /** The icon to be displayed in the card item view. */
     var icon: Drawable?
         get() = iconImageView?.drawable
         set(value) {
@@ -121,6 +155,7 @@ class CardItemView @JvmOverloads constructor(
             updateLayoutParams()
         }
 
+    /** Whether to show a badge on this card item. */
     var showBadge: Boolean
         get() = badgeFrame?.isVisible == true
         set(value) {
@@ -232,6 +267,12 @@ class CardItemView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Returns the icon ImageView.
+     * This method inflates the icon view if not yet inflated before returning it.
+     *
+     * @return The ImageView used to display the icon, or null if no icon is set.
+     */
     fun getIconImageView(): ImageView {
         ensureInflatedIconView()
         return iconImageView!!
@@ -250,6 +291,12 @@ class CardItemView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Register a callback to be invoked when this view is clicked. If this view is not
+     * clickable, it becomes clickable.
+     *
+     * @param l The [View.OnClickListener] that will be invoked
+     */
     override fun setOnClickListener(l: OnClickListener?) {
         containerView.setOnClickListener {
             if (isEnabled) {

@@ -268,8 +268,8 @@ class ScrollAwareFloatingActionButton @JvmOverloads constructor(
     override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
     override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
 
-    companion object {
-        private const val TAG = "ScrollAwareFAB"
-        private const val SCROLL_DELTA = 4f
+    private companion object {
+        const val TAG = "ScrollAwareFAB"
+        const val SCROLL_DELTA = 4f
     }
 }

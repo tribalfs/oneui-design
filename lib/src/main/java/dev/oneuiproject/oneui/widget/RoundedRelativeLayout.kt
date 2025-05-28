@@ -9,7 +9,28 @@ import dev.oneuiproject.oneui.delegates.ViewRoundedCorner
 import dev.oneuiproject.oneui.delegates.ViewRoundedCornerDelegate
 
 /**
- * [RelativeLayout]  which rounded corners can be set.
+ * [RelativeLayout] which rounded corners and edge insets can be set.
+ *
+ * ## Example usage:
+ *```xml
+ * <dev.oneuiproject.oneui.widget.RoundedRelativeLayout
+ *         android:layout_width="match_parent"
+ *         android:layout_height="match_parent"
+ *         app:roundedCorners="all">
+ *
+ *        <!-- child views -->
+
+ * </dev.oneuiproject.oneui.widget.RoundedRelativeLayout>
+ * ```
+ * @param context The Context the view is running in, through which it can access the
+ * current theme, resources, etc.
+ * @param attrs (Optional) The attributes of the XML tag that is inflating the view.
+ * @param defStyleAttr (Optional) An attribute in the current theme that contains a
+ * reference to a style resource that supplies default values for the view.
+ * @param defStyleRes (Optional) A resource identifier of a style resource that
+ * supplies default values for the view, used only if defStyleAttr is not provided
+ * or cannot be found in the theme.
+ *
  * @see roundedCorners
  * @see roundedCornersColor
  * @see edgeInsets

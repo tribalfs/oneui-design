@@ -11,7 +11,27 @@ import dev.oneuiproject.oneui.delegates.ViewRoundedCornerDelegate
 import dev.oneuiproject.oneui.delegates.ViewRoundedCorner
 
 /**
- * [NestedScrollView]  which rounded corners can be set.
+ * [NestedScrollView] which rounded corners and edge insets can be set.
+ *
+ * ## Example usage:
+ *```xml
+ * <dev.oneuiproject.oneui.widget.RoundedNestedScrollView
+ *         android:layout_width="match_parent"
+ *         android:layout_height="match_parent"
+ *         app:roundedCorners="all"
+ *         android:paddingHorizontal="10dp"
+ *         app:fillHorizontalPadding="true">
+ *
+ *        <!-- child view -->
+
+ * </dev.oneuiproject.oneui.widget.RoundedNestedScrollView>
+ * ```
+ * @param context The Context the view is running in, through which it can access the
+ * current theme, resources, etc.
+ * @param attrs (Optional) The attributes of the XML tag that is inflating the view.
+ * @param defStyleAttr (Optional) An attribute in the current theme that contains a
+ * reference to a style resource that supplies default values for the view.
+ *
  * @see roundedCorners
  * @see roundedCornersColor
  * @see edgeInsets

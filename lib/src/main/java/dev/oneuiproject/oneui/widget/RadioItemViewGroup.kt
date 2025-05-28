@@ -23,6 +23,22 @@ import androidx.core.view.isVisible
 import dev.oneuiproject.oneui.design.R
 
 
+/**
+ * A [ViewGroup] that displays a set of [RadioItemView]s vertically.
+ *
+ * This layout arranges its children in a single vertical column.
+ * The [RadioItemView]s within this group are mutually exclusive; selecting one
+ * [RadioItemView] will automatically deselect any previously selected item.
+ *
+ * This behavior is similar to a standard `RadioGroup` but is designed specifically
+ * for custom [RadioItemView] instances.
+ *
+ * @param context The Context the view is running in, through which it can
+ * access the current theme, resources, etc.
+ * @param attrs The attributes of the XML tag that is inflating the view.
+ *
+ * @see RadioItemView
+ */
 class RadioItemViewGroup @JvmOverloads constructor(
     private val context: Context,
     attrs: AttributeSet? = null

@@ -12,6 +12,17 @@ import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceViewHolder
 import dev.oneuiproject.oneui.design.R
 
+/**
+ * A PreferenceCategory that provides a custom height and rounded corners.
+ * It is used to create a visual separation between groups of preferences.
+ * The height can be customized using the `app:height` attribute in XML or by calling the `setHeight()` method.
+ * The rounded corners can be customized using the `app:roundedCorners` attribute in XML.
+ *
+ * Example usage in XML:
+ * ```xml
+ * <dev.oneuiproject.oneui.preference.InsetPreferenceCategory />
+ * ```
+ */
 class InsetPreferenceCategory @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null

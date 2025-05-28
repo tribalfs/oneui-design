@@ -20,21 +20,47 @@ import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.widget.internal.SelectableAnimatedDrawable
 
 /**
- * A custom [LinearLayout] designed to be used as a selectable item within a
- * [RecyclerView][androidx.recyclerview.widget.RecyclerView]. This layout provides
- * functionality to display OneUI-styled action mode and check mode (for selected state) indicators.
- * The latter indicator can be either a [CheckBox] or an animated check overlay drawable.
+ * A custom [LinearLayout] designed to be used as a selectable item of a
+ * [recyclerview][androidx.recyclerview.widget.RecyclerView]. This layout provides
+ * functionality to display OneUI-styled action mode and check mode (for selected state) indicators
+ * on recyclerview items. The check mode can be either a [CheckBox] or an animated check overlay drawable.
  *
  * The check mode can be set using the `app:checkMode` attribute.
- * - When `app:checkMode:checkBox` is set, `app:checkableButtonSpacing` attribute
+ * - `app:checkMode:"checkBox"`: When this is set, `app:checkableButtonSpacing` attribute
  * can also be set to adjust the spacing (in pixels) between the [CheckBox] and the content.
- * - When `app:checkMode:overlayCircle` is set, `app:cornerRadius` attribute
+ * - `app:checkMode:"overlayCircle"`: When this is set, `app:cornerRadius` attribute
  * can also be set to adjust the corner radius of the check drawable overlay. This
  * can also be set dynamically using [setOverlayCornerRadius].
  *
  *  This view also supports highlighting when selected for additional visual distinction.
  *  A custom highlight color can be set using the `app:selectedHighlightColor` attribute.
  *  This color is set to `#08000000` by default.
+ *
+ * ## Example usage:
+ * ```xml
+ * <dev.oneuiproject.oneui.widget.SelectableLinearLayout
+ *     android:layout_width="match_parent"
+ *     android:layout_height="?android:listPreferredItemHeight"
+ *     android:animateLayoutChanges="true"
+ *     android:background="?listChoiceBackgroundIndicator"
+ *     android:gravity="center_vertical"
+ *     android:orientation="horizontal"
+ *     android:paddingStart="?android:listPreferredItemPaddingStart"
+ *     android:paddingEnd="?android:listPreferredItemPaddingEnd"
+ *     app:checkMode="checkBox">
+ *
+ *     <!-- Child views -->
+ *
+ * </dev.oneuiproject.oneui.widget.SelectableLinearLayout>
+ * ```
+ * @param context The Context the view is running in, through which it can access the
+ * current theme, resources, etc.
+ * @param attrs (Optional) The attributes of the XML tag that is inflating the view.
+ * @param defStyleAttr (Optional) An attribute in the current theme that contains a
+ * reference to a style resource that supplies default values for the view.
+ * @param defStyleRes (Optional) A resource identifier of a style resource that
+ * supplies default values for the view, used only if defStyleAttr is not provided
+ * or cannot be found in the theme.
  */
 class SelectableLinearLayout @JvmOverloads constructor(
     context: Context,
@@ -156,9 +182,9 @@ class SelectableLinearLayout @JvmOverloads constructor(
         }
     }
 
-    companion object{
-        private const val TAG = "SelectableLinearLayout"
-        private const val CHECK_MODE_CHECKBOX = 0
-        private const val CHECK_MODE_OVERLAY = 1
+    private companion object{
+        const val TAG = "SelectableLinearLayout"
+        const val CHECK_MODE_CHECKBOX = 0
+        const val CHECK_MODE_OVERLAY = 1
     }
 }

@@ -144,7 +144,10 @@ class TipPopup(parentView: View, mode: Mode) {
     private val verticalTextMargin= resources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_balloon_message_margin_vertical)
 
     /**
-     * Choose either [NORMAL] or [TRANSLUCENT].
+     * The visual style of the TipPopup.
+     *
+     * [NORMAL] displays the popup with a solid background color by default.
+     * [TRANSLUCENT] displays the popup with a translucent background.
      */
     enum class Mode{
         NORMAL,
@@ -152,6 +155,7 @@ class TipPopup(parentView: View, mode: Mode) {
     }
 
     /**
+     * The direction of the arrow of the TipPopup.
      * Choose either [BOTTOM_LEFT], [BOTTOM_RIGHT], [DEFAULT], [TOP_LEFT] or [TOP_RIGHT].
      */
     enum class Direction{
@@ -168,26 +172,44 @@ class TipPopup(parentView: View, mode: Mode) {
         BALLOON_CUSTOM
     }
 
+    /**
+     * The state of the pop-up.
+     * - [DISMISSED]: The pop-up is not showing.
+     * - [EXPANDED]: The pop-up is showing with the message and action button.
+     * - [HINT]: The pop-up is showing as a hint icon.
+     */
     enum class State{
         DISMISSED,
         EXPANDED,
         HINT
     }
 
+    /**
+     * Interface definition for a callback to be invoked when a [TipPopup] is dismissed.
+     */
     fun interface OnDismissListener {
         fun onDismiss()
     }
 
+    /**
+     * Interface definition for a callback to be invoked when the state of the TipPopup changes.
+     * The state can be [State.DISMISSED], [State.EXPANDED], or [State.HINT].
+     */
     fun interface OnStateChangeListener {
         fun onStateChanged(i: State)
     }
 
+    /**
+     * Sets a listener to receive callbacks when the pop-up changes state.
+     *
+     * @param changeListener The listener to set.
+     */
     fun setOnStateChangeListener(changeListener: OnStateChangeListener?) {
         onStateChangeListener = changeListener
     }
 
     init {
-        debugLog("mDisplayMetrics = $displayMetrics")
+        debugLog("displayMetrics = $displayMetrics")
 
         context.withStyledAttributes(null, R.styleable.TipPopup) {
             backgroundColor = getColor(R.styleable.TipPopup_tipPopupBackgroundColor, Color.BLACK)
@@ -409,6 +431,12 @@ class TipPopup(parentView: View, mode: Mode) {
         }
     }
 
+    /**
+     * Sets the state of the tip popup.
+     *
+     * @param expanded True to set the state to [State.EXPANDED], false to set the state
+     * to [State.HINT] and apply a scale margin.
+     */
     fun setExpanded(expanded: Boolean) {
         if (expanded) {
             state = State.EXPANDED
@@ -418,6 +446,13 @@ class TipPopup(parentView: View, mode: Mode) {
         scaleMargin = resources.getDimensionPixelSize(R.dimen.oui_des_tip_popup_scale_margin)
     }
 
+    /**
+     * Set a custom position for the pop-up on the screen.
+     * Use with caution.
+     *
+     * @param x The absolute X coordinate of the desired position.
+     * @param y The absolute Y coordinate of the desired position.
+     */
     fun setTargetPosition(x: Int, y: Int) {
         if (x < 0 || y < 0) {
             return
@@ -427,6 +462,11 @@ class TipPopup(parentView: View, mode: Mode) {
         arrowPositionY = y
     }
 
+    /**
+     * Set the hint description.
+     *
+     * @param hintDescription The description to set.
+     */
     fun setHintDescription(hintDescription: CharSequence?) {
         this@TipPopup.hintDescription = hintDescription
     }
