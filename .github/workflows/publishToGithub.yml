@@ -43,3 +43,14 @@ jobs:
       - name: Publish to GitHub Packages
         if: steps.check_oneui.outputs.changed == 'true'
         run: ./gradlew publishAllPublicationsToGitHubPackagesRepository
+
+      - name: Build documentation
+        if: steps.check_oneui.outputs.changed == 'true'
+        run: ./gradlew dokkaGeneratePublicationHtml
+
+      - name: Publish to GitHub Pages
+        if: steps.check_oneui.outputs.changed == 'true'
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          BRANCH: gh-pages
+          FOLDER: lib/build/dokka/html

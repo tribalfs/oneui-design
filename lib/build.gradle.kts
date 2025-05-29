@@ -1,3 +1,5 @@
+import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -47,17 +49,30 @@ val dokkaHtmlJar by tasks.registering(Jar::class) {
 }
 
 dokka {
+    moduleName.set(rootProject.name)
+    dokkaPublications.html {
+        suppressObviousFunctions.set(true)
+        failOnWarning.set(true)
+        suppressInheritedMembers.set(true)
+    }
+
     dokkaSourceSets.main {
+        sourceRoots.from(file("src"))
+        skipDeprecated.set(true)
+        displayName.set(name)
+        reportUndocumented.set(true)
+        documentedVisibilities.set(setOf(VisibilityModifier.Public))
+
         sourceLink {
-            localDirectory.set(file("src/main/java"))
-            remoteUrl("https://github.com/oneui-design")
+            localDirectory.set(projectDir.resolve("src"))
+            remoteUrl("https://github.com/tribalfs/oneui-design/tree/main/lib/src")
             remoteLineSuffix.set("#L")
         }
 
-        pluginsConfiguration.html {
-            /*customStyleSheets.from("styles.css")
-            customAssets.from("logo.png")*/
-            footerMessage.set("(c) Tribalfs")
+        externalDocumentationLinks{
+            register("sesl.androidx") {
+                url("https://tribalfs.github.io/sesl-androidx/")
+            }
         }
     }
 }
