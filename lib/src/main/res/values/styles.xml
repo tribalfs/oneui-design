@@ -247,6 +247,7 @@
         <item name="android:lineSpacingExtra">4sp</item>
         <item name="android:paddingEnd">?attr/listPreferredItemPaddingStart</item>
         <item name="android:paddingStart">?attr/listPreferredItemPaddingStart</item>
+        <item name="android:textDirection">locale</item>
     </style>
 
     <style name="OneUI.BottomToolTip.Link" parent="@style/Widget.AppCompat.TextView.ListSeparator">
