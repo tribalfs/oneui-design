@@ -334,7 +334,7 @@ class ProgressDialog @JvmOverloads constructor(
     }
 
     private fun onProgressChanged() {
-        if (progressStyle == ProgressStyle.HORIZONTAL) {
+        if (progressStyle == ProgressStyle.HORIZONTAL && !isIndeterminate) {
             coroutineScope.launch {
                 updateProgressTextViews()
             }
