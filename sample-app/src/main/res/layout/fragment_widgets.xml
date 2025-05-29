@@ -138,6 +138,17 @@
                 android:focusable="true"
                 android:text="Button" />
 
+            <Button
+                android:id="@+id/fragment_btn_7"
+                android:theme="@style/OneUI.ContainedTransparentButtonTheme"
+                style="@style/OneUI.ContainedButton"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="Button" />
+
         </dev.oneuiproject.oneui.widget.RoundedLinearLayout>
 
         <dev.oneuiproject.oneui.widget.Separator
@@ -195,10 +206,33 @@
                 app:showTopDivider="false"
                 app:title="CardItemView" />
 
+            <dev.oneuiproject.oneui.widget.CardItemView
+                android:id="@+id/cardItemViewEndDrawable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:drawableEnd="@drawable/ic_keyboard_arrow_right"
+                app:title="CardItemView" />
+
             <dev.oneuiproject.oneui.widget.SwitchItemView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:separateSwitch="true"
+                app:title="SwitchItemView" />
+
+            <dev.oneuiproject.oneui.widget.CardItemView
+                android:id="@+id/cardItemViewIcon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/about_page_avatar_tribalfs"
+                app:fullWidthDivider="true"
+                app:title="CardItemView" />
+
+            <dev.oneuiproject.oneui.widget.SwitchItemView
+                android:id="@+id/switchItemViewIcon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 app:showBottomDivider="true"
+                app:icon="@drawable/about_page_avatar_tribalfs"
                 app:title="SwitchItemView" />
 
             <dev.oneuiproject.oneui.widget.RadioItemViewGroup

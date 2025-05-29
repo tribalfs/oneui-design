@@ -1,5 +1,6 @@
 package dev.oneuiproject.oneuiexample.ui.main.fragments.recyclerview.icons
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -33,6 +34,7 @@ import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchOnActionMode.Concurrent
 import dev.oneuiproject.oneui.utils.ItemDecorRule
 import dev.oneuiproject.oneui.utils.SemItemDecoration
+import dev.oneuiproject.oneui.widget.TipPopup
 import dev.oneuiproject.oneuiexample.ui.main.MainActivity
 import dev.oneuiproject.oneuiexample.ui.main.core.base.AbsBaseFragment
 import dev.oneuiproject.oneuiexample.ui.main.core.util.autoCleared
@@ -53,6 +55,7 @@ class IconsFragment : AbsBaseFragment(R.layout.fragment_icons),
     private val viewModel by viewModels<IconsViewModel>()
     private val parentViewModel by viewModels<RvParentViewModel>( {requireParentFragment()} )
     private lateinit var toolbarLayout: ToolbarLayout
+    private var rvTipView: TipPopup? = null
 
     @Inject
     lateinit var iconsAdapter: IconsAdapter
@@ -76,8 +79,14 @@ class IconsFragment : AbsBaseFragment(R.layout.fragment_icons),
         showTipPopup(
             message = "Long-press item to trigger multi-selection.",
             delayMillis = 1_000,
-            getAnchor = { binding.recyclerView.layoutManager!!.findViewByPosition(2) }
+            getAnchor = { binding.recyclerView.layoutManager!!.findViewByPosition(2) },
+            onCreate = { rvTipView = this }
         )
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+         rvTipView?.update()
     }
 
     private fun observeUIState() {
@@ -229,9 +238,12 @@ class IconsFragment : AbsBaseFragment(R.layout.fragment_icons),
         toolbarLayout.startSearchMode(searchModeListener, SearchModeOnBackBehavior.DISMISS)
     }
 
-    private val menuProvider: MenuProvider = object : MenuProvider {
+    private val menuProvider = object : MenuProvider {
+        private lateinit var menu: Menu
+
         override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
             menuInflater.inflate(R.menu.menu_icons, menu)
+            this.menu = menu
             val menuItemInfo = menu.findItem(R.id.menu_icons_info)
             menuItemInfo.setBadge(Badge.DOT)
         }
@@ -240,7 +252,6 @@ class IconsFragment : AbsBaseFragment(R.layout.fragment_icons),
             when(menuItem.itemId){
                 R.id.menu_icons_info -> {
                     showInfoAlertDialog()
-                    menuItem.clearBadge()
                     return true
                 }
                 R.id.menu_icons_search -> {
@@ -250,13 +261,16 @@ class IconsFragment : AbsBaseFragment(R.layout.fragment_icons),
             }
             return false
         }
+
+        fun findItem(id: Int) = menu.findItem(id)
     }
 
     private fun showInfoAlertDialog(){
         AlertDialog.Builder(requireContext()).apply {
             setMessage("If you're wondering whether these icons are outdated, yes - they're from OneUI 4. " +
                     "Don't ask us why. But let us know if you think you can help update them.")
-            setPositiveButton("OK") { _, _ -> }
+            setPositiveButton("OK") { _, _ ->
+                menuProvider.findItem(R.id.menu_icons_info).clearBadge() }
             show()
         }
     }

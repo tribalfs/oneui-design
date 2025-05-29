@@ -2,6 +2,7 @@ package dev.oneuiproject.oneuiexample.ui.main.fragments.recyclerview.contacts
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.LayoutDirection
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -32,6 +33,8 @@ import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.ktx.enableCoreSeslFeatures
 import dev.oneuiproject.oneui.ktx.hideSoftInput
 import dev.oneuiproject.oneui.ktx.hideSoftInputOnScroll
+import dev.oneuiproject.oneui.ktx.setBadge
+import dev.oneuiproject.oneui.layout.Badge
 import dev.oneuiproject.oneui.layout.ToolbarLayout
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.CLEAR_DISMISS
@@ -44,7 +47,6 @@ import dev.oneuiproject.oneuiexample.ui.main.MainActivity
 import dev.oneuiproject.oneuiexample.ui.main.core.base.AbsBaseFragment
 import dev.oneuiproject.oneuiexample.ui.main.core.util.autoCleared
 import dev.oneuiproject.oneuiexample.ui.main.core.util.launchAndRepeatWithViewLifecycle
-import dev.oneuiproject.oneuiexample.ui.main.core.util.semToast
 import dev.oneuiproject.oneuiexample.ui.main.core.util.showTipPopup
 import dev.oneuiproject.oneuiexample.ui.main.core.util.suggestiveSnackBar
 import dev.oneuiproject.oneuiexample.ui.main.fragments.recyclerview.RvParentViewModel
@@ -114,7 +116,8 @@ class ContactsFragment : AbsBaseFragment(R.layout.fragment_contacts),
                 "I am FAB!",
                 getAnchor = { it },
                 expanded = true,
-                mode = TipPopup.Mode.NORMAL
+                mode = TipPopup.Mode.NORMAL,
+                dismissOnPaused = false
             ) {
                 fabTipPopup = this
                 setBackgroundColorWithAlpha("#9AB65205".toColorInt())
@@ -124,8 +127,8 @@ class ContactsFragment : AbsBaseFragment(R.layout.fragment_contacts),
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        rvTipView?.dismiss(false)
-        fabTipPopup?.dismiss(false)
+        rvTipView?.update()
+        fabTipPopup?.update()
     }
 
     override fun onDestroyView() {
@@ -203,6 +206,10 @@ class ContactsFragment : AbsBaseFragment(R.layout.fragment_contacts),
             launch {
                 viewModel.contactsListStateFlow
                     .collectLatest {
+                        if (it.noItemText.isEmpty()) {
+                            binding.progressBar.isVisible = true
+                            return@collectLatest
+                        }
                         val itemsList = it.itemsList
                         if (itemsList.isNotEmpty()) {
                             updateRecyclerViewVisibility(true, it.noItemText)
@@ -212,6 +219,7 @@ class ContactsFragment : AbsBaseFragment(R.layout.fragment_contacts),
                         }
                         contactsAdapter.submitList(itemsList)
                         contactsAdapter.highlightWord = it.query
+                        binding.progressBar.isVisible = false
                     }
             }
 
@@ -297,11 +305,12 @@ class ContactsFragment : AbsBaseFragment(R.layout.fragment_contacts),
             onSwiped = { position, swipeDirection, _ ->
                 val contact =
                     (contactsAdapter.getItemByPosition(position) as ContactsListItemUiModel.ContactItem).contact
-                if (swipeDirection == START) {
-                    semToast("Messaging ${(contact.name)}... ")
-                }
-                if (swipeDirection == END) {
-                    showCallingProgressDialog(contact.name)
+                if (toolbarLayout.layoutDirection == LayoutDirection.LTR){
+                    if (swipeDirection == START ) showMessagingProgressDialog(contact.name)
+                    if (swipeDirection == END) showCallingProgressDialog(contact.name)
+                } else {
+                    if (swipeDirection == END ) showMessagingProgressDialog(contact.name)
+                    if (swipeDirection == START) showCallingProgressDialog(contact.name)
                 }
                 true
             }
@@ -311,6 +320,19 @@ class ContactsFragment : AbsBaseFragment(R.layout.fragment_contacts),
     private fun showCallingProgressDialog(name: String){
         val dialog = ProgressDialog(requireContext()).apply {
             setMessage("Calling $name...")
+            isIndeterminate = true
+            setProgressStyle(ProgressStyle.HORIZONTAL)
+            show()
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            delay(4_000)
+            dialog.dismiss()
+        }
+    }
+
+    private fun showMessagingProgressDialog(name: String){
+        val dialog = ProgressDialog(requireContext()).apply {
+            setMessage("Sending message to $name...")
             isIndeterminate = false
             setProgressStyle(ProgressStyle.HORIZONTAL)
             show()
@@ -361,6 +383,7 @@ class ContactsFragment : AbsBaseFragment(R.layout.fragment_contacts),
     private val menuProvider = object : MenuProvider {
         override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
             menuInflater.inflate(R.menu.menu_contacts_list, menu)
+            menu.findItem(R.id.menu_contacts_options).setBadge(Badge.DOT)
         }
 
         override fun onMenuItemSelected(menuItem: MenuItem): Boolean {

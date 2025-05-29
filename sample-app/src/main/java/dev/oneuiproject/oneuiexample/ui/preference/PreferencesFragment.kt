@@ -1,10 +1,7 @@
 package dev.oneuiproject.oneuiexample.ui.preference
 
-import android.R.attr.onClick
 import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils.indexOf
-import android.util.Log.i
 import android.view.View
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
@@ -13,9 +10,7 @@ import androidx.preference.EditTextPreference
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SeekBarPreference
 import androidx.preference.SeslSwitchPreferenceScreen
-import androidx.preference.SwitchPreference
 import androidx.preference.SwitchPreferenceCompat
 import com.sec.sesl.tester.R
 import dev.oneuiproject.oneui.ktx.getRelativeLinksCard
@@ -32,9 +27,8 @@ import dev.oneuiproject.oneui.preference.UpdatableWidgetPreference
 import dev.oneuiproject.oneui.widget.RelativeLink
 import dev.oneuiproject.oneui.widget.RelativeLinksCard
 import dev.oneuiproject.oneui.widget.replaceLinks
-import dev.oneuiproject.oneuiexample.data.util.determineDarkMode
+import dev.oneuiproject.oneuiexample.OneUIApp
 import dev.oneuiproject.oneuiexample.ui.about.SampleAboutActivity
-import dev.oneuiproject.oneuiexample.ui.main.core.util.applyDarkMode
 import dev.oneuiproject.oneuiexample.ui.main.core.util.semToast
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -158,15 +152,11 @@ class PreferencesFragment : PreferenceFragmentCompat() {
     }
 
     private fun Preference.applyDarkModePrefs() {
-        val darkMode = with(sharedPreferences!!) {
-            determineDarkMode(getString(PREF_DARK_MODE, "0")!!,
-                getBoolean(PREF_AUTO_DARK_MODE, true))
-        }
-        applyDarkMode(darkMode)
+        (requireContext().applicationContext as OneUIApp).applyDarkModePrefs()
     }
 
     companion object{
-        private const val PREF_AUTO_DARK_MODE = "darkModeAuto"
-        private const val PREF_DARK_MODE = "darkMode"
+        const val PREF_AUTO_DARK_MODE = "darkModeAuto"
+        const val PREF_DARK_MODE = "darkMode"
     }
 }

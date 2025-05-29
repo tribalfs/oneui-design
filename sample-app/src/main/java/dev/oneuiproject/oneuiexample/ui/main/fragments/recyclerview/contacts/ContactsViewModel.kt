@@ -25,7 +25,7 @@ import javax.inject.Inject
 data class ContactsUiState(
     val itemsList: List<ContactsListItemUiModel> = emptyList(),
     val query: String = "",
-    val noItemText: String = "No contacts"
+    val noItemText: String = ""
 )
 
 @HiltViewModel
