@@ -32,12 +32,14 @@ import dev.oneuiproject.oneui.utils.SemTouchFeedbackAnimator
  * A custom view that displays a card item with a title, summary, icon, and dividers.
  * It is designed to be used as a row item in a list or similar container.
  *
- * Features:
- * - Displays a title and summary.
- * - Optionally displays an icon on the left.
- * - Optionally displays top and bottom dividers.
- * - Supports showing a badge on the right.
- * - Supports showing a drawable image at the end
+ * The SwitchItemView supports the following custom attributes among others:
+ * - `app:title`: The main text displayed in the view.
+ * - `app:summary`: The optional summary text displayed in the view.
+ * - `app:showTopDivider`: Whether to display a divider line above the view.
+ * - `app:showBottomDivider`: Whether to display a divider line below the view.
+ * - `app:icon`: The optional drawable displayed at the start of the view.
+ * - `app:iconTint`: The tint color to be applied to icon.
+ * - `app:drawableEnd`: The optional drawable displayed at the end of the view.
  *
  * ## Example usage:
  * ```xml
@@ -345,12 +347,6 @@ class CardItemView @JvmOverloads constructor(
         containerView.isFocusable = focusable
     }
 
-    /**
-     * Register a callback to be invoked when this view is clicked. If this view is not
-     * clickable, it becomes clickable.
-     *
-     * @param l The [View.OnClickListener] that will be invoked
-     */
     override fun setOnClickListener(l: OnClickListener?) {
         containerView.setOnClickListener {
             if (isEnabled) {

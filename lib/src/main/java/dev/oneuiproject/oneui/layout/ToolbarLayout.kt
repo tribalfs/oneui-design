@@ -385,7 +385,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     private var _showSwitchBar = false
 
     /**
-     * The (SeslSwitchbar)[androidx.appcompat.widget.SeslSwitchBar] shown below the app bar.
+     * The [SeslSwitchbar][androidx.appcompat.widget.SeslSwitchBar] shown below the app bar.
      * Invoking this will automatically inflate and add the switch bar to the layout.
      */
     open val switchBar by lazy {
@@ -886,6 +886,18 @@ open class ToolbarLayout @JvmOverloads constructor(
             activateImmersiveScroll(activate, if (VERSION.SDK_INT >= 35) 0.8f else 1f)
         }
 
+    /**
+     * Sets the suggestion view for the AppBarLayout.
+     *
+     * <p>The suggestion view is dedicated for displaying contextual suggestions or actions,
+     * such as quick actions, recommendations, or dynamic content relevant to the current screen.
+     * Unlike [setCustomTitleView] and [customSubtitleView], which permanently replace the title and
+     * subtitle of the toolbar, the suggestion view can be made removable and is intended for transient
+     * or auxiliary content, rather than for primary titles or subtitles.
+     *
+     * @param appBarModel The [AppBarModel] implementation representing the suggested view. If null, any existing
+     * suggestion view will be removed.
+     */
     fun setAppBarSuggestView(appBarModel: AppBarModel<out AppBarView>?){
         collapsingToolbarLayout.seslSetSuggestView(appBarModel)
     }

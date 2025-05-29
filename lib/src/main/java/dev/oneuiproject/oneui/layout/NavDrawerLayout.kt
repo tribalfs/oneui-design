@@ -22,7 +22,6 @@ import dev.oneuiproject.oneui.layout.internal.widget.SemSlidingPaneLayout
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isTabletLayout
 import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout.MarginProvider
 import dev.oneuiproject.oneui.layout.DrawerLayout as OneUIDrawerLayout
-import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout as AdaptiveCoordinatorLayout
 
 /**
  * OneUI-styled layout that implements a DrawerLayout interface on smaller devices and a Navigation Rail interface on larger devices,
@@ -35,7 +34,7 @@ import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout as AdaptiveCoordi
  * Otherwise, layout changes based on screen size will not function correctly.
  *
  * ## XML Attributes
- * The following XML attributes are supported in addition to attributes of [ToolbarLayout]:
+ * The following XML attributes are supported in addition to attributes of [DrawerLayout]:
  *
  * - `app:drawerBackAnimation`: Enable or disable drawer's predictive back animation.
  *       This applies only to api34+. This is set to false by default.
@@ -187,13 +186,12 @@ class NavDrawerLayout @JvmOverloads constructor(
      * (i.e. in DrawerLayout mode).
      *
      * This will override the default behavior provided by
-     * [MARGIN_PROVIDER_ADP_DEFAULT][AdaptiveCoordinatorLayout.MARGIN_PROVIDER_ADP_DEFAULT].
+     * [MARGIN_PROVIDER_ADP_DEFAULT][dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout.MARGIN_PROVIDER_ADP_DEFAULT].
      *
      * @param provider The custom [MarginProvider] implementation to use.
-     * Set [MARGIN_PROVIDER_ADP_DEFAULT][AdaptiveCoordinatorLayout.MARGIN_PROVIDER_ADP_DEFAULT] to restore default.
+     * Set [MARGIN_PROVIDER_ADP_DEFAULT][dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout.MARGIN_PROVIDER_ADP_DEFAULT] to restore default.
      *
-     * @see AdaptiveCoordinatorLayout.MARGIN_PROVIDER_ADP_DEFAULT
-     * @see AdaptiveCoordinatorLayout.MARGIN_PROVIDER_ZERO
+     * @see [dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout.MARGIN_PROVIDER_ZERO]
      * @see setNavRailContentPreferredWidth
      * @see setNavRailContentMinSideMargin
      *

@@ -40,7 +40,7 @@ import kotlinx.coroutines.Runnable
  * A custom view that displays a title, summary, and a switch.
  * This view can be used to represent a setting or option that can be toggled on or off.
  *
- * The SwitchItemView supports the following custom attributes:
+ * The SwitchItemView supports the following custom attributes among others:
  * - `app:title`: The main text displayed in the view.
  * - `app:summaryOn`: The summary text displayed when the switch is checked.
  * - `app:summaryOff`: The summary text displayed when the switch is unchecked.
@@ -49,6 +49,8 @@ import kotlinx.coroutines.Runnable
  * - `app:showTopDivider`: Whether to display a divider line above the view.
  * - `app:showBottomDivider`: Whether to display a divider line below the view.
  * - `app:userUpdatableSummary`: Whether the summary text color should change based on the switch state.
+ * - `app:icon`: The optional icon displayed at the start of the view.
+ * - `app:iconTint`: The tint color to be applied to icon.
  *
  * # Example usage:
  * ```xml

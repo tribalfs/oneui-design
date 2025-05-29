@@ -18,7 +18,7 @@ import dev.oneuiproject.oneui.ktx.dpToPxFactor
 import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
 
 /**
- * OneUI tip item views for on-boarding screens
+ * OneUI tips item view for on-boarding screens
  *
  * @param context The Context the view is running in, through which it can access the
  * current theme, resources, etc.

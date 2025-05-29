@@ -275,6 +275,13 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     override fun applyWindowInsets(insets: WindowInsetsCompat) =
         containerLayout.applyWindowInsets(insets, isImmersiveScroll)
     
+    /**
+     * Enable or disable the drawer.
+     * When the drawer is disabled, the navigation button will be hidden
+     * and the drawer pane will not be accessible.
+     *
+     * @param drawerEnabled True to enable the drawer, false to disable it.
+     */
     open fun setDrawerEnabled(drawerEnabled: Boolean){
         if (this.drawerEnabled == drawerEnabled) return
         this.drawerEnabled = drawerEnabled

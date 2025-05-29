@@ -73,6 +73,28 @@ import dev.oneuiproject.oneui.widget.TipPopup.State.HINT
 import kotlin.math.ceil
 import kotlin.math.floor
 
+/**
+ * This class provides a pop-up window that can be used to display a message, a hint, or an
+ * action button. It can be displayed in two modes: [Mode.NORMAL] and [Mode.TRANSLUCENT].
+ * The pop-up can be shown with an arrow pointing to a specific direction. The arrow can be
+ * positioned at the top-left, top-right, bottom-left, or bottom-right of the pop-up.
+ * The pop-up can be dismissed by tapping outside of it by default, or by calling the [dismiss] method.
+ *
+ * It is possible to set a listener to be notified when the pop-up is dismissed,
+ * or when its state changes from hint to expanded.
+ *
+ * @param parentView The view to which the pop-up will be anchored.
+ * @param mode The mode of the pop-up. See [Mode] for more details.
+ *
+ * @see show
+ * @see update
+ * @see dismiss
+ * @see setListener
+ * @see setTargetPosition
+ * @see setMessage
+ * @see setAction
+ * @see setExpanded
+ */
 class TipPopup(parentView: View, mode: Mode) {
 
     constructor(parentView: View) : this(parentView, Mode.NORMAL)
@@ -353,6 +375,14 @@ class TipPopup(parentView: View, mode: Mode) {
         }
     }
 
+    /**
+     * Shows the pop-up.
+     *
+     * @param direction (Optional) The direction of the arrow.
+     * If not specified, the direction will be calculated based on the position of the parent/anchor view.
+     * @param dismissOnTimeout (Optional) Dismisses the [hint][State.HINT] after
+     * a [timeout][TIMEOUT_DURATION_MS]. Defaults to false.
+     */
     @JvmOverloads
     fun show(direction: Direction = DEFAULT, dismissOnTimeout: Boolean = false) {
         displayMetrics = resources.displayMetrics
@@ -379,10 +409,25 @@ class TipPopup(parentView: View, mode: Mode) {
         calculatePopupPosition()
     }
 
+    /**
+     * Sets the message to display in the expanded pop-up.
+     * If this invoked after [show], the message will be reflected only once
+     * [update] is called.
+     *
+     * @param message The message to set.
+     */
     fun setMessage(message: CharSequence?) {
         messageText = message
     }
 
+    /**
+     * Sets the action button text and listener.
+     * If this invoked after [show], the action params will be reflected only once
+     * [update] is called.
+     *
+     * @param actionText The text to display on the action button.
+     * @param listener The listener to be invoked when the action button is clicked.
+     */
     fun setAction(actionText: CharSequence?, listener: View.OnClickListener?) {
         this@TipPopup.actionText = actionText
         actionClickListener = listener
@@ -398,12 +443,16 @@ class TipPopup(parentView: View, mode: Mode) {
         needToCallParentViewsOnClick = needToCall
     }
 
-    /**
-     * Returns whether the pop-up, either as hint or expanded, is currently showing.
-     */
+    /** Returns whether the pop-up, either as hint or expanded, is currently showing. */
     val isShowing: Boolean
         get() = bubblePopup.isShowing == true || balloonPopup.isShowing == true
 
+    /**
+     * Dismisses the pop-up.
+     *
+     * @param withAnimation True to dismiss with animation, false otherwise.
+     * Default is true.
+     */
     @JvmOverloads
     fun dismiss(withAnimation: Boolean = true) {
         bubblePopup.apply {
@@ -437,11 +486,11 @@ class TipPopup(parentView: View, mode: Mode) {
     }
 
     /**
-     * Set a custom position for the pop-up on the screen.
-     * Use with caution.
+     * Sets a custom position for the arrow of the TipPopup.
+     * Setting a custom position disables the default behavior of anchoring the arrow to the [parentView].
      *
-     * @param x The absolute X coordinate of the desired position.
-     * @param y The absolute Y coordinate of the desired position.
+     * @param x The absolute X coordinate of the desired position for the pop-up's arrow.
+     * @param y The absolute Y coordinate of the desired position for the pop-up's arrow.
      */
     fun setTargetPosition(x: Int, y: Int) {
         if (x < 0 || y < 0) return
@@ -462,9 +511,10 @@ class TipPopup(parentView: View, mode: Mode) {
 
     /**
      * Updates the pop-up's size, position and arrow position if currently showing.
+     * This is typically called on configuration changes of an activity or fragment.
      *
      * @param direction (Optional) The new [Direction] of the arrow.
-     * @param dismissOnTimeout (Optional) Dismisses the hint after
+     * @param dismissOnTimeout (Optional) Dismisses the [hint][State.HINT] after
      * a [timeout][TIMEOUT_DURATION_MS]. Defaults to false.
      */
     @JvmOverloads
@@ -587,6 +637,12 @@ class TipPopup(parentView: View, mode: Mode) {
         iconColor = ColorUtils.setAlphaComponent(color, 255)
     }
 
+    /**
+     * Sets whether the pop-up can be dismissed by tapping outside of it.
+     * This is set to true by default.
+     *
+     * @param enabled True to enable, false to disable.
+     */
     fun setOutsideTouchEnabled(enabled: Boolean) {
         bubblePopup.apply { isFocusable = enabled; isOutsideTouchable = enabled }
         balloonPopup.apply { isFocusable = enabled; isOutsideTouchable = enabled }
