@@ -126,6 +126,7 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
             setIndexBarTextMode(getBoolean(R.styleable.AutoHideIndexScrollView_textMode, true))
             setAutoHideInternal(getBoolean(R.styleable.AutoHideIndexScrollView_autoHide, true))
         }
+        setIndexBarGravityInt(resources.configuration.layoutDirection)
     }
 
     private val rvScrollListener = object : RecyclerView.OnScrollListener() {
@@ -202,7 +203,6 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
                 )
             }
 
-            setIndexBarGravityInt(resources.configuration.layoutDirection)
             addOnScrollListener(rvScrollListener)
             setupEventListener(layoutManager as LinearLayoutManager)
 
