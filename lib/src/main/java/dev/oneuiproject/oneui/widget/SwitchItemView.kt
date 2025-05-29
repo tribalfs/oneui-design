@@ -403,6 +403,13 @@ class SwitchItemView @JvmOverloads constructor(
         postDelayed(responsiveSwitchUpdater, 100)
     }
 
+    /**
+     * Enables or disables the [switch][SwitchCompat] in this [SwitchItemView].
+     *
+     * @param enable Set to `true` to enable the switch, `false` to disable it.
+     */
+    fun setSwitchEnabled(enable: Boolean){ switchView.isEnabled = enable }
+
     override fun dispatchTouchEvent(motionEvent: MotionEvent): Boolean {
         if (Build.VERSION.SDK_INT >= 29) {
             val switchBounds = Rect().apply { switchView.getHitRect(this) }
