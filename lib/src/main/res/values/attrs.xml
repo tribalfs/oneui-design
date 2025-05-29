@@ -256,6 +256,8 @@
         <attr name="showBottomDivider" />
         <!-- Set to true to make top divider extend to cover the icon. False by default-->
         <attr name="fullWidthDivider" format="boolean" />
+        <!-- Drawable to set to the end image view -->
+        <attr name="drawableEnd" format="reference" />
     </declare-styleable>
 
     <attr name="bottomNavigationTextStyle" format="reference"/>

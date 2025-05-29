@@ -37,6 +37,7 @@ import dev.oneuiproject.oneui.utils.SemTouchFeedbackAnimator
  * - Optionally displays an icon on the left.
  * - Optionally displays top and bottom dividers.
  * - Supports showing a badge on the right.
+ * - Supports showing a drawable image at the end
  *
  * ## Example usage:
  * ```xml
@@ -65,6 +66,7 @@ class CardItemView @JvmOverloads constructor(
     private var dividerViewTop: View? = null
     private var dividerViewBottom: View? = null
     private var iconImageView: ImageView? = null
+    private var endImageView: ImageView? = null
     private var badgeFrame: LinearLayout? = null
 
     private var containerLeftPaddingWithIcon: Int = 0
@@ -178,11 +180,9 @@ class CardItemView @JvmOverloads constructor(
             containerLeftPaddingWithIcon = it - 4
         }
 
-        resources.apply {
-            dividerMarginStart = containerLeftPaddingNoIcon
-            dividerMarginStartWithIcon = containerLeftPaddingWithIcon + getDimensionPixelSize(R.dimen.oui_des_cardview_icon_size) +
-                    getDimensionPixelSize(R.dimen.oui_des_cardview_icon_margin_end)
-        }
+        dividerMarginStart = containerLeftPaddingNoIcon
+        dividerMarginStartWithIcon = containerLeftPaddingWithIcon + resources.getDimensionPixelSize(R.dimen.oui_des_cardview_icon_size) +
+                resources.getDimensionPixelSize(R.dimen.oui_des_cardview_icon_margin_end)
 
         inflate(context, R.layout.oui_des_widget_card_item, this)
         containerView = findViewById(R.id.cardview_container)
@@ -233,6 +233,11 @@ class CardItemView @JvmOverloads constructor(
             showBottomDivider = getBoolean(R.styleable.CardItemView_showBottomDivider, false)
             isEnabled = getBoolean(R.styleable.CardItemView_android_enabled, true)
             fullWidthDivider = getBoolean(R.styleable.CardItemView_fullWidthDivider, false)
+
+            if (hasValue(R.styleable.CardItemView_drawableEnd)) {
+                ensureInflatedEndView()
+                endImageView!!.setImageDrawable(getDrawable(R.styleable.CardItemView_drawableEnd))
+            }
         }
     }
 
@@ -243,10 +248,17 @@ class CardItemView @JvmOverloads constructor(
         }
     }
 
+    private fun ensureInflatedEndView(){
+        if (endImageView == null) {
+            endImageView = (findViewById<ViewStub>(R.id.viewstub_end_view).inflate() as ImageView)
+        }
+    }
+
     private fun updateLayoutParams(){
         if (suspendLayoutUpdates) return
 
-        val hasIcon = iconImageView?.isVisible == true && iconImageView?.drawable != null
+        val hasIcon = iconImageView?.drawable != null
+        (iconImageView?.parent as? FrameLayout)?.isVisible = hasIcon
         val desiredPaddingStart = if (hasIcon) containerLeftPaddingWithIcon else containerLeftPaddingNoIcon
 
         containerView.apply {
@@ -268,15 +280,46 @@ class CardItemView @JvmOverloads constructor(
     }
 
     /**
-     * Returns the icon ImageView.
-     * This method inflates the icon view if not yet inflated before returning it.
+     * Retrieves the [ImageView] positioned at the start of this view.
      *
-     * @return The ImageView used to display the icon, or null if no icon is set.
+     * The first invocation to this function inflates and adds the corresponding [ImageView]
+     * that will be returned by this function. This image view is intended for setting an icon
+     * to this view.
+     *
+     * @return The [ImageView] designated for the start icon of this view.
      */
     fun getIconImageView(): ImageView {
         ensureInflatedIconView()
         return iconImageView!!
     }
+
+    /**
+     * Retrieves the [ImageView] positioned at the end of this view.
+     *
+     * The first invocation of this function will inflate and add the corresponding [ImageView]
+     * if it hasn't been already. This ImageView is intended for displaying a drawable
+     * at the end of the view, such as a forward arrow or other indicator.
+     *
+     * @return The [ImageView] designated for the end drawable of this view.
+     */
+    fun getEndImageView(): ImageView {
+        ensureInflatedEndView()
+        return endImageView!!
+    }
+
+    /**
+     * Returns the [TextView] used to display the title.
+     *
+     * @return The [TextView] for the title.
+     */
+    fun getTitleView(): TextView = titleTextView
+
+    /**
+     * Returns the [TextView] that displays the summary text.
+     *
+     * @return The [TextView] for the summary.
+     */
+    fun getSummaryView(): TextView = summaryTextView
 
     override fun setEnabled(enabled: Boolean) {
         if (isEnabled == enabled) return
