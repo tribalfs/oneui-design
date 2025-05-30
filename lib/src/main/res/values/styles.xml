@@ -107,12 +107,11 @@
     </style>
 
     <!-- TipPopup -->
-    <style name="OneUI.TipPopupButtonStyle" parent="@android:style/Widget">
+    <style name="OneUI.TipPopupButtonStyle" parent="@style/OneUI.ButtonStyleTransparent">
         <item name="android:textAppearance">@style/OneUI.TipPopupButtonTextStyle</item>
         <item name="android:background">@drawable/oui_des_tip_popup_btn_borderless</item>
         <item name="android:minWidth">@dimen/oui_des_tip_popup_balloon_button_minwidth</item>
         <item name="android:minHeight">@dimen/oui_des_tip_popup_balloon_button_minheight</item>
-        <item name="android:stateListAnimator">@null</item>
     </style>
 
     <style name="OneUI.TipPopupButtonTextStyle" parent="@style/RobotoMedium">
