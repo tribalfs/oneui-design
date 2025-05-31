@@ -635,7 +635,7 @@ class BottomTabLayout(
      *
      * @param onMenuItemClickedListener The listener to set.
      */
-    fun setOnMenuItemClickListener(onMenuItemClickedListener: MenuItem.OnMenuItemClickListener){
+    fun setOnMenuItemClickListener(onMenuItemClickedListener: MenuItem.OnMenuItemClickListener?){
         this.itemClickedListener = onMenuItemClickedListener
     }
 

@@ -41,8 +41,4 @@
         <item name="timePickerDialogTheme">@style/Theme.AppCompat.PickerDialog.TimePicker</item>
     </style>
 
-    <style name="OneUI.ColoredButtonTheme" parent="@style/Widget.AppCompat.Button">
-        <item name="android:textColor">@color/oui_des_btn_contained_primary_text</item>
-        <item name="colorButtonNormal">@color/oui_des_enabled_disabled_primary_color_selector</item>
-    </style>
 </resources>

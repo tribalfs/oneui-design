@@ -138,16 +138,16 @@ class SwitchItemView @JvmOverloads constructor(
             dividerViewBottom?.isVisible = value
         }
 
-    private fun ensureTopDivider(){
-        if (dividerViewTop == null){
+    private fun ensureTopDivider() {
+        if (dividerViewTop == null) {
             dividerViewTop = LayoutInflater.from(context)
                 .inflate(R.layout.oui_des_widget_card_item_divider, this, false)
             addView(dividerViewTop, 0)
         }
     }
 
-    private fun ensureBottomDivider(){
-        if (dividerViewBottom == null){
+    private fun ensureBottomDivider() {
+        if (dividerViewBottom == null) {
             dividerViewBottom = LayoutInflater.from(context)
                 .inflate(R.layout.oui_des_widget_card_item_divider, this, false)
             addView(dividerViewBottom, childCount)
@@ -183,7 +183,7 @@ class SwitchItemView @JvmOverloads constructor(
     /**
      * Sets both the [summaryOn] and [summaryOff]
      */
-    fun setSummary(summary: String?){
+    fun setSummary(summary: String?) {
         summaryOn = summary
         summaryOff = summary
     }
@@ -221,7 +221,7 @@ class SwitchItemView @JvmOverloads constructor(
         get() = badgeFrame?.isVisible == true
         set(value) {
             if (value) {
-                if (badgeFrame == null){
+                if (badgeFrame == null) {
                     badgeFrame = (findViewById<ViewStub>(R.id.viewstub_badge_frame).inflate() as LinearLayout)
                 }
                 badgeFrame!!.isVisible = true
@@ -310,17 +310,17 @@ class SwitchItemView @JvmOverloads constructor(
         }
 
         contentFrame.setOnClickListener {
-            if (isClickable){
+            if (isClickable) {
                 if (!separateSwitch) {
                     switchView.performClick()
-                }else{
+                } else {
                     super.callOnClick()
                 }
             }
         }
 
         switchView.apply {
-            setOnClickListener {v ->
+            setOnClickListener { v ->
                 (v as SwitchCompat).isChecked.let { b ->
                     this.isChecked = b
                 }
@@ -359,7 +359,7 @@ class SwitchItemView @JvmOverloads constructor(
         switchView.isEnabled = enable
     }
 
-    private fun ensureInflatedIconView(){
+    private fun ensureInflatedIconView() {
         if (iconImageView == null) {
             val iconFrame = findViewById<ViewStub>(R.id.viewstub_switch_item_icon_frame).inflate() as FrameLayout
             iconImageView = iconFrame.findViewById(R.id.switch_item_icon)
@@ -454,7 +454,7 @@ class SwitchItemView @JvmOverloads constructor(
         }
     }
 
-    private fun updateSwitchPosition(){
+    private fun updateSwitchPosition() {
         removeCallbacks(responsiveSwitchUpdater)
         postDelayed(responsiveSwitchUpdater, 100)
     }
@@ -464,7 +464,7 @@ class SwitchItemView @JvmOverloads constructor(
      *
      * @param enable Set to `true` to enable the switch, `false` to disable it.
      */
-    fun setSwitchEnabled(enable: Boolean){ switchView.isEnabled = enable }
+    fun setSwitchEnabled(enable: Boolean) { switchView.isEnabled = enable }
 
     override fun dispatchTouchEvent(motionEvent: MotionEvent): Boolean {
         if (Build.VERSION.SDK_INT >= 29 && (isClickable || isFocusable)) {
