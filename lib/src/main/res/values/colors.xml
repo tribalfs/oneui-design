@@ -16,6 +16,8 @@
     <color name="oui_des_btn_outline_border_color">#252525</color>
     <color name="oui_des_btn_outline_text_color">#666666</color>
     <color name="oui_des_btn_contained_primary_text">#fffafafa</color>
+    <color name="oui_des_btn_default_color">@color/sesl_btn_default_color_light</color>
+    <color name="oui_des_btn_ripple_color">@color/sesl_ripple_color_light</color>
 
     <!-- RelatedCard -->
     <color name="oui_des_relative_link_title_text_color">#ff252525</color>

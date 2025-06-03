@@ -51,4 +51,8 @@
         <item name="colorButtonNormal">@color/oui_des_enabled_disabled_primary_color_selector</item>
     </style>
 
+    <style name="OneUI.ContainedTransparentButtonTheme" parent="@style/OneUI.ContainedButtonTheme">
+        <item name="colorButtonNormal">@color/oui_des_transparent_btn_color_selector</item>
+    </style>
+
 </resources>

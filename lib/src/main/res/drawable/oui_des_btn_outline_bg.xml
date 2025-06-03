@@ -2,6 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <corners android:radius="18dp" />
+    <solid android:color="@color/oui_des_transparent_btn_color_selector"/>
     <stroke
         android:width="0.3dp"
         android:color="@color/oui_des_btn_outline_border_color_selector" />

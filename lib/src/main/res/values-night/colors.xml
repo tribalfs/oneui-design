@@ -14,6 +14,8 @@
     <!-- Buttons -->
     <color name="oui_des_btn_outline_border_color">#fafafa</color>
     <color name="oui_des_btn_outline_text_color">#fafafa</color>
+    <color name="oui_des_btn_default_color">@color/sesl_btn_default_color_light</color>
+    <color name="oui_des_btn_ripple_color">@color/sesl_ripple_color_dark</color>
 
     <!-- RelatedCard -->
     <color name="oui_des_relative_link_title_text_color">#fffafafa</color>
