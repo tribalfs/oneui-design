@@ -174,10 +174,6 @@ class SwitchItemView @JvmOverloads constructor(
 
         bottomSpacer = findViewById(R.id.bottom_spacer)
 
-        isFocusable = true
-        isClickable = true
-
-
         context.obtainStyledAttributes(
             attrs,
             R.styleable.SwitchItemView,
@@ -185,6 +181,8 @@ class SwitchItemView @JvmOverloads constructor(
             defStyleRes
         ).use {a ->
             isEnabled = a.getBoolean(R.styleable.SwitchItemView_android_enabled, true)
+            isClickable = a.getBoolean(R.styleable.SwitchItemView_android_clickable, true)
+            isFocusable = a.getBoolean(R.styleable.SwitchItemView_android_focusable, true)
             isChecked = a.getBoolean(R.styleable.SwitchItemView_android_checked, false)
             title = a.getText(R.styleable.SwitchItemView_title)
             summaryOn = a.getText(R.styleable.SwitchItemView_summaryOn)
@@ -210,7 +208,7 @@ class SwitchItemView @JvmOverloads constructor(
         }
 
         mContentFrame.setOnClickListener {
-            if (isEnabled) {
+            if (isClickable) {
                 if (!separateSwitch) {
                     mSwitchView.performClick()
                 }else{

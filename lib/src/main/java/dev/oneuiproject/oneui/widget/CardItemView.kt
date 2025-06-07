@@ -29,9 +29,9 @@ class CardItemView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
 ) : LinearLayout(context, attrs) {
 
-    private lateinit var mContainerView: LinearLayout
-    private lateinit var mTitleTextView: TextView
-    private lateinit var mSummaryTextView: TextView
+    private var mContainerView: LinearLayout
+    private var mTitleTextView: TextView
+    private var mSummaryTextView: TextView
     private var mDividerViewTop: View? = null
     private var mDividerViewBottom: View? = null
     private var mIconImageView: ImageView? = null
@@ -190,6 +190,8 @@ class CardItemView @JvmOverloads constructor(
                 showTopDivider = getBoolean(R.styleable.CardItemView_showTopDivider, true)
                 showBottomDivider = getBoolean(R.styleable.CardItemView_showBottomDivider, false)
                 isEnabled = getBoolean(R.styleable.CardItemView_android_enabled, true)
+                isClickable = getBoolean(R.styleable.CardItemView_android_clickable, true)
+                isFocusable = getBoolean(R.styleable.CardItemView_android_focusable, true)
                 fullWidthDivider = getBoolean(R.styleable.CardItemView_fullWidthDivider, false)
             }
         }
@@ -238,8 +240,6 @@ class CardItemView @JvmOverloads constructor(
         if (isEnabled == enabled) return
         super.setEnabled(enabled)
         mContainerView.apply {
-            isFocusable = enabled
-            isClickable = enabled
             alpha = when {
                 enabled -> 1.0f
                 else -> 0.4f
@@ -247,6 +247,23 @@ class CardItemView @JvmOverloads constructor(
         }
     }
 
+
+    override fun setClickable(clickable: Boolean) {
+        super.setClickable(clickable)
+        mContainerView.isClickable = clickable
+    }
+
+    override fun setFocusable(focusable: Boolean) {
+        super.setFocusable(focusable)
+        mContainerView.isFocusable = focusable
+    }
+
+    /**
+     * Register a callback to be invoked when this view is clicked. If this view is not
+     * clickable, it becomes clickable.
+     *
+     * @param l The [View.OnClickListener] that will be invoked
+     */
     override fun setOnClickListener(l: OnClickListener?) {
         mContainerView.setOnClickListener {
             if (isEnabled) {
