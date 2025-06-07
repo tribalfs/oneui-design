@@ -232,6 +232,8 @@ class CardItemView @JvmOverloads constructor(
             showTopDivider = getBoolean(R.styleable.CardItemView_showTopDivider, true)
             showBottomDivider = getBoolean(R.styleable.CardItemView_showBottomDivider, false)
             isEnabled = getBoolean(R.styleable.CardItemView_android_enabled, true)
+            isClickable = getBoolean(R.styleable.CardItemView_android_clickable, true)
+            isFocusable = getBoolean(R.styleable.CardItemView_android_focusable, true)
             fullWidthDivider = getBoolean(R.styleable.CardItemView_fullWidthDivider, false)
 
             if (hasValue(R.styleable.CardItemView_drawableEnd)) {
@@ -325,13 +327,22 @@ class CardItemView @JvmOverloads constructor(
         if (isEnabled == enabled) return
         super.setEnabled(enabled)
         containerView.apply {
-            isFocusable = enabled
-            isClickable = enabled
             alpha = when {
                 enabled -> 1.0f
                 else -> 0.4f
             }
         }
+    }
+
+
+    override fun setClickable(clickable: Boolean) {
+        super.setClickable(clickable)
+        containerView.isClickable = clickable
+    }
+
+    override fun setFocusable(focusable: Boolean) {
+        super.setFocusable(focusable)
+        containerView.isFocusable = focusable
     }
 
     /**
@@ -349,7 +360,7 @@ class CardItemView @JvmOverloads constructor(
     }
 
     override fun dispatchTouchEvent(motionEvent: MotionEvent): Boolean {
-        if (Build.VERSION.SDK_INT >= 29) {
+        if (Build.VERSION.SDK_INT >= 29 && (isClickable || isFocusable)) {
             semTouchFeedbackAnimator.animate(motionEvent)
         }
         return super.dispatchTouchEvent(motionEvent)

@@ -240,10 +240,6 @@ class SwitchItemView @JvmOverloads constructor(
 
         bottomSpacer = findViewById(R.id.bottom_spacer)
 
-        isFocusable = true
-        isClickable = true
-
-
         context.withStyledAttributes(
             attrs,
             R.styleable.SwitchItemView,
@@ -251,6 +247,8 @@ class SwitchItemView @JvmOverloads constructor(
             defStyleRes
         ) {
             isEnabled = getBoolean(R.styleable.SwitchItemView_android_enabled, true)
+            isClickable = getBoolean(R.styleable.SwitchItemView_android_clickable, true)
+            isFocusable = getBoolean(R.styleable.SwitchItemView_android_focusable, true)
             isChecked = getBoolean(R.styleable.SwitchItemView_android_checked, false)
             title = getText(R.styleable.SwitchItemView_title)
             summaryOn = getText(R.styleable.SwitchItemView_summaryOn)
@@ -274,7 +272,7 @@ class SwitchItemView @JvmOverloads constructor(
         }
 
         contentFrame.setOnClickListener {
-            if (isEnabled) {
+            if (isClickable){
                 if (!separateSwitch) {
                     switchView.performClick()
                 }else{
@@ -321,6 +319,16 @@ class SwitchItemView @JvmOverloads constructor(
         titleView.isEnabled = enable
         summaryView.isEnabled = enable
         switchView.isEnabled = enable
+    }
+
+    override fun setClickable(clickable: Boolean) {
+        super.setClickable(clickable)
+        contentFrame.isClickable = clickable
+    }
+
+    override fun setFocusable(focusable: Boolean) {
+        super.setFocusable(focusable)
+        contentFrame.isFocusable = focusable
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -411,7 +419,7 @@ class SwitchItemView @JvmOverloads constructor(
     fun setSwitchEnabled(enable: Boolean){ switchView.isEnabled = enable }
 
     override fun dispatchTouchEvent(motionEvent: MotionEvent): Boolean {
-        if (Build.VERSION.SDK_INT >= 29) {
+        if (Build.VERSION.SDK_INT >= 29 && (isClickable || isFocusable)) {
             val switchBounds = Rect().apply { switchView.getHitRect(this) }
             val isTouchOnSwitch = switchBounds.contains(motionEvent.x.toInt(), motionEvent.y.toInt())
             if (!isTouchOnSwitch) {

@@ -242,6 +242,8 @@
 
     <declare-styleable name="CardItemView">
         <attr name="android:enabled"/>
+        <attr name="android:clickable"/>
+        <attr name="android:focusable"/>
         <attr name="icon" />
         <attr name="iconTint"/>
         <attr name="title" />
@@ -336,6 +338,8 @@
         <attr name="switchTextOn"/>/>
         <attr name="switchTextOff"/>
         <attr name="android:enabled"/>
+        <attr name="android:clickable"/>
+        <attr name="android:focusable"/>
         <attr name="android:checked"/>
         <attr name="userUpdatableSummary"/>
     </declare-styleable>
