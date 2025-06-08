@@ -417,11 +417,14 @@ internal class DrawerMenuPresenter(
 
 
         private inner class SeparatorViewHolder(dividerItemView: DrawerDividerItemView) : RecyclerView.ViewHolder(dividerItemView){
+            init {
+                (itemView as DrawerDividerItemView).setNavRailSlideRangeProvider(getNavRailSlideRange)
+            }
+
             fun updateOffset(offset: Float) {
-                (itemView as DrawerDividerItemView).applyOffset(offset, getNavRailSlideRange())
+                (itemView as DrawerDividerItemView).applyOffset(offset)
             }
         }
-
 
         private fun setAccessibilityDelegate(view: View, position: Int, isHeader: Boolean) {
             ViewCompat.setAccessibilityDelegate(
