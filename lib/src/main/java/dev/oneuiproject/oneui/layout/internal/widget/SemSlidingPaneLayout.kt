@@ -66,20 +66,18 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
     defStyle: Int = 0
 ) : SlidingPaneLayout(context, attrs, defStyle), DrawerLayoutInterface, NavButtonsHandler {
 
-    private lateinit var mToolbar: Toolbar
-    private lateinit var mDrawerPane: LinearLayout
-    private lateinit var mHeaderView: View
-    private var mDrawerHeaderButton: ImageButton? = null
-    private lateinit var mDrawerContainer: FrameLayout
-    private var mNavRailSlideViewContent: LinearLayout? = null
+    private lateinit var toolbar: Toolbar
+    private lateinit var _drawerPane: LinearLayout
+    private var drawerHeaderButton: ImageButton? = null
+    private var navRailSlideViewContent: LinearLayout? = null
     private lateinit var mainDetailsPane: LinearLayout
-    private var mDrawerHeaderLayout: View? = null
-    private var mDrawerItemsContainer: FrameLayout? = null
-    private var mDrawerHeaderButtonBadgeView: TextView? = null
-    private var mSplitDetailsPane: LinearLayout? = null
+    private var drawerHeaderLayout: View? = null
+    private var drawerItemsContainer: FrameLayout? = null
+    private var drawerHeaderButtonBadgeView: TextView? = null
+    private var splitDetailsPane: LinearLayout? = null
     private var navDrawerButtonBadge: Badge = Badge.NONE
     private var headerButtonBadge: Badge = Badge.NONE
-    private lateinit var mSlideViewPane: FrameLayout
+    private lateinit var slideViewPane: FrameLayout
 
     private val defaultDrawerTopMargin = resources.getDimensionPixelSize(androidx.appcompat.R.dimen.sesl_action_bar_top_padding)
 
@@ -92,7 +90,7 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
     internal var navRailDrawerButtonBadgeView: TextView? = null
 
     @Volatile
-    private var mCurrentState: DrawerState = DrawerState.CLOSE
+    private var currentDrawerState: DrawerState = DrawerState.CLOSE
 
     @Volatile
     private var sSlideOffset = 0f
@@ -114,24 +112,24 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        mToolbar = findViewById(R.id.toolbarlayout_main_toolbar)
-        mSlideViewPane = findViewById(R.id.slideable_view)
-        mDrawerPane = findViewById(R.id.drawer_panel)
-        mNavRailSlideViewContent = findViewById(R.id.slide_contents)
-        mainDetailsPane = mNavRailSlideViewContent!!.findViewById(R.id.tbl_main_content_root)
+        toolbar = findViewById(R.id.toolbarlayout_main_toolbar)
+        slideViewPane = findViewById(R.id.slideable_view)
+        _drawerPane = findViewById(R.id.drawer_panel)
+        navRailSlideViewContent = findViewById(R.id.slide_contents)
+        mainDetailsPane = navRailSlideViewContent!!.findViewById(R.id.tbl_main_content_root)
 
         addPanelSlideListener(SlidingPaneSlideListener())
 
         if (navRailDrawerButton == null) {
             navRailDrawerButton =
-                mDrawerPane.findViewById<ImageButton>(R.id.navRailDrawerButton).apply {
+                _drawerPane.findViewById<ImageButton>(R.id.navRailDrawerButton).apply {
                     isVisible = true
                     setOnClickListener {
                         if (isDrawerOpen) seslClosePane(true) else seslOpenPane(true)
                     }
                 }
 
-            navRailDrawerButtonBadgeView = mDrawerPane.findViewById(R.id.navRailDrawerButtonBadge)
+            navRailDrawerButtonBadgeView = _drawerPane.findViewById(R.id.navRailDrawerButtonBadge)
 
             SeslViewReflector.semSetHoverPopupType(
                 navRailDrawerButton!!,
@@ -139,11 +137,11 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
             )
         }
 
-        mDrawerHeaderLayout = mDrawerPane.findViewById(R.id.header_layout)
-        mDrawerItemsContainer = mDrawerPane.findViewById(R.id.drawer_items_container)
-        mDrawerHeaderButton = mDrawerHeaderLayout!!.findViewById(R.id.oui_des_drawer_header_button)
-        mDrawerHeaderButtonBadgeView =
-            mDrawerHeaderLayout!!.findViewById(R.id.oui_des_drawer_header_button_badge)
+        drawerHeaderLayout = _drawerPane.findViewById(R.id.header_layout)
+        drawerItemsContainer = _drawerPane.findViewById(R.id.drawer_items_container)
+        drawerHeaderButton = drawerHeaderLayout!!.findViewById(R.id.oui_des_drawer_header_button)
+        drawerHeaderButtonBadgeView =
+            drawerHeaderLayout!!.findViewById(R.id.oui_des_drawer_header_button_badge)
 
         setNavigationButtonTooltip(context.getText(R.string.oui_des_navigation_drawer))
     }
@@ -166,8 +164,8 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
     private fun ensureLayoutPreview() {
         sSlideOffset = 1f
         if (!seslGetResizeOff()) {
-            mNavRailSlideViewContent!!.updatePadding(
-                right = mDrawerPane.layoutParams.width
+            navRailSlideViewContent!!.updatePadding(
+                right = _drawerPane.layoutParams.width
                         - ((DEFAULT_OVERHANG_SIZE + 40) * context.dpToPxFactor + 0.5f).toInt()
             )
         }
@@ -181,9 +179,9 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
 
     private fun configDetailsPane(isDualDetails: Boolean){
         if (isDualDetails) {
-            if (mSplitDetailsPane == null) {
-                mSplitDetailsPane =
-                    mSlideViewPane.findViewById<ViewStub>(R.id.viewstub_split_details_container)
+            if (splitDetailsPane == null) {
+                splitDetailsPane =
+                    slideViewPane.findViewById<ViewStub>(R.id.viewstub_split_details_container)
                         .inflate() as LinearLayout
             }
             seslSetResizeChild()
@@ -201,7 +199,7 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
                 )
                 resizeSlideableView(sSlideOffset)
             }
-            mSplitDetailsPane?.isGone = true
+            splitDetailsPane?.isGone = true
         }
     }
 
@@ -214,7 +212,7 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
         val eventTime = downTime + 10
         val location = intArrayOf(0, 0)
 
-        mDrawerPane.getLocationInWindow(location)
+        _drawerPane.getLocationInWindow(location)
         val x = location[0].toFloat()
         val y = location[1].toFloat()
 
@@ -242,38 +240,38 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
 
     private fun applyDrawerCornerRadius(@Px px: Int){
         val cornerRadius = if (px == -1) DEFAULT_DRAWER_RADIUS.dpToPx(resources) else px
-        (mDrawerPane.outlineProvider as? DrawerOutlineProvider)?.let {
+        (_drawerPane.outlineProvider as? DrawerOutlineProvider)?.let {
             it.cornerRadius = cornerRadius
         } ?: run {
-            mDrawerPane.outlineProvider = DrawerOutlineProvider(cornerRadius)
-            mDrawerPane.clipToOutline = true
+            _drawerPane.outlineProvider = DrawerOutlineProvider(cornerRadius)
+            _drawerPane.clipToOutline = true
         }
         seslSetRoundedCornerOn(cornerRadius)
     }
 
     override fun setCustomHeader(headerView: View, params: ViewGroup.LayoutParams) {
-        (mDrawerHeaderLayout as ViewGroup).apply {
-            removeView(mDrawerHeaderButton)
-            removeView(mDrawerHeaderButtonBadgeView)
+        (drawerHeaderLayout as ViewGroup).apply {
+            removeView(drawerHeaderButton)
+            removeView(drawerHeaderButtonBadgeView)
         }
-        mDrawerPane.addView(headerView, 1, params)
-        mDrawerHeaderButton = headerView.findViewById(R.id.oui_des_drawer_header_button)
-        mDrawerHeaderButtonBadgeView = headerView.findViewById(R.id.oui_des_drawer_header_button_badge)
+        _drawerPane.addView(headerView, 1, params)
+        drawerHeaderButton = headerView.findViewById(R.id.oui_des_drawer_header_button)
+        drawerHeaderButtonBadgeView = headerView.findViewById(R.id.oui_des_drawer_header_button_badge)
         navRailDrawerButton = headerView.findViewById<ImageButton>(R.id.navRailDrawerButton).apply {
             isVisible = true
         }
         navRailDrawerButtonBadgeView = headerView.findViewById(R.id.navRailDrawerButtonBadge)
 
-        if (mDrawerHeaderButton == null) {
+        if (drawerHeaderButton == null) {
             Log.e(TAG, "`drawer_header_button` id is missing or is not an ImageButton")
         }
-        if (mDrawerHeaderButtonBadgeView == null) {
+        if (drawerHeaderButtonBadgeView == null) {
             Log.e(TAG, "`drawer_header_button_badge` id is missing or is not a TextView")
         }
     }
 
     override fun addDrawerContent(child: View, params: ViewGroup.LayoutParams) =
-        mDrawerItemsContainer!!.addView(child, params)
+        drawerItemsContainer!!.addView(child, params)
 
     override fun setNavigationButtonTooltip(tooltipText: CharSequence?) {
         navRailDrawerButton!!.apply {
@@ -282,27 +280,26 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
         }
     }
 
-    override fun getDrawerPane(): View = mDrawerPane
+    override fun getDrawerPane(): View = _drawerPane
 
-    override fun getContentPane(): View = mSlideViewPane
+    override fun getContentPane(): View = slideViewPane
 
     override var isLocked: Boolean
-        get() = seslGetLock()
+        get() = lockMode == LOCK_MODE_LOCKED
         set(value) {
-            if (seslGetLock() == value) return
-            seslSetLock(value || !drawerEnabled)
+            lockMode = if (value || !drawerEnabled) LOCK_MODE_LOCKED else LOCK_MODE_UNLOCKED
             navRailDrawerButton!!.isEnabled = !value
         }
 
-    override val isDrawerOpen: Boolean get() = mCurrentState == DrawerState.OPEN
+    override val isDrawerOpen: Boolean get() = currentDrawerState == DrawerState.OPEN
 
     override val isDrawerOpenOrIsOpening: Boolean
-        get() = mCurrentState == DrawerState.OPEN || mCurrentState == DrawerState.OPENING
+        get() = currentDrawerState == DrawerState.OPEN || currentDrawerState == DrawerState.OPENING
 
-    private var mDrawerStateListener: ((state: DrawerState) -> Unit)? = null
+    private var drawerStateListener: ((state: DrawerState) -> Unit)? = null
 
     override fun setOnDrawerStateChangedListener(listener: ((DrawerState) -> Unit)?) {
-        mDrawerStateListener = listener
+        drawerStateListener = listener
     }
 
     override fun getDrawerSlideOffset(): Float = sSlideOffset
@@ -312,9 +309,9 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
         val newState = getDrawerStateUpdate(sSlideOffset, newSlideOffset)
         sSlideOffset = newSlideOffset
 
-        if (newState != mCurrentState) {
-            mCurrentState = newState
-            mDrawerStateListener?.invoke(newState)
+        if (newState != currentDrawerState) {
+            currentDrawerState = newState
+            drawerStateListener?.invoke(newState)
         }
 
         if (navDrawerButtonBadge == Badge.NONE && headerButtonBadge != Badge.NONE) {
@@ -322,7 +319,7 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
         }
 
         if (drawerEnabled && hideDrawerOnCollapse) {
-            mToolbar.apply {
+            toolbar.apply {
                 if (navigationIcon == null){
                     navigationIcon = createBadgeNavIcon()
                 }
@@ -358,7 +355,7 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
     }
 
     internal fun updateContentMinSidePadding(@Px padding: Int) =
-        mSlideViewPane.updatePadding(left = padding, right = padding)
+        slideViewPane.updatePadding(left = padding, right = padding)
 
     /**Note: This doesn't check for the current value*/
     override var showNavigationButtonAsBack = false
@@ -372,24 +369,24 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
         this.activity?.apply {
             supportActionBar?.setDisplayHomeAsUpEnabled(showNavigationButtonAsBack)
             if (showNavigationButtonAsBack) {
-                mToolbar.apply {
+                toolbar.apply {
                     setNavigationOnClickListener {
                         onBackPressedDispatcher.onBackPressed()
                     }
                 }
             } else {
-                mToolbar.apply {
+                toolbar.apply {
                     titleTextView?.translationX = 0f
                     subtitleTextView?.translationX = 0f
                 }
                 if (drawerEnabled && hideDrawerOnCollapse) {
-                    mToolbar.apply {
+                    toolbar.apply {
                         navigationContentDescription = resources.getText(R.string.oui_des_navigation_drawer)
                         setNavigationOnClickListener{
                             navigationIcon = null
                             open(true)
                         }
-                        if (mCurrentState == DrawerState.OPEN) {
+                        if (currentDrawerState == DrawerState.OPEN) {
                             navigationIcon = null
                         } else {
                             if (navigationIcon == null) {
@@ -400,7 +397,7 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
                     }
                 }else{
                     navRailDrawerButton?.alpha = 1f
-                    mToolbar.apply {
+                    toolbar.apply {
                         navigationIcon = null
                         navigationContentDescription = null
                         setNavigationOnClickListener(null)
@@ -438,7 +435,7 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
     }
 
     override fun setHeaderButtonIcon(icon: Drawable?, tint: Int?) {
-        mDrawerHeaderButton?.apply {
+        drawerHeaderButton?.apply {
             setImageDrawable(icon)
             imageTintList = ColorStateList.valueOf(
                 tint ?: ContextCompat.getColor(context, R.color.oui_des_drawerlayout_header_icon_tint))
@@ -446,20 +443,20 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
     }
 
     override fun setHeaderButtonTooltip(tooltipText: CharSequence?) {
-        mDrawerHeaderButton?.semSetToolTipText(tooltipText)
+        drawerHeaderButton?.semSetToolTipText(tooltipText)
             ?: Log.e(TAG, "setHeaderButtonTooltip: `drawer_header_button` id is not set in custom header view")
     }
 
     override fun setHeaderButtonOnClickListener(listener: OnClickListener?) {
-        mDrawerHeaderButton?.setOnClickListener(listener)
+        drawerHeaderButton?.setOnClickListener(listener)
             ?: Log.e(TAG, "setHeaderButtonOnClickListener: `drawer_header_button` id is not set in custom header view")
     }
 
     override fun setHeaderButtonBadge(badge: Badge) {
-        if (mDrawerHeaderButtonBadgeView != null) {
+        if (drawerHeaderButtonBadgeView != null) {
             if (headerButtonBadge == badge) return
             headerButtonBadge = badge
-            mDrawerHeaderButtonBadgeView!!.updateBadgeView(badge)
+            drawerHeaderButtonBadgeView!!.updateBadgeView(badge)
             if (navDrawerButtonBadge == Badge.NONE) {
                 navRailDrawerButtonBadgeView!!.updateBadgeView(badge)
                 updateNavBadgeScale()
@@ -522,37 +519,49 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
             dispatchDrawerStateChange(slideOffset)
     }
 
+    /**
+     *
+     * @return true if the drawer is enabled, false otherwise.
+     */
     fun isDrawerEnabled() = drawerEnabled
 
+    /**
+     * Enable or disable the drawer.
+     * When the drawer is disabled, the navigation button will be hidden
+     * and the drawer pane will be hidden and will not be accessible.
+     *
+     * @param drawerEnabled True to enable the drawer, false to disable it.
+     * @param hideOnCollapsed True to fully hide the the drawer pane when it is collapsed, false otherwise.
+     */
     @JvmOverloads
     fun setDrawerEnabled(enabled: Boolean, hideOnCollapsed: Boolean = false, animate: Boolean = true) {
         if (this.drawerEnabled == enabled && this.hideDrawerOnCollapse == hideOnCollapsed) return
         this.drawerEnabled = enabled
         this.hideDrawerOnCollapse = hideOnCollapsed
 
-        mSlideViewPane.clearAnimation()
+        slideViewPane.clearAnimation()
 
         when {
             drawerEnabled && !hideOnCollapsed -> {
                 val defaultMargin =
                     context.resources.getDimensionPixelSize(splR.dimen.navigation_rail_margin_start)
                 if (animate) {
-                    createDrawerModeAnimator(mSlideViewPane.marginStart, defaultMargin).apply {
+                    createDrawerModeAnimator(slideViewPane.marginStart, defaultMargin).apply {
                         addListener(
-                            onStart = { mDrawerPane.isVisible = true },
+                            onStart = { _drawerPane.isVisible = true },
                             onEnd = { updateNavButton() }
                         )
                         start()
                     }
                 }else{
-                    mDrawerPane.isVisible = true
+                    _drawerPane.isVisible = true
                     updateSlideViewPaneWidth(defaultMargin)
                     updateNavButton()
                 }
             }
 
             drawerEnabled && hideOnCollapsed -> {
-                val startMargin = mSlideViewPane.marginStart
+                val startMargin = slideViewPane.marginStart
                 if (startMargin == 0) {
                     seslSetResizeOff(seslGetResizeOff())
                     return
@@ -564,7 +573,7 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
                         start()
                     }
                 }else{
-                    mDrawerPane.isVisible = true
+                    _drawerPane.isVisible = true
                     updateSlideViewPaneWidth(0)
                     updateNavButton()
                 }
@@ -572,16 +581,16 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
 
             else -> { //drawerEnabled == false
                 close(false)
-                val startMargin = mSlideViewPane.marginStart
+                val startMargin = slideViewPane.marginStart
                 if (startMargin == 0) return
 
                 if (animate) {
                     createDrawerModeAnimator(startMargin, 0).apply {
-                        doOnEnd { updateNavButton(); mDrawerPane.isInvisible = true }
+                        doOnEnd { updateNavButton(); _drawerPane.isInvisible = true }
                         start()
                     }
                 }else{
-                    mDrawerPane.isInvisible = true
+                    _drawerPane.isInvisible = true
                     updateSlideViewPaneWidth(0)
                     updateNavButton()
                 }
@@ -597,7 +606,7 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
     }
 
     private fun updateSlideViewPaneWidth(width: Int){
-        mSlideViewPane.updateLayoutParams<LayoutParams> {
+        slideViewPane.updateLayoutParams<LayoutParams> {
             marginStart = width
             seslSetResizeOff(seslGetResizeOff())
         }
