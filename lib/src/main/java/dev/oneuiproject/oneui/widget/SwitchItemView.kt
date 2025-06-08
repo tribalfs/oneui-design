@@ -468,6 +468,20 @@ class SwitchItemView @JvmOverloads constructor(
      */
     fun setSwitchEnabled(enable: Boolean) { switchView.isEnabled = enable }
 
+    /**
+     * Retrieves the [ImageView] positioned at the start of this view.
+     *
+     * The first invocation to this function inflates and adds the corresponding [ImageView]
+     * that will be returned by this function. This image view is intended for setting an icon
+     * to this view.
+     *
+     * @return The [ImageView] designated for the start icon of this view.
+     */
+    fun getIconImageView(): ImageView {
+        ensureInflatedIconView()
+        return iconImageView!!
+    }
+
     override fun dispatchTouchEvent(motionEvent: MotionEvent): Boolean {
         if (Build.VERSION.SDK_INT >= 29 && (isClickable || isFocusable)) {
             val switchBounds = Rect().apply { switchView.getHitRect(this) }
