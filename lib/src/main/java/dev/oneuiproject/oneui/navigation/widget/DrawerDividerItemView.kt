@@ -2,6 +2,7 @@ package dev.oneuiproject.oneui.navigation.widget
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Configuration
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +23,7 @@ internal class DrawerDividerItemView @JvmOverloads constructor(
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     private var offset: Float = 1f
-    private var slideRange: Int = -1
+    private var getNavRailSlideRange: () -> Int = { 0 }
 
     private val defaultWidth: Int
     private val defaultMargin: Int
@@ -45,27 +46,35 @@ internal class DrawerDividerItemView @JvmOverloads constructor(
         isFocusable = false
     }
 
-    fun applyOffset(offset: Float, slideRange: Int) {
-        if (this.offset == offset && (offset == 1f || this.slideRange == slideRange)) return
+    fun setNavRailSlideRangeProvider(provider: () -> Int) {
+        this.getNavRailSlideRange = provider
+    }
+
+    fun applyOffset(offset: Float) {
+        if (this.offset == offset) return
         this.offset = offset
-        this.slideRange = slideRange
+        updateDividerMargin()
 
-        dividerView.apply {
-            updateLayoutParams<LayoutParams> {
-                marginEnd = defaultMargin + (slideRange * (1f - offset)).toInt()
-            }
-        }
-
-        if (isInEditMode){
-            if (offset == 0f){
-                dividerView.apply {
-                    updateLayoutParams<LayoutParams> {
-                        width = defaultWidth
-                    }
+        if (isInEditMode && offset == 0f) {
+            dividerView.apply {
+                updateLayoutParams<LayoutParams> {
+                    width = defaultWidth
                 }
             }
         }
+    }
 
-        post { requestLayout() }
+    override fun onConfigurationChanged(newConfig: Configuration?) {
+        super.onConfigurationChanged(newConfig)
+        post { updateDividerMargin() }
+    }
+
+    /**
+     * Updates the divider's end margin based on the current offset and slide range.
+     */
+    private fun updateDividerMargin() {
+        dividerView.updateLayoutParams<LayoutParams> {
+            marginEnd = defaultMargin + (getNavRailSlideRange() * (1f - offset)).toInt()
+        }
     }
 }
