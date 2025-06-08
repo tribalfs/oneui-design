@@ -288,6 +288,7 @@ class BottomTabLayout(
             tabTitle = menuItem.title,
             tabIcon = menuItem.icon
         ).apply {
+            id = menuItem.itemId
             isEnabled = menuItem.isEnabled
             menuItem.badgeText?.let {
                 if (it.isNumericValue()) {
