@@ -6,6 +6,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Rect
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.text.SpannableString
 import android.util.AttributeSet
@@ -14,6 +15,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewStub
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Space
 import android.widget.TextView
@@ -23,8 +25,11 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.withStyledAttributes
 import androidx.core.graphics.ColorUtils
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePaddingRelative
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
@@ -79,6 +84,9 @@ class SwitchItemView @JvmOverloads constructor(
     private var badgeFrame: LinearLayout? = null
     private var bottomSpacer: Space
     private var isLargeLayout = false
+    private var iconImageView: ImageView? = null
+    private var containerLeftPaddingWithIcon: Int = 0
+    private var containerLeftPaddingNoIcon: Int = 0
 
     @RequiresApi(29)
     private lateinit var semTouchFeedbackAnimator: SemTouchFeedbackAnimator
@@ -222,10 +230,32 @@ class SwitchItemView @JvmOverloads constructor(
             }
         }
 
+    /** The icon to be displayed at the start of view. */
+    var icon: Drawable?
+        get() = iconImageView?.drawable
+        set(value) {
+            if (value != null) ensureInflatedIconView()
+            iconImageView?.apply {
+                if (drawable == value) return
+                setImageDrawable(value)
+                (parent as? FrameLayout)?.isVisible = value != null
+            }
+            mainContent.updatePaddingRelative(
+                start = if (value != null) containerLeftPaddingWithIcon else containerLeftPaddingNoIcon
+            )
+        }
+
     init {
         orientation = VERTICAL
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
         LayoutInflater.from(context).inflate(R.layout.oui_des_widget_switch_item, this@SwitchItemView)
+        val resources = context.resources
+        context.getThemeAttributeValue(android.R.attr.listPreferredItemPaddingStart)!!.run {
+            resources.getDimensionPixelSize(resourceId)
+        }.let {
+            containerLeftPaddingNoIcon = it
+            containerLeftPaddingWithIcon = it - 4
+        }
 
         titleView = findViewById(R.id.switch_card_title)
         summaryView = findViewById(R.id.switch_card_summary)
@@ -269,6 +299,14 @@ class SwitchItemView @JvmOverloads constructor(
                 )
                 summaryView.setTextColor(ColorStateList(states, colors))
             }
+            val iconDrawable = getDrawable(R.styleable.SwitchItemView_icon)
+            if (iconDrawable != null) {
+                icon = iconDrawable
+                val iconTint = getColor(R.styleable.SwitchItemView_iconTint, -1)
+                if (iconTint != -1) {
+                    DrawableCompat.setTint(iconImageView!!.drawable, iconTint)
+                }
+            }
         }
 
         contentFrame.setOnClickListener {
@@ -303,7 +341,7 @@ class SwitchItemView @JvmOverloads constructor(
         return switchView.performClick()
     }
 
-    private fun updateSubtitleVisibility(){
+    private fun updateSubtitleVisibility() {
         val summaryToSet = if (isChecked) summaryOn else summaryOff
         summaryView.apply {
             if (text == summaryToSet) return
@@ -319,6 +357,16 @@ class SwitchItemView @JvmOverloads constructor(
         titleView.isEnabled = enable
         summaryView.isEnabled = enable
         switchView.isEnabled = enable
+    }
+
+    private fun ensureInflatedIconView(){
+        if (iconImageView == null) {
+            val iconFrame = findViewById<ViewStub>(R.id.viewstub_switch_item_icon_frame).inflate() as FrameLayout
+            iconImageView = iconFrame.findViewById(R.id.switch_item_icon)
+            titleView.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                startToEnd = R.id.switch_item_icon_frame
+            }
+        }
     }
 
     override fun setClickable(clickable: Boolean) {

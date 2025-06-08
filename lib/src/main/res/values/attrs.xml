@@ -342,6 +342,8 @@
         <attr name="android:focusable"/>
         <attr name="android:checked"/>
         <attr name="userUpdatableSummary"/>
+        <attr name="icon" />
+        <attr name="iconTint" />
     </declare-styleable>
 
     <declare-styleable name="RadioItemViewGroup">

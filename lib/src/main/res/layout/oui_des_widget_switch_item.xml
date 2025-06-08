@@ -26,6 +26,17 @@
             android:gravity="center_vertical"
             android:minHeight="?attr/listPreferredItemHeightSmall">
 
+            <ViewStub
+                android:id="@+id/viewstub_switch_item_icon_frame"
+                android:inflatedId="@id/switch_item_icon_frame"
+                android:layout="@layout/oui_des_widget_switch_item_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+
             <TextView
                 android:id="@+id/switch_card_title"
                 android:layout_width="wrap_content"
@@ -39,7 +50,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/switch_card_summary"
                 app:layout_constraintEnd_toStartOf="@+id/switch_widget"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@id/viewstub_switch_item_icon_frame"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintVertical_chainStyle="packed"
@@ -74,6 +85,7 @@
                 app:layout_constrainedWidth="true"
                 tools:text="Summary Summary Summary Summary Summary Summary Summary Summary Summary"
                 android:visibility="gone"
+                tools:visibility="visible"
                 />
 
             <Space

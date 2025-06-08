@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/switch_item_icon_frame"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="start|center"
+    android:paddingEnd="@dimen/oui_des_cardview_icon_margin_end"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:viewBindingIgnore="true">
+
+    <ImageView
+        android:id="@+id/switch_item_icon"
+        android:layout_width="@dimen/oui_des_cardview_icon_size"
+        android:layout_height="@dimen/oui_des_cardview_icon_size"
+        android:layout_gravity="center"
+        android:layout_marginVertical="@dimen/oui_des_cardview_icon_margin_vertical"
+        android:scaleType="centerInside" />
+
+</FrameLayout>
