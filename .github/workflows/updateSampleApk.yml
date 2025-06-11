@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - 'manifest.gradle'
-
+  workflow_dispatch:
 jobs:
   check-and-publish:
     env:
@@ -23,7 +23,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
-
       - name: Check if sample-app version changed
         id: check_sample_app
         run: |
@@ -37,7 +36,11 @@ jobs:
           else
             echo "changed=false" >> $GITHUB_OUTPUT
           fi
-
+      - name: Configure signature
+        if: steps.check_sample_app.outputs.changed == 'true'
+        run: |
+          mkdir -p $HOME/.android
+          echo "${{ secrets.DEBUG_KEYSTORE_BASE64 }}" | base64 -d > $HOME/.android/debug.keystore
       - name: Grant execute permission for gradlew
         if: steps.check_sample_app.outputs.changed == 'true'
         run: chmod +x ./gradlew
