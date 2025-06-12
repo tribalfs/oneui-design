@@ -359,4 +359,13 @@
         <attr name="android:enabled"/>
         <attr name="android:checked"/>
     </declare-styleable>
+
+    <declare-styleable name="FloatingActionBar">
+        <attr name="button1Label" format="string" />
+        <attr name="button2Label" format="string" />
+        <attr name="button1Icon" format="reference" />
+        <attr name="button2Icon" format="reference" />
+        <attr name="selectedIndex" format="integer" />
+    </declare-styleable>
+
 </resources>
