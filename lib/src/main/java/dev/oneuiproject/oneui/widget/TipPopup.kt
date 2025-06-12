@@ -184,14 +184,22 @@ class TipPopup(parentView: View, mode: Mode) {
     }
 
     /**
-     * The direction of the arrow of the TipPopup.
-     * Choose either [BOTTOM_LEFT], [BOTTOM_RIGHT], [DEFAULT], [TOP_LEFT] or [TOP_RIGHT].
+     * The direction of the TipPopup with respect to the parent/anchor view.
+     * Choose either [DEFAULT], [BOTTOM_LEFT], [BOTTOM_RIGHT], [TOP_LEFT] or [TOP_RIGHT].
      */
     enum class Direction {
-        BOTTOM_LEFT,
-        BOTTOM_RIGHT,
+        /**
+         * The default direction. The arrow direction will be converted into one
+         * of the succeeding options based on the position of the parent/anchor view.
+         */
         DEFAULT,
+        /** The TipPopup will be shown at the bottom-left of the parent/anchor view. */
+        BOTTOM_LEFT,
+        /** The TipPopup will be shown at the bottom-right of the parent/anchor view. */
+        BOTTOM_RIGHT,
+        /** The TipPopup will be shown at the top-left of the parent/anchor view. */
         TOP_LEFT,
+        /** The TipPopup will be shown at the top-right of the parent/anchor view. */
         TOP_RIGHT
     }
 
@@ -930,7 +938,7 @@ class TipPopup(parentView: View, mode: Mode) {
         when (arrowDirection) {
             TOP_LEFT -> {
                 balloonPopup.setPivot(
-                    (arrowPositionX - balloonX + scaleMargin).toFloat(),
+                    ((arrowPositionX - balloonX) + scaleMargin).toFloat(),
                     (balloonHeight + scaleMargin).toFloat()
                 )
 
