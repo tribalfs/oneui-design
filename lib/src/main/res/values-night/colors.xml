@@ -87,4 +87,10 @@
 
     <!--BottomTabLayout-->
     <color name="oui_des_more_menu_list_edge_effect_color">#0ffafafa</color>
+
+    <!--FloatingActionBar-->
+    <color name="oui_des_floating_action_bar_border_stroke_color">#33dddddd</color>
+    <color name="oui_des_floating_action_bar_selected_bg_color">#252528</color>
+    <color name="oui_des_floating_action_bar_unselected_bg_color">#4d4d52</color>
+
 </resources>

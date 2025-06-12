@@ -97,4 +97,13 @@
 
     <!--BottomTabLayout-->
     <color name="oui_des_more_menu_list_edge_effect_color">#0d000000</color>
+
+    <!--FloatingActionBar-->
+    <color name="oui_des_floating_action_bar_border_stroke_color">#dddddd</color>
+    <color name="oui_des_floating_action_bar_icon_tint">#ffffff</color>
+    <color name="oui_des_floating_action_bar_selected_bg_color">#eaeaeb</color>
+    <color name="oui_des_floating_action_bar_selected_text_color">#387aff</color>
+    <color name="oui_des_floating_action_bar_unselected_bg_color">#fafaff</color>
+    <color name="oui_des_floating_action_bar_unselected_text_color">#b7b7bb</color>
+
 </resources>

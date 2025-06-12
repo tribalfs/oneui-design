@@ -323,4 +323,21 @@
         <item name="android:windowEnterAnimation">@anim/oui_des_more_menu_dialog_slide_right</item>
         <item name="android:windowExitAnimation">@anim/oui_des_more_menu_dialog_slide_right_exit</item>
     </style>
+
+    <!--Floating action bar-->
+    <style name="OneUI.FloatingActionBar.Text" parent="@style/RobotoRegular">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/oui_des_floating_action_bar_unselected_text_color</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:fontFamily">sec</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="OneUI.FloatingActionBar.SelectedText" parent="@style/RobotoMedium">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/oui_des_floating_action_bar_selected_text_color</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
 </resources>

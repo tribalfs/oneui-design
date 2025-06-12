@@ -157,4 +157,17 @@
     <dimen name="oui_des_more_menu_dialog_padding_bottom">9dp</dimen>
     <item name="oui_des_more_menu_dialog_width_ratio_mw" type="dimen" format="float">0.58</item>
     <item name="oui_des_more_menu_dialog_width_ratio" type="dimen" format="float">0.6</item>
+
+    <!--FloatingActionBar-->
+    <dimen name="oui_des_floating_action_bar_height">46dp</dimen>
+    <dimen name="oui_des_floating_action_bar_icon_margin_end">4dp</dimen>
+    <dimen name="oui_des_floating_action_bar_icon_size">20dp</dimen>
+    <dimen name="oui_des_floating_action_bar_margin_bottom">16dp</dimen>
+    <dimen name="oui_des_floating_action_bar_btn_radius">12dp</dimen>
+    <dimen name="oui_des_floating_action_bar_selected_padding">4dp</dimen>
+    <dimen name="oui_des_floating_action_bar_selected_radius">8dp</dimen>
+    <dimen name="oui_des_floating_action_bar_unselected_padding">4dp</dimen>
+    <dimen name="oui_des_floating_action_bar_unselected_radius">8dp</dimen>
+    <dimen name="oui_des_floating_action_bar_btn_width">154dp</dimen>
+    <dimen name="oui_des_floating_action_bar_elevation">3dp</dimen>
 </resources>
