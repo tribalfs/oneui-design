@@ -68,7 +68,6 @@
     <color name="oui_des_horizontalradiopref_text_unselected_color">#ffa8a9a9</color>
 
     <!--BottomSheet-->
-    <color name="oui_des_bottomsheet_bg_color">@color/sesl_dialog_window_background_color_material_dark</color>
     <color name="oui_des_bottomsheet_drag_handle_tint">#66b2b2b2</color>
 
     <color name="oui_des_list_item_selection_anim_bg_color">@color/sesl_primary_color_dark</color>

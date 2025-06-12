@@ -1,6 +1,7 @@
 @file:Suppress("unused", "NOTHING_TO_INLINE")
 package dev.oneuiproject.oneui.ktx
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.util.Log
 import android.view.SemView
@@ -9,11 +10,16 @@ import android.view.ViewGroup
 import androidx.annotation.ColorInt
 import androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_NONE
 import androidx.appcompat.widget.TooltipCompat
+import androidx.core.view.SemBlurCompat
+import androidx.core.view.SemBlurCompat.BLUR_MODE_WINDOW
+import androidx.core.view.SemBlurCompat.BLUR_UI_HIGH_ULTRA_THICK_DARK
+import androidx.core.view.SemBlurCompat.BLUR_UI_HIGH_ULTRA_THICK_LIGHT
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.reflect.DeviceInfo
+import androidx.reflect.feature.SeslFloatingFeatureReflector
 import dev.rikka.tools.refine.Refine
-
+import androidx.appcompat.R as appcompatR
 
 /**
  * Convenience method to register [View.addOnAttachStateChangeListener]
@@ -207,5 +213,46 @@ inline fun View.onMultiClick(clickCount: Int = 7, maxClickIntervalMillis: Long =
             return@setOnClickListener
         }
         postDelayed(resetCount, maxClickIntervalMillis)
+    }
+}
+
+/**
+ * Applies a OneUI-style background blur effect to this View.
+ *
+ * This effect is typically used for dialogs and other floating windows to blur the content
+ * behind them. The function automatically determines the appropriate blur style (light/dark)
+ * based on the current theme and applies it.
+ *
+ * This function will only have an effect on devices that support the necessary blur features.
+ *
+ * @return `true` if the blur effect was successfully applied, `false` otherwise (e.g., if the
+ *         device does not support the feature).
+ * @see SemBlurCompat.setBlurEffectPreset
+ */
+fun View.semSetBackgroundBlurEnabled(): Boolean {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+        @SuppressLint("RestrictedApi")
+        val supports3DTransitionFlag = DeviceInfo.isOneUI() && SeslFloatingFeatureReflector.getString(
+            "SEC_FLOATING_FEATURE_GRAPHICS_SUPPORT_3D_SURFACE_TRANSITION_FLAG",
+            "FALSE"
+        ) == "TRUE"
+
+        if (!supports3DTransitionFlag) return false
+
+        val isLightTheme = context.isLightMode()
+        val colorCurve: Int = if (isLightTheme) BLUR_UI_HIGH_ULTRA_THICK_LIGHT else BLUR_UI_HIGH_ULTRA_THICK_DARK
+        val blurColor: Int = context.getColor(appcompatR.color.sesl_dialog_blur_background_color)
+        val blurRadius = +context.resources.getDimensionPixelSize(appcompatR.dimen.sesl_dialog_background_corner_radius).toFloat()
+
+        SemBlurCompat.setBlurEffectPreset(
+            this,
+            BLUR_MODE_WINDOW,
+            colorCurve,
+            blurColor,
+            blurRadius
+        )
+        return true
+    } else {
+        return false
     }
 }

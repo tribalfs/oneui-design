@@ -9,10 +9,19 @@ import androidx.annotation.RestrictTo
 import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
 
+/**
+ * Updates the width and optionally the horizontal position of a Dialog.
+ *
+ * @param width The desired width of the dialog in pixels. If null, the width will be determined
+ *              by [semGetDialogWidth].
+ * @param centerX The desired horizontal center position of the dialog in pixels.
+ *                If null, the dialog's horizontal position will not be changed relative to its default.
+ *                If provided, the dialog's `x` attribute will be adjusted to center it at this point.
+ */
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 @JvmOverloads
-internal inline fun Dialog.updateWidth(centerX: Int? = null){
-    val dialogWidth = semGetDialogWidth()
+internal inline fun Dialog.updateWidth(width: Int? = null, centerX: Int? = null){
+    val dialogWidth = width ?: semGetDialogWidth()
     val dialogWindowLp = this.window!!.attributes
     dialogWindowLp.width = dialogWidth
     centerX?.let {

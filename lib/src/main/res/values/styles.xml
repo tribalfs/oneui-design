@@ -178,16 +178,39 @@
 
     <style name="OneUI.BottomSheetDialog.Light" parent="@style/Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/OneUI.BottomSheetStyle</item>
-        <item name="android:backgroundDimAmount">.32</item>
+        <item name="android:backgroundDimAmount">.35</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowAnimationStyle">@style/Animation.OneUI.BottomSheetDialog</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="enableEdgeToEdge">true</item>
     </style>
 
     <style name="OneUI.BottomSheetDialog" parent="@style/Theme.Design.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/OneUI.BottomSheetStyle</item>
-        <item name="android:backgroundDimAmount">.32</item>
+        <item name="android:backgroundDimAmount">.65</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowAnimationStyle">@style/Animation.OneUI.BottomSheetDialog</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="enableEdgeToEdge">true</item>
+    </style>
+
+    <style name="OneUI.BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:elevation">0dp</item>
+        <item name="behavior_skipCollapsed">true</item>
+        <item name="android:maxWidth">@dimen/material_bottom_sheet_max_width</item>
+        <item name="marginTopSystemWindowInsets">true</item>
+        <!--disable adding extra padding on top when fully expanded-->
+        <item name="paddingTopSystemWindowInsets">false</item>
+        <item name="dodgeNavBarInset">true</item>
+        <item name="topBottomInset">@dimen/sesl_dialog_background_inset_vertical</item>
+    </style>
+
+    <style name="OneUI.BottomSheet.DragHandle" parent="">
+        <item name="android:contentDescription">@string/bottomsheet_drag_handle_content_description</item>
+        <item name="android:minHeight">24dp</item>
+        <item name="android:paddingBottom">@dimen/m3_bottom_sheet_drag_handle_bottom_padding</item>
     </style>
 
     <style name="Animation.OneUI.BottomSheetDialog" parent="Animation.AppCompat.Dialog">
@@ -196,28 +219,12 @@
     </style>
 
     <style name="OneUI.BottomSheetDialogTitleStyle">
-        <item name="android:textAppearance" tools:ignore="PrivateResource">@style/RobotoMedium</item>
-        <item name="android:textSize" tools:ignore="SpUsage">21dp</item>
+        <item name="android:textAppearance">@style/RobotoMedium</item>
+        <item name="android:textSize">22sp</item>
         <item name="android:textColor">?android:textColorPrimary</item>
         <item name="android:textAlignment">textStart</item>
         <item name="android:paddingStart">22dp</item>
         <item name="android:paddingEnd">22dp</item>
-    </style>
-
-    <!--    <item format="float" name="container_opacity" type="dimen">0.35</item>-->
-
-    <style name="OneUI.BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@drawable/oui_des_bottomsheet_bg</item>
-        <item name="android:maxWidth">600dp</item>->
-    </style>
-
-    <style name="OneUI.BottomSheet.DragHandle" parent="">
-        <item name="srcCompat">@drawable/oui_des_bottomsheet_drag_handle</item>
-        <item name="android:scaleType">center</item>
-        <item name="android:contentDescription">@string/bottomsheet_drag_handle_content_description</item>
-        <item name="android:minWidth">@dimen/mtrl_min_touch_target_size</item>
-        <item name="android:minHeight">30dp</item>
-        <item name="tint">@color/oui_des_bottomsheet_drag_handle_tint</item>
     </style>
 
     <style name="OneUI.SearchHighlightedTextAppearance" parent="RobotoMedium">
@@ -316,5 +323,4 @@
         <item name="android:windowEnterAnimation">@anim/oui_des_more_menu_dialog_slide_right</item>
         <item name="android:windowExitAnimation">@anim/oui_des_more_menu_dialog_slide_right_exit</item>
     </style>
-
 </resources>
