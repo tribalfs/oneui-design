@@ -2,11 +2,12 @@
 <set xmlns:android="http://schemas.android.com/apk/res/android" android:shareInterpolator="false">
     <translate
         android:interpolator="@interpolator/sine_out_80"
-        android:duration="300"
+        android:duration="240"
         android:fromYDelta="0%"
-        android:toYDelta="40%"/>
+        android:toYDelta="60%"/>
     <alpha
-        android:duration="100"
+        android:interpolator="@android:interpolator/linear"
+        android:duration="200"
         android:fromAlpha="1"
         android:toAlpha="0"/>
 </set>

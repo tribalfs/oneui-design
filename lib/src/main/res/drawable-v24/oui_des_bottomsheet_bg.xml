@@ -4,11 +4,9 @@
     android:insetTop="@dimen/sesl_dialog_background_inset_vertical"
     android:insetRight="@dimen/sesl_dialog_background_inset_horizontal"
     android:insetBottom="@dimen/sesl_dialog_background_inset_vertical">
-    <shape
+    <androidx.appcompat.util.SeslShapeDrawable xmlns:android="http://schemas.android.com/apk/res/android"
         android:shape="rectangle">
+        <corners android:radius="@dimen/sesl_dialog_background_corner_radius" />
         <solid android:color="@color/oui_des_bottomsheet_bg_color" />
-        <corners
-            android:radius="@dimen/sesl_dialog_background_corner_radius"
-            />
-    </shape>
+    </androidx.appcompat.util.SeslShapeDrawable>
 </inset>

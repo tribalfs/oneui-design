@@ -4,14 +4,18 @@ package dev.oneuiproject.oneui.app
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import dev.oneuiproject.oneui.utils.internal.updateWidth
+import dev.oneuiproject.oneui.ktx.dpToPx
+import dev.oneuiproject.oneui.ktx.pxToDp
+import dev.oneuiproject.oneui.utils.DeviceLayoutUtil
 
 /**
  * A [BottomSheetDialogFragment] that provides the Samsung One UI bottom sheet design.
@@ -38,28 +42,53 @@ open class SemBottomSheetDialogFragment : BottomSheetDialogFragment {
                 skipCollapsed = true
                 significantVelocityThreshold = 2_000
                 setReleaseLowOffset(200)
-                forceExpandOnNestedScrollStop(true)
+                setRetainOriginalPaddings(true)
             }
-            updateWidth()
         }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
-        dialog?.updateWidth()
+        updateWidth()
         super.onConfigurationChanged(newConfig)
     }
 
     override fun onStart() {
-        fullExpandAndHideStatusBar()
+        fullyExpand()
         super.onStart()
+        updateWidth()
+        setupSystemUI()
     }
 
-    private inline fun fullExpandAndHideStatusBar(){
+    private fun fullyExpand() {
         (dialog as? BottomSheetDialog)?.apply {
             behavior.state = BottomSheetBehavior.STATE_EXPANDED
-            @Suppress("DEPRECATION")
-            window?.decorView?.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        }
+    }
+
+    private fun setupSystemUI() {
+        @Suppress("DEPRECATION")
+        dialog?.window?.apply {
+            if (!DeviceLayoutUtil.isTabletLayoutOrDesktop(context)) {
+                    decorView.systemUiVisibility =
+                        View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                isNavigationBarContrastEnforced = false
+            }
+        }
+    }
+
+    //https://m3.material.io/components/bottom-sheets/specs
+    private fun updateWidth() {
+        (dialog as? BottomSheetDialog)?.apply {
+            val displayMetrics: DisplayMetrics = resources.displayMetrics
+            val widthInDp = displayMetrics.widthPixels.pxToDp(resources)
+            val maxWidth = if (widthInDp > 640.0f) {
+                (widthInDp - (56 * 2)).dpToPx(resources)
+            } else {
+                (widthInDp).dpToPx(resources)
+            }
+            behavior.maxWidth = maxWidth
         }
     }
 }
