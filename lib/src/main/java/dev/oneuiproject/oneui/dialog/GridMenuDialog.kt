@@ -472,7 +472,7 @@ class GridMenuDialog @JvmOverloads constructor(
                     val gridItem = gridItems[bindingAdapterPosition]
                     val result = onClickMenuItem?.onClick(gridItem) ?: false
                     if (result) {
-                        parent.postDelayed({ dismiss()}, 240)
+                        dismiss()
                     }
                 }
             }
