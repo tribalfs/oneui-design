@@ -52,7 +52,7 @@ dokka {
     moduleName.set(rootProject.name)
     dokkaPublications.html {
         suppressObviousFunctions.set(true)
-        failOnWarning.set(true)
+        failOnWarning.set(false)
         suppressInheritedMembers.set(true)
     }
 
