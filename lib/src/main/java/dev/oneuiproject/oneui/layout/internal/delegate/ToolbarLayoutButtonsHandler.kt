@@ -17,10 +17,13 @@ import androidx.appcompat.R as appcompatR
 internal open class ToolbarLayoutButtonsHandler(private val toolbar: Toolbar):
     NavButtonsHandler {
     private var mNavDrawerButtonTooltip: CharSequence? = null
-    private var mNavigationOnClickList: View.OnClickListener? = null
+    private var mNavigationOnClickListener: View.OnClickListener? = null
     private var mNavigationBadgeIcon: LayerDrawable? = null
 
     private val mActivity by lazy(LazyThreadSafetyMode.NONE) { toolbar.context.appCompatActivity }
+    private val backButtonDrawable by lazy(LazyThreadSafetyMode.NONE) {
+        AppCompatResources.getDrawable(toolbar.context, appcompatR.drawable.sesl_ic_ab_back_light)!!
+    }
 
     /**Note: This doesn't check for the current value*/
     override var showNavigationButtonAsBack = false
@@ -37,12 +40,12 @@ internal open class ToolbarLayoutButtonsHandler(private val toolbar: Toolbar):
         }
 
     override fun setNavigationButtonOnClickListener(listener: View.OnClickListener?) {
-        mNavigationOnClickList = listener
-        updateNavButton()
+        mNavigationOnClickListener = listener
     }
 
     override fun setNavigationButtonTooltip(tooltipText: CharSequence?) {
         toolbar.navigationContentDescription = tooltipText
+        mNavDrawerButtonTooltip = tooltipText
     }
 
     private val badgeIcon by lazy(LazyThreadSafetyMode.NONE) { NavigationBadgeIcon(toolbar.context) }
@@ -66,7 +69,22 @@ internal open class ToolbarLayoutButtonsHandler(private val toolbar: Toolbar):
         }else {
             mNavigationBadgeIcon = null
         }
-        updateNavButton()
+
+        if (!showNavigationButtonAsBack && showNavigationButton) {
+            toolbar.apply {
+                mActivity?.apply {
+                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                    setNavigationOnClickListener {
+                        mNavigationOnClickListener?.onClick(it)
+                    }
+                    navigationContentDescription = mNavDrawerButtonTooltip
+                }
+
+                if (navigationIcon != mNavigationBadgeIcon) {
+                    navigationIcon = mNavigationBadgeIcon
+                }
+            }
+        }
     }
 
     override fun setHeaderButtonIcon(icon: Drawable?, tint: Int?) = Unit
@@ -78,12 +96,8 @@ internal open class ToolbarLayoutButtonsHandler(private val toolbar: Toolbar):
     private fun updateNavButton() {
         if (showNavigationButtonAsBack) {
             toolbar.apply {
-                if (isInEditMode) {
-                    navigationIcon = AppCompatResources.getDrawable(toolbar.context,  appcompatR.drawable.sesl_ic_ab_back_light)!!
-                }
-                //Backup current tooltip to restore later
-                //before setting the mBackButtonTooltip as the current one
-                mNavDrawerButtonTooltip = navigationContentDescription
+                navigationIcon = backButtonDrawable
+                navigationContentDescription = context.getString(appcompatR.string.sesl_action_bar_up_description)
                 mActivity?.apply {
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
                     setNavigationOnClickListener {
@@ -97,7 +111,7 @@ internal open class ToolbarLayoutButtonsHandler(private val toolbar: Toolbar):
                     mActivity?.apply {
                         supportActionBar?.setDisplayHomeAsUpEnabled(false)
                         setNavigationOnClickListener {
-                            mNavigationOnClickList?.onClick(it)
+                            mNavigationOnClickListener?.onClick(it)
                         }
                         navigationContentDescription = mNavDrawerButtonTooltip
                     }
