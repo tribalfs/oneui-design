@@ -27,7 +27,7 @@ class NaviFragment : AbsBaseFragment(R.layout.fragment_navi) {
         (requireActivity() as MainActivity).bottomTab.apply {
             show(true)
             setOnMenuItemClickListener { menuItem ->
-                suggestiveSnackBar("${menuItem.title} selected!", duration = Snackbar.LENGTH_SHORT)
+                requireContext().semToast("${menuItem.title} selected!")
                 true
             }
         }
