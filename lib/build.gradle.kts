@@ -72,6 +72,11 @@ dokka {
         externalDocumentationLinks{
             register("sesl.androidx") {
                 url("https://tribalfs.github.io/sesl-androidx/")
+                packageListUrl("https://tribalfs.github.io/sesl-androidx/package-list")
+            }
+            register("sesl.material") {
+                url("https://tribalfs.github.io/sesl-material-components-android/")
+                packageListUrl("https://tribalfs.github.io/sesl-material-components-android/sesl.com.google.android.material/package-list")
             }
         }
     }
