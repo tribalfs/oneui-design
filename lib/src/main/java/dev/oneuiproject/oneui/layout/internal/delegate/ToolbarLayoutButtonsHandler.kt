@@ -21,7 +21,10 @@ internal open class ToolbarLayoutButtonsHandler(private val toolbar: Toolbar):
     private var navigationOnClickList: View.OnClickListener? = null
     private var navigationBadgeIcon: LayerDrawable? = null
 
-    private val mActivity by lazy(LazyThreadSafetyMode.NONE) { toolbar.context.appCompatActivity }
+    private val activity by lazy(LazyThreadSafetyMode.NONE) { toolbar.context.appCompatActivity }
+    private val backButtonDrawable by lazy(LazyThreadSafetyMode.NONE) {
+        AppCompatResources.getDrawable(toolbar.context, appcompatR.drawable.sesl_ic_ab_back_light)!!
+    }
 
     /**Note: This doesn't check for the current value*/
     override var showNavigationButtonAsBack = false
@@ -39,11 +42,15 @@ internal open class ToolbarLayoutButtonsHandler(private val toolbar: Toolbar):
 
     override fun setNavigationButtonOnClickListener(listener: View.OnClickListener?) {
         navigationOnClickList = listener
-        updateNavButton()
     }
 
+    /**
+     * This applies only when [showNavigationButtonAsBack] is `false` (default)
+     * and [showNavigationButton] is true
+     */
     override fun setNavigationButtonTooltip(tooltipText: CharSequence?) {
         toolbar.navigationContentDescription = tooltipText
+        navDrawerButtonTooltip = tooltipText
     }
 
     private val badgeIcon by lazy(LazyThreadSafetyMode.NONE) { NavigationBadgeIcon(toolbar.context) }
@@ -55,6 +62,10 @@ internal open class ToolbarLayoutButtonsHandler(private val toolbar: Toolbar):
         }
     }
 
+    /**
+     * Set the icon on the navigation button.
+     * This applies only when [showNavigationButtonAsBack] is `false` (default).
+     */
     override fun setNavigationButtonIcon(icon: Drawable?) {
         if (icon != null) {
             if (navigationBadgeIcon == null) {
@@ -67,7 +78,22 @@ internal open class ToolbarLayoutButtonsHandler(private val toolbar: Toolbar):
         }else {
             navigationBadgeIcon = null
         }
-        updateNavButton()
+
+        if (!showNavigationButtonAsBack && showNavigationButton) {
+            toolbar.apply {
+                activity?.apply {
+                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                    setNavigationOnClickListener {
+                        navigationOnClickList?.onClick(it)
+                    }
+                    navigationContentDescription = navDrawerButtonTooltip
+                }
+
+                if (navigationIcon != navigationBadgeIcon) {
+                    navigationIcon = navigationBadgeIcon
+                }
+            }
+        }
     }
 
     override fun setHeaderButtonIcon(icon: Drawable?, tint: Int?) = Unit
@@ -79,13 +105,9 @@ internal open class ToolbarLayoutButtonsHandler(private val toolbar: Toolbar):
     private fun updateNavButton() {
         if (showNavigationButtonAsBack) {
             toolbar.apply {
-                if (isInEditMode) {
-                    navigationIcon = AppCompatResources.getDrawable(toolbar.context,  appcompatR.drawable.sesl_ic_ab_back_light)!!
-                }
-                //Backup current tooltip to restore later
-                //before setting the mBackButtonTooltip as the current one
-                navDrawerButtonTooltip = navigationContentDescription
-                mActivity?.apply {
+                navigationIcon = backButtonDrawable
+                navigationContentDescription = context.getString(appcompatR.string.sesl_action_bar_up_description)
+                activity?.apply {
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
                     setNavigationOnClickListener {
                         onBackPressedDispatcher.onBackPressed()
@@ -95,7 +117,7 @@ internal open class ToolbarLayoutButtonsHandler(private val toolbar: Toolbar):
         } else {
             if (showNavigationButton) {
                 toolbar.apply {
-                    mActivity?.apply {
+                    activity?.apply {
                         supportActionBar?.setDisplayHomeAsUpEnabled(false)
                         setNavigationOnClickListener {
                             navigationOnClickList?.onClick(it)
