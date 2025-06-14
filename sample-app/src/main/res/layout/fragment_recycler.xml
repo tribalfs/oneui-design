@@ -7,13 +7,13 @@
     android:paddingVertical="0dp"
     android:transitionGroup="true">
 
-    <dev.oneuiproject.oneui.widget.MarginsTabLayout
+    <dev.oneuiproject.oneui.widget.RoundedTabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:seslTabStyle="Sub"
-        app:tabMode="sesl_fixed_auto"
-        app:tabGravity="fill" />
+        app:tabGravity="fill"
+        android:layout_marginBottom="14dp"
+        android:layout_marginHorizontal="26dp"/>
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vp2"

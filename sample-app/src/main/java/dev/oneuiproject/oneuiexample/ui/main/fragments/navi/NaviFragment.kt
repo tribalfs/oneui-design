@@ -2,7 +2,6 @@ package dev.oneuiproject.oneuiexample.ui.main.fragments.navi
 
 import android.os.Bundle
 import android.view.View
-import com.google.android.material.snackbar.Snackbar
 import com.sec.sesl.tester.R
 import com.sec.sesl.tester.databinding.FragmentNaviBinding
 import dev.oneuiproject.oneui.ktx.addTab
@@ -10,7 +9,6 @@ import dev.oneuiproject.oneuiexample.ui.main.MainActivity
 import dev.oneuiproject.oneuiexample.ui.main.core.base.AbsBaseFragment
 import dev.oneuiproject.oneuiexample.ui.main.core.util.autoCleared
 import dev.oneuiproject.oneuiexample.ui.main.core.util.semToast
-import dev.oneuiproject.oneuiexample.ui.main.core.util.suggestiveSnackBar
 
 class NaviFragment : AbsBaseFragment(R.layout.fragment_navi) {
 

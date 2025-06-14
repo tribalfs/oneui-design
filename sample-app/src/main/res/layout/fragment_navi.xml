@@ -16,6 +16,29 @@
         <dev.oneuiproject.oneui.widget.Separator
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="RoundedTabLayout" />
+
+        <dev.oneuiproject.oneui.widget.RoundedTabLayout
+            android:id="@+id/borderTabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="38dp">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tab 1" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tab 2" />
+
+        </dev.oneuiproject.oneui.widget.RoundedTabLayout>
+
+        <dev.oneuiproject.oneui.widget.Separator
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="MarginsTabLayout"
             tools:ignore="TextContrastCheck" />
 
