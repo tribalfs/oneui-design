@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:state_pressed="false"
+        android:color="@color/oui_des_rounded_tab_unselected_text_color"
+        android:state_activated="false"/>
+    <item
+        android:state_pressed="true"
+        android:color="@color/oui_des_rounded_tab_selected_text_color"
+        android:state_activated="false"/>
+    <item
+        android:state_pressed="false"
+        android:color="@color/oui_des_rounded_tab_selected_text_color"
+        android:state_activated="true"/>
+    <item
+        android:state_pressed="true"
+        android:color="@color/oui_des_rounded_tab_selected_text_color"
+        android:state_activated="true"/>
+</selector>

@@ -93,4 +93,8 @@
     <color name="oui_des_floating_action_bar_selected_bg_color">#252528</color>
     <color name="oui_des_floating_action_bar_unselected_bg_color">#4d4d52</color>
 
+    <!--RoundedTabLayout-->
+    <color name="oui_des_rounded_tab_layout_background_color">#47474a</color>
+    <color name="oui_des_rounded_tab_unselected_text_color">#a3a3a7</color>
+
 </resources>

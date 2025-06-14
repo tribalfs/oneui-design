@@ -340,4 +340,10 @@
         <item name="android:textAlignment">center</item>
     </style>
 
+    <!--RoundedTabLayout-->
+    <style name="TabTextStyle" parent="@style/TextAppearance.Design.Tab">
+        <item name="android:textSize">15sp</item>
+        <item name="android:layout_width">156dp</item>
+    </style>
+
 </resources>

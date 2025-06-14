@@ -106,4 +106,9 @@
     <color name="oui_des_floating_action_bar_unselected_bg_color">#fafaff</color>
     <color name="oui_des_floating_action_bar_unselected_text_color">#b7b7bb</color>
 
+    <!--RoundedTabLayout-->
+    <color name="oui_des_rounded_tab_layout_background_color">#e4e4e7</color>
+    <color name="oui_des_rounded_tab_selected_text_color">#fafaff</color>
+    <color name="oui_des_rounded_tab_unselected_text_color">#848487</color>
+
 </resources>

@@ -170,4 +170,7 @@
     <dimen name="oui_des_floating_action_bar_unselected_radius">8dp</dimen>
     <dimen name="oui_des_floating_action_bar_btn_width">154dp</dimen>
     <dimen name="oui_des_floating_action_bar_elevation">3dp</dimen>
+
+    <!--RoundedTabLayout-->
+    <dimen name="oui_des_rounded_tab_min_height">40dp</dimen>
 </resources>
