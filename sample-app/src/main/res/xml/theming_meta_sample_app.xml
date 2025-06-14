@@ -47,5 +47,35 @@
             ValueRef="1-52-1"
             ValueType="Color"/>
 
+        <Property
+            Comment="RoundedTabLayout selected tab text color"
+            DefaultValue="#252525"
+            DestAttribName="oui_des_rounded_tab_selected_text_color"
+            UID="16-61-11"
+            ValueRef="1-E"
+            ValueType="TextColor"/>
+        <Property
+            Comment="RoundedTabLayout unselected tab text color"
+            DefaultValue="#949494"
+            DestAttribName="oui_des_rounded_tab_unselected_text_color"
+            UID="16-61-8"
+            ValueRef="1-1-4"
+            ValueType="TextColor"/>
+        <Property
+            Comment="RoundedTabLayout selected BG color"
+            DefaultValue="#69696c"
+            DestAttribName="oui_des_rounded_tab_selected_background_color"
+            UID="16-61-12"
+            ValueRef="1-A"
+            ValueType="BgColor"/>
+
+        <Property
+            Comment="Background color for RoundedTabLayout"
+            DefaultValue="#e4e4e7"
+            DestAttribName="oui_des_rounded_tab_layout_background_color"
+            UID="16-61-4"
+            ValueRef="1-7-1"
+            ValueType="BgColor"/>
+
     </AppMetaData>
 </ThemeMetaData>
