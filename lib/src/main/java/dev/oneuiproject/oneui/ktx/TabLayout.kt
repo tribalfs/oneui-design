@@ -4,10 +4,12 @@ package dev.oneuiproject.oneui.ktx
 
 import android.graphics.drawable.Drawable
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.DrawableRes
+import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.appcompat.content.res.AppCompatResources
 import com.google.android.material.tabs.TabLayout
@@ -31,6 +33,7 @@ inline fun <T: TabLayout>T.selectTabAt(index: Int, updateIndicator: Boolean = tr
  *
  * @param tabTitleRes The resource id of the string to set as title for the tab.
  * @param tabIconRes (Optional) The resource id of the drawable to display on the tab.
+ * @param customTabViewRes (Optional) The resource id of the layout to use as the custom tab view.
  * @param listener (Optional) [View.OnClickListener] to be set to the tab.
  *
  * @return The added [TabLayout.Tab] instance for further configuration, if needed.
@@ -48,11 +51,13 @@ inline fun <T: TabLayout>T.selectTabAt(index: Int, updateIndicator: Boolean = tr
 inline fun <T: TabLayout>T.addTab(
     @StringRes tabTitleRes: Int?,
     @DrawableRes tabIconRes: Int? = null,
+    @LayoutRes customTabViewRes: Int? = null,
     listener: View.OnClickListener? = null
 ): TabLayout.Tab {
     return addTab(
         tabTitle = tabTitleRes?.let {context!!.getString(it) },
         null,
+        customTabViewRes,
         listener
     ).apply {
         tabIconRes?.let {
@@ -67,6 +72,7 @@ inline fun <T: TabLayout>T.addTab(
  *
  * @param tabTitle The title text to display on the tab.
  * @param tabIcon (Optional) The drawable to display as the tab's icon.
+ * @param customTabViewRes (Optional) The resource id of the layout to use as the custom tab view.
  * @param listener (Optional) [View.OnClickListener] to be set to the tab.
  *
  * @return The added [TabLayout.Tab] instance for further configuration, if needed.
@@ -82,11 +88,13 @@ inline fun <T: TabLayout>T.addTab(
 inline fun <T: TabLayout>T.addTab(
     tabTitle: CharSequence?,
     tabIcon: Drawable? = null,
+    @LayoutRes customTabViewRes: Int? = null,
     listener: View.OnClickListener? = null,
 ): TabLayout.Tab {
     return newTab().apply {
         text = tabTitle
         icon = tabIcon
+        customTabViewRes?.let { setCustomView(LayoutInflater.from(context).inflate(it, view, false)) }
         addTab(this)
         //Call after added
         getTabView(position)?.apply {
