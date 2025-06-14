@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package dev.oneuiproject.oneui.utils.internal
 
 /**
