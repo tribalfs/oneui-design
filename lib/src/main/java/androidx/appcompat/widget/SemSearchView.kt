@@ -63,16 +63,14 @@ internal fun SearchView.applyActionModeSearchStyle(){
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 internal fun SearchView.applyThemeColors(){
     with (context!!) {
-        theme.obtainStyledAttributes(
-            intArrayOf(
-                appcompatR.attr.searchViewHintTextColor,
-                appcompatR.attr.searchViewIconColor,
-                appcompatR.attr.searchViewTextColor
-            )
-        ).use {
-            val hintColor = it.getColor(0, 0)
-            val iconColor = it.getColor(@Suppress("ResourceType") 1, 0)
-            val textColor = it.getColor(@Suppress("ResourceType") 2, 0)
+        withStyledAttributes(null, intArrayOf(
+            appcompatR.attr.searchViewHintTextColor,
+            appcompatR.attr.searchViewIconColor,
+            appcompatR.attr.searchViewTextColor
+        )) {
+            val hintColor = getColor(0, 0)
+            val iconColor = getColor(@Suppress("ResourceType") 1, 0)
+            val textColor = getColor(@Suppress("ResourceType") 2, 0)
             setSearchViewColors(iconColor, textColor, hintColor)
         }
     }
