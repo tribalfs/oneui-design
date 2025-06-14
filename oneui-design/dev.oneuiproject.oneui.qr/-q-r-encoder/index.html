@@ -50,7 +50,7 @@
         <div class="navigation-controls">
         <div class="filter-section filter-section_loading" id="filter-section">
                 <button class="platform-tag platform-selector jvm-like" data-active=""
-                        data-filter=":oneui-design/release">androidJvm</button>
+                        data-filter=":oneui-design/main">main</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox"
                         data-role="dropdown-toggle"
@@ -67,10 +67,10 @@
                     </div>
                         <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
                             <label class="checkbox">
-                                <input type="checkbox" class="checkbox--input" id=":oneui-design/release"
-                                       data-filter=":oneui-design/release"/>
+                                <input type="checkbox" class="checkbox--input" id=":oneui-design/main"
+                                       data-filter=":oneui-design/main"/>
                                 <span class="checkbox--icon"></span>
-                                androidJvm
+                                main
                             </label>
                         </li>
                 </ul>
@@ -104,28 +104,28 @@
                 </div>
             </div>
             <div id="main">
-<div class="main-content" data-page-type="classlike" id="content" pageIds="oneui-design::dev.oneuiproject.oneui.qr/QREncoder///PointingToDeclaration//1925756284">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="oneui-design::dev.oneuiproject.oneui.qr/QREncoder///PointingToDeclaration//1915391025">
   <div class="breadcrumbs"><a href="../../../index.html">oneui-design</a><span class="delimiter">/</span><a href="../index.html">dev.oneuiproject.oneui.qr</a><span class="delimiter">/</span><span class="current">QREncoder</span></div>
   <div class="cover ">
     <h1 class="cover"><span><span>QREncoder</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">QREncoder</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">content<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div><p class="paragraph">A utility class for generating QR codes with various customization options.</p><p class="paragraph">This class allows you to:</p><ul><li><p class="paragraph">Set the content (data) to be encoded in the QR code.</p></li><li><p class="paragraph">Customize the size of the QR code.</p></li><li><p class="paragraph">Add an icon to the center of the QR code.</p></li><li><p class="paragraph">Set the foreground and background colors.</p></li><li><p class="paragraph">Apply a rounded frame around the QR code.</p></li><li><p class="paragraph">Tint the anchor points and border of the QR code.</p></li></ul><p class="paragraph">Example usage:</p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">val qrEncoder = QREncoder(context, &quot;https://example.com&quot;)<br>    .setSize(300)<br>    .setIcon(R.drawable.my_icon)<br>    .setBackgroundColor(Color.WHITE)<br>    .setForegroundColor(Color.BLUE, true, true)<br>    .roundedFrame(true)<br>val qrBitmap = qrEncoder.generate()<br><br>myImageView.setImageBitmap(qrBitmap)</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><h4 class="">See also</h4><div class="table"><div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../../dev.oneuiproject.oneui.widget/-q-r-image-view/index.html"><span>QRImage</span><wbr></wbr><span><span>View</span></span></a></div></span></div><div></div></div></div></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">QREncoder</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">content<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="clearfix"><span class="floating-right">(<a href="https://github.com/tribalfs/oneui-design/tree/main/lib/src/main/java/dev/oneuiproject/oneui/qr/QREncoder.kt#L57">source</a>)</span></span></div><p class="paragraph">A utility class for generating QR codes with various customization options.</p><p class="paragraph">This class allows you to:</p><ul><li><p class="paragraph">Set the content (data) to be encoded in the QR code.</p></li><li><p class="paragraph">Customize the size of the QR code.</p></li><li><p class="paragraph">Add an icon to the center of the QR code.</p></li><li><p class="paragraph">Set the foreground and background colors.</p></li><li><p class="paragraph">Apply a rounded frame around the QR code.</p></li><li><p class="paragraph">Tint the anchor points and border of the QR code.</p></li></ul><p class="paragraph">Example usage:</p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">val qrEncoder = QREncoder(context, &quot;https://example.com&quot;)<br>    .setSize(300)<br>    .setIcon(R.drawable.my_icon)<br>    .setBackgroundColor(Color.WHITE)<br>    .setForegroundColor(Color.BLUE, true, true)<br>    .roundedFrame(true)<br>val qrBitmap = qrEncoder.generate()<br><br>myImageView.setImageBitmap(qrBitmap)</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><h4 class="">See also</h4><div class="table"><div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../../dev.oneuiproject.oneui.widget/-q-r-image-view/index.html"><span>QRImage</span><wbr></wbr><span><span>View</span></span></a></div></span></div><div></div></div></div></div></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
     <div class="tabs-section-body">
       <div data-togglable="CONSTRUCTOR">
         <h2 class="">Constructors</h2>
-        <div class="table"><a data-name="1752690194%2FConstructors%2F1925756284" anchor-label="QREncoder" id="1752690194%2FConstructors%2F1925756284" data-filterable-set=":oneui-design/release"></a>
-          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+        <div class="table"><a data-name="1752690194%2FConstructors%2F1915391025" anchor-label="QREncoder" id="1752690194%2FConstructors%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-q-r-encoder.html"><span><span>QREncoder</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1752690194%2FConstructors%2F1925756284"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1752690194%2FConstructors%2F1915391025"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">content<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">content<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
@@ -134,92 +134,92 @@
       </div>
       <div data-togglable="FUNCTION">
         <h2 class="">Functions</h2>
-        <div class="table"><a data-name="-2022167248%2FFunctions%2F1925756284" anchor-label="generate" id="-2022167248%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
-          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+        <div class="table"><a data-name="-2022167248%2FFunctions%2F1915391025" anchor-label="generate" id="-2022167248%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="generate.html"><span><span>generate</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2022167248%2FFunctions%2F1925756284"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2022167248%2FFunctions%2F1915391025"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="generate.html"><span class="token function">generate</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/Bitmap.html">Bitmap</a><span class="token operator">?</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="generate.html"><span class="token function">generate</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/Bitmap.html">Bitmap</a><span class="token operator">?</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-786327350%2FFunctions%2F1925756284" anchor-label="roundedFrame" id="-786327350%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
-          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+<a data-name="-786327350%2FFunctions%2F1915391025" anchor-label="roundedFrame" id="-786327350%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="rounded-frame.html"><span>rounded</span><wbr></wbr><span><span>Frame</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-786327350%2FFunctions%2F1925756284"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-786327350%2FFunctions%2F1915391025"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="rounded-frame.html"><span class="token function">roundedFrame</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">apply<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">QREncoder</a></div><div class="brief "><p class="paragraph">Sets whether to add a rounded border around the QR code.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="rounded-frame.html"><span class="token function">roundedFrame</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">apply<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">QREncoder</a></div><div class="brief "><p class="paragraph">Sets whether to add a rounded border around the QR code.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1415975056%2FFunctions%2F1925756284" anchor-label="setBackgroundColor" id="-1415975056%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
-          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+<a data-name="-1415975056%2FFunctions%2F1915391025" anchor-label="setBackgroundColor" id="-1415975056%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-background-color.html"><span>set</span><wbr></wbr><span>Background</span><wbr></wbr><span><span>Color</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1415975056%2FFunctions%2F1925756284"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1415975056%2FFunctions%2F1915391025"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="set-background-color.html"><span class="token function">setBackgroundColor</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ColorInt.html"><span class="token annotation builtin">ColorInt</span></a> </span>color<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">QREncoder</a></div><div class="brief "><p class="paragraph">Sets the background color of the QR code.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="set-background-color.html"><span class="token function">setBackgroundColor</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ColorInt.html"><span class="token annotation builtin">ColorInt</span></a> </span>color<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">QREncoder</a></div><div class="brief "><p class="paragraph">Sets the background color of the QR code.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1895163067%2FFunctions%2F1925756284" anchor-label="setForegroundColor" id="-1895163067%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
-          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+<a data-name="-1895163067%2FFunctions%2F1915391025" anchor-label="setForegroundColor" id="-1895163067%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-foreground-color.html"><span>set</span><wbr></wbr><span>Foreground</span><wbr></wbr><span><span>Color</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1895163067%2FFunctions%2F1925756284"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1895163067%2FFunctions%2F1915391025"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="set-foreground-color.html"><span class="token function">setForegroundColor</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">color<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">tintAnchor<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter ">tintBorder<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">QREncoder</a></div><div class="brief "><p class="paragraph">Sets the foreground color of the QR code, with options to tint anchor and border.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="set-foreground-color.html"><span class="token function">setForegroundColor</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">color<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">tintAnchor<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter ">tintBorder<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">QREncoder</a></div><div class="brief "><p class="paragraph">Sets the foreground color of the QR code, with options to tint anchor and border.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1822399937%2FFunctions%2F1925756284" anchor-label="setIcon" id="-1822399937%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
-          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+<a data-name="-1822399937%2FFunctions%2F1915391025" anchor-label="setIcon" id="-1822399937%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-icon.html"><span>set</span><wbr></wbr><span><span>Icon</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1822399937%2FFunctions%2F1925756284"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1822399937%2FFunctions%2F1915391025"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="set-icon.html"><span class="token function">setIcon</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">icon<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/drawable/Drawable.html">Drawable</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">QREncoder</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="set-icon.html"><span class="token function">setIcon</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/DrawableRes.html"><span class="token annotation builtin">DrawableRes</span></a> </span>id<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">QREncoder</a></div><div class="brief "><p class="paragraph">Sets the icon to be placed at the center of the QR code.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="set-icon.html"><span class="token function">setIcon</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">icon<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/drawable/Drawable.html">Drawable</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">QREncoder</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="set-icon.html"><span class="token function">setIcon</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/DrawableRes.html"><span class="token annotation builtin">DrawableRes</span></a> </span>id<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">QREncoder</a></div><div class="brief "><p class="paragraph">Sets the icon to be placed at the center of the QR code.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="561131120%2FFunctions%2F1925756284" anchor-label="setSize" id="561131120%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
-          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+<a data-name="561131120%2FFunctions%2F1915391025" anchor-label="setSize" id="561131120%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-size.html"><span>set</span><wbr></wbr><span><span>Size</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="561131120%2FFunctions%2F1925756284"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="561131120%2FFunctions%2F1915391025"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="set-size.html"><span class="token function">setSize</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Px.html"><span class="token annotation builtin">Px</span></a> </span>size<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">QREncoder</a></div><div class="brief "><p class="paragraph">Sets the size of the QR code.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="set-size.html"><span class="token function">setSize</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Px.html"><span class="token annotation builtin">Px</span></a> </span>size<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">QREncoder</a></div><div class="brief "><p class="paragraph">Sets the size of the QR code.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -231,7 +231,7 @@
 </div>
     <div class="footer">
         <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
-        <span>(c) Tribalfs</span>
+        <span>© 2025 Copyright</span>
         <span class="pull-right">
             <span>Generated by </span>
             <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">

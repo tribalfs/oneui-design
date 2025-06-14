@@ -50,7 +50,7 @@
         <div class="navigation-controls">
         <div class="filter-section filter-section_loading" id="filter-section">
                 <button class="platform-tag platform-selector jvm-like" data-active=""
-                        data-filter=":oneui-design/release">androidJvm</button>
+                        data-filter=":oneui-design/main">main</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox"
                         data-role="dropdown-toggle"
@@ -67,10 +67,10 @@
                     </div>
                         <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
                             <label class="checkbox">
-                                <input type="checkbox" class="checkbox--input" id=":oneui-design/release"
-                                       data-filter=":oneui-design/release"/>
+                                <input type="checkbox" class="checkbox--input" id=":oneui-design/main"
+                                       data-filter=":oneui-design/main"/>
                                 <span class="checkbox--icon"></span>
-                                androidJvm
+                                main
                             </label>
                         </li>
                 </ul>
@@ -104,28 +104,28 @@
                 </div>
             </div>
             <div id="main">
-<div class="main-content" data-page-type="classlike" id="content" pageIds="oneui-design::dev.oneuiproject.oneui.delegates/AppBarAwareYTranslator///PointingToDeclaration//1925756284">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="oneui-design::dev.oneuiproject.oneui.delegates/AppBarAwareYTranslator///PointingToDeclaration//1915391025">
   <div class="breadcrumbs"><a href="../../../index.html">oneui-design</a><span class="delimiter">/</span><a href="../index.html">dev.oneuiproject.oneui.delegates</a><span class="delimiter">/</span><span class="current">AppBarAwareYTranslator</span></div>
   <div class="cover ">
     <h1 class="cover"><span>App</span><wbr></wbr><span>Bar</span><wbr></wbr><span>Aware</span><wbr></wbr><span><span>YTranslator</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">AppBarAwareYTranslator</a> : <a href="../-view-y-translator/index.html">ViewYTranslator</a>, <span data-unresolved-link="com.google.android.material.appbar/AppBarLayout.OnOffsetChangedListener///PointingToDeclaration/">AppBarLayout.OnOffsetChangedListener</span></div><p class="paragraph">An implementation of <a href="../-view-y-translator/index.html">ViewYTranslator</a> designed to center a &quot;No items&quot; view or similar views to show when the RecyclerView is empty. This class translates the Y position of the provided view(s) in the opposite scroll direction of the <code class="lang-kotlin">AppBarLayout</code> with a sensitivity of 50%.</p><p class="paragraph">This behavior ensures that the view remains visible and centered even as the <code class="lang-kotlin">AppBarLayout</code> is scrolled.</p><h2 class="">Example usage:</h2><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">class IconsFragment : Fragment(),<br>                      ViewYTranslator by AppBarAwareYTranslator() {<br><br>   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {<br>       // Configure the translation for single view<br>       binding.noItemView.translateYWithAppBar(appBarLayout, viewLifecycleOwner)<br><br>       // or for multiple views<br>       translateYWithAppBar(setOf(binding.noItemView, binding.progressBar), appBarLayout, viewLifecycleOwner)<br>   }<br><br>}</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">AppBarAwareYTranslator</a> : <a href="../-view-y-translator/index.html">ViewYTranslator</a>, <a href="https://tribalfs.github.io/sesl-material-components-android/sesl.com.google.android.material/com.google.android.material.appbar/-app-bar-layout/-on-offset-changed-listener/index.html">AppBarLayout.OnOffsetChangedListener</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/tribalfs/oneui-design/tree/main/lib/src/main/java/dev/oneuiproject/oneui/delegates/AppBarAwareYTranslator.kt#L36">source</a>)</span></span></div><p class="paragraph">An implementation of <a href="../-view-y-translator/index.html">ViewYTranslator</a> designed to center a &quot;No items&quot; view or similar views to show when the RecyclerView is empty. This class translates the Y position of the provided view(s) in the opposite scroll direction of the <code class="lang-kotlin">AppBarLayout</code> with a sensitivity of 50%.</p><p class="paragraph">This behavior ensures that the view remains visible and centered even as the <code class="lang-kotlin">AppBarLayout</code> is scrolled.</p><h2 class="">Example usage:</h2><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">class IconsFragment : Fragment(),<br>                      ViewYTranslator by AppBarAwareYTranslator() {<br><br>   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {<br>       // Configure the translation for single view<br>       binding.noItemView.translateYWithAppBar(appBarLayout, viewLifecycleOwner)<br><br>       // or for multiple views<br>       translateYWithAppBar(setOf(binding.noItemView, binding.progressBar), appBarLayout, viewLifecycleOwner)<br>   }<br><br>}</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
     <div class="tabs-section-body">
       <div data-togglable="CONSTRUCTOR">
         <h2 class="">Constructors</h2>
-        <div class="table"><a data-name="-905917383%2FConstructors%2F1925756284" anchor-label="AppBarAwareYTranslator" id="-905917383%2FConstructors%2F1925756284" data-filterable-set=":oneui-design/release"></a>
-          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+        <div class="table"><a data-name="-905917383%2FConstructors%2F1915391025" anchor-label="AppBarAwareYTranslator" id="-905917383%2FConstructors%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-app-bar-aware-y-translator.html"><span>App</span><wbr></wbr><span>Bar</span><wbr></wbr><span>Aware</span><wbr></wbr><span><span>YTranslator</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-905917383%2FConstructors%2F1925756284"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-905917383%2FConstructors%2F1915391025"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
@@ -134,32 +134,32 @@
       </div>
       <div data-togglable="FUNCTION">
         <h2 class="">Functions</h2>
-        <div class="table"><a data-name="975631531%2FFunctions%2F1925756284" anchor-label="onOffsetChanged" id="975631531%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
-          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+        <div class="table"><a data-name="975631531%2FFunctions%2F1915391025" anchor-label="onOffsetChanged" id="975631531%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-offset-changed.html"><span>on</span><wbr></wbr><span>Offset</span><wbr></wbr><span><span>Changed</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="975631531%2FFunctions%2F1925756284"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="975631531%2FFunctions%2F1915391025"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="on-offset-changed.html"><span class="token function">onOffsetChanged</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">appBarLayout<span class="token operator">: </span><span data-unresolved-link="com.google.android.material.appbar/AppBarLayout///PointingToDeclaration/">AppBarLayout</span><span class="token punctuation">, </span></span><span class="parameter ">verticalOffset<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="on-offset-changed.html"><span class="token function">onOffsetChanged</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">appBarLayout<span class="token operator">: </span><a href="https://tribalfs.github.io/sesl-material-components-android/sesl.com.google.android.material/com.google.android.material.appbar/-app-bar-layout/index.html">AppBarLayout</a><span class="token punctuation">, </span></span><span class="parameter ">verticalOffset<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1163201061%2FFunctions%2F1925756284" anchor-label="translateYWithAppBar" id="1163201061%2FFunctions%2F1925756284" data-filterable-set=":oneui-design/release"></a>
-          <div class="table-row" data-filterable-current=":oneui-design/release" data-filterable-set=":oneui-design/release">
+<a data-name="1163201061%2FFunctions%2F1915391025" anchor-label="translateYWithAppBar" id="1163201061%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="translate-y-with-app-bar.html"><span>translate</span><wbr></wbr><span>YWith</span><wbr></wbr><span>App</span><wbr></wbr><span><span>Bar</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1163201061%2FFunctions%2F1925756284"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1163201061%2FFunctions%2F1915391025"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">.</span><a href="translate-y-with-app-bar.html"><span class="token function">translateYWithAppBar</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">appBarLayout<span class="token operator">: </span><span data-unresolved-link="com.google.android.material.appbar/AppBarLayout///PointingToDeclaration/">AppBarLayout</span><span class="token punctuation">, </span></span><span class="parameter ">lifecycleOwner<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/LifecycleOwner.html">LifecycleOwner</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Translates the Y position of a view with the given AppBarLayout and LifecycleOwner.</p></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="translate-y-with-app-bar.html"><span class="token function">translateYWithAppBar</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">translatingViews<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">appBarLayout<span class="token operator">: </span><span data-unresolved-link="com.google.android.material.appbar/AppBarLayout///PointingToDeclaration/">AppBarLayout</span><span class="token punctuation">, </span></span><span class="parameter ">lifecycleOwner<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/LifecycleOwner.html">LifecycleOwner</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">.</span><a href="translate-y-with-app-bar.html"><span class="token function">translateYWithAppBar</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">appBarLayout<span class="token operator">: </span><a href="https://tribalfs.github.io/sesl-material-components-android/sesl.com.google.android.material/com.google.android.material.appbar/-app-bar-layout/index.html">AppBarLayout</a><span class="token punctuation">, </span></span><span class="parameter ">lifecycleOwner<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/LifecycleOwner.html">LifecycleOwner</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Translates the Y position of a view with the given AppBarLayout and LifecycleOwner.</p></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="translate-y-with-app-bar.html"><span class="token function">translateYWithAppBar</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">translatingViews<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">appBarLayout<span class="token operator">: </span><a href="https://tribalfs.github.io/sesl-material-components-android/sesl.com.google.android.material/com.google.android.material.appbar/-app-bar-layout/index.html">AppBarLayout</a><span class="token punctuation">, </span></span><span class="parameter ">lifecycleOwner<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/LifecycleOwner.html">LifecycleOwner</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
@@ -171,7 +171,7 @@
 </div>
     <div class="footer">
         <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
-        <span>(c) Tribalfs</span>
+        <span>© 2025 Copyright</span>
         <span class="pull-right">
             <span>Generated by </span>
             <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
