@@ -90,7 +90,7 @@ class WidgetsFragment : AbsBaseFragment(R.layout.fragment_widgets) {
     @RequiresApi(Build.VERSION_CODES.M)
     private fun createSuggestAppBarModel(): SuggestAppBarModel<SuggestAppBarView> =
         SuggestAppBarModel.Builder(requireContext()).apply {
-            setTitle("This is an a suggestion view")
+            setTitle("This is a suggestion view")
             setCloseClickListener {_, _ -> drawerLayout?.setAppBarSuggestView(null) }
             setButtons(
                 arrayListOf(

@@ -39,7 +39,6 @@ class RvParentFragment : AbsBaseFragment(R.layout.fragment_recycler) {
             adapter = ViewPagerAdapter(this@RvParentFragment)
             //seslSetSuggestionPaging(true)
         }
-        binding.tabs.setTabIndicatorAnimationMode(INDICATOR_ANIMATION_MODE_LINEAR)
         val titles = listOf("Icons", "Contacts", "Apps")
         tabPagerMediator = TabPagerMediator(this, binding.tabs, binding.vp2) { tab: Tab?, pos ->
             tab?.text = titles[pos]
