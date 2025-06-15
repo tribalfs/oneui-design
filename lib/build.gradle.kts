@@ -65,7 +65,7 @@ dokka {
 
         sourceLink {
             localDirectory.set(projectDir.resolve("src"))
-            remoteUrl("https://github.com/tribalfs/oneui-design/tree/main/lib/src")
+            remoteUrl("https://github.com/tribalfs/oneui-design/blob/main/lib/src")
             remoteLineSuffix.set("#L")
         }
 

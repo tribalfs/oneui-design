@@ -176,15 +176,36 @@ open class MarginsTabLayout @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Sets a custom implementation for calculating tab dimensions.
+     * This allows for more granular control over how the side margins of the tabs are determined.
+     *
+     * @param tabDimenImpl An instance of [TabDimen] that defines the custom logic
+     *                     for calculating tab dimensions.
+     */
     open fun setCustomTabDimen(tabDimenImpl: TabDimen){
         tabDimens = tabDimenImpl
         requestLayout()
     }
 
+    /**
+     * Functional interface for calculating the side margin of the [TabLayout].
+     * This allows for custom logic to determine how the tabs are spaced within
+     * their container.
+     */
     fun interface TabDimen{
         fun getSideMargin(tabLayout: TabLayout, containerWidthPixels: Int, totalTabTextsWidth: Float): Float
     }
 
+    /**
+     * Default implementation of [TabDimen] for calculating tab side margins.
+     * This class provides a standard way to determine the side margins for tabs based on
+     * various device and layout configurations, such as screen orientation, display type,
+     * and screen width.
+     *
+     * @property defaultTabPadding The default padding to be applied to each tab. This value
+     * is used in the calculation of total tab paddings.
+     */
     class TabDimenDefault(val defaultTabPadding: Float): TabDimen{
         override fun getSideMargin(tabLayout: TabLayout, containerWidthPixels: Int, totalTabTextsWidth: Float): Float {
 

@@ -12,6 +12,18 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
+/**
+ * A [BottomSheetDialogFragment] that provides the Samsung One UI bottom sheet design.
+ *
+ * Features:
+ * - **Skip Collapsed State:** The bottom sheet directly expands to the fully expanded state,
+ *   skipping the collapsed state.
+ * - **Max Width Calculation:** Dynamically calculates and sets the maximum width of the bottom sheet
+ *   based on the screen size, adhering to One UI design guidelines.
+ * - **Configuration Change Handling:** Adjusts the maximum width when the device configuration (e.g., orientation) changes.
+ *
+ * This class is designed to be extended by specific bottom sheet dialog implementations.
+ */
 open class SemBottomSheetDialogFragment : BottomSheetDialogFragment {
 
     @SuppressLint("ValidFragment")
