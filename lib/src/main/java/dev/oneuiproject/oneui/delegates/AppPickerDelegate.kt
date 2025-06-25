@@ -46,6 +46,7 @@ import kotlin.coroutines.CoroutineContext
  *    }
  * ```
  */
+@Deprecated("Use the picker-app module")
 class AppPickerDelegate : AppPickerOp, AppPickerView.OnBindListener, CoroutineScope {
 
     private var listType: Int? = null
