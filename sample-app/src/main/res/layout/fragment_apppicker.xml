@@ -19,14 +19,28 @@
         app:edgeInsetRight="10dp"
         android:layout_weight="1">
 
-        <androidx.apppickerview.widget.AppPickerView
+        <androidx.picker.widget.SeslAppPickerListView
             android:id="@+id/app_picker_view"
             android:layout_width="match_parent"
             android:clipToPadding="false"
             android:background="?android:colorBackground"
             android:paddingHorizontal="10dp"
             android:scrollbarStyle="outsideOverlay"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            app:customStrategyClass="dev.oneuiproject.oneuiexample.ui.main.fragments.recyclerview.apps.strategy.SampleCustomStrategy"
+            app:strategy="@string/all_select_strategy_class"/>
+
+        <androidx.picker.widget.SeslAppPickerGridView
+            android:id="@+id/app_picker_grid_view"
+            android:layout_width="match_parent"
+            android:clipToPadding="false"
+            android:background="?roundedCornerColor"
+            android:paddingHorizontal="10dp"
+            android:layout_marginHorizontal="10dp"
+            android:scrollbarStyle="outsideOverlay"
+            android:layout_height="match_parent"
+            app:strategy="@string/app_item_strategy_class"
+            android:visibility="gone"/>
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nsvNoItem"
