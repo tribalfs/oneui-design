@@ -32,7 +32,8 @@ internal fun Dialog.semGetDialogWidth(): Int {
         if(config.orientation == ORIENTATION_PORTRAIT) {
             android.R.attr.windowMinWidthMinor
         } else android.R.attr.windowMinWidthMajor
-    )!!
+    ) ?: return displayMetrics.widthPixels
+
     val min = when (minWidth.type) {
         TypedValue.TYPE_DIMENSION -> minWidth.getDimension(displayMetrics).toInt()
         TypedValue.TYPE_FRACTION -> minWidth.getFraction(screenWidth, screenWidth).toInt()

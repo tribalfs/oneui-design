@@ -3,14 +3,13 @@ package dev.oneuiproject.oneui.app
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.res.Configuration
-import android.os.Build
 import android.os.Bundle
-import android.util.DisplayMetrics
-import android.view.WindowInsets
+import android.view.View
 import androidx.annotation.LayoutRes
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dev.oneuiproject.oneui.utils.internal.updateWidth
 
 /**
  * A [BottomSheetDialogFragment] that provides the Samsung One UI bottom sheet design.
@@ -33,25 +32,23 @@ open class SemBottomSheetDialogFragment : BottomSheetDialogFragment {
         return (super.onCreateDialog(savedInstanceState) as BottomSheetDialog).apply {
             behavior.skipCollapsed = true
             setOnShowListener { behavior.state = BottomSheetBehavior.STATE_EXPANDED }
-            behavior.maxWidth = getMaxWidth()
+            updateWidth()
         }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        (dialog as BottomSheetDialog).behavior.maxWidth = getMaxWidth()
+        dialog?.updateWidth()
     }
 
-    private fun getMaxWidth(): Int {
-        val displayMetrics: DisplayMetrics = resources.displayMetrics
-        var maxWidthInPixels = displayMetrics.widthPixels
-        val density = displayMetrics.density
-        val widthInDp = maxWidthInPixels / density
-        return if (widthInDp >= 600.0f && widthInDp < 960.0f) {
-            (maxWidthInPixels * 0.86).toInt()
-        } else if (widthInDp >= 960.0f) {
-            (density * 840.0f).toInt()
-        } else maxWidthInPixels
+    override fun onStart() {
+        hideStatusBar()
+        super.onStart()
     }
 
+    private fun hideStatusBar(){
+        @Suppress("DEPRECATION")
+        dialog?.window?.decorView?.systemUiVisibility =
+                View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+    }
 }
