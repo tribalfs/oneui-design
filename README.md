@@ -65,8 +65,7 @@ dependencies {
 
 ### Sample apps
 - <a href="https://github.com/tribalfs/oneui-design/tree/main/sample-app"> OneUI7 Sample (widgets showcase)</a> | <a href="https://github.com/tribalfs/oneui-design/raw/main/sample-app/release/sample-app-release.apk">Download APK</a>
-- <a href="https://github.com/tribalfs/oneui-design/tree/oneui6/sample-app"> OneUI6 Sample (widgets showcase)</a> | <a href="https://github.com/tribalfs/oneui-design/raw/oneui6/sample-app/release/sample-app-release.apk">Download APK</a>
-- <a href="https://github.com/tribalfs/Stargazers">Stargazers (OneUI6)</a>
+- <a href="https://github.com/tribalfs/oneui-design/tree/oneui6/sample-app"> OneUI6 Sample (widgets showcase)</a> | <a href="https://github.com/tribalfs/oneui-design/raw/oneui6/sample-app/release/sample-app-release.apk">Download APK</a> 
 
 ### Credits
 - [Google](https://developer.android.com/jetpack) for their Jetpack and Material Components libraries.
