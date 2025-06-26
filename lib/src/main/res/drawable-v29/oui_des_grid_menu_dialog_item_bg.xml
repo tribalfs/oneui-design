@@ -8,4 +8,10 @@
             <solid android:color="@android:color/white" />
         </shape>
     </item>
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/oui_des_grid_menu_dialog_item_ripple_radius" />
+            <solid android:color="@color/oui_des_grid_menu_dialog_bgcolor_selector" />
+        </shape>
+    </item>
 </androidx.appcompat.graphics.drawable.SeslRecoilDrawable>

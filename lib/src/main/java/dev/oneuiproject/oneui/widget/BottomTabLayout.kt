@@ -90,6 +90,7 @@ class BottomTabLayout(
 
     private var isPopulatingTabs = false
     private var overFLowItems: ArrayList<MenuItemImpl>? = null
+    private var selectedOverflowItemId: Int? = null
 
     val menu by lazy { BottomTabLayoutMenu(context){ updateTabs() } }
 
@@ -270,6 +271,7 @@ class BottomTabLayout(
                 tabIconTint = getTabTextColors()
                 id = R.id.bottom_tab_menu_show_grid_dialog
                 setBadge(if (hasBadgeOnOverFlow()) Badge.DOT else Badge.NONE)
+                setTabContentDescription(this, view)
             }
 
             gridMenuDialog?.apply {
@@ -278,7 +280,6 @@ class BottomTabLayout(
                 }
             }
         }
-
         isPopulatingTabs = false
         recalculateTextWidths = true
     }
@@ -297,12 +298,15 @@ class BottomTabLayout(
                     seslShowDotBadge(position, true)
                 }
             }
+            setTabContentDescription(this, view)
         }
     }
 
     private fun createAndShowGridDialog(){
-        gridMenuDialog = createGridMenuDialog(overFLowItems!!)
-        gridMenuDialog!!.show()
+        gridMenuDialog = createGridMenuDialog(overFLowItems!!).apply {
+            setSelectedItem(selectedOverflowItemId)
+            show()
+        }
     }
 
     private fun hasOverflowItems(): Boolean = overFLowItems?.isNotEmpty() == true
@@ -552,21 +556,29 @@ class BottomTabLayout(
      * @param position The position of the tab to select.
      */
     fun setTabSelected(position: Int) {
-        val tabCount = tabCount
-        for (i in 0 until tabCount) {
-            getTabAt(i)?.let {
-                if (position == it.position) {
-                    if (it.isSelected()) return
-                    it.select()
-                    //Update last tab description
-                    setTabContentDescription(getTabAt(tabCount - 1)/*last Tab*/, getTabView(i))
-                    //Update current tab description
-                    setTabContentDescription(it, getTabView(i))
-                    return
-                }
-            }
+        getTabAt(position)?.apply {
+            select()
+            selectedOverflowItemId = null
+            gridMenuDialog?.setSelectedItem(null)
+        } ?: Log.w(TAG, "setTabSelected:  $position is an invalid position.")
+    }
+
+    /**
+     * Selects the item with the specified id
+     *
+     * @param itemId The id of the item to select.
+     */
+    fun setSelectedItem(itemId: Int) {
+        findTab(itemId)?.apply {
+            select()
+            selectedOverflowItemId = null
+            gridMenuDialog?.setSelectedItem(null)
+        } ?:
+        run {
+            findTab(R.id.bottom_tab_menu_show_grid_dialog)?.select()
+            selectedOverflowItemId = itemId
+            gridMenuDialog?.setSelectedItem(itemId)
         }
-        Log.w(TAG, "setTabSelected:  $position is an invalid position.")
     }
 
     /**

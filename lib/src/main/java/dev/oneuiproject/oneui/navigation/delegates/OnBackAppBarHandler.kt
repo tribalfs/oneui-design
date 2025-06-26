@@ -12,14 +12,15 @@ import androidx.navigation.NavDestination
 import androidx.navigation.ui.AppBarConfiguration
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.layout.NavDrawerLayout
+import dev.oneuiproject.oneui.layout.ToolbarLayout
 
 /**
  * Delegate for updating the toolbar titles and navigation icon
  * on destination changes and during predictive back animation progress.
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-internal class OnBackAppBarHandler(
-    private val navDrawerLayout: NavDrawerLayout,
+internal class OnBackAppBarHandler<T: ToolbarLayout>(
+    private val toolbarLayout: T,
     private val navController: NavController,
     private val configuration: AppBarConfiguration,
     @FloatRange(0.0, 1.0)
@@ -36,7 +37,7 @@ internal class OnBackAppBarHandler(
     private var backFragmentIsTop = false
     private var _showNavButtonAsBack = true
 
-    private val context = navDrawerLayout.context
+    private val context = toolbarLayout.context
     private var navArgSubTitle: String = context.getString(R.string.navArg_subtitle)
     private var navArgExpandable: String = context.getString(R.string.navArg_expandable)
     private var navArgImmersiveScroll: String = context.getString(R.string.navArg_immersiveScroll)
@@ -53,7 +54,7 @@ internal class OnBackAppBarHandler(
             if (isBackFragmentLabelSet != interpolatedProgress > toolbarThreshold) {
                 isBackFragmentLabelSet = !isBackFragmentLabelSet
                 if (isBackFragmentLabelSet) {
-                    navDrawerLayout.apply {
+                    toolbarLayout.apply {
                         showNavigationButtonAsBack = !backFragmentIsTop
                         setTitlesNoCache(
                             backFragmentLabel,
@@ -64,7 +65,7 @@ internal class OnBackAppBarHandler(
                     }
 
                 } else {
-                    navDrawerLayout.apply {
+                    toolbarLayout.apply {
                         showNavigationButtonAsBack = _showNavButtonAsBack
                         applyCachedTitles()
                     }
@@ -75,10 +76,10 @@ internal class OnBackAppBarHandler(
 
     override fun onBackStackChangeCancelled() {
         if (isBackFragmentLabelSet){
-            navDrawerLayout.applyCachedTitles()
+            toolbarLayout.applyCachedTitles()
             isBackFragmentLabelSet = false
         }
-        navDrawerLayout.showNavigationButtonAsBack = _showNavButtonAsBack
+        toolbarLayout.showNavigationButtonAsBack = _showNavButtonAsBack
     }
 
     override fun onBackStackChangeCommitted(fragment: Fragment, pop: Boolean) {
@@ -102,7 +103,7 @@ internal class OnBackAppBarHandler(
 
         backFragmentIsTop = popupDestination?.run { configuration.isTopLevelDestination(this) } ?: true
 
-        navDrawerLayout.apply {
+        toolbarLayout.apply {
             setTitle(destination.label)
             setSubtitle(destination.arguments[navArgSubTitle]?.defaultValue as? String)
 
@@ -114,7 +115,7 @@ internal class OnBackAppBarHandler(
             configuration.isTopLevelDestination(destination).let {
                 showNavigationButtonAsBack = !it
                 _showNavButtonAsBack = !it
-                closeNavRailOnBack = it
+                (toolbarLayout as? NavDrawerLayout)?.closeNavRailOnBack = it
             }
         }
     }

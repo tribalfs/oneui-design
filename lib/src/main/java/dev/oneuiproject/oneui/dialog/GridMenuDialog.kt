@@ -49,6 +49,7 @@ import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isPhoneLandscapeOrTablet
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isPortrait
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isTabletStyle
 import dev.oneuiproject.oneui.utils.TypedValueUtils
+import kotlin.collections.find
 
 
 /**
@@ -82,6 +83,7 @@ class GridMenuDialog @JvmOverloads constructor(
     private lateinit var gridListView: RecyclerView
     private val adapter: GridListAdapter = GridListAdapter()
     private var currentAnchorView: View? = null
+    private var selectedId: Int? = null
 
     /**
      * Interface definition for a callback to be invoked when an item in this
@@ -438,6 +440,15 @@ class GridMenuDialog @JvmOverloads constructor(
         }
     }
 
+    fun setSelectedItem(itemId: Int?) {
+        if (selectedId == itemId) return
+        val prevIdx =  selectedId?.let { p -> gridItems.indexOfFirst { it.itemId == p } } ?: -1
+        val currentIdx =  itemId?.let { p -> gridItems.indexOfFirst { it.itemId == p } } ?: -1
+        selectedId = itemId
+        if (prevIdx != -1) adapter.notifyItemChanged(prevIdx)
+        if (currentIdx != -1) adapter.notifyItemChanged(currentIdx)
+    }
+
     /**
      * @hide
      */
@@ -486,6 +497,7 @@ class GridMenuDialog @JvmOverloads constructor(
                 setBadge(gridItem.badge)
                 setEnabled(gridItem.isEnabled)
                 setTooltipText(gridItem.tooltipText)
+                holder.itemView.isSelected = selectedId == gridItem.itemId
             }
         }
 

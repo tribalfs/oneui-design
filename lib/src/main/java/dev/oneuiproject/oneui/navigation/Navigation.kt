@@ -19,8 +19,10 @@ import androidx.navigation.createGraph
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import dev.oneuiproject.oneui.layout.NavDrawerLayout
+import dev.oneuiproject.oneui.layout.ToolbarLayout
 import dev.oneuiproject.oneui.navigation.delegates.OnBackAppBarHandler
 import dev.oneuiproject.oneui.navigation.widget.DrawerNavigationView
+import dev.oneuiproject.oneui.widget.BottomTabLayout
 import kotlin.reflect.KClass
 
 /**
@@ -55,8 +57,8 @@ fun NavDrawerLayout.setupNavigation(
     val navController = navHostFragment.navController
     val startDestination = navController.graph.findStartDestination()
 
-    val onBackAppBarHandler = OnBackAppBarHandler(this, navController, configuration, toolbarBackThreshold).apply {
-        this.startDestination = startDestination }
+    val onBackAppBarHandler = OnBackAppBarHandler(this, navController, configuration, toolbarBackThreshold)
+        .apply { this.startDestination = startDestination }
 
     navHostFragment.childFragmentManager.addOnBackStackChangedListener(onBackAppBarHandler)
 
@@ -155,4 +157,114 @@ private inline fun onNavDestinationSelected(
     } catch (_: IllegalArgumentException) {
         false
     }
+}
+
+
+/**
+ * Sets up navigation for [ToolbarLayout] with a [BottomTabLayout] and [NavHostFragment].
+ * Supports both XML and programmatically created navigation graphs (NavGraphBuilder DSL).
+ *
+ * @param bottomTabLayout The [BottomTabLayout] to be linked with navigation actions.
+ * @param navHostFragment The [NavHostFragment] that hosts the navigation graph and manages navigation transactions.
+ * @param configuration Optional [AppBarConfiguration] to customize top-level destinations and drawer behavior.
+ *                      By default, uses the menu from the [bottomTabLayout].
+ * @param toolbarBackThreshold The threshold (from 0.0 to 1.0) at which the [ToolbarLayout] toolbar switches its title, subtitle and navigation icon
+ * to those of the back destination during predictive back animation progress. Defaults to 0.75f.
+ *
+ * Usage example:
+ * ```
+ * toolbarLayout.setupNavigation(bottomTabLayout, navHostFragment)
+ * ```
+ *
+ * @see NavHostFragment
+ * @see AppBarConfiguration
+ */
+@JvmName("setup")
+@JvmOverloads
+fun <T: ToolbarLayout>T.setupNavigation(
+    bottomTabLayout: BottomTabLayout,
+    navHostFragment: NavHostFragment,
+    configuration: AppBarConfiguration = AppBarConfiguration(bottomTabLayout.menu, null),
+    @FloatRange(0.0, 1.0)
+    toolbarBackThreshold: Float = 0.75f
+) {
+    val navController = navHostFragment.navController
+    val startDestination = navController.graph.findStartDestination()
+
+    val onBackAppBarHandler = OnBackAppBarHandler(this, navController, configuration, toolbarBackThreshold)
+        .apply { this.startDestination = startDestination }
+
+    navHostFragment.childFragmentManager.addOnBackStackChangedListener(onBackAppBarHandler)
+
+    bottomTabLayout.setOnMenuItemClickListener { item ->
+        if (item.itemId == navController.currentDestination?.id) {
+            return@setOnMenuItemClickListener true
+        }
+
+        onNavDestinationSelected(item, navController).also { handled ->
+            if (handled) {
+                val destinationNode = navController.currentDestination!!.parent!!.findNode(item.itemId)
+                if (destinationNode !is FloatingWindow
+                    && destinationNode !is ActivityNavigator.Destination) {
+                    if (isActionMode) endActionMode()
+                    if (isSearchMode) endSearchMode()
+                    bottomTabLayout.setSelectedItem(item.itemId)
+                }
+            } else {
+                navController.currentDestination?.let {
+                    bottomTabLayout.setSelectedItem(it.id)
+                }
+            }
+        }
+    }
+
+    navController.addOnDestinationChangedListener(
+        object : NavController.OnDestinationChangedListener {
+            override fun onDestinationChanged(
+                controller: NavController,
+                destination: NavDestination,
+                arguments: Bundle?
+            ) {
+                if (destination is FloatingWindow) return
+                bottomTabLayout.setSelectedItem(destination.id)
+                onBackAppBarHandler.onDestinationChanged(destination)
+            }
+        }
+    )
+}
+
+/**
+ * Overload for programmatic navigation graph creation using NavGraphBuilder DSL.
+ *
+ * Example usage:
+ * ```
+ * toolbarLayout.setupNavigation(
+ *     bottomTabLayout,
+ *     navHostFragment,
+ *     startDestination = "widgets_dest"
+ * ) {
+ *     mainNavGraph()
+ * }
+ * ```
+ */
+@JvmName("setupDsl")
+@JvmOverloads
+fun <T: ToolbarLayout>T.setupNavigation(
+    bottomTabLayout: BottomTabLayout,
+    navHostFragment: NavHostFragment,
+    startDestination: KClass<*>,
+    route: KClass<*>? = null,
+    configuration: AppBarConfiguration = AppBarConfiguration(bottomTabLayout.menu, null),
+    @FloatRange(0.0, 1.0)
+    toolbarBackThreshold: Float = 0.75f,
+    builder: NavGraphBuilder.() -> Unit
+) {
+    val navController = navHostFragment.navController
+    val graph: NavGraph = navController.createGraph(
+        startDestination = startDestination,
+        route = route,
+        builder = builder
+    )
+    navController.graph = graph
+    setupNavigation(bottomTabLayout, navHostFragment, configuration, toolbarBackThreshold)
 }
