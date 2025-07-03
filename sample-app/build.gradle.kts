@@ -43,12 +43,10 @@ android {
     }
 
     lint { baseline = file("lint-baseline.xml") }
-
-    kotlinOptions{ jvmTarget = "21" }
 }
 
 dependencies {
-    // sesl7 modules
+    // sesl modules
     implementation(libs.bundles.sesl.androidx)
     implementation(libs.sesl.material)
 

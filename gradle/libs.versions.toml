@@ -1,20 +1,24 @@
 [versions]
-android-gradle = "8.10.1"
 androidLint = "31.11.0"
-kotlin = "2.1.20"
-rikka-refine = "4.4.0"
-ksp = "2.1.20-2.0.0"
-dokka = "2.0.0"
-hiltAndroid = "2.55"
-
+android-gradle = "8.11.1"
+androidx-activityKtx="1.10.1"
 androidx-annotation = "1.9.1"
+androidx-constraintlayout="2.2.1"
+androidx-datastore = "1.1.7"
+androidx-navigation = "2.9.1"
+dokka = "2.0.0"
+hiltAndroid = "2.56.2"
+lottie = "6.6.2"
+kotlin = "2.2.0"
+ksp = "2.2.0-2.0.2"
+rikka-refine = "4.4.0"
 sesl-core = "1.16.0+1.0.16-sesl7+rev1"
 sesl-coreKtx = "1.16.0+1.0.0-sesl7+rev0"
 sesl-appcompat = "1.7.1+1.0.47000-sesl7+rev0"
 sesl-indexscroll = "1.0.6+1.0.6-sesl7+rev3"
 sesl-pickerColor = "1.0.19+1.0.19-sesl7+rev0"
 sesl-pickerBasic = "1.0.16+1.0.16-sesl7+rev0"
-sesl-pickerApp = "1.0.21+1.0.21-sesl7+rev2"
+sesl-pickerApp = "1.0.21+1.0.21-sesl7+rev3"
 sesl-preference = "1.2.1+1.0.12-sesl7+rev0"
 sesl-material = "1.12.0+1.0.39-sesl7+rev5"
 sesl-apppickerview = "1.0.1+1.0.1-sesl7+rev0"
@@ -26,30 +30,42 @@ sesl-fragment = "1.8.8+1.0.9-sesl7+rev0"
 sesl-coordinator = "1.3.0+1.0.0-sesl7+rev0"
 sesl-swiperefreshlayout = "1.2.0-alpha01+1.0.1-sesl7+rev0"
 
-androidx-constraintlayout="2.2.1"
-androidx-navigation = "2.9.0"
-androidx-activityKtx="1.10.1"
-androidx-datastore = "1.1.7"
-
 zxing-core = "3.5.3"
-lottie = "6.6.2"
 
 
 [libraries]
 androidLintApi = { module = "com.android.tools.lint:lint-api", version.ref = "androidLint" }
+androidx-activityKtx = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activityKtx" }
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }
-kotlinStdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib" }
+androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidx-constraintlayout" }
+androidx-datastoreCore = { module = "androidx.datastore:datastore-core", version.ref = "androidx-datastore" }
+androidx-datastorePreferences = { module = "androidx.datastore:datastore-preferences", version.ref = "androidx-datastore" }
+androidx-navigation-fragmentKtx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "androidx-navigation" }
+androidx-navigation-runtimeKtx = { module = "androidx.navigation:navigation-runtime-ktx", version.ref = "androidx-navigation" }
+androidx-navigation-uiKtx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "androidx-navigation" }
 
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }
+kotlinStdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib" }
+lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
+
+oneuiDesign = { module = "io.github.tribalfs:oneui-design", version = "0.6.0+oneui7" }
+oneuiIcons = { module = "io.github.oneuiproject:icons", version = "1.1.0" }
+
+rikka-refineRuntime = { module = "dev.rikka.tools.refine:runtime", version.ref = "rikka-refine" }
+rikka-refineAnnotation = { module = "dev.rikka.tools.refine:annotation", version.ref = "rikka-refine" }
+rikka-refineAnnotationProcessor = { module = "dev.rikka.tools.refine:annotation-processor", version.ref = "rikka-refine" }
+
+sesl-appcompat = { module = "sesl.androidx.appcompat:appcompat", version.ref = "sesl-appcompat" }
+sesl-apppickerview = { module = "sesl.androidx.apppickerview:apppickerview", version.ref = "sesl-apppickerview" }
 sesl-core = { module = "sesl.androidx.core:core", version.ref = "sesl-core" }
 sesl-coreKtx = { module = "sesl.androidx.core:core-ktx", version.ref = "sesl-coreKtx" }
-sesl-appcompat = { module = "sesl.androidx.appcompat:appcompat", version.ref = "sesl-appcompat" }
 sesl-indexscroll = { module = "sesl.androidx.indexscroll:indexscroll", version.ref = "sesl-indexscroll" }
 sesl-pickerColor = { module = "sesl.androidx.picker:picker-color", version.ref = "sesl-pickerColor" }
 sesl-pickerBasic = { module = "sesl.androidx.picker:picker-basic", version.ref = "sesl-pickerBasic" }
 sesl-pickerApp = { module = "sesl.androidx.picker:picker-app", version.ref = "sesl-pickerApp" }
 sesl-preference = { module = "sesl.androidx.preference:preference", version.ref = "sesl-preference" }
 sesl-material = { module = "sesl.com.google.android.material:material", version.ref = "sesl-material" }
-sesl-apppickerview = { module = "sesl.androidx.apppickerview:apppickerview", version.ref = "sesl-apppickerview" }
 sesl-drawerlayout = { module = "sesl.androidx.drawerlayout:drawerlayout", version.ref = "sesl-drawerlayout" }
 sesl-customview = { module = "sesl.androidx.customview:customview", version.ref = "sesl-customview" }
 sesl-slidingpanelayout = { module = "sesl.androidx.slidingpanelayout:slidingpanelayout", version.ref = "sesl-slidingpanelayout" }
@@ -58,42 +74,30 @@ sesl-coordinatorlayout = { module = "sesl.androidx.coordinatorlayout:coordinator
 sesl-swiperefreshlayout = { module = "sesl.androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "sesl-swiperefreshlayout" }
 sesl-fragment = { module = "sesl.androidx.fragment:fragment", version.ref = "sesl-fragment" }
 
-oneuiDesign = { module = "io.github.tribalfs:oneui-design", version = "0.6.0+oneui7" }
-oneuiIcons = { module = "io.github.oneuiproject:icons", version = "1.1.0" }
-
-androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidx-constraintlayout" }
-androidx-activityKtx = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activityKtx" }
-androidx-datastoreCore = { module = "androidx.datastore:datastore-core", version.ref = "androidx-datastore" }
-androidx-datastorePreferences = { module = "androidx.datastore:datastore-preferences", version.ref = "androidx-datastore" }
-
 zxing-core = { module = "com.google.zxing:core", version.ref = "zxing-core" }
-lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
-rikka-refineRuntime = { module = "dev.rikka.tools.refine:runtime", version.ref = "rikka-refine" }
-rikka-refineAnnotation = { module = "dev.rikka.tools.refine:annotation", version.ref = "rikka-refine" }
-rikka-refineAnnotationProcessor = { module = "dev.rikka.tools.refine:annotation-processor", version.ref = "rikka-refine" }
 
-androidx-navigation-runtimeKtx = { module = "androidx.navigation:navigation-runtime-ktx", version.ref = "androidx-navigation" }
-androidx-navigation-fragmentKtx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "androidx-navigation" }
-androidx-navigation-uiKtx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "androidx-navigation" }
-
-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle" }
 android-library = { id = "com.android.library", version.ref = "android-gradle" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-rikka-refine = { id = "dev.rikka.tools.refine", version.ref = "rikka-refine" }
-kotlin-parcelize = { id = "kotlin-parcelize"}
-maven-publish = { id = "maven-publish"}
-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka"}
 dokka-javadoc = { id = "org.jetbrains.dokka-javadoc", version.ref = "dokka"}
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin-parcelize = { id = "kotlin-parcelize"}
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+maven-publish = { id = "maven-publish"}
+rikka-refine = { id = "dev.rikka.tools.refine", version.ref = "rikka-refine" }
 
 [bundles]
+androidx-datastore = ["androidx-datastoreCore", "androidx-datastorePreferences"]
+androidx-navigation = ["androidx-navigation-runtimeKtx", "androidx-navigation-fragmentKtx", "androidx-navigation-uiKtx"]
+hilt = ["hilt-android"]
+hilt-compilers = ["hilt-android-compiler"]
+
 sesl-androidx = ["sesl-appcompat",
+    "sesl-apppickerview",
     "sesl-coordinatorlayout",
     "sesl-recyclerview",
     "sesl-customview",
@@ -107,11 +111,4 @@ sesl-androidx = ["sesl-appcompat",
     "sesl-core",
     "sesl-coreKtx",
     "sesl-fragment",
-    "sesl-apppickerview",
     "sesl-pickerApp"]
-
-androidx-datastore = ["androidx-datastoreCore", "androidx-datastorePreferences"]
-
-androidx-navigation = ["androidx-navigation-runtimeKtx", "androidx-navigation-fragmentKtx", "androidx-navigation-uiKtx"]
-hilt = ["hilt-android"]
-hilt-compilers = ["hilt-android-compiler"]
