@@ -66,8 +66,10 @@
             android:name="dev.oneuiproject.oneuiexample.ui.about.SampleAboutActivity" />
 
         <activity
-            android:name="dev.oneuiproject.oneuiexample.ui.preference.PreferenceActivity"
-            android:configChanges="orientation|screenLayout|screenSize|smallestScreenSize" />
+            android:name="dev.oneuiproject.oneuiexample.ui.preference.PreferenceActivity" />
+
+        <activity
+            android:name="androidx.picker.eyeDropper.SeslEyeDropperActivity" />
 
     </application>
 

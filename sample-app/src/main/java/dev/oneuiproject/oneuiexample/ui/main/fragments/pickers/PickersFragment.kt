@@ -1,11 +1,16 @@
 package dev.oneuiproject.oneuiexample.ui.main.fragments.pickers
 
+import android.content.res.Configuration
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.createBitmap
 import androidx.picker.app.SeslDatePickerDialog
 import androidx.picker.widget.SeslTimePicker
 import androidx.picker3.app.SeslColorPickerDialog
@@ -236,12 +241,12 @@ class PickersFragment : AbsBaseFragment(R.layout.fragment_pickers) {
         dialog.show()
     }
 
-
-    private var currentColor = -16547330 // #0381fe
-    private val recentColors = mutableListOf(currentColor)
+    private var colorPickerDialog: SeslColorPickerDialog? = null
+    private var currentColor: Int = Color.RED
+    private val recentColors = mutableListOf<Int>(Color.RED, Color.GREEN, Color.BLUE)
 
     private fun openColorPickerDialog() {
-        SeslColorPickerDialog(
+        colorPickerDialog = SeslColorPickerDialog(
             requireContext(),
             { color ->
                 currentColor = color
@@ -253,7 +258,29 @@ class PickersFragment : AbsBaseFragment(R.layout.fragment_pickers) {
             currentColor, recentColors.toIntArray(), true
         ).apply {
             setTransparencyControlEnabled(true)
+            colorPicker.setOnColorChangedListener { currentColor = it }
             show()
+            requireView().post {
+                setOnBitmapSetListener(object: SeslColorPickerDialog.OnBitmapSetListener{
+                    override fun onBitmapSet(): Bitmap {
+                        val rootView = requireActivity().window.decorView.rootView
+                        val bitmap = createBitmap(rootView.width, rootView.height)
+                        val canvas = Canvas(bitmap)
+                        rootView.draw(canvas)
+                        return bitmap
+                    }
+                })
+            }
+        }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        colorPickerDialog?.apply {
+            if (isShowing == true){
+                dismiss()
+                openColorPickerDialog()
+            }
         }
     }
 }
