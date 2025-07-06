@@ -1,3 +1,5 @@
+@file:Suppress("UNCHECKED_CAST")
+
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.LibraryExtension
