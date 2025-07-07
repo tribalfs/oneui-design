@@ -23,7 +23,7 @@ internal class OnBackAppBarHandler<T: ToolbarLayout>(
     private val toolbarLayout: T,
     private val navController: NavController,
     private val configuration: AppBarConfiguration,
-    @FloatRange(0.0, 1.0)
+    @field:FloatRange(0.0, 1.0)
     private val toolbarThreshold: Float
 ) : FragmentManager.OnBackStackChangedListener {
 

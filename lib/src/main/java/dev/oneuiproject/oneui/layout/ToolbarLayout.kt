@@ -1833,7 +1833,7 @@ sealed class Badge {
      * Values <= 0 will be ignored.
      */
     data class NUMERIC(
-        @IntRange(from = 1, to = BADGE_LIMIT_NUMBER.toLong())
+        @field:IntRange(from = 1, to = BADGE_LIMIT_NUMBER.toLong())
         @JvmField val count: Int
     ) : Badge()
 

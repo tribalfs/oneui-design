@@ -249,11 +249,7 @@ sealed class ItemDecorRule{
  */
 data class DividerInsets(
 
-    @JvmField
-    @Px
-    val start: Int,
+    @JvmField @field:Px val start: Int,
 
-    @JvmField
-    @Px
-    val end: Int
+    @JvmField @field:Px val end: Int
 )

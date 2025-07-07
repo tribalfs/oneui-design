@@ -28,7 +28,7 @@ internal class ImmersiveScrollHelper(
     private val activity: AppCompatActivity,
     private val appBarLayout: AppBarLayout,
     private var bottomView: View?,
-    @FloatRange(0.0, 1.0)
+    @field:FloatRange(0.0, 1.0)
     private val bottomViewAlpha: Float = 1f
 ) {
 

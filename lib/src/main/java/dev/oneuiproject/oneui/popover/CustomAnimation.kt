@@ -11,8 +11,6 @@ import androidx.annotation.AnimRes
  * @see dev.oneuiproject.oneui.ktx.startPopOverActivity
  */
 data class CustomAnimation(
-    @JvmField
-    @AnimRes val enterResId: Int,
-    @JvmField
-    @AnimRes val exitResId: Int
+    @JvmField @field:AnimRes val enterResId: Int,
+    @JvmField @field:AnimRes val exitResId: Int
 )

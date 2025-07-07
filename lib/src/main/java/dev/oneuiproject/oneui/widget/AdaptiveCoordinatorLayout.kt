@@ -48,7 +48,7 @@ open class AdaptiveCoordinatorLayout @JvmOverloads constructor(
      * @property matchParent Whether the child view should match the parent's width.
      */
     data class SideMarginParams(
-        @JvmField @Px var sideMargin: Int,
+        @JvmField @field:Px var sideMargin: Int,
         @JvmField var matchParent: Boolean = true
     )
 

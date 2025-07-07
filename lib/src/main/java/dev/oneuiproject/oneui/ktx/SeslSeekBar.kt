@@ -1,12 +1,12 @@
 @file:Suppress("NOTHING_TO_INLINE")
 package dev.oneuiproject.oneui.ktx
 
-import android.graphics.Color
 import android.util.Log
 import androidx.annotation.ColorInt
 import androidx.appcompat.widget.SeslSeekBar
 import androidx.core.content.ContextCompat
 import androidx.appcompat.R as appcompatR
+import androidx.core.graphics.toColorInt
 
 sealed interface SeslSeekBarDualColors{
     data object Default: SeslSeekBarDualColors
@@ -14,11 +14,11 @@ sealed interface SeslSeekBarDualColors{
         /**
          * Overlap color for background tract
          */
-        @ColorInt val bgColor: Int = Color.parseColor("#f7c0bd"),
+        @field:ColorInt val bgColor: Int = "#f7c0bd".toColorInt(),
         /**
          * Overlap color for activated tract
          */
-        @ColorInt val fgColor: Int = Color.parseColor("#f1462f")
+        @field:ColorInt val fgColor: Int = "#f1462f".toColorInt()
     ): SeslSeekBarDualColors
 }
 

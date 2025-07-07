@@ -25,7 +25,7 @@ import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
  */
 class SearchHighlighter @JvmOverloads constructor(
     @JvmField val context: Context? = null,
-    @JvmField @ColorInt var highlightColor: Int = -1
+    @JvmField @field:ColorInt var highlightColor: Int = -1
 ) {
 
     init {
