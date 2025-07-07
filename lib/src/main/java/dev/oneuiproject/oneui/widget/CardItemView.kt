@@ -188,7 +188,7 @@ class CardItemView @JvmOverloads constructor(
 
         inflate(context, R.layout.oui_des_widget_card_item, this)
         containerView = findViewById(R.id.cardview_container)
-        titleTextView = findViewById<TextView?>(R.id.cardview_title)
+        titleTextView = findViewById<TextView>(R.id.cardview_title)
         summaryTextView = findViewById<TextView>(R.id.cardview_summary)
 
         suspendLayoutUpdates = true

@@ -504,10 +504,10 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     private fun initViews() {
         adpCoordinatorLayout = findViewById(R.id.toolbarlayout_coordinator_layout)
-        appBarLayout = adpCoordinatorLayout.findViewById<AppBarLayout?>(R.id.toolbarlayout_app_bar)
+        appBarLayout = adpCoordinatorLayout.findViewById<AppBarLayout>(R.id.toolbarlayout_app_bar)
             .apply { setTag(R.id.tag_side_margin_excluded, true) }
         collapsingToolbarLayout = appBarLayout.findViewById(R.id.toolbarlayout_collapsing_toolbar)
-        _mainToolbar = collapsingToolbarLayout.findViewById<Toolbar?>(R.id.toolbarlayout_main_toolbar).apply {
+        _mainToolbar = collapsingToolbarLayout.findViewById<Toolbar>(R.id.toolbarlayout_main_toolbar).apply {
             if (toolbarGravity != Gravity.BOTTOM) {
                 updateLayoutParams<CollapsingToolbarLayout.LayoutParams> { gravity = toolbarGravity }
             }
