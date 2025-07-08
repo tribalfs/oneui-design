@@ -11,4 +11,5 @@
     <item name="tag_rv_imm_bottom_padding_listener" type="id"/>
 
     <item name="bottom_tab_menu_show_grid_dialog" type="id"/>
+    <item name="tbl_action_mode_menu_group_id" type="id"/>
 </resources>

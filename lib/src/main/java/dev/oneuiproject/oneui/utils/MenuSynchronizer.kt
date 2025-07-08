@@ -12,6 +12,7 @@ import androidx.core.view.MenuItemCompat
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import dev.oneuiproject.oneui.design.R
 
 /**
  * Handles the synchronization of menu items between a BottomNavigationView and a Toolbar,
@@ -207,7 +208,8 @@ class MenuSynchronizer @JvmOverloads constructor(
     }
 
     companion object{
-        private const val AMT_GROUP_MENU_ID = 999
+        @IdRes
+        private val AMT_GROUP_MENU_ID = R.id.tbl_action_mode_menu_group_id
     }
 }
 

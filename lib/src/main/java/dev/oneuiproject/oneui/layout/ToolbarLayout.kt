@@ -1792,8 +1792,6 @@ open class ToolbarLayout @JvmOverloads constructor(
     internal companion object {
         private const val TAG = "ToolbarLayout"
 
-        @RestrictTo(RestrictTo.Scope.LIBRARY)
-        internal const val AMT_GROUP_MENU_ID: Int = 9999
         /**
          * The child will be added as the primary content of this layout located
          * right below the app bar and will have the adaptive margins applied,
