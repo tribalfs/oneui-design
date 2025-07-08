@@ -148,7 +148,7 @@ private inline fun onNavDestinationSelected(
     val destinationNode = navController.currentDestination!!.parent!!.findNode(item.itemId)
     if (destinationNode !is ActivityNavigator.Destination
         && destinationNode !is FloatingWindow) {
-        builder.setPopUpTo(navController.graph.findStartDestination().id, inclusive = false)
+        builder.setPopUpTo(navController.graph.findStartDestination().id, inclusive = false, saveState = true)
     }
 
     return try {
