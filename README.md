@@ -27,7 +27,7 @@ dependencies {
   //sesl and other dependencies
 
   //For OneUI 7 - must use sesl7 dependencies
-  implementation("io.github.tribalfs:oneui-design:0.7.2+oneui7")
+  implementation("io.github.tribalfs:oneui-design:0.7.3+oneui7")
     
   //For OneUI 6 - must use sesl6 dependencies
   implementation("io.github.tribalfs:oneui-design:0.6.2+oneui6")
