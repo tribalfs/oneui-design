@@ -13,6 +13,7 @@ import androidx.core.content.withStyledAttributes
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import dev.oneuiproject.oneui.ktx.isLightMode
+import androidx.core.graphics.toColorInt
 
 private var Impl: EdgeToEdgeImpl? = null
 
@@ -78,7 +79,7 @@ private class EdgeToEdgeApi23 : EdgeToEdgeImpl {
     ) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         window.statusBarColor = Color.TRANSPARENT
-        window.navigationBarColor = if (navigationBarIsDark) Color.TRANSPARENT else Color.parseColor("#20000000")
+        window.navigationBarColor = if (navigationBarIsDark) Color.TRANSPARENT else "#20000000".toColorInt()
         WindowInsetsControllerCompat(window, view).isAppearanceLightStatusBars = !statusBarIsDark
     }
 }

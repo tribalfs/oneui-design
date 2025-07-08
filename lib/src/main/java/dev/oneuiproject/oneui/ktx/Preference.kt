@@ -99,7 +99,7 @@ inline fun <R : TwoStatePreference> R.onNewValue(crossinline action: (newValue: 
  *
  * Example usage:
  * ```kotlin
- * switchPreference.onNewValueConditional { newValue ->
+ * switchPreference.onNewValueConditional { newValue: Boolean ->
  *     if (isValid(newValue)) {
  *         // Accept and persist the new value
  *         true
@@ -134,7 +134,7 @@ inline fun <R : TwoStatePreference> R.onNewValueConditional(crossinline action: 
  * Example usage:
  * ```kotlin
  * seekbarPreference.onNewValue { newValue ->
- *     // Handle the new value (Boolean)
+ *     // Handle the new value (Int)
  *     // The preference will automatically persist the new value.
  * }
  * ```
@@ -167,7 +167,7 @@ inline fun <R : SeekBarPreference> R.onNewValue(crossinline action: (newValue: I
  *
  * Example usage:
  * ```kotlin
- * seekbarPreference.onNewValueConditional { newValue ->
+ * seekbarPreference.onNewValueConditional { newValue: Int ->
  *     if (isValid(newValue)) {
  *         // Accept and persist the new value
  *         true
@@ -202,7 +202,7 @@ inline fun <R : SeekBarPreference> R.onNewValueConditional(crossinline action: (
  * Example usage:
  * ```kotlin
  * editTextPreference.onNewValue { newValue ->
- *     // Handle the new value (Boolean)
+ *     // Handle the new value (String)
  *     // The preference will automatically persist the new value.
  * }
  * ```
@@ -235,7 +235,7 @@ inline fun <R : EditTextPreference> R.onNewValue(crossinline action: (newValue: 
  *
  * Example usage:
  * ```kotlin
- * editTextPreference.onNewValueConditional { newValue ->
+ * editTextPreference.onNewValueConditional { newValue: String ->
  *     if (isValid(newValue)) {
  *         // Accept and persist the new value
  *         true
@@ -270,7 +270,7 @@ inline fun <R : EditTextPreference> R.onNewValueConditional(crossinline action: 
  * Example usage:
  * ```kotlin
  * listPreference.onNewValue { newValue ->
- *     // Handle the new value (Boolean)
+ *     // Handle the new value (String)
  *     // The preference will automatically persist the new value.
  * }
  * ```
@@ -303,7 +303,7 @@ inline fun <R : ListPreference> R.onNewValue(crossinline action: (newValue: Stri
  *
  * Example usage:
  * ```kotlin
- * listPreference.onNewValueConditional { newValue ->
+ * listPreference.onNewValueConditional { newValue: String ->
  *     if (isValid(newValue)) {
  *         // Accept and persist the new value
  *         true
@@ -338,8 +338,8 @@ inline fun <R : ListPreference> R.onNewValueConditional(crossinline action: (new
  *
  * Example usage:
  * ```kotlin
- * listPreference.onNewValue { newValue ->
- *     // Handle the new value (Boolean)
+ * horizontalRadioPreference.onNewValue { newValue ->
+ *     // Handle the new value (String)
  *     // The preference will automatically persist the new value.
  * }
  * ```
@@ -372,7 +372,7 @@ inline fun HorizontalRadioPreference.onNewValue(crossinline action: (newValue: S
  *
  * Example usage:
  * ```kotlin
- * horizontalRadioPreference.onNewValueConditional { newValue ->
+ * horizontalRadioPreference.onNewValueConditional { newValue: String ->
  *     if (isValid(newValue)) {
  *         // Accept and persist the new value
  *         true

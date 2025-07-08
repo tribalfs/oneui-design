@@ -33,7 +33,7 @@ import dev.oneuiproject.oneui.layout.DrawerLayout as OneUIDrawerLayout
  * - This view must be hosted within an [AppCompatActivity][androidx.appcompat.app.AppCompatActivity] as it relies on AppCompat-specific features and theming.
  * Otherwise, it will result to runtime exceptions.
  * - To use this layout, ensure your activity does *not* handle `smallestScreenSize` in `android:configChanges`.
- * Otherwise, layout changes based on screen size will not function correctly.
+ * Otherwise, adaptive layout changes based on screen size will not function correctly.
  *
  * ## XML Attributes
  * The following XML attributes are supported in addition to attributes of [DrawerLayout]:

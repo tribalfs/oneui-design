@@ -368,7 +368,7 @@ open class ToolbarLayout @JvmOverloads constructor(
      */
     internal val searchView: SearchView? get() = _searchView
 
-    private var mSearchModeListener: SearchModeListener? = null
+    private var searchModeListener: SearchModeListener? = null
 
     @JvmField
     internal var searchModeOBPBehavior = CLEAR_DISMISS
@@ -733,6 +733,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         collapsingToolbarLayout.seslSetSubtitle(expandedSubTitle)
     }
 
+    /** Restore the original toolbar titles*/
     @RestrictTo(RestrictTo.Scope.LIBRARY)
     fun applyCachedTitles() {
         _mainToolbar.title = _collapsedTitle
@@ -1005,7 +1006,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         listener: SearchModeListener,
         searchModeOnBackBehavior: SearchModeOnBackBehavior = CLEAR_DISMISS
     ) {
-        mSearchModeListener = listener
+        searchModeListener = listener
         searchModeOBPBehavior = searchModeOnBackBehavior
 
         if (isActionMode) {
@@ -1032,7 +1033,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             resources.getString(appcompatR.string.sesl_searchview_description_search)
         collapsingToolbarLayout.seslSetSubtitle(null)
         updateOnBackCallbackState()
-        mSearchModeListener!!.onSearchModeToggle(_searchView!!, true)
+        searchModeListener!!.onSearchModeToggle(_searchView!!, true)
     }
 
     private fun setupSearchModeListener() {
@@ -1041,7 +1042,7 @@ open class ToolbarLayout @JvmOverloads constructor(
                 private var backCallbackUpdaterJob: Job? = null
 
                 override fun onQueryTextSubmit(query: String): Boolean {
-                    return mSearchModeListener?.onQueryTextSubmit(query) == true
+                    return searchModeListener?.onQueryTextSubmit(query) == true
                 }
 
                 override fun onQueryTextChange(newText: String): Boolean {
@@ -1052,7 +1053,7 @@ open class ToolbarLayout @JvmOverloads constructor(
                             updateOnBackCallbackState()
                         }
                     }
-                    return mSearchModeListener?.onQueryTextChange(newText) == true
+                    return searchModeListener?.onQueryTextChange(newText) == true
                 }
             })
     }
@@ -1066,7 +1067,6 @@ open class ToolbarLayout @JvmOverloads constructor(
         if (!isSearchMode) return
         isSearchMode = false
 
-        //Restore toolbar titles
         applyCachedTitles()
 
         //Restore views visibility
@@ -1074,11 +1074,11 @@ open class ToolbarLayout @JvmOverloads constructor(
         animatedVisibility(_mainToolbar, VISIBLE)
         customFooterContainer!!.setVisibility(VISIBLE, true, 450)
 
-        mSearchModeListener!!.onSearchModeToggle(_searchView!!, false)
+        searchModeListener!!.onSearchModeToggle(_searchView!!, false)
         // We are clearing the listener first. We don't want to trigger
         // SearchModeListener.onQueryTextChange callback
         // when clearing the SearchView's input field
-        mSearchModeListener = null
+        searchModeListener = null
         _searchView!!.apply {
             setOnQueryTextListener(null)
             setQuery("", false)
@@ -1120,7 +1120,7 @@ open class ToolbarLayout @JvmOverloads constructor(
                         isSearchMode = false
                         iconifyActionModeSearchView(true)
                         setOnQueryTextListener(null)
-                        mSearchModeListener?.onSearchModeToggle(this, false)
+                        searchModeListener?.onSearchModeToggle(this, false)
                         setQuery("", false)
                     }
                     if (!isDescendantOf(mainContainerParent)) {
@@ -1264,7 +1264,7 @@ open class ToolbarLayout @JvmOverloads constructor(
                 setupActionModeSearchMenu()
                 setupSearchView()
                 searchOnActionMode.searchModeListener?.let {
-                    mSearchModeListener = it
+                    searchModeListener = it
                 }
                 post {
                     if (isSearchMode || !_searchView!!.query.isNullOrEmpty()) {
@@ -1285,10 +1285,10 @@ open class ToolbarLayout @JvmOverloads constructor(
         showActionModeToolbarAnimate()
         setupActionModeMenu(showCancel)
 
-        allSelectorStateFlow?.let {
+        allSelectorStateFlow?.let {ass ->
             allSelectorItemsCount = 0
             updateAllSelectorJob = activity!!.lifecycleScope.launch {
-                it.flowWithLifecycle(activity!!.lifecycle)
+                ass.flowWithLifecycle(activity!!.lifecycle)
                     .collectLatest {
                         updateAllSelectorInternal(it.totalSelected, it.isEnabled, it.isChecked)
                     }
@@ -1391,7 +1391,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         iconifyActionModeSearchView(false)
         if (!isSearchMode) {
             setupSearchModeListener()
-            mSearchModeListener!!.onSearchModeToggle(_searchView!!, true)
+            searchModeListener!!.onSearchModeToggle(_searchView!!, true)
         }
         setExpanded(expanded = false, animate = true)
     }
@@ -1532,8 +1532,8 @@ open class ToolbarLayout @JvmOverloads constructor(
     private inline fun clearActionModeSearch() {
         _searchView?.apply {
             isGone = true
-            mSearchModeListener?.onSearchModeToggle(this, false)
-            mSearchModeListener = null
+            searchModeListener?.onSearchModeToggle(this, false)
+            searchModeListener = null
             setQuery("", false)
         }
     }

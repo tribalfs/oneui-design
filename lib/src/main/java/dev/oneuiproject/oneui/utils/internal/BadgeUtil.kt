@@ -2,28 +2,33 @@
 
 package dev.oneuiproject.oneui.utils.internal
 
+import androidx.annotation.RestrictTo
+import dev.oneuiproject.oneui.layout.Badge
+import java.text.NumberFormat
+import java.util.Locale
+
 /**
  * Formats into localized badge count string. Also takes care of limiting to [BADGE_LIMIT_NUMBER].
  * Value < 0 returns null.
  */
-@androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.LIBRARY)
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 internal inline fun Int.badgeCountToText(): String?{
     return if (this <= 0) null else {
-        java.text.NumberFormat.getInstance(java.util.Locale.getDefault()).format(this.coerceAtMost(BADGE_LIMIT_NUMBER))
+        NumberFormat.getInstance(Locale.getDefault()).format(this.coerceAtMost(BADGE_LIMIT_NUMBER))
     }
 }
 
-@androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.LIBRARY)
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 internal inline fun String.badgeTextToCount() = this.toIntOrNull() ?: 0
 
-@androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.LIBRARY)
-internal inline fun String?.toBadge(): dev.oneuiproject.oneui.layout.Badge {
+@RestrictTo(RestrictTo.Scope.LIBRARY)
+internal inline fun String?.toBadge(): Badge {
     return this?.badgeTextToCount()?.let {
-        if (it > 0) dev.oneuiproject.oneui.layout.Badge.NUMERIC(it) else dev.oneuiproject.oneui.layout.Badge.DOT
-    } ?: dev.oneuiproject.oneui.layout.Badge.NONE
+        if (it > 0) Badge.NUMERIC(it) else Badge.DOT
+    } ?: Badge.NONE
 }
 
 internal const val BADGE_LIMIT_NUMBER = 99
 
-@androidx.annotation.RestrictTo(androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX)
+@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP_PREFIX)
 internal const val N_BADGE = -1
