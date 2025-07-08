@@ -29,7 +29,7 @@ import javax.inject.Inject
 
 @FragmentScoped
 class ContactsAdapter @Inject constructor (
-    @ApplicationContext private val context: Context
+    @param:ApplicationContext private val context: Context
 ) : RecyclerView.Adapter<ContactsAdapter.ViewHolder>(),
     MultiSelector<Long> by MultiSelectorDelegate(isSelectable = { it != ContactsListItemUiModel.SeparatorItem.Companion.VIEW_TYPE }),
     SemSectionIndexer<ContactsListItemUiModel> by SectionIndexerDelegate(context, labelExtractor = { getLabel(it) }) {

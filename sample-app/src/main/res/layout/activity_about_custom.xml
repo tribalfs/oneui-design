@@ -154,10 +154,6 @@
         android:layout_gravity="bottom|center"
         android:focusable="false">
 
-        <!--
-            Kang from:
-            https://lottiefiles.com/24773-swipe-up-white-text
-        -->
         <com.airbnb.lottie.LottieAnimationView
             android:layout_width="180dp"
             android:layout_height="180dp"

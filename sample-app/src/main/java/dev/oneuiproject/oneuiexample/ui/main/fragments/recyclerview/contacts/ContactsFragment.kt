@@ -73,7 +73,7 @@ class ContactsFragment : AbsBaseFragment(R.layout.fragment_contacts),
     lateinit var contactsAdapter: ContactsAdapter
     private var rvTipView: TipPopup? = null
     private var fabTipPopup: TipPopup? = null
-    private val indexBarEventListener = object:OnIndexBarEventListener{
+    private val indexBarEventListener = object: OnIndexBarEventListener{
         override fun onIndexChanged(sectionIndex: Int) {}
         override fun onPressed(v: Float) {
             parentViewModel.isTabLayoutEnabled = false

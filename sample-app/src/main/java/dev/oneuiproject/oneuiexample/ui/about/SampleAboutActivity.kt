@@ -19,7 +19,7 @@ class SampleAboutActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about)
 
-        appInfoLayout = findViewById<AppInfoLayout?>(R.id.appInfoLayout).apply {
+        appInfoLayout = findViewById<AppInfoLayout>(R.id.appInfoLayout).apply {
             addOptionalText("OneUI Design version " + BuildConfig.ONEUI_DESIGN_VERSION)
             setMainButtonClickListener {
                 semToast("Main button clicked! updateState: $updateStatus")

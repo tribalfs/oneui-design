@@ -24,13 +24,10 @@ import com.sec.sesl.tester.databinding.FragmentApppickerBinding
 import dagger.hilt.android.AndroidEntryPoint
 import dev.oneuiproject.oneui.delegates.AppBarAwareYTranslator
 import dev.oneuiproject.oneui.delegates.ViewYTranslator
-import dev.oneuiproject.oneui.ktx.clearBadge
 import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.ktx.isSoftKeyboardShowing
 import dev.oneuiproject.oneui.ktx.seslSetFastScrollerAdditionalPadding
-import dev.oneuiproject.oneui.ktx.setBadge
 import dev.oneuiproject.oneui.ktx.setEntries
-import dev.oneuiproject.oneui.layout.Badge
 import dev.oneuiproject.oneui.layout.ToolbarLayout
 import dev.oneuiproject.oneui.layout.startSearchMode
 import dev.oneuiproject.oneuiexample.ui.main.MainActivity
@@ -98,7 +95,7 @@ class AppPickerFragment : AbsBaseFragment(R.layout.fragment_apppicker),
                         appInfo: AppInfo,
                         isSelected: Boolean
                     ) {
-                        val allItemsSelected = appPicker.appDataList.count { (it as AppInfoData).selected != true } == 0
+                        val allItemsSelected = appPicker.appDataList.count { !(it as AppInfoData).selected } == 0
                         (headerFooterAdapter.getItem(0) as? AllAppsViewData)?.selectableItem?.setValueSilence(allItemsSelected)
                     }
                 }

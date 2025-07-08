@@ -35,7 +35,7 @@ data class IconsUiState(
 
 @HiltViewModel
 class IconsViewModel @Inject constructor(
-    @ApplicationContext private val appContext: Context,
+    @param:ApplicationContext private val appContext: Context,
     iconsRepo: IconsRepo,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {

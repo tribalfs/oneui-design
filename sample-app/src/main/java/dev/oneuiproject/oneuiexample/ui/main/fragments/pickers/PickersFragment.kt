@@ -1,8 +1,6 @@
 package dev.oneuiproject.oneuiexample.ui.main.fragments.pickers
 
 import android.content.res.Configuration
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
 import android.text.format.DateFormat
@@ -10,7 +8,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.createBitmap
+import androidx.core.view.isVisible
 import androidx.picker.app.SeslDatePickerDialog
 import androidx.picker.widget.SeslTimePicker
 import androidx.picker3.app.SeslColorPickerDialog
@@ -22,7 +20,9 @@ import dev.oneuiproject.oneui.ktx.setEntries
 import dev.oneuiproject.oneui.ktx.showTimePickerDialog
 import dev.oneuiproject.oneui.utils.getRegularFont
 import dev.oneuiproject.oneuiexample.ui.main.core.base.AbsBaseFragment
+import dev.oneuiproject.oneuiexample.ui.main.core.util.addOrMoveToFirstWithLimit
 import dev.oneuiproject.oneuiexample.ui.main.core.util.autoCleared
+import dev.oneuiproject.oneuiexample.ui.main.core.util.captureScreenBitmap
 import dev.oneuiproject.oneuiexample.ui.main.core.util.semToast
 import java.util.Calendar
 
@@ -142,45 +142,44 @@ class PickersFragment : AbsBaseFragment(R.layout.fragment_pickers) {
         fun onItemSelected(position: Int) {
             when (position) {
                 0 -> {
-                    binding.pickersNumber.visibility = View.VISIBLE
-
-                    binding.pickerTime.visibility = View.GONE
-                    binding.pickerDate.visibility = View.GONE
-                    binding.pickerSpinningDate.visibility = View.GONE
-                    binding.pickerSleepTime.visibility = View.GONE
+                    binding.pickersNumber.isVisible = true
+                    binding.pickerTime.isVisible = false
+                    binding.pickerDate.isVisible = false
+                    binding.pickerSpinningDate.isVisible = false
+                    binding.pickerSleepTime.isVisible = false
                 }
 
                 1 -> {
-                    binding.pickersNumber.visibility = View.GONE
-                    binding.pickerTime.visibility = View.VISIBLE
+                    binding.pickersNumber.isVisible = false
+                    binding.pickerTime.isVisible = true
                     binding.pickerTime.startAnimation(200, null)
-                    binding.pickerDate.visibility = View.GONE
-                    binding.pickerSpinningDate.visibility = View.GONE
-                    binding.pickerSleepTime.visibility = View.GONE
+                    binding.pickerDate.isVisible = false
+                    binding.pickerSpinningDate.isVisible = false
+                    binding.pickerSleepTime.isVisible = false
                 }
 
                 2 -> {
-                    binding.pickersNumber.visibility = View.GONE
-                    binding.pickerTime.visibility = View.GONE
-                    binding.pickerDate.visibility = View.VISIBLE
-                    binding.pickerSpinningDate.visibility = View.GONE
-                    binding.pickerSleepTime.visibility = View.GONE
+                    binding.pickersNumber.isVisible = false
+                    binding.pickerTime.isVisible = false
+                    binding.pickerDate.isVisible = true
+                    binding.pickerSpinningDate.isVisible = false
+                    binding.pickerSleepTime.isVisible = false
                 }
 
                 3 -> {
-                    binding.pickersNumber.visibility = View.GONE
-                    binding.pickerTime.visibility = View.GONE
-                    binding.pickerDate.visibility = View.GONE
-                    binding.pickerSpinningDate.visibility = View.VISIBLE
-                    binding.pickerSleepTime.visibility = View.GONE
+                    binding.pickersNumber.isVisible = false
+                    binding.pickerTime.isVisible = false
+                    binding.pickerDate.isVisible = false
+                    binding.pickerSpinningDate.isVisible = true
+                    binding.pickerSleepTime.isVisible = false
                 }
 
                 4 -> {
-                    binding.pickersNumber.visibility = View.GONE
-                    binding.pickerTime.visibility = View.GONE
-                    binding.pickerDate.visibility = View.GONE
-                    binding.pickerSpinningDate.visibility = View.GONE
-                    binding.pickerSleepTime.visibility = View.VISIBLE
+                    binding.pickersNumber.isVisible = false
+                    binding.pickerTime.isVisible = false
+                    binding.pickerDate.isVisible = false
+                    binding.pickerSpinningDate.isVisible = false
+                    binding.pickerSleepTime.isVisible = true
                 }
             }
         }
@@ -243,17 +242,14 @@ class PickersFragment : AbsBaseFragment(R.layout.fragment_pickers) {
 
     private var colorPickerDialog: SeslColorPickerDialog? = null
     private var currentColor: Int = Color.RED
-    private val recentColors = mutableListOf<Int>(Color.RED, Color.GREEN, Color.BLUE)
+    private val recentColors = mutableListOf(Color.RED, Color.GREEN, Color.BLUE)
 
     private fun openColorPickerDialog() {
         colorPickerDialog = SeslColorPickerDialog(
             requireContext(),
             { color ->
                 currentColor = color
-                if (recentColors.size == 6) {
-                    recentColors.removeAt(5)
-                }
-                recentColors.add(0, color)
+                recentColors.addOrMoveToFirstWithLimit(color, 5)
             },
             currentColor, recentColors.toIntArray(), true
         ).apply {
@@ -261,15 +257,7 @@ class PickersFragment : AbsBaseFragment(R.layout.fragment_pickers) {
             colorPicker.setOnColorChangedListener { currentColor = it }
             show()
             requireView().post {
-                setOnBitmapSetListener(object: SeslColorPickerDialog.OnBitmapSetListener{
-                    override fun onBitmapSet(): Bitmap {
-                        val rootView = requireActivity().window.decorView.rootView
-                        val bitmap = createBitmap(rootView.width, rootView.height)
-                        val canvas = Canvas(bitmap)
-                        rootView.draw(canvas)
-                        return bitmap
-                    }
-                })
+                setOnBitmapSetListener { requireActivity().captureScreenBitmap() }
             }
         }
     }
@@ -277,7 +265,7 @@ class PickersFragment : AbsBaseFragment(R.layout.fragment_pickers) {
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         colorPickerDialog?.apply {
-            if (isShowing == true){
+            if (isShowing){
                 dismiss()
                 openColorPickerDialog()
             }

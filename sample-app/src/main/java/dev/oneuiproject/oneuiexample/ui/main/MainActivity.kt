@@ -1,12 +1,10 @@
 package dev.oneuiproject.oneuiexample.ui.main
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.NavHostFragment
-import com.sec.sesl.tester.R
 import com.sec.sesl.tester.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import dev.oneuiproject.oneui.ktx.startPopOverActivity

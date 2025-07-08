@@ -24,7 +24,7 @@ import javax.inject.Inject
 
 @FragmentScoped
 class IconsAdapter @Inject constructor(
-    @ApplicationContext private val context: Context
+    @param:ApplicationContext private val context: Context
 ) : RecyclerView.Adapter<IconsAdapter.ViewHolder?>(),
     SemSectionIndexer<IconListItemUiModel> by SectionIndexerDelegate(
         context,

@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.DropDownPreference
 import androidx.preference.EditTextPreference
+import androidx.preference.ListPreference
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -137,7 +138,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
         findPreference<DropDownPreference>("dropDownPref")!!.setSummaryUpdatable(true)
 
-        findPreference<DropDownPreference>("listPref")!!.setSummaryUpdatable(true)
+        findPreference<ListPreference>("listPref")!!.setSummaryUpdatable(true)
 
         findPreference<Preference>("aboutPref")!!.onClick {
             startActivity(Intent(requireActivity(), SampleAboutActivity::class.java))
@@ -151,7 +152,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         ) { v: View -> semToast((v as TextView).text.toString()) }
     }
 
-    private fun Preference.applyDarkModePrefs() {
+    private fun applyDarkModePrefs() {
         (requireContext().applicationContext as OneUIApp).applyDarkModePrefs()
     }
 
