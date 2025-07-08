@@ -58,7 +58,8 @@ import com.google.android.material.R as materialR
  * - Customizable appearance with attributes for minimum side margin and menu resource.
  * - Integrates with [GridMenuDialog] for displaying overflow items in a grid layout.
  * - Supports visibility animations (slide up/down) .
- * - Supports badges on tabs and overflow items to indicate notifications or updates.
+ * - Supports navigation integration via [setupNavigation][dev.oneuiproject.oneui.navigation.setupNavigation]
+ * for navigation handling when used in conjunction with a [ToolbarLayout][dev.oneuiproject.oneui.layout.ToolbarLayout].
  *
  * ## Example usage:
  * ```xml
