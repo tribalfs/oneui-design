@@ -5,6 +5,7 @@
 package dev.oneuiproject.oneui.navigation
 
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.FloatRange
 import androidx.navigation.ActivityNavigator
@@ -35,6 +36,9 @@ import kotlin.reflect.KClass
  *                      By default, uses the menu from [drawerNavigationView] and this [NavDrawerLayout] as the drawer layout.
  * @param toolbarBackThreshold The threshold (from 0.0 to 1.0) at which the [NavDrawerLayout] toolbar switches its title, subtitle and navigation icon
  * to those of the back destination during predictive back animation progress. Defaults to 0.75f.
+ *
+ * By default, the back stack will be popped back to the navigation graph's start destination except
+ * for Activity and FloatingWindow destinations and for menu items that have `android:menuCategory="secondary"`.
  *
  * Usage example:
  * ```
@@ -137,7 +141,7 @@ fun NavDrawerLayout.setupNavigation(
     setupNavigation(drawerNavigationView, navHostFragment, configuration, toolbarBackThreshold)
 }
 
-private inline fun onNavDestinationSelected(
+private fun onNavDestinationSelected(
     item: MenuItem,
     navController: NavController
 ): Boolean {
@@ -147,7 +151,8 @@ private inline fun onNavDestinationSelected(
 
     val destinationNode = navController.currentDestination!!.parent!!.findNode(item.itemId)
     if (destinationNode !is ActivityNavigator.Destination
-        && destinationNode !is FloatingWindow) {
+        && destinationNode !is FloatingWindow
+        && item.order and Menu.CATEGORY_SECONDARY == 0) {
         builder.setPopUpTo(navController.graph.findStartDestination().id, inclusive = false, saveState = true)
     }
 
@@ -170,6 +175,9 @@ private inline fun onNavDestinationSelected(
  *                      By default, uses the menu from the [bottomTabLayout].
  * @param toolbarBackThreshold The threshold (from 0.0 to 1.0) at which the [ToolbarLayout] toolbar switches its title, subtitle and navigation icon
  * to those of the back destination during predictive back animation progress. Defaults to 0.75f.
+ *
+ * By default, the back stack will be popped back to the navigation graph's start destination except
+ * for Activity and FloatingWindow destinations and for menu items that have `android:menuCategory="secondary"`.
  *
  * Usage example:
  * ```
