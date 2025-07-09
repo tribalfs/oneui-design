@@ -1,0 +1,2589 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 8.11.1" type="baseline" client="gradle" dependencies="false" name="AGP (8.11.1)" variant="all" version="8.11.1">
+
+    <issue
+        id="CustomViewStyleable"
+        message="By convention, the declare-styleable (`ToolbarLayoutParams`) for a layout parameter class (`ToolbarLayoutParams`) is expected to be the surrounding class (`ToolbarLayout`) plus &quot;`_Layout`&quot;, e.g. `ToolbarLayout_Layout`. (Various editor features rely on this convention.)"
+        errorLine1="            context.obtainStyledAttributes(at, R.styleable.ToolbarLayoutParams).use {"
+        errorLine2="                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/dev/oneuiproject/oneui/layout/ToolbarLayout.kt"
+            line="1700"
+            column="48"/>
+    </issue>
+
+    <issue
+        id="InconsistentLayout"
+        message="The id &quot;app_info_empty_view_top&quot; in layout &quot;oui_des_layout_app_info&quot; is missing from the following layout configurations: layout-land (present in layout)"
+        errorLine1="            android:id=&quot;@+id/app_info_empty_view_top&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_layout_app_info.xml"
+            line="21"
+            column="13"
+            message="Occurrence in layout"/>
+    </issue>
+
+    <issue
+        id="InconsistentLayout"
+        message="The id &quot;app_info_empty_view_bottom&quot; in layout &quot;oui_des_layout_app_info&quot; is missing from the following layout configurations: layout-land (present in layout)"
+        errorLine1="            android:id=&quot;@+id/app_info_empty_view_bottom&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_layout_app_info.xml"
+            line="87"
+            column="13"
+            message="Occurrence in layout"/>
+    </issue>
+
+    <issue
+        id="InconsistentLayout"
+        message="The id &quot;oui_des_splash_image_background&quot; in layout &quot;oui_des_layout_splash_animated&quot; is missing from the following layout configurations: layout-land (present in layout)"
+        errorLine1="            android:id=&quot;@+id/oui_des_splash_image_background&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_layout_splash_animated.xml"
+            line="14"
+            column="13"
+            message="Occurrence in layout"/>
+    </issue>
+
+    <issue
+        id="InconsistentLayout"
+        message="The id &quot;oui_des_splash_image_foreground&quot; in layout &quot;oui_des_layout_splash_animated&quot; is missing from the following layout configurations: layout-land (present in layout)"
+        errorLine1="            android:id=&quot;@+id/oui_des_splash_image_foreground&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_layout_splash_animated.xml"
+            line="23"
+            column="13"
+            message="Occurrence in layout"/>
+    </issue>
+
+    <issue
+        id="InconsistentLayout"
+        message="The id &quot;oui_des_splash_text&quot; in layout &quot;oui_des_layout_splash_animated&quot; is missing from the following layout configurations: layout-land (present in layout)"
+        errorLine1="        android:id=&quot;@+id/oui_des_splash_text&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_layout_splash_animated.xml"
+            line="35"
+            column="9"
+            message="Occurrence in layout"/>
+    </issue>
+
+    <issue
+        id="LocaleFolder"
+        message="The locale folder &quot;`he`&quot; should be called &quot;`iw`&quot; instead; see the `java.util.Locale` documentation">
+        <location
+            file="src/main/res/values-he"/>
+    </issue>
+
+    <issue
+        id="LocaleFolder"
+        message="The locale folder &quot;`id`&quot; should be called &quot;`in`&quot; instead; see the `java.util.Locale` documentation">
+        <location
+            file="src/main/res/values-id"/>
+    </issue>
+
+    <issue
+        id="TrimLambda"
+        message="The lambda argument (`{ it &lt;= &apos; &apos; }`) is unnecessary"
+        errorLine1="        pattern = pattern.replace(&quot;a&quot;, &quot;&quot;).replace(&quot;h&quot;, &quot;H&quot;).trim { it &lt;= &apos; &apos; }"
+        errorLine2="                                                                  ~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/dev/oneuiproject/oneui/dialog/internal/StartEndTimePickerUtils.kt"
+            line="16"
+            column="67"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `fillType` is only used in API level 24 and higher (current min is 21)"
+        errorLine1="        android:fillType=&quot;nonZero&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/drawable/oui_des_drawer_menu_expand_icon.xml"
+            line="9"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `fillType` is only used in API level 24 and higher (current min is 21)"
+        errorLine1="        android:fillType=&quot;evenOdd&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/drawable/oui_des_ic_ab_drawer.xml"
+            line="11"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `fillType` is only used in API level 24 and higher (current min is 21)"
+        errorLine1="        android:fillType=&quot;nonZero&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/drawable/oui_des_preference_seekbar_pro_minus.xml"
+            line="10"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `fillType` is only used in API level 24 and higher (current min is 21)"
+        errorLine1="        android:fillType=&quot;evenOdd&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/drawable/oui_des_preference_seekbar_pro_plus.xml"
+            line="10"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `height` is only used in API level 23 and higher (current min is 21)"
+        errorLine1="        android:height=&quot;20dp&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/drawable/oui_des_preference_suggestion_card_close_btn.xml"
+            line="4"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `width` is only used in API level 23 and higher (current min is 21)"
+        errorLine1="        android:width=&quot;20dp&quot;>"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/drawable/oui_des_preference_suggestion_card_close_btn.xml"
+            line="5"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `fillType` is only used in API level 24 and higher (current min is 21)"
+        errorLine1="        android:fillType=&quot;evenOdd&quot;/>"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/drawable/oui_des_preference_suggestion_card_icon.xml"
+            line="15"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `fillType` is only used in API level 24 and higher (current min is 21)"
+        errorLine1="        android:fillType=&quot;nonZero&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/drawable/oui_des_preference_tipscard_close.xml"
+            line="9"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="InflateParams"
+        message="Avoid passing `null` as the view root (needed to resolve layout parameters on the inflated layout&apos;s root element)"
+        errorLine1="                    inflater.inflate(R.layout.oui_des_transient_notification, null).apply {"
+        errorLine2="                                                                              ~~~~">
+        <location
+            file="src/main/java/dev/oneuiproject/oneui/widget/SemToast.kt"
+            line="27"
+            column="79"/>
+    </issue>
+
+    <issue
+        id="InflateParams"
+        message="Avoid passing `null` as the view root (needed to resolve layout parameters on the inflated layout&apos;s root element)"
+        errorLine1="                    inflater.inflate(R.layout.oui_des_transient_notification, null).apply {"
+        errorLine2="                                                                              ~~~~">
+        <location
+            file="src/main/java/dev/oneuiproject/oneui/widget/SemToast.kt"
+            line="27"
+            column="79"/>
+    </issue>
+
+    <issue
+        id="InflateParams"
+        message="Avoid passing `null` as the view root (needed to resolve layout parameters on the inflated layout&apos;s root element)"
+        errorLine1="            bubbleView = inflate(R.layout.oui_des_tip_popup_bubble, null)"
+        errorLine2="                                                                    ~~~~">
+        <location
+            file="src/main/java/dev/oneuiproject/oneui/widget/TipPopup.kt"
+            line="256"
+            column="69"/>
+    </issue>
+
+    <issue
+        id="InflateParams"
+        message="Avoid passing `null` as the view root (needed to resolve layout parameters on the inflated layout&apos;s root element)"
+        errorLine1="            balloonView = inflate(R.layout.oui_des_tip_popup_balloon, null).also {"
+        errorLine2="                                                                      ~~~~">
+        <location
+            file="src/main/java/dev/oneuiproject/oneui/widget/TipPopup.kt"
+            line="257"
+            column="71"/>
+    </issue>
+
+    <issue
+        id="VisibleForTests"
+        message="This method should only be accessed from tests or within private scope"
+        errorLine1="                        titleTextView?.translationX = -it"
+        errorLine2="                        ~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/dev/oneuiproject/oneui/layout/internal/widget/SemSlidingPaneLayout.kt"
+            line="328"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="VisibleForTests"
+        message="This method should only be accessed from tests or within private scope"
+        errorLine1="                        titleTextView?.translationX = -it"
+        errorLine2="                        ~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/dev/oneuiproject/oneui/layout/internal/widget/SemSlidingPaneLayout.kt"
+            line="328"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="VisibleForTests"
+        message="This method should only be accessed from tests or within private scope"
+        errorLine1="                        subtitleTextView?.translationX = -it"
+        errorLine2="                        ~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/dev/oneuiproject/oneui/layout/internal/widget/SemSlidingPaneLayout.kt"
+            line="329"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="VisibleForTests"
+        message="This method should only be accessed from tests or within private scope"
+        errorLine1="                        subtitleTextView?.translationX = -it"
+        errorLine2="                        ~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/dev/oneuiproject/oneui/layout/internal/widget/SemSlidingPaneLayout.kt"
+            line="329"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="ParcelClassLoader"
+        message="Using the default class loader will not work if you are restoring your own classes. Consider using for example `readBundle(getClass().getClassLoader())` instead."
+        errorLine1="            dialogBundle = source.readBundle()"
+        errorLine2="                                  ~~~~~~~~~~~~">
+        <location
+            file="src/main/java/dev/oneuiproject/oneui/preference/ColorPickerPreference.kt"
+            line="173"
+            column="35"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@attr/coordinatorLayoutStyle` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="    defStyleAttr: Int = androidx.coordinatorlayout.R.attr.coordinatorLayoutStyle,"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/dev/oneuiproject/oneui/widget/AdaptiveCoordinatorLayout.kt"
+            line="41"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@drawable/navigation_empty_icon` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="                    com.google.android.material.R.drawable.navigation_empty_icon,"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/dev/oneuiproject/oneui/navigation/widget/DrawerMenuItemView.kt"
+            line="213"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@attr/recyclerViewStyle` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="    defStyleAttr: Int =  androidx.recyclerview.R.attr.recyclerViewStyle"
+        errorLine2="                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/dev/oneuiproject/oneui/navigation/widget/DrawerMenuView.kt"
+            line="17"
+            column="26"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@attr/nestedScrollViewStyle` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="    defStyleAttr: Int = androidx.core.R.attr.nestedScrollViewStyle"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/dev/oneuiproject/oneui/widget/RoundedNestedScrollView.kt"
+            line="44"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_action_bar_top_padding` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="    private val defaultDrawerTopMargin = resources.getDimensionPixelSize(androidx.appcompat.R.dimen.sesl_action_bar_top_padding)"
+        errorLine2="                                                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/dev/oneuiproject/oneui/layout/internal/widget/SemSlidingPaneLayout.kt"
+            line="82"
+            column="74"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@drawable/sesl_level_seekbar_tick_mark` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        ContextCompat.getDrawable(context, androidx.appcompat.R.drawable.sesl_level_seekbar_tick_mark)"
+        errorLine2="                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/dev/oneuiproject/oneui/ktx/SeslSeekBar.kt"
+            line="60"
+            column="44"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@drawable/sesl_level_seekbar_tick_mark` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        ContextCompat.getDrawable(context, androidx.appcompat.R.drawable.sesl_level_seekbar_tick_mark)"
+        errorLine2="                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/dev/oneuiproject/oneui/ktx/SeslSeekBar.kt"
+            line="60"
+            column="44"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_preference_switch_padding_vertical` is marked as private in sesl.androidx.preference:preference:1.2.1+1.0.12-sesl7+rev0"
+        errorLine1="                res.getDimensionPixelSize(androidx.preference.R.dimen.sesl_preference_switch_padding_vertical)"
+        errorLine2="                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/dev/oneuiproject/oneui/widget/SwitchItemView.kt"
+            line="427"
+            column="43"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_dialog_background_corner_radius` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:topLeftRadius=&quot;@dimen/sesl_dialog_background_corner_radius&quot;"
+        errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/drawable/oui_des_bottomsheet_bg.xml"
+            line="7"
+            column="32"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_dialog_background_corner_radius` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:topRightRadius=&quot;@dimen/sesl_dialog_background_corner_radius&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/drawable/oui_des_bottomsheet_bg.xml"
+            line="8"
+            column="33"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@drawable/sesl_btn_default_mask` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:drawable=&quot;@drawable/sesl_btn_default_mask&quot; />"
+        errorLine2="                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/drawable-v29/oui_des_btn_transparent_bg.xml"
+            line="7"
+            column="27"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@drawable/sesl_btn_default_mask` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:drawable=&quot;@drawable/sesl_btn_default_mask&quot; />"
+        errorLine2="                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/drawable/oui_des_btn_transparent_bg.xml"
+            line="7"
+            column="27"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_progress_dialog_circle_message_text_size` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:textSize=&quot;@dimen/sesl_progress_dialog_circle_message_text_size&quot;"
+        errorLine2="                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_dialog_progress_dialog_circle.xml"
+            line="26"
+            column="27"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@string/sesl_font_family_regular` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:fontFamily=&quot;@string/sesl_font_family_regular&quot;"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_dialog_progress_dialog_circle.xml"
+            line="28"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_dialog_padding_horizontal` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="    android:paddingStart=&quot;@dimen/sesl_dialog_padding_horizontal&quot;"
+        errorLine2="                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_dialog_progress_dialog_horizontal.xml"
+            line="5"
+            column="27"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_dialog_padding_vertical` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="    android:paddingTop=&quot;@dimen/sesl_dialog_padding_vertical&quot;"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_dialog_progress_dialog_horizontal.xml"
+            line="6"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_dialog_padding_horizontal` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="    android:paddingEnd=&quot;@dimen/sesl_dialog_padding_horizontal&quot;"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_dialog_progress_dialog_horizontal.xml"
+            line="7"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_dialog_padding_vertical` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="    android:paddingBottom=&quot;@dimen/sesl_dialog_padding_vertical&quot;>"
+        errorLine2="                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_dialog_progress_dialog_horizontal.xml"
+            line="8"
+            column="28"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_progress_dialog_text_size` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:textSize=&quot;@dimen/sesl_progress_dialog_text_size&quot;"
+        errorLine2="                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_dialog_progress_dialog_horizontal.xml"
+            line="14"
+            column="27"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@string/sesl_font_family_regular` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:fontFamily=&quot;@string/sesl_font_family_regular&quot;"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_dialog_progress_dialog_horizontal.xml"
+            line="16"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_progress_dialog_text_size` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:textSize=&quot;@dimen/sesl_progress_dialog_text_size&quot;"
+        errorLine2="                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_dialog_progress_dialog_horizontal.xml"
+            line="35"
+            column="27"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@string/sesl_font_family_regular` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:fontFamily=&quot;@string/sesl_font_family_regular&quot; />"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_dialog_progress_dialog_horizontal.xml"
+            line="37"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_progress_dialog_text_size` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:textSize=&quot;@dimen/sesl_progress_dialog_text_size&quot;"
+        errorLine2="                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_dialog_progress_dialog_horizontal.xml"
+            line="45"
+            column="27"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@string/sesl_font_family_regular` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:fontFamily=&quot;@string/sesl_font_family_regular&quot; />"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_dialog_progress_dialog_horizontal.xml"
+            line="47"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_progress_dialog_padding_horizontal` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:paddingStart=&quot;@dimen/sesl_progress_dialog_padding_horizontal&quot;"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_dialog_progress_dialog_spinner.xml"
+            line="10"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_progress_dialog_padding_vertical` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:paddingTop=&quot;@dimen/sesl_progress_dialog_padding_vertical&quot;"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_dialog_progress_dialog_spinner.xml"
+            line="11"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_progress_dialog_padding_horizontal` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:paddingEnd=&quot;@dimen/sesl_progress_dialog_padding_horizontal&quot;"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_dialog_progress_dialog_spinner.xml"
+            line="12"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_progress_dialog_padding_vertical` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:paddingBottom=&quot;@dimen/sesl_progress_dialog_padding_vertical&quot;"
+        errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_dialog_progress_dialog_spinner.xml"
+            line="13"
+            column="32"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_dialog_body_text_size` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="            android:textSize=&quot;@dimen/sesl_dialog_body_text_size&quot;"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_dialog_progress_dialog_spinner.xml"
+            line="30"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_dialog_body_text_line_spacing_extra` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="            android:lineSpacingExtra=&quot;@dimen/sesl_dialog_body_text_line_spacing_extra&quot;"
+        errorLine2="                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_dialog_progress_dialog_spinner.xml"
+            line="32"
+            column="39"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@string/sesl_font_family_regular` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="            android:fontFamily=&quot;@string/sesl_font_family_regular&quot; />"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_dialog_progress_dialog_spinner.xml"
+            line="33"
+            column="33"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/design_navigation_padding_bottom` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="    android:paddingBottom=&quot;@dimen/design_navigation_padding_bottom&quot;"
+        errorLine2="                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_drawer_menu_view.xml"
+            line="11"
+            column="28"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@style/RobotoBold` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="                android:textAppearance=&quot;@style/RobotoBold&quot;"
+        errorLine2="                                        ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/oui_des_layout_app_info.xml"
+            line="31"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@style/RobotoBold` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="            android:textAppearance=&quot;@style/RobotoBold&quot;"
+        errorLine2="                                    ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_layout_app_info.xml"
+            line="32"
+            column="37"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@style/RobotoRegular` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="                android:textAppearance=&quot;@style/RobotoRegular&quot;"
+        errorLine2="                                        ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/oui_des_layout_app_info.xml"
+            line="42"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@style/RobotoRegular` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="            android:textAppearance=&quot;@style/RobotoRegular&quot;"
+        errorLine2="                                    ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_layout_app_info.xml"
+            line="44"
+            column="37"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@style/RobotoRegular` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="                android:textAppearance=&quot;@style/RobotoRegular&quot;"
+        errorLine2="                                        ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/oui_des_layout_app_info.xml"
+            line="51"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@style/RobotoRegular` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="            android:textAppearance=&quot;@style/RobotoRegular&quot;"
+        errorLine2="                                    ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_layout_app_info.xml"
+            line="54"
+            column="37"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_action_bar_top_padding` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="    android:layout_marginTop=&quot;@dimen/sesl_action_bar_top_padding&quot;"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_layout_drawer_panel.xml"
+            line="9"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_action_bar_top_padding` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:layout_marginTop=&quot;@dimen/sesl_action_bar_top_padding&quot;"
+        errorLine2="                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_layout_drawerlayout_main.xml"
+            line="27"
+            column="35"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_action_bar_top_padding` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="    app:seslDrawerMarginTop=&quot;@dimen/sesl_action_bar_top_padding&quot;"
+        errorLine2="                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_layout_navdrawer_main.xml"
+            line="11"
+            column="30"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/navigation_rail_margin_start` is marked as private in sesl.androidx.slidingpanelayout:slidingpanelayout:1.2.0+1.0.5-sesl7+rev1"
+        errorLine1="        android:layout_marginStart=&quot;@dimen/navigation_rail_margin_start&quot;>"
+        errorLine2="                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_layout_navdrawer_main.xml"
+            line="26"
+            column="37"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@interpolator/sine_in_out_80` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:interpolator=&quot;@interpolator/sine_in_out_80&quot;"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/anim/oui_des_more_menu_dialog_slide_left.xml"
+            line="4"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@interpolator/sine_in_out_80` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:interpolator=&quot;@interpolator/sine_in_out_80&quot;"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/anim/oui_des_more_menu_dialog_slide_left.xml"
+            line="9"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@interpolator/sine_in_out_80` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:interpolator=&quot;@interpolator/sine_in_out_80&quot;"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/anim/oui_des_more_menu_dialog_slide_left_exit.xml"
+            line="4"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@interpolator/sine_in_out_80` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:interpolator=&quot;@interpolator/sine_in_out_80&quot;"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/anim/oui_des_more_menu_dialog_slide_left_exit.xml"
+            line="9"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@interpolator/sine_in_out_80` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:interpolator=&quot;@interpolator/sine_in_out_80&quot;"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/anim/oui_des_more_menu_dialog_slide_right.xml"
+            line="4"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@interpolator/sine_in_out_80` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:interpolator=&quot;@interpolator/sine_in_out_80&quot;"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/anim/oui_des_more_menu_dialog_slide_right.xml"
+            line="9"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@interpolator/sine_in_out_80` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:interpolator=&quot;@interpolator/sine_in_out_80&quot;"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/anim/oui_des_more_menu_dialog_slide_right_exit.xml"
+            line="4"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@interpolator/sine_in_out_80` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:interpolator=&quot;@interpolator/sine_in_out_80&quot;"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/anim/oui_des_more_menu_dialog_slide_right_exit.xml"
+            line="9"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_list_divider_height` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        &lt;size android:width=&quot;@dimen/sesl_list_divider_height&quot; />"
+        errorLine2="                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/drawable/oui_des_preference_horizontal_radio_divider_vertical.xml"
+            line="4"
+            column="30"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_preference_item_padding_vertical` is marked as private in sesl.androidx.preference:preference:1.2.1+1.0.12-sesl7+rev0"
+        errorLine1="    android:paddingTop=&quot;@dimen/sesl_preference_item_padding_vertical&quot;"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_preference_seekbar_pro_layout.xml"
+            line="11"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_preference_item_padding_vertical` is marked as private in sesl.androidx.preference:preference:1.2.1+1.0.12-sesl7+rev0"
+        errorLine1="    android:paddingBottom=&quot;@dimen/sesl_preference_item_padding_vertical&quot;>"
+        errorLine2="                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_preference_seekbar_pro_layout.xml"
+            line="13"
+            column="28"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_preference_item_padding_vertical` is marked as private in sesl.androidx.preference:preference:1.2.1+1.0.12-sesl7+rev0"
+        errorLine1="            android:layout_height=&quot;@dimen/sesl_preference_item_padding_vertical&quot;/>"
+        errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_preference_seekbar_pro_layout.xml"
+            line="40"
+            column="36"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_disabled_color_alpha` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:alpha=&quot;@dimen/sesl_disabled_color_alpha&quot;"
+        errorLine2="                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/color/oui_des_seekbar_tick_mark_color_selector.xml"
+            line="4"
+            column="24"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@color/sesl_ripple_color_dark` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="    app:seslRecoilColor=&quot;@color/sesl_ripple_color_dark&quot;>"
+        errorLine2="                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/drawable-v29/oui_des_tip_popup_btn_borderless.xml"
+            line="4"
+            column="26"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@color/sesl_white` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="            &lt;solid android:color=&quot;@color/sesl_white&quot; />"
+        errorLine2="                                  ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/drawable-v29/oui_des_tip_popup_btn_borderless.xml"
+            line="7"
+            column="35"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_button_corner_radius` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="            &lt;corners android:radius=&quot;@dimen/sesl_button_corner_radius&quot; />"
+        errorLine2="                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/drawable-v29/oui_des_tip_popup_btn_borderless.xml"
+            line="8"
+            column="38"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_button_corner_radius` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="                &lt;corners android:radius=&quot;@dimen/sesl_button_corner_radius&quot; />"
+        errorLine2="                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/drawable/oui_des_tip_popup_btn_borderless.xml"
+            line="11"
+            column="42"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@color/sesl_menu_badge_text_color` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="                android:textColor=&quot;@color/sesl_menu_badge_text_color&quot;"
+        errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_view_grid_menu_dialog_item.xml"
+            line="57"
+            column="36"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_menu_item_badge_text_size` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="                android:textSize=&quot;@dimen/sesl_menu_item_badge_text_size&quot;"
+        errorLine2="                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_view_grid_menu_dialog_item.xml"
+            line="58"
+            column="35"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@style/RobotoRegular` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="            style=&quot;@style/RobotoRegular&quot;"
+        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_view_grid_menu_dialog_item.xml"
+            line="75"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@style/RobotoRegular` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:textAppearance=&quot;@style/RobotoRegular&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_bottom_tip.xml"
+            line="21"
+            column="33"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_text_size_medium` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:textSize=&quot;@dimen/sesl_text_size_medium&quot; />"
+        errorLine2="                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_bottom_tip.xml"
+            line="22"
+            column="27"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_list_subheader_padding_top` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:layout_marginTop=&quot;@dimen/sesl_list_subheader_padding_top&quot;"
+        errorLine2="                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_bottom_tip.xml"
+            line="27"
+            column="35"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_description_text_size` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:textSize=&quot;@dimen/sesl_description_text_size&quot; />"
+        errorLine2="                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_bottom_tip.xml"
+            line="30"
+            column="27"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@style/RobotoMedium` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:textAppearance=&quot;@style/RobotoMedium&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_bottom_tip.xml"
+            line="41"
+            column="33"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_description_text_size` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:textSize=&quot;@dimen/sesl_description_text_size&quot; />"
+        errorLine2="                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_bottom_tip.xml"
+            line="43"
+            column="27"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@string/mtrl_badge_numberless_content_description` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="    android:contentDescription=&quot;@string/mtrl_badge_numberless_content_description&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_item_badge.xml"
+            line="10"
+            column="33"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@drawable/sesl_dot_badge` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        android:background=&quot;@drawable/sesl_dot_badge&quot; />"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_item_badge.xml"
+            line="17"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@style/RobotoMedium` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="            android:textAppearance=&quot;@style/RobotoMedium&quot;"
+        errorLine2="                                    ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_obs_tips_item.xml"
+            line="32"
+            column="37"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@style/RobotoRegular` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="            android:textAppearance=&quot;@style/RobotoRegular&quot;"
+        errorLine2="                                    ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_obs_tips_item.xml"
+            line="47"
+            column="37"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_list_item_padding_end` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="            android:paddingEnd=&quot;@dimen/sesl_list_item_padding_end&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_switch_item.xml"
+            line="25"
+            column="33"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_preference_dot_frame_size` is marked as private in sesl.androidx.preference:preference:1.2.1+1.0.12-sesl7+rev0"
+        errorLine1="                android:layout_marginEnd=&quot;@dimen/sesl_preference_dot_frame_size&quot;"
+        errorLine2="                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_switch_item.xml"
+            line="48"
+            column="43"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_preference_dot_frame_size` is marked as private in sesl.androidx.preference:preference:1.2.1+1.0.12-sesl7+rev0"
+        errorLine1="                android:layout_marginEnd=&quot;@dimen/sesl_preference_dot_frame_size&quot;"
+        errorLine2="                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_switch_item.xml"
+            line="79"
+            column="43"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_switch_divider_height` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="                android:layout_width=&quot;@dimen/sesl_switch_divider_height&quot;"
+        errorLine2="                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_switch_item.xml"
+            line="99"
+            column="39"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_preference_switch_padding_vertical` is marked as private in sesl.androidx.preference:preference:1.2.1+1.0.12-sesl7+rev0"
+        errorLine1="                android:paddingVertical=&quot;@dimen/sesl_preference_switch_padding_vertical&quot;"
+        errorLine2="                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_switch_item.xml"
+            line="111"
+            column="42"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_list_widget_end_padding` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="                android:paddingEnd=&quot;@dimen/sesl_list_widget_end_padding&quot;"
+        errorLine2="                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_switch_item.xml"
+            line="116"
+            column="37"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@style/RobotoMedium` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="            android:textAppearance=&quot;@style/RobotoMedium&quot;"
+        errorLine2="                                    ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_tips_card.xml"
+            line="27"
+            column="37"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@style/RobotoRegular` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        &lt;item name=&quot;android:textAppearance&quot;>@style/RobotoRegular&lt;/item>"
+        errorLine2="                                            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="10"
+            column="45"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@style/RobotoRegular` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="    &lt;style name=&quot;OneUI.RelativeLinkTextViewTextStyle&quot; parent=&quot;@style/RobotoRegular&quot;>"
+        errorLine2="                                                              ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="22"
+            column="63"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@style/RobotoRegular` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="    &lt;style name=&quot;OneUI.UnclickablePreferenceTextStyle&quot; parent=&quot;@style/RobotoRegular&quot;>"
+        errorLine2="                                                               ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="28"
+            column="64"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@string/sesl_font_family_regular` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        &lt;item name=&quot;android:fontFamily&quot;>@string/sesl_font_family_regular&lt;/item>"
+        errorLine2="                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="42"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@style/RobotoMedium` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="    &lt;style name=&quot;OneUI.AppInfoButtonTextAppearance&quot; parent=&quot;@style/RobotoMedium&quot;>"
+        errorLine2="                                                            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="48"
+            column="61"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@style/RobotoMedium` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        &lt;item name=&quot;android:textAppearance&quot;>@style/RobotoMedium&lt;/item>"
+        errorLine2="                                            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="105"
+            column="45"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@style/RobotoMedium` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="    &lt;style name=&quot;OneUI.TipPopupButtonTextStyle&quot; parent=&quot;@style/RobotoMedium&quot;>"
+        errorLine2="                                                        ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="117"
+            column="57"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@style/RobotoRegular` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="    &lt;style name=&quot;OneUI.TipPopupTextStyle&quot; parent=&quot;@style/RobotoRegular&quot;>"
+        errorLine2="                                                  ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="123"
+            column="51"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@style/RobotoRegular` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="    &lt;style name=&quot;OneUI.SeekBarProLabelTextAppearance&quot; parent=&quot;@style/RobotoRegular&quot;>"
+        errorLine2="                                                              ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="133"
+            column="63"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_list_divider_height` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        &lt;item name=&quot;android:layout_height&quot;>@dimen/sesl_list_divider_height&lt;/item>"
+        errorLine2="                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="157"
+            column="44"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@string/bottomsheet_drag_handle_content_description` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        &lt;item name=&quot;android:contentDescription&quot;>@string/bottomsheet_drag_handle_content_description&lt;/item>"
+        errorLine2="                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="201"
+            column="49"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/mtrl_min_touch_target_size` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        &lt;item name=&quot;android:minWidth&quot;>@dimen/mtrl_min_touch_target_size&lt;/item>"
+        errorLine2="                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="202"
+            column="39"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/mtrl_min_touch_target_size` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        &lt;item name=&quot;android:minHeight&quot;>@dimen/mtrl_min_touch_target_size&lt;/item>"
+        errorLine2="                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="203"
+            column="40"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/m3_bottom_sheet_drag_handle_bottom_padding` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        &lt;item name=&quot;android:paddingBottom&quot;>@dimen/m3_bottom_sheet_drag_handle_bottom_padding&lt;/item>"
+        errorLine2="                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="204"
+            column="44"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@color/sesl_tablayout_selected_indicator_color` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        &lt;item name=&quot;tabIndicatorColor&quot;>@color/sesl_tablayout_selected_indicator_color&lt;/item>"
+        errorLine2="                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="217"
+            column="40"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@color/sesl_tablayout_selected_text_color` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        &lt;item name=&quot;tabSelectedTextColor&quot;>@color/sesl_tablayout_selected_text_color&lt;/item>"
+        errorLine2="                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="218"
+            column="43"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@color/sesl_tablayout_selected_indicator_color` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        &lt;item name=&quot;tabIndicatorColor&quot;>@color/sesl_tablayout_selected_indicator_color&lt;/item>"
+        errorLine2="                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="222"
+            column="40"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@color/sesl_tablayout_selected_text_color` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        &lt;item name=&quot;tabSelectedTextColor&quot;>@color/sesl_tablayout_selected_text_color&lt;/item>"
+        errorLine2="                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="223"
+            column="43"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@style/RobotoRegular` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="    &lt;style name=&quot;OneUI.DrawerCategoryTitle&quot; parent=&quot;@style/RobotoRegular&quot;>"
+        errorLine2="                                                    ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="268"
+            column="53"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@style/RobotoRegular` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="    &lt;style name=&quot;OneUI.Drawer.Category.Count&quot; parent=&quot;@style/RobotoRegular&quot;>"
+        errorLine2="                                                      ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="276"
+            column="55"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@color/sesl_round_and_bgcolor_dark` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        &lt;item name=&quot;android:statusBarColor&quot;>@color/sesl_round_and_bgcolor_dark&lt;/item>"
+        errorLine2="                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-night/themes.xml"
+            line="7"
+            column="45"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@color/sesl_round_and_bgcolor_light` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        &lt;item name=&quot;android:statusBarColor&quot;>@color/sesl_round_and_bgcolor_light&lt;/item>"
+        errorLine2="                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/themes.xml"
+            line="7"
+            column="45"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@color/sesl_round_and_bgcolor_dark` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        &lt;item name=&quot;android:windowBackground&quot;>@color/sesl_round_and_bgcolor_dark&lt;/item>"
+        errorLine2="                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-night/themes.xml"
+            line="8"
+            column="47"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@color/sesl_round_and_bgcolor_light` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        &lt;item name=&quot;android:windowBackground&quot;>@color/sesl_round_and_bgcolor_light&lt;/item>"
+        errorLine2="                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/themes.xml"
+            line="8"
+            column="47"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@color/sesl_round_and_bgcolor_dark` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        &lt;item name=&quot;android:navigationBarColor&quot;>@color/sesl_round_and_bgcolor_dark&lt;/item>"
+        errorLine2="                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-night/themes.xml"
+            line="9"
+            column="49"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@color/sesl_round_and_bgcolor_light` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        &lt;item name=&quot;android:navigationBarColor&quot;>@color/sesl_round_and_bgcolor_light&lt;/item>"
+        errorLine2="                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/themes.xml"
+            line="9"
+            column="49"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@color/sesl_round_and_bgcolor_dark` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        &lt;item name=&quot;android:windowSplashScreenBackground&quot; tools:targetApi=&quot;s&quot;>@color/sesl_round_and_bgcolor_dark&lt;/item>"
+        errorLine2="                                                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-night/themes.xml"
+            line="15"
+            column="79"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@color/sesl_round_and_bgcolor_light` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        &lt;item name=&quot;android:windowSplashScreenBackground&quot; tools:targetApi=&quot;s&quot;>@color/sesl_round_and_bgcolor_light&lt;/item>"
+        errorLine2="                                                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/themes.xml"
+            line="15"
+            column="79"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@color/sesl_round_and_bgcolor_dark` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        &lt;item name=&quot;android:windowSplashScreenAnimatedIcon&quot; tools:targetApi=&quot;s&quot;>@color/sesl_round_and_bgcolor_dark&lt;/item>"
+        errorLine2="                                                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-night/themes.xml"
+            line="16"
+            column="81"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@color/sesl_round_and_bgcolor_light` is marked as private in sesl.com.google.android.material:material:1.12.0+1.0.39-sesl7+rev5"
+        errorLine1="        &lt;item name=&quot;android:windowSplashScreenAnimatedIcon&quot; tools:targetApi=&quot;s&quot;>@color/sesl_round_and_bgcolor_light&lt;/item>"
+        errorLine2="                                                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/themes.xml"
+            line="16"
+            column="81"/>
+    </issue>
+
+    <issue
+        id="SpUsage"
+        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes"
+        errorLine1="        android:textSize=&quot;24dp&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/oui_des_layout_splash_animated.xml"
+            line="32"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="SpUsage"
+        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes"
+        errorLine1="        android:textSize=&quot;24dp&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_layout_splash_animated.xml"
+            line="42"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="SpUsage"
+        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes"
+        errorLine1="        android:textSize=&quot;30dp&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_layout_splash_simple.xml"
+            line="25"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="SpUsage"
+        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes"
+        errorLine1="            android:textSize=&quot;20dp&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_preference_horizontal_radio_item.xml"
+            line="54"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="SpUsage"
+        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes"
+        errorLine1="            android:textSize=&quot;15dp&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_preference_horizontal_radio_item.xml"
+            line="63"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="SpUsage"
+        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes"
+        errorLine1="        &lt;item name=&quot;android:textSize&quot;>12dp&lt;/item>"
+        errorLine2="                                      ~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="40"
+            column="39"/>
+    </issue>
+
+    <issue
+        id="PxUsage"
+        message="Avoid using &quot;`px`&quot; as units; use &quot;`dp`&quot; instead"
+        errorLine1="        android:layout_height=&quot;2px&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_view_relative_link_preference.xml"
+            line="13"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="PxUsage"
+        message="Avoid using &quot;`px`&quot; as units; use &quot;`dp`&quot; instead"
+        errorLine1="    android:layout_height=&quot;2px&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_relative_links_card_divider.xml"
+            line="6"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="            android:tint=&quot;@color/oui_des_tip_popup_background_color&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_tip_popup_balloon.xml"
+            line="16"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="            android:tint=&quot;@color/oui_des_tip_popup_text_color&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_tip_popup_balloon.xml"
+            line="23"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="        android:tint=&quot;@color/oui_des_tip_popup_background_color&quot; />"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_tip_popup_bubble.xml"
+            line="12"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="        android:tint=&quot;@color/oui_des_tip_popup_text_color&quot; />"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_tip_popup_bubble.xml"
+            line="21"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;oui_des_relative_description&quot; is not translated in &quot;yo&quot; (Yoruba), &quot;id&quot; (Indonesian), &quot;ig&quot; (Igbo), &quot;am&quot; (Amharic), &quot;sw&quot; (Swahili), &quot;ha&quot; (Hausa), &quot;he&quot; (Hebrew)"
+        errorLine1="    &lt;string name=&quot;oui_des_relative_description&quot;>Looking for something else?&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="5"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;oui_des_new_badge_text&quot; is not translated in &quot;yo&quot; (Yoruba), &quot;id&quot; (Indonesian), &quot;ig&quot; (Igbo), &quot;am&quot; (Amharic), &quot;sw&quot; (Swahili), &quot;ha&quot; (Hausa), &quot;he&quot; (Hebrew)"
+        errorLine1="    &lt;string name=&quot;oui_des_new_badge_text&quot;>N&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="8"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;oui_des_navigation_drawer&quot; is not translated in &quot;yo&quot; (Yoruba), &quot;id&quot; (Indonesian), &quot;ig&quot; (Igbo), &quot;am&quot; (Amharic), &quot;sw&quot; (Swahili), &quot;ha&quot; (Hausa), &quot;he&quot; (Hebrew)"
+        errorLine1="    &lt;string name=&quot;oui_des_navigation_drawer&quot;>Navigation drawer&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="11"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;oui_des_action_mode_all_checkbox&quot; is not translated in &quot;yo&quot; (Yoruba), &quot;id&quot; (Indonesian), &quot;ig&quot; (Igbo), &quot;am&quot; (Amharic), &quot;sw&quot; (Swahili), &quot;ha&quot; (Hausa), &quot;he&quot; (Hebrew)"
+        errorLine1="    &lt;string name=&quot;oui_des_action_mode_all_checkbox&quot;>All&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="12"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;oui_des_action_mode_n_selected&quot; is not translated in &quot;yo&quot; (Yoruba), &quot;id&quot; (Indonesian), &quot;ig&quot; (Igbo), &quot;am&quot; (Amharic), &quot;sw&quot; (Swahili), &quot;ha&quot; (Hausa), &quot;he&quot; (Hebrew)"
+        errorLine1="    &lt;string name=&quot;oui_des_action_mode_n_selected&quot;>%d selected&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="13"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;oui_des_action_mode_select_items&quot; is not translated in &quot;yo&quot; (Yoruba), &quot;id&quot; (Indonesian), &quot;ig&quot; (Igbo), &quot;am&quot; (Amharic), &quot;sw&quot; (Swahili), &quot;ha&quot; (Hausa), &quot;he&quot; (Hebrew)"
+        errorLine1="    &lt;string name=&quot;oui_des_action_mode_select_items&quot;>Select items&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="14"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;app_name&quot; is not translated in &quot;de&quot; (German), &quot;hi&quot; (Hindi), &quot;lo&quot; (Lao), &quot;pt&quot; (Portuguese), &quot;lt&quot; (Lithuanian), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;hu&quot; (Hungarian), &quot;hy&quot; (Armenian), &quot;ug&quot; (Uyghur), &quot;uk&quot; (Ukrainian), &quot;yo&quot; (Yoruba), &quot;id&quot; (Indonesian), &quot;ur&quot; (Urdu), &quot;ig&quot; (Igbo), &quot;mk&quot; (Macedonian), &quot;ml&quot; (Malayalam), &quot;mn&quot; (Mongolian), &quot;in&quot; (Indonesian), &quot;mr&quot; (Marathi), &quot;uz&quot; (Uzbek), &quot;ms&quot; (Malay), &quot;el&quot; (Greek), &quot;en&quot; (English), &quot;is&quot; (Icelandic), &quot;it&quot; (Italian), &quot;am&quot; (Amharic), &quot;my&quot; (Burmese), &quot;es&quot; (Spanish), &quot;iw&quot; (Hebrew), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;eu&quot; (Basque), &quot;ar&quot; (Arabic), &quot;as&quot; (Assamese), &quot;vi&quot; (Vietnamese), &quot;nb&quot; (Norwegian Bokmål), &quot;ja&quot; (Japanese), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;ro&quot; (Romanian), &quot;nl&quot; (Dutch), &quot;be&quot; (Belarusian), &quot;fi&quot; (Finnish), &quot;ru&quot; (Russian), &quot;bg&quot; (Bulgarian), &quot;bn&quot; (Bangla), &quot;fr&quot; (French), &quot;bo&quot; (Tibetan), &quot;bs&quot; (Bosnian), &quot;ka&quot; (Georgian), &quot;si&quot; (Sinhala), &quot;sk&quot; (Slovak), &quot;sl&quot; (Slovenian), &quot;ga&quot; (Irish), &quot;ca&quot; (Catalan), &quot;sq&quot; (Albanian), &quot;sr&quot; (Serbian), &quot;kk&quot; (Kazakh), &quot;km&quot; (Khmer), &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;sv&quot; (Swedish), &quot;ko&quot; (Korean), &quot;sw&quot; (Swahili), &quot;gl&quot; (Galician), &quot;ta&quot; (Tamil), &quot;gu&quot; (Gujarati), &quot;ky&quot; (Kyrgyz), &quot;cs&quot; (Czech), &quot;pa&quot; (Punjabi), &quot;te&quot; (Telugu), &quot;tg&quot; (Tajik), &quot;th&quot; (Thai), &quot;tk&quot; (Turkmen), &quot;tl&quot; (Tagalog), &quot;ha&quot; (Hausa), &quot;pl&quot; (Polish), &quot;da&quot; (Danish), &quot;he&quot; (Hebrew), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;app_name&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="17"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;oui_des_app_info&quot; is not translated in &quot;yo&quot; (Yoruba), &quot;id&quot; (Indonesian), &quot;ig&quot; (Igbo), &quot;am&quot; (Amharic), &quot;sw&quot; (Swahili), &quot;ha&quot; (Hausa), &quot;he&quot; (Hebrew)"
+        errorLine1="    &lt;string name=&quot;oui_des_app_info&quot;>App info&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="18"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;oui_des_version_info&quot; is not translated in &quot;yo&quot; (Yoruba), &quot;id&quot; (Indonesian), &quot;ig&quot; (Igbo), &quot;am&quot; (Amharic), &quot;sw&quot; (Swahili), &quot;ha&quot; (Hausa), &quot;he&quot; (Hebrew)"
+        errorLine1="    &lt;string name=&quot;oui_des_version_info&quot;>Version %s&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="19"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;oui_des_update&quot; is not translated in &quot;yo&quot; (Yoruba), &quot;id&quot; (Indonesian), &quot;ig&quot; (Igbo), &quot;am&quot; (Amharic), &quot;sw&quot; (Swahili), &quot;ha&quot; (Hausa), &quot;he&quot; (Hebrew)"
+        errorLine1="    &lt;string name=&quot;oui_des_update&quot;>Update&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="20"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;oui_des_retry&quot; is not translated in &quot;yo&quot; (Yoruba), &quot;id&quot; (Indonesian), &quot;ig&quot; (Igbo), &quot;am&quot; (Amharic), &quot;sw&quot; (Swahili), &quot;ha&quot; (Hausa), &quot;he&quot; (Hebrew)"
+        errorLine1="    &lt;string name=&quot;oui_des_retry&quot;>Retry&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="21"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;oui_des_new_version_is_available&quot; is not translated in &quot;yo&quot; (Yoruba), &quot;id&quot; (Indonesian), &quot;ig&quot; (Igbo), &quot;am&quot; (Amharic), &quot;sw&quot; (Swahili), &quot;ha&quot; (Hausa), &quot;he&quot; (Hebrew)"
+        errorLine1="    &lt;string name=&quot;oui_des_new_version_is_available&quot;>A new version is available.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="22"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;oui_des_latest_version&quot; is not translated in &quot;yo&quot; (Yoruba), &quot;id&quot; (Indonesian), &quot;ig&quot; (Igbo), &quot;am&quot; (Amharic), &quot;sw&quot; (Swahili), &quot;ha&quot; (Hausa), &quot;he&quot; (Hebrew)"
+        errorLine1="    &lt;string name=&quot;oui_des_latest_version&quot;>The latest version is already installed.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="23"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;oui_des_network_connect_is_not_stable&quot; is not translated in &quot;yo&quot; (Yoruba), &quot;id&quot; (Indonesian), &quot;ig&quot; (Igbo), &quot;am&quot; (Amharic), &quot;sw&quot; (Swahili), &quot;ha&quot; (Hausa), &quot;he&quot; (Hebrew)"
+        errorLine1="    &lt;string name=&quot;oui_des_network_connect_is_not_stable&quot;>Couldn\&apos;t check for updates.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="24"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;oui_des_time_dialog_end&quot; is not translated in &quot;ug&quot; (Uyghur), &quot;yo&quot; (Yoruba), &quot;id&quot; (Indonesian), &quot;ig&quot; (Igbo), &quot;am&quot; (Amharic), &quot;bo&quot; (Tibetan), &quot;sw&quot; (Swahili), &quot;ha&quot; (Hausa), &quot;he&quot; (Hebrew)"
+        errorLine1="    &lt;string name=&quot;oui_des_time_dialog_end&quot;>End&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="27"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;oui_des_time_dialog_start&quot; is not translated in &quot;ug&quot; (Uyghur), &quot;yo&quot; (Yoruba), &quot;id&quot; (Indonesian), &quot;ig&quot; (Igbo), &quot;am&quot; (Amharic), &quot;bo&quot; (Tibetan), &quot;sw&quot; (Swahili), &quot;ha&quot; (Hausa), &quot;he&quot; (Hebrew)"
+        errorLine1="    &lt;string name=&quot;oui_des_time_dialog_start&quot;>Start&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="28"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;oui_des_common_add&quot; is not translated in &quot;ug&quot; (Uyghur), &quot;yo&quot; (Yoruba), &quot;id&quot; (Indonesian), &quot;ig&quot; (Igbo), &quot;am&quot; (Amharic), &quot;bo&quot; (Tibetan), &quot;sw&quot; (Swahili), &quot;ha&quot; (Hausa), &quot;he&quot; (Hebrew)"
+        errorLine1="    &lt;string name=&quot;oui_des_common_add&quot;>Add&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="31"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;oui_des_common_apply&quot; is not translated in &quot;ug&quot; (Uyghur), &quot;yo&quot; (Yoruba), &quot;id&quot; (Indonesian), &quot;ig&quot; (Igbo), &quot;am&quot; (Amharic), &quot;bo&quot; (Tibetan), &quot;sw&quot; (Swahili), &quot;ha&quot; (Hausa), &quot;he&quot; (Hebrew)"
+        errorLine1="    &lt;string name=&quot;oui_des_common_apply&quot;>Apply&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="32"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;oui_des_common_button_yes&quot; is not translated in &quot;ug&quot; (Uyghur), &quot;yo&quot; (Yoruba), &quot;id&quot; (Indonesian), &quot;ig&quot; (Igbo), &quot;am&quot; (Amharic), &quot;bo&quot; (Tibetan), &quot;sw&quot; (Swahili), &quot;ha&quot; (Hausa), &quot;he&quot; (Hebrew)"
+        errorLine1="    &lt;string name=&quot;oui_des_common_button_yes&quot;>Yes&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="33"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;oui_des_common_cancel&quot; is not translated in &quot;ug&quot; (Uyghur), &quot;yo&quot; (Yoruba), &quot;id&quot; (Indonesian), &quot;ig&quot; (Igbo), &quot;am&quot; (Amharic), &quot;bo&quot; (Tibetan), &quot;sw&quot; (Swahili), &quot;ha&quot; (Hausa), &quot;he&quot; (Hebrew)"
+        errorLine1="    &lt;string name=&quot;oui_des_common_cancel&quot;>Cancel&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="34"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;oui_des_common_continue&quot; is not translated in &quot;ug&quot; (Uyghur), &quot;yo&quot; (Yoruba), &quot;id&quot; (Indonesian), &quot;ig&quot; (Igbo), &quot;am&quot; (Amharic), &quot;bo&quot; (Tibetan), &quot;sw&quot; (Swahili), &quot;ha&quot; (Hausa), &quot;he&quot; (Hebrew)"
+        errorLine1="    &lt;string name=&quot;oui_des_common_continue&quot;>Continue&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="35"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;oui_des_common_disable&quot; is not translated in &quot;ug&quot; (Uyghur), &quot;yo&quot; (Yoruba), &quot;id&quot; (Indonesian), &quot;ig&quot; (Igbo), &quot;am&quot; (Amharic), &quot;bo&quot; (Tibetan), &quot;sw&quot; (Swahili), &quot;ha&quot; (Hausa), &quot;he&quot; (Hebrew)"
+        errorLine1="    &lt;string name=&quot;oui_des_common_disable&quot;>Disable&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="36"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;oui_des_common_done&quot; is not translated in &quot;ug&quot; (Uyghur), &quot;yo&quot; (Yoruba), &quot;id&quot; (Indonesian), &quot;ig&quot; (Igbo), &quot;am&quot; (Amharic), &quot;bo&quot; (Tibetan), &quot;sw&quot; (Swahili), &quot;ha&quot; (Hausa), &quot;he&quot; (Hebrew)"
+        errorLine1="    &lt;string name=&quot;oui_des_common_done&quot;>Done&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="37"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;oui_des_common_edit&quot; is not translated in &quot;ug&quot; (Uyghur), &quot;yo&quot; (Yoruba), &quot;id&quot; (Indonesian), &quot;ig&quot; (Igbo), &quot;am&quot; (Amharic), &quot;bo&quot; (Tibetan), &quot;sw&quot; (Swahili), &quot;ha&quot; (Hausa), &quot;he&quot; (Hebrew)"
+        errorLine1="    &lt;string name=&quot;oui_des_common_edit&quot;>Edit&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="38"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;oui_des_common_close&quot; is not translated in &quot;ug&quot; (Uyghur), &quot;yo&quot; (Yoruba), &quot;id&quot; (Indonesian), &quot;ig&quot; (Igbo), &quot;am&quot; (Amharic), &quot;bo&quot; (Tibetan), &quot;sw&quot; (Swahili), &quot;ha&quot; (Hausa), &quot;he&quot; (Hebrew)"
+        errorLine1="    &lt;string name=&quot;oui_des_common_close&quot;>Close&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="39"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;oui_des_tip_popup_hint_string&quot; is not translated in &quot;ug&quot; (Uyghur), &quot;yo&quot; (Yoruba), &quot;id&quot; (Indonesian), &quot;ig&quot; (Igbo), &quot;am&quot; (Amharic), &quot;bo&quot; (Tibetan), &quot;sw&quot; (Swahili), &quot;ha&quot; (Hausa), &quot;he&quot; (Hebrew)"
+        errorLine1="    &lt;string name=&quot;oui_des_tip_popup_hint_string&quot;>Double tap this button to learn more.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="42"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;selected&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;oui_des_action_mode_n_selected&quot;>%d selected&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="13"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;selected&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;oui_des_action_mode_n_selected&quot;>%d selected&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-en-rCA/strings.xml"
+            line="21"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;selected&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;oui_des_action_mode_n_selected&quot;>%d selected&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-en-rPH/strings.xml"
+            line="21"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;selected&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;oui_des_action_mode_n_selected&quot;>%d selected&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-en-rUS/strings.xml"
+            line="21"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;selected&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;oui_des_action_mode_n_selected&quot;>%d selected&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-en-rZG/strings.xml"
+            line="21"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;selected&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;oui_des_action_mode_n_selected&quot;>%d selected&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-en/strings.xml"
+            line="21"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="UseCompoundDrawables"
+        message="This tag and its children can be replaced by one `&lt;TextView/>` and a compound drawable"
+        errorLine1="        &lt;LinearLayout"
+        errorLine2="         ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_preference_suggestion_card.xml"
+            line="18"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `?attr/drawerBackgroundColor` with a theme that also paints a background (inferred theme is `@android:style/Theme.Holo`)"
+        errorLine1="    android:background=&quot;?attr/drawerBackgroundColor&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_layout_drawer_panel.xml"
+            line="10"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `?roundedCornerColor` with a theme that also paints a background (inferred theme is `@android:style/Theme.Holo`)"
+        errorLine1="    android:background=&quot;?roundedCornerColor&quot;>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_layout_drawerlayout_main.xml"
+            line="8"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `?roundedCornerColor` with a theme that also paints a background (inferred theme is `@android:style/Theme.Holo`)"
+        errorLine1="    android:background=&quot;?roundedCornerColor&quot; />"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_preference_switch_bar_layout.xml"
+            line="6"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `?roundedCornerColor` with a theme that also paints a background (inferred theme is `@android:style/Theme.Holo`)"
+        errorLine1="    android:background=&quot;?roundedCornerColor&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_preference_unclickable_layout.xml"
+            line="8"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `?roundedCornerColor` with a theme that also paints a background (inferred theme is `@android:style/Theme.Holo`)"
+        errorLine1="    android:background=&quot;?roundedCornerColor&quot;>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_view_relative_link_preference.xml"
+            line="8"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `?attr/roundedCornerColor` with a theme that also paints a background (inferred theme is `@android:style/Theme.Holo`)"
+        errorLine1="    android:background=&quot;?attr/roundedCornerColor&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_bottom_tip.xml"
+            line="7"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `?android:attr/listDivider` with a theme that also paints a background (inferred theme is `@android:style/Theme.Holo`)"
+        errorLine1="    android:background=&quot;?android:attr/listDivider&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_relative_links_card_divider.xml"
+            line="7"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="UselessParent"
+        message="This `LinearLayout` layout or its `FrameLayout` parent is possibly unnecessary"
+        errorLine1="    &lt;LinearLayout"
+        errorLine2="     ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_dialog_progress_dialog_spinner.xml"
+            line="6"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="UselessParent"
+        message="This `LinearLayout` layout or its `FrameLayout` parent is possibly unnecessary"
+        errorLine1="        &lt;LinearLayout"
+        errorLine2="         ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_layout_navdrawer_main.xml"
+            line="28"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="IconDuplicates"
+        message="The following unrelated icon files have identical contents: oui_des_tip_popup_hint_icon_rtl.png, oui_des_tip_popup_hint_icon_translucent_rtl.png">
+        <location
+            file="src/main/res/drawable-desk-mdpi/oui_des_tip_popup_hint_icon_translucent_rtl.png"/>
+        <location
+            file="src/main/res/drawable-desk-mdpi/oui_des_tip_popup_hint_icon_rtl.png"/>
+    </issue>
+
+    <issue
+        id="IconDuplicates"
+        message="The following unrelated icon files have identical contents: oui_des_tip_popup_hint_icon_rtl.png, oui_des_tip_popup_hint_icon_translucent_rtl.png">
+        <location
+            file="src/main/res/drawable-xxhdpi/oui_des_tip_popup_hint_icon_translucent_rtl.png"/>
+        <location
+            file="src/main/res/drawable-xxhdpi/oui_des_tip_popup_hint_icon_rtl.png"/>
+    </issue>
+
+    <issue
+        id="IconMissingDensityFolder"
+        message="Missing density variation folders in `src\main\res`: drawable-hdpi, drawable-mdpi, drawable-xhdpi">
+        <location
+            file="src/main/res"/>
+    </issue>
+
+    <issue
+        id="AlwaysShowAction"
+        message="Prefer &quot;`SHOW_AS_ACTION_IF_ROOM`&quot; instead of &quot;`SHOW_AS_ACTION_ALWAYS`&quot;"
+        errorLine1="                        setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)"
+        errorLine2="                                                 ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/dev/oneuiproject/oneui/utils/MenuSynchronizer.kt"
+            line="111"
+            column="50"/>
+    </issue>
+
+    <issue
+        id="AlwaysShowAction"
+        message="Prefer &quot;`SHOW_AS_ACTION_IF_ROOM`&quot; instead of &quot;`SHOW_AS_ACTION_ALWAYS`&quot;"
+        errorLine1="                        setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)"
+        errorLine2="                                                 ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/dev/oneuiproject/oneui/utils/MenuSynchronizer.kt"
+            line="124"
+            column="50"/>
+    </issue>
+
+    <issue
+        id="AlwaysShowAction"
+        message="Prefer &quot;`SHOW_AS_ACTION_IF_ROOM`&quot; instead of &quot;`SHOW_AS_ACTION_ALWAYS`&quot;"
+        errorLine1="                it.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)"
+        errorLine2="                                            ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/dev/oneuiproject/oneui/layout/ToolbarLayout.kt"
+            line="1381"
+            column="45"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="&lt;ImageView android:layout_gravity=&quot;center_vertical&quot;"
+        errorLine2=" ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_drawer_menu_expand_button.xml"
+            line="2"
+            column="2"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageButton"
+        errorLine2="         ~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_layout_drawer_panel.xml"
+            line="26"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/oui_des_layout_splash_animated.xml"
+            line="7"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_layout_splash_animated.xml"
+            line="13"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/oui_des_layout_splash_animated.xml"
+            line="16"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_layout_splash_animated.xml"
+            line="22"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_layout_splash_simple.xml"
+            line="7"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_preference_horizontal_radio_item.xml"
+            line="22"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_preference_seekbar_pro_layout.xml"
+            line="89"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_preference_seekbar_pro_layout.xml"
+            line="105"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="            &lt;ImageView"
+        errorLine2="             ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_preference_suggestion_card.xml"
+            line="24"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_tip_popup_balloon.xml"
+            line="11"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_tip_popup_balloon.xml"
+            line="18"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_tip_popup_balloon.xml"
+            line="31"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_tip_popup_balloon.xml"
+            line="38"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_tip_popup_bubble.xml"
+            line="6"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="                &lt;ImageView"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_view_grid_menu_dialog_item.xml"
+            line="37"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="&lt;ImageView android:id=&quot;@+id/end_view&quot;"
+        errorLine2=" ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_card_item_end_image.xml"
+            line="2"
+            column="2"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_card_item_icon.xml"
+            line="12"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_obs_tips_item.xml"
+            line="12"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_switch_item_icon.xml"
+            line="15"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_tips_card.xml"
+            line="31"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="RelativeOverlap"
+        message="`LinearLayout-1` can overlap `@id/close_button` if LinearLayout-1 grows due to localized text expansion"
+        errorLine1="        &lt;LinearLayout"
+        errorLine2="         ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_preference_suggestion_card.xml"
+            line="18"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="RtlSymmetry"
+        message="When you define `paddingEnd` you should probably also define `paddingStart` for right-to-left symmetry"
+        errorLine1="        android:paddingEnd=&quot;?android:attr/listPreferredItemPaddingEnd&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_preference_color_picker_widget.xml"
+            line="11"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="RtlSymmetry"
+        message="When you define `paddingStart` you should probably also define `paddingEnd` for right-to-left symmetry"
+        errorLine1="    android:paddingStart=&quot;@dimen/oui_des_suggestionpref_tile_image_margin_start&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_preference_suggestion_card.xml"
+            line="9"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="RtlSymmetry"
+        message="When you define `paddingEnd` you should probably also define `paddingStart` for right-to-left symmetry"
+        errorLine1="            android:paddingEnd=&quot;12dp&quot;>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_preference_suggestion_card.xml"
+            line="48"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="RtlSymmetry"
+        message="When you define `paddingStart` you should probably also define `paddingEnd` for right-to-left symmetry"
+        errorLine1="            android:paddingStart=&quot;@dimen/oui_des_relative_link_view_margin_start_end&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_view_relative_link.xml"
+            line="18"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="RtlSymmetry"
+        message="When you define `paddingEnd` you should probably also define `paddingStart` for right-to-left symmetry"
+        errorLine1="            android:paddingEnd=&quot;@dimen/oui_des_cardview_icon_margin_end&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_card_item.xml"
+            line="28"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="RtlSymmetry"
+        message="When you define `paddingEnd` you should probably also define `paddingStart` for right-to-left symmetry"
+        errorLine1="                    android:paddingEnd=&quot;10dp&quot;"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_card_item.xml"
+            line="51"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="RtlSymmetry"
+        message="When you define `paddingEnd` you should probably also define `paddingStart` for right-to-left symmetry"
+        errorLine1="                android:paddingEnd=&quot;12.0dip&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_card_item.xml"
+            line="74"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="RtlSymmetry"
+        message="When you define `paddingEnd` you should probably also define `paddingStart` for right-to-left symmetry"
+        errorLine1="    android:paddingEnd=&quot;@dimen/oui_des_cardview_icon_margin_end&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_card_item_icon.xml"
+            line="6"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="RtlSymmetry"
+        message="When you define `paddingEnd` you should probably also define `paddingStart` for right-to-left symmetry"
+        errorLine1="        android:paddingEnd=&quot;?listPreferredItemPaddingEnd&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_radio_item.xml"
+            line="26"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="RtlSymmetry"
+        message="When you define `paddingEnd` you should probably also define `paddingStart` for right-to-left symmetry"
+        errorLine1="    android:paddingEnd=&quot;@dimen/oui_des_relative_link_view_margin_start_end&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_relative_links_card.xml"
+            line="9"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="RtlSymmetry"
+        message="When you define `paddingStart` you should probably also define `paddingEnd` for right-to-left symmetry"
+        errorLine1="        android:paddingStart=&quot;@dimen/oui_des_relative_link_view_margin_start_end&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_relative_links_card.xml"
+            line="21"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="RtlSymmetry"
+        message="When you define `paddingEnd` you should probably also define `paddingStart` for right-to-left symmetry"
+        errorLine1="    android:paddingEnd=&quot;@dimen/oui_des_cardview_icon_margin_end&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_switch_item_icon.xml"
+            line="9"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="RtlSymmetry"
+        message="When you define `paddingEnd` you should probably also define `paddingStart` for right-to-left symmetry"
+        errorLine1="            android:paddingEnd=&quot;22dp&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/oui_des_widget_tips_card.xml"
+            line="25"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Use &quot;`Gravity.START`&quot; instead of &quot;`Gravity.LEFT`&quot; to ensure correct behavior in right-to-left locales"
+        errorLine1="        return (absoluteGravity and Gravity.LEFT) == Gravity.LEFT"
+        errorLine2="                                            ~~~~">
+        <location
+            file="src/main/java/dev/oneuiproject/oneui/layout/internal/delegate/DrawerBackAnimator.kt"
+            line="170"
+            column="45"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Use &quot;`Gravity.START`&quot; instead of &quot;`Gravity.LEFT`&quot; to ensure correct behavior in right-to-left locales"
+        errorLine1="        return (absoluteGravity and Gravity.LEFT) == Gravity.LEFT"
+        errorLine2="                                                             ~~~~">
+        <location
+            file="src/main/java/dev/oneuiproject/oneui/layout/internal/delegate/DrawerBackAnimator.kt"
+            line="170"
+            column="62"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Use &quot;`Gravity.START`&quot; instead of &quot;`Gravity.LEFT`&quot; to ensure correct behavior in right-to-left locales"
+        errorLine1="        return (absoluteGravity and Gravity.LEFT) == Gravity.LEFT"
+        errorLine2="                                            ~~~~">
+        <location
+            file="src/main/java/dev/oneuiproject/oneui/layout/internal/delegate/NavDrawerBackAnimator.kt"
+            line="156"
+            column="45"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Use &quot;`Gravity.START`&quot; instead of &quot;`Gravity.LEFT`&quot; to ensure correct behavior in right-to-left locales"
+        errorLine1="        return (absoluteGravity and Gravity.LEFT) == Gravity.LEFT"
+        errorLine2="                                                             ~~~~">
+        <location
+            file="src/main/java/dev/oneuiproject/oneui/layout/internal/delegate/NavDrawerBackAnimator.kt"
+            line="156"
+            column="62"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Use &quot;`Gravity.START`&quot; instead of &quot;`Gravity.LEFT`&quot; to ensure correct behavior in right-to-left locales"
+        errorLine1="        get() = getDrawerLockMode(Gravity.LEFT) != LOCK_MODE_UNLOCKED"
+        errorLine2="                                          ~~~~">
+        <location
+            file="src/main/java/dev/oneuiproject/oneui/layout/internal/widget/SemDrawerLayout.kt"
+            line="307"
+            column="43"/>
+    </issue>
+
+</issues>

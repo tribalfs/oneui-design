@@ -18,6 +18,7 @@ android {
         }
     }
     buildTypes.all { consumerProguardFiles("consumer-rules.pro") }
+    lint { baseline = file("lint-baseline.xml") }
 }
 
 dependencies {
