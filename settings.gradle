@@ -10,7 +10,7 @@ pluginManagement {
 
 rootProject.name = "oneui-design"
 include(":sample-app")
-include(":oneui-design",":stub")
+include(":oneui-design",":stub", ":lint")
 project(":oneui-design").projectDir = new File("lib")
 
 

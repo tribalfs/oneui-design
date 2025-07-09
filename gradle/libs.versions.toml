@@ -1,5 +1,6 @@
 [versions]
 android-gradle = "8.10.1"
+androidLint = "31.11.0"
 kotlin = "2.1.20"
 rikka-refine = "4.4.0"
 ksp = "2.1.20-2.0.0"
@@ -35,7 +36,9 @@ lottie = "6.6.2"
 
 
 [libraries]
+androidLintApi = { module = "com.android.tools.lint:lint-api", version.ref = "androidLint" }
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }
+kotlinStdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib" }
 
 sesl-core = { module = "sesl.androidx.core:core", version.ref = "sesl-core" }
 sesl-coreKtx = { module = "sesl.androidx.core:core-ktx", version.ref = "sesl-coreKtx" }

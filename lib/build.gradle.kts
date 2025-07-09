@@ -33,6 +33,7 @@ dependencies {
     compileOnly(project(":stub"))
 
     implementation(libs.bundles.androidx.navigation)
+    lintPublish(project(":lint"))
 }
 
 
