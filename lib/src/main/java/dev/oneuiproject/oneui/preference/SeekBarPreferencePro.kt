@@ -5,15 +5,14 @@ package dev.oneuiproject.oneui.preference
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
+import android.os.Build
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnLongClickListener
 import android.view.View.OnTouchListener
+import android.view.accessibility.AccessibilityNodeInfo
+import android.view.accessibility.AccessibilityNodeInfo.RangeInfo
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -31,9 +30,16 @@ import dev.oneuiproject.oneui.ktx.SeslSeekBarDualColors
 import dev.oneuiproject.oneui.ktx.setShowTickMarks
 import dev.oneuiproject.oneui.ktx.updateDualColorRange
 import dev.oneuiproject.oneui.widget.SeekBarPlus
-import java.lang.ref.WeakReference
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 
-
+//Reference: Font size seekbar
 /**
  * Preference based [SeekBarPreference] but with more options and flexibility
  *
@@ -46,8 +52,7 @@ import java.lang.ref.WeakReference
  * @see [isAdjustable]
  *
  */
-
-class SeekBarPreferencePro @JvmOverloads constructor(
+open class SeekBarPreferencePro @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet?,
     @SuppressLint("RestrictedApi")
@@ -61,11 +66,12 @@ class SeekBarPreferencePro @JvmOverloads constructor(
     OnLongClickListener,
     OnTouchListener {
 
-    private val longPressHandler: Handler = LongPressHandler(this)
+    private val preferenceScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+    private var longPressJob: Job? = null
 
     private var seekbarMode: Int = MODE_LEVEL_BAR
     private var isSeamLess: Boolean = false
-    private var seekBarPlus: SeekBarPlus? = null
+    private var skipOnBind = false
 
     /**
      * If true, this sets [SeslSeekBar] to only put tick marks at the start, middle and end
@@ -73,7 +79,7 @@ class SeekBarPreferencePro @JvmOverloads constructor(
      * This will ignore [SeslSeekBar.setMode] value and will use [MODE_LEVEL_BAR][SeslSeekBar.MODE_LEVEL_BAR] mode instead.
      */
     var centerBasedSeekBar: Boolean = false
-        set(centerBased){
+        set(centerBased) {
             if (field != centerBased) {
                 field = centerBased
                 notifyChanged()
@@ -81,32 +87,27 @@ class SeekBarPreferencePro @JvmOverloads constructor(
         }
 
     var leftLabel: CharSequence? = null
-        set(charSequence){
+        set(charSequence) {
             if (field != charSequence) {
                 field = charSequence
                 notifyChanged()
             }
         }
     var rightLabel: CharSequence? = null
-        set(charSequence){
-            if (field != charSequence) {
-                field = charSequence
-                notifyChanged()
-            }
-        }
-    var stateDescription: CharSequence? = null
-        set(charSequence){
+        set(charSequence) {
             if (field != charSequence) {
                 field = charSequence
                 notifyChanged()
             }
         }
 
+    var stateDescription: CharSequence? = null
+
     /**
      * This does not apply when [centerBasedSeekBar] is true
      */
     var showTickMarks: Boolean = false
-        set(show){
+        set(show) {
             if (field != show) {
                 field = show
                 notifyChanged()
@@ -115,7 +116,7 @@ class SeekBarPreferencePro @JvmOverloads constructor(
 
 
     var progressTintList: ColorStateList? = null
-        set(progressTintList){
+        set(progressTintList) {
             if (field != progressTintList) {
                 field = progressTintList
                 notifyChanged()
@@ -123,7 +124,7 @@ class SeekBarPreferencePro @JvmOverloads constructor(
         }
 
     var tickMarkTintList: ColorStateList? = null
-        set(tickMarkTintList){
+        set(tickMarkTintList) {
             if (field != tickMarkTintList) {
                 field = tickMarkTintList
                 notifyChanged()
@@ -132,37 +133,21 @@ class SeekBarPreferencePro @JvmOverloads constructor(
 
 
     private var overlapPoint: Int = NO_OVERLAP
-    private var isLongKeyProcessing = false
     private var seekBarValueTextView: TextView? = null
     private var units: String? = null
     private var addButton: ImageView? = null
     private var deleteButton: ImageView? = null
     private var onSeekBarPreferenceChangeListener: OnSeekBarPreferenceChangeListener? = null
-
-    init {
-        context.withStyledAttributes(attrs, R.styleable.SeekBarPreferencePro) {
-            centerBasedSeekBar = getBoolean(R.styleable.SeekBarPreferencePro_centerBasedSeekBar, false)
-            leftLabel = getString(R.styleable.SeekBarPreferencePro_leftLabelName)
-            overlapPoint = getInt(R.styleable.SeekBarPreferencePro_overlapPoint, NO_OVERLAP)
-            rightLabel = getString(R.styleable.SeekBarPreferencePro_rightLabelName)
-            isSeamLess = getBoolean(R.styleable.SeekBarPreferencePro_seamlessSeekBar, false)
-            seekbarMode = getInt(R.styleable.SeekBarPreferencePro_seekBarMode, MODE_LEVEL_BAR)
-            showTickMarks = getBoolean(R.styleable.SeekBarPreferencePro_showTickMark, true)
-            units = getString(R.styleable.SeekBarPreferencePro_units)
-        }
-        setOnSeekBarPreferenceChangeListener(null)
-    }
-
-
-    override fun setOnSeekBarPreferenceChangeListener(onSeekBarPreferenceChangeListener: OnSeekBarPreferenceChangeListener?) {
-        this@SeekBarPreferencePro.onSeekBarPreferenceChangeListener = object: OnSeekBarPreferenceChangeListener{
+    private var internalSeekBarChangeListener: OnSeekBarPreferenceChangeListener =
+        object : OnSeekBarPreferenceChangeListener {
             override fun onProgressChanged(
                 seekBar: SeslSeekBar?,
                 progress: Int,
                 fromUser: Boolean
             ) {
-                onSeekBarPreferenceChangeListener?.onProgressChanged(seekBar, progress, fromUser)
                 if (showSeekBarValue) updateValueLabel(progress)
+                stateDescription = getFormattedValue()
+                onSeekBarPreferenceChangeListener?.onProgressChanged(seekBar, progress, fromUser)
             }
 
             override fun onStartTrackingTouch(seslSeekBar: SeslSeekBar?) {
@@ -171,35 +156,106 @@ class SeekBarPreferencePro @JvmOverloads constructor(
 
             override fun onStopTrackingTouch(seslSeekBar: SeslSeekBar?) {
                 onSeekBarPreferenceChangeListener?.onStopTrackingTouch(seslSeekBar)
-                if (showSeekBarValue) updateValueLabel(seslSeekBar?.progress?:0)
+                if (showSeekBarValue) updateValueLabel(seslSeekBar?.progress ?: 0)
             }
-
         }
-        super.setOnSeekBarPreferenceChangeListener(this@SeekBarPreferencePro.onSeekBarPreferenceChangeListener)
+
+    init {
+        context.withStyledAttributes(attrs, R.styleable.SeekBarPreferencePro) {
+            centerBasedSeekBar =
+                getBoolean(R.styleable.SeekBarPreferencePro_centerBasedSeekBar, false)
+            leftLabel = getString(R.styleable.SeekBarPreferencePro_leftLabelName)
+            overlapPoint = getInt(R.styleable.SeekBarPreferencePro_overlapPoint, NO_OVERLAP)
+            rightLabel = getString(R.styleable.SeekBarPreferencePro_rightLabelName)
+            isSeamLess = getBoolean(R.styleable.SeekBarPreferencePro_seamlessSeekBar, false)
+            seekbarMode = getInt(R.styleable.SeekBarPreferencePro_seekBarMode, MODE_LEVEL_BAR)
+            showTickMarks = getBoolean(R.styleable.SeekBarPreferencePro_showTickMark, true)
+            units = getString(R.styleable.SeekBarPreferencePro_units)
+        }
+        super.setOnSeekBarPreferenceChangeListener(internalSeekBarChangeListener)
     }
 
 
-    override fun onBindViewHolder(holder: PreferenceViewHolder) {
-        super.onBindViewHolder(holder)
+    override fun setOnSeekBarPreferenceChangeListener(onSeekBarPreferenceChangeListener: OnSeekBarPreferenceChangeListener?) {
+        this.onSeekBarPreferenceChangeListener = onSeekBarPreferenceChangeListener
+    }
 
-        seekBarPlus = (holder.findViewById(R.id.seekbar) as? SeekBarPlus)?.apply sbp@{
+    override fun onBindViewHolder(holder: PreferenceViewHolder) {
+        if (skipOnBind) return
+        super.onBindViewHolder(holder)
+        setupSeekBarPlus(seekBar as SeekBarPlus)
+
+        seekBarValueTextView = (holder.findViewById(R.id.seekbar_value) as? TextView)
+        setupSeekBarValueLabel()
+
+        setupLabels(holder)
+
+        addButton = (holder.findViewById(R.id.add_button) as? ImageView)
+        setupAdjustButton(addButton, true)
+
+        deleteButton = (holder.findViewById(R.id.delete_button) as? ImageView)
+        setupAdjustButton(deleteButton, false)
+    }
+
+    private fun setupSeekBarPlus(seekBarPlus: SeekBarPlus) {
+        seekBarPlus.apply sbp@{
             setSeamless(isSeamLess)
             if (!centerBasedSeekBar) {
                 centerBasedBar = false
                 setMode(seekbarMode)
                 if (overlapPoint != NO_OVERLAP) {
-                     updateDualColorRange(overlapPoint - this@SeekBarPreferencePro.min,
-                         SeslSeekBarDualColors.Custom())
+                    updateDualColorRange(
+                        overlapPoint - this@SeekBarPreferencePro.min,
+                        SeslSeekBarDualColors.Custom()
+                    )
                 }
                 setShowTickMarks(showTickMarks)
             }
-        }
-        seekBarValueTextView = (holder.findViewById(R.id.seekbar_value) as? TextView)
-        if (showSeekBarValue) {
-            seekBarValueTextView!!.isVisible = true
-            updateValueLabel(seekBarPlus!!.progress)
-        }
 
+            accessibilityDelegate = object : View.AccessibilityDelegate() {
+                override fun onInitializeAccessibilityNodeInfo(
+                    host: View,
+                    info: AccessibilityNodeInfo
+                ) {
+                    super.onInitializeAccessibilityNodeInfo(host, info)
+                    if (Build.VERSION.SDK_INT >= 30) {
+                        this@SeekBarPreferencePro.stateDescription?.let {
+                            info.stateDescription = it
+                        }
+                        RangeInfo(
+                            RangeInfo.RANGE_TYPE_INT,
+                            this@SeekBarPreferencePro.min.toFloat(),
+                            this@SeekBarPreferencePro.max.toFloat(),
+                            (this@SeekBarPreferencePro.min + progress).toFloat()
+                        )
+                    } else {
+                        @Suppress("DEPRECATION")
+                        RangeInfo.obtain(
+                            RangeInfo.RANGE_TYPE_INT,
+                            this@SeekBarPreferencePro.min.toFloat(),
+                            this@SeekBarPreferencePro.max.toFloat(),
+                            (this@SeekBarPreferencePro.min + progress).toFloat()
+                        )
+                    }.let {
+                        info.rangeInfo = it
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setupSeekBarValueLabel() {
+        seekBarValueTextView?.let { textView ->
+            if (showSeekBarValue) {
+                textView.isVisible = true
+                updateValueLabel( value)
+            } else {
+                textView.isVisible = false
+            }
+        }
+    }
+
+    private fun setupLabels(holder: PreferenceViewHolder) {
         if (leftLabel != null || rightLabel != null) {
             with(holder) {
                 (findViewById(R.id.seekbar_label_area) as? LinearLayout)?.isVisible = true
@@ -207,123 +263,92 @@ class SeekBarPreferencePro @JvmOverloads constructor(
                 (findViewById(R.id.right_label) as? TextView)?.text = rightLabel
             }
         }
+    }
 
-        addButton = (holder.findViewById(R.id.add_button) as? ImageView)?.apply add@{
+    private fun setupAdjustButton(button: ImageView?, isIncrement: Boolean) {
+        button?.apply {
+            isVisible = this@SeekBarPreferencePro.isAdjustable
             if (this@SeekBarPreferencePro.isAdjustable) {
-                visibility = View.VISIBLE
                 isEnabled = this@SeekBarPreferencePro.isEnabled
-                alpha = if (isEnabled) 1.0f else 0.4f
+                alpha = if (this@SeekBarPreferencePro.isEnabled) 1.0f else 0.4f
                 setOnClickListener(this@SeekBarPreferencePro)
                 setOnLongClickListener(this@SeekBarPreferencePro)
+                @SuppressLint("ClickableViewAccessibility") // Keep if necessary for specific touch handling
                 setOnTouchListener(this@SeekBarPreferencePro)
-
-            }else{
-                visibility = View.GONE
-            }
-        }
-
-        deleteButton = (holder.findViewById(R.id.delete_button) as? ImageView)?.apply del@{
-            if (this@SeekBarPreferencePro.isAdjustable) {
-                visibility = View.VISIBLE
-                setOnClickListener(this@SeekBarPreferencePro)
-                setOnLongClickListener(this@SeekBarPreferencePro)
-                setOnTouchListener(this@SeekBarPreferencePro)
-                isEnabled = this@SeekBarPreferencePro.isEnabled
-                alpha = if (isEnabled) 1.0f else 0.4f
-            }else{
-                this.visibility = View.GONE
             }
         }
     }
 
-
-    private fun updateValueLabel(progress: Int) {
-        if (seekBarValueTextView != null) {
-            val value = progress + min
-            val valueStr = "$value${units?:""}"
-            seekBarValueTextView!!.text = valueStr
-        }
-    }
+    private fun updateValueLabel(value: Int) = seekBarValueTextView?.text = getFormattedValue()
 
     override fun onClick(view: View) {
-        when(view.id){
+        when (view.id) {
             R.id.delete_button -> onDeleteButtonClicked()
             R.id.add_button -> onAddButtonClicked()
         }
-        view.announceForAccessibility(stateDescription)
     }
 
     override fun onLongClick(view: View): Boolean {
-        isLongKeyProcessing = true
-        val id = view.id
-        if (id == R.id.delete_button || id == R.id.add_button) {
-            Thread {
-                while (isLongKeyProcessing) {
-                    longPressHandler.sendEmptyMessage(if (view.id == R.id.delete_button) MSG_DELETE else MSG_ADD)
-                    try {
-                        Thread.sleep(300L)
-                    } catch (e: InterruptedException) {
-                        Log.w(SeekBarPreferencePro::class.java.simpleName, "InterruptedException!", e)
-                    }
+        longPressJob?.cancel()
+        when (view.id) {
+            R.id.delete_button -> longPressJob = preferenceScope.launch {
+                while (isActive) {
+                    onDeleteButtonClicked(); delay(300)
                 }
-            }.start()
-            return false
+            }
+            R.id.add_button -> longPressJob = preferenceScope.launch {
+                while (isActive) {
+                    onAddButtonClicked(); delay(300)
+                }
+            }
         }
         return false
     }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(view: View, event: MotionEvent): Boolean {
-        if (event.action == MotionEvent.ACTION_UP) {
-            isLongKeyProcessing = false
-            longPressHandler.removeMessages(MSG_DELETE)
-            longPressHandler.removeMessages(MSG_ADD)
+        if (event.action == MotionEvent.ACTION_UP || event.action == MotionEvent.ACTION_CANCEL) {
+            longPressJob?.cancel()
         }
         return false
     }
 
-    private fun onDeleteButtonClicked() {
-        val newValue = (value - seekBarIncrement).coerceAtLeast(min)
-        if (!callChangeListener(newValue)){
-            return
-        }
+    private fun updateValueIfAllowed(newValue: Int) {
+        if (!callChangeListener(newValue)) return
+        skipOnBind = true
         value = newValue
-        seekBar?.performHapticFeedback(HAPTIC_CONSTANT_CURSOR_MOVE)
+        seekBar?.apply {
+            progress = newValue - min
+            performHapticFeedback(HAPTIC_CONSTANT_CURSOR_MOVE)
+        }
+        skipOnBind = false
+    }
+
+    private fun onDeleteButtonClicked() {
+        if (min == value) return
+        val newValue = (value - seekBarIncrement).coerceAtLeast(min)
+        updateValueIfAllowed(newValue)
     }
 
     private fun onAddButtonClicked() {
+        if (max == value) return
         val newValue = (value + seekBarIncrement).coerceAtMost(max)
-        if (!callChangeListener(newValue)) {
-            return
-        }
-        value = newValue
-        seekBar?.performHapticFeedback(HAPTIC_CONSTANT_CURSOR_MOVE)
+        updateValueIfAllowed(newValue)
     }
 
+    private fun getFormattedValue(): String = "$value${units ?: ""}"
 
-    private class LongPressHandler(seekBarPref: SeekBarPreferencePro) :
-        Handler(Looper.getMainLooper()) {
-        private val weakReference: WeakReference<SeekBarPreferencePro> = WeakReference(seekBarPref)
-
-        override fun handleMessage(message: Message) {
-            val seekBarPreferencePro = weakReference.get()
-            when(message.what) {
-                MSG_DELETE -> seekBarPreferencePro!!.onDeleteButtonClicked()
-                MSG_ADD -> seekBarPreferencePro!!.onAddButtonClicked()
-            }
-        }
+    override fun onDetached() {
+        super.onDetached()
+        preferenceScope.cancel()
     }
 
-
-    private companion object{
+    private companion object {
         private const val TAG = "SeekBarPreferencePro"
 
         private val HAPTIC_CONSTANT_CURSOR_MOVE by lazy {
             @SuppressLint("RestrictedApi")
             SeslHapticFeedbackConstantsReflector.semGetVibrationIndex(41)
         }
-
-        private const val MSG_DELETE = 1
-        private const val MSG_ADD = 2
     }
 }
