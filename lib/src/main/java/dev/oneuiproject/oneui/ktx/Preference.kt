@@ -19,32 +19,31 @@ import androidx.preference.SeekBarPreference
 import androidx.preference.TwoStatePreference
 import dev.oneuiproject.oneui.preference.ColorPickerPreference
 import dev.oneuiproject.oneui.preference.HorizontalRadioPreference
+import kotlin.jvm.Throws
 import kotlin.math.min
 
 /**
  * Registers a callback to be invoked when the preference's value is changed.
  *
+ * @param T The type of the value the specific preference holds.
  * @param action A lambda function to be invoked when the preference's value changes.
  *                 The lambda receives the new value as its parameter. It can optionally
  *                 return a `false` boolean to prevent the preference from persisting
  *                 the new value.
  * @return The preference to allow for chaining calls.
  *
- * Caution: Ensure that the type parameter matches the expected type of the preference's value.
- * This function uses unchecked casts, so providing an incorrect type parameter may lead to runtime exceptions.
+ * @throws ClassCastException If the preference's value type does not match the expected type.
+ * This function uses unchecked casts to the returned value.
  *
  * Example usage:
  * ```
- * preference.onNewValue<String> { newValue ->
+ * preference.onNewValueUnsafe<String> { newValue ->
  *     // Handle the new value
  * }
  * ```
  */
-@Deprecated(
-    message = "Please use the type-safe onNewValue() function specific to the preference type.",
-    replaceWith = ReplaceWith("onNewValue()")
-)
-inline fun <reified T : Any?> Preference.onNewValue(crossinline action: (newValue: T) -> Any): Preference {
+@Throws(ClassCastException::class)
+inline fun <reified T : Any?> Preference.onNewValueUnsafe(crossinline action: (newValue: T) -> Any): Preference {
     onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, v ->
         action(v as T) as? Boolean ?: true
     }
