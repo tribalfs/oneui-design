@@ -13,9 +13,11 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
+import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import androidx.preference.SeekBarPreference
 import androidx.preference.TwoStatePreference
+import dev.oneuiproject.oneui.preference.ColorPickerPreference
 import dev.oneuiproject.oneui.preference.HorizontalRadioPreference
 import kotlin.math.min
 
@@ -317,6 +319,142 @@ inline fun <R : ListPreference> R.onNewValue(crossinline action: (newValue: Stri
 inline fun <R : ListPreference> R.onNewValueConditional(crossinline action: (newValue: String) -> Boolean): R {
     onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, v ->
         action(v as String)
+    }
+    return this
+}
+
+/**
+ * Registers a callback to be invoked when this [MultiSelectListPreference] changes its value.
+ *
+ * This function provides a type-safe way to set an [onPreferenceChangeListener][Preference.OnPreferenceChangeListener]
+ * for a [MultiSelectListPreference], where the new value is provided as a [Set&lt;String&gt;][Set].
+ * The listener will always return `true`, allowing the preference to persist the new value automatically.
+ *
+ * If you need to conditionally prevent the preference from persisting the new value, consider using
+ * [onNewValueConditional] instead.
+ *
+ * @param action A lambda function to be invoked when the preference's value changes.
+ *               The lambda receives the new value as its parameter.
+ * @return The preference instance to allow for chaining calls.
+ *
+ * Example usage:
+ * ```kotlin
+ * multiSelectListPreference.onNewValue { newValue ->
+ *     // Handle the new value (Set<String>)
+ *     // The preference will automatically persist the new value.
+ * }
+ * ```
+ */
+inline fun <R : MultiSelectListPreference> R.onNewValue(crossinline action: (newValue: String) -> Unit): R {
+    onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, v ->
+        action(v as String)
+        true
+    }
+    return this
+}
+
+/**
+ * Registers a callback to be invoked when this [MultiSelectListPreference] changes its value, allowing you to
+ * conditionally control whether the new value should be persisted.
+ *
+ * This function provides a type-safe way to set an [onPreferenceChangeListener][Preference.OnPreferenceChangeListener]
+ * for a [MultiSelectListPreference], where the new value is supplied as a [Set&lt;String&gt;][Set].
+ * The listener's return value determines whether the preference should persist the new value:
+ *
+ * - Return `true` to allow the preference to persist the new value automatically.
+ * - Return `false` to prevent the preference from persisting the new value.
+ *
+ * Use this function when you need to validate or perform checks before accepting the new value.
+ *
+ * @param action A lambda function to be invoked when the preference's value changes.
+ *               The lambda receives the new value as its parameter and should return `true` to accept
+ *               the new value or `false` to reject it.
+ * @return The preference instance to allow for chaining calls.
+ *
+ * Example usage:
+ * ```kotlin
+ * multiSelectListPreference.onNewValueConditional { newValue: Set<String> ->
+ *     if (process(newValue)) {
+ *         // Accept and persist the new value
+ *         true
+ *     } else {
+ *         // Reject the new value
+ *         false
+ *     }
+ * }
+ * ```
+ */
+inline fun <R : MultiSelectListPreference> R.onNewValueConditional(crossinline action: (newValue: String) -> Boolean): R {
+    onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, v ->
+        action(v as String)
+    }
+    return this
+}
+
+/**
+ * Registers a callback to be invoked when this [ColorPickerPreference] changes its value.
+ *
+ * This function provides a type-safe way to set an [onPreferenceChangeListener][Preference.OnPreferenceChangeListener]
+ * for a [ColorPickerPreference], where the new value is provided as a [Int]. The listener will always return `true`,
+ * allowing the preference to persist the new value automatically.
+ *
+ * If you need to conditionally prevent the preference from persisting the new value, consider using
+ * [onNewValueConditional] instead.
+ *
+ * @param action A lambda function to be invoked when the preference's value changes.
+ *               The lambda receives the new value as its parameter.
+ * @return The preference instance to allow for chaining calls.
+ *
+ * Example usage:
+ * ```kotlin
+ * colorPickerPreference.onNewValue { newValue ->
+ *     // Handle the new value (Int)
+ *     // The preference will automatically persist the new value.
+ * }
+ * ```
+ */
+inline fun ColorPickerPreference.onNewValue(crossinline action: (newValue: Int) -> Unit): ColorPickerPreference {
+    onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, v ->
+        action(v as Int)
+        true
+    }
+    return this
+}
+
+/**
+ * Registers a callback to be invoked when this [ColorPickerPreference] changes its value, allowing you to
+ * conditionally control whether the new value should be persisted.
+ *
+ * This function provides a type-safe way to set an [onPreferenceChangeListener][Preference.OnPreferenceChangeListener]
+ * for a [ColorPickerPreference], where the new value is supplied as a [Int]. The listener's return value determines whether the
+ * preference should persist the new value:
+ *
+ * - Return `true` to allow the preference to persist the new value automatically.
+ * - Return `false` to prevent the preference from persisting the new value.
+ *
+ * Use this function when you need to validate or perform checks before accepting the new value.
+ *
+ * @param action A lambda function to be invoked when the preference's value changes.
+ *               The lambda receives the new value as its parameter and should return `true` to accept
+ *               the new value or `false` to reject it.
+ * @return The preference instance to allow for chaining calls.
+ *
+ * Example usage:
+ * ```kotlin
+ * colorPickerPreference.onNewValueConditional { newValue: Int ->
+ *     if (process(newValue)) {
+ *         // Accept and persist the new value
+ *         true
+ *     } else {
+ *         // Reject the new value
+ *         false
+ *     }
+ * }
+ * ```
+ */
+inline fun ColorPickerPreference.onNewValueConditional(crossinline action: (newValue: Int) -> Boolean): ColorPickerPreference {
+    onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, v ->
+        action(v as Int)
     }
     return this
 }
