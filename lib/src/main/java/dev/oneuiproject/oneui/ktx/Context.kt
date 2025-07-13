@@ -24,6 +24,9 @@ import dev.oneuiproject.oneui.popover.PopOverOptions
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.getWindowHeight
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.getWindowWidthNet
 import java.util.Calendar
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 
 /**
  * The logical density of the display. This is a scaling factor for the Density
@@ -102,6 +105,7 @@ inline val Context.windowHeight: Int get() = getWindowHeight(this)
  * @param onDateSelected Lambda to be invoked for the result containing the [Calendar] instance with updated year, month and day of month.
  * @return [SeslDatePickerDialog] created and shown.
  */
+@OptIn(ExperimentalContracts::class)
 @JvmOverloads
 inline fun Context.showDatePickerDialog(
     initialValue: Calendar,
@@ -111,6 +115,7 @@ inline fun Context.showDatePickerDialog(
     onCreate: SeslDatePickerDialog.() -> Unit = {},
     crossinline onDateSelected: (datePicker: SeslDatePicker, calendar: Calendar)-> Unit
 ): SeslDatePickerDialog {
+    contract { callsInPlace(onCreate, InvocationKind.EXACTLY_ONCE) }
     return SeslDatePickerDialog(
         this,
         getThemeAttributeValue(R.attr.datePickerDialogTheme)?.resourceId ?: 0,
@@ -169,6 +174,7 @@ inline fun Context.showTimePickerDialog(
  * @param onTimeSelected Lambda to be invoked containing the selected hour and minute.
  * @return [SeslTimePickerDialog] created and shown.
  */
+@OptIn(ExperimentalContracts::class)
 @JvmOverloads
 inline fun Context.showTimePickerDialog(
     hour: Int,
@@ -177,7 +183,7 @@ inline fun Context.showTimePickerDialog(
     onCreate: SeslTimePickerDialog.() -> Unit = {},
     crossinline onTimeSelected: (timePicker: SeslTimePicker, hourOfDay: Int, minute: Int)-> Unit
 ) : SeslTimePickerDialog {
-
+    contract { callsInPlace(onCreate, InvocationKind.EXACTLY_ONCE) }
     return SeslTimePickerDialog(
         this,
         getThemeAttributeValue(R.attr.timePickerDialogTheme)?.resourceId ?: 0,
