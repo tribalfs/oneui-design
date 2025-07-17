@@ -49,9 +49,21 @@ inline fun Context.getThemeAttributeValue(attr: Int): TypedValue? =
         if (theme.resolveAttribute(attr, this, true)) { this } else null
     }
 
+/**
+ * Checks if the current theme is a light theme.
+ *
+ * @return True if the current theme is light, false otherwise.
+ */
 @SuppressLint("RestrictedApi")
 inline fun Context.isLightMode(): Boolean = SeslMisc.isLightTheme(this)
 
+/**
+ * Returns the [Activity] associated with this context, or null if the context is not an [Activity]
+ * or is not associated with one.
+ *
+ * This property iterates through the context wrappers until it finds an Activity
+ * or reaches the base context.
+ */
 val Context.activity: Activity?
     get() {
         var context = this
@@ -64,6 +76,13 @@ val Context.activity: Activity?
         return null
     }
 
+/**
+ * Returns the [AppCompatActivity] associated with this context, or null if the context is not
+ * associated with an AppCompatActivity.
+ *
+ * This property iterates through the context wrappers until it finds an AppCompatActivity
+ * or reaches the base context.
+ */
 val Context.appCompatActivity: AppCompatActivity?
     get() {
         var context = this

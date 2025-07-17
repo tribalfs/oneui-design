@@ -60,7 +60,14 @@ inline fun View.semSetToolTipText(toolTipText: CharSequence?) {
 }
 
 /**
- * This method only works on OneUI with api 28 and above
+ * Retrieves the rounded corners of this View.
+ *
+ * This method is specifically designed for OneUI devices running API level 28 or higher.
+ *
+ * @return An integer representing the rounded corners of the View.
+ *         Returns [ROUNDED_CORNER_NONE] if the method is not applicable or an error occurs.
+ * @see SemView.semGetRoundedCorners
+ * @see ROUNDED_CORNER_NONE
  */
 inline fun View.semGetRoundedCorners(): Int {
     if (Build.VERSION.SDK_INT >= 28 && DeviceInfo.isOneUI()) {
@@ -78,7 +85,13 @@ inline fun View.semGetRoundedCorners(): Int {
 }
 
 /**
- * This method only works on OneUI with api 28 and above
+ * Sets the rounded corners of this View.
+ *
+ * This method only works on OneUI with API level 28 and above.
+ *
+ * @param corners A bitmask of the corners to round.
+ *                See [androidx.appcompat.util.SeslRoundedCorner] for available constants.
+ * @param radius The radius of the rounded corners in pixels. If null, the default radius is used.
  */
 @JvmOverloads
 inline fun View.semSetRoundedCorners(corners: Int, radius: Int? = null) {
@@ -99,7 +112,16 @@ inline fun View.semSetRoundedCorners(corners: Int, radius: Int? = null) {
 }
 
 /**
- * This method only works on OneUI with api 28 and above
+ * Sets the rounded corner color for the specified corners of this View.
+ *
+ * This method only works on OneUI devices with API level 28 and above.
+ * If called on other devices or lower API levels, a warning will be logged.
+ *
+ * @param corners An integer representing the corners to apply the color to.
+ *                Use constants from `androidx.appcompat.util.SeslRoundedCorner`
+ *                (e.g., `SeslRoundedCorner.ROUNDED_CORNER_TOP_LEFT`).
+ * @param color The color to set for the rounded corners, as an integer.
+ *              Use `@ColorInt` annotation to ensure a valid color is passed.
  */
 inline fun View.semSetRoundedCornerColor(
     corners: Int, @ColorInt color: Int
@@ -118,6 +140,12 @@ inline fun View.semSetRoundedCornerColor(
 }
 
 
+/**
+ * Traverses up the view hierarchy to find the first ancestor of the specified type.
+ *
+ * @param T The type of the ancestor to find.
+ * @return The first ancestor of type [T], or null if no such ancestor is found.
+ */
 inline fun <reified T: ViewGroup> View.findAncestorOfType(): T?{
     var targetParent: T? = null
     var parent = this.parent
@@ -131,6 +159,15 @@ inline fun <reified T: ViewGroup> View.findAncestorOfType(): T?{
     return targetParent
 }
 
+/**
+ * Checks if this View is a descendant of the given [parentView].
+ *
+ * This function traverses up the view hierarchy from the current view and checks if
+ * any of its ancestors match the provided [parentView].
+ *
+ * @param parentView The [ViewGroup] to check if it's an ancestor of this view.
+ * @return `true` if this view is a descendant of [parentView], `false` otherwise.
+ */
 @JvmName("isViewDescendant")
 inline fun View.isDescendantOf(parentView: ViewGroup): Boolean {
     var parent = this.parent
@@ -143,6 +180,20 @@ inline fun View.isDescendantOf(parentView: ViewGroup): Boolean {
     return false
 }
 
+/**
+ * Sets a click listener that invokes the given action only after the view has been clicked
+ * a specific number of times within a specified interval.
+ *
+ * This is useful for implementing features like "Easter eggs" or developer options that
+ * are triggered by multiple rapid clicks.
+ *
+ * @param clickCount The number of clicks required to trigger the action. Defaults to 7.
+ * @param maxClickIntervalMillis The maximum time in milliseconds allowed between consecutive clicks
+ * for them to be considered part of the same multi-click sequence. If the time between
+ * clicks exceeds this value, the click count resets. Defaults to 1000 milliseconds (1 second).
+ * @param action The lambda function to be executed when the required number of clicks is reached
+ * within the specified interval.
+ */
 inline fun View.onMultiClick(clickCount: Int = 7, maxClickIntervalMillis: Long = 1_000, crossinline action: () -> Unit) {
     var currentCount = 0
     val resetCount = Runnable { currentCount = 0 }

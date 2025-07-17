@@ -214,7 +214,7 @@ open class SemItemDecoration @JvmOverloads constructor(
 }
 
 /**
- * Defines rules for applying item decorations in a RecyclerView.
+ * Defines rules being used by [SemItemDecoration] for applying item decorations in a RecyclerView.
  * This sealed class allows specifying whether a decoration (like a divider or sub-header background)
  * should be applied to all items, only to selected items based on a condition, or not at all.
  *

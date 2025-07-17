@@ -105,6 +105,9 @@ class SwitchItemView @JvmOverloads constructor(
      *  Makes click and check change events separate.
      *  This allows you to register separate callbacks for click and check change events.
      *  `false` by default.
+     *
+     * @see onCheckedChangedListener
+     * @see setOnClickListener
      */
     var separateSwitch: Boolean
         get() = verticalDivider.isVisible

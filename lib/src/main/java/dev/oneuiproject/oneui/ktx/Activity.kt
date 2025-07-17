@@ -6,6 +6,7 @@ import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Build.VERSION
 import android.view.inputmethod.InputMethodManager
 
+/**Returns whether this activity is in multi-window mode. */
 inline val Activity.isInMultiWindowModeCompat get() = VERSION.SDK_INT >= 24 && isInMultiWindowMode
 
 /**Hide the soft input if showing and optionally clear focus on the text input view.*/
