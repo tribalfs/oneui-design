@@ -50,6 +50,7 @@ import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isPortrait
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isTabletStyle
 import dev.oneuiproject.oneui.utils.TypedValueUtils
 import kotlin.collections.find
+import androidx.appcompat.R as appcompatR
 
 
 /**
@@ -199,6 +200,7 @@ class GridMenuDialog @JvmOverloads constructor(
                     this@wlp.y = 0
                     this@wlp.width = context.windowWidthNetOfInsets
                     gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
+                    this@wlp.windowAnimations = appcompatR.style.Animation_AppCompat_Dialog
                 }
             }
         }
