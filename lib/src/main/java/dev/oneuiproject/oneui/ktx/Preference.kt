@@ -593,6 +593,15 @@ fun <R : Preference>R.setSummaryUpdatable(isUpdatable: Boolean): R{
 )
 inline fun <R : Preference>R.setUpdatableSummaryColor(isUpdatable: Boolean): R = setSummaryUpdatable(isUpdatable)
 
+/**
+ * Retrieves a [ColorStateList] suitable for a preference summary that is user-updatable.
+ *
+ * This color state list uses the `colorPrimaryDark` theme attribute for the enabled state.
+ * For the disabled state, it uses the same color but with a reduced alpha (40% of the enabled alpha,
+ * or at least 20% alpha, whichever is greater).
+ *
+ * This provides a visual cue that the summary's content can be changed by the user.
+ */
 inline val Preference.userUpdatableSummaryColor: ColorStateList
     get(){
         val enabledColor = context.getThemeAttributeValue(androidx.appcompat.R.attr.colorPrimaryDark)!!.data
@@ -609,6 +618,16 @@ inline val Preference.userUpdatableSummaryColor: ColorStateList
         )
     }
 
+/**
+ * Retrieves the default summary color for the preference based on the current theme (light or dark).
+ * This property returns a [ColorStateList] that represents the default color used for preference summaries.
+ *
+ * This is typically used as for summaries that are not user-updatable.
+ *
+ * @return A [ColorStateList] representing the default summary color.
+ * @see userUpdatableSummaryColor
+ * @see setSummaryUpdatable
+ */
 inline val Preference.defaultSummaryColor: ColorStateList
     @SuppressLint("RestrictedApi")
     get(){

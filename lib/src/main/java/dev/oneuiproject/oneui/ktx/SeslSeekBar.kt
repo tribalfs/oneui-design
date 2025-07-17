@@ -22,6 +22,25 @@ sealed interface SeslSeekBarDualColors{
     ): SeslSeekBarDualColors
 }
 
+/**
+ * Updates the dual color range of the [SeslSeekBar].
+ *
+ * This function allows you to define a point on the SeekBar where the color of the track changes.
+ * This is useful for visually representing a threshold or a change in state.
+ *
+ * @param overlapPoint The point on the SeekBar (between [SeslSeekBar.getMin] and [SeslSeekBar.getMax])
+ *                     where the color transition should occur. If the value is outside this range,
+ *                     an error will be logged, and the function will return without making changes.
+ * @param dualColors An instance of [SeslSeekBarDualColors] that defines the colors for the two parts
+ *                   of the SeekBar.
+ *                   - [SeslSeekBarDualColors.Default]: Uses predefined default colors based on the current
+ *                     light/dark theme.
+ *                   - [SeslSeekBarDualColors.Custom]: Allows specifying custom colors for the background
+ *                     and foreground parts of the overlapping region.
+ *
+ * @see SeslSeekBar.setOverlapPointForDualColor
+ * @see SeslSeekBar.setDualModeOverlapColor
+ */
 @JvmOverloads
 inline fun <T: SeslSeekBar>T.updateDualColorRange(
     overlapPoint: Int,
@@ -54,6 +73,12 @@ inline fun <T: SeslSeekBar>T.updateDualColorRange(
 }
 
 
+/**
+ * Shows or hides the tick marks on this [SeslSeekBar].
+ *
+ * @param show `true` to show tick marks, `false` to hide them.
+ *             When set to `true`, the default tick mark drawable is used.
+ */
 inline fun <T: SeslSeekBar>T.setShowTickMarks(show: Boolean) {
     tickMark = if (show) {
         val context = context

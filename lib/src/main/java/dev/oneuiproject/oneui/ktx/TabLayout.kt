@@ -148,7 +148,7 @@ inline fun <T: TabLayout>T.addCustomTab(
  *           }
  * ```
  */
-inline fun <T: TabLayout>T.addCustomTab(
+fun <T: TabLayout>T.addCustomTab(
     tabTitle: CharSequence?,
     tabIcon: Drawable?,
     listener: View.OnClickListener,

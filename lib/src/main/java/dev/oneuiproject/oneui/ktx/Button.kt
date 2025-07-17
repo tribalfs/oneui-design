@@ -20,7 +20,7 @@ import androidx.core.view.isInvisible
  * @return the [SeslProgressBar] created and shown.
  */
 @JvmOverloads
-inline fun <T : Button> T.showProgress(asOverlay: Boolean = false): SeslProgressBar {
+fun <T : Button> T.showProgress(asOverlay: Boolean = false): SeslProgressBar {
     val parentView = parent as ViewGroup
     val btnIndex = parentView.indexOfChild(this)
     val btnWidth = width
