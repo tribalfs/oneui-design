@@ -1,278 +1,297 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nsv"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:overScrollMode="always"
-    android:scrollbars="vertical">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingHorizontal="10dp">
+        android:fillViewport="true"
+        android:overScrollMode="always"
+        android:scrollbars="vertical"
+        android:layout_marginBottom="52dp">
 
-        <dev.oneuiproject.oneui.widget.Separator
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Compound Buttons" />
-
-        <dev.oneuiproject.oneui.widget.RoundedLinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?android:colorBackground"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingHorizontal="24dp"
-            android:paddingVertical="12dp">
+            android:paddingHorizontal="10dp">
 
-            <androidx.appcompat.widget.SwitchCompat
+            <dev.oneuiproject.oneui.widget.Separator
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="6dp"
-                android:checked="true"
-                android:text="Switch" />
+                android:text="Compound Buttons" />
 
-            <androidx.appcompat.widget.AppCompatCheckBox
+            <dev.oneuiproject.oneui.widget.RoundedLinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="6dp"
-                android:checked="true"
-                android:text="CheckBox" />
+                android:background="?android:colorBackground"
+                android:orientation="vertical"
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="12dp">
 
-            <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:layout_width="0dp"
+                <androidx.appcompat.widget.SwitchCompat
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="RadioButton" />
+                    android:layout_marginVertical="6dp"
+                    android:checked="true"
+                    android:text="Switch" />
 
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:layout_width="0dp"
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="RadioButton" />
+                    android:layout_marginVertical="6dp"
+                    android:checked="true"
+                    android:text="CheckBox" />
 
-            </RadioGroup>
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-        </dev.oneuiproject.oneui.widget.RoundedLinearLayout>
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="RadioButton" />
 
-        <dev.oneuiproject.oneui.widget.Separator
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Buttons" />
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="RadioButton" />
 
-        <dev.oneuiproject.oneui.widget.RoundedLinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?android:colorBackground"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:paddingHorizontal="24dp"
-            android:paddingVertical="8dp">
+                </RadioGroup>
 
-            <Button
-                android:id="@+id/fragment_btn_1"
-                android:layout_width="wrap_content"
+            </dev.oneuiproject.oneui.widget.RoundedLinearLayout>
+
+            <dev.oneuiproject.oneui.widget.Separator
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:text="Button" />
+                android:text="Buttons" />
 
-            <Button
-                android:id="@+id/fragment_btn_2"
-                android:theme="@style/OneUI.ButtonStyleColored"
-                android:layout_width="wrap_content"
+            <dev.oneuiproject.oneui.widget.RoundedLinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:text="Button" />
+                android:background="?android:colorBackground"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="8dp">
 
-            <Button
-                android:id="@+id/fragment_btn_3"
-                style="@style/OneUI.ButtonStyleTransparent"
-                android:layout_width="wrap_content"
+                <Button
+                    android:id="@+id/fragment_btn_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="Button" />
+
+                <Button
+                    android:id="@+id/fragment_btn_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="Button"
+                    android:theme="@style/OneUI.ButtonStyleColored" />
+
+                <Button
+                    android:id="@+id/fragment_btn_3"
+                    style="@style/OneUI.ButtonStyleTransparent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="Button" />
+
+
+                <Button
+                    android:id="@+id/fragment_btn_5"
+                    style="@style/OneUI.ButtonStyleOutline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="Button" />
+
+                <Button
+                    android:id="@+id/fragment_btn_4"
+                    style="@style/OneUI.ContainedButton"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="Button"
+                    android:theme="@style/OneUI.ContainedButtonTheme" />
+
+                <Button
+                    android:id="@+id/fragment_btn_6"
+                    style="@style/OneUI.ContainedButton"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="Button"
+                    android:theme="@style/OneUI.ContainedPrimaryColorButtonTheme" />
+
+                <Button
+                    android:id="@+id/fragment_btn_7"
+                    style="@style/OneUI.ContainedButton"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="Button"
+                    android:theme="@style/OneUI.ContainedTransparentButtonTheme" />
+
+            </dev.oneuiproject.oneui.widget.RoundedLinearLayout>
+
+            <dev.oneuiproject.oneui.widget.Separator
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:text="Button" />
+                android:text="Spinner" />
 
-
-            <Button
-                android:id="@+id/fragment_btn_5"
-                style="@style/OneUI.ButtonStyleOutline"
-                android:layout_width="wrap_content"
+            <dev.oneuiproject.oneui.widget.RoundedFrameLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:text="Button" />
+                android:background="?android:colorBackground"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp">
 
-            <Button
-                android:id="@+id/fragment_btn_4"
-                android:theme="@style/OneUI.ContainedButtonTheme"
-                style="@style/OneUI.ContainedButton"
-                android:layout_width="200dp"
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/fragment_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </dev.oneuiproject.oneui.widget.RoundedFrameLayout>
+
+            <dev.oneuiproject.oneui.widget.Separator
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:text="Button" />
+                android:text="SearchView" />
 
-            <Button
-                android:id="@+id/fragment_btn_6"
-                android:theme="@style/OneUI.ContainedPrimaryColorButtonTheme"
-                style="@style/OneUI.ContainedButton"
-                android:layout_width="200dp"
+            <dev.oneuiproject.oneui.widget.RoundedFrameLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:text="Button" />
+                android:background="?android:colorBackground">
 
-            <Button
-                android:id="@+id/fragment_btn_7"
-                android:theme="@style/OneUI.ContainedTransparentButtonTheme"
-                style="@style/OneUI.ContainedButton"
-                android:layout_width="200dp"
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/searchview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:iconifiedByDefault="false" />
+
+            </dev.oneuiproject.oneui.widget.RoundedFrameLayout>
+
+            <dev.oneuiproject.oneui.widget.Separator
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:text="Button" />
+                android:text="Custom item views" />
 
-        </dev.oneuiproject.oneui.widget.RoundedLinearLayout>
+            <dev.oneuiproject.oneui.widget.RoundedLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:colorBackground"
+                android:orientation="vertical">
 
-        <dev.oneuiproject.oneui.widget.Separator
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Spinner" />
+                <dev.oneuiproject.oneui.widget.CardItemView
+                    android:id="@+id/cardItemView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:showTopDivider="false"
+                    app:title="CardItemView" />
 
-        <dev.oneuiproject.oneui.widget.RoundedFrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?android:colorBackground"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="8dp">
+                <dev.oneuiproject.oneui.widget.CardItemView
+                    android:id="@+id/cardItemViewEndDrawable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:drawableEnd="@drawable/ic_keyboard_arrow_right"
+                    app:title="CardItemView" />
 
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/fragment_spinner"
-                android:layout_width="wrap_content"
+                <dev.oneuiproject.oneui.widget.SwitchItemView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:separateSwitch="true"
+                    app:title="SwitchItemView" />
+
+                <dev.oneuiproject.oneui.widget.CardItemView
+                    android:id="@+id/cardItemViewIcon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:fullWidthDivider="true"
+                    app:icon="@drawable/about_page_avatar_tribalfs"
+                    app:title="CardItemView" />
+
+                <dev.oneuiproject.oneui.widget.SwitchItemView
+                    android:id="@+id/switchItemViewIcon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:icon="@drawable/about_page_avatar_tribalfs"
+                    app:showBottomDivider="true"
+                    app:title="SwitchItemView" />
+
+                <dev.oneuiproject.oneui.widget.RadioItemViewGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <dev.oneuiproject.oneui.widget.RadioItemView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:title="RadioItemView 1" />
+
+                    <dev.oneuiproject.oneui.widget.RadioItemView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:title="RadioItemView 2" />
+
+                    <dev.oneuiproject.oneui.widget.RadioItemView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:title="RadioItemView 3" />
+                </dev.oneuiproject.oneui.widget.RadioItemViewGroup>
+            </dev.oneuiproject.oneui.widget.RoundedLinearLayout>
+
+            <dev.oneuiproject.oneui.widget.Separator
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-        </dev.oneuiproject.oneui.widget.RoundedFrameLayout>
+            <include layout="@layout/relative_links_card_layout" />
 
-        <dev.oneuiproject.oneui.widget.Separator
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="SearchView" />
-
-        <dev.oneuiproject.oneui.widget.RoundedFrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?android:colorBackground">
-
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/searchview"
+            <dev.oneuiproject.oneui.widget.BottomTipView
+                android:id="@+id/bottomTip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:iconifiedByDefault="false" />
+                app:linkText="More details"
+                app:summary="This is a sample bottom tip description."
+                app:title="Tip" />
 
-        </dev.oneuiproject.oneui.widget.RoundedFrameLayout>
+            <Space
+                android:layout_width="1dp"
+                android:layout_height="8dp" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-        <dev.oneuiproject.oneui.widget.Separator
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Custom item views" />
-
-        <dev.oneuiproject.oneui.widget.RoundedLinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?android:colorBackground"
-            android:orientation="vertical">
-
-            <dev.oneuiproject.oneui.widget.CardItemView
-                android:id="@+id/cardItemView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:showTopDivider="false"
-                app:title="CardItemView" />
-
-            <dev.oneuiproject.oneui.widget.CardItemView
-                android:id="@+id/cardItemViewEndDrawable"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:drawableEnd="@drawable/ic_keyboard_arrow_right"
-                app:title="CardItemView" />
-
-            <dev.oneuiproject.oneui.widget.SwitchItemView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:separateSwitch="true"
-                app:title="SwitchItemView" />
-
-            <dev.oneuiproject.oneui.widget.CardItemView
-                android:id="@+id/cardItemViewIcon"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:icon="@drawable/about_page_avatar_tribalfs"
-                app:fullWidthDivider="true"
-                app:title="CardItemView" />
-
-            <dev.oneuiproject.oneui.widget.SwitchItemView
-                android:id="@+id/switchItemViewIcon"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:showBottomDivider="true"
-                app:icon="@drawable/about_page_avatar_tribalfs"
-                app:title="SwitchItemView" />
-
-            <dev.oneuiproject.oneui.widget.RadioItemViewGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <dev.oneuiproject.oneui.widget.RadioItemView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:title="RadioItemView 1" />
-
-                <dev.oneuiproject.oneui.widget.RadioItemView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:title="RadioItemView 2" />
-
-                <dev.oneuiproject.oneui.widget.RadioItemView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:title="RadioItemView 3" />
-            </dev.oneuiproject.oneui.widget.RadioItemViewGroup>
-        </dev.oneuiproject.oneui.widget.RoundedLinearLayout>
-
-        <dev.oneuiproject.oneui.widget.Separator
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <include layout="@layout/relative_links_card_layout" />
-
-        <dev.oneuiproject.oneui.widget.BottomTipView
-            android:id="@+id/bottomTip"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:linkText="More details"
-            app:summary="This is a sample bottom tip description."
-            app:title="Tip" />
-
-        <Space
-            android:layout_width="1dp"
-            android:layout_height="8dp" />
-    </LinearLayout>
-
-</androidx.core.widget.NestedScrollView>
+    <dev.oneuiproject.oneui.widget.FloatingActionBar
+        android:id="@+id/floatingActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginBottom="10dp"
+        app:button1Icon="@drawable/ic_oui_arrow_up"
+        app:button1Label="Action #1"
+        app:button2Icon="@drawable/ic_oui_arrow_down"
+        app:button2Label="Action #2"
+        app:selectedIndex="1" />
+</FrameLayout>
