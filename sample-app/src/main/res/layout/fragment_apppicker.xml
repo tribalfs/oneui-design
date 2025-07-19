@@ -37,7 +37,6 @@
             android:clipToPadding="false"
             android:background="?android:colorBackground"
             android:paddingHorizontal="10dp"
-            android:layout_marginStart="10dp"
             android:scrollbarStyle="outsideOverlay"
             android:layout_height="match_parent"
             app:strategy="@string/app_item_strategy_class"
