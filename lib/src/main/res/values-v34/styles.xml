@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="OneUI.BottomSheetDialogTitleStyle">
+        <item name="android:fontFamily" tools:ignore="PrivateResource">@string/sec_font_family</item>
+        <item name="android:textFontWeight">600</item>
+        <item name="android:textSize" tools:ignore="SpUsage">21dp</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:paddingHorizontal">22dp</item>
+    </style>
+</resources>

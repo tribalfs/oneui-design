@@ -34,14 +34,19 @@ open class SemBottomSheetDialogFragment : BottomSheetDialogFragment {
     @CallSuper
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return (super.onCreateDialog(savedInstanceState) as BottomSheetDialog).apply {
-            behavior.skipCollapsed = true
+            behavior.apply {
+                skipCollapsed = true
+                significantVelocityThreshold = 2_000
+                setReleaseLowOffset(200)
+                forceExpandOnNestedScrollStop(true)
+            }
             updateWidth()
         }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
         dialog?.updateWidth()
+        super.onConfigurationChanged(newConfig)
     }
 
     override fun onStart() {
