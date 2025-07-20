@@ -324,6 +324,7 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
                     navigationIcon = createBadgeNavIcon()
                 }
                 navigationIcon?.apply {
+                    @SuppressLint("VisibleForTests")
                     (32.dpToPx(resources) * sSlideOffset).let{
                         titleTextView?.translationX = -it
                         subtitleTextView?.translationX = -it

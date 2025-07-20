@@ -13,7 +13,7 @@ import java.util.Locale
 internal inline fun getTimeText(context: Context, calendar: Calendar, is24HourView: Boolean): String {
     var pattern = (DateFormat.getTimeFormat(context) as SimpleDateFormat).toPattern()
     if (is24HourView) {
-        pattern = pattern.replace("a", "").replace("h", "H").trim { it <= ' ' }
+        pattern = pattern.replace("a", "").replace("h", "H").trim()
     }
     return SimpleDateFormat(
         pattern,
