@@ -64,13 +64,6 @@ dependencies {
     ksp(libs.bundles.hilt.compilers)
 }
 
-kotlin {
-    sourceSets.all {
-        languageSettings.enableLanguageFeature(LanguageFeature.ExplicitBackingFields.name)
-        languageSettings.enableLanguageFeature(LanguageFeature.WhenGuards.name)
-    }
-}
-
 tasks.register("generateReleaseApk", Copy::class.java) {
     dependsOn(tasks.assemble)
     from(layout.buildDirectory.dir("outputs/apk/release"))
