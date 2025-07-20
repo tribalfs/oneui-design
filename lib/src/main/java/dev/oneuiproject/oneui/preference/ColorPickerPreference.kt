@@ -135,7 +135,7 @@ class ColorPickerPreference @JvmOverloads constructor(
 
     private fun addRecentColor(color: Int) {
         usedColors.removeAll { it == color }
-        if (usedColors.size > 5) {
+        if (usedColors.size > 6) {
             usedColors.removeAt(0)
         }
         usedColors.add(color)
@@ -170,12 +170,11 @@ class ColorPickerPreference @JvmOverloads constructor(
         var dialogBundle: Bundle?
 
         constructor(source: Parcel) : super(source) {
-            dialogBundle = source.readBundle()
+            dialogBundle = source.readBundle(Bundle::class.java.getClassLoader())
         }
 
         constructor(superState: Parcelable?) : super(superState) {
             dialogBundle = null
-
         }
 
         constructor(superState: Parcelable?, dialogBundle: Bundle?) : super(superState) {
