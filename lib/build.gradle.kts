@@ -22,8 +22,8 @@ android {
 }
 
 dependencies {
-    implementation(libs.bundles.sesl.androidx)
-    implementation(libs.sesl.material)
+    api(libs.bundles.sesl.androidx)
+    api(libs.sesl.material)
 
     api(libs.androidx.annotation)
 
@@ -33,7 +33,7 @@ dependencies {
 
     compileOnly(project(":stub"))
 
-    implementation(libs.bundles.androidx.navigation)
+    api(libs.bundles.androidx.navigation)
     lintPublish(project(":lint"))
 }
 
