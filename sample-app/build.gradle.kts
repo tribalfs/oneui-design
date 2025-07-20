@@ -46,12 +46,16 @@ android {
 }
 
 dependencies {
-    // sesl modules
+    //implementation(project(":oneui-design"))
+    implementation(libs.oneuiDesign)
+
+    // Since v0.7.6+oneui7, the sesl-androidx, sesl-material,
+    // and androidx navigation libraries are included by default via
+    // the design library. Declare them explicitly only if you
+    // need newer versions than those bundled.
     implementation(libs.bundles.sesl.androidx)
     implementation(libs.sesl.material)
-
-    implementation(project(":oneui-design"))
-    // implementation(libs.oneuiDesign)
+    implementation(libs.bundles.androidx.navigation)
 
     implementation(libs.oneuiIcons)
 
@@ -59,9 +63,9 @@ dependencies {
     implementation(libs.androidx.activityKtx)
 
     implementation(libs.bundles.androidx.datastore)
-    implementation(libs.bundles.androidx.navigation)
     implementation(libs.bundles.hilt)
     ksp(libs.bundles.hilt.compilers)
+    implementation(libs.lottie)
 }
 
 tasks.register("generateReleaseApk", Copy::class.java) {
