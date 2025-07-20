@@ -358,7 +358,8 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
         listener: ActionModeListener,
         searchOnActionMode: SearchOnActionMode,
         allSelectorStateFlow: StateFlow<AllSelectorState>?,
-        showCancel: Boolean
+        showCancel: Boolean,
+        maxActionItems: Int
     ) {
         //no op
     }

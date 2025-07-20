@@ -32,7 +32,7 @@ class MenuSynchronizer @JvmOverloads constructor(
     toolbar: Toolbar,
     onMenuItemClick: (menuItem: MenuItem) -> Boolean,
     initialState: State? = null,
-    maxActionItems: Int = 2,
+    maxActionItems: Int = 4,
     private var copyIcon: Boolean? = null,
 ) {
 

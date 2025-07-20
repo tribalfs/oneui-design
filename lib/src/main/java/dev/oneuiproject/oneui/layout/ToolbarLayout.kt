@@ -1241,7 +1241,8 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @param showCancel (optional) Show a Cancel button in the toolbar menu. Setting this to true
      * disables adaptive action mode menu (i.e. menu will always be shown as a bottom action menu.
      * This is false by default.
-     *
+     * @param maxActionItems (optional) The maximum number of items to show as action items in the Toolbar.
+     * By default, it's 4.
      * @see [endActionMode]
      */
     @JvmOverloads
@@ -1249,7 +1250,8 @@ open class ToolbarLayout @JvmOverloads constructor(
         listener: ActionModeListener,
         searchOnActionMode: SearchOnActionMode = Dismiss,
         allSelectorStateFlow: StateFlow<AllSelectorState>? = null,
-        showCancel: Boolean = false
+        showCancel: Boolean = false,
+        maxActionItems: Int = 4
     ) {
         isActionMode = true
         updateAllSelectorJob?.cancel()
@@ -1283,7 +1285,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         //swapping Toolbars on landscape.
         animatedVisibility(_mainToolbar, INVISIBLE)
         showActionModeToolbarAnimate()
-        setupActionModeMenu(showCancel)
+        setupActionModeMenu(showCancel, maxActionItems)
 
         allSelectorStateFlow?.let {ass ->
             allSelectorItemsCount = 0
@@ -1447,7 +1449,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
     }
 
-    private inline fun setupActionModeMenu(showCancel: Boolean) {
+    private inline fun setupActionModeMenu(showCancel: Boolean, maxActionItems: Int) {
         forcePortraitMenu = showCancel
 
         actionModeToolbar!!.apply {
@@ -1473,7 +1475,8 @@ open class ToolbarLayout @JvmOverloads constructor(
             onMenuItemClick = {
                 actionModeListener!!.onMenuItemClicked(it)
             },
-            null
+            null,
+            maxActionItems = maxActionItems
         ).apply {
             actionModeListener!!.onInflateActionMenu(this.menu, activity!!.menuInflater)
         }
@@ -1933,20 +1936,19 @@ inline fun <T : ToolbarLayout> T.startSearchMode(
  * ```
  * @param onInflateMenu Lambda function called at the start of [startActionMode].
  * Inflate the menu items for this action mode session using this menu.
- *
  * @param onEnd Lambda function to be invoked when action mode ends.
- *
  * @param onSelectMenuItem Lambda function to be invoked when an action menu item is selected.
  * Return true if the item click is handled, false otherwise.
- *
  * @param onSelectAll Lambda function to be invoked when the `All` selector is clicked.
  * This will not be triggered with [ToolbarLayout.updateAllSelector].
- *
  * @param searchOnActionMode (optional) The [SearchOnActionMode] option to set for this action mode.
  * Defaults to [SearchOnActionMode.Dismiss].
- *
  * @param allSelectorStateFlow (Optional) StateFlow of [AllSelectorState] that updates the `All` selector state and count.
- *
+ * @param showCancel (optional) Show a Cancel button in the toolbar menu. Setting this to true
+ * disables adaptive action mode menu (i.e. menu will always be shown as a bottom action menu.
+ * This is false by default.
+ * @param maxActionItems (optional) The maximum number of items to show as action items in the Toolbar.
+ * By default, it's 4.
  * @see ToolbarLayout.endActionMode
  */
 inline fun <T : ToolbarLayout> T.startActionMode(
@@ -1956,7 +1958,8 @@ inline fun <T : ToolbarLayout> T.startActionMode(
     crossinline onSelectAll: (Boolean) -> Unit,
     searchOnActionMode: SearchOnActionMode = Dismiss,
     allSelectorStateFlow: StateFlow<AllSelectorState>? = null,
-    showCancel: Boolean = false
+    showCancel: Boolean = false,
+    maxActionItems: Int = 4
 ) {
     startActionMode(
         object : ActionModeListener {
@@ -1969,7 +1972,8 @@ inline fun <T : ToolbarLayout> T.startActionMode(
         },
         searchOnActionMode,
         allSelectorStateFlow,
-        showCancel
+        showCancel,
+        maxActionItems
     )
 }
 
