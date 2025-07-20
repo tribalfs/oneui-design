@@ -160,7 +160,7 @@
     <attr name="drawerSelectedBackgroundColor" format="reference|color"/>
     <attr name="drawerHeaderTextAppearance" format="reference" />
 
-    <declare-styleable name="ToolbarLayoutParams">
+    <declare-styleable name="ToolbarLayout_Layout">
         <!--The location of the ToolbarLayout children views.
         This defaults to main_content if not provided.-->
         <attr name="layout_location">

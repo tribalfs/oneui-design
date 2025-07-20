@@ -784,7 +784,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     /**
      * Replace the title of the expanded Toolbar with a custom View including LayoutParams.
      * This might not be visible in landscape or on devices with small dpi.
-     * This is similar to setting [R.styleable.ToolbarLayoutParams_layout_location]
+     * This is similar to setting [R.styleable.ToolbarLayout_Layout_layout_location]
      * to [R.attr.layout_location#appbar_header]
      *
      * @see customSubtitleView
@@ -1697,8 +1697,8 @@ open class ToolbarLayout @JvmOverloads constructor(
     class ToolbarLayoutParams(context: Context, attrs: AttributeSet?) :
         LayoutParams(context, attrs) {
         val layoutLocation = attrs?.let { at ->
-            context.obtainStyledAttributes(at, R.styleable.ToolbarLayoutParams).use {
-                it.getInteger(R.styleable.ToolbarLayoutParams_layout_location, MAIN_CONTENT)
+            context.obtainStyledAttributes(at, R.styleable.ToolbarLayout_Layout).use {
+                it.getInteger(R.styleable.ToolbarLayout_Layout_layout_location, MAIN_CONTENT)
             }
         } ?: MAIN_CONTENT
     }
