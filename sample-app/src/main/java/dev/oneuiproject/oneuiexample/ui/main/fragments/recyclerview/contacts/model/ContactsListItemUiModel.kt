@@ -14,10 +14,10 @@ sealed class ContactsListItemUiModel{
         companion object{ const val VIEW_TYPE = 1 }
     }
 
-    fun toStableId(): Long{
+    fun getStableId(): Long{
         return when(this){
             is GroupItem -> groupName.hashCode().toLong()
-            is ContactItem -> contact.hashCode().toLong()
+            is ContactItem -> contact.id
             is SeparatorItem -> indexText.hashCode().toLong()
         }
     }

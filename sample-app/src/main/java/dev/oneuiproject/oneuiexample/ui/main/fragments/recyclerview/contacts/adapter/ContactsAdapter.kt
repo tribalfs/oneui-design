@@ -63,7 +63,7 @@ class ContactsAdapter @Inject constructor (
     fun submitList(listItems: List<ContactsListItemUiModel>){
         updateSections(listItems, true)
         asyncListDiffer.submitList(listItems)
-        updateSelectableIds(listItems.filter {it !is ContactsListItemUiModel.SeparatorItem }.map { it.toStableId() } )
+        updateSelectableIds(listItems.filter {it !is ContactsListItemUiModel.SeparatorItem }.map { it.getStableId() } )
     }
 
     var highlightWord = ""
@@ -77,7 +77,7 @@ class ContactsAdapter @Inject constructor (
 
     fun getItemByPosition(position: Int) = currentList[position]
 
-    override fun getItemId(position: Int) = currentList[position].toStableId()
+    override fun getItemId(position: Int) = currentList[position].getStableId()
 
     override fun getItemCount(): Int = currentList.size
 

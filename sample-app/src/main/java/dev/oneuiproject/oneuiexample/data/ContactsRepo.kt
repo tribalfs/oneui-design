@@ -9,13 +9,13 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 data class Contact(
+    val id: Long,
     val name: String,
     val number: String
 )
@@ -39,8 +39,9 @@ class ContactsRepo @Inject constructor(@ApplicationContext context: Context) {
 
     val contactsFlow: Flow<List<Contact>> = flow {
         emit(
-            personsList.map {
+            personsList.mapIndexed {i, it ->
                 Contact(
+                    id = i.toLong(),
                     name = it,
                     number = "+63" + (1000000000..9999999999).random().toString()
                 )

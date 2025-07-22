@@ -252,7 +252,7 @@ class ContactsFragment : AbsBaseFragment(R.layout.fragment_contacts),
     private fun ContactsAdapter.setupOnClickListeners() {
         onClickItem = { contact, position ->
             if (isActionMode) {
-                onToggleItem(contact.toStableId(), position)
+                onToggleItem(contact.getStableId(), position)
             } else {
                 requireActivity().hideSoftInput()
 
