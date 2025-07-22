@@ -101,14 +101,26 @@ class TabPagerMediator(
 
         val lifeCycleObserver = object : DefaultLifecycleObserver {
             override fun onDestroy(owner: LifecycleOwner) {
-                owner.lifecycle.removeObserver(this)
+                if (tabLayoutMediator.isAttached) tabLayoutMediator.detach()
+
+                if (!smoothScrollSelect) {
+                    if (isCustomTabSelectedListenerAdded) {
+                        tabLayout.removeOnTabSelectedListener(onTabSelectedListener)
+                        isCustomTabSelectedListenerAdded = false
+                    }
+                    viewPager2.unregisterOnPageChangeCallback(onPageChangeCallback)
+                }
+
                 if (isCustomTabSelectedListenerAdded) {
                     tabLayout.removeOnTabSelectedListener(onTabSelectedListener)
                     isCustomTabSelectedListenerAdded = false
                 }
+
+                owner.lifecycle.removeObserver(this)
             }
 
-            override fun onStart(owner: LifecycleOwner) {
+            override fun onCreate(owner: LifecycleOwner) {
+                super.onCreate(owner)
                 if (!tabLayoutMediator.isAttached && viewPager2.adapter != null) {
                     tabLayoutMediator.attach()
                 }
@@ -119,18 +131,6 @@ class TabPagerMediator(
                         tabLayout.addOnTabSelectedListener(onTabSelectedListener)
                         isCustomTabSelectedListenerAdded = true
                     }
-                }
-            }
-
-            override fun onStop(owner: LifecycleOwner) {
-                if (tabLayoutMediator.isAttached) tabLayoutMediator.detach()
-
-                if (!smoothScrollSelect) {
-                    if (isCustomTabSelectedListenerAdded) {
-                        tabLayout.removeOnTabSelectedListener(onTabSelectedListener)
-                        isCustomTabSelectedListenerAdded = false
-                    }
-                    viewPager2.unregisterOnPageChangeCallback(onPageChangeCallback)
                 }
             }
         }
@@ -161,8 +161,9 @@ class TabPagerMediator(
      *
      * @param enabled If `true`, enables interaction; if `false`, disables interaction.
      */
-    fun setInteractionEnabled(enabled: Boolean) {
+    @JvmOverloads
+    fun setInteractionEnabled(enabled: Boolean, applyToViewPager: Boolean = true) {
         tabLayout.setTabsEnabled(enabled)
-        viewPager2.isUserInputEnabled = enabled
+        if (applyToViewPager) viewPager2.isUserInputEnabled = enabled
     }
 }
