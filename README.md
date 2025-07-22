@@ -4,9 +4,9 @@ This design lib is consists of custom components intended to complement and inte
 and [SESL Material Components for Android](https://github.com/tribalfs/sesl-material-components-android?tab=readme-ov-file#sesloneui-material-components-for-android-unofficial).
 
 ## Usage
-- Add the needed [SESL Android Jetpack Modules](https://github.com/tribalfs/sesl-androidx?tab=readme-ov-file#sesloneui-android-jetpack-unofficial)
+- Declare the needed github maven and authentication for [SESL Android Jetpack Modules](https://github.com/tribalfs/sesl-androidx?tab=readme-ov-file#sesloneui-android-jetpack-unofficial)
   and [SESL Material Components for Android](https://github.com/tribalfs/sesl-material-components-android?tab=readme-ov-file#sesloneui-material-components-for-android-unofficial)
-  dependencies to your project following their usage guide. Then add the following dependency next:
+  dependencies to your project following their usage guide. Then add the following next:
 
 ```
 repositories {
@@ -26,11 +26,14 @@ repositories {
 dependencies {
   //sesl and other dependencies
 
+  //For OneUI 8 - must use sesl8 dependencies
+  //coming soon
+  
   //For OneUI 7 - must use sesl7 dependencies
   implementation("io.github.tribalfs:oneui-design:0.7.6+oneui7")
     
   //For OneUI 6 - must use sesl6 dependencies
-  implementation("io.github.tribalfs:oneui-design:0.6.2+oneui6")
+  implementation("io.github.tribalfs:oneui-design:0.6.3+oneui6")
 }
 ```
 
