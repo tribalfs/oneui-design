@@ -48,6 +48,7 @@ class AppPickerFragment : AbsBaseFragment(R.layout.fragment_apppicker),
     private val parentViewModel by viewModels<RvParentViewModel>({ requireParentFragment() })
     private val packageManagerHelper by lazy { AppPickerContext(requireContext()).packageManagerHelper }
     private var currentPicker: SeslAppPickerView? = null
+    private val viewModel by viewModels<AppPickerViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -55,10 +56,43 @@ class AppPickerFragment : AbsBaseFragment(R.layout.fragment_apppicker),
             toolbarLayout = it.drawerLayout
             it.addMenuProvider(menuProvider, viewLifecycleOwner, Lifecycle.State.RESUMED)
         }
-        configureSpinner()
-        setType(ListTypes.entries[0])
+
+        showAppPicker()
     }
 
+    private fun showAppPicker() {
+        viewModel.isSelectLayout.let {
+            binding.appPickerSelectLayout.isVisible = it
+            binding.simpleAppPickerFrame.isVisible = !it
+            binding.simpleAppPickerSpinner.isVisible = !it
+
+            if (it) {
+                configureSelectLayout()
+            } else {
+                configureSpinner()
+            }
+        }
+    }
+
+    private fun setType(listType: ListTypes) {
+        showProgressBar(true)
+        currentPicker = when (listType) {
+            ListTypes.TYPE_GRID,
+            ListTypes.TYPE_GRID_CHECKBOX -> binding.appPickerGridView.also {
+                it.isVisible = true
+                binding.appPickerView.isVisible = false
+            }
+            else -> binding.appPickerView.also {
+                it.isVisible = true
+                binding.appPickerGridView.isVisible = false
+            }
+        }
+        configureAppPicker(currentPicker!!)
+        val packages = getAppList(requireContext(), listType)
+        currentPicker!!.submitList(packages)
+        updateAppPickerVisibility(packages.isNotEmpty())
+        showProgressBar(false)
+    }
 
     private fun configureAppPicker(appPicker: SeslAppPickerView) {
         if (appPicker.getTag(R.id.tag_app_picker_configured) == true) return
@@ -103,34 +137,15 @@ class AppPickerFragment : AbsBaseFragment(R.layout.fragment_apppicker),
         }
     }
 
-
-    private fun setType(listType: ListTypes) {
-        showProgressBar(true)
-        currentPicker = when (listType) {
-            ListTypes.TYPE_GRID,
-            ListTypes.TYPE_GRID_CHECKBOX -> binding.appPickerGridView.also {
-                it.isVisible = true
-                binding.appPickerView.isVisible = false
-            }
-            else -> binding.appPickerView.also {
-                it.isVisible = true
-                binding.appPickerGridView.isVisible = false
-            }
-        }
-        configureAppPicker(currentPicker!!)
-        val packages = getAppList(requireContext(), listType)
-        currentPicker!!.submitList(packages)
-        updateAppPickerVisibility(packages.isNotEmpty())
-        showProgressBar(false)
-    }
-
-
     private fun showProgressBar(show: Boolean) {
         binding.apppickerProgress.isVisible = show
     }
 
     private fun configureSpinner() {
-        binding.apppickerSpinner.setEntries(
+        if (binding.simpleAppPickerSpinner.getTag(R.id.tag_app_picker_configured) == true) return
+        binding.simpleAppPickerSpinner.setTag(R.id.tag_app_picker_configured, true)
+
+        binding.simpleAppPickerSpinner.setEntries(
             ListTypes.entries.map { getString(it.description) }
         ){pos, _ ->
             pos?.let{ setType(ListTypes.entries[it]) }
@@ -138,8 +153,12 @@ class AppPickerFragment : AbsBaseFragment(R.layout.fragment_apppicker),
     }
 
     private fun applyFilter(query: String) {
-        currentPicker!!.setSearchFilter(query) {
-            updateAppPickerVisibility( it > 0)
+        if (viewModel.isSelectLayout) {
+            binding.appPickerSelectLayout.setSearchFilter(query)
+        } else {
+            currentPicker!!.setSearchFilter(query) {
+                updateAppPickerVisibility(it > 0)
+            }
         }
     }
 
@@ -153,9 +172,45 @@ class AppPickerFragment : AbsBaseFragment(R.layout.fragment_apppicker),
         }
     }
 
+     private fun configureSelectLayout() {
+        if (binding.appPickerSelectLayout.getTag(R.id.tag_app_picker_configured) == true) return
+        binding.appPickerSelectLayout.setTag(R.id.tag_app_picker_configured, true)
+
+        binding.appPickerSelectLayout.apply {
+            appPickerStateView.appListOrder = ORDER_ASCENDING
+            submitList(getAppList(requireContext(), ListTypes.TYPE_LIST_CHECKBOX))
+            enableSelectedAppPickerView(true)
+            setOnStateChangeListener(
+                object : OnStateChangeListener {
+                    override fun onStateAllChanged(isAllSelected: Boolean) {}
+
+                    override fun onStateChanged(
+                        appInfo: AppInfo,
+                        isSelected: Boolean
+                    ) {
+                        if (isSelected) {
+                            addSelectedItem(appInfo)
+                        } else {
+                            removeSelectedItem(appInfo)
+                        }
+                    }
+                }
+            )
+        }
+    }
+
     private val menuProvider = object : MenuProvider {
         override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
             menuInflater.inflate(R.menu.menu_apppicker, menu)
+        }
+
+        override fun onPrepareMenu(menu: Menu) {
+            super.onPrepareMenu(menu)
+            if (viewModel.isSelectLayout) {
+                menu.findItem(R.id.menu_apppicker_options).title = "Single picker mode"
+            } else {
+                menu.findItem(R.id.menu_apppicker_options).title = "Select layout mode"
+            }
         }
 
         override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -171,7 +226,7 @@ class AppPickerFragment : AbsBaseFragment(R.layout.fragment_apppicker),
                                     imm.showSoftInput(it, 0)
                                 }
                                 parentViewModel.isTabLayoutEnabled = false
-                                binding.apppickerSpinner.isEnabled = false
+                                binding.simpleAppPickerSpinner.isEnabled = false
                             },
                             onQuery = { query, _ ->
                                 applyFilter(query)
@@ -180,11 +235,17 @@ class AppPickerFragment : AbsBaseFragment(R.layout.fragment_apppicker),
                             onEnd = {
                                 applyFilter("")
                                 parentViewModel.isTabLayoutEnabled = true
-                                binding.apppickerSpinner.isEnabled = true
+                                binding.simpleAppPickerSpinner.isEnabled = true
                             },
                             onBackBehavior = ToolbarLayout.SearchModeOnBackBehavior.CLEAR_DISMISS
                         )
                     }
+                    true
+                }
+
+                R.id.menu_apppicker_options -> {
+                    viewModel.isSelectLayout = !viewModel.isSelectLayout
+                    showAppPicker()
                     true
                 }
                 else -> false

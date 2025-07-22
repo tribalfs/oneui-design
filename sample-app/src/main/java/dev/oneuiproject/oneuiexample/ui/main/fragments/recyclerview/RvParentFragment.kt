@@ -29,7 +29,7 @@ class RvParentFragment : AbsBaseFragment(R.layout.fragment_recycler) {
         launchAndRepeatWithViewLifecycle {
             viewModel.isTabLayoutEnabledStateFlow
                 .collectLatest {
-                    tabPagerMediator.setInteractionEnabled(it)
+                    tabPagerMediator.setInteractionEnabled(it, false)
                 }
         }
     }
@@ -43,6 +43,10 @@ class RvParentFragment : AbsBaseFragment(R.layout.fragment_recycler) {
         tabPagerMediator = TabPagerMediator(this, binding.tabs, binding.vp2) { tab: Tab?, pos ->
             tab?.text = titles[pos]
         }
+
+        //Conflicts with recyclerview's swipe item animator and
+        //horizontal scrolling contents in pages
+        binding.vp2.isUserInputEnabled = false
     }
 
     private class ViewPagerAdapter(fm: Fragment) : FragmentStateAdapter(fm) {

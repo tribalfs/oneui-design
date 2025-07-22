@@ -73,15 +73,6 @@ class ContactsFragment : AbsBaseFragment(R.layout.fragment_contacts),
     lateinit var contactsAdapter: ContactsAdapter
     private var rvTipView: TipPopup? = null
     private var fabTipPopup: TipPopup? = null
-    private val indexBarEventListener = object: OnIndexBarEventListener{
-        override fun onIndexChanged(sectionIndex: Int) {}
-        override fun onPressed(v: Float) {
-            parentViewModel.isTabLayoutEnabled = false
-        }
-        override fun onReleased(v: Float) {
-            parentViewModel.isTabLayoutEnabled = !(viewModel.isActionMode || viewModel.isSearchMode)
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -138,7 +129,6 @@ class ContactsFragment : AbsBaseFragment(R.layout.fragment_contacts),
                 viewModel.initialSelectedIds = it.asSet().toTypedArray()
             }
         }
-        binding.indexscrollView.removeOnIndexEventListener(indexBarEventListener)
     }
 
     private fun configureRecyclerView() {
@@ -174,7 +164,6 @@ class ContactsFragment : AbsBaseFragment(R.layout.fragment_contacts),
         binding.indexscrollView.apply {
             setIndexScrollMargin(0, 78.dpToPx(resources))
             attachToRecyclerView(binding.contactsList)
-            addOnIndexEventListener(indexBarEventListener)
         }
 
         binding.tvNoItem.translateYWithAppBar(

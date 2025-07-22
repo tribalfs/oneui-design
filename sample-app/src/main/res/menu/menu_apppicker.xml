@@ -11,4 +11,9 @@
         app:iconTint="?actionMenuTextColor"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/menu_apppicker_options"
+        android:title="SelectLayout Mode"
+        app:showAsAction="never" />
+
 </menu>
