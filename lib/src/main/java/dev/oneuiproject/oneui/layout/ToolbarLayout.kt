@@ -462,10 +462,20 @@ open class ToolbarLayout @JvmOverloads constructor(
         super.onDetachedFromWindow()
         _appBarLayout.removeOnOffsetChangedListener(appBarOffsetListener)
         footerParent.removeOnLayoutChangeListener(footerLayoutListener)
+        if (isTouching) isTouching = false
+    }
+
+    override fun onWindowFocusChanged(hasWindowFocus: Boolean) {
+        super.onWindowFocusChanged(hasWindowFocus)
+        if (!hasWindowFocus && isTouching) {
+            isTouching = false
+            handlePendingActions()
+        }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
+        if (isTouching) isTouching = false
         if (!isAttachedToWindow) return
         refreshLayout(newConfig)
         updateAppbarHeight()
@@ -1069,14 +1079,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             MotionEvent.ACTION_DOWN -> isTouching = true
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                 isTouching = false
-                if (syncMenuPending){
-                    syncMenuPending = false
-                    syncActionModeMenu()
-                }
-                if (showActionModeSearchPending) {
-                    showActionModeSearchPending = false
-                    showActionModeSearchView()
-                }
+                handlePendingActions()
             }
         }
         return super.dispatchTouchEvent(event)
@@ -1330,6 +1333,17 @@ open class ToolbarLayout @JvmOverloads constructor(
             null
         ).apply {
           mActionModeListener!!.onInflateActionMenu(this.menu, activity!!.menuInflater)
+        }
+    }
+
+    private fun handlePendingActions() {
+        if (syncMenuPending) {
+            syncMenuPending = false
+            syncActionModeMenu()
+        }
+        if (showActionModeSearchPending) {
+            showActionModeSearchPending = false
+            showActionModeSearchView()
         }
     }
 
