@@ -28,6 +28,7 @@ import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.ktx.isSoftKeyboardShowing
 import dev.oneuiproject.oneui.ktx.seslSetFastScrollerAdditionalPadding
 import dev.oneuiproject.oneui.ktx.setEntries
+import dev.oneuiproject.oneui.layout.NavDrawerLayout
 import dev.oneuiproject.oneui.layout.ToolbarLayout
 import dev.oneuiproject.oneui.layout.startSearchMode
 import dev.oneuiproject.oneuiexample.ui.main.MainActivity
@@ -44,7 +45,7 @@ class AppPickerFragment : AbsBaseFragment(R.layout.fragment_apppicker),
     ViewYTranslator by AppBarAwareYTranslator() {
 
     private val binding by autoCleared { FragmentApppickerBinding.bind(requireView()) }
-    private lateinit var toolbarLayout: ToolbarLayout
+    private lateinit var navDrawerLayout: NavDrawerLayout
     private val parentViewModel by viewModels<RvParentViewModel>({ requireParentFragment() })
     private val packageManagerHelper by lazy { AppPickerContext(requireContext()).packageManagerHelper }
     private var currentPicker: SeslAppPickerView? = null
@@ -53,7 +54,7 @@ class AppPickerFragment : AbsBaseFragment(R.layout.fragment_apppicker),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (requireActivity() as MainActivity).let {
-            toolbarLayout = it.drawerLayout
+            navDrawerLayout = it.drawerLayout
             it.addMenuProvider(menuProvider, viewLifecycleOwner, Lifecycle.State.RESUMED)
         }
 
@@ -217,7 +218,7 @@ class AppPickerFragment : AbsBaseFragment(R.layout.fragment_apppicker),
             return when (menuItem.itemId) {
 
                 R.id.menu_apppicker_search -> {
-                    toolbarLayout.apply {
+                    navDrawerLayout.apply {
                         startSearchMode(
                             onStart = {
                                 it.queryHint = "Search app"

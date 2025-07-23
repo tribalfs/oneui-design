@@ -8,7 +8,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.sec.sesl.tester.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import dev.oneuiproject.oneui.ktx.startPopOverActivity
-import dev.oneuiproject.oneui.layout.DrawerLayout
+import dev.oneuiproject.oneui.layout.NavDrawerLayout
 import dev.oneuiproject.oneui.navigation.setupNavigation
 import dev.oneuiproject.oneui.widget.BottomTabLayout
 import dev.oneuiproject.oneuiexample.ui.preference.PreferenceActivity
@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    val drawerLayout: DrawerLayout get() = binding.drawerLayout
+    val drawerLayout: NavDrawerLayout get() = binding.drawerLayout
     val bottomTab: BottomTabLayout get() = binding.bottomTab
 
     public override fun onNewIntent(intent: Intent) {
