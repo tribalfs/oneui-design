@@ -49,10 +49,10 @@ dependencies {
     //implementation(project(":oneui-design"))
     implementation(libs.oneuiDesign)
 
-    // Since v0.7.6+oneui7, the sesl-androidx, sesl-material,
-    // and androidx navigation libraries are included by default via
-    // the design library. Declare them explicitly only if you
-    // need newer versions than those bundled.
+    // Since v0.7.6+oneui7, it's not anymore required to explicitly declare
+    // sesl-androidx, sesl-material, or androidx navigation dependencies,
+    // unless you need versions newer than those bundled with this design library.
+    // However, GitHub authentication is still required to resolve the sesl* modules.
     implementation(libs.bundles.sesl.androidx)
     implementation(libs.sesl.material)
     implementation(libs.bundles.androidx.navigation)
