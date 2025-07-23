@@ -48,7 +48,7 @@ class SeekBarPlus @JvmOverloads constructor(
         context.withStyledAttributes(attrs, R.styleable.SeekBarPlus) {
             setSeamless(getBoolean(R.styleable.SeekBarPlus_seamless, true))
             centerBasedBar = getBoolean(R.styleable.SeekBarPlus_centerBasedBar, true)
-            if (centerBasedBar) setMode(MODE_LEVEL_BAR)
+            if (centerBasedBar) super.setMode(MODE_LEVEL_BAR)
         }
         progressTintMode = PorterDuff.Mode.SRC
     }
