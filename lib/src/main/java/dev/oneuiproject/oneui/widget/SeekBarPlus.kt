@@ -33,7 +33,7 @@ class SeekBarPlus @JvmOverloads constructor(
         context.obtainStyledAttributes(attrs, R.styleable.SeekBarPlus).use{ a ->
             setSeamless(a.getBoolean(R.styleable.SeekBarPlus_seamless, true))
             centerBasedBar = a.getBoolean(R.styleable.SeekBarPlus_centerBasedBar, true)
-            if (centerBasedBar) setMode(MODE_LEVEL_BAR)
+            if (centerBasedBar) super.setMode(MODE_LEVEL_BAR)
         }
         progressTintMode = PorterDuff.Mode.SRC
         // This will make the view animate with recoil anim
