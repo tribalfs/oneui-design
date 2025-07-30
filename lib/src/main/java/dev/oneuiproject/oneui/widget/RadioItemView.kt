@@ -117,7 +117,7 @@ class RadioItemView @JvmOverloads constructor(
     }
 
     override fun dispatchTouchEvent(motionEvent: MotionEvent): Boolean {
-        if (Build.VERSION.SDK_INT >= 29) {
+        if (Build.VERSION.SDK_INT >= 29 && isEnabled) {
             semTouchFeedbackAnimator.animate(motionEvent)
         }
         return super.dispatchTouchEvent(motionEvent)

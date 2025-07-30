@@ -486,7 +486,7 @@ class SwitchItemView @JvmOverloads constructor(
     }
 
     override fun dispatchTouchEvent(motionEvent: MotionEvent): Boolean {
-        if (Build.VERSION.SDK_INT >= 29 && (isClickable || isFocusable)) {
+        if (Build.VERSION.SDK_INT >= 29 && isEnabled && (isClickable || isFocusable)) {
             val switchBounds = Rect().apply { switchView.getHitRect(this) }
             val isTouchOnSwitch = switchBounds.contains(motionEvent.x.toInt(), motionEvent.y.toInt())
             if (!isTouchOnSwitch) {

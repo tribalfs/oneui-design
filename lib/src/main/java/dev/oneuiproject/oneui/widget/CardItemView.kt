@@ -356,7 +356,7 @@ class CardItemView @JvmOverloads constructor(
     }
 
     override fun dispatchTouchEvent(motionEvent: MotionEvent): Boolean {
-        if (Build.VERSION.SDK_INT >= 29 && (isClickable || isFocusable)) {
+        if (Build.VERSION.SDK_INT >= 29 && isEnabled && (isClickable || isFocusable)) {
             semTouchFeedbackAnimator.animate(motionEvent)
         }
         return super.dispatchTouchEvent(motionEvent)
