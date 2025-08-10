@@ -4,7 +4,6 @@ package dev.oneuiproject.oneui.widget
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.ColorStateList
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -22,9 +21,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.core.content.withStyledAttributes
-import androidx.core.graphics.ColorUtils
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -34,7 +31,6 @@ import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
 import dev.oneuiproject.oneui.utils.SemTouchFeedbackAnimator
-import kotlinx.coroutines.Runnable
 
 /**
  * A custom view that displays a title, summary, and a switch.
@@ -318,6 +314,7 @@ class SwitchItemView @JvmOverloads constructor(
             if (isClickable) {
                 if (!separateSwitch) {
                     switchView.performClick()
+                    super.callOnClick()
                 } else {
                     super.callOnClick()
                 }
@@ -343,7 +340,7 @@ class SwitchItemView @JvmOverloads constructor(
 
     @SuppressLint("ClickableViewAccessibility")
     override fun performClick(): Boolean {
-        return switchView.performClick()
+        return contentFrame.performClick()
     }
 
     private fun updateSubtitleVisibility() {
