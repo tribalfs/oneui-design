@@ -1,6 +1,7 @@
 package dev.oneuiproject.oneui.layout
 
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.os.Parcel
 import android.os.Parcelable
@@ -17,10 +18,12 @@ import androidx.core.view.doOnLayout
 import androidx.customview.view.AbsSavedState
 import androidx.customview.widget.Openable
 import dev.oneuiproject.oneui.design.R
+import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.layout.internal.backapi.BackHandler
 import dev.oneuiproject.oneui.layout.internal.util.DrawerLayoutInterface
 import dev.oneuiproject.oneui.layout.internal.util.NavButtonsHandler
 import dev.oneuiproject.oneui.layout.internal.widget.SemDrawerLayout
+import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isPortrait
 
 
 /**
@@ -53,6 +56,10 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         CLOSING,
         OPENING
     }
+
+    enum class FeatureState {
+        UNSET, ENABLED, DISABLED
+    }
     
     fun interface DrawerStateListener{
         fun onStateChanged(state: DrawerState)
@@ -62,13 +69,17 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         fun onLockChanged(isLocked: Boolean)
     }
 
+    fun interface DrawerWidthProvider {
+        fun getWidth(resources: Resources, isLargeScreenMode: Boolean, isMultiWindow: Boolean): Int
+    }
+
     protected var drawerLockListener: DrawerLockListener? = null
         private set
 
     protected var enableDrawerBackAnimation: Boolean = false
         private set
 
-    protected var drawerEnabled = true
+    protected var drawerEnabledState: FeatureState = FeatureState.UNSET
         private set
 
     init { initLayoutAttrs(attrs) }
@@ -126,7 +137,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
     }
 
     protected open fun updateDrawerLock() {
-        val newLockState = isActionMode || isSearchMode || !drawerEnabled
+        val newLockState = isActionMode || isSearchMode || drawerEnabledState == FeatureState.DISABLED
         if (containerLayout.isLocked != newLockState) {
             containerLayout.isLocked = newLockState
             drawerLockListener?.onLockChanged(newLockState)
@@ -280,17 +291,20 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
      * When the drawer is disabled, the navigation button will be hidden
      * and the drawer pane will not be accessible.
      *
-     * @param drawerEnabled True to enable the drawer, false to disable it.
+     * @param enabled True to enable the drawer, false to disable it.
      */
-    open fun setDrawerEnabled(drawerEnabled: Boolean){
-        if (this.drawerEnabled == drawerEnabled) return
-        this.drawerEnabled = drawerEnabled
-        if (isAttachedToWindow) updateDrawerState()
+    open fun setDrawerEnabled(enabled: Boolean){
+        val newState = if (enabled) FeatureState.ENABLED else FeatureState.DISABLED
+        if (drawerEnabledState == newState) return
+        drawerEnabledState = newState
+        if (isAttachedToWindow) {
+            updateDrawerState()
+        }
     }
 
     protected open fun updateDrawerState(animate: Boolean = true){
         updateDrawerLock()
-        if (drawerEnabled) {
+        if (drawerEnabledState != FeatureState.DISABLED) {
             showNavigationButton = true
             setNavigationButtonTooltip(resources.getText(R.string.oui_des_navigation_drawer))
           } else {
@@ -299,10 +313,19 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         }
     }
 
+    /**
+     * Sets a custom [DrawerWidthProvider] to determine the drawer's width.
+     *
+     * @param drawerWidthProvider The provider to use for calculating drawer width.
+     * By default this is set to [DEFAULT_DRAWER_WIDTH_PROVIDER].
+     */
+    open fun setDrawerWidthProvider (drawerWidthProvider: DrawerWidthProvider) =
+        containerLayout.setDrawerWidthProvider(drawerWidthProvider)
+
     override fun onSaveInstanceState(): Parcelable {
         val superState = super.onSaveInstanceState()
         val state = SavedState(superState)
-        state.drawerEnabled = drawerEnabled
+        state.drawerEnabledState = drawerEnabledState.ordinal
         return state
     }
 
@@ -311,24 +334,25 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
             super.onRestoreInstanceState(state)
             return
         }
-        if (this.drawerEnabled != state.drawerEnabled) {
-            this.drawerEnabled = state.drawerEnabled
+        /** Only restore if drawerEnabled has not been explicitly set with [setDrawerEnabled] */
+        if (drawerEnabledState == FeatureState.UNSET && drawerEnabledState.ordinal != state.drawerEnabledState) {
+            drawerEnabledState = FeatureState.entries[state.drawerEnabledState]
             updateDrawerState(false)
         }
         super.onRestoreInstanceState(state.superState)
     }
 
     private class SavedState : AbsSavedState {
-        var drawerEnabled = true
+        var drawerEnabledState: Int = 0
 
         constructor(superState: Parcelable?) : super(superState!!)
         constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
-            drawerEnabled = parcel.readInt() != 0
+            drawerEnabledState = parcel.readInt()
         }
 
         override fun writeToParcel(out: Parcel, flags: Int) {
             super.writeToParcel(out, flags)
-            out.writeInt(if (drawerEnabled) 1 else 0)
+            out.writeInt(drawerEnabledState)
         }
 
         companion object {
@@ -349,6 +373,38 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
         private const val DRAWER_HEADER = 4
         const val DRAWER_PANEL = 5
 
+        /**
+         * Default provider for calculating the drawer width.
+         *
+         *  **Large Screen Mode:**
+         *   - Width is 40% of the screen width.
+         *   - Maximum width is capped at 318dp. In landscape mode, except in multi-window mode,
+         *     the maximum width is 378dp.
+         *
+         *  **Normal Screen Mode (based on screen width in dp):**
+         *   - `>= 960dp`: 318dp
+         *   - `600dp - 959dp`: 40% of screen width
+         *   - `480dp - 599dp`: 60% of screen width
+         *   - `< 480dp`: 86% of screen width
+         */
+        @JvmField
+        val DEFAULT_DRAWER_WIDTH_PROVIDER = DrawerWidthProvider { resources, isLargeScreenMode, isMultiWindow, ->
+            if (isLargeScreenMode) {
+                val displayMetrics = resources.displayMetrics
+                val isPortraitOrMultiWindow = isPortrait(resources.configuration) || isMultiWindow
+                val maxWidth =  (if (isPortraitOrMultiWindow) 318 else 378).dpToPx(displayMetrics)
+                (displayMetrics.widthPixels * 0.4).toInt().coerceAtMost(maxWidth)
+            } else {
+                resources.configuration.screenWidthDp.let {
+                    when {
+                        it >= 960 -> 318f
+                        it in 600..959 -> it * 0.40f
+                        it in 480..599 -> it * 0.60f
+                        else -> it * 0.86f
+                    }.dpToPx(resources)
+                }
+            }
+        }
     }
 }
 

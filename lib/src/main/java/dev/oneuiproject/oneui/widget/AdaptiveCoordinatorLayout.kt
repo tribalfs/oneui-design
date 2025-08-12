@@ -27,9 +27,6 @@ import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.updateStat
  * @param attrs (Optional) The attributes of the XML tag that is inflating the view.
  * @param defStyleAttr (Optional) An attribute in the current theme that contains a
  * reference to a style resource that supplies default values for the view.
- * @param defStyleRes (Optional) A resource identifier of a style resource that
- * supplies default values for the view, used only if defStyleAttr is not provided
- * or cannot be found in the theme.
  *
  * @see configureAdaptiveMargin
  * @see MARGIN_PROVIDER_ADP_DEFAULT
@@ -168,7 +165,7 @@ open class AdaptiveCoordinatorLayout @JvmOverloads constructor(
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        computeSideMarginParams()
+        if (w != oldw) computeSideMarginParams()
         super.onSizeChanged(w, h, oldw, oldh)
     }
 

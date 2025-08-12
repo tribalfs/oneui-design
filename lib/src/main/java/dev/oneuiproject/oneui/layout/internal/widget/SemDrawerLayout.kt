@@ -38,7 +38,9 @@ import dev.oneuiproject.oneui.ktx.ifNegativeOrZero
 import dev.oneuiproject.oneui.ktx.semSetRoundedCorners
 import dev.oneuiproject.oneui.ktx.semSetToolTipText
 import dev.oneuiproject.oneui.layout.Badge
+import dev.oneuiproject.oneui.layout.DrawerLayout.Companion.DEFAULT_DRAWER_WIDTH_PROVIDER
 import dev.oneuiproject.oneui.layout.DrawerLayout.DrawerState
+import dev.oneuiproject.oneui.layout.DrawerLayout.DrawerWidthProvider
 import dev.oneuiproject.oneui.layout.internal.delegate.DrawerBackAnimator
 import dev.oneuiproject.oneui.layout.internal.delegate.DrawerLayoutBackHandler
 import dev.oneuiproject.oneui.layout.internal.delegate.ToolbarLayoutButtonsHandler
@@ -89,6 +91,8 @@ internal class SemDrawerLayout @JvmOverloads constructor(
 
     private val updateHandler = Handler(Looper.getMainLooper())
     private var lastScreenWidthDp: Int = 0
+
+    private var drawerWidthProvider: DrawerWidthProvider = DEFAULT_DRAWER_WIDTH_PROVIDER
 
     init {
         ContextCompat.getColor(context, R.color.oui_des_drawerlayout_drawer_dim_color).let {
@@ -145,7 +149,7 @@ internal class SemDrawerLayout @JvmOverloads constructor(
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        if (!isAttachedToWindow) return
+        if (oldw == w || !isAttachedToWindow) return
         updateDrawerWidthAndState()
     }
 
@@ -165,14 +169,11 @@ internal class SemDrawerLayout @JvmOverloads constructor(
     }
 
     private fun updateDrawerWidth() {
-        val drawerWidth = resources.configuration.screenWidthDp.let {
-            when {
-                it >= 960 -> 310f
-                it in 600..959 -> it * 0.40f
-                it in 480..599 -> it * 0.60f
-                else -> it * 0.86f
-            }.dpToPx(resources)
-        }
+        val drawerWidth = drawerWidthProvider.getWidth(
+            resources,
+            isLargeScreenMode = false,
+            isMultiWindow = false
+        )
 
         if (drawerPane.layoutParams.width != drawerWidth) {
             drawerPane.updateLayoutParams { width = drawerWidth }
@@ -181,6 +182,13 @@ internal class SemDrawerLayout @JvmOverloads constructor(
         if (isInEditMode && isOpen){
             ensureOpenDrawerPreview()
         }
+    }
+
+    override fun setDrawerWidthProvider(drawerWidthProvider: DrawerWidthProvider) {
+        // For functional interfaces (lambdas), equality is by reference, not by logic.
+        if (this.drawerWidthProvider === drawerWidthProvider) return
+        this.drawerWidthProvider = drawerWidthProvider
+        updateDrawerWidth()
     }
 
     private fun ensureOpenDrawerPreview(){

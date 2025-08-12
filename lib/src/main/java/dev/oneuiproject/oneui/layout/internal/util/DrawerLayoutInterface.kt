@@ -8,6 +8,7 @@ import androidx.annotation.RestrictTo
 import androidx.core.view.WindowInsetsCompat
 import dev.oneuiproject.oneui.layout.DrawerLayout
 import dev.oneuiproject.oneui.layout.DrawerLayout.DrawerState
+import dev.oneuiproject.oneui.layout.DrawerLayout.DrawerWidthProvider
 import dev.oneuiproject.oneui.layout.internal.delegate.DrawerLayoutBackHandler
 
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
@@ -27,4 +28,10 @@ internal interface DrawerLayoutInterface{
     val isDrawerOpenOrIsOpening: Boolean
     fun getDrawerSlideOffset(): Float
     fun getOrCreateBackHandler(drawerLayout: DrawerLayout): DrawerLayoutBackHandler<DrawerLayout>
+    /**
+     * Sets a custom [DrawerWidthProvider] to determine the drawer's width.
+     *
+     * @param drawerWidthProvider The provider to use for calculating drawer width.
+     */
+    fun setDrawerWidthProvider(drawerWidthProvider: DrawerWidthProvider)
 }

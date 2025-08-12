@@ -13,7 +13,6 @@ import androidx.annotation.Px
 import androidx.annotation.RestrictTo
 import androidx.core.view.doOnLayout
 import androidx.customview.view.AbsSavedState
-import androidx.slidingpanelayout.widget.SlidingPaneLayout.Companion.LOCK_MODE_LOCKED_OPEN
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.layout.DrawerLayout
 import dev.oneuiproject.oneui.layout.NavDrawerLayout.Companion.DEFAULT_NAV_RAIL_DETAILS_WIDTH
@@ -53,10 +52,10 @@ class NavDrawerLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : OneUIDrawerLayout(context, attrs) {
 
-    @Px private var navRailContentMinSideMargin: Int = 0
+   @Px private var navRailContentMinSideMargin: Int = 0
     @Px private var navRailContentPreferredWidth: Int = DEFAULT_NAV_RAIL_DETAILS_WIDTH
-    private var navRailContentPaneResizeOff = false
-    private var hideNavRailDrawerOnCollapse = false
+    private var navRailContentPaneResizeOffState: FeatureState = FeatureState.UNSET
+    private var hideNavRailDrawerOnCollapseState: FeatureState = FeatureState.UNSET
 
     private var semSlidingPaneLayout: SemSlidingPaneLayout? = null
 
@@ -137,7 +136,7 @@ class NavDrawerLayout @JvmOverloads constructor(
     private fun updateContentWidth() {
         (containerLayout as? SemSlidingPaneLayout)?.apply {
             updateContentMinSidePadding(navRailContentMinSideMargin)
-            if (navRailContentPaneResizeOff){
+            if (navRailContentPaneResizeOffState == FeatureState.ENABLED){
                 doOnLayout { seslSetResizeOff(true) }
             }else {
                 if (seslGetPreferredContentPixelSize() != navRailContentPreferredWidth) {
@@ -173,8 +172,9 @@ class NavDrawerLayout @JvmOverloads constructor(
      * This is false by default.
      */
     fun setNavRailContentPaneResizeOff(resizeOff: Boolean){
-        if (navRailContentPaneResizeOff == resizeOff) return
-        navRailContentPaneResizeOff = resizeOff
+        val resizeOffState = if (resizeOff) FeatureState.ENABLED else FeatureState.DISABLED
+        if (navRailContentPaneResizeOffState == resizeOffState) return
+        navRailContentPaneResizeOffState = resizeOffState
         (containerLayout as? SemSlidingPaneLayout)?.apply {
             if (seslGetResizeOff() != resizeOff) {
                 doOnLayout { seslSetResizeOff(resizeOff) }
@@ -210,7 +210,7 @@ class NavDrawerLayout @JvmOverloads constructor(
         (containerLayout as? SemSlidingPaneLayout)?.apply {
             val newLockState = lockNavRailOnActionMode && isActionMode
                     || lockNavRailOnSearchMode && isSearchMode
-                    || !drawerEnabled
+                    || drawerEnabledState == FeatureState.DISABLED
             if (isLocked != newLockState) {
                 isLocked = newLockState
                 drawerLockListener?.onLockChanged(newLockState)
@@ -288,14 +288,21 @@ class NavDrawerLayout @JvmOverloads constructor(
 
 
     fun setHideNavRailDrawerOnCollapse(hideOnCollapse: Boolean){
-        if (this.hideNavRailDrawerOnCollapse == hideOnCollapse) return
-        this.hideNavRailDrawerOnCollapse = hideOnCollapse
+        val hideOnCollapseState = if (hideOnCollapse) FeatureState.ENABLED else FeatureState.DISABLED
+        if (this.hideNavRailDrawerOnCollapseState == hideOnCollapseState) return
+        this.hideNavRailDrawerOnCollapseState = hideOnCollapseState
         updateDrawerState()
     }
 
     override fun updateDrawerState(animate: Boolean) {
         (containerLayout as? SemSlidingPaneLayout)?.apply {
-            setDrawerEnabled(drawerEnabled, hideNavRailDrawerOnCollapse, animate)
+            val drawerEnabled = drawerEnabledState != FeatureState.DISABLED
+            val hideOnCollapsed = hideNavRailDrawerOnCollapseState == FeatureState.ENABLED
+            setDrawerEnabled(
+                enabled = drawerEnabled,
+                hideOnCollapsed = hideOnCollapsed,
+                animate = animate
+            )
             if (drawerEnabled) {
                 updateDrawerLock()
             }else{
@@ -309,8 +316,8 @@ class NavDrawerLayout @JvmOverloads constructor(
     override fun onSaveInstanceState(): Parcelable {
         val superState = super.onSaveInstanceState()
         return SavedState(superState).apply {
-            navRailContentPaneResizeOff = this@NavDrawerLayout.navRailContentPaneResizeOff
-            hideNavRailDrawerOnCollapse = this@NavDrawerLayout.hideNavRailDrawerOnCollapse
+            navRailContentPaneResizeOff = navRailContentPaneResizeOffState.ordinal
+            hideNavRailDrawerOnCollapse = this@NavDrawerLayout.hideNavRailDrawerOnCollapseState.ordinal
             isNavRailOpen = (containerLayout as? SemSlidingPaneLayout)?.isDrawerOpen ?: sNavRailOpen
         }
     }
@@ -320,8 +327,14 @@ class NavDrawerLayout @JvmOverloads constructor(
             super.onRestoreInstanceState(state)
             return
         }
-        setNavRailContentPaneResizeOff(state.navRailContentPaneResizeOff)
-        setHideNavRailDrawerOnCollapse(state.hideNavRailDrawerOnCollapse)
+        if (navRailContentPaneResizeOffState == FeatureState.UNSET &&
+            FeatureState.entries[state.navRailContentPaneResizeOff] == FeatureState.ENABLED) {
+            setNavRailContentPaneResizeOff(true)
+        }
+        if (hideNavRailDrawerOnCollapseState == FeatureState.UNSET &&
+            FeatureState.entries[state.hideNavRailDrawerOnCollapse] == FeatureState.ENABLED) {
+            setHideNavRailDrawerOnCollapse(true)
+        }
         val semSlidingPane = containerLayout as? SemSlidingPaneLayout
         if (semSlidingPane != null) {
             if (state.isNavRailOpen) semSlidingPane.open(false)
@@ -332,21 +345,21 @@ class NavDrawerLayout @JvmOverloads constructor(
     }
 
     private class SavedState : AbsSavedState {
-        var navRailContentPaneResizeOff = false
-        var hideNavRailDrawerOnCollapse = false
+        var navRailContentPaneResizeOff: Int = 0
+        var hideNavRailDrawerOnCollapse: Int = 0
         var isNavRailOpen = false
 
         constructor(superState: Parcelable?) : super(superState!!)
         constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
-            navRailContentPaneResizeOff = parcel.readInt() != 0
-            hideNavRailDrawerOnCollapse = parcel.readInt() != 0
+            navRailContentPaneResizeOff = parcel.readInt()
+            hideNavRailDrawerOnCollapse = parcel.readInt()
             isNavRailOpen = parcel.readInt() != 0
         }
 
         override fun writeToParcel(out: Parcel, flags: Int) {
             super.writeToParcel(out, flags)
-            out.writeInt(if (navRailContentPaneResizeOff) 1 else 0)
-            out.writeInt(if (hideNavRailDrawerOnCollapse) 1 else 0)
+            out.writeInt(navRailContentPaneResizeOff)
+            out.writeInt(hideNavRailDrawerOnCollapse)
             out.writeInt(if (isNavRailOpen) 1 else 0)
         }
 

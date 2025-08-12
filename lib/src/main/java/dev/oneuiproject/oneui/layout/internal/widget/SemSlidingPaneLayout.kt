@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.Configuration
+import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.os.SystemClock
@@ -45,9 +46,12 @@ import dev.oneuiproject.oneui.ktx.appCompatActivity
 import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.ktx.dpToPxFactor
 import dev.oneuiproject.oneui.ktx.fitsSystemWindows
+import dev.oneuiproject.oneui.ktx.isInMultiWindowModeCompat
 import dev.oneuiproject.oneui.ktx.semSetToolTipText
 import dev.oneuiproject.oneui.layout.Badge
 import dev.oneuiproject.oneui.layout.DrawerLayout.DrawerState
+import dev.oneuiproject.oneui.layout.DrawerLayout.DrawerWidthProvider
+import dev.oneuiproject.oneui.layout.DrawerLayout.Companion.DEFAULT_DRAWER_WIDTH_PROVIDER
 import dev.oneuiproject.oneui.layout.internal.NavigationBadgeIcon
 import dev.oneuiproject.oneui.layout.internal.delegate.DrawerLayoutBackHandler
 import dev.oneuiproject.oneui.layout.internal.delegate.NavDrawerBackAnimator
@@ -102,10 +106,13 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
 
     private val activity by lazy(LazyThreadSafetyMode.NONE) { context.appCompatActivity }
 
+    private var drawerWidthProvider: DrawerWidthProvider = DEFAULT_DRAWER_WIDTH_PROVIDER
+
     init { setOverhangSize(DEFAULT_OVERHANG_SIZE) }
 
     override fun onConfigurationChanged(configuration: Configuration) {
         seslSetPendingAction(if (isOpen) PENDING_ACTION_EXPANDED else PENDING_ACTION_COLLAPSED)
+        updateDrawerWidth()
         super.onConfigurationChanged(configuration)
     }
 
@@ -148,6 +155,7 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
 
     override fun onAttachedToWindow() {
         applyDrawerCornerRadius(drawerCornerRadius)
+        updateDrawerWidth()
         configDetailsPane(false)
         super.onAttachedToWindow()
     }
@@ -610,6 +618,30 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
         slideViewPane.updateLayoutParams<LayoutParams> {
             marginStart = width
             seslSetResizeOff(seslGetResizeOff())
+        }
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        if (oldw == w || !isAttachedToWindow) return
+        updateDrawerWidth()
+    }
+
+    override fun setDrawerWidthProvider(drawerWidthProvider: DrawerWidthProvider) {
+        // For functional interfaces (lambdas), equality is by reference, not by logic.
+        if (this.drawerWidthProvider === drawerWidthProvider) return
+        this.drawerWidthProvider = drawerWidthProvider
+        updateDrawerWidth()
+    }
+
+    private fun updateDrawerWidth(configuration: Resources = resources) {
+        val drawerWidth = drawerWidthProvider.getWidth(
+            configuration,
+            true,
+            activity?.isInMultiWindowModeCompat == true
+        )
+        if (seslGetPreferredDrawerPixelSize() != drawerWidth) {
+            seslRequestPreferredDrawerPixelSize(drawerWidth)
         }
     }
 
