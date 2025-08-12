@@ -446,7 +446,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
     }
 
-    override fun generateDefaultLayoutParams() = ToolbarLayoutParams(context, null)
+    override fun generateDefaultLayoutParams() = ToolbarLayoutParams(LayoutParams(MATCH_PARENT, WRAP_CONTENT))
 
     override fun generateLayoutParams(attrs: AttributeSet) = ToolbarLayoutParams(context, attrs)
 
@@ -601,7 +601,8 @@ open class ToolbarLayout @JvmOverloads constructor(
      */
     @CallSuper
     open fun setAdaptiveMarginProvider(provider: MarginProvider) {
-        if (marginProviderImpl == provider) return
+        // For functional interfaces (lambdas), equality is by reference, not by logic.
+        if (marginProviderImpl === provider) return
         marginProviderImpl = provider
         adpCoordinatorLayout.configureAdaptiveMargin(provider, getAdaptiveChildViews())
     }
@@ -1711,13 +1712,23 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
     }
 
-    class ToolbarLayoutParams(context: Context, attrs: AttributeSet?) :
-        LayoutParams(context, attrs) {
-        val layoutLocation = attrs?.let { at ->
-            context.obtainStyledAttributes(at, R.styleable.ToolbarLayout_Layout).use {
-                it.getInteger(R.styleable.ToolbarLayout_Layout_layout_location, MAIN_CONTENT)
+    class ToolbarLayoutParams : LinearLayout.LayoutParams {
+        @JvmField
+        var layoutLocation: Int = MAIN_CONTENT
+
+        constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+            context.obtainStyledAttributes(attrs, R.styleable.ToolbarLayout_Layout).use {
+                layoutLocation = it.getInteger(
+                    R.styleable.ToolbarLayout_Layout_layout_location,
+                    MAIN_CONTENT
+                )
             }
-        } ?: MAIN_CONTENT
+        }
+        constructor(width: Int, height: Int) : super(width, height)
+        constructor(width: Int, height: Int, weight: Float) : super(width, height)
+        constructor(params: ViewGroup.LayoutParams?) : super(params)
+        constructor(source: MarginLayoutParams?) : super(source)
+        constructor(source: LayoutParams) : super(source)
     }
 
     private fun cllpWrapper(oldLp: LayoutParams): CoordinatorLayout.LayoutParams {
