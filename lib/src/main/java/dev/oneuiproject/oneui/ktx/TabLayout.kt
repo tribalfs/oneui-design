@@ -20,10 +20,16 @@ import dev.oneuiproject.oneui.utils.internal.badgeCountToText
  * Selects the tab at the specified index.
  *
  * @param index The index of the tab to be selected.
- * @param updateIndicator (Optional) Whether to update the indicator for the selected tab.
+ * @param updateIndicator (Optional) Whether to update the indicator for the selected tab. Defaults to `true`.
+ * @param reselect (Optional) Whether to reselect the tab if it's already selected. Defaults to `false`.
  */
 @JvmOverloads
-inline fun <T: TabLayout>T.selectTabAt(index: Int, updateIndicator: Boolean = true){
+inline fun <T: TabLayout>T.selectTabAt(
+    index: Int,
+    updateIndicator: Boolean = true,
+    reselect: Boolean = false
+){
+    if (index == selectedTabPosition && !reselect) return
     getTabAt(index)?.let { selectTab(it, updateIndicator) }
         ?: Log.e(this::class.simpleName, "selectTabAt($index): This tabLayout has no tab at index $index")
 }
@@ -97,9 +103,7 @@ inline fun <T: TabLayout>T.addTab(
         customTabViewRes?.let { setCustomView(LayoutInflater.from(context).inflate(it, view, false)) }
         addTab(this)
         //Call after added
-        getTabView(position)?.apply {
-            setOnClickListener(listener)
-        }
+        view.setOnClickListener(listener)
     }
 }
 
@@ -133,7 +137,7 @@ inline fun <T: TabLayout>T.addCustomTab(
 
 
 /**
- * Adds a custom tab to this TabLayout. A custom tab has no selected state.
+ * Adds a custom tab to this TabLayout. A custom tab does not select itself when clicked.
  *
  * @param tabTitle The title to display on the tab.
  * @param tabIcon (Optional) drawable object to display as the tab's icon.
@@ -157,15 +161,13 @@ fun <T: TabLayout>T.addCustomTab(
         text = tabTitle
         icon = tabIcon
         addTab(this)
-    }
-
-    getTabView(newTab.position)!!.apply {
-        setOnTouchListener { v, event ->
+        view.setOnTouchListener { v, event ->
             val selectedTabPos = selectedTabPosition
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     v.isPressed = true
                 }
+
                 MotionEvent.ACTION_UP -> {
                     v.isPressed = false
                     listener.onClick(v)
@@ -173,6 +175,7 @@ fun <T: TabLayout>T.addCustomTab(
                         this@addCustomTab.selectTabAt(selectedTabPos)
                     }
                 }
+
                 MotionEvent.ACTION_CANCEL -> {
                     v.isPressed = false
                     if (selectedTabPosition != selectedTabPos) {
