@@ -84,7 +84,7 @@ class GridMenuDialog @JvmOverloads constructor(
     private lateinit var gridListView: RecyclerView
     private val adapter: GridListAdapter = GridListAdapter()
     private var currentAnchorView: View? = null
-    private var selectedId: Int? = null
+    private var selectedId: Int = -1
 
     /**
      * Interface definition for a callback to be invoked when an item in this
@@ -248,11 +248,13 @@ class GridMenuDialog @JvmOverloads constructor(
      *
      * @param anchor The view to anchor the dialog to.
      */
-    fun setAnchor(anchor: View) {
+    fun setAnchor(anchor: View?) {
         currentAnchorView?.removeOnLayoutChangeListener(onLayoutChangeListener)
         currentAnchorView = anchor
-        anchor.addOnLayoutChangeListener(onLayoutChangeListener)
-        updateDialogWidthAndPosition()
+        anchor?.apply {
+            addOnLayoutChangeListener(onLayoutChangeListener)
+            updateDialogWidthAndPosition()
+        }
     }
 
     private fun getAnchorViewHorizontalCenter(): Float? {
@@ -442,10 +444,17 @@ class GridMenuDialog @JvmOverloads constructor(
         }
     }
 
-    fun setSelectedItem(itemId: Int?) {
+    /**
+     * Sets the selected item in the grid menu.
+     * If an item is already selected, it will be deselected.
+     * The new item will be marked as selected, and the UI will be updated accordingly.
+     *
+     * @param itemId The ID of the item to select. If -1, no item will be selected.
+     */
+    fun setSelectedItem(itemId: Int) {
         if (selectedId == itemId) return
-        val prevIdx =  selectedId?.let { p -> gridItems.indexOfFirst { it.itemId == p } } ?: -1
-        val currentIdx =  itemId?.let { p -> gridItems.indexOfFirst { it.itemId == p } } ?: -1
+        val prevIdx =  if (selectedId == -1) -1 else gridItems.indexOfFirst { it.itemId == selectedId }
+        val currentIdx =  if (itemId == -1) -1 else gridItems.indexOfFirst { it.itemId == itemId }
         selectedId = itemId
         if (prevIdx != -1) adapter.notifyItemChanged(prevIdx)
         if (currentIdx != -1) adapter.notifyItemChanged(currentIdx)
