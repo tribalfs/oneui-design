@@ -57,13 +57,13 @@ import dev.oneuiproject.oneui.design.R
  *                    look for defaults.
  */
 class ViewRoundedCornerDelegate(
-    context: Context,
+    private val context: Context,
     attrs: AttributeSet?,
     defStyleAttr: Int,
     defStyleRes: Int
-): ViewRoundedCorner {
+) : ViewRoundedCorner {
 
-    private var seslRoundedCorner: SeslRoundedCorner = SeslRoundedCorner(context)
+    private var seslRoundedCorner: SeslRoundedCorner? = null
 
     override var edgeInsets = Insets.NONE
 
@@ -71,11 +71,22 @@ class ViewRoundedCornerDelegate(
 
     override var fillHorizontalPadding: Boolean = false
 
-    override var roundedCorners: Int
-        get() = seslRoundedCorner.roundedCorners
+    override var roundedCorners: Int = SeslRoundedCorner.ROUNDED_CORNER_NONE
         set(value) {
-            if (seslRoundedCorner.roundedCorners == value) return
-            seslRoundedCorner.roundedCorners = value
+            if (field == value) return
+            field = value
+
+            if (value != SeslRoundedCorner.ROUNDED_CORNER_NONE) {
+                if (seslRoundedCorner == null) {
+                    seslRoundedCorner = SeslRoundedCorner(context)
+                }
+                seslRoundedCorner?.roundedCorners = value
+                if (roundedCornersColor != -1) {
+                    seslRoundedCorner?.setRoundedCornerColor(value, roundedCornersColor)
+                }
+            } else {
+                seslRoundedCorner = null
+            }
         }
 
     @ColorInt
@@ -84,7 +95,11 @@ class ViewRoundedCornerDelegate(
             if (field == value) return
             field = value
             if (roundedCorners != SeslRoundedCorner.ROUNDED_CORNER_NONE) {
-                seslRoundedCorner.setRoundedCornerColor(roundedCorners, value)
+                if (seslRoundedCorner == null) {
+                    seslRoundedCorner = SeslRoundedCorner(context)
+                    seslRoundedCorner?.roundedCorners = roundedCorners
+                }
+                seslRoundedCorner?.setRoundedCornerColor(roundedCorners, value)
             }
         }
 
@@ -103,11 +118,12 @@ class ViewRoundedCornerDelegate(
     }
 
     override fun drawRoundedCorners(canvas: Canvas) {
-        if (edgeInsets != Insets.NONE || seslRoundedCorner.roundedCorners != SeslRoundedCorner.ROUNDED_CORNER_NONE) {
-            seslRoundedCorner.drawRoundedCorner(canvas, edgeInsets)
+        val currentRoundedCorner = seslRoundedCorner
+        if (currentRoundedCorner != null &&
+            (edgeInsets != Insets.NONE || (currentRoundedCorner.roundedCorners != SeslRoundedCorner.ROUNDED_CORNER_NONE))) {
+            currentRoundedCorner.drawRoundedCorner(canvas, edgeInsets)
         }
     }
-
 }
 
 
