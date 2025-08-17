@@ -189,7 +189,7 @@ open class SemItemDecoration @JvmOverloads constructor(
     }
 
     override fun seslOnDispatchDraw(
-        canvass: Canvas,
+        canvas: Canvas,
         recyclerView: RecyclerView,
         state: RecyclerView.State
     ) {
@@ -207,7 +207,7 @@ open class SemItemDecoration @JvmOverloads constructor(
                 else -> false//not expected here
             }
             if (applyDecor) {
-                subheaderRoundedCorner!!.drawRoundedCorner(child, canvass)
+                subheaderRoundedCorner!!.drawRoundedCorner(child, canvas)
             }
         }
     }
