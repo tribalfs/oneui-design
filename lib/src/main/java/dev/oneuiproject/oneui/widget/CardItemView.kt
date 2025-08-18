@@ -3,7 +3,6 @@
 package dev.oneuiproject.oneui.widget
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.AttributeSet
@@ -23,7 +22,9 @@ import androidx.core.view.marginStart
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePaddingRelative
 import dev.oneuiproject.oneui.design.R
+import dev.oneuiproject.oneui.ktx.defaultSummaryColor
 import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
+import dev.oneuiproject.oneui.ktx.userUpdatableSummaryColor
 import dev.oneuiproject.oneui.utils.SemTouchFeedbackAnimator
 
 /**
@@ -147,6 +148,24 @@ class CardItemView @JvmOverloads constructor(
             summaryTextView.text = value
         }
 
+    /**
+     * Set whether the summary text can be updated by the user.
+     * When set to true, the summary text color will change to indicate it's user-updatable.
+     * The default value is false.
+     *
+     * @see R.attr.userUpdatableSummary
+     */
+    var isSummaryUserUpdatable: Boolean = false
+        set(value) {
+            if (field == value) return
+            field = value
+            if (value) {
+                summaryTextView.setTextColor(context.userUpdatableSummaryColor)
+            } else {
+                summaryTextView.setTextColor(context.defaultSummaryColor)
+            }
+        }
+
     /** The icon to be displayed in the card item view. */
     var icon: Drawable?
         get() = iconImageView?.drawable
@@ -216,17 +235,7 @@ class CardItemView @JvmOverloads constructor(
 
             summary = getString(R.styleable.CardItemView_summary)
             if (getBoolean(R.styleable.CardItemView_userUpdatableSummary, false)){
-                val colorEnabled = ContextCompat.getColor(context,
-                    context.getThemeAttributeValue(androidx.appcompat.R.attr.colorPrimaryDark)!!.resourceId)
-                val states = arrayOf(
-                    intArrayOf(android.R.attr.state_enabled),
-                    intArrayOf(-android.R.attr.state_enabled)
-                )
-                val colors = intArrayOf(
-                    colorEnabled,
-                    ColorUtils.setAlphaComponent(colorEnabled, (255 * 0.4).toInt())
-                )
-                summaryTextView.setTextColor(ColorStateList(states, colors))
+                isSummaryUserUpdatable = true
             }
             summaryTextView.maxLines = getInteger(R.styleable.CardItemView_summaryMaxLines, 10)
             showTopDivider = getBoolean(R.styleable.CardItemView_showTopDivider, true)

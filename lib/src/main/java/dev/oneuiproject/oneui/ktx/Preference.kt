@@ -602,21 +602,7 @@ inline fun <R : Preference>R.setUpdatableSummaryColor(isUpdatable: Boolean): R =
  *
  * This provides a visual cue that the summary's content can be changed by the user.
  */
-inline val Preference.userUpdatableSummaryColor: ColorStateList
-    get(){
-        val enabledColor = context.getThemeAttributeValue(androidx.appcompat.R.attr.colorPrimaryDark)!!.data
-        val enabledAlpha = Color.alpha(enabledColor)
-        val disabledAlpha = (enabledAlpha * 0.4).toInt()
-            .coerceAtLeast(min(51, enabledAlpha)) // 51 represents 20% alpha
-        val disabledColor = ColorUtils.setAlphaComponent(enabledColor, disabledAlpha)
-        return ColorStateList(
-            arrayOf(
-                intArrayOf(android.R.attr.state_enabled),
-                intArrayOf(-android.R.attr.state_enabled)
-            ),
-            intArrayOf(enabledColor, disabledColor)
-        )
-    }
+inline val Preference.userUpdatableSummaryColor: ColorStateList get() = context.userUpdatableSummaryColor
 
 /**
  * Retrieves the default summary color for the preference based on the current theme (light or dark).
@@ -628,12 +614,8 @@ inline val Preference.userUpdatableSummaryColor: ColorStateList
  * @see userUpdatableSummaryColor
  * @see setSummaryUpdatable
  */
-inline val Preference.defaultSummaryColor: ColorStateList
-    @SuppressLint("RestrictedApi")
-    get(){
-        val colorResId = if (SeslMisc.isLightTheme(context)) sesl_secondary_text_light else sesl_secondary_text_dark
-        return ContextCompat.getColorStateList(context, colorResId)!!
-    }
+inline val Preference.defaultSummaryColor: ColorStateList get() = context.defaultSummaryColor
+
 
 inline fun <R : Preference>R.showDotBadge(show: Boolean = true): R{
     dotVisibility = show

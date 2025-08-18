@@ -28,8 +28,10 @@ import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePaddingRelative
 import dev.oneuiproject.oneui.design.R
+import dev.oneuiproject.oneui.ktx.defaultSummaryColor
 import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
+import dev.oneuiproject.oneui.ktx.userUpdatableSummaryColor
 import dev.oneuiproject.oneui.utils.SemTouchFeedbackAnimator
 
 /**
@@ -190,6 +192,24 @@ class SwitchItemView @JvmOverloads constructor(
     }
 
     /**
+     * Set whether the summary text can be updated by the user.
+     * When set to true, the summary text color will change to indicate it's user-updatable.
+     * The default value is false.
+     *
+     * @see R.attr.userUpdatableSummary
+     */
+    var isSummaryUserUpdatable: Boolean = false
+        set(value) {
+            if (field == value) return
+            field = value
+            if (value) {
+                summaryView.setTextColor(context.userUpdatableSummaryColor)
+            } else {
+                summaryView.setTextColor(context.defaultSummaryColor)
+            }
+        }
+
+    /**
      * The title of the switch item.
      */
     var title: CharSequence?
@@ -288,17 +308,7 @@ class SwitchItemView @JvmOverloads constructor(
             showTopDivider = getBoolean(R.styleable.SwitchItemView_showTopDivider, true)
             showBottomDivider = getBoolean(R.styleable.SwitchItemView_showBottomDivider, false)
             if (getBoolean(R.styleable.SwitchItemView_userUpdatableSummary, false)){
-                val colorEnabled = ContextCompat.getColor(context,
-                    context.getThemeAttributeValue(androidx.appcompat.R.attr.colorPrimaryDark)!!.resourceId)
-                val states = arrayOf(
-                    intArrayOf(android.R.attr.state_enabled),
-                    intArrayOf(-android.R.attr.state_enabled)
-                )
-                val colors = intArrayOf(
-                    colorEnabled,
-                    ColorUtils.setAlphaComponent(colorEnabled, (255 * 0.4).toInt())
-                )
-                summaryView.setTextColor(ColorStateList(states, colors))
+                isSummaryUserUpdatable = true
             }
             val iconDrawable = getDrawable(R.styleable.SwitchItemView_icon)
             if (iconDrawable != null) {

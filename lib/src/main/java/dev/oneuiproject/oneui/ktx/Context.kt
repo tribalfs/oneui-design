@@ -6,15 +6,21 @@ import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.TypedValue
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
+import androidx.appcompat.R.color.sesl_secondary_text_dark
+import androidx.appcompat.R.color.sesl_secondary_text_light
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.util.SeslMisc
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.ColorUtils
 import androidx.picker.app.SeslDatePickerDialog
 import androidx.picker.app.SeslTimePickerDialog
 import androidx.picker.widget.SeslDatePicker
@@ -27,6 +33,7 @@ import java.util.Calendar
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
+import kotlin.math.min
 
 /**
  * The logical density of the display. This is a scaling factor for the Density
@@ -373,3 +380,44 @@ fun startPopOverActivityForResult(
         })
 
 }
+
+/**
+ * Retrieves a [ColorStateList] suitable for a list item summary that is user-updatable.
+ *
+ * This color state list uses the `colorPrimaryDark` theme attribute for the enabled state.
+ * For the disabled state, it uses the same color but with a reduced alpha (40% of the enabled alpha,
+ * or at least 20% alpha, whichever is greater).
+ *
+ * This provides a visual cue that the summary's content can be changed by the user.
+ */
+inline val Context.userUpdatableSummaryColor: ColorStateList
+    get(){
+        val enabledColor = getThemeAttributeValue(androidx.appcompat.R.attr.colorPrimaryDark)!!.data
+        val enabledAlpha = Color.alpha(enabledColor)
+        val disabledAlpha = (enabledAlpha * 0.4).toInt()
+            .coerceAtLeast(min(51, enabledAlpha)) // 51 represents 20% alpha
+        val disabledColor = ColorUtils.setAlphaComponent(enabledColor, disabledAlpha)
+        return ColorStateList(
+            arrayOf(
+                intArrayOf(android.R.attr.state_enabled),
+                intArrayOf(-android.R.attr.state_enabled)
+            ),
+            intArrayOf(enabledColor, disabledColor)
+        )
+    }
+
+/**
+ * Retrieves the default summary color for a list item summary based on the current theme (light or dark).
+ * This property returns a [ColorStateList] that represents the default color used for preference summaries.
+ *
+ * This is typically used as for summaries that are not user-updatable.
+ *
+ * @return A [ColorStateList] representing the default summary color.
+ * @see userUpdatableSummaryColor
+ */
+inline val Context.defaultSummaryColor: ColorStateList
+    @SuppressLint("RestrictedApi")
+    get(){
+        val colorResId = if (SeslMisc.isLightTheme(this)) sesl_secondary_text_light else sesl_secondary_text_dark
+        return ContextCompat.getColorStateList(this, colorResId)!!
+    }
