@@ -3,16 +3,18 @@ package dev.oneuiproject.oneui.ktx
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.ActivityOptions
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.os.Bundle
+import android.os.Build
 import android.text.format.DateFormat
 import android.util.TypedValue
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.appcompat.R.color.sesl_secondary_text_dark
 import androidx.appcompat.R.color.sesl_secondary_text_light
@@ -25,6 +27,7 @@ import androidx.picker.app.SeslDatePickerDialog
 import androidx.picker.app.SeslTimePickerDialog
 import androidx.picker.widget.SeslDatePicker
 import androidx.picker.widget.SeslTimePicker
+import androidx.reflect.DeviceInfo
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.popover.PopOverOptions
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.getWindowHeight
@@ -223,162 +226,6 @@ inline fun Context.showTimePickerDialog(
         onCreate()
         show()
     }
-}
-
-
-/**
- * Starts an activity in PopOver mode. This mode is only available to large display Samsung device with OneUI.
- * ## Example usage:
- * ```
- * startPopOverActivity(
- *     activityClass = SearchActivity::class.java,
- *     popOverOptions = PopOverOptions(
- *         popOverSize = PopOverSize(
- *               731,
- *               360,
- *               if (context.isTablet) 731 else 574,
- *               360
- *        ),
- *        anchorPositions = if (resources.configuration.layoutDirection == LAYOUT_DIRECTION_RTL) {
- *            PopOverPositions(TOP_LEFT, TOP_LEFT)
- *        } else {
- *            PopOverPositions(TOP_RIGHT, TOP_RIGHT)
- *        }
- *   )
- * )
- * ```
- * @param activityClass The activity class to start.
- * @param popOverOptions See [PopOverOptions]
- * @param activityOptions (Optional) Additional options for how the Activity should be started.
- * See [android.app.ActivityOptions]
- */
-@JvmOverloads
-inline fun <T : Activity> Context.startPopOverActivity(
-    activityClass: Class<T>,
-    popOverOptions: PopOverOptions? = null,
-    activityOptions: Bundle? = null,
-) {
-    startPopOverActivity(
-        Intent(this, activityClass),
-        popOverOptions,
-        activityOptions
-    )
-}
-
-/**
- * Starts an activity in PopOver mode. This mode is only available to large display Samsung device with OneUI.
- * ## Example usage:
- * ```
- * startPopOverActivity(
- *     intent = Intent(context, SearchActivity::class.java),
- *     popOverOptions = PopOverOptions(
- *         popOverSize = PopOverSize(
- *               731,
- *               360,
- *               if (context.isTablet) 731 else 574,
- *               360
- *        ),
- *        anchorPositions = if (resources.configuration.layoutDirection == LAYOUT_DIRECTION_RTL) {
- *            PopOverPositions(TOP_LEFT, TOP_LEFT)
- *        } else {
- *            PopOverPositions(TOP_RIGHT, TOP_RIGHT)
- *        }
- *    )
- * )
- * ```
- * @param intent The Intent for the activity to start.
- * @param popOverOptions See [PopOverOptions]
- * @param activityOptions (Optional) Additional options for how the Activity should be started.
- */
-@JvmOverloads
-fun Context.startPopOverActivity(
-    intent: Intent,
-    popOverOptions: PopOverOptions? = null,
-    activityOptions: Bundle? = null,
-) {
-    startActivity(
-        intent,
-        (activityOptions ?: Bundle()).apply {
-            popOverOptions?.let {
-                putBoolean("android:activity.popOver", true)
-                putBoolean("android:activity.popOverAllowOutsideTouch", it.allowOutsideTouch)
-                putBoolean("android:activity.popOverRemoveOutlineEffect", it.removeOutline)
-                putBoolean("android:activity.popOverRemoveDefaultMargin", it.removeDefaultMargin)
-                putBoolean("android:activity.popOverInheritOptions", it.inheritOptions)
-                putParcelableArray("android:activity.popOverAnchor", it.anchor.getPointArray())
-                putIntArray("android:activity.popOverHeight",it.popOverSize.getHeightArray())
-                putIntArray("android:activity.popOverWidth", it.popOverSize.getWidthArray())
-                putIntArray("android:activity.popOverAnchorPosition",it.anchorPositions.getFlagArray())
-            }
-        }
-    )
-}
-
-/**
- * Starts an activity in PopOver mode for a result. This mode is only available to large display Samsung device with OneUI.
- * ## Example usage:
- * ```
- * val searchLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
- *     // Handle the result
- * }
- *
- * startPopOverActivityForResult(
- *     intent = Intent(context, SearchActivity::class.java),
- *     popOverOptions = PopOverOptions(
- *         popOverSize = PopOverSize(
- *               731,
- *               360,
- *               if (context.isTablet) 731 else 574,
- *               360
- *        ),
- *        anchorPositions = if (resources.configuration.layoutDirection == LAYOUT_DIRECTION_RTL) {
- *            PopOverPositions(TOP_LEFT, TOP_LEFT)
- *        } else {
- *            PopOverPositions(TOP_RIGHT, TOP_RIGHT)
- *        }
- *     ),
- *     resultLauncher = searchLauncher
- * )
- * ```
- * @param intent The Intent for the activity to start.
- * @param popOverOptions See [PopOverOptions]
- * @param activityOptions (Optional) Additional options for how the Activity should be started.
- * See [ActivityOptionsCompat]
- * @param resultLauncher The [ActivityResultLauncher] to handle the activity result.
-
- */
-@JvmOverloads
-fun startPopOverActivityForResult(
-    intent: Intent,
-    popOverOptions: PopOverOptions? = null,
-    activityOptions: ActivityOptionsCompat? = null,
-    resultLauncher: ActivityResultLauncher<Intent>
-) {
-    val activityOptionsBundle =  (activityOptions ?: ActivityOptionsCompat.makeBasic()).toBundle()!!
-
-    activityOptionsBundle.apply {
-        putBoolean("android:activity.popOver", true)
-        popOverOptions?.let {
-            putBoolean("android:activity.popOverAllowOutsideTouch", it.allowOutsideTouch)
-            putBoolean("android:activity.popOverRemoveOutlineEffect", it.removeOutline)
-            putBoolean("android:activity.popOverRemoveDefaultMargin", it.removeDefaultMargin)
-            putBoolean("android:activity.popOverInheritOptions", it.inheritOptions)
-            putParcelableArray("android:activity.popOverAnchor", it.anchor.getPointArray())
-            putIntArray("android:activity.popOverHeight",it.popOverSize.getHeightArray())
-            putIntArray("android:activity.popOverWidth", it.popOverSize.getWidthArray())
-            putIntArray("android:activity.popOverAnchorPosition",it.anchorPositions.getFlagArray())
-        }
-    }
-
-
-    resultLauncher.launch(
-        intent.apply {
-            putExtra(
-                ActivityResultContracts.StartActivityForResult.EXTRA_ACTIVITY_OPTIONS_BUNDLE,
-                activityOptionsBundle
-            )
-        })
-
 }
 
 /**
