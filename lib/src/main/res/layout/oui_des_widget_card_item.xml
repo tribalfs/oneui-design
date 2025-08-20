@@ -39,7 +39,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_toStartOf="@id/viewstub_end_view"
                 android:orientation="horizontal">
 
                 <TextView
@@ -48,10 +47,8 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="5"
-                    android:paddingEnd="10dp"
                     android:textAlignment="viewStart"
-                    android:textAppearance="?attr/textAppearanceListItem"
-                    tools:text="Title"/>
+                    android:textAppearance="?attr/textAppearanceListItem" />
 
                 <ViewStub
                     android:id="@+id/viewstub_badge_frame"
@@ -71,23 +68,20 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/title_frame"
                 android:layout_alignStart="@id/title_frame"
-                android:paddingEnd="12.0dip"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textAlignment="viewStart"
                 android:maxLines="10"
-                android:visibility="gone"
-                tools:text="Summary"/>
-
-            <ViewStub
-                android:id="@+id/viewstub_end_view"
-                android:inflatedId="@+id/end_view"
-                android:layout="@layout/oui_des_widget_card_item_end_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"/>
+                android:visibility="gone" />
 
         </RelativeLayout>
+
+        <ViewStub
+            android:id="@+id/viewstub_end_view"
+            android:inflatedId="@+id/end_view"
+            android:layout="@layout/oui_des_widget_card_item_end_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical" />
 
     </LinearLayout>
 
