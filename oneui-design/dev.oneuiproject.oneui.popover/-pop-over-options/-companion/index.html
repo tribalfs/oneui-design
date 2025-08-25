@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>Companion</title>
+    <link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async="async"></script>
+<script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<link href="../../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../../ui-kit/ui-kit.min.js" defer="defer"></script>
+<script type="text/javascript" src="../../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+    <div class="root">
+    <nav class="navigation theme-dark" id="navigation-wrapper">
+            <a class="library-name--link" href="../../../../index.html">
+                    oneui-design
+            </a>
+        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle"
+                type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+        <div class="navigation-controls">
+        <div class="filter-section filter-section_loading" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active=""
+                        data-filter=":oneui-design/main">main</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox"
+                        data-role="dropdown-toggle"
+                        aria-controls="platform-tags-listbox"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                        aria-label="Toggle source sets"
+                ></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
+                    <div class="dropdown--header"><span>Platform filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":oneui-design/main"
+                                       data-filter=":oneui-design/main"/>
+                                <span class="checkbox--icon"></span>
+                                main
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </div>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button"
+                    type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list"
+                        data-role="dropdown-listbox">
+                        <div class="dropdown--header">
+                            <span>
+                                    oneui-design
+                            </span>
+                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                            </button>
+                        </div>
+                        <div class="sidebar--inner" id="sideMenu"></div>
+                    </ul>
+                    <div class="dropdown--overlay"></div>
+                </div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="oneui-design::dev.oneuiproject.oneui.popover/PopOverOptions.Companion///PointingToDeclaration//1915391025">
+  <div class="breadcrumbs"><a href="../../../../index.html">oneui-design</a><span class="delimiter">/</span><a href="../../index.html">dev.oneuiproject.oneui.popover</a><span class="delimiter">/</span><a href="../index.html">PopOverOptions</a><span class="delimiter">/</span><span class="current">Companion</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Companion</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="index.html">Companion</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/tribalfs/oneui-design/blob/main/lib/src/main/java/dev/oneuiproject/oneui/popover/PopOverOptions.kt#L39">source</a>)</span></span></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-1267807646%2FFunctions%2F1915391025" anchor-label="bottomCenterAnchored" id="-1267807646%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="bottom-center-anchored.html"><span>bottom</span><wbr></wbr><span>Center</span><wbr></wbr><span><span>Anchored</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1267807646%2FFunctions%2F1915391025"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="bottom-center-anchored.html"><span class="token function">bottomCenterAnchored</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../index.html">PopOverOptions</a></div><div class="brief "><p class="paragraph">Returns a default <a href="../index.html">PopOverOptions</a> instance for bottom-center anchored pop-over activity. This uses the default pop-over size from <a href="../../-pop-over-size/-companion/default-size.html">PopOverSize.defaultSize</a>. The anchor positions are set to <a href="../../-pop-over-position/-b-o-t-t-o-m_-c-e-n-t-e-r/index.html">PopOverPosition.BOTTOM_CENTER</a> for both orientations.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="89755604%2FFunctions%2F1915391025" anchor-label="bottomLeftAnchored" id="89755604%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="bottom-left-anchored.html"><span>bottom</span><wbr></wbr><span>Left</span><wbr></wbr><span><span>Anchored</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="89755604%2FFunctions%2F1915391025"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="bottom-left-anchored.html"><span class="token function">bottomLeftAnchored</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../index.html">PopOverOptions</a></div><div class="brief "><p class="paragraph">Returns a default <a href="../index.html">PopOverOptions</a> instance for bottom-left anchored pop-over activity. This uses the default pop-over size from <a href="../../-pop-over-size/-companion/default-size.html">PopOverSize.defaultSize</a>. The anchor positions are set to <a href="../../-pop-over-position/-b-o-t-t-o-m_-l-e-f-t/index.html">PopOverPosition.BOTTOM_LEFT</a> in LTR layouts, and to <a href="../../-pop-over-position/-b-o-t-t-o-m_-r-i-g-h-t/index.html">PopOverPosition.BOTTOM_RIGHT</a> in RTL layouts for both orientations.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-338370197%2FFunctions%2F1915391025" anchor-label="bottomRightAnchored" id="-338370197%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="bottom-right-anchored.html"><span>bottom</span><wbr></wbr><span>Right</span><wbr></wbr><span><span>Anchored</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-338370197%2FFunctions%2F1915391025"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="bottom-right-anchored.html"><span class="token function">bottomRightAnchored</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../index.html">PopOverOptions</a></div><div class="brief "><p class="paragraph">Returns a default <a href="../index.html">PopOverOptions</a> instance for bottom-right anchored pop-over activity. This uses the default pop-over size from <a href="../../-pop-over-size/-companion/default-size.html">PopOverSize.defaultSize</a>. The anchor positions are set to <a href="../../-pop-over-position/-b-o-t-t-o-m_-r-i-g-h-t/index.html">PopOverPosition.BOTTOM_RIGHT</a> in LTR layouts, and to <a href="../../-pop-over-position/-b-o-t-t-o-m_-l-e-f-t/index.html">PopOverPosition.BOTTOM_LEFT</a> in RTL layouts for both orientations.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1234167895%2FFunctions%2F1915391025" anchor-label="centerAnchored" id="1234167895%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="center-anchored.html"><span>center</span><wbr></wbr><span><span>Anchored</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1234167895%2FFunctions%2F1915391025"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="center-anchored.html"><span class="token function">centerAnchored</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../index.html">PopOverOptions</a></div><div class="brief "><p class="paragraph">Returns a default <a href="../index.html">PopOverOptions</a> instance for centered pop-over activity. This uses the default pop-over size from <a href="../../-pop-over-size/-companion/default-size.html">PopOverSize.defaultSize</a>. The anchor positions are set to <a href="../../-pop-over-position/-c-e-n-t-e-r/index.html">PopOverPosition.CENTER</a> for both orientations.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1235490558%2FFunctions%2F1915391025" anchor-label="centerLeftAnchored" id="1235490558%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="center-left-anchored.html"><span>center</span><wbr></wbr><span>Left</span><wbr></wbr><span><span>Anchored</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1235490558%2FFunctions%2F1915391025"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="center-left-anchored.html"><span class="token function">centerLeftAnchored</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../index.html">PopOverOptions</a></div><div class="brief "><p class="paragraph">Returns a default <a href="../index.html">PopOverOptions</a> instance for center-left anchored pop-over activity. This uses the default pop-over size from <a href="../../-pop-over-size/-companion/default-size.html">PopOverSize.defaultSize</a>. The anchor positions are set to <a href="../../-pop-over-position/-c-e-n-t-e-r_-l-e-f-t/index.html">PopOverPosition.CENTER_LEFT</a> in LTR layouts, and to <a href="../../-pop-over-position/-c-e-n-t-e-r_-r-i-g-h-t/index.html">PopOverPosition.CENTER_RIGHT</a> in RTL layouts for both orientations.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="819675009%2FFunctions%2F1915391025" anchor-label="centerRightAnchored" id="819675009%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="center-right-anchored.html"><span>center</span><wbr></wbr><span>Right</span><wbr></wbr><span><span>Anchored</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="819675009%2FFunctions%2F1915391025"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="center-right-anchored.html"><span class="token function">centerRightAnchored</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../index.html">PopOverOptions</a></div><div class="brief "><p class="paragraph">Returns a default <a href="../index.html">PopOverOptions</a> instance for center-right anchored pop-over activity. This uses the default pop-over size from <a href="../../-pop-over-size/-companion/default-size.html">PopOverSize.defaultSize</a>. The anchor positions are set to <a href="../../-pop-over-position/-c-e-n-t-e-r_-r-i-g-h-t/index.html">PopOverPosition.CENTER_RIGHT</a> for both orientations in LTR layouts, and to <a href="../../-pop-over-position/-c-e-n-t-e-r_-l-e-f-t/index.html">PopOverPosition.CENTER_LEFT</a> in RTL layouts.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-273382204%2FFunctions%2F1915391025" anchor-label="topCenterAnchored" id="-273382204%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="top-center-anchored.html"><span>top</span><wbr></wbr><span>Center</span><wbr></wbr><span><span>Anchored</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-273382204%2FFunctions%2F1915391025"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="top-center-anchored.html"><span class="token function">topCenterAnchored</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../index.html">PopOverOptions</a></div><div class="brief "><p class="paragraph">Returns a default <a href="../index.html">PopOverOptions</a> instance for top-centered pop-over activity. This uses the default pop-over size from <a href="../../-pop-over-size/-companion/default-size.html">PopOverSize.defaultSize</a>. The anchor positions are set to <a href="../../-pop-over-position/-t-o-p_-c-e-n-t-e-r/index.html">PopOverPosition.TOP_CENTER</a> for both orientations.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="573471414%2FFunctions%2F1915391025" anchor-label="topLeftAnchored" id="573471414%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="top-left-anchored.html"><span>top</span><wbr></wbr><span>Left</span><wbr></wbr><span><span>Anchored</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="573471414%2FFunctions%2F1915391025"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="top-left-anchored.html"><span class="token function">topLeftAnchored</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../index.html">PopOverOptions</a></div><div class="brief "><p class="paragraph">Returns a default <a href="../index.html">PopOverOptions</a> instance for top-left anchored pop-over activity. This uses the default pop-over size from <a href="../../-pop-over-size/-companion/default-size.html">PopOverSize.defaultSize</a>. The anchor positions are set to <a href="../../-pop-over-position/-t-o-p_-l-e-f-t/index.html">PopOverPosition.TOP_LEFT</a> for both orientations in LTR layouts, and to <a href="../../-pop-over-position/-t-o-p_-r-i-g-h-t/index.html">PopOverPosition.TOP_RIGHT</a> in RTL layouts.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1771918025%2FFunctions%2F1915391025" anchor-label="topRightAnchored" id="1771918025%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="top-right-anchored.html"><span>top</span><wbr></wbr><span>Right</span><wbr></wbr><span><span>Anchored</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1771918025%2FFunctions%2F1915391025"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="top-right-anchored.html"><span class="token function">topRightAnchored</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../index.html">PopOverOptions</a></div><div class="brief "><p class="paragraph">Returns a default <a href="../index.html">PopOverOptions</a> instance for top-right anchored pop-over activity. This uses the default pop-over size from <a href="../../-pop-over-size/-companion/default-size.html">PopOverSize.defaultSize</a>. The anchor positions are set to <a href="../../-pop-over-position/-t-o-p_-r-i-g-h-t/index.html">PopOverPosition.TOP_RIGHT</a> for both orientations in LTR layouts, and to <a href="../../-pop-over-position/-t-o-p_-l-e-f-t/index.html">PopOverPosition.TOP_LEFT</a> in RTL layouts.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+        <span>© 2025 Copyright</span>
+        <span class="pull-right">
+            <span>Generated by </span>
+            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                <span>dokka</span>
+            </a>
+        </span>
+    </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
