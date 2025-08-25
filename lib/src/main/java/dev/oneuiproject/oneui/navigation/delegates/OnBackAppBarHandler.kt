@@ -59,8 +59,8 @@ internal class OnBackAppBarHandler<T: ToolbarLayout>(
                         setTitlesNoCache(
                             backFragmentLabel,
                             backFragmentLabel,
-                            backFragmentSubtitle,
-                            backFragmentSubtitle
+                            backFragmentSubtitle ?: expandedSubtitle,
+                            backFragmentSubtitle ?: collapsedSubtitle
                         )
                     }
 
@@ -95,7 +95,14 @@ internal class OnBackAppBarHandler<T: ToolbarLayout>(
         updateTitleOnBackProgress = isChildDestination
         if (isChildDestination && popupDestination != null) {
             backFragmentLabel = popupDestination.label
-            backFragmentSubtitle = popupDestination.arguments[navArgSubTitle]?.defaultValue as? String
+            val rawSubtitleValue = popupDestination.arguments[navArgSubTitle]?.defaultValue
+            val subTitleResolved = when (rawSubtitleValue) {
+                is String -> rawSubtitleValue
+                is CharSequence -> rawSubtitleValue.toString()
+                is Int -> context.getString(rawSubtitleValue)
+                else -> null
+            }
+            subTitleResolved?.let { backFragmentSubtitle = it }
         } else {
             backFragmentLabel = null
             backFragmentSubtitle = null
@@ -105,7 +112,14 @@ internal class OnBackAppBarHandler<T: ToolbarLayout>(
 
         toolbarLayout.apply {
             setTitle(destination.label)
-            setSubtitle(destination.arguments[navArgSubTitle]?.defaultValue as? String)
+            val rawSubtitleValue = destination.arguments[navArgSubTitle]?.defaultValue
+            val subTitleResolved = when (rawSubtitleValue) {
+                is String -> rawSubtitleValue
+                is CharSequence -> rawSubtitleValue.toString()
+                is Int -> context.getString(rawSubtitleValue)
+                else -> null
+            }
+            subTitleResolved?.let { setSubtitle(it) }
 
             isExpandable = destination.arguments[navArgExpandable]?.defaultValue as? Boolean ?: true
             if (Build.VERSION.SDK_INT >= 30) {

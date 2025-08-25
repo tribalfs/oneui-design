@@ -80,7 +80,6 @@ class DrawerNavigationView @JvmOverloads constructor(
 
         menuPresenter = DrawerMenuPresenter { (drawerLayout as? NavDrawerLayout)?.getNavRailSlideRange() ?: 1 }
 
-
         if (navMenuRes != 0) {
             inflateMenu(navMenuRes)
         }
@@ -180,8 +179,26 @@ class DrawerNavigationView @JvmOverloads constructor(
         this.navigationItemSelectedListener = listener
     }
 
-    fun getDrawerMenu() = navDrawerMenu
+    //Keep internal for consistency and prevent leaks
+    internal fun getDrawerMenu() = navDrawerMenu
 
+    /**
+     * Finds a menu item in the navigation drawer by its ID.
+     *
+     * @param id The ID of the menu item to find.
+     * @return The [MenuItem] if found, or `null` otherwise.
+     */
+    fun findMenuItem(id: Int): MenuItem? = navDrawerMenu.findItem(id)
+
+    /**
+     * Updates the selected item in the navigation drawer based on the current [NavDestination].
+     *
+     * This function iterates through all items in the [menu] and sets the `isChecked`
+     * property of each item. An item is considered checked if its ID matches any ID in the
+     * hierarchy of the provided `destination`.
+     *
+     * @param destination The current [NavDestination] to match against the menu items.
+     */
     fun updateSelectedItem(destination: NavDestination){
         navDrawerMenu.forEach { item ->
             @Suppress("RestrictedApi")

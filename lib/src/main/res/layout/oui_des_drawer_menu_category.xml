@@ -67,7 +67,7 @@
         android:layout_marginBottom="@dimen/oui_des_drawer_menu_group_margin_vertical"
         android:importantForAccessibility="no"
         android:layout_marginStart="@dimen/oui_des_drawer_menu_category_view_title_margin_start"
-        android:layout_marginEnd="@dimen/oui_des_drawer_menu_category_title_margin"
+        android:layout_marginEnd="@dimen/oui_des_drawer_menu_category_view_title_margin_end"
         android:elevation="@dimen/oui_des_drawer_menu_category_view_elevation"
         android:outlineProvider="none"
         app:layout_constraintBottom_toBottomOf="parent"

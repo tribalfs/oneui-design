@@ -23,7 +23,7 @@ internal class DrawerDividerItemView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    private var offset: Float = 1f
+    private var offset: Float = -1f
     private var getNavRailSlideRange: () -> Int = { 0 }
 
     private val defaultWidth: Int

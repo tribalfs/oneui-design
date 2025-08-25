@@ -42,7 +42,7 @@ internal class DrawerMenuItemView @JvmOverloads constructor(
 
     private var iconSize = context.resources.getDimensionPixelSize(R.dimen.oui_des_drawer_menu_item_icon_size)
     private var needsEmptyIcon = true
-    private var offset: Float = 1f
+    private var offset: Float = -1f
 
     @JvmField
     var checkable: Boolean = false

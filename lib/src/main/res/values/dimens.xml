@@ -111,6 +111,7 @@
     <dimen name="oui_des_drawer_menu_category_view_elevation">3dp</dimen>
     <dimen name="oui_des_drawer_menu_category_view_icon_margin_start">42dp</dimen>
     <dimen name="oui_des_drawer_menu_category_view_title_margin_start">12dp</dimen>
+    <dimen name="oui_des_drawer_menu_category_view_title_margin_end">36dp</dimen>
     <dimen name="oui_des_drawer_menu_category_view_count_margin_end">45dp</dimen>
     <dimen name="oui_des_drawer_menu_category_title_margin">18dp</dimen>
 

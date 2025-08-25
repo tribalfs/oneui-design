@@ -45,4 +45,5 @@
     <string name="navArg_subtitle" translatable="false">drawer:subtitle</string>
     <string name="navArg_expandable" translatable="false">drawer:expandable</string>
     <string name="navArg_immersiveScroll" translatable="false">drawer:immersive_scroll</string>
+    <string name="navArg_isPopOver" translatable="false">drawer:isPopOverActivity</string>
 </resources>
