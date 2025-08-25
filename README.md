@@ -1,4 +1,4 @@
-## Unofficial OneUI Design Library (OneUI 7 & 6)
+## Unofficial OneUI Design Library (OneUI 8, 7 & 6)
 
 This design lib is consists of custom components intended to complement and integrate with both [SESL Android Jetpack Modules](https://github.com/tribalfs/sesl-androidx?tab=readme-ov-file#sesloneui-android-jetpack-unofficial)
 and [SESL Material Components for Android](https://github.com/tribalfs/sesl-material-components-android?tab=readme-ov-file#sesloneui-material-components-for-android-unofficial).
@@ -27,7 +27,7 @@ dependencies {
   //sesl and other dependencies
 
   //For OneUI 8 - must use sesl8 dependencies
-  //coming soon
+  implementation("io.github.tribalfs:oneui-design:0.8.0+oneui8")
   
   //For OneUI 7 - must use sesl7 dependencies
   implementation("io.github.tribalfs:oneui-design:0.7.10+oneui7")
