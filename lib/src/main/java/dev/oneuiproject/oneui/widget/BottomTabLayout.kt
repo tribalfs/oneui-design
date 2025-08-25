@@ -27,6 +27,7 @@ import androidx.appcompat.view.SupportMenuInflater
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuItemImpl
 import androidx.core.content.withStyledAttributes
+import androidx.core.view.doOnLayout
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.customview.view.AbsSavedState
@@ -43,6 +44,8 @@ import dev.oneuiproject.oneui.ktx.setBadge
 import dev.oneuiproject.oneui.ktx.setListener
 import dev.oneuiproject.oneui.ktx.tabViewGroup
 import dev.oneuiproject.oneui.layout.Badge
+import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isDisplayTypeSub
+import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isLandscape
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type.SINE_IN_OUT_90
 import com.google.android.material.R as materialR
@@ -80,7 +83,7 @@ class BottomTabLayout(
     attrs: AttributeSet?
 ) : MarginsTabLayout(context, attrs), TabLayout.OnTabSelectedListener {
 
-    private var minSideMargin = 0
+    private var minSideMargin = 0f
     private var slideDownAnim: Animation? = null
     private var slideUpAnim: Animation? = null
     private var transientState = TRANSIENT_NONE
@@ -91,22 +94,11 @@ class BottomTabLayout(
 
     private var isPopulatingTabs = false
     private var overFLowItems: ArrayList<MenuItemImpl>? = null
-    private var selectedOverflowItemId: Int? = null
+    private var selectedItemId: Int = -1
+    private var defaultTabPadding = context.resources.getDimension(R.dimen.oui_des_tab_layout_default_tab_padding)
 
-    val menu by lazy { BottomTabLayoutMenu(context){ updateTabs() } }
-
-    init {
-        isFocusable = false
-        tabMode = if (isInEditMode) MODE_FIXED else MODE_SCROLLABLE
-        tabGravity = GRAVITY_FILL
-        context.withStyledAttributes(attrs, R.styleable.BottomTabLayout, 0, 0) {
-                minSideMargin = getDimensionPixelSize(R.styleable.BottomTabLayout_minSideMargin, 0)
-                if (hasValue(R.styleable.BottomTabLayout_menu)) {
-                    inflateMenu((getResourceId(R.styleable.BottomTabLayout_menu, 0)))
-                }
-            }
-        addOnTabSelectedListener(this)
-    }
+    //Keep internal for consistency and prevent leaks
+    internal val bottomTabLayoutMenu by lazy { BottomTabLayoutMenu(context){ populateItems() } }
 
     /**
      * A custom [MenuBuilder] for the [BottomTabLayout].
@@ -121,7 +113,7 @@ class BottomTabLayout(
      *
      * @see setBadge
      */
-    class BottomTabLayoutMenu(
+    internal class BottomTabLayoutMenu(
         context: Context,
         private var onItemsChanged: ((structureChanged: Boolean) -> Unit)? = null
     ): MenuBuilder(context){
@@ -135,14 +127,37 @@ class BottomTabLayout(
                 onItemsChanged?.invoke(structureChanged)
             }
         }
+    }
 
-        @Suppress("RedundantOverride")
-        //To suppress restricted api lint warning on caller
-        override fun findItem(id: Int): MenuItem? = super.findItem(id)
+    init {
+        isFocusable = false
+        tabMode = MODE_SCROLLABLE
+        tabGravity = GRAVITY_START
+        context.withStyledAttributes(attrs, R.styleable.BottomTabLayout, 0, 0) {
+            minSideMargin = getDimension(R.styleable.BottomTabLayout_minSideMargin, 0f)
+            configureTabDimen()
+            if (hasValue(R.styleable.BottomTabLayout_menu)) {
+                inflateMenu((getResourceId(R.styleable.BottomTabLayout_menu, 0)))
+            }
+        }
+        addOnTabSelectedListener(this)
+    }
 
-        fun setBadge(itemId: Int, badge: Badge){
-            findItem(itemId)?.setBadge(badge)
-                ?: Log.e(TAG, "setBadge:  ${context.resources.getResourceEntryName(itemId)} is invalid.")
+    private fun configureTabDimen() {
+        super.setCustomTabDimen {tabLayout, containerWidthPixels, totalTabTextsWidth ->
+            val res = tabLayout.resources
+            val configuration = res.configuration
+
+            when {
+                isLandscape(configuration) && isDisplayTypeSub(configuration) -> minSideMargin / 2f
+                configuration.smallestScreenWidthDp <= 480 -> minSideMargin
+                else -> {
+                    val tabLayoutPaddingMax = maxOf(containerWidthPixels * 0.125f, minSideMargin)
+                    val totalTabPaddings = defaultTabPadding * tabLayout.tabCount * 2
+                    ((containerWidthPixels - totalTabTextsWidth - totalTabPaddings) / 2f)
+                        .coerceIn(minSideMargin, tabLayoutPaddingMax)
+                }
+            }
         }
     }
 
@@ -175,18 +190,17 @@ class BottomTabLayout(
     }
 
     override fun updateLayoutParams() {
-        val sideMarginFinal = sideMargin.coerceAtLeast(minSideMargin)
         if (sideMarginChanged) {
             sideMarginChanged = false
             layoutParams = (layoutParams as MarginLayoutParams).apply {
-                marginStart = sideMarginFinal
-                marginEnd = sideMarginFinal
+                marginStart = sideMargin
+                marginEnd = sideMargin
             }
         }
 
-        if (containerWidth == null || previousContainerWidth == containerWidth) return
-        previousContainerWidth = containerWidth!!
-        val availableForTabPaddings = containerWidth!! - tabTextWidthsList.sum() - (sideMarginFinal * 2)
+        if (containerWidth == 0 || previousContainerWidth == containerWidth) return
+        previousContainerWidth = containerWidth
+        val availableForTabPaddings = containerWidth - tabTextWidthsList.sum() - (sideMargin * 2)
         val tabPadding = (availableForTabPaddings/(tabCount * 2)).coerceAtLeast(defaultTabPadding)
 
         tabViewGroup?.let {
@@ -216,25 +230,25 @@ class BottomTabLayout(
     ){
         this.itemClickedListener = onMenuItemClicked
 
-        menu.apply {
+        bottomTabLayoutMenu.apply {
             suspendUpdate = true
             SupportMenuInflater(context).inflate(menuResId, this)
             suspendUpdate = false
         }
-        removeAllTabs()
-        isPopulatingTabs = true
-        updateTabs()
+        populateItems()
     }
 
+    private fun populateItems() {
+        isPopulatingTabs = true
+        removeAllTabs()
 
-    private fun updateTabs() {
         val tabItems = ArrayList<MenuItemImpl>()
         val overflowItems = ArrayList<MenuItemImpl>()
 
         var tabItemsAdded = 0
-        val menuSize = menu.size()
+        val menuSize = bottomTabLayoutMenu.size()
         for (i in 0 until menuSize) {
-            val menuItem = menu.getItem(i) as MenuItemImpl
+            val menuItem = bottomTabLayoutMenu.getItem(i) as MenuItemImpl
             if (menuItem.isVisible) {
                 if (tabItemsAdded < 3 || menuSize == 4) {
                     tabItems.add(menuItem)
@@ -245,18 +259,40 @@ class BottomTabLayout(
             }
         }
         this.overFLowItems = overflowItems
+
+        gridMenuDialog?.setAnchor(null)
+
         populateTabs(tabItems)
+
+        isPopulatingTabs = false
+
+        if (selectedItemId != -1) {
+            applySelectedItem()
+        }
+
+        if (isAttachedToWindow) {
+            sideMargin = 0
+            previousContainerWidth = -1
+            calculateMargins()
+        }
+
+        gridMenuDialog?.apply {
+            if (!isShowing)  return
+            if (overflowItems.isNotEmpty()) {
+                updateItems(overflowItems.map { it.toGridDialogItem() })
+                setAnchor(getTabView(3))
+            } else {
+                dismiss()
+            }
+        }
     }
 
     @SuppressLint("PrivateResource")
     private fun populateTabs(
-        mBottomMenuItems: ArrayList<MenuItemImpl>
+        bottomMenuItems: ArrayList<MenuItemImpl>
     ) {
-        isPopulatingTabs = true
-        removeAllTabs()
-
         var showMoreText = true
-        for (menuItem in mBottomMenuItems) {
+        for (menuItem in bottomMenuItems) {
             addTabForMenu(menuItem)
             if (menuItem.icon == null){
                 showMoreText = false
@@ -271,7 +307,7 @@ class BottomTabLayout(
             ).apply{
                 tabIconTint = getTabTextColors()
                 id = R.id.bottom_tab_menu_show_grid_dialog
-                setBadge(if (hasBadgeOnOverFlow()) Badge.DOT else Badge.NONE)
+                setBadge(3, if (hasBadgeOnOverFlow()) "" else null)
                 setTabContentDescription(this, view)
             }
 
@@ -281,7 +317,6 @@ class BottomTabLayout(
                 }
             }
         }
-        isPopulatingTabs = false
         recalculateTextWidths = true
     }
 
@@ -292,20 +327,26 @@ class BottomTabLayout(
         ).apply {
             id = menuItem.itemId
             isEnabled = menuItem.isEnabled
-            menuItem.badgeText?.let {
-                if (it.isNumericValue()) {
-                    seslShowBadge(position, true, it)
-                } else {
-                    seslShowDotBadge(position, true)
-                }
-            }
+            setBadge(position, menuItem.badgeText)
             setTabContentDescription(this, view)
+        }
+    }
+
+    private fun TabLayout.setBadge(position: Int, badgeText: String?) {
+        badgeText?.let {
+            if (it.isNumericValue()) {
+                seslShowBadge(position, true, it)
+            } else {
+                seslShowDotBadge(position, true)
+            }
         }
     }
 
     private fun createAndShowGridDialog(){
         gridMenuDialog = createGridMenuDialog(overFLowItems!!).apply {
-            setSelectedItem(selectedOverflowItemId)
+            if (findTab(selectedItemId) == null) {
+                setSelectedItem(selectedItemId)
+            }
             show()
         }
     }
@@ -318,7 +359,7 @@ class BottomTabLayout(
             updateItems(menu.map { it.toGridDialogItem() })
             setOnItemClickListener{item: GridMenuDialog.GridItem ->
                 itemClickedListener?.apply {
-                    this@BottomTabLayout.menu.findItem(item.itemId)?.let {
+                    bottomTabLayoutMenu.findItem(item.itemId)?.let {
                         onMenuItemClick(it)
                     }
                 }
@@ -371,6 +412,7 @@ class BottomTabLayout(
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
+        defaultTabPadding = context.resources.getDimension(R.dimen.oui_des_tab_layout_default_tab_padding)
         super.onConfigurationChanged(newConfig)
         updateGridDialogSizeAndHeight()
     }
@@ -379,6 +421,9 @@ class BottomTabLayout(
         val superState = super.onSaveInstanceState()
         val state = SavedState(superState)
         state.isGridDialogShowing = gridMenuDialog?.isShowing == true
+        state.selectedItemId = if (selectedItemId != -1) {
+            selectedItemId
+        } else getTabAt(selectedTabPosition)?.id ?: -1
         return state
     }
 
@@ -388,8 +433,11 @@ class BottomTabLayout(
             return
         }
         super.onRestoreInstanceState(state.superState)
+        if (state.selectedItemId != -1 && selectedItemId == -1) {
+            setSelectedItem(state.selectedItemId)
+        }
         if (state.isGridDialogShowing) {
-            createAndShowGridDialog()
+            doOnLayout { createAndShowGridDialog() }
         }
     }
 
@@ -552,33 +600,27 @@ class BottomTabLayout(
     }
 
     /**
-     * Selects the tab at the specified position.
-     *
-     * @param position The position of the tab to select.
-     */
-    fun setTabSelected(position: Int) {
-        getTabAt(position)?.apply {
-            select()
-            selectedOverflowItemId = null
-            gridMenuDialog?.setSelectedItem(null)
-        } ?: Log.w(TAG, "setTabSelected:  $position is an invalid position.")
-    }
-
-    /**
      * Selects the item with the specified id
      *
      * @param itemId The id of the item to select.
      */
     fun setSelectedItem(itemId: Int) {
-        findTab(itemId)?.apply {
+        if (itemId == selectedItemId) return
+        selectedItemId = itemId
+        if (isPopulatingTabs) return
+        applySelectedItem()
+    }
+
+    private fun applySelectedItem() {
+        findTab(selectedItemId)?.apply {
             select()
-            selectedOverflowItemId = null
-            gridMenuDialog?.setSelectedItem(null)
+            gridMenuDialog?.setSelectedItem(-1)
         } ?:
         run {
-            findTab(R.id.bottom_tab_menu_show_grid_dialog)?.select()
-            selectedOverflowItemId = itemId
-            gridMenuDialog?.setSelectedItem(itemId)
+            if (bottomTabLayoutMenu.findItem(selectedItemId) != null) {
+                findTab(R.id.bottom_tab_menu_show_grid_dialog)?.select()
+                gridMenuDialog?.setSelectedItem(selectedItemId)
+            }
         }
     }
 
@@ -587,9 +629,8 @@ class BottomTabLayout(
      *
      * @param itemId The ID of the menu item to set the badge on.
      * @param badge The [Badge] to display on the menu item.
-     * @see BottomTabLayoutMenu.setBadge
      */
-    fun setItemBadge(itemId: Int, badge: Badge) = menu.setBadge(itemId, badge)
+    fun setItemBadge(itemId: Int, badge: Badge) = findMenuItem(itemId)?.setBadge(badge)
 
     /**
      * Sets the enabled state of a menu item.
@@ -598,7 +639,7 @@ class BottomTabLayout(
      * @param enabled `true` to enable the item, `false` to disable it.
      */
     fun setItemEnabled(itemId: Int, enabled: Boolean){
-        menu.findItem(itemId)?.setEnabled(enabled)
+        bottomTabLayoutMenu.findItem(itemId)?.setEnabled(enabled)
             ?: Log.w(TAG, "setItemEnabled: ${context.resources.getResourceEntryName(itemId)} item id is invalid.")
     }
 
@@ -609,7 +650,7 @@ class BottomTabLayout(
      * @param visible `true` to make the item visible, `false` to make it invisible.
      */
     fun setItemVisible(itemId: Int, visible: Boolean){
-        menu.findItem(itemId)?.setVisible(visible)
+        bottomTabLayoutMenu.findItem(itemId)?.setVisible(visible)
             ?: Log.w(TAG, "`setItemVisible`, ${context.resources.getResourceEntryName(itemId)} item id is invalid.")
     }
 
@@ -630,8 +671,9 @@ class BottomTabLayout(
     }
 
     override fun onTabSelected(tab: Tab) {
+        if (tab.id != -1) selectedItemId = tab.id
         itemClickedListener?.apply {
-            menu.findItem(tab.id)?.let {
+            bottomTabLayoutMenu.findItem(tab.id)?.let {
                 onMenuItemClick(it)
             }
         }
@@ -653,17 +695,48 @@ class BottomTabLayout(
         this.itemClickedListener = onMenuItemClickedListener
     }
 
+    /**
+     * Finds a menu item by its ID.
+     *
+     * @param itemId The ID of the menu item to find.
+     * @return The [MenuItem] with the specified ID, or `null` if not found.
+     */
+    fun findMenuItem(itemId: Int): MenuItem? = bottomTabLayoutMenu.findItem(itemId)
+
+    /**
+     * Adds a new menu item to the BottomTabLayout.
+     *
+     * This method programmatically adds a tab to the layout with the given title.
+     *
+     * @param itemTitle The title of the menu item to add.
+     * @return The newly created [MenuItem].
+     */
+    fun addMenuItem(itemTitle: String): MenuItem =  bottomTabLayoutMenu.add(itemTitle)
+
+    /**
+     * Removes a menu item from the BottomTabLayout.
+     *
+     * This method removes the menu item with the specified ID and then re-populates the tabs
+     * to reflect the change.
+     *
+     * @param id The ID of the menu item to remove.
+     */
+    fun removeMenuItem(id: Int) { bottomTabLayoutMenu.removeItem(id) }
+
     private class SavedState : AbsSavedState {
         var isGridDialogShowing = false
+        var selectedItemId = -1
 
         constructor(superState: Parcelable?) : super(superState!!)
         constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
             isGridDialogShowing = parcel.readInt() != 0
+            selectedItemId = parcel.readInt()
         }
 
         override fun writeToParcel(out: Parcel, flags: Int) {
             super.writeToParcel(out, flags)
             out.writeInt(if (isGridDialogShowing) 1 else 0)
+            out.writeInt(selectedItemId)
         }
 
         companion object {

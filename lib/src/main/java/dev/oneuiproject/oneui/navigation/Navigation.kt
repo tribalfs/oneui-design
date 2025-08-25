@@ -232,7 +232,7 @@ private fun onDestinationSelected(
 fun <T: ToolbarLayout>T.setupNavigation(
     bottomTabLayout: BottomTabLayout,
     navHostFragment: NavHostFragment,
-    configuration: AppBarConfiguration = AppBarConfiguration(bottomTabLayout.menu, null),
+    configuration: AppBarConfiguration = AppBarConfiguration(bottomTabLayout.bottomTabLayoutMenu, null),
     @FloatRange(0.0, 1.0)
     toolbarBackThreshold: Float = 0.75f
 ) {
@@ -302,7 +302,7 @@ fun <T: ToolbarLayout>T.setupNavigation(
     navHostFragment: NavHostFragment,
     startDestination: KClass<*>,
     route: KClass<*>? = null,
-    configuration: AppBarConfiguration = AppBarConfiguration(bottomTabLayout.menu, null),
+    configuration: AppBarConfiguration = AppBarConfiguration(bottomTabLayout.bottomTabLayoutMenu, null),
     @FloatRange(0.0, 1.0)
     toolbarBackThreshold: Float = 0.75f,
     builder: NavGraphBuilder.() -> Unit

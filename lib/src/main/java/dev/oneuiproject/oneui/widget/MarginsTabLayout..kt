@@ -3,17 +3,15 @@
 package dev.oneuiproject.oneui.widget
 
 import android.content.Context
+import android.content.res.Configuration
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewParent
 import androidx.annotation.CallSuper
+import androidx.core.view.doOnLayout
 import com.google.android.material.tabs.TabLayout
 import dev.oneuiproject.oneui.design.R
-import dev.oneuiproject.oneui.ktx.findAncestorOfType
-import dev.oneuiproject.oneui.ktx.isDescendantOf
 import dev.oneuiproject.oneui.ktx.tabViewGroup
-import dev.oneuiproject.oneui.layout.ToolbarLayout
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isDisplayTypeSub
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isLandscape
 
@@ -41,19 +39,15 @@ open class MarginsTabLayout @JvmOverloads constructor(
     internal var tabDimens: TabDimen? = null
     @JvmField
     internal var tabTextWidthsList: ArrayList<Float> = arrayListOf()
-    @JvmField
-    internal val defaultTabPadding = context.resources.getDimension(R.dimen.oui_des_tab_layout_default_tab_padding)
 
     internal var sideMarginChanged = false
     @JvmField
     internal var sideMargin: Int = 0
     @JvmField
-    internal var containerWidth: Int? = null
+    internal var containerWidth: Int = 0
 
     @JvmField
     internal var recalculateTextWidths = false
-
-    private var referenceContainer: ViewParent? = null
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         updateLayoutParams()
@@ -67,7 +61,6 @@ open class MarginsTabLayout @JvmOverloads constructor(
 
     override fun onVisibilityChanged(changedView: View, visibility: Int) {
         if (visibility == VISIBLE) {
-            ensureReferenceContainer()
             calculateMarginsInternal()
         }
         super.onVisibilityChanged(changedView, visibility)
@@ -76,6 +69,8 @@ open class MarginsTabLayout @JvmOverloads constructor(
 
     override fun addTab(tab: Tab, position: Int, setSelected: Boolean) {
         recalculateTextWidths = true
+        //Note: minimumWidth is set by `TabLayout` when newTab is created based on R.attr.tabMinWidth
+        tab.view.setTag(R.id.margin_tab_view_min_width, tab.view.minimumWidth)
         super.addTab(tab, position, setSelected)
     }
 
@@ -96,34 +91,21 @@ open class MarginsTabLayout @JvmOverloads constructor(
                 val tabTextWidth = textView?.paint?.measureText(textView.getText().toString())
                     ?.coerceAtLeast(subTextView?.paint?.measureText(textView.getText().toString()) ?: 0f)
                     ?: 0f
-                tabTextWidthsList.add(tabTextWidth)
+                val minTabWidth = tab.view.getTag(R.id.margin_tab_view_min_width) as Int
+                tabTextWidthsList.add(tabTextWidth.coerceAtLeast(minTabWidth.toFloat()))
             }
         }
     }
 
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        (parent as ViewGroup).doOnLayout { calculateMarginsInternal() }
+        super.onConfigurationChanged(newConfig)
+    }
+
     override fun onAttachedToWindow() {
-        ensureReferenceContainer()
         calculateMarginsInternal()
         setScrollPosition(selectedTabPosition, 0.0f, true)
         super.onAttachedToWindow()
-    }
-
-    private fun ensureReferenceContainer(){
-        if (referenceContainer == null){
-            // Attempt to use a consistently visible reference parent for determining the container's width.
-            // This helps prevent width "jumping" issues during visibility transitions
-            // (from 'gone' to 'visible'). Such issues arise due to delayed width updates when
-            // the reference container was previously set to 'gone'.
-            referenceContainer = findAncestorOfType<ToolbarLayout>()?.let{
-                if (isDescendantOf(it.mainContainer)){
-                    it.mainContainer
-                }else if (isDescendantOf(it.footerParent)){
-                    it.footerParent
-                }else if (isDescendantOf(it.appBarLayout.parent as ViewGroup)){
-                    it.appBarLayout.parent
-                } else null
-            } ?: parent
-        }
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -136,11 +118,11 @@ open class MarginsTabLayout @JvmOverloads constructor(
 
 
     private fun calculateMarginsInternal(): Boolean {
-        val parentWidth = with(referenceContainer!! as ViewGroup) { width - paddingStart - paddingEnd }
+        val parentWidth = with(parent as ViewGroup) { width - paddingStart - paddingEnd }
         if (parentWidth != 0 && containerWidth != parentWidth) {
             containerWidth = parentWidth
             if (tabDimens == null) {
-                tabDimens = TabDimenDefault(defaultTabPadding)
+                tabDimens = TabDimenDefault()
             }
             calculateMargins()
             return true
@@ -152,12 +134,14 @@ open class MarginsTabLayout @JvmOverloads constructor(
 
     @CallSuper
     internal open fun calculateMargins(){
-        if (recalculateTextWidths || isInEditMode) {
+        if (recalculateTextWidths) {
             recalculateTextWidths()
             recalculateTextWidths = false
         }
 
-        tabDimens!!.getSideMargin(this, containerWidth!!, tabTextWidthsList.sum()).toInt().let {
+        val tabDimens = tabDimens?: return
+
+        tabDimens.getSideMargin(this, containerWidth, tabTextWidthsList.sum()).toInt().let {
             if (it != sideMargin){
                 sideMargin = it
                 sideMarginChanged = true
@@ -202,17 +186,15 @@ open class MarginsTabLayout @JvmOverloads constructor(
      * This class provides a standard way to determine the side margins for tabs based on
      * various device and layout configurations, such as screen orientation, display type,
      * and screen width.
-     *
-     * @property defaultTabPadding The default padding to be applied to each tab. This value
-     * is used in the calculation of total tab paddings.
      */
-    class TabDimenDefault(val defaultTabPadding: Float): TabDimen{
+    class TabDimenDefault(): TabDimen{
         override fun getSideMargin(tabLayout: TabLayout, containerWidthPixels: Int, totalTabTextsWidth: Float): Float {
 
             val res = tabLayout.resources
             val configuration = res.configuration
 
             val tabLayoutPaddingMin = res.getDimension(R.dimen.oui_des_tab_layout_default_side_margin)
+            val defaultTabPadding = res.getDimension(R.dimen.oui_des_tab_layout_default_tab_padding)
 
             if (isLandscape(configuration) && isDisplayTypeSub(configuration)) {
                 return tabLayoutPaddingMin / 2f
