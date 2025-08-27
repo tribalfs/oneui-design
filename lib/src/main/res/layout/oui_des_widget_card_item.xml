@@ -1,89 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:parentTag="LinearLayout"
     tools:viewBindingIgnore="true">
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/cardview_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="?attr/listPreferredItemHeightSmall"
-        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-        android:gravity="center_vertical"
         android:background="?attr/listChoiceBackgroundIndicator"
         android:clickable="true"
-        android:focusable="true"
-        android:baselineAligned="false">
+        android:focusable="true">
 
-        <ViewStub
-            android:id="@+id/viewstub_icon_frame"
-            android:inflatedId="@+id/tbl_icon_frame"
-            android:layout="@layout/oui_des_widget_card_item_icon"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/main_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingEnd="@dimen/oui_des_cardview_icon_margin_end"
-            android:gravity="start|center"/>
+            android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+            android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+            android:gravity="center_vertical|start"
+            android:minHeight="?attr/listPreferredItemHeightSmall">
 
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingVertical="14dp">
-
-            <RelativeLayout
-                android:id="@+id/title_frame"
+            <ViewStub
+                android:id="@+id/viewstub_icon_frame"
+                android:inflatedId="@id/switch_item_icon_frame"
+                android:layout="@layout/oui_des_widget_card_item_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:orientation="horizontal">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
-                <TextView
-                    android:id="@+id/cardview_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="5"
-                    android:textAlignment="viewStart"
-                    android:textAppearance="?attr/textAppearanceListItem" />
+            <TextView
+                android:id="@+id/cardview_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="5"
+                android:layout_marginTop="14dp"
+                android:textAlignment="viewStart"
+                android:layout_marginEnd="@dimen/sesl_preference_dot_frame_size"
+                android:textAppearance="?attr/textAppearanceListItem"
+                app:layout_constraintBottom_toTopOf="@+id/cardview_summary"
+                app:layout_constraintEnd_toStartOf="@+id/viewstub_end_view"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@id/viewstub_icon_frame"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="Title" />
 
-                <ViewStub
-                    android:id="@+id/viewstub_badge_frame"
-                    android:inflatedId="@+id/badge_frame"
-                    android:layout="@layout/oui_des_widget_item_badge"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_alignEnd="@id/cardview_title"
-                    android:gravity="center"
-                    android:orientation="vertical"/>
-
-            </RelativeLayout>
+            <ViewStub
+                android:id="@+id/viewstub_badge_frame"
+                android:inflatedId="@+id/badge_frame"
+                android:layout="@layout/oui_des_widget_item_badge"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                app:layout_constraintStart_toEndOf="@id/cardview_title"
+                app:layout_constraintTop_toTopOf="@id/cardview_title"
+                app:contentDescription="New notification"
+                android:gravity="center"
+                android:orientation="vertical"/>
 
             <TextView
                 android:id="@+id/cardview_summary"
+                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/title_frame"
-                android:layout_alignStart="@id/title_frame"
-                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:ellipsize="end"
+                android:maxLines="4"
                 android:textAlignment="viewStart"
-                android:maxLines="10"
-                android:visibility="gone" />
+                android:layout_marginEnd="@dimen/sesl_preference_dot_frame_size"
+                app:layout_constraintBottom_toTopOf="@+id/bottom_spacer"
+                app:layout_constraintStart_toStartOf="@+id/cardview_title"
+                app:layout_constraintTop_toBottomOf="@+id/cardview_title"
+                app:layout_constraintEnd_toStartOf="@id/viewstub_end_view"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constrainedWidth="true"
+                android:visibility="gone"
+                />
 
-        </RelativeLayout>
+            <Space
+                android:id="@+id/bottom_spacer"
+                android:layout_width="0dp"
+                android:layout_height="14dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardview_summary"
+                app:layout_constraintStart_toStartOf="parent"/>
 
-        <ViewStub
-            android:id="@+id/viewstub_end_view"
-            android:inflatedId="@+id/end_view"
-            android:layout="@layout/oui_des_widget_card_item_end_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical" />
+            <ViewStub
+                android:id="@+id/viewstub_end_view"
+                android:inflatedId="@+id/end_view"
+                android:layout="@layout/oui_des_widget_card_item_end_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
-    </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
 
 </merge>
 

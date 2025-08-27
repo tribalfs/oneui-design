@@ -15,6 +15,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.withStyledAttributes
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
@@ -26,6 +27,7 @@ import dev.oneuiproject.oneui.ktx.defaultSummaryColor
 import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
 import dev.oneuiproject.oneui.ktx.userUpdatableSummaryColor
 import dev.oneuiproject.oneui.utils.SemTouchFeedbackAnimator
+import java.lang.Compiler.enable
 
 /**
  * A custom view that displays a card item with a title, summary, icon, and dividers.
@@ -61,7 +63,7 @@ class CardItemView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
 ) : LinearLayout(context, attrs) {
 
-    private var containerView: LinearLayout
+    private var containerView: FrameLayout
     private var titleTextView: TextView
     private var summaryTextView: TextView
     private var dividerViewTop: View? = null
@@ -254,8 +256,11 @@ class CardItemView @JvmOverloads constructor(
 
     private fun ensureInflatedIconView(){
         if (iconImageView == null) {
-            iconImageView = (findViewById<ViewStub>(R.id.viewstub_icon_frame).inflate() as FrameLayout)
-                .findViewById(R.id.cardview_icon)
+            val iconFrame = (findViewById<ViewStub>(R.id.viewstub_icon_frame).inflate() as FrameLayout)
+            titleTextView.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                startToEnd = iconFrame.id
+            }
+            iconImageView = iconFrame.findViewById(R.id.cardview_icon)
         }
     }
 
@@ -270,12 +275,6 @@ class CardItemView @JvmOverloads constructor(
 
         val hasIcon = iconImageView?.drawable != null
         (iconImageView?.parent as? FrameLayout)?.isVisible = hasIcon
-        val desiredPaddingStart = if (hasIcon) containerLeftPaddingWithIcon else containerLeftPaddingNoIcon
-
-        containerView.apply {
-            if (desiredPaddingStart == paddingLeft) return@apply
-            updatePaddingRelative(start = desiredPaddingStart)
-        }
 
         val desiredDividerStartMargin = if (!hasIcon || fullWidthDivider) dividerMarginStart else dividerMarginStartWithIcon
 
@@ -336,6 +335,7 @@ class CardItemView @JvmOverloads constructor(
         if (isEnabled == enabled) return
         super.setEnabled(enabled)
         containerView.apply {
+            isEnabled = enabled
             alpha = when {
                 enabled -> 1.0f
                 else -> 0.4f

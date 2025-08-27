@@ -6,7 +6,6 @@
     android:id="@+id/badge_frame"
     android:layout_width="10dp"
     android:layout_height="10dp"
-    android:layout_alignEnd="@id/cardview_title"
     android:contentDescription="@string/mtrl_badge_numberless_content_description"
     android:gravity="center"
     android:orientation="vertical">
