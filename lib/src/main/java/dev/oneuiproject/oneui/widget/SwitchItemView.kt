@@ -362,13 +362,16 @@ class SwitchItemView @JvmOverloads constructor(
         }
     }
 
-    override fun setEnabled(enable: Boolean) {
-        super.setEnabled(enable)
-        contentFrame.isEnabled = enable
-        mainContent.isEnabled = enable
-        titleView.isEnabled = enable
-        summaryView.isEnabled = enable
-        switchView.isEnabled = enable
+    override fun setEnabled(enabled: Boolean) {
+        if (isEnabled == enabled) return
+        super.setEnabled(enabled)
+        contentFrame.apply {
+            isEnabled = enabled
+            alpha = when {
+                enabled -> 1.0f
+                else -> 0.4f
+            }
+        }
     }
 
     private fun ensureInflatedIconView() {
