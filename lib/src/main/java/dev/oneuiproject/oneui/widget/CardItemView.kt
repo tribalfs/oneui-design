@@ -267,6 +267,9 @@ class CardItemView @JvmOverloads constructor(
     private fun ensureInflatedEndView(){
         if (endImageView == null) {
             endImageView = (findViewById<ViewStub>(R.id.viewstub_end_view).inflate() as ImageView)
+            summaryTextView.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                endToStart = endImageView!!.id
+            }
         }
     }
 
