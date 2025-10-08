@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.tribalfs.oneuisample",
+  "applicationId": "com.tribalfs.oneuisample8",
   "variantName": "release",
   "elements": [
     {
@@ -12,7 +12,7 @@
       "filters": [],
       "attributes": [],
       "versionCode": 1,
-      "versionName": "0.7.7+oneui7",
+      "versionName": "0.8.0+oneui8",
       "outputFile": "sample-app-release.apk"
     }
   ],
