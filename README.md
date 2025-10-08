@@ -67,7 +67,7 @@ dependencies {
 - <a href="https://tribalfs.github.io/oneui-design/">API documentation (WIP)</a>
 
 ### Sample apps
-- <a href="https://github.com/tribalfs/oneui-design/tree/main/sample-app"> OneUI7 Sample (widgets showcase)</a> | <a href="https://github.com/tribalfs/oneui-design/raw/main/sample-app/release/sample-app-release.apk">Download APK</a>
+- <a href="https://github.com/tribalfs/oneui-design/tree/oneui7/sample-app"> OneUI7 Sample (widgets showcase)</a> | <a href="https://github.com/tribalfs/oneui-design/raw/oneui7/sample-app/release/sample-app-release.apk">Download APK</a>
 - <a href="https://github.com/tribalfs/oneui-design/tree/oneui6/sample-app"> OneUI6 Sample (widgets showcase)</a> | <a href="https://github.com/tribalfs/oneui-design/raw/oneui6/sample-app/release/sample-app-release.apk">Download APK</a> 
 
 ### Credits
