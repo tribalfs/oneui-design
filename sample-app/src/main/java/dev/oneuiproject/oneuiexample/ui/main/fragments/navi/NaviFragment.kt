@@ -43,7 +43,7 @@ class NaviFragment : AbsBaseFragment(R.layout.fragment_navi) {
 
     private fun initSubTabs(view: View) {
         binding.tabsSubtab.apply {
-            addTab("Subtab 4"){}
+            addTab("Subtab 4")
             addTab("Subtab 5")
             addTab("Subtab 6")
             addTab("Subtab 7")

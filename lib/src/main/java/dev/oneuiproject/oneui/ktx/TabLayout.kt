@@ -40,7 +40,6 @@ inline fun <T: TabLayout>T.selectTabAt(
  * @param tabTitleRes The resource id of the string to set as title for the tab.
  * @param tabIconRes (Optional) The resource id of the drawable to display on the tab.
  * @param customTabViewRes (Optional) The resource id of the layout to use as the custom tab view.
- * @param listener (Optional) [View.OnClickListener] to be set to the tab.
  *
  * @return The added [TabLayout.Tab] instance for further configuration, if needed.
  *
@@ -57,14 +56,12 @@ inline fun <T: TabLayout>T.selectTabAt(
 inline fun <T: TabLayout>T.addTab(
     @StringRes tabTitleRes: Int?,
     @DrawableRes tabIconRes: Int? = null,
-    @LayoutRes customTabViewRes: Int? = null,
-    listener: View.OnClickListener? = null
+    @LayoutRes customTabViewRes: Int? = null
 ): TabLayout.Tab {
     return addTab(
         tabTitle = tabTitleRes?.let {context!!.getString(it) },
         null,
-        customTabViewRes,
-        listener
+        customTabViewRes
     ).apply {
         tabIconRes?.let {
             icon = AppCompatResources.getDrawable(context, it)
@@ -79,31 +76,25 @@ inline fun <T: TabLayout>T.addTab(
  * @param tabTitle The title text to display on the tab.
  * @param tabIcon (Optional) The drawable to display as the tab's icon.
  * @param customTabViewRes (Optional) The resource id of the layout to use as the custom tab view.
- * @param listener (Optional) [View.OnClickListener] to be set to the tab.
  *
  * @return The added [TabLayout.Tab] instance for further configuration, if needed.
  *
  * Example usage:
  * ```kotlin
- * val tab = tabLayout.addTab("Tab Name", isSelected = true) { view ->
- *     // Handle tab click
- * }
+ * val tab = tabLayout.addTab("Tab Name", isSelected = true)
  * ```
  */
 @JvmOverloads
 inline fun <T: TabLayout>T.addTab(
     tabTitle: CharSequence?,
     tabIcon: Drawable? = null,
-    @LayoutRes customTabViewRes: Int? = null,
-    listener: View.OnClickListener? = null,
+    @LayoutRes customTabViewRes: Int? = null
 ): TabLayout.Tab {
     return newTab().apply {
         text = tabTitle
         icon = tabIcon
         customTabViewRes?.let { setCustomView(LayoutInflater.from(context).inflate(it, view, false)) }
         addTab(this)
-        //Call after added
-        view.setOnClickListener(listener)
     }
 }
 
