@@ -5,6 +5,7 @@ package dev.oneuiproject.oneui.dialog
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.util.Log
@@ -35,6 +36,7 @@ import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.dialog.internal.toGridDialogItem
 import dev.oneuiproject.oneui.ktx.activity
 import dev.oneuiproject.oneui.ktx.findWithIndex
+import dev.oneuiproject.oneui.ktx.semSetBackgroundBlurEnabled
 import dev.oneuiproject.oneui.ktx.semSetToolTipText
 import dev.oneuiproject.oneui.ktx.windowWidthNetOfInsets
 import dev.oneuiproject.oneui.layout.Badge
@@ -49,7 +51,6 @@ import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isPhoneLandscapeOrTablet
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isPortrait
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isTabletStyle
 import dev.oneuiproject.oneui.utils.TypedValueUtils
-import kotlin.collections.find
 import androidx.appcompat.R as appcompatR
 
 
@@ -112,8 +113,10 @@ class GridMenuDialog @JvmOverloads constructor(
         val inflater = LayoutInflater.from(context)
         contentView = inflater.inflate(R.layout.oui_des_dialog_grid_menu, null) as LinearLayout
         setContentView(contentView)
+        if (Build.VERSION.SDK_INT >= 35) {
+            contentView.semSetBackgroundBlurEnabled()
+        }
         super.onCreate(savedInstanceState)
-
         resetContentPadding()
         setOnShowListener {
             val layoutManager = gridListView.layoutManager!!
@@ -139,7 +142,7 @@ class GridMenuDialog @JvmOverloads constructor(
      * initializes or updates the RecyclerView for displaying grid items,
      * and adjusts the dialog's maximum height.
      */
-    fun updateDialog(){
+    fun updateDialog() {
         spanCount = calculateColumnCount().coerceAtMost(gridItems.size)
         gridListView = contentView.findViewById<RecyclerView>(R.id.grid_menu_view).apply {
             layoutManager = GridLayoutManager(context, spanCount).apply {
@@ -167,34 +170,42 @@ class GridMenuDialog @JvmOverloads constructor(
             val resources = context.resources
             val config = resources.configuration
 
-            window!!.apply{
+            window!!.apply {
                 val decorView = context.activity!!.window.decorView
                 val decorViewWidth = decorView.width
-                var dialogWidth = (decorViewWidth * TypedValueUtils.getFloat(context,
+                var dialogWidth = (decorViewWidth * TypedValueUtils.getFloat(
+                    context,
                     if (isInMultiWindowModeCompat(context)) {
                         R.dimen.oui_des_more_menu_dialog_width_ratio_mw
-                    } else R.dimen.oui_des_more_menu_dialog_width_ratio)).toInt()
+                    } else R.dimen.oui_des_more_menu_dialog_width_ratio
+                )).toInt()
 
                 if (DeviceLayoutUtil.isTabletLayoutOrDesktop(context)) {
-                    dialogWidth = dialogWidth.coerceAtMost(resources.getDimensionPixelOffset(R.dimen.oui_des_more_menu_dialog_max_width))
+                    dialogWidth =
+                        dialogWidth.coerceAtMost(resources.getDimensionPixelOffset(R.dimen.oui_des_more_menu_dialog_max_width))
                     if (DeviceLayoutUtil.isLandscape(config) && !isInMultiWindowModeCompat(context)) {
-                        dialogWidth = dialogWidth.coerceAtLeast(resources.getDimensionPixelOffset(
-                            R.dimen.oui_des_more_menu_dialog_min_width))
+                        dialogWidth = dialogWidth.coerceAtLeast(
+                            resources.getDimensionPixelOffset(
+                                R.dimen.oui_des_more_menu_dialog_min_width
+                            )
+                        )
                     }
                 }
 
                 val isRTL = config.layoutDirection == LAYOUT_DIRECTION_RTL
-                attributes = windowLp.apply wlp@ {
+                attributes = windowLp.apply wlp@{
                     this@wlp.width = dialogWidth
-                    this@wlp.y = resources.getDimensionPixelOffset(R.dimen.oui_des_more_menu_dialog_y_offset)
+                    this@wlp.y =
+                        resources.getDimensionPixelOffset(R.dimen.oui_des_more_menu_dialog_y_offset)
                     getAnchorViewHorizontalCenter()?.let {
                         this@wlp.x = (it - dialogWidth / 2).toInt()
                     }
-                    this@wlp.windowAnimations = if (isRTL) R.style.MoreMenuDialogSlideRight else R.style.MoreMenuDialogSlideLeft
+                    this@wlp.windowAnimations =
+                        if (isRTL) R.style.MoreMenuDialogSlideRight else R.style.MoreMenuDialogSlideLeft
                     gravity = Gravity.BOTTOM or Gravity.START
                 }
             }
-        }else{
+        } else {
             window!!.apply {
                 attributes = windowLp.apply wlp@{
                     this@wlp.y = 0
@@ -238,7 +249,7 @@ class GridMenuDialog @JvmOverloads constructor(
         currentAnchorView?.apply {
             removeCallbacks(updateDialogWidthAndPositionRunnable)
             hide()
-            postDelayed(updateDialogWidthAndPositionRunnable,500)
+            postDelayed(updateDialogWidthAndPositionRunnable, 500)
         }
     }
 
@@ -262,7 +273,7 @@ class GridMenuDialog @JvmOverloads constructor(
             val location = IntArray(2)
             if (SDK_INT >= 29) {
                 view.getLocationInSurface(location)
-            }else{
+            } else {
                 view.getLocationInWindow(location)
             }
             location[0] + view.width / 2f
@@ -309,9 +320,12 @@ class GridMenuDialog @JvmOverloads constructor(
         val resources = context.resources
 
         // Calculate the available width for grid items
-        val horizontalPadding = resources.getDimensionPixelOffset(R.dimen.oui_des_more_menu_dialog_padding_horizontal)
-        val gridItemHorizontalPadding = resources.getDimensionPixelSize(R.dimen.oui_des_more_menu_griditem_padding_horizontal)
-        val minGridItemWidth = resources.getDimensionPixelOffset(R.dimen.oui_des_more_menu_grid_item_min_width)
+        val horizontalPadding =
+            resources.getDimensionPixelOffset(R.dimen.oui_des_more_menu_dialog_padding_horizontal)
+        val gridItemHorizontalPadding =
+            resources.getDimensionPixelSize(R.dimen.oui_des_more_menu_griditem_padding_horizontal)
+        val minGridItemWidth =
+            resources.getDimensionPixelOffset(R.dimen.oui_des_more_menu_grid_item_min_width)
 
         val maxColumns = ((context.windowWidthNetOfInsets - (horizontalPadding * 2)) /
                 ((gridItemHorizontalPadding * 2) + minGridItemWidth)).coerceAtLeast(1)
@@ -329,8 +343,10 @@ class GridMenuDialog @JvmOverloads constructor(
 
     private fun resetContentPadding() {
         val res = context.resources
-        val horizontalPadding = res.getDimensionPixelSize(R.dimen.oui_des_grid_menu_dialog_horizontal_padding)
-        val verticalPadding = res.getDimensionPixelSize(R.dimen.oui_des_grid_menu_dialog_vertical_padding)
+        val horizontalPadding =
+            res.getDimensionPixelSize(R.dimen.oui_des_grid_menu_dialog_horizontal_padding)
+        val verticalPadding =
+            res.getDimensionPixelSize(R.dimen.oui_des_grid_menu_dialog_vertical_padding)
         val hasMessage = message != null && message!!.isNotEmpty()
         contentView.setPaddingRelative(
             horizontalPadding,
@@ -453,8 +469,9 @@ class GridMenuDialog @JvmOverloads constructor(
      */
     fun setSelectedItem(itemId: Int) {
         if (selectedId == itemId) return
-        val prevIdx =  if (selectedId == -1) -1 else gridItems.indexOfFirst { it.itemId == selectedId }
-        val currentIdx =  if (itemId == -1) -1 else gridItems.indexOfFirst { it.itemId == itemId }
+        val prevIdx =
+            if (selectedId == -1) -1 else gridItems.indexOfFirst { it.itemId == selectedId }
+        val currentIdx = if (itemId == -1) -1 else gridItems.indexOfFirst { it.itemId == itemId }
         selectedId = itemId
         if (prevIdx != -1) adapter.notifyItemChanged(prevIdx)
         if (currentIdx != -1) adapter.notifyItemChanged(currentIdx)

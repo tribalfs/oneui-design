@@ -135,6 +135,8 @@ class ProgressDialog @JvmOverloads constructor(
             )
             window!!.apply { setGravity(Gravity.CENTER); setLayout(size, size) }
         }
+
+        seslSetBackgroundBlurEnabled()
     }
 
     override fun onStart() { super.onStart(); hasStarted = true }

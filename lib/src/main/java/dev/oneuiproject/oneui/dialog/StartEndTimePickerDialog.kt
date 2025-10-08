@@ -101,6 +101,7 @@ class StartEndTimePickerDialog(
             }
             tabLayout = it.findViewById(R.id.time_picker_tab)
         }
+        seslSetBackgroundBlurEnabled()
     }
 
     private fun initDialogButton() {
