@@ -20,7 +20,6 @@ import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED
 import android.view.accessibility.AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUS_CLEARED
 import android.view.accessibility.AccessibilityNodeInfo
-import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.annotation.MenuRes
 import androidx.appcompat.view.SupportMenuInflater
@@ -84,8 +83,28 @@ class BottomTabLayout(
 ) : MarginsTabLayout(context, attrs), TabLayout.OnTabSelectedListener {
 
     private var minSideMargin = 0f
-    private var slideDownAnim: Animation? = null
-    private var slideUpAnim: Animation? = null
+    private val slideDownAnim by lazy(LazyThreadSafetyMode.NONE) {
+        AnimationUtils.loadAnimation(context, R.anim.oui_des_bottom_tab_slide_down).apply {
+            startOffset = 100L
+            interpolator = CachedInterpolatorFactory.getOrCreate(SINE_IN_OUT_90)
+            setListener(
+                onStart = {this@BottomTabLayout.visibility = VISIBLE},
+                onEnd = {
+                    this@BottomTabLayout.visibility = GONE
+                    transientState = TRANSIENT_NONE
+                },
+            )
+        }
+    }
+
+    private val slideUpAnim by lazy(LazyThreadSafetyMode.NONE) {
+        AnimationUtils.loadAnimation(context, R.anim.oui_des_bottom_tab_slide_up).apply {
+            startOffset = 240
+            interpolator = CachedInterpolatorFactory.getOrCreate(SINE_IN_OUT_90)
+            doOnEnd { transientState = TRANSIENT_NONE }
+        }
+    }
+
     private var transientState = TRANSIENT_NONE
     private var previousContainerWidth = -1
 
@@ -452,32 +471,12 @@ class BottomTabLayout(
     private fun doSlideDownAnimation() {
         if (isGone) return
         transientState = ABOUT_TO_HIDE
-        if (slideDownAnim == null) {
-            slideDownAnim = AnimationUtils.loadAnimation(context, R.anim.oui_des_bottom_tab_slide_down).apply {
-                startOffset = 100L
-                interpolator = CachedInterpolatorFactory.getOrCreate(SINE_IN_OUT_90)
-                setListener(
-                    onStart = {this@BottomTabLayout.visibility = VISIBLE},
-                    onEnd = {
-                        this@BottomTabLayout.visibility = GONE
-                        transientState = TRANSIENT_NONE
-                    },
-                )
-            }
-        }
         startAnimation(slideDownAnim)
     }
 
     private fun doSlideUpAnimation() {
         if (isVisible) return
         transientState = ABOUT_TO_SHOW
-        if (slideUpAnim == null) {
-            slideUpAnim = AnimationUtils.loadAnimation(context, R.anim.oui_des_bottom_tab_slide_up).apply {
-                startOffset = 240
-                interpolator = CachedInterpolatorFactory.getOrCreate(SINE_IN_OUT_90)
-                doOnEnd { transientState = TRANSIENT_NONE }
-            }
-        }
         visibility = VISIBLE
         startAnimation(slideUpAnim)
     }
