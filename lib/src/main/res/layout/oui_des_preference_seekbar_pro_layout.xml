@@ -24,16 +24,14 @@
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
             android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceListItem"
-            tools:text="Title"/>
+            android:textAppearance="?android:attr/textAppearanceListItem"/>
 
         <TextView
             android:id="@android:id/summary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="4"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            tools:text="summary"/>
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <Space
             android:layout_width="0dp"
@@ -44,8 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:textAppearance="?android:attr/textAppearanceListItem"
-            android:textColor="?android:attr/colorPrimaryDark"
+            android:textAppearance="@style/OneUI.SeekBarProValueTextAppearance"
             android:singleLine="true"
             android:visibility="gone" />
 
@@ -65,8 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="viewStart"
-            android:textAppearance="@style/OneUI.SeekBarProLabelTextAppearance"
-            tools:text="Left" />
+            android:textAppearance="@style/OneUI.SeekBarProLabelTextAppearance" />
 
         <TextView
             android:id="@+id/right_label"
@@ -74,8 +70,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:textAlignment="viewEnd"
-            android:textAppearance="@style/OneUI.SeekBarProLabelTextAppearance"
-            tools:text="Right" />
+            android:textAppearance="@style/OneUI.SeekBarProLabelTextAppearance" />
     </LinearLayout>
 
     <LinearLayout
