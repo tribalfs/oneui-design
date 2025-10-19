@@ -38,6 +38,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import androidx.preference.R as preferenceR
 
 //Reference: Font size seekbar
 /**
@@ -58,7 +59,7 @@ open class SeekBarPreferencePro @JvmOverloads constructor(
     @SuppressLint("RestrictedApi")
     defStyleAttr: Int = TypedArrayUtils.getAttr(
         context, R.attr.seekBarPreferenceProStyle,
-        androidx.preference.R.attr.seekBarPreferenceStyle
+        preferenceR.attr.seekBarPreferenceStyle
     ),
     defStyleRes: Int = 0
 ) : SeekBarPreference(context, attrs, defStyleAttr, defStyleRes),
@@ -66,12 +67,17 @@ open class SeekBarPreferencePro @JvmOverloads constructor(
     OnLongClickListener,
     OnTouchListener {
 
+    fun interface ValueFormatter {
+        fun getFormattedValue(value: Int): String
+    }
+
     private val preferenceScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     private var longPressJob: Job? = null
 
     private var seekbarMode: Int = MODE_LEVEL_BAR
     private var isSeamLess: Boolean = false
     private var skipOnBind = false
+    private var valueFormatter: ValueFormatter? = null
 
     /**
      * If true, this sets [SeslSeekBar] to only put tick marks at the start, middle and end
@@ -145,7 +151,7 @@ open class SeekBarPreferencePro @JvmOverloads constructor(
                 progress: Int,
                 fromUser: Boolean
             ) {
-                if (showSeekBarValue) updateValueLabel(progress)
+                if (showSeekBarValue) updateValueLabel()
                 stateDescription = getFormattedValue()
                 onSeekBarPreferenceChangeListener?.onProgressChanged(seekBar, progress, fromUser)
             }
@@ -156,7 +162,7 @@ open class SeekBarPreferencePro @JvmOverloads constructor(
 
             override fun onStopTrackingTouch(seslSeekBar: SeslSeekBar?) {
                 onSeekBarPreferenceChangeListener?.onStopTrackingTouch(seslSeekBar)
-                if (showSeekBarValue) updateValueLabel(seslSeekBar?.progress ?: 0)
+                if (showSeekBarValue) updateValueLabel()
             }
         }
 
@@ -248,7 +254,8 @@ open class SeekBarPreferencePro @JvmOverloads constructor(
         seekBarValueTextView?.let { textView ->
             if (showSeekBarValue) {
                 textView.isVisible = true
-                updateValueLabel( value)
+                textView.isEnabled = isEnabled
+                updateValueLabel()
             } else {
                 textView.isVisible = false
             }
@@ -279,7 +286,7 @@ open class SeekBarPreferencePro @JvmOverloads constructor(
         }
     }
 
-    private fun updateValueLabel(value: Int) = seekBarValueTextView?.text = getFormattedValue()
+    private fun updateValueLabel() = seekBarValueTextView?.text = getFormattedValue()
 
     override fun onClick(view: View) {
         when (view.id) {
@@ -336,7 +343,14 @@ open class SeekBarPreferencePro @JvmOverloads constructor(
         updateValueIfAllowed(newValue)
     }
 
-    private fun getFormattedValue(): String = "$value${units ?: ""}"
+    private fun getFormattedValue(): String = valueFormatter?.getFormattedValue(value) ?: "$value${units ?: ""}"
+
+    fun setValueFormatter(valueFormatter: ValueFormatter) {
+        if (this.valueFormatter === valueFormatter) return
+        this.valueFormatter = valueFormatter
+        stateDescription = getFormattedValue()
+        updateValueLabel()
+    }
 
     override fun onDetached() {
         super.onDetached()

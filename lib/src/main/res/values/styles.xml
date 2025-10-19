@@ -135,6 +135,11 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="OneUI.SeekBarProValueTextAppearance" parent="@style/RobotoRegular">
+        <item name="android:textColor">@color/oui_des_seekbar_value_text_color_selector</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="OneUI.SeekBarPreferencePro" parent="@style/Preference.SeekBarPreference">
         <item name="android:layout">@layout/oui_des_preference_seekbar_pro_layout</item>
     </style>
