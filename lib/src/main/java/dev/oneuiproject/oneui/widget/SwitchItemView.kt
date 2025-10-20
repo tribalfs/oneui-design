@@ -372,6 +372,7 @@ class SwitchItemView @JvmOverloads constructor(
                 else -> 0.4f
             }
         }
+        switchView.isEnabled = enabled
     }
 
     private fun ensureInflatedIconView() {
