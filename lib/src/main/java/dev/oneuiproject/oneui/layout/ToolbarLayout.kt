@@ -914,6 +914,13 @@ open class ToolbarLayout @JvmOverloads constructor(
         collapsingToolbarLayout.seslSetSuggestView(appBarModel)
     }
 
+    /**
+     * Sets whether to enable or disable the fade effect of the collapsed title.
+     * This is set to `true` by default.
+     */
+    fun setEnableFadeToolbarTitle(enable: Boolean) =
+        collapsingToolbarLayout.seslEnableFadeToolbarTitle(enable)
+
     //
     // Navigation Button methods
     //
