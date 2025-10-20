@@ -71,6 +71,16 @@ dependencies {
 - <a href="https://github.com/tribalfs/oneui-design/tree/oneui7/sample-app"> OneUI7 Sample (widgets showcase)</a> | <a href="https://github.com/tribalfs/oneui-design/raw/oneui7/sample-app/release/sample-app-release.apk">Download APK</a>
 - <a href="https://github.com/tribalfs/oneui-design/tree/oneui6/sample-app"> OneUI6 Sample (widgets showcase)</a> | <a href="https://github.com/tribalfs/oneui-design/raw/oneui6/sample-app/release/sample-app-release.apk">Download APK</a> 
 
+### Projects using this lib (Add yours too!)
+
+[Galaxy MaxHz](https://github.com/tribalfs/GalaxyMaxHzPub)
+| [Pixels: Resolution+DPI Changer](https://play.google.com/store/apps/details?id=com.tribalfs.pixels)
+| [ECOIN Wallet: Crypto DeFi, BTC](https://play.google.com/store/apps/details?id=org.ecoinwallet)
+| [OneURL - URL Shortener (QR)](https://play.google.com/store/apps/details?id=de.lemke.oneurl)
+| [Get Icon](https://play.google.com/store/apps/details?id=de.lemke.geticon)
+| [Sudoku with OneUI-Design](https://play.google.com/store/apps/details?id=de.lemke.sudoku)
+| [NAK Buch (Gesang,Chorbuch,...)](https://play.google.com/store/apps/details?id=de.lemke.nakbuch)
+
 ### Credits
 - [Google](https://developer.android.com/jetpack) for their Jetpack and Material Components libraries.
 - [Samsung](https://www.samsung.com/) for their awesome OneUI Design.
