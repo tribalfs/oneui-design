@@ -20,6 +20,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.reflect.DeviceInfo
 import com.google.android.material.shape.MaterialShapeDrawable
 import dev.rikka.tools.refine.Refine
+import dev.oneuiproject.oneui.utils.supports3DTransitionFlag
 import androidx.appcompat.R as appcompatR
 
 /**
@@ -233,18 +234,12 @@ inline fun View.onMultiClick(clickCount: Int = 7, maxClickIntervalMillis: Long =
  */
 fun View.semSetBackgroundBlurEnabled(): Boolean {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
-        @SuppressLint("RestrictedApi")
-        val supports3DTransitionFlag = DeviceInfo.isOneUI() && SeslFloatingFeatureReflector.getString(
-            "SEC_FLOATING_FEATURE_GRAPHICS_SUPPORT_3D_SURFACE_TRANSITION_FLAG",
-            "FALSE"
-        ) == "TRUE"
-
         if (!supports3DTransitionFlag) return false
 
         val isLightTheme = context.isLightMode()
         val colorCurve: Int = if (isLightTheme) BLUR_UI_HIGH_ULTRA_THICK_LIGHT else BLUR_UI_HIGH_ULTRA_THICK_DARK
         val blurColor: Int = context.getColor(appcompatR.color.sesl_dialog_blur_background_color)
-        val blurRadius = +context.resources.getDimensionPixelSize(appcompatR.dimen.sesl_dialog_background_corner_radius).toFloat()
+        val blurRadius = context.resources.getDimensionPixelSize(appcompatR.dimen.sesl_dialog_background_corner_radius).toFloat()
 
         SemBlurCompat.setBlurEffectPreset(
             this,
