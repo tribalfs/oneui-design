@@ -5,12 +5,10 @@ package dev.oneuiproject.oneui.app
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.res.Configuration
-import android.graphics.Outline
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewOutlineProvider
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.core.view.updatePadding
@@ -20,6 +18,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.ktx.pxToDp
 import dev.oneuiproject.oneui.ktx.semSetBackgroundBlurEnabled
+import dev.oneuiproject.oneui.ktx.setRoundedCorners
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isTabletLayoutOrDesktop
 import dev.oneuiproject.oneui.utils.internal.updateWidth
 import com.google.android.material.R as materialR
@@ -65,15 +64,7 @@ open class SemBottomSheetDialogFragment : BottomSheetDialogFragment {
             }
             findViewById<ViewGroup>(materialR.id.design_bottom_sheet).apply {
                 if (!semSetBackgroundBlurEnabled()) {
-                    outlineProvider = object : ViewOutlineProvider() {
-                        private val maxCornerRadius =
-                            resources.getDimension(appcompatR.dimen.sesl_dialog_background_corner_radius)
-
-                        override fun getOutline(view: View, outline: Outline) {
-                            outline.setRoundRect(0, 0, view.width, view.height, maxCornerRadius)
-                        }
-                    }
-                    clipToOutline = true
+                    setRoundedCorners(resources.getDimension(appcompatR.dimen.sesl_dialog_background_corner_radius))
                 }
             }
         }

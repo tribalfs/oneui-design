@@ -1,12 +1,13 @@
 @file:Suppress("unused", "NOTHING_TO_INLINE")
 package dev.oneuiproject.oneui.ktx
 
-import android.annotation.SuppressLint
+import android.graphics.Outline
 import android.os.Build
 import android.util.Log
 import android.view.SemView
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewOutlineProvider
 import androidx.annotation.ColorInt
 import androidx.appcompat.util.SeslRoundedCorner.ROUNDED_CORNER_NONE
 import androidx.appcompat.widget.TooltipCompat
@@ -17,7 +18,7 @@ import androidx.core.view.SemBlurCompat.BLUR_UI_HIGH_ULTRA_THICK_LIGHT
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.reflect.DeviceInfo
-import androidx.reflect.feature.SeslFloatingFeatureReflector
+import com.google.android.material.shape.MaterialShapeDrawable
 import dev.rikka.tools.refine.Refine
 import androidx.appcompat.R as appcompatR
 
@@ -98,6 +99,7 @@ inline fun View.semGetRoundedCorners(): Int {
  * @param corners A bitmask of the corners to round.
  *                See [androidx.appcompat.util.SeslRoundedCorner] for available constants.
  * @param radius The radius of the rounded corners in pixels. If null, the default radius is used.
+ * @see androidx.appcompat.util.SeslRoundedCorner
  */
 @JvmOverloads
 inline fun View.semSetRoundedCorners(corners: Int, radius: Int? = null) {
@@ -256,3 +258,36 @@ fun View.semSetBackgroundBlurEnabled(): Boolean {
         return false
     }
 }
+
+/**
+ * Applies rounded corners to this View.
+ *
+ * This function handles two cases:
+ * 1. If the View's background is a [MaterialShapeDrawable], it updates the shape appearance model
+ *    to set the corner radius. This is the preferred method as it respects the existing shape.
+ * 2. If the background is not a [MaterialShapeDrawable] (or is null), it sets a custom
+ *    [ViewOutlineProvider] to clip the View to a rounded rectangle shape.
+ *
+ * In both cases, `clipToOutline` is set to `true` to enable the clipping.
+ *
+ * @param radius The corner radius in pixels.
+ * @see semSetRoundedCorners
+ */
+fun View.setRoundedCorners(radius: Float) {
+    (background as? MaterialShapeDrawable)?.let { shapeDrawable ->
+        shapeDrawable.shapeAppearanceModel = shapeDrawable.shapeAppearanceModel
+            .toBuilder()
+            .setAllCornerSizes(radius)
+            .build()
+        this.outlineProvider = ViewOutlineProvider.BACKGROUND
+        this.clipToOutline = true
+    } ?: run {
+        outlineProvider = object : ViewOutlineProvider() {
+            override fun getOutline(view: View, outline: Outline) {
+                outline.setRoundRect(0, 0, view.width, view.height, radius)
+            }
+        }
+        clipToOutline = true
+    }
+}
+
