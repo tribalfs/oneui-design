@@ -1,12 +1,12 @@
 name: Build and Commit APK
 
-on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'manifest.gradle'
-  workflow_dispatch:
+#on:
+#  push:
+#    branches:
+#      - main
+#    paths:
+#      - 'manifest.gradle'
+#  workflow_dispatch:
 jobs:
   check-and-publish:
     env:
