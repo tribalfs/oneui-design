@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.ksp)
+    id ("kotlin-parcelize")
 }
 
 android {
@@ -64,6 +65,13 @@ dependencies {
 
     implementation(libs.bundles.androidx.datastore)
     implementation(libs.bundles.hilt)
+    implementation(libs.bundles.androidx.room) {
+        exclude(group = "com.intellij", module = "annotations")
+    }
+    implementation(libs.bundles.retrofit2)
+    implementation(libs.bundles.moshi)
+    implementation(libs.glide)
+    ksp(libs.androidx.room.compiler)
     ksp(libs.bundles.hilt.compilers)
     implementation(libs.lottie)
 }
@@ -74,3 +82,6 @@ tasks.register("generateReleaseApk", Copy::class.java) {
     into("$rootDir/sample-app/release/")
 }
 
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+}

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dev.oneuiproject.oneui.layout.ToolbarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/toolbar_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:expanded="false"
+    app:expandable="false"
+    android:background="?roundedCornerColor">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="always"
+        android:background="?roundedCornerColor"
+        android:paddingHorizontal="10dp"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <dev.oneuiproject.oneui.widget.RoundedLinearLayout
+                android:id="@+id/header_container"
+                android:background="?android:colorBackground"
+                android:padding="8dp"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:edgeInsetTop="62dp"
+                app:drawOverEdge="false"
+                app:roundedCorners="all">
+
+                <ImageView
+                    android:background="@drawable/avatar_background"
+                    android:id="@+id/stargazer_avatar"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="8dp"
+                    android:scaleType="fitXY"
+                    tools:src="@drawable/ic_oui_creatures_outline"/>
+
+                <TextView
+                    android:id="@+id/stargazer_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tribalfs"
+                    android:textSize="20sp"
+                    android:layout_gravity="center_horizontal"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceListItem" />
+
+                <TextView
+                    android:id="@+id/stargazer_github_url"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:textAlignment="center"
+                    tools:text="https://github.com/tribalfs"
+                    android:textAppearance="?android:attr/textAppearanceListItemSecondary"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:layout_marginBottom="6dp"/>
+
+                <include
+                    android:id="@+id/stargazer_buttons"
+                    android:layout_width="wrap_content"
+                    layout="@layout/view_stargazer_buttons"
+                    android:layout_height="wrap_content" />
+
+            </dev.oneuiproject.oneui.widget.RoundedLinearLayout>
+
+            <dev.oneuiproject.oneui.widget.Separator
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <dev.oneuiproject.oneui.widget.RoundedLinearLayout
+                android:id="@+id/stargazer_details_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="?android:colorBackground"/>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_location="footer"
+        app:menu="@menu/menu_stargazer_bottom"/>
+
+</dev.oneuiproject.oneui.layout.ToolbarLayout>

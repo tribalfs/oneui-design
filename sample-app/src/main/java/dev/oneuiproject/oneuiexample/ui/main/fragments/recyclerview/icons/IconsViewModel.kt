@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.oneuiproject.oneui.delegates.AllSelectorState
-import dev.oneuiproject.oneuiexample.data.IconsRepo
+import dev.oneuiproject.oneuiexample.data.icons.IconsRepo
 import dev.oneuiproject.oneuiexample.ui.main.fragments.recyclerview.icons.util.toFilteredIconsUiModelList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview

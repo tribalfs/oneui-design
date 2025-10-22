@@ -6,11 +6,14 @@ androidx-annotation = "1.9.1"
 androidx-constraintlayout="2.2.1"
 androidx-datastore = "1.1.7"
 androidx-navigation = "2.9.5"
+androidx-room = "2.8.2"
 dokka = "2.0.0"
 hiltAndroid = "2.56.2"
-lottie = "6.6.2"
 kotlin = "2.2.20"
 ksp = "2.2.20-2.0.3"
+lottie = "6.6.2"
+moshi = "1.15.2"
+retrofit2 = "3.0.0"
 rikka-refine = "4.4.0"
 sesl-core = "1.17.0+1.0.7-sesl8+rev1"
 sesl-coreKtx = "1.17.0+1.0.0-sesl8+rev0"
@@ -44,14 +47,26 @@ androidx-navigation-fragmentKtx = { module = "androidx.navigation:navigation-fra
 androidx-navigation-runtimeKtx = { module = "androidx.navigation:navigation-runtime-ktx", version.ref = "androidx-navigation" }
 androidx-navigation-uiKtx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "androidx-navigation" }
 
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "androidx-room" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "androidx-room" }
+
+glide = { module = "com.github.bumptech.glide:glide", version = "5.0.5" }
+
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }
+
 kotlinStdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib" }
+
 lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
+
+moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
+moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshi" }
 
 oneuiDesign = { module = "io.github.tribalfs:oneui-design", version = "0.8.1+oneui8" }
 oneuiIcons = { module = "io.github.oneuiproject:icons", version = "1.1.0" }
 
+retrofit2 = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit2" }
+retrofit2-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit2" }
 rikka-refineRuntime = { module = "dev.rikka.tools.refine:runtime", version.ref = "rikka-refine" }
 rikka-refineAnnotation = { module = "dev.rikka.tools.refine:annotation", version.ref = "rikka-refine" }
 rikka-refineAnnotationProcessor = { module = "dev.rikka.tools.refine:annotation-processor", version.ref = "rikka-refine" }
@@ -93,9 +108,11 @@ rikka-refine = { id = "dev.rikka.tools.refine", version.ref = "rikka-refine" }
 [bundles]
 androidx-datastore = ["androidx-datastoreCore", "androidx-datastorePreferences"]
 androidx-navigation = ["androidx-navigation-runtimeKtx", "androidx-navigation-fragmentKtx", "androidx-navigation-uiKtx"]
+androidx-room = ["androidx-room-ktx", "androidx-room-compiler"]
 hilt = ["hilt-android"]
 hilt-compilers = ["hilt-android-compiler"]
-
+moshi = ["moshi", "moshi-kotlin"]
+retrofit2 = ["retrofit2", "retrofit2-converter-gson"]
 sesl-androidx = ["sesl-appcompat",
     "sesl-coordinatorlayout",
     "sesl-recyclerview",

@@ -18,7 +18,7 @@ import dev.oneuiproject.oneui.delegates.SemSectionIndexer
 import dev.oneuiproject.oneui.utils.SearchHighlighter
 import dev.oneuiproject.oneui.widget.SelectableLinearLayout
 import dev.oneuiproject.oneuiexample.ui.main.fragments.recyclerview.icons.IconListItemUiModel
-import dev.oneuiproject.oneuiexample.ui.main.fragments.recyclerview.contacts.adapter.ContactsAdapter
+import dev.oneuiproject.oneuiexample.ui.main.fragments.recyclerview.stargazers.adapter.StargazersAdapter
 import java.util.Locale
 import javax.inject.Inject
 
@@ -58,7 +58,7 @@ class IconsAdapter @Inject constructor(
         set(value) {
             if (value != field) {
                 field = value
-                notifyItemRangeChanged(0, itemCount, ContactsAdapter.Payload.HIGHLIGHT)
+                notifyItemRangeChanged(0, itemCount, StargazersAdapter.Payload.HIGHLIGHT)
             }
         }
 
@@ -102,8 +102,8 @@ class IconsAdapter @Inject constructor(
             val item = currentList[position]
             for (payload in payloads.toSet()) {
                 when(payload){
-                    ContactsAdapter.Payload.SELECTION_MODE -> holder.bindSelected(item)
-                    ContactsAdapter.Payload.HIGHLIGHT -> holder.bindText(item.name)
+                    StargazersAdapter.Payload.SELECTION_MODE -> holder.bindSelected(item)
+                    StargazersAdapter.Payload.HIGHLIGHT -> holder.bindText(item.name)
                 }
             }
         }
