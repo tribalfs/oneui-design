@@ -1,11 +1,11 @@
 [versions]
 androidLint = "31.13.0"
 android-gradle = "8.13.0"
-androidx-activityKtx="1.10.1"
+androidx-activityKtx="1.11.0"
 androidx-annotation = "1.9.1"
 androidx-constraintlayout="2.2.1"
 androidx-datastore = "1.1.7"
-androidx-navigation = "2.9.1"
+androidx-navigation = "2.9.5"
 dokka = "2.0.0"
 hiltAndroid = "2.56.2"
 lottie = "6.6.2"
