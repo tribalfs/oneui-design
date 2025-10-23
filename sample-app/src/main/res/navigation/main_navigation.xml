@@ -5,11 +5,13 @@
     android:id="@+id/main_nav"
     app:startDestination="@+id/progressbar_dest">
 
+<!--
     <dialog
         android:id="@+id/bottomsheet_dest"
         android:name="dev.oneuiproject.oneuiexample.ui.main.fragments.bottomsheet.FragmentBottomSheet"
         android:label="Bottom Sheet"
         tools:layout="@layout/fragment_bottomsheet" />
+-->
 
     <fragment
         android:id="@+id/progressbar_dest"

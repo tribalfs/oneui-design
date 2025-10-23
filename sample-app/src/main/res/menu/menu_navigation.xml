@@ -5,9 +5,9 @@
     tools:ignore="AppCompatResource,HardcodedText,AlwaysShowAction">
 
     <item
-        android:id="@+id/bottomsheet_dest"
+        android:id="@+id/popup_menu"
         android:icon="@drawable/ic_oui_category_location"
-        android:title="Bottom Sheet"
+        android:title="Pop-up Menu"
         app:actionViewClass="dev.oneuiproject.oneui.navigation.widget.DrawerCategoryItemView" />
 
     <group android:id="@+id/group1">

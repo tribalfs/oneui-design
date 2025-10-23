@@ -2,15 +2,19 @@ package dev.oneuiproject.oneuiexample.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.NavHostFragment
+import com.sec.sesl.tester.R
 import com.sec.sesl.tester.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import dev.oneuiproject.oneui.ktx.startPopOverActivity
 import dev.oneuiproject.oneui.layout.NavDrawerLayout
 import dev.oneuiproject.oneui.navigation.setupNavigation
 import dev.oneuiproject.oneui.widget.BottomTabLayout
+import dev.oneuiproject.oneuiexample.ui.main.core.util.semToast
 import dev.oneuiproject.oneuiexample.ui.preference.PreferenceActivity
 import dev.oneuiproject.oneui.R as iconsLibR
 
@@ -40,6 +44,31 @@ class MainActivity : AppCompatActivity() {
             val navHostFragment = binding.navHostMain.getFragment<NavHostFragment>()
             setupNavigation(binding.navigationView, navHostFragment)
 
+            binding.navigationView.findMenuItem(R.id.popup_menu)?.apply {
+                setOnMenuItemClickListener {
+                    if (binding.drawerLayout.drawerOffset == 0f) {
+                        binding.drawerLayout.setDrawerOpen(true)
+                    } else {
+                        val anchor = binding.navigationView.findViewById<View>(R.id.popup_menu)
+                        PopupMenu(context, anchor).apply {
+                            seslSetOverlapAnchor(false)
+                            setForceShowIcon(true)
+                            seslSetOffset(140, 0)
+                            inflate(R.menu.menu_popup)
+                            menu.findItem(R.id.menu2).isCheckable = true
+                            menu.findItem(R.id.menu2).isChecked = true
+                            setOnMenuItemClickListener { menuItem ->
+                                setTitle(menuItem.title)
+                                semToast("${menuItem.title} clicked")
+                                true
+                            }
+                            show()
+                        }
+                    }
+
+                    true
+                }
+            }
         }
     }
 
