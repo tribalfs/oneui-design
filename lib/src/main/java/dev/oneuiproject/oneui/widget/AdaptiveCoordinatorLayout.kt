@@ -11,7 +11,7 @@ import androidx.annotation.Px
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.updateLayoutParams
 import dev.oneuiproject.oneui.design.R
-import dev.oneuiproject.oneui.ktx.appCompatActivity
+import dev.oneuiproject.oneui.ktx.activity
 import dev.oneuiproject.oneui.ktx.pxToDp
 import dev.oneuiproject.oneui.ktx.windowHeight
 import dev.oneuiproject.oneui.ktx.windowWidthNetOfInsets
@@ -62,7 +62,7 @@ open class AdaptiveCoordinatorLayout @JvmOverloads constructor(
 
     private var adaptiveMarginViews: Set<View>? = null
 
-    private val activity by lazy(LazyThreadSafetyMode.NONE) { context.appCompatActivity }
+    private val activity by lazy(LazyThreadSafetyMode.NONE) { context.activity }
 
     /**
      * This function allows you to define custom logic for calculating

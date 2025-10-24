@@ -12,7 +12,7 @@ import android.widget.LinearLayout.LayoutParams
 import androidx.annotation.FloatRange
 import androidx.annotation.RequiresApi
 import androidx.annotation.RestrictTo
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.graphics.ColorUtils
@@ -25,7 +25,7 @@ import kotlinx.parcelize.Parcelize
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 @RequiresApi(Build.VERSION_CODES.R)
 internal class ImmersiveScrollHelper(
-    private val activity: AppCompatActivity,
+    private val activity: ComponentActivity,
     private val appBarLayout: AppBarLayout,
     private var bottomView: View?,
     @field:FloatRange(0.0, 1.0)

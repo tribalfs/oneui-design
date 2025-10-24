@@ -9,6 +9,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.text.format.DateFormat
 import android.util.TypedValue
+import androidx.activity.ComponentActivity
 import androidx.annotation.StringRes
 import androidx.appcompat.R.color.sesl_secondary_text_dark
 import androidx.appcompat.R.color.sesl_secondary_text_light
@@ -89,6 +90,25 @@ val Context.appCompatActivity: AppCompatActivity?
         var context = this
         while (context is ContextWrapper) {
             if (context is AppCompatActivity) {
+                return context
+            }
+            context = context.baseContext
+        }
+        return null
+    }
+
+/**
+ * Returns the [ComponentActivity] associated with this context, or null if the context is not
+ * associated with an ComponentActivity.
+ *
+ * This property iterates through the context wrappers until it finds an AppCompatActivity
+ * or reaches the base context.
+ */
+val Context.componentActivity: ComponentActivity?
+    get() {
+        var context = this
+        while (context is ContextWrapper) {
+            if (context is ComponentActivity) {
                 return context
             }
             context = context.baseContext
