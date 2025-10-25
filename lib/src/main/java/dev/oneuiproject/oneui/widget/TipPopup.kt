@@ -1199,15 +1199,13 @@ class TipPopup(parentView: View, mode: Mode) {
         }
 
         arrowPositionX = if (arrowDirection == BOTTOM_RIGHT || arrowDirection == TOP_RIGHT) {
-            arrowPositionX.coerceIn(
-                displayFrame.left + sideMargin + horizontalTextMargin,
-                (displayFrame.right - sideMargin) - horizontalTextMargin - arrowWidth
-            )
+            val minX = displayFrame.left + sideMargin + horizontalTextMargin
+            val maxX = maxOf(minX, (displayFrame.right - sideMargin) - horizontalTextMargin - arrowWidth)
+            arrowPositionX.coerceIn(minX, maxX)
         } else {
-            arrowPositionX.coerceIn(
-                displayFrame.left + sideMargin + horizontalTextMargin + arrowWidth,
-                (displayFrame.right - sideMargin) - horizontalTextMargin
-            )
+            val minX =displayFrame.left + sideMargin + horizontalTextMargin + arrowWidth
+            val maxX = maxOf(minX, (displayFrame.right - sideMargin) - horizontalTextMargin)
+            arrowPositionX.coerceIn(minX, maxX)
         }
 
         balloonX = if (isDeskTopMode(context.resources)) {
@@ -1220,15 +1218,13 @@ class TipPopup(parentView: View, mode: Mode) {
                     measuredWidth
                 }
             }
-            balloonX.coerceIn(
-                displayFrame.left + sideMargin,
-                (windowWidthInDexMode - sideMargin) - balloonWidth - minOf(windowLocation[0], 0)
-            )
+            val minX = displayFrame.left + sideMargin
+            val maxX = maxOf(minX, (windowWidthInDexMode - sideMargin) - balloonWidth - minOf(windowLocation[0], 0))
+            arrowPositionX.coerceIn(minX, maxX)
         } else {
-            balloonX.coerceIn(
-                displayFrame.left + sideMargin,
-                (displayFrame.right - sideMargin) - balloonWidth
-            )
+            val minX = displayFrame.left + sideMargin
+            val maxX = maxOf(minX, (displayFrame.right - sideMargin) - balloonWidth)
+            arrowPositionX.coerceIn(minX, maxX)
         }
 
         when (arrowDirection) {
