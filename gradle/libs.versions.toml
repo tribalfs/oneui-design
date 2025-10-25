@@ -34,6 +34,8 @@ sesl-swiperefreshlayout = "1.2.0-alpha01+1.0.0-sesl8+rev0"
 sesl-viewpager2 = "1.1.0+1.0.0-sesl8+rev0"
 
 zxing-core = "3.5.3"
+datastorePreferencesCore = "1.1.7"
+preferenceKtx = "1.2.1"
 
 
 [libraries]
@@ -90,6 +92,8 @@ sesl-fragment = { module = "sesl.androidx.fragment:fragment", version.ref = "ses
 sesl-viewpager2 = { module = "sesl.androidx.viewpager2:viewpager2", version.ref = "sesl-viewpager2" }
 
 zxing-core = { module = "com.google.zxing:core", version.ref = "zxing-core" }
+androidx-datastore-preferences-core = { group = "androidx.datastore", name = "datastore-preferences-core", version.ref = "datastorePreferencesCore" }
+androidx-preference-ktx = { group = "androidx.preference", name = "preference-ktx", version.ref = "preferenceKtx" }
 
 
 [plugins]

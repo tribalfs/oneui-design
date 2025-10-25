@@ -30,6 +30,8 @@ dependencies {
     implementation(libs.zxing.core)
     implementation(libs.lottie)
     implementation(libs.rikka.refineRuntime)
+    implementation(libs.androidx.datastore.preferences.core)
+    implementation(libs.androidx.preference.ktx)
 
     compileOnly(project(":stub"))
 
