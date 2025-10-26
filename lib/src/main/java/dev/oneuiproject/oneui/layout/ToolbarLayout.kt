@@ -114,6 +114,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.lang.ref.WeakReference
 import kotlin.math.abs
 import androidx.appcompat.R as appcompatR
 
@@ -307,8 +308,8 @@ open class ToolbarLayout @JvmOverloads constructor(
     private var scrollDelta = 0
     private var navBarInsetBottom = 0
     private var footerHeight = 0
-    private var bottomOffsetListeners: MutableList<(bottomOffset: Float) -> Unit>? = null
-
+    private var bottomOffsetListeners: MutableList<WeakReference<(bottomOffset: Float) -> Unit>>? = null
+    private var appBarOffsetListeners: MutableList<WeakReference<(bottomOffset: Float) -> Unit>>? = null
     private var appBarOffsetListener = AppBarOffsetListener()
 
     private var layoutRes: Int = 0
@@ -790,7 +791,6 @@ open class ToolbarLayout @JvmOverloads constructor(
         set(expanded) {
             setExpanded(expanded, appBarLayout.isLaidOut)
         }
-
 
     /**
      * Replace the title of the expanded Toolbar with a custom View including LayoutParams.
@@ -1761,17 +1761,48 @@ open class ToolbarLayout @JvmOverloads constructor(
             .start()
     }
 
+    fun addOnAppbarOffsetListener(listener: (Float) -> Unit) {
+        if (appBarOffsetListeners == null) {
+            appBarOffsetListeners = mutableListOf(WeakReference(listener))
+            return
+        }
+        appBarOffsetListeners!!.add(WeakReference(listener))
+    }
+
+    fun removeOnCollapsingToolbarOffsetListener(listener: (Float) -> Unit) {
+        appBarOffsetListeners?.let { list ->
+            val iterator = list.iterator()
+            while (iterator.hasNext()) {
+                val weakRef = iterator.next()
+                if (weakRef.get() == listener || weakRef.get() == null) {
+                    iterator.remove()
+                }
+            }
+        }
+    }
+
     internal fun addOnBottomOffsetChangedListener(listener: (Float) -> Unit) {
         if (bottomOffsetListeners == null) {
-            bottomOffsetListeners = mutableListOf(listener)
+            bottomOffsetListeners = mutableListOf(WeakReference(listener))
+            return
         }
         bottomOffsetListeners!!.apply {
-            if (!contains(listener)) add(listener)
+            if (find { it.get() == listener } == null) {
+                add(WeakReference(listener))
+            }
         }
     }
 
     internal fun removeOnBottomOffsetChangedListener(listener: (Float) -> Unit) {
-        bottomOffsetListeners?.remove(listener)
+        bottomOffsetListeners?.let { list ->
+            val iterator = list.iterator()
+            while (iterator.hasNext()) {
+                val weakRef = iterator.next()
+                if (weakRef.get() == listener || weakRef.get() == null) {
+                    iterator.remove()
+                }
+            }
+        }
     }
 
     private val footerLayoutListener: OnLayoutChangeListener by lazy(LazyThreadSafetyMode.NONE) {
@@ -1793,7 +1824,19 @@ open class ToolbarLayout @JvmOverloads constructor(
                 (maxBottomInset * scrollRatio).applyMinForNonScrollingNavBar()
             } else 0f
             forEach {
-                it.invoke(scrollDelta + adjBottomInset)
+                it.get()?.invoke(scrollDelta + adjBottomInset)
+            }
+        }
+    }
+
+    private var lastAppbarOffsetDispatched = -1f
+    private fun dispatchAppBarOffsetChanged(offset: Float) {
+        if (lastAppbarOffsetDispatched != offset) {
+            lastAppbarOffsetDispatched = offset
+            appBarOffsetListeners?.let {
+                for (listener in it) {
+                    listener.get()?.invoke(offset)
+                }
             }
         }
     }
@@ -1807,6 +1850,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         override fun onOffsetChanged(layout: AppBarLayout, verticalOffset: Int) {
             scrollDelta = verticalOffset + layout.totalScrollRange
             dispatchBottomOffsetChanged()
+            dispatchAppBarOffsetChanged( layout.totalScrollRange.toFloat().let{ if (it == 0f) 0f else 1f + verticalOffset / it} )
 
             if (isActionMode && actionModeToolbar!!.isVisible) {
                 val layoutPosition = abs(appBarLayout.top)
