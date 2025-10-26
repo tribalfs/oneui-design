@@ -123,6 +123,12 @@ open class AdaptiveCoordinatorLayout @JvmOverloads constructor(
         super.addView(child, index, params)
     }
 
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        // Compute side margin parameters before measuring children.
+        computeSideMarginParams()
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+    }
+
     override fun onMeasureChild(
         child: View,
         parentWidthMeasureSpec: Int,
@@ -131,7 +137,7 @@ open class AdaptiveCoordinatorLayout @JvmOverloads constructor(
         heightUsed: Int
     ) {
 
-        if (lastSideMarginParams != null || computeSideMarginParams()) {
+        if (lastSideMarginParams != null && adaptiveMarginViews?.contains(child) == true) {
             if (adaptiveMarginViews?.contains(child) == true) {
                 @Suppress("UNCHECKED_CAST")
                 val origMargins = child.getTag(R.id.tag_init_side_margins) as Pair<Int, Int>
@@ -188,7 +194,10 @@ open class AdaptiveCoordinatorLayout @JvmOverloads constructor(
         additionalLeft: Int,
         additionalRight: Int
     ) {
-        layoutParams = (layoutParams as LayoutParams).apply{
+        // DO NOT assign a new LayoutParams object.
+        // Instead, modify the properties of the existing one
+        // so we wouldn't trigger a requestLayout.
+        (layoutParams as LayoutParams).apply{
             if (smp.matchParent) width = ViewGroup.LayoutParams.MATCH_PARENT
             leftMargin = smp.sideMargin + additionalLeft
             rightMargin = smp.sideMargin + additionalRight
