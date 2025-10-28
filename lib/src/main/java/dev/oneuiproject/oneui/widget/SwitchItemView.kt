@@ -323,7 +323,7 @@ class SwitchItemView @JvmOverloads constructor(
         contentFrame.setOnClickListener {
             if (isClickable) {
                 if (!separateSwitch) {
-                    switchView.performClick()
+                    this.isChecked = !this.isChecked
                     super.callOnClick()
                 } else {
                     super.callOnClick()
@@ -331,16 +331,9 @@ class SwitchItemView @JvmOverloads constructor(
             }
         }
 
-        switchView.apply {
-            setOnClickListener { v ->
-                (v as SwitchCompat).isChecked.let { b ->
-                    this.isChecked = b
-                }
-            }
-            setOnCheckedChangeListener { _, isChecked ->
-                updateSubtitleVisibility()
-                onCheckedChangedListener?.invoke(this@SwitchItemView.id, isChecked)
-            }
+        switchView.setOnCheckedChangeListener { _, isChecked ->
+            updateSubtitleVisibility()
+            onCheckedChangedListener?.invoke(this@SwitchItemView.id, isChecked)
         }
 
         if (Build.VERSION.SDK_INT >= 29) {
