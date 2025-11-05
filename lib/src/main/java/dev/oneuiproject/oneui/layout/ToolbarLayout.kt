@@ -412,6 +412,8 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     private var _handleInsets: Boolean = false
 
+    private var _landscapeHeightForStatusBar: Int = 420
+
     /**
      * Listener for the search mode.
      *
@@ -493,6 +495,7 @@ open class ToolbarLayout @JvmOverloads constructor(
                 R.styleable.ToolbarLayout_mainRoundedCorners,
                 0
             )]
+            _landscapeHeightForStatusBar = getInt(R.styleable.ToolbarLayout_landscapeHeightForStatusBar, 420)
         }
     }
 
@@ -504,7 +507,9 @@ open class ToolbarLayout @JvmOverloads constructor(
     }
 
     private fun initViews() {
-        adpCoordinatorLayout = findViewById(R.id.toolbarlayout_coordinator_layout)
+        adpCoordinatorLayout = findViewById<AdaptiveCoordinatorLayout>(R.id.toolbarlayout_coordinator_layout).apply {
+            setLandscapeHeightForStatusBar(this@ToolbarLayout._landscapeHeightForStatusBar)
+        }
         appBarLayout = adpCoordinatorLayout.findViewById<AppBarLayout>(R.id.toolbarlayout_app_bar)
             .apply { setTag(R.id.tag_side_margin_excluded, true) }
         collapsingToolbarLayout = appBarLayout.findViewById(R.id.toolbarlayout_collapsing_toolbar)

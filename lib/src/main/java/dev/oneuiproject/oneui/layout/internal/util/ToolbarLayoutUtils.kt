@@ -30,20 +30,20 @@ import android.view.SemWindowManager.LayoutParams.SEM_EXTENSION_FLAG_RESIZE_FULL
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 internal object ToolbarLayoutUtils {
 
-    inline fun Activity.updateStatusBarVisibility() {
+    inline fun Activity.updateStatusBarVisibility(landscapeHeightForStatusBar: Int) {
         if (isTabletBuildOrIsDeskTopMode(this)) return
         if (Build.VERSION.SDK_INT >= 30){
-            updateStatusBarVisibilityApi30()
+            updateStatusBarVisibilityApi30(landscapeHeightForStatusBar)
         }else {
-            updateStatusBarVisibilityApi21()
+            updateStatusBarVisibilityApi21(landscapeHeightForStatusBar)
         }
     }
 
     @RequiresApi(30)
-    private fun Activity.updateStatusBarVisibilityApi30() {
+    private fun Activity.updateStatusBarVisibilityApi30(landscapeHeightForStatusBar: Int) {
         val orientation = resources.configuration.orientation
         if (orientation == ORIENTATION_LANDSCAPE) {
-            if (isInMultiWindowModeCompat || isScreenWidthLarge(this, 420)) {
+            if (isInMultiWindowModeCompat || isScreenWidthLarge(this, landscapeHeightForStatusBar)) {
                 window.insetsController?.show(Type.statusBars())
                 window.clearFlags(FLAG_ALLOW_LOCK_WHILE_SCREEN_ON)
             } else {
@@ -61,10 +61,10 @@ internal object ToolbarLayoutUtils {
     }
 
     @Suppress("DEPRECATION")
-    private fun Activity.updateStatusBarVisibilityApi21() {
+    private fun Activity.updateStatusBarVisibilityApi21(statusBarVisibilityThreshold: Int) {
         val orientation = resources.configuration.orientation
         if (orientation == ORIENTATION_LANDSCAPE) {
-            if (isInMultiWindowModeCompat || isScreenWidthLarge(this, 420)) {
+            if (isInMultiWindowModeCompat || isScreenWidthLarge(this, statusBarVisibilityThreshold)) {
                 window.clearFlags(FLAG_FULLSCREEN or FLAG_ALLOW_LOCK_WHILE_SCREEN_ON)
             } else {
                 window.addFlags(FLAG_FULLSCREEN)

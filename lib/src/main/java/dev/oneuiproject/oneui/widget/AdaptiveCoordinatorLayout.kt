@@ -38,6 +38,9 @@ open class AdaptiveCoordinatorLayout @JvmOverloads constructor(
     defStyleAttr: Int = androidx.coordinatorlayout.R.attr.coordinatorLayoutStyle,
 ) : CoordinatorLayout(context, attrs, defStyleAttr) {
 
+    @Px
+    private var _landscapeHeightForStatusBar = 420
+
     /**
      * Data class to store the side margin parameters for child views.
      *
@@ -89,6 +92,24 @@ open class AdaptiveCoordinatorLayout @JvmOverloads constructor(
         if (!isAttachedToWindow) return
         if (computeSideMarginParams()){
             requestLayout()
+        }
+    }
+
+    /**
+     * Sets the screen height threshold for hiding the status bar in landscape mode.
+     *
+     * In landscape mode, the status bar will be hidden if the screen height in px
+     * is lesser than or equal to this threshold. The default value is 420.
+     *   *
+     * @param threshold The screen height in px lesser or equal which the status bar should be hidden
+     * in landscape mode.  Pass `0` to always show the status bar, or
+     * a large value (like `Integer.MAX_VALUE`) to effectively disable hiding.
+     */
+    fun setLandscapeHeightForStatusBar(@Px threshold: Int) {
+        if (_landscapeHeightForStatusBar == threshold) return
+        _landscapeHeightForStatusBar = threshold
+        if (isAttachedToWindow) {
+            activity?.updateStatusBarVisibility(_landscapeHeightForStatusBar)
         }
     }
 
@@ -159,13 +180,13 @@ open class AdaptiveCoordinatorLayout @JvmOverloads constructor(
     override fun onAttachedToWindow() {
         computeSideMarginParams()
         super.onAttachedToWindow()
-        activity?.updateStatusBarVisibility()
+        activity?.updateStatusBarVisibility(_landscapeHeightForStatusBar)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         computeSideMarginParams()
         super.onConfigurationChanged(newConfig)
-        activity?.updateStatusBarVisibility()
+        activity?.updateStatusBarVisibility(_landscapeHeightForStatusBar)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {

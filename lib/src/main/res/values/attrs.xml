@@ -146,6 +146,10 @@
             <!-- Pins the toolbar to the top edge. -->
             <flag name="top" value="0x30" />
         </attr>
+        <!-- Defines the minimum screen height in px for showing the status bar in landscape mode.
+        If the screen height is less than or equal to this value while in landscape,
+        the status bar will be hidden. The default is 420. -->
+        <attr format="integer" name="landscapeHeightForStatusBar"/>
     </declare-styleable>
 
     <declare-styleable name="DrawerLayout">
