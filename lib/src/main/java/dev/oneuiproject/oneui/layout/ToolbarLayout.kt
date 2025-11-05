@@ -802,10 +802,9 @@ open class ToolbarLayout @JvmOverloads constructor(
      */
     @JvmOverloads
     fun setCustomTitleView(view: View, params: CollapsingToolbarLayout.LayoutParams? = null) {
-        (params ?: CollapsingToolbarLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)).apply {
-            seslSetIsTitleCustom(true)
-            collapsingToolbarLayout.seslSetCustomTitleView(view, this)
-        }
+        val lp = params ?: CollapsingToolbarLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+            .apply { seslSetIsTitleCustom(true) }
+        collapsingToolbarLayout.seslSetCustomTitleView(view, lp)
     }
 
     /**
