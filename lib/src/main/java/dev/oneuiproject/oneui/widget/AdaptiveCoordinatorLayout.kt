@@ -138,15 +138,13 @@ open class AdaptiveCoordinatorLayout @JvmOverloads constructor(
     ) {
 
         if (lastSideMarginParams != null && adaptiveMarginViews?.contains(child) == true) {
-            if (adaptiveMarginViews?.contains(child) == true) {
-                @Suppress("UNCHECKED_CAST")
-                val origMargins = child.getTag(R.id.tag_init_side_margins) as Pair<Int, Int>
-                child.applySideMarginParams(
-                    lastSideMarginParams!!,
-                    origMargins.first,
-                    origMargins.second
-                )
-            }
+            @Suppress("UNCHECKED_CAST")
+            val origMargins = child.getTag(R.id.tag_init_side_margins) as Pair<Int, Int>
+            child.applySideMarginParams(
+                lastSideMarginParams!!,
+                origMargins.first,
+                origMargins.second
+            )
         }
 
         super.onMeasureChild(
