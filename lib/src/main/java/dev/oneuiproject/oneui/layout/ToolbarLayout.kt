@@ -293,11 +293,14 @@ open class ToolbarLayout @JvmOverloads constructor(
     @CallSuper
     protected open fun getBackCallbackStateUpdate(): Boolean {
         return when {
+            //Let the system handle the dismissing
+            //of the keyboard
+            isSofInputShowing -> false
             isActionMode -> true
             isSearchMode -> {
                 when (searchModeOBPBehavior) {
                     DISMISS, CLEAR_DISMISS -> true
-                    CLEAR_CLOSE -> _searchView!!.query.isNotEmpty() || isSofInputShowing
+                    CLEAR_CLOSE -> _searchView!!.query.isNotEmpty()
                 }
             }
 
