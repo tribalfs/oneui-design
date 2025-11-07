@@ -4,13 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.DropDownPreference
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SeslSwitchPreferenceScreen
 import androidx.preference.SwitchPreferenceCompat
 import com.sec.sesl.tester.R
@@ -25,21 +26,31 @@ import dev.oneuiproject.oneui.preference.InsetPreferenceCategory
 import dev.oneuiproject.oneui.preference.SuggestionCardPreference
 import dev.oneuiproject.oneui.preference.TipsCardPreference
 import dev.oneuiproject.oneui.preference.UpdatableWidgetPreference
+import dev.oneuiproject.oneui.preference.app.DataStorePreferenceFragment
+import dev.oneuiproject.oneui.preference.app.ObservablePreferencesDataStore
 import dev.oneuiproject.oneui.widget.RelativeLink
 import dev.oneuiproject.oneui.widget.RelativeLinksCard
 import dev.oneuiproject.oneui.widget.replaceLinks
 import dev.oneuiproject.oneuiexample.OneUIApp
+import dev.oneuiproject.oneuiexample.data.sampleAppPreferences
 import dev.oneuiproject.oneuiexample.ui.about.SampleAboutActivity
 import dev.oneuiproject.oneuiexample.ui.main.core.util.semToast
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.Random
 
-class PreferencesFragment : PreferenceFragmentCompat() {
+class SampleObservablePreferencesDataStore(sampleAppPreferences: DataStore<Preferences>) :
+    ObservablePreferencesDataStore(sampleAppPreferences)
+
+class PreferencesFragment : DataStorePreferenceFragment() {
 
     private var relativeLinksCard: RelativeLinksCard? = null
 
+    override fun getDataStore(): ObservablePreferencesDataStore =
+        SampleObservablePreferencesDataStore(requireContext().sampleAppPreferences)
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        super.onCreatePreferences(savedInstanceState, rootKey)
         setPreferencesFromResource(R.xml.app_preferences, rootKey)
     }
 
