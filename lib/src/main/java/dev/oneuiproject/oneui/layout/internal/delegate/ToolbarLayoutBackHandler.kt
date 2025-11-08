@@ -1,4 +1,3 @@
-
 package dev.oneuiproject.oneui.layout.internal.delegate
 
 import androidx.activity.BackEventCompat
@@ -12,11 +11,28 @@ import dev.oneuiproject.oneui.layout.internal.backapi.BackHandler
 
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-internal open class ToolbarLayoutBackHandler(private val toolbarLayout: ToolbarLayout
-): BackHandler {
-    override fun startBackProgress(backEvent: BackEventCompat) {}
+internal open class ToolbarLayoutBackHandler(
+    private val toolbarLayout: ToolbarLayout
+) : BackHandler {
+    @CallSuper
+    override fun startBackProgress(backEvent: BackEventCompat) {
+        with(toolbarLayout) {
+            if (isSearchMode && !isActionMode) {
+                searchView?.startBackProgress(backEvent)
+            }
+        }
+    }
 
-    override fun updateBackProgress(backEvent: BackEventCompat) {}
+    @CallSuper
+    override fun updateBackProgress(backEvent: BackEventCompat) {
+        toolbarLayout.searchView?.updateBackProgress(backEvent)
+    }
+
+
+    @CallSuper
+    override fun cancelBackProgress() {
+        toolbarLayout.searchView?.cancelBackProgress()
+    }
 
     @CallSuper
     override fun handleBackInvoked() {
@@ -58,8 +74,4 @@ internal open class ToolbarLayoutBackHandler(private val toolbarLayout: ToolbarL
             }
         }
     }
-
-    override fun cancelBackProgress() {}
-
-
 }

@@ -17,6 +17,8 @@ internal open class DrawerLayoutBackHandler<T: DrawerLayout>(
     override fun startBackProgress(backEvent: BackEventCompat) {
         if (drawerLayout.shouldAnimateDrawer) {
             drawerBackAnimator.startBackProgress(backEvent)
+        } else {
+            super.startBackProgress(backEvent)
         }
     }
 
@@ -25,6 +27,8 @@ internal open class DrawerLayoutBackHandler<T: DrawerLayout>(
             drawerBackAnimator.updateBackProgress(backEvent)
         }else if (drawerLayout.shouldAnimateDrawer) {
             drawerBackAnimator.startBackProgress(backEvent)
+        } else {
+            super.updateBackProgress(backEvent)
         }
     }
 
@@ -42,6 +46,8 @@ internal open class DrawerLayoutBackHandler<T: DrawerLayout>(
         if (drawerBackAnimator.isBackProgressStarted()) {
             drawerBackAnimator.cancelBackProgress()
             drawerLayout.updateOnBackCallbackState()
+        } else {
+            super.cancelBackProgress()
         }
     }
 

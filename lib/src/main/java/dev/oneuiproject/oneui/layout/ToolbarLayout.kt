@@ -298,7 +298,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             isSofInputShowing -> false
             isActionMode -> true
             isSearchMode -> {
-                when (searchModeOBPBehavior) {
+                when (searchView!!.searchModeOBPBehavior) {
                     DISMISS, CLEAR_DISMISS -> true
                     CLEAR_CLOSE -> _searchView!!.query.isNotEmpty()
                 }
@@ -370,12 +370,10 @@ open class ToolbarLayout @JvmOverloads constructor(
      *
      * Note: Apps should access this view using [SearchModeListener] callback.
      */
-    internal val searchView: SearchView? get() = _searchView
+    internal val searchView: SemSearchView? get() = _searchView
 
     private var searchModeListener: SearchModeListener? = null
 
-    @JvmField
-    internal var searchModeOBPBehavior = CLEAR_DISMISS
     private var searchMenuItem: MenuItem? = null
 
     private var searchOnActionMode: SearchOnActionMode? = null
@@ -1023,16 +1021,18 @@ open class ToolbarLayout @JvmOverloads constructor(
      * @param listener [SearchModeListener] to apply.
      * @param searchModeOnBackBehavior (optional) [SearchModeOnBackBehavior] to apply.
      * Defaults to [CLEAR_DISMISS] when not set.
+     * @param predictiveBackEnabled (optional) to enable predictive back animation for
+     * search mode. Defaults to true.
      *
      * @see [endSearchMode]
      */
     @JvmOverloads
     open fun startSearchMode(
         listener: SearchModeListener,
-        searchModeOnBackBehavior: SearchModeOnBackBehavior = CLEAR_DISMISS
+        searchModeOnBackBehavior: SearchModeOnBackBehavior = CLEAR_DISMISS,
+        predictiveBackEnabled: Boolean = true
     ) {
         searchModeListener = listener
-        searchModeOBPBehavior = searchModeOnBackBehavior
 
         if (isActionMode) {
             if (searchOnActionMode is Concurrent) {
@@ -1047,8 +1047,8 @@ open class ToolbarLayout @JvmOverloads constructor(
 
         isSearchMode = true
         ensureSearchModeToolbar()
-        setupSearchView()
-        animatedVisibility(_mainToolbar, GONE)
+        setupSearchView(predictiveBackEnabled, searchModeOnBackBehavior)
+       // animatedVisibility(_mainToolbar, GONE)
         animatedVisibility(searchToolbar!!, VISIBLE)
         customFooterContainer!!.setVisibility(GONE, false)
         setExpanded(expanded = false, animate = true)
@@ -1071,7 +1071,7 @@ open class ToolbarLayout @JvmOverloads constructor(
                 }
 
                 override fun onQueryTextChange(newText: String): Boolean {
-                    if (!isActionMode && searchModeOBPBehavior == CLEAR_CLOSE) {
+                    if (!isActionMode && searchView?.searchModeOBPBehavior == CLEAR_CLOSE) {
                         backCallbackUpdaterJob?.cancel()
                         backCallbackUpdaterJob = activity!!.lifecycleScope.launch {
                             delay(250)
@@ -1123,13 +1123,19 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
     }
 
-    private fun setupSearchView() {
+    private fun setupSearchView(
+        predictiveBackEnabled: Boolean? = null,
+        searchModeOnBackBehavior: SearchModeOnBackBehavior? = null
+    ) {
         if (_searchView == null) {
             _searchView = SemSearchView(context).apply {
                 setIconifiedByDefault(false)
                 activity?.let { setSearchableInfoFrom(it) }
             }
         }
+
+        predictiveBackEnabled?.let { _searchView!!.predictiveBackEnabled = it  }
+        searchModeOnBackBehavior?.let { _searchView!!.searchModeOBPBehavior = it }
 
         when {
             isActionMode -> {
@@ -1301,7 +1307,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         //Note: Using INVISIBLE, instead of GONE because
         //to workaround the incorrect top inset issue when
         //swapping Toolbars on landscape.
-        animatedVisibility(_mainToolbar, INVISIBLE)
+        //animatedVisibility(_mainToolbar, INVISIBLE)
         showActionModeToolbarAnimate()
         setupActionModeMenu(showCancel, maxActionItems)
 

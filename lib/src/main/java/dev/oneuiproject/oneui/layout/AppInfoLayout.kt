@@ -370,7 +370,8 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
     @Deprecated("Unsupported operation.", level = DeprecationLevel.ERROR)
     override fun startSearchMode(
         listener: SearchModeListener,
-        searchModeOnBackBehavior: SearchModeOnBackBehavior
+        searchModeOnBackBehavior: SearchModeOnBackBehavior,
+        predictiveBackEnabled: Boolean
     ) {
         //no op
     }
