@@ -4,7 +4,6 @@ package dev.oneuiproject.oneui.layout.internal.delegate
 import androidx.activity.BackEventCompat
 import androidx.annotation.CallSuper
 import androidx.annotation.RestrictTo
-import dev.oneuiproject.oneui.ktx.hideSoftInput
 import dev.oneuiproject.oneui.layout.ToolbarLayout
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.CLEAR_CLOSE
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.CLEAR_DISMISS
@@ -23,36 +22,34 @@ internal open class ToolbarLayoutBackHandler(private val toolbarLayout: ToolbarL
     override fun handleBackInvoked() {
         if (toolbarLayout.isInEditMode) return
 
-        with (toolbarLayout) {
+        with(toolbarLayout) {
             when {
-                isActionMode -> {
-                    if (toolbarLayout.isSofInputShowing) {
-                        activity?.hideSoftInput()
-                    } else endActionMode()
-                }
+                isActionMode -> endActionMode()
                 isSearchMode -> {
-                    when (searchModeOBPBehavior) {
+                    when (searchView!!.searchModeOBPBehavior) {
                         DISMISS -> {
-                            if (toolbarLayout.isSofInputShowing) {
-                                activity?.hideSoftInput()
-                            } else endSearchMode()
+                            searchView?.handleBackInvoked()
+                            endSearchMode()
                         }
 
                         CLEAR_CLOSE -> {
-                            if (toolbarLayout.isSofInputShowing) {
-                                activity?.hideSoftInput()
-                            } else {
-                                searchView?.setQuery("", true)
-                                updateOnBackCallbackState()
+                            searchView?.apply {
+                                setQuery("", true);
+                                handleBackInvoked()
                             }
+                            updateOnBackCallbackState()
                         }
 
                         CLEAR_DISMISS -> {
-                            if (toolbarLayout.isSofInputShowing) {
-                                activity?.hideSoftInput()
-                            } else if (searchView?.query?.isNotEmpty() == true) {
-                                searchView?.setQuery("", true)
-                            } else endSearchMode()
+                             if (searchView?.query?.isNotEmpty() == true) {
+                                searchView?.apply {
+                                    setQuery("", true);
+                                    handleBackInvoked()
+                                }
+                            } else {
+                                searchView?.handleBackInvoked()
+                                endSearchMode()
+                            }
                         }
                     }
                 }
