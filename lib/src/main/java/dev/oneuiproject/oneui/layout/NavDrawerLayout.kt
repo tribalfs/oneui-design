@@ -14,6 +14,7 @@ import androidx.annotation.RestrictTo
 import androidx.core.view.doOnLayout
 import androidx.customview.view.AbsSavedState
 import dev.oneuiproject.oneui.design.R
+import dev.oneuiproject.oneui.ktx.isSoftKeyboardShowing
 import dev.oneuiproject.oneui.layout.DrawerLayout
 import dev.oneuiproject.oneui.layout.NavDrawerLayout.Companion.DEFAULT_NAV_RAIL_DETAILS_WIDTH
 import dev.oneuiproject.oneui.layout.internal.delegate.DrawerLayoutBackHandler
@@ -96,8 +97,9 @@ class NavDrawerLayout @JvmOverloads constructor(
 
     override fun getBackCallbackStateUpdate(): Boolean =
         (containerLayout as? SemSlidingPaneLayout)?.let {
-            it.isDrawerOpenOrIsOpening
-                    && closeNavRailOnBack && !isDrawerLocked() || isSearchMode || isActionMode
+            !isSoftKeyboardShowing
+                    && (it.isDrawerOpenOrIsOpening
+                    && closeNavRailOnBack && !isDrawerLocked() || isSearchMode || isActionMode)
         } ?: super.getBackCallbackStateUpdate()
 
 
