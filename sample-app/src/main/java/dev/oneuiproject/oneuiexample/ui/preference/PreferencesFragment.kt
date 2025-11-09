@@ -54,8 +54,8 @@ class PreferencesFragment : DataStorePreferenceFragment() {
         setPreferencesFromResource(R.xml.app_preferences, rootKey)
     }
 
-    override fun onCreate(bundle: Bundle?) {
-        super.onCreate(bundle)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         initPreferences()
     }
 
