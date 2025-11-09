@@ -270,7 +270,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     internal var isSofInputShowing: Boolean = isSoftKeyboardShowing
         private set
 
-    internal open val backHandler: BackHandler by lazy(LazyThreadSafetyMode.NONE) {
+    internal open val backHandler by lazy(LazyThreadSafetyMode.NONE) {
         ToolbarLayoutBackHandler(this@ToolbarLayout)
     }
 
@@ -1134,7 +1134,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             }
         }
 
-        predictiveBackEnabled?.let { _searchView!!.predictiveBackEnabled = it  }
+        predictiveBackEnabled?.let { backHandler.predictiveBackEnabled = it }
         searchModeOnBackBehavior?.let { _searchView!!.searchModeOBPBehavior = it }
 
         when {

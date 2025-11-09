@@ -8,17 +8,25 @@ import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.CLEA
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.CLEAR_DISMISS
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.DISMISS
 import dev.oneuiproject.oneui.layout.internal.backapi.BackHandler
+import dev.oneuiproject.oneui.layout.internal.widget.SemToolbar
 
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 internal open class ToolbarLayoutBackHandler(
     private val toolbarLayout: ToolbarLayout
 ) : BackHandler {
+
+    var predictiveBackEnabled = true
+
+    private val semToolbar = toolbarLayout.toolbar as SemToolbar
+
     @CallSuper
     override fun startBackProgress(backEvent: BackEventCompat) {
+        if (!predictiveBackEnabled) return
         with(toolbarLayout) {
             if (isSearchMode && !isActionMode) {
                 searchView?.startBackProgress(backEvent)
+                semToolbar.startBackProgress(backEvent)
             }
         }
     }
@@ -26,13 +34,16 @@ internal open class ToolbarLayoutBackHandler(
     @CallSuper
     override fun updateBackProgress(backEvent: BackEventCompat) {
         toolbarLayout.searchView?.updateBackProgress(backEvent)
+        semToolbar.updateBackProgress(backEvent)
     }
 
 
     @CallSuper
     override fun cancelBackProgress() {
         toolbarLayout.searchView?.cancelBackProgress()
+        semToolbar.cancelBackProgress()
     }
+
 
     @CallSuper
     override fun handleBackInvoked() {
@@ -45,12 +56,13 @@ internal open class ToolbarLayoutBackHandler(
                     when (searchView!!.searchModeOBPBehavior) {
                         DISMISS -> {
                             searchView?.handleBackInvoked()
+                            semToolbar.handleBackInvoked()
                             endSearchMode()
                         }
 
                         CLEAR_CLOSE -> {
                             searchView?.apply {
-                                setQuery("", true);
+                                setQuery("", true)
                                 handleBackInvoked()
                             }
                             updateOnBackCallbackState()
@@ -64,7 +76,8 @@ internal open class ToolbarLayoutBackHandler(
                                 }
                             } else {
                                 searchView?.handleBackInvoked()
-                                endSearchMode()
+                                 semToolbar.handleBackInvoked()
+                                 endSearchMode()
                             }
                         }
                     }

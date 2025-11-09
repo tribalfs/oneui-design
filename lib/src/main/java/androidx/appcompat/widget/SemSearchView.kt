@@ -7,6 +7,7 @@ import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import android.util.Property
 import android.view.View
+import android.view.animation.Interpolator
 import androidx.activity.BackEventCompat
 import androidx.annotation.ColorInt
 import androidx.annotation.RestrictTo
@@ -32,13 +33,23 @@ internal class SemSearchView @JvmOverloads constructor(
     @JvmField
     var onCloseClickListener: ((View) -> Unit)? = null
     internal var searchModeOBPBehavior = CLEAR_DISMISS
-    internal var predictiveBackEnabled = true
 
-    private var backProgress: Property<View, Float>? = null
     private var backAnimator: ObjectAnimator? = null
-    private var currentBackProgress: Float = 0f
+    private var backInterpolator: Interpolator? = null
 
-    private val backInterpolator = PathInterpolatorCompat.create(0f, 0f, 0f, 1f)
+    private val backProgress by lazy(LazyThreadSafetyMode.NONE) {
+        object : Property<View, Float>(
+            Float::class.java, "backProgress"
+        ) {
+            private var currentBackProgress: Float = 0f
+            override fun get(view: View): Float = currentBackProgress
+            override fun set(view: View, value: Float) {
+                currentBackProgress = value
+                view.alpha = 1f - value
+            }
+        }
+    }
+
 
     override fun onCloseClicked() {
         onCloseClickListener?.let {
@@ -48,7 +59,6 @@ internal class SemSearchView @JvmOverloads constructor(
     }
 
     override fun startBackProgress(backEvent: BackEventCompat) {
-        if (!predictiveBackEnabled) return
         val hasQuery = query?.isNotEmpty() == true
         if (hasQuery || searchModeOBPBehavior != CLEAR_CLOSE) {
             backAnimator?.cancel()
@@ -58,28 +68,18 @@ internal class SemSearchView @JvmOverloads constructor(
 
     private fun createBackAnimator(hasQuery: Boolean): ObjectAnimator {
         val clearMode = hasQuery && searchModeOBPBehavior != DISMISS
-        val target: View = if (clearMode) mSearchSrcTextView else (this.parent as? Toolbar) ?: this
-        val interpolate: (Float) -> Float = if (clearMode) {
-            {v -> 1.0f - v * 0.90f }
+        val targetView = if (clearMode) mSearchSrcTextView else (this.parent as? Toolbar) ?: this
+        backInterpolator = if (clearMode) {
+            PathInterpolatorCompat.create(0f, 0.45f, 0.85f, 0.6f)
         } else {
-            {v -> 1.0f - (v * 1.25f).coerceAtMost(1f) }
+            PathInterpolatorCompat.create(0.5f, 0.5f, 0.2f, 1.1f)
         }
 
-        backProgress = object : Property<View, Float>(
-            Float::class.java, "backProgress"
-        ) {
-            override fun get(view: View): Float = currentBackProgress
-            override fun set(view: View, value: Float) {
-                currentBackProgress = value
-                target.alpha = interpolate(value)
-            }
-        }
-
-        return ObjectAnimator.ofFloat(target, backProgress, 0.0f, 1.0f)
+        return ObjectAnimator.ofFloat(targetView, backProgress, 0.0f, 1.0f)
     }
 
     override fun updateBackProgress(backEvent: BackEventCompat) {
-        backAnimator?.currentPlayTime = (backInterpolator.getInterpolation(backEvent.progress)
+        backAnimator?.currentPlayTime = ((backInterpolator?.getInterpolation(backEvent.progress) ?: 0f)
                 * backAnimator!!.duration).toLong()
     }
 
@@ -94,11 +94,11 @@ internal class SemSearchView @JvmOverloads constructor(
         val currentProgress = (backProgress as Property<View, Float>).get(this)
         backAnimator?.cancel()
         backAnimator = null
+        backInterpolator = null
 
         ObjectAnimator
             .ofFloat(target, backProgress, currentProgress, 0f).apply {
                 duration = 200
-                interpolator = backInterpolator
                 start()
             }
     }

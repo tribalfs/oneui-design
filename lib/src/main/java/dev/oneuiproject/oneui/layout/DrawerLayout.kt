@@ -20,6 +20,8 @@ import androidx.customview.widget.Openable
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.layout.internal.backapi.BackHandler
+import dev.oneuiproject.oneui.layout.internal.delegate.DrawerLayoutBackHandler
+import dev.oneuiproject.oneui.layout.internal.delegate.ToolbarLayoutBackHandler
 import dev.oneuiproject.oneui.layout.internal.util.DrawerLayoutInterface
 import dev.oneuiproject.oneui.layout.internal.util.NavButtonsHandler
 import dev.oneuiproject.oneui.layout.internal.widget.SemDrawerLayout
@@ -84,7 +86,7 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
 
     init { initLayoutAttrs(attrs) }
 
-    override val backHandler: BackHandler get() = containerLayout.getOrCreateBackHandler(this@DrawerLayout)
+    override val backHandler: DrawerLayoutBackHandler<*> get() = containerLayout.getOrCreateBackHandler(this@DrawerLayout)
 
     override fun getDefaultLayoutResource() = R.layout.oui_des_layout_drawerlayout_main
     override fun getDefaultNavigationIconResource(): Int = R.drawable.oui_des_ic_ab_drawer
