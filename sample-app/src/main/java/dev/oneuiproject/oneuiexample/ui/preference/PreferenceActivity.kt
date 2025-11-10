@@ -3,7 +3,9 @@ package dev.oneuiproject.oneuiexample.ui.preference
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.sec.sesl.tester.databinding.ActivityPreferencesBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PreferenceActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPreferencesBinding
 

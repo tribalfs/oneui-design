@@ -6,7 +6,9 @@ import android.view.View
 import android.widget.TextView
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.preference.DropDownPreference
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
@@ -15,6 +17,7 @@ import androidx.preference.Preference
 import androidx.preference.SeslSwitchPreferenceScreen
 import androidx.preference.SwitchPreferenceCompat
 import com.sec.sesl.tester.R
+import dagger.hilt.android.AndroidEntryPoint
 import dev.oneuiproject.oneui.ktx.getRelativeLinksCard
 import dev.oneuiproject.oneui.ktx.onClick
 import dev.oneuiproject.oneui.ktx.onNewValue
@@ -32,22 +35,28 @@ import dev.oneuiproject.oneui.widget.RelativeLink
 import dev.oneuiproject.oneui.widget.RelativeLinksCard
 import dev.oneuiproject.oneui.widget.replaceLinks
 import dev.oneuiproject.oneuiexample.OneUIApp
-import dev.oneuiproject.oneuiexample.data.sampleAppPreferences
+import dev.oneuiproject.oneuiexample.data.SettingsRepo
 import dev.oneuiproject.oneuiexample.ui.about.SampleAboutActivity
 import dev.oneuiproject.oneuiexample.ui.main.core.util.semToast
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import java.util.Random
+import javax.inject.Inject
 
 class SampleObservablePreferencesDataStore(sampleAppPreferences: DataStore<Preferences>) :
     ObservablePreferencesDataStore(sampleAppPreferences)
 
+@AndroidEntryPoint
 class PreferencesFragment : DataStorePreferenceFragment() {
+
+    @Inject lateinit var settingsRepo: SettingsRepo
 
     private var relativeLinksCard: RelativeLinksCard? = null
 
     override fun getDataStore(): ObservablePreferencesDataStore =
-        SampleObservablePreferencesDataStore(requireContext().sampleAppPreferences)
+        SampleObservablePreferencesDataStore(settingsRepo.dataStore)
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
@@ -61,7 +70,18 @@ class PreferencesFragment : DataStorePreferenceFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observeDarkModePrefs()
         relativeLinksCard = getRelativeLinksCard()
+    }
+
+    private fun observeDarkModePrefs() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                settingsRepo.getDarkModeFlow()
+                    .distinctUntilChanged()
+                    .collectLatest { applyDarkModePrefs() }
+            }
+        }
     }
 
     override fun onResume() {
@@ -94,20 +114,12 @@ class PreferencesFragment : DataStorePreferenceFragment() {
             setDividerEnabled(false)
             setTouchEffectEnabled(false)
             onNewValue {
-                // Ensure it is saved first before updating the app's night mode,
-                // which will recreate the activity that prevents the preference from being saved.
-                value = it
-                applyDarkModePrefs()
             }
         }
 
 
         findPreference<SwitchPreferenceCompat>(PREF_AUTO_DARK_MODE)!!.apply {
             onNewValue{
-                // Ensure it is saved first before updating the app's night mode,
-                // which will recreate the activity that prevents the preference from being saved.
-                isChecked = it
-                applyDarkModePrefs()
             }
         }
 
@@ -163,7 +175,8 @@ class PreferencesFragment : DataStorePreferenceFragment() {
         ) { v: View -> semToast((v as TextView).text.toString()) }
     }
 
-    private fun applyDarkModePrefs() {
+    private suspend fun applyDarkModePrefs() {
+        if (activity?.let {it.isDestroyed || it.isFinishing} != false ) return
         (requireContext().applicationContext as OneUIApp).applyDarkModePrefs()
     }
 
