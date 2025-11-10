@@ -49,6 +49,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
 import androidx.core.content.withStyledAttributes
 import androidx.core.graphics.Insets
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsAnimationCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsCompat.Type.displayCutout
 import androidx.core.view.WindowInsetsCompat.Type.ime
@@ -87,7 +89,6 @@ import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchOnActionMode
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchOnActionMode.Concurrent
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchOnActionMode.Dismiss
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchOnActionMode.NoDismiss
-import dev.oneuiproject.oneui.layout.internal.backapi.BackHandler
 import dev.oneuiproject.oneui.layout.internal.backapi.OnBackCallbackDelegateCompat
 import dev.oneuiproject.oneui.layout.internal.delegate.ToolbarLayoutBackHandler
 import dev.oneuiproject.oneui.layout.internal.delegate.ToolbarLayoutButtonsHandler
@@ -278,6 +279,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         OnBackCallbackDelegateCompat(activity!!, this, backHandler)
     }
 
+
     internal open fun updateOnBackCallbackState() {
         if (isInEditMode) return
         if (getBackCallbackStateUpdate()) {
@@ -412,6 +414,37 @@ open class ToolbarLayout @JvmOverloads constructor(
         private set
 
     private var _handleInsets: Boolean = false
+
+    private var isImeAnimationRunning = false
+
+    private val imeAnimationCallback by lazy(LazyThreadSafetyMode.NONE) {
+        object : WindowInsetsAnimationCompat.Callback(DISPATCH_MODE_STOP) {
+            private fun WindowInsetsAnimationCompat.isImeAnimation(): Boolean =
+                (typeMask and WindowInsetsCompat.Type.ime()) != 0
+
+            override fun onPrepare(animation: WindowInsetsAnimationCompat) {
+                if (animation.isImeAnimation()) isImeAnimationRunning = true
+            }
+
+            override fun onProgress(
+                insets: WindowInsetsCompat,
+                runningAnimations: MutableList<WindowInsetsAnimationCompat>
+            ): WindowInsetsCompat {
+                runningAnimations.find { it.isImeAnimation() }?.let {
+                    applyWindowInsets(insets)
+                }
+                return insets
+            }
+
+            override fun onEnd(animation: WindowInsetsAnimationCompat) {
+                if (animation.isImeAnimation()) {
+                    isImeAnimationRunning = false
+                    // Ensure the final insets is applied
+                    requestApplyInsets()
+                }
+            }
+        }
+    }
 
     private var _landscapeHeightForStatusBar: Int = 420
 
@@ -556,6 +589,9 @@ open class ToolbarLayout @JvmOverloads constructor(
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         refreshLayout(resources.configuration)
+        if (_handleInsets) {
+            ViewCompat.setWindowInsetsAnimationCallback(this, imeAnimationCallback)
+        }
         syncActionModeMenu()
         updateOnBackCallbackState()
         appBarLayout.addOnOffsetChangedListener(appBarOffsetListener)
@@ -564,6 +600,7 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
+        ViewCompat.setWindowInsetsAnimationCallback(this, null)
         appBarLayout.removeOnOffsetChangedListener(appBarOffsetListener)
         footerParent.removeOnLayoutChangeListener(footerLayoutListener)
         isTouching = false
@@ -1668,12 +1705,10 @@ open class ToolbarLayout @JvmOverloads constructor(
             updateOnBackCallbackState()
         }
 
-        if (_handleInsets) {
+        if (_handleInsets && !isImeAnimationRunning) {
             applyWindowInsets(insetsCompat)
-            return insets
-        } else {
-            return super.onApplyWindowInsets(insets)
         }
+        return super.onApplyWindowInsets(insets)
     }
 
     open fun applyWindowInsets(insets: WindowInsetsCompat) {
