@@ -12,9 +12,16 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
+import androidx.preference.EditTextPreference
+import androidx.preference.ListPreference
+import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceDataStore
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SeekBarPreference
+import androidx.preference.TwoStatePreference
+import dev.oneuiproject.oneui.preference.ColorPickerPreference
+import dev.oneuiproject.oneui.preference.HorizontalRadioPreference
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -38,8 +45,6 @@ import java.util.concurrent.CopyOnWriteArraySet
  * - **Automatic DataStore Binding:** Subclasses only need to provide a [DataStore]
  *   instance via [DataStoreProvider.getDataStore]; this fragment handles the wiring
  *   between the [androidx.preference.PreferenceManager] and the DataStore automatically.
- * - **Change Deduplication:** Prevents redundant or circular preference change events
- *   that can occur when both the UI and the DataStore update each other in quick succession.
  * - **Lifecycle-Aware Listeners:** Automatically registers and unregisters itself
  *   as a listener to the associated [ObservablePreferencesDataStore] during
  *   `onCreate()` and `onDestroy()` to prevent leaks and dangling observers.
@@ -77,12 +82,7 @@ import java.util.concurrent.CopyOnWriteArraySet
  * @see ObservablePreferencesDataStore
  * @see DataStoreProvider
  */
-abstract class DataStorePreferenceFragment : PreferenceFragmentCompat(),
-    DataStoreProvider, ObservablePreferencesDataStore.OnPreferencesChangeListener {
-
-    private var lastKeyInvoked: String? = null
-    private var lastValueInvoked: Any? = null
-
+abstract class DataStorePreferenceFragment : PreferenceFragmentCompat(), DataStoreProvider {
     @CallSuper
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         // Set the custom data store from the concrete implementation.
@@ -93,34 +93,83 @@ abstract class DataStorePreferenceFragment : PreferenceFragmentCompat(),
      * This listener receives all preference change events, both from UI interactions and
      * from external DataStore updates. It filters out immediate duplicate events.
      */
-    @CallSuper
-    override fun onPreferenceChanged(key: String, newValue: Any?) {
-        // Check if this is an immediate echo of the exact same event
-        if (lastKeyInvoked == key && lastValueInvoked == newValue) {
-            // It's a duplicate echo. Clear the state and stop processing.
-            lastKeyInvoked = null
-            lastValueInvoked = null
-            return
+    private val onPreferencesChangeListener =
+        object : ObservablePreferencesDataStore.OnPreferencesChangeListener {
+            @Volatile private var lastKeyInvoked: String? = null
+            @Volatile private var lastValueInvoked: Any? = null
+            private var pendingUpdates: MutableMap<String, Any>? = null
+            var skipChange = false
+
+            override fun onPreferenceChanged(key: String, newValue: Any?, oldValue: Any?) {
+                if (skipChange) return
+                if (lastKeyInvoked == key && lastValueInvoked == newValue) {
+                    // It's a duplicate echo. Clear the state and stop processing.
+                    lastKeyInvoked = null
+                    lastValueInvoked = null
+                    return
+                }
+                lastKeyInvoked = key
+                lastValueInvoked = newValue
+
+                findPreference<Preference>(key)?.apply {
+                    // Ensure ui is update in case triggered from outside
+                    if (isResumed) {
+                        updatePreference(this, newValue)
+                    } else {
+                        if (pendingUpdates == null) {
+                            pendingUpdates = mutableMapOf()
+                        }
+                        pendingUpdates?.set(key, newValue!!)
+                    }
+                }
+            }
+
+            fun applyPendingUpdates() {
+                pendingUpdates?.let { updates ->
+                    if (updates.isEmpty()) return@let
+
+                    skipChange = true
+                    updates.forEach { (key, value) ->
+                        findPreference<Preference>(key)?.apply {
+                            updatePreference(this, value)
+                        }
+                    }
+                    skipChange = false
+                    updates.clear()
+                }
+                pendingUpdates = null
+            }
         }
 
-        lastKeyInvoked = key
-        lastValueInvoked = newValue
-
-        findPreference<Preference>(key)?.apply {
-            onPreferenceChangeListener?.onPreferenceChange(this, newValue)
+    private fun updatePreference(pref: Preference, value: Any?) {
+        when (pref) {
+            is TwoStatePreference -> pref.isChecked = value as? Boolean ?: false
+            is SeekBarPreference -> (value as? Int)?.let { pref.value = it }
+            is EditTextPreference -> pref.text = value as? String
+            is ListPreference -> pref.value = value as? String
+            is ColorPickerPreference -> (value as? Int)?.let { pref.onColorSet(it) }
+            is MultiSelectListPreference -> pref.values = value as? Set<String> ?: emptySet()
+            is HorizontalRadioPreference -> pref.value = value as? String
         }
     }
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getDataStore().addOnPreferencesChangeListener(this)
+        getDataStore().addOnPreferencesChangeListener(onPreferencesChangeListener)
     }
+
+    @CallSuper
+    override fun onResume() {
+        super.onResume()
+        onPreferencesChangeListener.applyPendingUpdates()
+    }
+
 
     @CallSuper
     override fun onDestroy() {
         super.onDestroy()
-        getDataStore().removeOnPreferencesChangeListener(this)
+        getDataStore().removeOnPreferencesChangeListener(onPreferencesChangeListener)
     }
 }
 
@@ -140,13 +189,14 @@ abstract class ObservablePreferencesDataStore(
     private val store: DataStore<Preferences>
 ) : PreferenceDataStore() {
 
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO + CoroutineName("ObservablePrefDataStore"))
+    private val scope =
+        CoroutineScope(SupervisorJob() + Dispatchers.IO + CoroutineName("ObservablePrefDataStore"))
 
     @Volatile
     private var snapshot: Preferences = emptyPreferences()
 
     fun interface OnPreferencesChangeListener {
-        fun onPreferenceChanged(key: String, newValue: Any?)
+        fun onPreferenceChanged(key: String, newValue: Any?, oldValue: Any?)
     }
 
     private val listeners = CopyOnWriteArraySet<OnPreferencesChangeListener>()
@@ -175,20 +225,24 @@ abstract class ObservablePreferencesDataStore(
                         }
                     }
 
+                    // keep a reference to the old snapshot before overwriting
+                    val oldSnapshot = previous
+
                     // swap snapshot
                     snapshot = current
                     previous = current
 
                     if (changedKeys.isNotEmpty()) {
-                        // prepare notifications outside the main dispatcher
-                        val notifications = changedKeys.map { key -> key.name to current[key] }
+                        val notifications = changedKeys.map { key ->
+                            Triple(key.name, current[key], oldSnapshot[key])
+                        }
                         val listenersSnapshot = listeners.toList()
 
                         // switch once to Main and notify all listeners
                         withContext(Dispatchers.Main) {
-                            for ((name, value) in notifications) {
+                            for ((name, newValue, oldValue) in notifications) {
                                 for (listener in listenersSnapshot) {
-                                    listener.onPreferenceChanged(name, value)
+                                    listener.onPreferenceChanged(name, newValue, oldValue)
                                 }
                             }
                         }
@@ -201,12 +255,16 @@ abstract class ObservablePreferencesDataStore(
      * Registers a callback to be invoked when a preference is changed.
      * Ensure to call [removeOnPreferencesChangeListener] to release the reference.
      */
-    fun addOnPreferencesChangeListener(listener: OnPreferencesChangeListener) { listeners.add(listener) }
+    fun addOnPreferencesChangeListener(listener: OnPreferencesChangeListener) {
+        listeners.add(listener)
+    }
 
     /**
      * Un-registers a previously registered callback.
      */
-    fun removeOnPreferencesChangeListener(listener: OnPreferencesChangeListener) { listeners.remove(listener) }
+    fun removeOnPreferencesChangeListener(listener: OnPreferencesChangeListener) {
+        listeners.remove(listener)
+    }
 
     override fun putString(key: String, value: String?) {
         val k = stringPreferencesKey(key)
