@@ -1,6 +1,6 @@
 ext {
     versions_metadata = [
-            "oneui-design"     : ["0.8.9+oneui8", 21, 36],
+            "oneui-design"     : ["0.8.10+oneui8", 21, 36],
             "stub"             : ["1.0.0", 21, 36],
             "sample-app"       : ["0.8.7+oneui8", 23, 36]
     ]
