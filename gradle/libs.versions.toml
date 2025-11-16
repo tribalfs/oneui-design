@@ -64,7 +64,7 @@ lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
 moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
 moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshi" }
 
-oneuiDesign = { module = "io.github.tribalfs:oneui-design", version = "0.8.10+oneui8" }
+oneuiDesign = { module = "io.github.tribalfs:oneui-design", version = "0.8.12+oneui8" }
 oneuiIcons = { module = "io.github.oneuiproject:icons", version = "1.1.0" }
 
 retrofit2 = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit2" }
