@@ -21,7 +21,6 @@ internal class DrawerMenuView @JvmOverloads constructor(
         layoutManager = LinearLayoutManager(context, VERTICAL, false)
         seslSetLastRoundedCorner(false)
         seslSetGoToTopEnabled(false)
-        setWillNotDraw(true)
     }
 
     override fun initialize(menu: MenuBuilder) = Unit
