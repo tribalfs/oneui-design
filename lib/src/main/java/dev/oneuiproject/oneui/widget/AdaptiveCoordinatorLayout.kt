@@ -239,14 +239,17 @@ open class AdaptiveCoordinatorLayout @JvmOverloads constructor(
          */
         @JvmField
         val MARGIN_PROVIDER_ADP_DEFAULT = MarginProvider { context ->
-            val widthXInsets = context.windowWidthNetOfInsets
-            val pxToDp = 1f.pxToDp(context.resources)
-
             // Using the following values instead of those from
             // resources.configuration.* due to the latter's
             // delay in being updated.
-            val screenWidthDp = widthXInsets * pxToDp
-            val screenHeightDp = context.windowHeight * pxToDp
+            val metrics = context.resources.displayMetrics
+            val density = metrics.density
+
+            val widthPixels = metrics.widthPixels.toFloat()
+            val heightPixels = metrics.heightPixels.toFloat()
+
+            val screenWidthDp = widthPixels / density
+            val screenHeightDp = heightPixels / density
 
             val marginRatio = when {
                 (screenWidthDp < 589) -> 0.0f
@@ -256,7 +259,7 @@ open class AdaptiveCoordinatorLayout @JvmOverloads constructor(
                 else -> 0.0f
             }
             SideMarginParams(
-                (widthXInsets * marginRatio).toInt(),
+                (widthPixels * marginRatio).toInt(),
                 screenWidthDp >= 589
             )
         }
