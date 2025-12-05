@@ -25,11 +25,11 @@ import dev.oneuiproject.oneui.preference.HorizontalRadioPreference
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.runBlocking
 import java.util.concurrent.CopyOnWriteArraySet
 
 /**
@@ -48,9 +48,6 @@ import java.util.concurrent.CopyOnWriteArraySet
  * - **Lifecycle-Aware Listeners:** Automatically registers and unregisters itself
  *   as a listener to the associated [ObservablePreferencesDataStore] during
  *   `onCreate()` and `onDestroy()` to prevent leaks and dangling observers.
- * - **Cached Reads:** Uses an in-memory snapshot of DataStore preferences to serve
- *   read requests instantly without blocking the main thread. This allows the Preferences
- *   UI to load synchronously while still reflecting the latest DataStore values.
  *
  * ## Usage
  * Subclass this fragment and implement [DataStoreProvider] to supply your
@@ -63,18 +60,8 @@ import java.util.concurrent.CopyOnWriteArraySet
  * ```
  *
  * ## Threading
- * - **Writes:** All write operations (`put*` methods) in [ObservablePreferencesDataStore]
- *   are performed asynchronously on `Dispatchers.IO`, ensuring that disk I/O never blocks
- *   the main thread. After each successful write, preference change notifications are
- *   dispatched on the main thread to keep the UI in sync.
- *
- * - **Reads:** All reads are served from a **cached in-memory snapshot** of the
- *   [Preferences] object, updated automatically via a background coroutine.
- *
- * - **Memory Impact:** The snapshot cache holds a single immutable [Preferences]
- *   instance in memory. This overhead is minimal for typical key–value pairs and
- *   does not grow with time. Large data payloads should be avoided in Preferences
- *   DataStore and stored in files or Proto DataStore instead.
+ * - All write and read operations in [ObservablePreferencesDataStore]
+ *   are performed synchronously.
  *
  * ## Notes
  * - This class assumes the use of the **Preferences DataStore** variant (not Proto).
@@ -190,7 +177,7 @@ abstract class ObservablePreferencesDataStore(
 ) : PreferenceDataStore() {
 
     private val scope =
-        CoroutineScope(SupervisorJob() + Dispatchers.IO + CoroutineName("ObservablePrefDataStore"))
+        CoroutineScope(SupervisorJob() + Dispatchers.Main + CoroutineName("ObservablePrefDataStore"))
 
     @Volatile
     private var snapshot: Preferences = emptyPreferences()
@@ -201,55 +188,6 @@ abstract class ObservablePreferencesDataStore(
 
     private val listeners = CopyOnWriteArraySet<OnPreferencesChangeListener>()
 
-    init {
-        // Keep an up-to-date snapshot and notify listeners only for changed keys.
-        @OptIn(ExperimentalCoroutinesApi::class)
-        scope.launch {
-            var previous: Preferences = emptyPreferences()
-            store.data
-                .distinctUntilChanged()
-                .collect { current ->
-                    // compute changed keys
-                    val changedKeys = mutableListOf<Preferences.Key<*>>()
-                    val prevKeys = previous.asMap().keys
-                    val currKeys = current.asMap().keys
-                    val allKeys = HashSet<Preferences.Key<*>>(prevKeys.size + currKeys.size)
-                    allKeys.addAll(prevKeys)
-                    allKeys.addAll(currKeys)
-
-                    for (k in allKeys) {
-                        val prevVal = previous[k]
-                        val currVal = current[k]
-                        if (prevVal != currVal) {
-                            changedKeys.add(k)
-                        }
-                    }
-
-                    // keep a reference to the old snapshot before overwriting
-                    val oldSnapshot = previous
-
-                    // swap snapshot
-                    snapshot = current
-                    previous = current
-
-                    if (changedKeys.isNotEmpty()) {
-                        val notifications = changedKeys.map { key ->
-                            Triple(key.name, current[key], oldSnapshot[key])
-                        }
-                        val listenersSnapshot = listeners.toList()
-
-                        // switch once to Main and notify all listeners
-                        withContext(Dispatchers.Main) {
-                            for ((name, newValue, oldValue) in notifications) {
-                                for (listener in listenersSnapshot) {
-                                    listener.onPreferenceChanged(name, newValue, oldValue)
-                                }
-                            }
-                        }
-                    }
-                }
-        }
-    }
 
     /**
      * Registers a callback to be invoked when a preference is changed.
@@ -269,63 +207,97 @@ abstract class ObservablePreferencesDataStore(
     override fun putString(key: String, value: String?) {
         val k = stringPreferencesKey(key)
         scope.launch {
+            val oldValue = store.data.map { it[k] }.firstOrNull()
             store.edit { it[k] = value ?: "" }
+            for (listener in listeners) {
+                listener.onPreferenceChanged(key, value, oldValue)
+            }
         }
     }
 
-    override fun getString(key: String, defValue: String?): String {
+    override fun getString(key: String, defValue: String?): String? {
         val k = stringPreferencesKey(key)
-        return snapshot[k] ?: defValue ?: ""
+        return runBlocking { (store.data.map { it[k] }.firstOrNull() ?: defValue) }
     }
 
     override fun putInt(key: String, value: Int) {
         val k = intPreferencesKey(key)
-        scope.launch { store.edit { it[k] = value } }
+        scope.launch {
+            val oldValue = store.data.map { it[k] }.firstOrNull()
+            store.edit { it[k] = value }
+            for (listener in listeners) {
+                listener.onPreferenceChanged(key, value, oldValue)
+            }
+        }
     }
 
     override fun getInt(key: String, defValue: Int): Int {
         val k = intPreferencesKey(key)
-        return snapshot[k] ?: defValue
+        return runBlocking { store.data.map { it[k] }.firstOrNull() ?: defValue }
     }
 
     override fun putBoolean(key: String, value: Boolean) {
         val k = booleanPreferencesKey(key)
-        scope.launch { store.edit { it[k] = value } }
+        scope.launch {
+            val oldValue = store.data.map { it[k] }.firstOrNull()
+            store.edit { it[k] = value }
+            for (listener in listeners) {
+                listener.onPreferenceChanged(key, value, oldValue)
+            }
+        }
     }
 
     override fun getBoolean(key: String, defValue: Boolean): Boolean {
         val k = booleanPreferencesKey(key)
-        return snapshot[k] ?: defValue
+        return runBlocking { store.data.map { it[k] }.firstOrNull() ?: defValue }
     }
 
     override fun putFloat(key: String, value: Float) {
         val k = floatPreferencesKey(key)
-        scope.launch { store.edit { it[k] = value } }
+        scope.launch {
+            val oldValue = store.data.map { it[k] }.firstOrNull()
+            store.edit { it[k] = value }
+            for (listener in listeners) {
+                listener.onPreferenceChanged(key, value, oldValue)
+            }
+        }
     }
 
     override fun getFloat(key: String, defValue: Float): Float {
         val k = floatPreferencesKey(key)
-        return snapshot[k] ?: defValue
+        return runBlocking { store.data.map { it[k] }.firstOrNull() ?: defValue }
     }
 
     override fun putLong(key: String, value: Long) {
         val k = longPreferencesKey(key)
-        scope.launch { store.edit { it[k] = value } }
+        scope.launch {
+            val oldValue = store.data.map { it[k] }.firstOrNull()
+            store.edit { it[k] = value }
+            for (listener in listeners) {
+                listener.onPreferenceChanged(key, value, oldValue)
+            }
+        }
     }
 
     override fun getLong(key: String, defValue: Long): Long {
         val k = longPreferencesKey(key)
-        return snapshot[k] ?: defValue
+        return runBlocking { store.data.map { it[k] }.firstOrNull() ?: defValue }
     }
 
     override fun putStringSet(key: String, values: Set<String>?) {
         val k = stringSetPreferencesKey(key)
-        scope.launch { store.edit { it[k] = values ?: emptySet() } }
+        scope.launch {
+            val oldValue = store.data.map { it[k] }.firstOrNull()
+            store.edit { it[k] = values ?: emptySet()}
+            for (listener in listeners) {
+                listener.onPreferenceChanged(key, values, oldValue)
+            }
+        }
     }
 
-    override fun getStringSet(key: String, defValues: MutableSet<String>?): Set<String> {
+    override fun getStringSet(key: String, defValues: MutableSet<String>?): Set<String>? {
         val k = stringSetPreferencesKey(key)
         @Suppress("UNCHECKED_CAST")
-        return snapshot[k] as? Set<String> ?: (defValues ?: emptySet())
+        return runBlocking { store.data.map { it[k] }.firstOrNull() ?: defValues }
     }
 }
