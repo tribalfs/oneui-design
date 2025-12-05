@@ -71,7 +71,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:maxLines="4"
                 android:textAlignment="viewStart"
                 android:layout_marginEnd="@dimen/sesl_preference_dot_frame_size"
                 app:layout_constraintBottom_toTopOf="@+id/bottom_spacer"
