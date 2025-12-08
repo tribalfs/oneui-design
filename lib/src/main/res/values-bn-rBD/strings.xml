@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">সম্পন্ন</string>
     <string name="oui_des_common_button_yes">হ্যাঁ</string>
     <string name="oui_des_common_disable">অক্ষম</string>
+    <string name="oui_des_common_on">চালু</string>
+    <string name="oui_des_common_off">বন্ধ</string>
+
     <string name="oui_des_tip_popup_hint_string">আরো জানতে এই বাটনে দু’বার ট্যাপ করুন।</string>
     <string name="oui_des_action_mode_all_checkbox">সব</string>
     <string name="oui_des_network_error">কোনও নেটওয়ার্ক সংযোগ নেই। নেটওয়ার্কে সংযোগ স্থাপন করে আবার চেষ্টা করুন।</string>
+
+    <string name="oui_des_camera_perm_not_granted">ক্যামেরার অনুমতি দেওয়া হয়নি।</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">মাল্টি উইন্ডোতে এই ফাংশন ব্যবহার করা যাবে না৷ ফুল স্ক্রিন ভিউতে আবার চেষ্টা করুন৷</string>
+    <string name="oui_des_qrcode_scan_tts">QR কোড স্ক্যান করা হয়েছে</string>
+    <string name="oui_des_tts_qr_flashlight">ফ্ল্যাশলাইট %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">QR কোড পড়া যায়নি</string>
+    <string name="oui_des_qrdialog_decode_error_body">QR কোড আবার স্ক্যান করার চেষ্টা করুন।</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">এই অ্যাপ ব্যবহার করতে পারে এমন কোনো তথ্য এই QR কোডে নেই৷</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">QR কোড সঠিক নয়</string>
+    <string name="oui_des_scan_qr_code">QR কোড স্ক্যান করুন</string>
 </resources>

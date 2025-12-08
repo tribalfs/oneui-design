@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">ସମାପ୍ତ</string>
     <string name="oui_des_common_button_yes">ହଁ</string>
     <string name="oui_des_common_disable">ଅକ୍ଷମ</string>
+    <string name="oui_des_common_on">ଅନ୍</string>
+    <string name="oui_des_common_off">ଅଫ୍</string>
+
     <string name="oui_des_tip_popup_hint_string">ଅଧିକ ଜାଣିବାକୁ ଏହି ବଟନ୍ ଦୁଇଥର ଟ୍ୟାପ୍ କରନ୍ତୁ।</string>
     <string name="oui_des_action_mode_all_checkbox">ସମସ୍ତ</string>
     <string name="oui_des_network_error">କୌଣସି ନେଟୱାର୍କ୍‌ କନେକ୍ସନ୍ ନାହିଁ। ନେଟୱାର୍କକୁ କନେକ୍ଟ କରି ପୁନଃଚେଷ୍ଟା କରନ୍ତୁ।</string>
+
+    <string name="oui_des_camera_perm_not_granted">କ୍ୟାମେରା ଅନୁମତି ଦିଆଯାଇ ନାହିଁ।</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">ମଲ୍ଟି ୱିଣ୍ଡୋରେ ଏହି ପ୍ରକାର୍ଯ୍ୟ ବ୍ୟବହାର କରିପାରିବେ ନାହିଁ। ପୂର୍ଣ୍ଣ ସ୍କ୍ରିନ୍ ଦୃଶ୍ୟରେ ପୁନଃଚେଷ୍ଟା କରନ୍ତୁ।</string>
+    <string name="oui_des_qrcode_scan_tts">ସ୍କାନ୍‌ ହୋଇଥିବା QR କୋଡ୍</string>
+    <string name="oui_des_tts_qr_flashlight">ଫ୍ଲାସଲାଇଟ୍ %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">QR କୋଡ୍ ପଢାଯାଇ ପାରିଲା ନାହିଁ</string>
+    <string name="oui_des_qrdialog_decode_error_body">ପୁନଃ QR କୋଡ୍ ସ୍କାନ୍ କରିବାକୁ ଚେଷ୍ଟା କରନ୍ତୁ।</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">QR କୋଡରେ କୌଣସି ସୂଚନା ନାହିଁ ଯାହା ଏହି ଆପ୍ଲିକେସନ୍ ଧାରଣ କରିପାରିବ।</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">QR କୋଡ୍ ବୈଧ ନୁହେଁ</string>
+    <string name="oui_des_scan_qr_code">QR କୋଡ୍ ସ୍କାନ୍</string>
 </resources>

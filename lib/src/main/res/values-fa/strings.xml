@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">انجام شد</string>
     <string name="oui_des_common_button_yes">بلی</string>
     <string name="oui_des_common_disable">غیر فعال</string>
+    <string name="oui_des_common_on">روشن</string>
+    <string name="oui_des_common_off">خاموش</string>
+
     <string name="oui_des_tip_popup_hint_string">برای اطلاعات بیشتر دوبار روی این دکمه ضربه بزنید.</string>
     <string name="oui_des_action_mode_all_checkbox">همه</string>
     <string name="oui_des_network_error">اتصال به شبکه وجود ندارد. به شبکه وصل شده و دوباره امتحان کنید.</string>
+
+    <string name="oui_des_camera_perm_not_granted">مجوز دوربین داده نشد.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">استفاده از این عملکرد در نمای ”چند پنجره“ ممکن نیست. با نمای تمام‌صفحه امتحان کنید.</string>
+    <string name="oui_des_qrcode_scan_tts">کد QR اسکن شد</string>
+    <string name="oui_des_tts_qr_flashlight">نور فلاش %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">کد QR خوانده نشد</string>
+    <string name="oui_des_qrdialog_decode_error_body">دوباره کد QR را اسکن کنید.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">کد QR حاوی اطلاعاتی که این برنامه بتواند استفاده کند، نیست.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">کد QR معتبر نیست</string>
+    <string name="oui_des_scan_qr_code">اسکن کد QR</string>
 </resources>

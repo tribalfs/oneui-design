@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">పూర్తయింది</string>
     <string name="oui_des_common_button_yes">అవును</string>
     <string name="oui_des_common_disable">నిలిపివేయి</string>
+    <string name="oui_des_common_on">ఆన్</string>
+    <string name="oui_des_common_off">ఆఫ్</string>
+
     <string name="oui_des_tip_popup_hint_string">మరింత తెలుసుకోవడానికి ఈ బటన్‌ను రెండుసార్లు నొక్కండి.</string>
     <string name="oui_des_action_mode_all_checkbox">అన్నీ</string>
     <string name="oui_des_network_error">ఏ నెట్‍‌వర్క్‌ కనెక్షన్ లేదు. నెట్‍‌వర్క్‌కు కనెక్ట్ చేసి మళ్లీ ప్రయత్నించండి.</string>
+
+    <string name="oui_des_camera_perm_not_granted">కెమెరా అనుమతి మంజూరు చేయబడలేదు.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">మల్టీ విండోలో ఈ విధిని ఉపయోగించలేరు. పూర్తి స్క్రీన్ వీక్షణలో మళ్లీ ప్రయత్నించండి.</string>
+    <string name="oui_des_qrcode_scan_tts">QR కోడ్ స్కాన్ చేయబడింది</string>
+    <string name="oui_des_tts_qr_flashlight">ఫ్లాష్‌లైట్ %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">QR కోడ్‌ని చదవడం సాధ్యం కాదు</string>
+    <string name="oui_des_qrdialog_decode_error_body">QR కోడ్‌ని మళ్లీ స్కాన్ చేయడానికి ప్రయత్నించండి.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">QR కోడ్‌లో ఈ అప్లికేషన్ ఉపయోగించగల ఎటువంటి సమాచారం ఉండదు.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">QR కోడ్ చెల్లదు</string>
+    <string name="oui_des_scan_qr_code">QR కోడ్‌ను స్కాన్ చేయి</string>
 </resources>

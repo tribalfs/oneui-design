@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">Amaituta</string>
     <string name="oui_des_common_button_yes">Bai</string>
     <string name="oui_des_common_disable">Ezgaitu</string>
+    <string name="oui_des_common_on">Aktibatuta</string>
+    <string name="oui_des_common_off">Desaktibatuta</string>
+
     <string name="oui_des_tip_popup_hint_string">Informazio gehiago lortzeko, ukitu bi aldiz botoi hau.</string>
     <string name="oui_des_action_mode_all_checkbox">Guztiak</string>
     <string name="oui_des_network_error">Ez dago sareko konexiorik. Konektatu sarera eta saiatu berriz.</string>
+
+    <string name="oui_des_camera_perm_not_granted">Ez da eman kamera erabiltzeko baimenik.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Ezin da erabili funtzio hori Multiwindow ikuspegian. Saiatu berriz pantaila osoko ikuspegian.</string>
+    <string name="oui_des_qrcode_scan_tts">Eskaneatu da QR kodea</string>
+    <string name="oui_des_tts_qr_flashlight">Flash argia %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">Ezin izan da irakurri QR kodea</string>
+    <string name="oui_des_qrdialog_decode_error_body">Eskaneatu QR kodea berriz.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">QR kodeak ez du aplikazio honek erabil dezakeen informaziorik.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">QR kodeak ez du balio</string>
+    <string name="oui_des_scan_qr_code">Eskaneatu QR kodea</string>
 </resources>

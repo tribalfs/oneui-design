@@ -23,4 +23,16 @@
     <string name="oui_des_time_dialog_start">Malite</string>
     <string name="oui_des_time_dialog_end">Ọgwụgwụ</string>
     <string name="oui_des_network_error">Enweghi njikọ netwọkụ. Jikọọ na netwọk wee nwaa ọzọ.</string>
+    <string name="oui_des_common_on">Gbanye</string>
+    <string name="oui_des_common_off">Gbanyụọ</string>
+
+    <string name="oui_des_camera_perm_not_granted">Enyeghị ikike igwefoto.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Enweghị ike iji ọrụ a na Ọtụtụ windo. Nwaa ọzọ na ihuenyo zuru ezu.</string>
+    <string name="oui_des_qrcode_scan_tts">Enyochara koodu QR</string>
+    <string name="oui_des_tts_qr_flashlight">Igweọkụ%s</string>
+    <string name="oui_des_qrdialog_decode_error_title">Enweghị ike ịgụ koodu QR</string>
+    <string name="oui_des_qrdialog_decode_error_body">Gbalịa inyocha koodu QR ahụ ọzọ.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">Koodu QR enweghị ozi ọ bụla ngwa a nwere ike iji.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">Koodu QR ezighi ezi</string>
+    <string name="oui_des_scan_qr_code">Chaa ọkụ na koodu QR</string>
 </resources>

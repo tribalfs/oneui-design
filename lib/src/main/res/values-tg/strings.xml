@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">Иҷро шуд</string>
     <string name="oui_des_common_button_yes">Ҳа</string>
     <string name="oui_des_common_disable">Ғайрифаъол</string>
+    <string name="oui_des_common_on">Фурӯзон</string>
+    <string name="oui_des_common_off">Хомӯш</string>
+
     <string name="oui_des_tip_popup_hint_string">Барои маълумоти бештар гирифтан, ин тугмаро ду бор зарба занед.</string>
     <string name="oui_des_action_mode_all_checkbox">Ҳама</string>
     <string name="oui_des_network_error">Ягон пайвастагии шабака нест. Ба шабака пайваст шуда, аз нав кӯшиш кунед.</string>
+
+    <string name="oui_des_camera_perm_not_granted">Иҷозати камера дода нашудааст.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Истифодаи ин функсия дар намуди Серравзана ғайриимкон аст. Кӯшишро дар экрани пурра такрор кунед.</string>
+    <string name="oui_des_qrcode_scan_tts">Рамзи QR скан карда шуд</string>
+    <string name="oui_des_tts_qr_flashlight">Фонус %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">Хондани рамзи QR барор наёфт</string>
+    <string name="oui_des_qrdialog_decode_error_body">Рамзи QR-ро бори дигар скан кунед.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">Рамзи QR ягон маълумоте надорад, ки ин гуруҳ тавонад истифода барад.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">Рамзи QR нодуруст аст</string>
+    <string name="oui_des_scan_qr_code">Рамзи QR скан кардан</string>
 </resources>

@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">ສຳ​ເລັດ</string>
     <string name="oui_des_common_button_yes">ແມ່ນ</string>
     <string name="oui_des_common_disable">ປິດໃຊ້ງານ</string>
+    <string name="oui_des_common_on">ເປີດ</string>
+    <string name="oui_des_common_off">ປິດ</string>
+
     <string name="oui_des_tip_popup_hint_string">ແຕະປຸ່ມນີ້ສອງຄັ້ງເພື່ອຮຽນຮູ້ເພີ່ມເຕີມ.</string>
     <string name="oui_des_action_mode_all_checkbox">ທັງໝົດ</string>
     <string name="oui_des_network_error">ບໍ່ມີການເຊື່ອມຕໍ່ເຄືອຂ່າຍໃດ. ເຊື່ອມຕໍ່ໃສ່ເຄືອຂ່າຍ ແລະລອງໃໝ່ອີກ</string>
+
+    <string name="oui_des_camera_perm_not_granted">ບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ໃຊ້ກ້ອງ.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">ບໍ່ສາມາດໃຊ້ຟັງຄ໌ຊັນນີ້ໃນມັລຕິວິນໂດໄດ້. ລອງໃໝ່ອີກໃນມຸມມອງເຕັມໜ້າຈໍ.</string>
+    <string name="oui_des_qrcode_scan_tts">ສະແກນລະຫັດ QR ແລ້ວ</string>
+    <string name="oui_des_tts_qr_flashlight">ໄຟສາຍ %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">ບໍ່ສາມາດອ່ານລະຫັດ QR ໄດ້</string>
+    <string name="oui_des_qrdialog_decode_error_body">ລອງສະແກນລະຫັດ QR ອີກຄັ້ງ.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">ລະຫັດ QR ບໍ່ມີຂໍ້ມູນໃດໜຶ່ງທີ່ແອັບນີ້ສາມາດໃຊ້ໄດ້.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">ລະຫັດ QR ບໍ່ຖືກຕ້ອງ</string>
+    <string name="oui_des_scan_qr_code">ສະແກນລະຫັດ QR</string>
 </resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="AppCompatResource,AlwaysShowAction">
+
+    <item
+        android:id="@+id/menu_item_crop_cancel"
+        android:title="@string/oui_des_common_cancel"
+        app:iconTint="?actionMenuTextColor"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/menu_item_crop_ok"
+        android:title="@android:string/ok"
+        app:showAsAction="always" />
+</menu>

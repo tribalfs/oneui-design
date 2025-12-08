@@ -23,4 +23,16 @@
     <string name="oui_des_time_dialog_start">Anza</string>
     <string name="oui_des_time_dialog_end">Mwisho</string>
     <string name="oui_des_network_error">Hakuna muunganisho wa mtandao. Unganisha kwenye mtandao na ujaribu tena.</string>
+    <string name="oui_des_common_on">Imewashwa</string>
+    <string name="oui_des_common_off">Imezimwa</string>
+
+    <string name="oui_des_camera_perm_not_granted">Ruhusa ya kamera haijatolewa.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Haiwezi kutumia kitendaji hiki katika Madirisha mengi. Jaribu tena katika mwonekano wa skrini nzima.</string>
+    <string name="oui_des_qrcode_scan_tts">Msimbo wa QR umechanganuliwa</string>
+    <string name="oui_des_tts_qr_flashlight">Tochi %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">Haikuweza kusoma msimbo wa QR</string>
+    <string name="oui_des_qrdialog_decode_error_body">Jaribu kuchanganua tena msimbo wa QR.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">Msimbo wa QR hauna maelezo yoyote ambayo programu hii inaweza kutumia.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">Msimbo wa QR si sahihi</string>
+    <string name="oui_des_scan_qr_code">Changanua msimbo wa QR</string>
 </resources>

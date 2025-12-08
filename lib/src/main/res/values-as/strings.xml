@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">সম্পন্ন</string>
     <string name="oui_des_common_button_yes">হয়</string>
     <string name="oui_des_common_disable">অক্ষম</string>
+    <string name="oui_des_common_on">অন</string>
+    <string name="oui_des_common_off">অফ</string>
+
     <string name="oui_des_tip_popup_hint_string">অধিক জানিবলৈ এই বুটামটো দুবাৰ টিপক।</string>
     <string name="oui_des_action_mode_all_checkbox">সকলো</string>
     <string name="oui_des_network_error">নেটৱৰ্ক সংযোগ নাই৷ নেটৱৰ্কলৈ সংযোগ কৰক আৰু পুনৰ চেষ্টা কৰক।</string>
-</resources>
+
+    <string name="oui_des_camera_perm_not_granted">কেમેৰাৰ অনুমতি প্ৰদান কৰা হোৱা নাই৷</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">মাল্টি উইণ্ড\'ত এই ফাংচনটো ব্যৱহাৰ কৰিব নোৱাৰে। সম্পূৰ্ণ স্ক্ৰীণ দৰ্শনত পুনঃচেষ্টা কৰক।</string>
+    <string name="oui_des_qrcode_scan_tts">QR ক\'ড স্কেন কৰিছে</string>
+    <string name="oui_des_tts_qr_flashlight">ফ্লাচলাইট %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">QR ক\'ড পঢ়িব পৰা নগ\'ল</string>
+    <string name="oui_des_qrdialog_decode_error_body">QR ক\'ডটো পুনৰ স্কেন কৰিবলৈ চেষ্টা কৰক।</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">QR ক\'ডটোত এই এপ্প্‌টোৱে ব্যৱহাৰ কৰিব পৰা কোনো তথ্য নাই।</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">QR ক\'ড বৈধ নহয়</string>
+    <string name="oui_des_scan_qr_code">QR ক\'ড স্কেন কৰক</string>
+ </resources>

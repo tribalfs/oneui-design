@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">Дууслаа</string>
     <string name="oui_des_common_button_yes">Тийм</string>
     <string name="oui_des_common_disable">Идэвхгүй болгох</string>
+    <string name="oui_des_common_on">Идэвхтэй</string>
+    <string name="oui_des_common_off">Идэвхгүй</string>
+
     <string name="oui_des_tip_popup_hint_string">Илүү ихийг авахын тулд энэ товчыг хоёр товш.</string>
     <string name="oui_des_action_mode_all_checkbox">Бүгд</string>
     <string name="oui_des_network_error">Сүлжээний холболт байхгүй. Сүлжээнд холбогдож, дахин оролд.</string>
+
+    <string name="oui_des_camera_perm_not_granted">Камерын зөвшөөрөл олгогдоогүй.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Энэ функцийг Олон цонхоор ашиглах боломжгүй. Бүрэн дэлгэцээр харахаар дахин оролдоно уу.</string>
+    <string name="oui_des_qrcode_scan_tts">QR код уншуулсан</string>
+    <string name="oui_des_tts_qr_flashlight">Гар чийдэн %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">QR кодыг уншиж чадсангүй</string>
+    <string name="oui_des_qrdialog_decode_error_body">QR кодыг дахин уншуулж үз.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">QR кодод энэ хэрэглүүр ашиглаж болох ямар нэгэн мэдээлэл байхгүй.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">QR код хүчингүй</string>
+    <string name="oui_des_scan_qr_code">QR код уншуул</string>
 </resources>

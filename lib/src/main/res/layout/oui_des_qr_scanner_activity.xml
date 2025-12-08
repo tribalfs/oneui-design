@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000">
+
+    <androidx.camera.view.PreviewView
+        android:id="@+id/preview_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="false" />
+
+    <LinearLayout
+        android:id="@+id/qr_scanner_group"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+        <dev.oneuiproject.oneui.qr.widget.QrCodeScannerView
+            android:id="@+id/qr_scanner_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:layoutDirection="locale" />
+
+            <dev.oneuiproject.oneui.qr.app.internal.CropOverlayView
+                android:id="@+id/qr_crop_overlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/crop_bottom_menu"
+            style="@style/Widget.Design.BottomNavigationView.Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/qr_scanner_view"
+            android:layout_gravity="bottom|center_horizontal"
+            android:visibility="gone"
+            app:menu="@menu/oui_des_menu_qr_crop" />
+    </LinearLayout>
+
+</FrameLayout>

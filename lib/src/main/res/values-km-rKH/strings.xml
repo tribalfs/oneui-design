@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">រួចរាល់</string>
     <string name="oui_des_common_button_yes">បាទ/ចាស</string>
     <string name="oui_des_common_disable">បិទ</string>
+    <string name="oui_des_common_on">បើក</string>
+    <string name="oui_des_common_off">បិទ</string>
+
     <string name="oui_des_tip_popup_hint_string">ប៉ះ​ពីរ​ដង​លើ​ប៊ូតុង​នេះ ដើម្បី​ស្វែងយល់​បន្ថែម។</string>
     <string name="oui_des_action_mode_all_checkbox">ទាំងអស់</string>
     <string name="oui_des_network_error">គ្មាន​ការភ្ជាប់​បណ្តាញ។ ភ្ជាប់​ទៅ​បណ្តាញ និង សាកល្បង​ម្តង​ទៀត</string>
+
+    <string name="oui_des_camera_perm_not_granted">ការអនុញ្ញាតកាមេរ៉ាមិនត្រូវបានផ្តល់ឱ្យទេ។</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">មិន​អាច​ប្រើ​មុខងារ​នេះ​ទេ ក្នុង​ពហុវីនដូវ។ សាកល្បង​ម្ដងទៀត​ក្នុង​ទិដ្ឋភាព​ពេញ​អេក្រង់។</string>
+    <string name="oui_des_qrcode_scan_tts">បាន​ស្កេន​កូដ QR</string>
+    <string name="oui_des_tts_qr_flashlight">ពន្លឺភ្លាស %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">មិន​អាច​អាន​កូដ QR</string>
+    <string name="oui_des_qrdialog_decode_error_body">សាកល្បង​ស្កេន​កូដ QR ម្ដងទៀត។</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">កូដ QR មិនមាន​ព័ត៌មាន​ណា​មួយ​ដែល​កម្មវិធី​នេះ​អាច​ប្រើ​ទេ។</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">កូដ QR អសុពលភាព</string>
+    <string name="oui_des_scan_qr_code">ស្កេន​កូដ QR</string>
 </resources>

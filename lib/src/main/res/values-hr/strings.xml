@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">OK</string>
     <string name="oui_des_common_button_yes">Da</string>
     <string name="oui_des_common_disable">Isključi</string>
+    <string name="oui_des_common_on">Uključeno</string>
+    <string name="oui_des_common_off">Isključeno</string>
+
     <string name="oui_des_tip_popup_hint_string">Dvaput dodirnite ovaj gumb da biste saznali više.</string>
     <string name="oui_des_action_mode_all_checkbox">Sve</string>
     <string name="oui_des_network_error">Nema mrežne veze. Spojite se na mrežu i ponovite</string>
+
+    <string name="oui_des_camera_perm_not_granted">Dozvola za kameru nije dodijeljena.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Nemoguće upotrebljavati ovu funkciju u prikazu Više prozora. Pokušajte ponovno na cijelom zaslonu.</string>
+    <string name="oui_des_qrcode_scan_tts">QR kod skeniran</string>
+    <string name="oui_des_tts_qr_flashlight">Bljeskalica: %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">Nemoguće pročitati QR kod</string>
+    <string name="oui_des_qrdialog_decode_error_body">Pokušajte ponovno skenirati QR kod.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">QR kod ne sadrži podatke koje ova aplikacija može upotrijebiti.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">Neispravni QR kod</string>
+    <string name="oui_des_scan_qr_code">Skeniraj QR kod</string>
 </resources>

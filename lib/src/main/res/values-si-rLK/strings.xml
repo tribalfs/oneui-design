@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">නිමයි</string>
     <string name="oui_des_common_button_yes">ඔව්</string>
     <string name="oui_des_common_disable">අබල කරන්න</string>
+    <string name="oui_des_common_on">ක්‍රියාත්මකයි</string>
+    <string name="oui_des_common_off">ක්‍රියා විරහිතයි</string>
+
     <string name="oui_des_tip_popup_hint_string">වැඩිදුර දැන ගැනීමට මෙම බොත්තම දෙවරක් තට්ටු කරන්න.</string>
     <string name="oui_des_action_mode_all_checkbox">සියල්ල</string>
     <string name="oui_des_network_error">ජාල සම්බන්ධතාව නැත. ජාලයට සම්බන්ධ වී නැවත උත්සාහ කරන්න.</string>
+
+    <string name="oui_des_camera_perm_not_granted">කැමරා අවසර ලබා දී නැත.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">බහු කවුළුවෙහි මෙම ක්‍රියාදාමය භාවිතා කළ නොහැක. පූර්ණ තිර දසුනෙහි නැවත උත්සාහ කරන්න.</string>
+    <string name="oui_des_qrcode_scan_tts">QR කේතය සුපිරික්සිණි</string>
+    <string name="oui_des_tts_qr_flashlight">සැණෙළිය %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">QR කේතය කියවිය නොහැකි විය</string>
+    <string name="oui_des_qrdialog_decode_error_body">QR කේතය නැවත සුපිරික්සීමට උත්සාහ කරන්න.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">මෙම යෙදුමට භාවිතා කළ හැකි තතු කිසිවක් QR කේතයේ අඩංගු නොවේ.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">QR කේතය වලංගු නොවේ</string>
+    <string name="oui_des_scan_qr_code">QR කේතය පිරික්සන්න</string>
 </resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="oui_des_qr_scanner_btn_bottom_margin">118dp</dimen>
+    <dimen name="oui_des_qr_scanner_btn_horizontal_margin">75dp</dimen>
+    <dimen name="oui_des_qr_scanner_btn_size">60dp</dimen>
+    <dimen name="oui_des_qr_scanner_detected_image_min_size">40dp</dimen>
+    <dimen name="oui_des_qr_scanner_detected_image_padding">4dp</dimen>
+    <dimen name="oui_des_qr_scanner_guide_text_font_size">17dp</dimen>
+    <dimen name="oui_des_qr_scanner_guide_text_height">40dp</dimen>
+    <dimen name="oui_des_qr_scanner_guide_text_horizontal_margin">32dp</dimen>
+    <dimen name="oui_des_qr_scanner_guide_text_top_margin">74dp</dimen>
+    <dimen name="oui_des_qr_scanner_roi_height">440dp</dimen>
+    <dimen name="oui_des_qr_scanner_roi_padding">24dp</dimen>
+    <dimen name="oui_des_qr_scanner_roi_top_margin">6dp</dimen>
+    <dimen name="oui_des_qr_scanner_roi_width">330dp</dimen>
+    <dimen name="oui_des_qr_scanner_scanning_rect_radius">4dp</dimen>
+
+</resources>

@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">Bajarildi</string>
     <string name="oui_des_common_button_yes">Ha</string>
     <string name="oui_des_common_disable">O‘chirish</string>
+    <string name="oui_des_common_on">Yoqilgan</string>
+    <string name="oui_des_common_off">O‘chirilgan</string>
+
     <string name="oui_des_tip_popup_hint_string">Qo‘shimcha ma’lumot olish uchun ikki marta teging.</string>
     <string name="oui_des_action_mode_all_checkbox">Barchasi</string>
     <string name="oui_des_network_error">Tarmoq ulanishi yo‘q. Tarmoqqa ulaning va qayta urinib ko‘ring</string>
+
+    <string name="oui_des_camera_perm_not_granted">Kameraga ruxsat berilmadi.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Bir nechta oynali rejimda bu funksiyadan foydalanib bo‘lmaydi. To‘liq ekran ko‘rinishida qayta urinib ko‘ring.</string>
+    <string name="oui_des_qrcode_scan_tts">QR-kod skanerlandi</string>
+    <string name="oui_des_tts_qr_flashlight">%s fonari</string>
+    <string name="oui_des_qrdialog_decode_error_title">QR-kodni o‘qib bo‘lmadi</string>
+    <string name="oui_des_qrdialog_decode_error_body">QR-kodni qayta skanerlab ko‘ring.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">QR-kod ushbu ilova foydalana oladigan hech qaysi ma’lumotlarga ega emas.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">QR-kod noto‘g‘ri</string>
+    <string name="oui_des_scan_qr_code">QR-kodni skanerlash</string>
 </resources>

@@ -23,4 +23,16 @@
     <string name="oui_des_time_dialog_start">Mulai</string>
     <string name="oui_des_time_dialog_end">Selesai</string>
     <string name="oui_des_network_error">Tidak ada koneksi jaringan. Sambungkan ke jaringan lalu coba lagi</string>
+    <string name="oui_des_common_on">Aktif</string>
+    <string name="oui_des_common_off">Nonaktif</string>
+
+    <string name="oui_des_camera_perm_not_granted">Izin kamera tidak diberikan.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Tidak dapat menggunakan fungsi ini dalam tampilan Multi jendela. Coba dalam tampilan layar penuh.</string>
+    <string name="oui_des_qrcode_scan_tts">Kode QR dipindai</string>
+    <string name="oui_des_tts_qr_flashlight">Lampu kilat %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">Tidak dapat membaca kode QR</string>
+    <string name="oui_des_qrdialog_decode_error_body">Cobalah memindai kode QR lagi.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">Kode QR tidak berisi info yang dapat digunakan aplikasi ini.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">Kode QR tidak valid</string>
+    <string name="oui_des_scan_qr_code">Pindai kode QR</string>
 </resources>

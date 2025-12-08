@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">Kryer</string>
     <string name="oui_des_common_button_yes">Po</string>
     <string name="oui_des_common_disable">Çaktivizo</string>
+    <string name="oui_des_common_on">Ndezur</string>
+    <string name="oui_des_common_off">Fikur</string>
+
     <string name="oui_des_tip_popup_hint_string">Dy-trokit mbi këtë buton për të mësuar më shumë.</string>
     <string name="oui_des_action_mode_all_checkbox">Të gjitha</string>
     <string name="oui_des_network_error">Nuk ka lidhje me rrjetin. Lidhu me rrjetin dhe provo sërish</string>
+
+    <string name="oui_des_camera_perm_not_granted">Leja për kamerën nuk u dha.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">S’mund ta përdorësh këtë funksion në Multi-Window. Provoje sërish në pamjen gjithë ekrani.</string>
+    <string name="oui_des_qrcode_scan_tts">Kodi QR u skanua</string>
+    <string name="oui_des_tts_qr_flashlight">Dritë dore %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">S’e lexova dot kodin QR</string>
+    <string name="oui_des_qrdialog_decode_error_body">Provo ta skanosh kodin QR sërish.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">Kodi QR nuk përmban ndonjë informacion që mund ta përdorë ky app.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">Kodi QR nuk është i vlefshëm</string>
+    <string name="oui_des_scan_qr_code">Skano kodin QR</string>
 </resources>

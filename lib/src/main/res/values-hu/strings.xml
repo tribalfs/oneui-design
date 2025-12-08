@@ -23,6 +23,19 @@
     <string name="oui_des_common_done">Kész</string>
     <string name="oui_des_common_button_yes">Igen</string>
     <string name="oui_des_common_disable">Kikapcsol</string>
+    <string name="oui_des_common_on">Be</string>
+    <string name="oui_des_common_off">Ki</string>
+
     <string name="oui_des_tip_popup_hint_string">További információért érintse meg ezt a gombot kétszer.</string>
     <string name="oui_des_action_mode_all_checkbox">Mind</string>
+
+    <string name="oui_des_camera_perm_not_granted">A kamerához való hozzáférés megtagadva.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">A funkció nem használható Több ablak nézetben. Próbálja meg újra teljes képernyős nézetben.</string>
+    <string name="oui_des_qrcode_scan_tts">QR-kód leolvasva</string>
+    <string name="oui_des_tts_qr_flashlight">Elemlámpa %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">Sikertelen QR-kód-leolvasás</string>
+    <string name="oui_des_qrdialog_decode_error_body">Próbálja meg ismét leolvasni a QR-kódot.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">A QR-kód nem tartalmaz olyan információt, amelyet az alkalmazás használni tudna.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">A QR-kód érvénytelen</string>
+    <string name="oui_des_scan_qr_code">QR-kód leolvasása</string>
 </resources>

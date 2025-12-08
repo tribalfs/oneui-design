@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">تمت</string>
     <string name="oui_des_common_button_yes">نعم</string>
     <string name="oui_des_common_disable">تعطيل</string>
+    <string name="oui_des_common_on">قيد التشغيل</string>
+    <string name="oui_des_common_off">إيقاف التشغيل</string>
+
     <string name="oui_des_tip_popup_hint_string">انقر مرتين فوق هذا الزر لمعرفة المزيد.</string>
     <string name="oui_des_action_mode_all_checkbox">الكل</string>
     <string name="oui_des_network_error">لا يوجد اتصال شبكة. اتصل بالشبكة وحاول مرة أخرى.</string>
+
+    <string name="oui_des_camera_perm_not_granted">لم يتم منح إذن الكاميرا.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">يتعذر استخدام هذه الوظيفة في طريقة عرض الإطارات المتعددة. حاول مرة أخرى في عرض ملء الشاشة.</string>
+    <string name="oui_des_qrcode_scan_tts">تم مسح QR code</string>
+    <string name="oui_des_tts_qr_flashlight">%s ضوء الفلاش</string>
+    <string name="oui_des_qrdialog_decode_error_title">تعذرت قراءة QR code</string>
+    <string name="oui_des_qrdialog_decode_error_body">حاول مسح QR code مرة أخرى.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">لا يحتوي QR code على أي معلومات يمكن لهذا التطبيق استخدامها.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">‏QR code غير صالح</string>
+    <string name="oui_des_scan_qr_code">مسح QR code</string>
 </resources>

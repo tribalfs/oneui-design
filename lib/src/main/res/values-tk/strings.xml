@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">Tamam</string>
     <string name="oui_des_common_button_yes">Hawa</string>
     <string name="oui_des_common_disable">Öçür</string>
+    <string name="oui_des_common_on">Açyk</string>
+    <string name="oui_des_common_off">Ýapyk</string>
+
     <string name="oui_des_tip_popup_hint_string">Köp öwrenmek üçin, şu düwmä iki gezek basyň.</string>
     <string name="oui_des_action_mode_all_checkbox">Ähli</string>
     <string name="oui_des_network_error">Ulgam birikmesi ýok. Tora birigip, täzeden synanşyň.</string>
+
+    <string name="oui_des_camera_perm_not_granted">Kamera rugsady berilmedi.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Bu funksiýa Köp-penjirede ulanyp bolmaýar. Doly ekran görnüşinde ýene synanyşyň.</string>
+    <string name="oui_des_qrcode_scan_tts">QR kody skanlandy</string>
+    <string name="oui_des_tts_qr_flashlight">Çyrajyk %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">QR kody okap bolmady</string>
+    <string name="oui_des_qrdialog_decode_error_body">QR koduny täzeden skanlap görüň.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">QR kodunda şu programmanyň ulanyp biljek hiç hili maglumaty ýok.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">QR kody hakyky däl</string>
+    <string name="oui_des_scan_qr_code">QR kod skanla</string>
 </resources>

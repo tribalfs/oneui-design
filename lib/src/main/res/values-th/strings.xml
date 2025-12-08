@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">เรียบร้อย</string>
     <string name="oui_des_common_button_yes">ใช่</string>
     <string name="oui_des_common_disable">ปิด​ใช้​งาน</string>
+    <string name="oui_des_common_on">เปิด</string>
+    <string name="oui_des_common_off">ปิด</string>
+
     <string name="oui_des_tip_popup_hint_string">แตะสองครั้งที่ปุ่มนี้เพื่อเรียนรู้เพิ่มเติม</string>
     <string name="oui_des_action_mode_all_checkbox">ทั้งหมด</string>
     <string name="oui_des_network_error">ไม่​มี​การ​เชื่อม​ต่อ​เครือ​ข่าย เชื่อม​ต่อ​กับ​เครือ​ข่าย​และ​ลอง​อีก​ครั้ง</string>
+
+    <string name="oui_des_camera_perm_not_granted">ไม่ได้รับอนุญาตให้ใช้กล้อง</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">ไม่สามารถใช้ฟังก์ชั่นนี้ในมัลติวินโดว์ได้ ลองอีกครั้งในมุมมองเต็มหน้าจอ</string>
+    <string name="oui_des_qrcode_scan_tts">สแกน QR Code แล้ว</string>
+    <string name="oui_des_tts_qr_flashlight">ไฟฉาย %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">ไม่สามารถอ่าน QR Code ได้</string>
+    <string name="oui_des_qrdialog_decode_error_body">ลองสแกน QR Code อีกครั้ง</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">QR Code นี้ไม่มีข้อมูลที่แอพนี้สามารถใช้ได้</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">QR Code ไม่ถูกต้อง</string>
+    <string name="oui_des_scan_qr_code">สแกน QR Code</string>
 </resources>

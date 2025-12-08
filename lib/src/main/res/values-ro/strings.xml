@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">Efectuat</string>
     <string name="oui_des_common_button_yes">Da</string>
     <string name="oui_des_common_disable">Dezactiv.</string>
+    <string name="oui_des_common_on">Pornit</string>
+    <string name="oui_des_common_off">Oprit</string>
+
     <string name="oui_des_tip_popup_hint_string">Atingeți de două ori acest buton pentru a afla mai multe.</string>
     <string name="oui_des_action_mode_all_checkbox">Toate</string>
     <string name="oui_des_network_error">Nicio conexiune de rețea. Conectați-vă la rețea și încercați din nou</string>
+
+    <string name="oui_des_camera_perm_not_granted">Permisiunea pentru cameră nu a fost acordată.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Nu se poate utiliza această funcție în vizualizarea pentru Ferestre multiple. Încercați din nou în vizualizarea pe ecran complet.</string>
+    <string name="oui_des_qrcode_scan_tts">Cod QR scanat</string>
+    <string name="oui_des_tts_qr_flashlight">Lanternă %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">Nu s-a putut citi codul QR</string>
+    <string name="oui_des_qrdialog_decode_error_body">Încercați să scanați din nou codul QR.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">Codul QR nu conține informații pe care să le poată utiliza această aplicație.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">Cod QR nevalid</string>
+    <string name="oui_des_scan_qr_code">Scanare cod QR</string>
 </resources>

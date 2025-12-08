@@ -23,4 +23,16 @@
     <string name="oui_des_time_dialog_start">התחלה</string>
     <string name="oui_des_time_dialog_end">סיום</string>
     <string name="oui_des_network_error">אין חיבור לרשת. התחבר לרשת ונסה שוב.</string>
+    <string name="oui_des_common_on">מופעל</string>
+    <string name="oui_des_common_off">כבוי</string>
+
+    <string name="oui_des_camera_perm_not_granted">לא ניתנה הרשאה למצלמה.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">לא ניתן להפעיל תכונה זו בתצוגת \'חלונות מרובים\'. נסה שוב בתצוגת מסך מלא.</string>
+    <string name="oui_des_qrcode_scan_tts">קוד QR נסרק</string>
+    <string name="oui_des_tts_qr_flashlight">הפנס %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">אין אפשרות לקרוא קוד QR</string>
+    <string name="oui_des_qrdialog_decode_error_body">נסה לסרוק את קוד ה-QR שוב.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">אין בקוד ה-QR שום מידע שיישום זה יכול להשתמש בו.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">קוד QR לא תקף</string>
+    <string name="oui_des_scan_qr_code">סרוק קוד QR</string>
 </resources>

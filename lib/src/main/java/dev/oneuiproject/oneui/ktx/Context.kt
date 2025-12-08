@@ -24,6 +24,7 @@ import androidx.picker.widget.SeslTimePicker
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.getWindowHeight
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.getWindowWidthNet
+import dev.oneuiproject.oneui.widget.SemToast
 import java.util.Calendar
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
@@ -279,3 +280,7 @@ inline val Context.defaultSummaryColor: ColorStateList
         val colorResId = if (SeslMisc.isLightTheme(this)) sesl_secondary_text_light else sesl_secondary_text_dark
         return ContextCompat.getColorStateList(this, colorResId)!!
     }
+
+@JvmOverloads
+inline fun Context.semToast(message: CharSequence, duration: Int = SemToast.LENGTH_SHORT) =
+    SemToast.makeText(this, message, duration).show()

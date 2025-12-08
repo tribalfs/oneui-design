@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">Concluído</string>
     <string name="oui_des_common_button_yes">Sim</string>
     <string name="oui_des_common_disable">Desactivar</string>
+    <string name="oui_des_common_on">Ligado</string>
+    <string name="oui_des_common_off">Desligado</string>
+
     <string name="oui_des_tip_popup_hint_string">Toque duas vezes neste botão para obter mais informações.</string>
     <string name="oui_des_action_mode_all_checkbox">Todas</string>
     <string name="oui_des_network_error">Sem ligação de rede. Ligue à rede e tente novamente.</string>
+
+    <string name="oui_des_camera_perm_not_granted">A permissão da câmara não foi concedida.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Impossível utilizar esta função em Multijanela. Tente novamente na vista de ecrã inteiro.</string>
+    <string name="oui_des_qrcode_scan_tts">Código QR digitalizado</string>
+    <string name="oui_des_tts_qr_flashlight">Lanterna %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">Impossível ler código QR</string>
+    <string name="oui_des_qrdialog_decode_error_body">Tente digitalizar o código QR novamente.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">O código QR não contém nenhumas informações que esta aplicação possa utilizar.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">Código QR inválido</string>
+    <string name="oui_des_scan_qr_code">Digitalizar código QR</string>
 </resources>

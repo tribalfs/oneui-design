@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">Klar</string>
     <string name="oui_des_common_button_yes">Ja</string>
     <string name="oui_des_common_disable">Inaktivera</string>
+    <string name="oui_des_common_on">På</string>
+    <string name="oui_des_common_off">Av</string>
+
     <string name="oui_des_tip_popup_hint_string">Dubbeltryck på den här knappen om du vill veta mer.</string>
     <string name="oui_des_action_mode_all_checkbox">Allt</string>
     <string name="oui_des_network_error">Ingen nätverksanslutning. Anslut till nätverket och försök igen.</string>
+
+    <string name="oui_des_camera_perm_not_granted">Kamerabehörighet ej beviljad.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Det går inte att använda funktionen i Flera fönster. Försök igen i helskärmsläge.</string>
+    <string name="oui_des_qrcode_scan_tts">QR-koden skannades</string>
+    <string name="oui_des_tts_qr_flashlight">Ficklampa %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">Det gick inte att läsa QR-koden</string>
+    <string name="oui_des_qrdialog_decode_error_body">Prova skanna QR-koden igen.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">QR-koden innehåller ingen information som appen kan använda.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">QR-koden är inte giltig</string>
+    <string name="oui_des_scan_qr_code">Skanna QR-kod</string>
 </resources>

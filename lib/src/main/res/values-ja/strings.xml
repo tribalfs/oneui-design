@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">完了</string>
     <string name="oui_des_common_button_yes">はい</string>
     <string name="oui_des_common_disable">無効</string>
+    <string name="oui_des_common_on">オン</string>
+    <string name="oui_des_common_off">オフ</string>
+
     <string name="oui_des_tip_popup_hint_string">詳細については、このボタンをダブルタップしてください。</string>
     <string name="oui_des_action_mode_all_checkbox">全て</string>
     <string name="oui_des_network_error">ネットワークに接続されていません。ネットワークに接続し、再度お試しください。</string>
+
+    <string name="oui_des_camera_perm_not_granted">カメラの権限が付与されていません。</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">マルチウィンドウでは、この機能を使用できません。全画面表示で再度実行してください。</string>
+    <string name="oui_des_qrcode_scan_tts">QRコードをスキャンしました</string>
+    <string name="oui_des_tts_qr_flashlight">ライト%s</string>
+    <string name="oui_des_qrdialog_decode_error_title">QRコードの読み取りに失敗</string>
+    <string name="oui_des_qrdialog_decode_error_body">QRコードを再度スキャンしてください。</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">QRコードには、このアプリで使用可能な情報が含まれていません。</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">無効なQRコード</string>
+    <string name="oui_des_scan_qr_code">QRコードをスキャン</string>
 </resources>

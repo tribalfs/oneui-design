@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.util.SeslShapeDrawable xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
+    <solid android:color="@color/oui_des_qrcode_popup_high_frequency_bg_color"/>
+</androidx.appcompat.util.SeslShapeDrawable>

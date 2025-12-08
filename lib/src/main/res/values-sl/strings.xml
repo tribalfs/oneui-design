@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">Končano</string>
     <string name="oui_des_common_button_yes">Da</string>
     <string name="oui_des_common_disable">Onemogoči</string>
+    <string name="oui_des_common_on">Vklop</string>
+    <string name="oui_des_common_off">Izklop</string>
+
     <string name="oui_des_tip_popup_hint_string">Dvakrat pritisnite ta gumb, če želite izvedeti več.</string>
     <string name="oui_des_action_mode_all_checkbox">Vse</string>
     <string name="oui_des_network_error">Ni omrežne povezave. Povežite se z omrežjem in poskusite znova</string>
+
+    <string name="oui_des_camera_perm_not_granted">Dovoljenje za kamero ni bilo dodeljeno.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Te funkcije ni mogoče uporabljati v pogledu Več oken. Poskusite znova s celozaslonskim prikazom.</string>
+    <string name="oui_des_qrcode_scan_tts">Koda QR je prebrana</string>
+    <string name="oui_des_tts_qr_flashlight">Svetilka %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">Kode QR ni bilo mogoče prebrati</string>
+    <string name="oui_des_qrdialog_decode_error_body">Poskusite znova prebrati kodo QR.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">Koda QR ne vsebuje nobenih podatkov, ki bi jih ta aplikacija lahko uporabila.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">Koda QR ni veljavna</string>
+    <string name="oui_des_scan_qr_code">Preberi kodo QR</string>
 </resources>

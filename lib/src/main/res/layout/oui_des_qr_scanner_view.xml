@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <View
+        android:id="@+id/roi_guide_line"
+        android:layout_height="@dimen/oui_des_qr_scanner_guide_text_height"
+        android:layout_marginHorizontal="@dimen/oui_des_qr_scanner_guide_text_horizontal_margin"
+        android:layout_marginTop="@dimen/oui_des_qr_scanner_guide_text_top_margin"
+        android:layout_width="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/default_view_group"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+        <dev.oneuiproject.oneui.widget.StrokedTextView
+            style="@style/RobotoMedium"
+            android:focusedByDefault="true"
+            android:gravity="center"
+            android:id="@+id/guide_text"
+            android:layout_height="@dimen/oui_des_qr_scanner_guide_text_height"
+            android:layout_marginHorizontal="@dimen/oui_des_qr_scanner_guide_text_horizontal_margin"
+            android:layout_marginTop="@dimen/oui_des_qr_scanner_guide_text_top_margin"
+            android:layout_width="match_parent"
+            android:maxLines="2"
+            android:text="@string/oui_des_scan_qr_code"
+            android:textColor="@color/oui_des_qr_scanner_guide_text_color"
+            android:textSize="@dimen/oui_des_qr_scanner_guide_text_font_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:textViewStroke="true"
+            app:textViewStrokeColor="@color/oui_des_qr_scanner_guide_text_stroke_color"
+            app:textViewStrokeWidth="@integer/oui_des_default_stroke_width"
+            />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/flash_button"
+            android:layout_height="@dimen/oui_des_qr_scanner_btn_size"
+            android:layout_marginBottom="@dimen/oui_des_qr_scanner_btn_bottom_margin"
+            android:layout_marginStart="@dimen/oui_des_qr_scanner_btn_horizontal_margin"
+            android:layout_width="@dimen/oui_des_qr_scanner_btn_size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:lottie_rawRes="@raw/oui_des_qr_flash" />
+
+        <ImageView
+            android:background="@drawable/oui_des_qr_gallery_btn"
+            android:contentDescription="Open gallery"
+            android:id="@+id/gallery_button"
+            android:layout_height="@dimen/oui_des_qr_scanner_btn_size"
+            android:layout_marginBottom="@dimen/oui_des_qr_scanner_btn_bottom_margin"
+            android:layout_marginEnd="@dimen/oui_des_qr_scanner_btn_horizontal_margin"
+            android:layout_width="@dimen/oui_des_qr_scanner_btn_size"
+            android:tooltipText="Open gallery"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/background_group"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+        <View
+            android:background="#ff000000"
+            android:id="@+id/black_bg"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:contentDescription="@null"
+            android:id="@+id/decoded_image"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:visibility="invisible" />
+
+        <View
+            android:id="@+id/dim_bg"
+            android:background="#59000000"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:clipChildren="false"
+        android:id="@+id/roi_group"
+        android:layout_height="@dimen/oui_des_qr_scanner_roi_height"
+        android:layout_marginTop="@dimen/oui_des_qr_scanner_roi_top_margin"
+        android:layout_width="@dimen/oui_des_qr_scanner_roi_width"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/roi_guide_line">
+
+        <ImageView
+            android:background="@drawable/oui_des_qr_roi"
+            android:id="@+id/roi"
+            android:layout_gravity="center"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:visibility="invisible"
+            tools:visibility="visible" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/roi_lottie"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:visibility="invisible"
+            app:lottie_rawRes="@raw/oui_des_qr_detector" />
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/qr_image_group"
+        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible">
+
+        <ImageView
+            android:contentDescription="@null"
+            android:id="@+id/qr_detected_image"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:padding="@dimen/oui_des_qr_scanner_detected_image_padding" />
+
+        <ImageView
+            android:background="@android:color/transparent"
+            android:contentDescription="@null"
+            android:id="@+id/qr_scanning_rectangle"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:src="@drawable/oui_des_qr_clip_scanning_rect"
+            android:visibility="invisible" />
+
+    </RelativeLayout>
+</merge>

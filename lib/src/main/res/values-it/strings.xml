@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">Fatto</string>
     <string name="oui_des_common_button_yes">Sì</string>
     <string name="oui_des_common_disable">Disattiva</string>
+    <string name="oui_des_common_on">Sì</string>
+    <string name="oui_des_common_off">No</string>
+
     <string name="oui_des_tip_popup_hint_string">Toccate due volte questo pulsante per ulteriori informazioni.</string>
     <string name="oui_des_action_mode_all_checkbox">Tutti/e</string>
     <string name="oui_des_network_error">Nessuna connessione di rete. Connettevi alla rete e riprovate.</string>
+
+    <string name="oui_des_camera_perm_not_granted">Autorizzazione fotocamera non concessa.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Impossibile utilizzare questa funzione nella vista Multischermo. Riprovate con la vista a schermo intero.</string>
+    <string name="oui_des_qrcode_scan_tts">Scansione codice QR effettuata</string>
+    <string name="oui_des_tts_qr_flashlight">Flash %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">Impossibile leggere il codice QR</string>
+    <string name="oui_des_qrdialog_decode_error_body">Provate a effettuare di nuovo la scansione del codice QR.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">Il codice QR non contiene informazioni utilizzabili dall’applicazione.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">Codice QR non valido</string>
+    <string name="oui_des_scan_qr_code">Scansione codice QR</string>
 </resources>

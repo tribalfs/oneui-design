@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">ပြီးပါပြီ</string>
     <string name="oui_des_common_button_yes">ဟုတ်ကဲ့</string>
     <string name="oui_des_common_disable">ပိတ်ထားပါ</string>
+    <string name="oui_des_common_on">ဖွင့်</string>
+    <string name="oui_des_common_off">ပိတ်</string>
+
     <string name="oui_des_tip_popup_hint_string">နောက်ထပ်လေ့လာရန် ဤခလုတ်ကို နှစ်ချက်နှိပ်ပါ။</string>
     <string name="oui_des_action_mode_all_checkbox">အားလုံး</string>
     <string name="oui_des_network_error">ကွန်ရက်မရှိပါ။ ကွန်ရက်ချိတ်ဆက်ပြီး တစ်ဖန် ပြန်ကြိုးစားပါ</string>
+
+    <string name="oui_des_camera_perm_not_granted">ကင်မရာ ခွင့်ပြုချက် မပေးထားပါ။</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">ဤလုပ်ဆောင်ချက်ကို Multi window တွင် အသုံးပြု၍ မရပါ။ ဖန်သားပြင် အပြည့် မြင်ကွင်းတွင် ထပ်မံကြိုးစားပါ။</string>
+    <string name="oui_des_qrcode_scan_tts">QR ကုဒ်ကို စကန်ဖတ်ထားသည်</string>
+    <string name="oui_des_tts_qr_flashlight">ဖလက်ရှ်မီး %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">QR ကုဒ်နံပါတ်ကို ဖတ်၍ မရနိုင်ပါ</string>
+    <string name="oui_des_qrdialog_decode_error_body">QR ကုဒ်နံပါတ်ကို ထပ်မံ စကန်ဖတ်ကြည့်ပါ။</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">QR ကုဒ်နံပါတ်တွင် ဤအက်ပ်သုံးနိုင်သော မည်သည့်အချက်အလက်မျှ မပါဝင်ပါ။</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">QR ကုဒ်နံပါတ် မှားနေသည်</string>
+    <string name="oui_des_scan_qr_code">QR ကုဒ်နံပါတ်ကို စကန်ဖတ်ပါ</string>
 </resources>

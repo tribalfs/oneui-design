@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">Atlikta</string>
     <string name="oui_des_common_button_yes">Taip</string>
     <string name="oui_des_common_disable">Išjungti</string>
+    <string name="oui_des_common_on">Įjungta</string>
+    <string name="oui_des_common_off">Išjungta</string>
+
     <string name="oui_des_tip_popup_hint_string">Bakstelėkite dukart šį mygtuką ir sužinokite daugiau.</string>
     <string name="oui_des_action_mode_all_checkbox">Visi</string>
     <string name="oui_des_network_error">Nėra ryšio su tinklu. Prisijunkite prie tinklo ir bandykite dar kartą</string>
+
+    <string name="oui_des_camera_perm_not_granted">Kameros leidimas nesuteiktas.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Šios funkcijos negalima naudoti kelių langų rodinyje. Bandykite dar kartą viso ekrano rodinyje.</string>
+    <string name="oui_des_qrcode_scan_tts">QR kodas nuskaitytas</string>
+    <string name="oui_des_tts_qr_flashlight">Žibintuvėlis %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">Nepavyko nuskaityti QR kodo</string>
+    <string name="oui_des_qrdialog_decode_error_body">Pabandykite nuskaityti QR kodą dar kartą.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">QR kode nėra jokios informacijos, kurią galėtų panaudoti ši programa.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">Netinkamas QR kodas</string>
+    <string name="oui_des_scan_qr_code">Nuskaityti QR kodą</string>
 </resources>

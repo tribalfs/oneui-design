@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">முடிந்தது</string>
     <string name="oui_des_common_button_yes">ஆம்</string>
     <string name="oui_des_common_disable">செயல்நீக்கு</string>
+    <string name="oui_des_common_on">ஆன்</string>
+    <string name="oui_des_common_off">ஆஃப்</string>
+
     <string name="oui_des_tip_popup_hint_string">மேலும் அறிய இந்த பொத்தானை இருமுறை டேப் செய்யவும்.</string>
     <string name="oui_des_action_mode_all_checkbox">எல்லாம்</string>
     <string name="oui_des_network_error">நெட்வொர்க் இணைப்பு இல்லை. நெட்வொர்க்கை இணைத்து மீண்டும் முயற்சிக்கவும்.</string>
+
+    <string name="oui_des_camera_perm_not_granted">கேமரா அனுமதி வழங்கப்படவில்லை.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">மல்டி விண்டோவில் இந்த செயல்பாட்டைப் பயன்படுத்த இயலாது. முழுத் திரைக் காட்சியில் மீண்டும் முயலவும்.</string>
+    <string name="oui_des_qrcode_scan_tts">QR குறியீடு ஸ்கேன் செய்யப்பட்டன</string>
+    <string name="oui_des_tts_qr_flashlight">ஃப்ளாஷ்லைட் %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">QR குறியீட்டை வாசிக்க இயலவில்லை</string>
+    <string name="oui_des_qrdialog_decode_error_body">QR குறியீட்டை மீண்டும் ஸ்கேன் செய்ய முயலவும்.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">இந்த பயன்பாட்டில் பயன்படுத்தக்கூடிய எந்த விவரமும் QR குறியீட்டில் இல்லை.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">தவறான QR குறியீடு</string>
+    <string name="oui_des_scan_qr_code">QR குறியீடு ஸ்கேன்செய்க</string>
 </resources>

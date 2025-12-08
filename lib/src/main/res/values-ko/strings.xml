@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">완료</string>
     <string name="oui_des_common_button_yes">예</string>
     <string name="oui_des_common_disable">끄기</string>
+    <string name="oui_des_common_on">켜짐</string>
+    <string name="oui_des_common_off">꺼짐</string>
+
     <string name="oui_des_tip_popup_hint_string">자세히 알아보려면 이 버튼을 두 번 누르세요.</string>
     <string name="oui_des_action_mode_all_checkbox">전체</string>
     <string name="oui_des_network_error">연결된 네트워크가 없습니다. 네트워크에 연결하고 다시 해보세요.</string>
+
+    <string name="oui_des_camera_perm_not_granted">카메라 권한이 허용되지 않았습니다.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">이 기능은 멀티윈도우 화면에서는 사용할 수 없어요. 전체 화면 모드로 다시 해보세요.</string>
+    <string name="oui_des_qrcode_scan_tts">QR 코드 스캔 완료</string>
+    <string name="oui_des_tts_qr_flashlight">손전등 %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">QR 코드를 읽을 수 없음</string>
+    <string name="oui_des_qrdialog_decode_error_body">QR 코드를 다시 스캔하세요.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">QR 코드에 이 앱에서 사용하는 정보가 포함되어 있지 않습니다.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">유효하지 않은 QR 코드</string>
+    <string name="oui_des_scan_qr_code">QR 코드 스캔</string>
 </resources>

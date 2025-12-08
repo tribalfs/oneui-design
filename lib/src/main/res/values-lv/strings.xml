@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">Gatavs</string>
     <string name="oui_des_common_button_yes">Jā</string>
     <string name="oui_des_common_disable">Deaktiviz.</string>
+    <string name="oui_des_common_on">Ieslēgts</string>
+    <string name="oui_des_common_off">Izslēgts</string>
+
     <string name="oui_des_tip_popup_hint_string">Veiciet dubultskārienu pie šīs pogas, lai uzzinātu vairāk.</string>
     <string name="oui_des_action_mode_all_checkbox">Visi</string>
     <string name="oui_des_network_error">Nav savienojuma ar tīklu. Izveidojiet savienojumu ar tīklu un mēģiniet vēlreiz</string>
+
+    <string name="oui_des_camera_perm_not_granted">Kameras atļauja nav piešķirta.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Šo funkciju nevar izmantot vairāklogu skatā. Mēģiniet vēlreiz pilnekrāna skatā.</string>
+    <string name="oui_des_qrcode_scan_tts">QR kods ir skenēts</string>
+    <string name="oui_des_tts_qr_flashlight">Kabatas baterija %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">Nevarēja nolasīt QR kodu</string>
+    <string name="oui_des_qrdialog_decode_error_body">Mēģiniet vēlreiz skenēt QR kodu.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">QR kods neietver nekādu informāciju, ko šī programma varētu izmantot.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">QR kods nav derīgs</string>
+    <string name="oui_des_scan_qr_code">Skenēt QR kodu</string>
 </resources>

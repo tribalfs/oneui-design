@@ -18,4 +18,16 @@
     <string name="oui_des_common_edit">IDS_NOTES_OPT_EDIT</string>
     <string name="oui_des_action_mode_all_checkbox">DREAM_NOTES_OPT_ALL</string>
     <string name="oui_des_network_error">IDS_SMEMO_POP_NO_NETWORK_CONNECTION_CONNECT_TO_NETWORK_AND_TRY_AGAIN</string>
+    <string name="oui_des_common_on">DREAM_ACCS_TBOPT_ON</string>
+    <string name="oui_des_common_off">DREAM_ACCS_TBOPT_OFF</string>
+
+    <string name="oui_des_camera_perm_not_granted">Camera permission not granted.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">DREAM_GCA_TPOP_CANT_USE_THIS_FUNCTION_IN_MULTI_WINDOW_TRY_AGAIN_IN_FULL_SCREEN_VIEW</string>
+    <string name="oui_des_qrcode_scan_tts">DREAM_CAM_TBOPT_QR_CODE_SCANNED</string>
+    <string name="oui_des_tts_qr_flashlight">DREAM_CAM_TBOPT_FLASHLIGHT_PS %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">DREAM_CAM_PHEADER_COULDNT_READ_QR_CODE</string>
+    <string name="oui_des_qrdialog_decode_error_body">DREAM_CAM_BODY_TRY_SCANNING_THE_QR_CODE_AGAIN</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">DREAM_CAM_BODY_THE_QR_CODE_DOESNT_CONTAIN_ANY_INFO_THIS_APP_CAN_USE</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">DREAM_CAM_PHEADER_QR_CODE_NOT_VALID</string>
+    <string name="oui_des_scan_qr_code">DREAM_CAM_BUTTON_SCAN_QR_CODE_20</string>
 </resources>

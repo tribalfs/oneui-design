@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">完成</string>
     <string name="oui_des_common_button_yes">是</string>
     <string name="oui_des_common_disable">禁用</string>
+    <string name="oui_des_common_on">开</string>
+    <string name="oui_des_common_off">关</string>
+
     <string name="oui_des_tip_popup_hint_string">双击此按钮了解详情。</string>
     <string name="oui_des_action_mode_all_checkbox">全部</string>
     <string name="oui_des_network_error">无网络连接。连接至网络并重试。</string>
+
+    <string name="oui_des_camera_perm_not_granted">未授予相机权限。</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">无法在多窗口视图中使用此功能。请在全屏视图中尝试。</string>
+    <string name="oui_des_qrcode_scan_tts">已扫描二维码</string>
+    <string name="oui_des_tts_qr_flashlight">闪光灯%s</string>
+    <string name="oui_des_qrdialog_decode_error_title">无法读取二维码</string>
+    <string name="oui_des_qrdialog_decode_error_body">请重新尝试扫描二维码。</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">二维码不包含任何此应用程序可以使用的信息。</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">二维码无效</string>
+    <string name="oui_des_scan_qr_code">扫描二维码</string>
 </resources>

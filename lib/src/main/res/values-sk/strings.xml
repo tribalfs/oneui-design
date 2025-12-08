@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">Hotovo</string>
     <string name="oui_des_common_button_yes">Áno</string>
     <string name="oui_des_common_disable">Vypnúť</string>
+    <string name="oui_des_common_on">Zapnuté</string>
+    <string name="oui_des_common_off">Vypnuté</string>
+
     <string name="oui_des_tip_popup_hint_string">Dvojitým ťuknutím na toto tlačidlo zobrazíte ďalšie informácie.</string>
     <string name="oui_des_action_mode_all_checkbox">Všetky</string>
     <string name="oui_des_network_error">Žiadne sieťové pripojenie. Pripojte sa k sieti a skúste to znova</string>
+
+    <string name="oui_des_camera_perm_not_granted">Oprávnenie pre fotoaparát nebolo udelené.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Táto funkcia sa v zobrazení viacerých okien nedá použiť. Skúste to znova v zobrazení na celej obrazovke.</string>
+    <string name="oui_des_qrcode_scan_tts">Kód QR je naskenovaný</string>
+    <string name="oui_des_tts_qr_flashlight">Baterka %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">Nepodarilo sa načítať kód QR</string>
+    <string name="oui_des_qrdialog_decode_error_body">Skúste naskenovať kód QR znova.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">Kód QR neobsahuje žiadne informácie, ktoré môže táto aplikácia použiť.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">Kód QR je neplatný</string>
+    <string name="oui_des_scan_qr_code">Skenovať kód QR</string>
 </resources>

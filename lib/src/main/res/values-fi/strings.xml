@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">Valmis</string>
     <string name="oui_des_common_button_yes">Kyllä</string>
     <string name="oui_des_common_disable">Ei käyt.</string>
+    <string name="oui_des_common_on">Käytössä</string>
+    <string name="oui_des_common_off">Ei käytössä</string>
+
     <string name="oui_des_tip_popup_hint_string">Lisätietoja saat kaksoisnapauttamalla tätä painiketta.</string>
     <string name="oui_des_action_mode_all_checkbox">Kaikki</string>
     <string name="oui_des_network_error">Verkkoyhteyttä ei ole. Muodosta verkkoyhteys ja yritä uudelleen.</string>
+
+    <string name="oui_des_camera_perm_not_granted">Kameran käyttöoikeutta ei myönnetty.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Tätä toimintoa ei voi käyttää moni-ikkunanäkymässä. Kokeile uudelleen koko näytön näkymässä.</string>
+    <string name="oui_des_qrcode_scan_tts">QR-koodi skannattu</string>
+    <string name="oui_des_tts_qr_flashlight">Taskulamppu %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">QR-koodin luku epäonnistui</string>
+    <string name="oui_des_qrdialog_decode_error_body">Yritä skannata QR-koodi uudelleen.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">QR-koodi ei sisällä tietoja, joita tämä sovellus pystyy käyttämään.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">QR-koodi ei kelpaa</string>
+    <string name="oui_des_scan_qr_code">Skannaa QR-koodi</string>
 </resources>

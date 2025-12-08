@@ -37,6 +37,9 @@ dependencies {
 
     api(libs.bundles.androidx.navigation)
     lintPublish(project(":lint"))
+
+    api(libs.bundles.mlkitBarcodeScanning)
+    api(libs.bundles.androidx.camera)
 }
 
 

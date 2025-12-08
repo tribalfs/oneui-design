@@ -23,4 +23,16 @@
     <string name="oui_des_time_dialog_start">Bẹrẹ</string>
     <string name="oui_des_time_dialog_end">Opin</string>
     <string name="oui_des_network_error">Kò sí ìsopọ̀ nẹ́tíwọ́ọ̀kì. Sopọ̀ mọ́ nẹ́tíwọ́ọ̀kì kí o gbìyànjú lẹ́ẹ̀kan si.</string>
+    <string name="oui_des_common_on">Tàń</string>
+    <string name="oui_des_common_off">Paá</string>
+
+    <string name="oui_des_camera_perm_not_granted">A ko funni ni aṣẹ kamẹra.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Kò lè lo wíwo oríṣìíríṣìí nǹkan lórí àtẹ window lẹ́ẹ̀kan ṣoṣo. Gbìyànjú lẹ́ẹ̀kan ṣii lórí wiwo àwòrán kíkún.</string>
+    <string name="oui_des_qrcode_scan_tts">Kíka détà kóòdù QR ti wáyé</string>
+    <string name="oui_des_tts_qr_flashlight">Iná fíláàsi %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">Kò lè kà kóòdù QR</string>
+    <string name="oui_des_qrdialog_decode_error_body">Gbìyànjú ṣiṣé ìwò fínífíní kóòdú QR lẹ́ẹ̀kan si.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">Kóòdù QR náà kò ní àlàyé kankan tí áàpù yìí lè lò.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">KóòdÚ QR kò fẹsẹ̀múlẹ̀</string>
+    <string name="oui_des_scan_qr_code">Ṣàyẹ̀wò kóòdù QR</string>
 </resources>

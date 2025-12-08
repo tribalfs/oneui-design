@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">Гатова</string>
     <string name="oui_des_common_button_yes">Так</string>
     <string name="oui_des_common_disable">Адключыць</string>
+    <string name="oui_des_common_on">Уключана</string>
+    <string name="oui_des_common_off">Выключана</string>
+
     <string name="oui_des_tip_popup_hint_string">Націсніце гэту кнопку двойчы, каб даведацца больш.</string>
     <string name="oui_des_action_mode_all_checkbox">Усе</string>
     <string name="oui_des_network_error">Няма злучэння з сеткай. Злучыцеся з сеткай і паўтарыце спробу.</string>
+
+    <string name="oui_des_camera_perm_not_granted">Дазвол на выкарыстанне камеры не атрыманы.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Немагчыма выкарыстоўваць гэту функцыю ў рэжыме некалькіх вокнаў. Паспрабуйце зноў выкарыстаць поўнаэкранны рэжым.</string>
+    <string name="oui_des_qrcode_scan_tts">QR-код прасканіраваны</string>
+    <string name="oui_des_tts_qr_flashlight">Ліхтарык %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">Не атрымалася прачытаць QR-код</string>
+    <string name="oui_des_qrdialog_decode_error_body">Паспрабуйце прасканіраваць QR-код яшчэ раз.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">QR-код не ўтрымлівае ніякай інфармацыі, якую можа выкарыстоўваць гэта праграм.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">QR-код несапраўдны</string>
+    <string name="oui_des_scan_qr_code">Сканіраваць QR-код</string>
 </resources>

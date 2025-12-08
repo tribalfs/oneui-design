@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">مکمل</string>
     <string name="oui_des_common_button_yes">ہاں</string>
     <string name="oui_des_common_disable">نااہل کریں</string>
+    <string name="oui_des_common_on">آن</string>
+    <string name="oui_des_common_off">آف</string>
+
     <string name="oui_des_tip_popup_hint_string">مزید سیکھنے کے لیے اس بٹن کو دوہری تھپکی دیں۔</string>
     <string name="oui_des_action_mode_all_checkbox">تمام</string>
     <string name="oui_des_network_error">کوئی نیٹ ورک کنکشن نہیں۔ نیٹ ورک سے کنکٹ ہوں اور دوبارہ کوشش کریں۔</string>
+
+    <string name="oui_des_camera_perm_not_granted">کیمرہ کی اجازت نہیں دی گئی۔</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">یہ فنکشن ملٹی ونڈو منظر میں استعمال نہیں کرسکتے۔ مکمل اسکرین منظر میں دوبارہ کوشش کریں۔</string>
+    <string name="oui_des_qrcode_scan_tts">‏QR کوڈ اسکین کرلیا گيا</string>
+    <string name="oui_des_tts_qr_flashlight">فلیش لائٹ %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">‏QR کوڈ نہ پڑھ سکا</string>
+    <string name="oui_des_qrdialog_decode_error_body">‏QR کوڈ دوبارہ اسکین کرنے کی کوشش کریں۔</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">‏QR کوڈ میں ایسی کوئی معلومات نہیں ہوتی ہے جسے یہ ایپلیکیشن استعمال کرسکے۔</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">‏QR کوڈ درست نہیں ہے</string>
+    <string name="oui_des_scan_qr_code">‏QR کوڈ اسکین کریں</string>
 </resources>

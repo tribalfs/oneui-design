@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">Lokið</string>
     <string name="oui_des_common_button_yes">Já</string>
     <string name="oui_des_common_disable">Slökkva</string>
+    <string name="oui_des_common_on">Kveikt</string>
+    <string name="oui_des_common_off">Slökkt</string>
+
     <string name="oui_des_tip_popup_hint_string">Pikkaðu tvisvar á þennan hnapp til að fá frekari upplýsingar.</string>
     <string name="oui_des_action_mode_all_checkbox">Allt</string>
     <string name="oui_des_network_error">Engin nettenging. Tengdu við net og reyndu aftur.</string>
+
+    <string name="oui_des_camera_perm_not_granted">Aðgangur að myndavél ekki veittur.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Ekki er hægt að nota þennan eiginleika í mörgum gluggum. Reyndu aftur á öllum skjánum.</string>
+    <string name="oui_des_qrcode_scan_tts">QR-kóði skannaður</string>
+    <string name="oui_des_tts_qr_flashlight">Vasaljós %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">Ekki var hægt að lesa QR-kóða</string>
+    <string name="oui_des_qrdialog_decode_error_body">Prófaðu að skanna QR-kóðann aftur.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">QR-kóðinn inniheldur ekki neinar upplýsingar sem þetta forrit getur notað.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">QR-kóði ekki gildur</string>
+    <string name="oui_des_scan_qr_code">Skanna QR-kóða</string>
 </resources>

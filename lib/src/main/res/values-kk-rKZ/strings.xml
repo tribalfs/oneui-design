@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">Аяқталды</string>
     <string name="oui_des_common_button_yes">Иә</string>
     <string name="oui_des_common_disable">Өшіру</string>
+    <string name="oui_des_common_on">Қосулы</string>
+    <string name="oui_des_common_off">Өшірулі</string>
+
     <string name="oui_des_tip_popup_hint_string">Қосымша ақпарат алу үшін осы түймені екі рет түртіңіз.</string>
     <string name="oui_des_action_mode_all_checkbox">Барлығы</string>
     <string name="oui_des_network_error">Желілік байланыс жоқ. Желіге қосылып, әрекетті қайталаңыз</string>
+
+    <string name="oui_des_camera_perm_not_granted">Камераны пайдалануға рұқсат берілмеді.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Бірнеше терезе көрінісінде бұл функцияны пайдалану мүмкін емес. Толық экран көрінісінде байқап көріңіз.</string>
+    <string name="oui_des_qrcode_scan_tts">QR коды сканерленді</string>
+    <string name="oui_des_tts_qr_flashlight">Қолшам %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">QR кодын оқу мүмкін болмады</string>
+    <string name="oui_des_qrdialog_decode_error_body">QR кодын қайтадан сканерлеп көріңіз.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">QR коды осы қолданба пайдалана алмайтын ақпараттың ешқайсысын қамтымайды.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">QR коды жарамсыз</string>
+    <string name="oui_des_scan_qr_code">QR кодын сканерлеу</string>
 </resources>

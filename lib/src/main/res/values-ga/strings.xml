@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">Déanta</string>
     <string name="oui_des_common_button_yes">Déan é</string>
     <string name="oui_des_common_disable">Díchumasú</string>
+    <string name="oui_des_common_on">Air</string>
+    <string name="oui_des_common_off">As</string>
+
     <string name="oui_des_tip_popup_hint_string">Déthapáil an cnaipe seo le tuilleadh faisnéise a fháil.</string>
     <string name="oui_des_action_mode_all_checkbox">Gach</string>
     <string name="oui_des_network_error">Níl nasc líonra ann. Nasc leis an líonra agus triail arís.</string>
+
+    <string name="oui_des_camera_perm_not_granted">Ní bhfuarthas cead don cheamara.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Ní féidir an fheidhm seo a úsáid in amharc Ilfhuinneog. Triail arís san Amharc lánscáileáin í.</string>
+    <string name="oui_des_qrcode_scan_tts">Cód QR scanta</string>
+    <string name="oui_des_tts_qr_flashlight">Tóirse %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">Níorbh fhéidir an cód QR a léamh</string>
+    <string name="oui_des_qrdialog_decode_error_body">Triail an cód QR a scanadh arís.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">Níl aon fhaisnéis sa chód QR is féidir leis an bhfeidhmchlár seo a úsáid.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">Níl an cód QR bailí</string>
+    <string name="oui_des_scan_qr_code">Scan cód QR</string>
 </resources>

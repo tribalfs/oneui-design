@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">Done</string>
     <string name="oui_des_common_button_yes">Yes</string>
     <string name="oui_des_common_disable">Disable</string>
+    <string name="oui_des_common_on">On</string>
+    <string name="oui_des_common_off">Off</string>
+
     <string name="oui_des_tip_popup_hint_string">Double tap this button to learn more.</string>
     <string name="oui_des_action_mode_all_checkbox">All</string>
     <string name="oui_des_network_error">No network connection. Connect to network and try again.</string>
+
+    <string name="oui_des_camera_perm_not_granted">Camera permission not granted.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Can\'t use this function in Multi window. Try again in full screen view.</string>
+    <string name="oui_des_qrcode_scan_tts">QR code scanned</string>
+    <string name="oui_des_tts_qr_flashlight">Torch %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">Couldn\'t read QR code</string>
+    <string name="oui_des_qrdialog_decode_error_body">Try scanning the QR code again.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">The QR code doesn\'t contain any info this app can use.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">QR code not valid</string>
+    <string name="oui_des_scan_qr_code">Scan QR code</string>
 </resources>

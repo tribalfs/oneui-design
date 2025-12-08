@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">भयो</string>
     <string name="oui_des_common_button_yes">हो</string>
     <string name="oui_des_common_disable">असक्षम छ</string>
+    <string name="oui_des_common_on">अन</string>
+    <string name="oui_des_common_off">अफ</string>
+
     <string name="oui_des_tip_popup_hint_string">थप जान्न यस बटनमा दुई पटक ट्याप गर्नुहोस्।</string>
     <string name="oui_des_action_mode_all_checkbox">सबै</string>
     <string name="oui_des_network_error">कुनै नेटवर्क जड़ान छैन। नेटवर्कमा जोड्नुहोस् र फेरि प्रयास गर्नुहोस्।</string>
+
+    <string name="oui_des_camera_perm_not_granted">क्यामेरा अनुमति दिइएको छैन।</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">यो फंक्शन मल्टी विन्डो भ्यूमा चलाउन सकिँदैन। फुल स्क्रीनको भ्यू प्रयोग गरी हेर्नुहोस्।</string>
+    <string name="oui_des_qrcode_scan_tts">QR कोड स्क्यान गरियो</string>
+    <string name="oui_des_tts_qr_flashlight">फ्ल्याशलाइट %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">QR कोड पढ्न सकिएन</string>
+    <string name="oui_des_qrdialog_decode_error_body">QR कोड फेरि स्क्यान गरी हेर्नुहोस्।</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">यो QR कोडमा यो एपले प्रयोग गर्न मिल्ने केही पनि जानकारी छैन।</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">QR कोड मान्य छैन</string>
+    <string name="oui_des_scan_qr_code">QR कोड स्क्यान गर्नुहोस्</string>
 </resources>

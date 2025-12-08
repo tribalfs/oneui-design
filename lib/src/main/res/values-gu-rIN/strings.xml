@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">થઇ ગયું</string>
     <string name="oui_des_common_button_yes">હા</string>
     <string name="oui_des_common_disable">અક્ષમ કરો</string>
+    <string name="oui_des_common_on">ચાલુ</string>
+    <string name="oui_des_common_off">બંધ</string>
+
     <string name="oui_des_tip_popup_hint_string">વધુ જાણવા માટે આ બટનને બે વાર ટૅપ કરો.</string>
     <string name="oui_des_action_mode_all_checkbox">બધા</string>
     <string name="oui_des_network_error">કોઈ નેટવર્ક કનેક્શન નથી. નેટવર્ક સાથે કનેક્શન કરો અને ફરી પ્રયત્ન કરો.</string>
+
+    <string name="oui_des_camera_perm_not_granted">કેમેરાની પરવાનગી આપવામાં આવી નથી.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">મલ્ટિ વિન્ડોમાં આ ફંક્શનનો ઉપયોગ થઈ શકતો નથી. સંપૂર્ણ સ્ક્રીન વ્યૂમાં ફરી પ્રયાસ કરો.</string>
+    <string name="oui_des_qrcode_scan_tts">QR કોડ સ્કૅન કરવામાં આવ્યો</string>
+    <string name="oui_des_tts_qr_flashlight">ફ્લૅશલાઇટ %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">QR કોડ વાંચી શકાયો નથી</string>
+    <string name="oui_des_qrdialog_decode_error_body">QR કોડ ફરીથી સ્કૅન કરવાનો પ્રયાસ કરો.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">QR કોડ આ ઍપ ઉપયોગમાં લઈ શકે તેવી કોઈ માહિતી ધરાવતો નથી.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">QR કોડ માન્ય નથી</string>
+    <string name="oui_des_scan_qr_code">QR કોડ સ્કૅન કરો</string>
 </resources>

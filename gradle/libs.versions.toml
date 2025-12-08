@@ -8,11 +8,14 @@ androidx-datastore = "1.1.7"
 androidx-navigation = "2.9.5"
 androidx-preference = "1.2.1"
 androidx-room = "2.8.2"
+cameraVersion = "1.5.2"
 dokka = "2.0.0"
 hiltAndroid = "2.56.2"
 kotlin = "2.2.20"
 ksp = "2.2.20-2.0.3"
 lottie = "6.6.2"
+mlKitBarcodeScanningCommon = "17.0.0"
+mlKitBarcodeScanning = "18.3.1"
 moshi = "1.15.2"
 retrofit2 = "3.0.0"
 rikka-refine = "4.4.0"
@@ -41,6 +44,11 @@ zxing-core = "3.5.3"
 androidLintApi = { module = "com.android.tools.lint:lint-api", version.ref = "androidLint" }
 androidx-activityKtx = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activityKtx" }
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }
+androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraVersion" }
+androidx-camera-core = { module = "androidx.camera:camera-core", version.ref = "cameraVersion" }
+androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "cameraVersion" }
+androidx-camera-view = { module = "androidx.camera:camera-view", version.ref = "cameraVersion" }
+
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidx-constraintlayout" }
 androidx-datastoreCore = { module = "androidx.datastore:datastore-core", version.ref = "androidx-datastore" }
 androidx-datastorePreferences = { module = "androidx.datastore:datastore-preferences", version.ref = "androidx-datastore" }
@@ -61,6 +69,9 @@ hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", ve
 kotlinStdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib" }
 
 lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
+
+mlkit-barcodeScanningCommon = { module = "com.google.mlkit:barcode-scanning-common", version.ref = "mlKitBarcodeScanningCommon" }
+mlkit-barcodeScanning = { module = "com.google.android.gms:play-services-mlkit-barcode-scanning", version.ref = "mlKitBarcodeScanning" }
 
 moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
 moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshi" }
@@ -108,11 +119,13 @@ maven-publish = { id = "maven-publish"}
 rikka-refine = { id = "dev.rikka.tools.refine", version.ref = "rikka-refine" }
 
 [bundles]
+androidx-camera = ["androidx-camera-camera2", "androidx-camera-core", "androidx-camera-lifecycle", "androidx-camera-view"]
 androidx-datastore = ["androidx-datastoreCore", "androidx-datastorePreferences"]
 androidx-navigation = ["androidx-navigation-runtimeKtx", "androidx-navigation-fragmentKtx", "androidx-navigation-uiKtx"]
 androidx-room = ["androidx-room-ktx", "androidx-room-compiler"]
 hilt = ["hilt-android"]
 hilt-compilers = ["hilt-android-compiler"]
+mlkitBarcodeScanning = ["mlkit-barcodeScanning", "mlkit-barcodeScanningCommon"]
 moshi = ["moshi", "moshi-kotlin"]
 retrofit2 = ["retrofit2", "retrofit2-converter-gson"]
 sesl-androidx = ["sesl-appcompat",

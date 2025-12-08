@@ -23,7 +23,19 @@
     <string name="oui_des_common_done">Τέλος</string>
     <string name="oui_des_common_button_yes">Ναι</string>
     <string name="oui_des_common_disable">Απενεργ.</string>
+    <string name="oui_des_common_on">Ενεργοποίηση</string>
+    <string name="oui_des_common_off">Απενεργοποίηση</string>
+
+    <string name="oui_des_camera_perm_not_granted">Δεν παραχωρήθηκε άδεια κάμερας.</string>
     <string name="oui_des_tip_popup_hint_string">Πατήστε δύο φορές αυτό το κουμπί για να μάθετε περισσότερα.</string>
     <string name="oui_des_action_mode_all_checkbox">Όλα</string>
     <string name="oui_des_network_error">Δεν υπάρχει σύνδεση δικτύου. Συνδεθείτε σε δίκτυο και προσπαθήστε ξανά</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Δεν είναι δυνατή η χρήση αυτής της λειτουργίας στην προβολή πολλών παραθύρων. Δοκιμάστε ξανά στην προβολή πλήρους οθόνης.</string>
+    <string name="oui_des_qrcode_scan_tts">Ο κωδικός QR σαρώθηκε</string>
+    <string name="oui_des_tts_qr_flashlight">Φακός %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">Δεν ήταν δυνατή η ανάγνωση του κωδικού QR</string>
+    <string name="oui_des_qrdialog_decode_error_body">Δοκιμάστε να σαρώσετε ξανά τον κωδικό QR.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">Ο κωδικός QR δεν περιέχει πληροφορίες που μπορεί να χρησιμοποιήσει αυτή η εφαρμογή.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">Ο κωδικός QR δεν είναι έγκυρος</string>
+    <string name="oui_des_scan_qr_code">Σάρωση κωδικού QR</string>
 </resources>

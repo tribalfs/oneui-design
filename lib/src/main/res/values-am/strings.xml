@@ -22,5 +22,17 @@
     <string name="oui_des_common_disable">አሰናክል</string>
     <string name="oui_des_time_dialog_start">ጀምር</string>
     <string name="oui_des_time_dialog_end">መጨረሻ</string>
+    <string name="oui_des_common_on">በርቷል</string>
+    <string name="oui_des_common_off">ጠፍቷል</string>
     <string name="oui_des_network_error">የአውታረ መረብ ግንኙነት የለም። ከአውታረ መረብ ጋር ይገናኙ እና እንደገና ይሞክሩ።</string>
+
+    <string name="oui_des_camera_perm_not_granted">ለካሜራ ፈቃድ አልተሰጠም።</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">ይህንን ተግባር በብዙ መስኮት ውስጥ መጠቀም አይቻልም። በሙሉ ማያ ገጽ እይታ እንደገና ይሞክሩ።</string>
+    <string name="oui_des_qrcode_scan_tts">የQR ኮድ ተነቦዋል</string>
+    <string name="oui_des_tts_qr_flashlight">የፊት መብራት%s</string>
+    <string name="oui_des_qrdialog_decode_error_title">QR ኮድ ማንበብ አልተቻለም</string>
+    <string name="oui_des_qrdialog_decode_error_body">የQR ኮዱን እንደገና ስካን ለማድረግ ይሞክሩ።</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">የQR ኮድ ይህ መተግበሪያ ሊጠቀምበት የሚችል ምንም አይነት መረጃ አልያዘም።</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">QR ኮዱ አይሰራም</string>
+    <string name="oui_des_scan_qr_code">QR ኮድ ስካን ያድርጉ</string>
 </resources>

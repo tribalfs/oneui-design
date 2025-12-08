@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">OK</string>
     <string name="oui_des_common_button_yes">Ja</string>
     <string name="oui_des_common_disable">Deaktivieren</string>
+    <string name="oui_des_common_on">Ein</string>
+    <string name="oui_des_common_off">Aus</string>
+
     <string name="oui_des_tip_popup_hint_string">Tippen Sie zweimal auf diese Schaltfläche, um mehr zu erfahren.</string>
     <string name="oui_des_action_mode_all_checkbox">Alle</string>
     <string name="oui_des_network_error">Keine Netzwerkverbindung. Stelle eine Netzwerkverbindung her und versuche es erneut.</string>
+
+    <string name="oui_des_camera_perm_not_granted">Kameraberechtigung nicht erteilt.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Diese Funktion kann in der Multi Window-Ansicht nicht genutzt werden. Versuche es erneut in der Vollbildansicht.</string>
+    <string name="oui_des_qrcode_scan_tts">QR-Code gescannt</string>
+    <string name="oui_des_tts_qr_flashlight">Blitzlicht %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">QR-Code nicht lesbar</string>
+    <string name="oui_des_qrdialog_decode_error_body">Versuche, den QR-Code erneut zu scannen.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">Der QR-Code enthält keine Informationen für diese App.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">Ungültiger QR-Code</string>
+    <string name="oui_des_scan_qr_code">QR-Code scannen</string>
 </resources>

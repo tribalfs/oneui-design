@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">Valmis</string>
     <string name="oui_des_common_button_yes">Jah</string>
     <string name="oui_des_common_disable">Desaktiv.</string>
+    <string name="oui_des_common_on">Sees</string>
+    <string name="oui_des_common_off">Väljas</string>
+
     <string name="oui_des_tip_popup_hint_string">Topelttoksake seda nuppu, et saada lisateavet.</string>
     <string name="oui_des_action_mode_all_checkbox">Kõik</string>
     <string name="oui_des_network_error">Võrguühendus puudub. Ühendage võrguga ja proovige uuesti</string>
+
+    <string name="oui_des_camera_perm_not_granted">Kaamera luba pole antud.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Seda funktsiooni ei saa kasutada mitmikaknas. Proovige uuesti täisekraanivaates.</string>
+    <string name="oui_des_qrcode_scan_tts">QR-kood skannitud</string>
+    <string name="oui_des_tts_qr_flashlight">Taskulamp %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">QR-koodi lugemine nurjus</string>
+    <string name="oui_des_qrdialog_decode_error_body">Proovige QR-koodi uuesti skannida.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">QR-kood ei sisalda mingeid andmeid, mida see rakendus kasutada saaks.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">QR-kood on kehtetu</string>
+    <string name="oui_des_scan_qr_code">Skanni QR-koodi</string>
 </resources>

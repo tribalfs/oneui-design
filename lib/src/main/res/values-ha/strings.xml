@@ -20,7 +20,19 @@
     <string name="oui_des_common_button_yes">E</string>
     <string name="oui_des_common_apply">Saka</string>
     <string name="oui_des_common_disable">Kashe</string>
+    <string name="oui_des_common_on">Kunna</string>
+    <string name="oui_des_common_off">Kashe</string>
     <string name="oui_des_time_dialog_start">Fara</string>
     <string name="oui_des_time_dialog_end">Karshe</string>
     <string name="oui_des_network_error">Babu haɗin yanar gizo. Haɗa zuwa hanyar sadarwa sanna a sake gwadawa.</string>
+
+    <string name="oui_des_camera_perm_not_granted">Ba a bayar da izinin kyamara ba.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Ba za a iya amfani da wannan aikin a Multi window ba. Sake gwadawa a cikakken allo.</string>
+    <string name="oui_des_qrcode_scan_tts">Lambar QR anyi sikanin</string>
+    <string name="oui_des_tts_qr_flashlight">Hasken tocila %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">An kasa ƙaranta lambar QR</string>
+    <string name="oui_des_qrdialog_decode_error_body">Gwada sake bincike lambar QR.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">Lambar QR ba ta ƙunshi wani bayani da wannan manhajan zai iya amfani da shi ba.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">lambar QR ba inganci</string>
+    <string name="oui_des_scan_qr_code">Bincika lambar QR</string>
 </resources>

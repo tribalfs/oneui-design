@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">Tapos na</string>
     <string name="oui_des_common_button_yes">Oo</string>
     <string name="oui_des_common_disable">Huwag paganahin</string>
+    <string name="oui_des_common_on">Naka-on</string>
+    <string name="oui_des_common_off">Naka-off</string>
+
     <string name="oui_des_tip_popup_hint_string">I-double tap ang button na ito para alamin pa.</string>
     <string name="oui_des_action_mode_all_checkbox">Lahat</string>
     <string name="oui_des_network_error">Walang koneksyon sa network. Kumonekta sa network at subukang muli.</string>
+
+    <string name="oui_des_camera_perm_not_granted">Hindi ipinagkaloob ang pahintulot sa camera.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Hindi magagamit ang function na ito sa Multi window. Subukang muli sa full screen view.</string>
+    <string name="oui_des_qrcode_scan_tts">Na-scan ang QR code</string>
+    <string name="oui_des_tts_qr_flashlight">Flashlight %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">Hindi mabasa ang QR code</string>
+    <string name="oui_des_qrdialog_decode_error_body">Subukang i-scan muli ang QR code.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">Hindi naglalaman ang QR code ng anumang info na magagamit ng app na ito.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">Hindi balido ang QR code</string>
+    <string name="oui_des_scan_qr_code">I-scan ang QR code</string>
 </resources>

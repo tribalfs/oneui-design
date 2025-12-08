@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">Hoàn tất</string>
     <string name="oui_des_common_button_yes">OK</string>
     <string name="oui_des_common_disable">Tắt</string>
+    <string name="oui_des_common_on">Bật</string>
+    <string name="oui_des_common_off">Tắt</string>
+
     <string name="oui_des_tip_popup_hint_string">Chạm hai lần phím này để tìm hiểu thêm.</string>
     <string name="oui_des_action_mode_all_checkbox">Tất cả</string>
     <string name="oui_des_network_error">Không có kết nối mạng. Kết nối tới mạng rồi thử lại</string>
+
+    <string name="oui_des_camera_perm_not_granted">Chưa cấp quyền truy cập máy ảnh.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Không thể sử dụng chức năng này trong Đa cửa sổ. Hãy thử lại ở dạng xem toàn màn hình.</string>
+    <string name="oui_des_qrcode_scan_tts">Đã quét mã QR</string>
+    <string name="oui_des_tts_qr_flashlight">Đèn pin %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">Không thể đọc mã QR</string>
+    <string name="oui_des_qrdialog_decode_error_body">Hãy thử quét lại mã QR.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">Mã QR không có bất kỳ thông tin nào mà ứng dụng này có thể sử dụng.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">Mã QR không hợp lệ</string>
+    <string name="oui_des_scan_qr_code">Quét mã QR</string>
 </resources>

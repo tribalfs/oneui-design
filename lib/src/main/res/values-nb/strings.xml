@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">Utført</string>
     <string name="oui_des_common_button_yes">Ja</string>
     <string name="oui_des_common_disable">Deaktiver</string>
+    <string name="oui_des_common_on">På</string>
+    <string name="oui_des_common_off">Av</string>
+
     <string name="oui_des_tip_popup_hint_string">Trykk raskt to ganger på denne knappen for å finne ut mer.</string>
     <string name="oui_des_action_mode_all_checkbox">Alle</string>
     <string name="oui_des_network_error">Ingen nettverksforbindelse. Koble til nettverket, og prøv igjen på nytt.</string>
+
+    <string name="oui_des_camera_perm_not_granted">Kameratillatelse ikke gitt.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Kan ikke bruke denne funksjonen i Flervindu. Prøv igjen i fullskjermvisning.</string>
+    <string name="oui_des_qrcode_scan_tts">QR-kode skannet</string>
+    <string name="oui_des_tts_qr_flashlight">Lommelykt %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">Kunne ikke lese QR-koden</string>
+    <string name="oui_des_qrdialog_decode_error_body">Prøv å skanne QR-koden igjen.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">QR-koden inneholder ikke noe informasjon denne appen kan bruke.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">QR-koden er ikke gyldig</string>
+    <string name="oui_des_scan_qr_code">Skann QR-kode</string>
 </resources>

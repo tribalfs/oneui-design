@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">შესრულებულია</string>
     <string name="oui_des_common_button_yes">დიახ</string>
     <string name="oui_des_common_disable">გამორთვა</string>
+    <string name="oui_des_common_on">ჩართვა</string>
+    <string name="oui_des_common_off">გამორთვა</string>
+
     <string name="oui_des_tip_popup_hint_string">ორჯერ შეეხეთ ამ ღილაკს, რომ შეიტყოთ მეტი.</string>
     <string name="oui_des_action_mode_all_checkbox">ყველა</string>
     <string name="oui_des_network_error">ქსელთან კავშირი არ არის. დაუკავშირდით ქსელს და ისევ ცადეთ</string>
+
+    <string name="oui_des_camera_perm_not_granted">კამერის ნებართვა არ არის მინიჭებული.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">ამ ფუნქციის გამოყენება მრავალფანჯრიან ხედში შეუძლებელია. ისევ სცადეთ მთელ ეკრანზე გახსნა.</string>
+    <string name="oui_des_qrcode_scan_tts">QR კოდის სკანერი</string>
+    <string name="oui_des_tts_qr_flashlight">ფანარი %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">QR კოდის წაკითხვა ვერ შესრულდა</string>
+    <string name="oui_des_qrdialog_decode_error_body">ისევ სცადეთ QR კოდის დასკანერება.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">QR კოდი არ შეიცავს ისეთ ინფორმაციას, რომლის გამოყენებაც შეუძლია ამ აპლიკაციას.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">QR კოდი არასწორია</string>
+    <string name="oui_des_scan_qr_code">დაასკანერეთ QR კოდი</string>
 </resources>

@@ -111,4 +111,7 @@
     <color name="oui_des_rounded_tab_selected_text_color">#fafaff</color>
     <color name="oui_des_rounded_tab_unselected_text_color">#848487</color>
 
+    <color name="oui_des_qr_scanner_guide_text_color">#fffcfcfc</color>
+    <color name="oui_des_qrcode_popup_high_frequency_bg_color">#ff707070</color>
+    <color name="oui_des_qr_scanner_guide_text_stroke_color">#4d000000</color>
 </resources>

@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">Selesai</string>
     <string name="oui_des_common_button_yes">Ya</string>
     <string name="oui_des_common_disable">Nyahaktif</string>
+    <string name="oui_des_common_on">Hidup</string>
+    <string name="oui_des_common_off">Mati</string>
+
     <string name="oui_des_tip_popup_hint_string">Dwiketik butang ini untuk mengetahui lebih lanjut.</string>
     <string name="oui_des_action_mode_all_checkbox">Semua</string>
     <string name="oui_des_network_error">Tiada sambungan rangkaian. Sambung ke rangkaian dan cuba lagi</string>
+
+    <string name="oui_des_camera_perm_not_granted">Kebenaran kamera tidak diberikan.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Tidak dapat menggunakan fungsi ini dalam Berbilang tetingkap. Cuba lagi dalam pandangan skrin penuh.</string>
+    <string name="oui_des_qrcode_scan_tts">Kod QR diimbas</string>
+    <string name="oui_des_tts_qr_flashlight">Lampu suluh %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">Tidak dapat membaca kod QR</string>
+    <string name="oui_des_qrdialog_decode_error_body">Cuba imbas kod QR sekali lagi.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">Kod QR tidak mengandungi sebarang maklumat yang boleh digunakan aplikasi ini.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">Kod QR tidak sah</string>
+    <string name="oui_des_scan_qr_code">Imbas kod QR</string>
 </resources>

@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">Готово</string>
     <string name="oui_des_common_button_yes">Да</string>
     <string name="oui_des_common_disable">Забрани</string>
+    <string name="oui_des_common_on">Включено</string>
+    <string name="oui_des_common_off">Изключено</string>
+
     <string name="oui_des_tip_popup_hint_string">Докоснете двукратно този бутон, за да научите повече.</string>
     <string name="oui_des_action_mode_all_checkbox">Всички</string>
     <string name="oui_des_network_error">Няма мрежова връзка. Свържете се към мрежа и опитайте отново</string>
+
+    <string name="oui_des_camera_perm_not_granted">Разрешението за камерата не е дадено.</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Тази функция не може да се използва в изглед „Много прозорци“. Опитайте отново в изглед на цял екран.</string>
+    <string name="oui_des_qrcode_scan_tts">QR кодът е сканиран</string>
+    <string name="oui_des_tts_qr_flashlight">Фенерче %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">Неуспешно прочитане на QR кода</string>
+    <string name="oui_des_qrdialog_decode_error_body">Опитайте да сканирате QR кода отново.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">QR кодът не съдържа информация, която това приложение може да използва.</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">QR кодът не е валиден</string>
+    <string name="oui_des_scan_qr_code">Сканиране на QR код</string>
 </resources>

@@ -23,7 +23,20 @@
     <string name="oui_des_common_done">Կատարված է</string>
     <string name="oui_des_common_button_yes">Այո</string>
     <string name="oui_des_common_disable">Կասեցնել</string>
+    <string name="oui_des_common_on">Միացնել</string>
+    <string name="oui_des_common_off">Անջատել</string>
+
     <string name="oui_des_tip_popup_hint_string">Կրկնակի թակեք այս կոճակը՝ ավելին իմանալու համար:</string>
     <string name="oui_des_action_mode_all_checkbox">Բոլոր</string>
     <string name="oui_des_network_error">Ցանցի միացում չկա: Միացեք ցանցին և նորից փորձեք</string>
+
+    <string name="oui_des_camera_perm_not_granted">Տեսախցիկի թույլտվություն չի տրվել:</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">Հնարավոր չէ այս գործառույթն օգտագործել Բազմակի պատուհանում: Նորից փորձեք լիաէկրան դիտակերպում:</string>
+    <string name="oui_des_qrcode_scan_tts">QR կոդը տեսածրվեց</string>
+    <string name="oui_des_tts_qr_flashlight">Լապտեր %s</string>
+    <string name="oui_des_qrdialog_decode_error_title">Չհաջողվեց կարդալ QR կոդը</string>
+    <string name="oui_des_qrdialog_decode_error_body">Նորից փորձեք տեսածրել QR կոդը:</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">QR կոդը չի պարունակում տեղեկություններ, որոնք այս ծրագիրը կարող է օգտագործել:</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">QR կոդը վավերական չէ</string>
+    <string name="oui_des_scan_qr_code">Տեսածրել QR կոդը</string>
 </resources>

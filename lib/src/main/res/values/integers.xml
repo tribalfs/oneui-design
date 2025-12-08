@@ -6,4 +6,7 @@
     <!--BottomTabLayout-->
     <integer name="oui_des_more_menu_dialog_anim_from_delta">100</integer>
     <integer name="oui_des_more_menu_dialog_anim_from_delta_rtl">-100</integer>
+
+    <!--QrScannerView-->
+    <integer name="oui_des_default_stroke_width">2</integer>
 </resources>

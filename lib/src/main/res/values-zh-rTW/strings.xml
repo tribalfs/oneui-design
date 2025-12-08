@@ -23,7 +23,19 @@
     <string name="oui_des_common_done">完成</string>
     <string name="oui_des_common_button_yes">是</string>
     <string name="oui_des_common_disable">停用</string>
+    <string name="oui_des_common_on">開</string>
+    <string name="oui_des_common_off">關</string>
     <string name="oui_des_tip_popup_hint_string">輕觸兩下此按鈕來深入瞭解。</string>
     <string name="oui_des_action_mode_all_checkbox">全部</string>
     <string name="oui_des_network_error">無網路連線。連接至網路並重試。</string>
+
+    <string name="oui_des_camera_perm_not_granted">未授予相機權限。</string>
+    <string name="oui_des_not_supported_feature_in_multiwindow">多重視窗中無法使用此功能。請以全螢幕檢視重試。</string>
+    <string name="oui_des_qrcode_scan_tts">已掃描 QR 碼</string>
+    <string name="oui_des_tts_qr_flashlight">閃光燈%s</string>
+    <string name="oui_des_qrdialog_decode_error_title">無法讀取 QR 碼</string>
+    <string name="oui_des_qrdialog_decode_error_body">請試著再掃描一次 QR 碼。</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_body">QR 碼不包含此應用程式可使用的任何資訊。</string>
+    <string name="oui_des_qrdialog_not_matched_request_type_error_title">QR 碼無效</string>
+    <string name="oui_des_scan_qr_code">掃描 QR 碼</string>
 </resources>
