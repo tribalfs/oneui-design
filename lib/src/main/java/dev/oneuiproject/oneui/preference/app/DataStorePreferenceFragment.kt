@@ -295,9 +295,9 @@ abstract class ObservablePreferencesDataStore(
         }
     }
 
-    override fun getStringSet(key: String, defValues: MutableSet<String>?): Set<String>? {
+    override fun getStringSet(key: String, defValues: MutableSet<String>?): Set<String> {
         val k = stringSetPreferencesKey(key)
         @Suppress("UNCHECKED_CAST")
-        return runBlocking { store.data.map { it[k] }.firstOrNull() ?: defValues }
+        return runBlocking { store.data.map { it[k] }.firstOrNull() ?: defValues } ?: emptySet()
     }
 }
