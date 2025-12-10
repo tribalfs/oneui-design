@@ -13,4 +13,18 @@
     <string name="oui_des_app_info">ཉེར་སྤྱོད་བྱ་རིམ་ཆ་འཕྲིན།</string>
     <string name="oui_des_action_mode_all_checkbox">ཚང་མ།</string>
     <string name="oui_des_retry">བསྐྱར་ཚོད།</string>
+    <string name="oui_des_common_add">སྣོན་འཇུག།</string>
+    <string name="oui_des_common_cancel">རྩིས་མེད།</string>
+    <string name="oui_des_common_continue">མུ་མཐུད།</string>
+    <string name="oui_des_common_close">ཁ་རྒྱག་པ།</string>
+    <string name="oui_des_common_done">གྲུབ་ཟིན།</string>
+    <string name="oui_des_common_edit">སྒྲིག་བཟོ།</string>
+    <string name="oui_des_network_error">དྲ་བ་འབྲེལ་མཐུད་མེད་པ། དྲ་བར་འབྲེལ་མཐུད་བྱས་རྗེས་ཚོད་ལྟ་བྱ་དགོས།</string>
+    <string name="oui_des_common_apply">ཉེར་སྤྱོད།</string>
+    <string name="oui_des_common_button_yes">ལགས་སོ།</string>
+    <string name="oui_des_common_disable">ནུས་མེད་བཟོ།</string>
+    <string name="oui_des_common_off">སྒོ་སྟེམ།</string>
+    <string name="oui_des_common_on">བེད་སྤྱོད་བྱེད་བཞིན་པ་</string>
+    <string name="oui_des_time_dialog_start">འགོ་འཛུགས།</string>
+    <string name="oui_des_time_dialog_end">མཇུག་རྫོགས།</string>
 </resources>

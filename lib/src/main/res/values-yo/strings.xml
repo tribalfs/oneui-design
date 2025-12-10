@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="oui_des_navigation_drawer">Ìyíkiri dị́rọ́wà</string>
+    <string name="oui_des_action_mode_n_selected">%d tí o yàn</string>
+    <string name="oui_des_action_mode_select_items">Yan àwọn nǹkan</string>
+    <string name="oui_des_app_info">Àlàyé nípa áàpù</string>
+    <string name="oui_des_version_info">Ẹ̀dà %s</string>
+    <string name="oui_des_update">Ìmúdójúìwọ̀n</string>
+    <string name="oui_des_retry">Gbìyju lẹ́ẹ̀knsíi</string>
+    <string name="oui_des_new_version_is_available">Ẹ̀dà tuntun ti wà.</string>
+    <string name="oui_des_latest_version">Ẹ̀yà tuntun náà tí di gbígbà sórí ẹ̀rọ.</string>
+    <string name="oui_des_network_connect_is_not_stable">Kò lè ṣàyẹ̀wò fún ìmúdójúìwọ̀n.</string>
+    <string name="oui_des_common_add">Ṣàfikún</string>
+    <string name="oui_des_common_cancel">Fagile</string>
+    <string name="oui_des_common_continue">Tẹ̀síwàjù</string>
+    <string name="oui_des_common_close">Padé</string>
+    <string name="oui_des_common_done">Ṣetán</string>
+    <string name="oui_des_common_edit">Ṣàtúnkọ</string>
+    <string name="oui_des_action_mode_all_checkbox">Gbogbo rẹ̀</string>
+    <string name="oui_des_common_button_yes">Bẹ́ẹ̀ni</string>
+    <string name="oui_des_common_apply">Lòó</string>
+    <string name="oui_des_common_disable">Mú kuro</string>
+    <string name="oui_des_time_dialog_start">Bẹrẹ</string>
+    <string name="oui_des_time_dialog_end">Opin</string>
+ </resources>

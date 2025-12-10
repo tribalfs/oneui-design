@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="oui_des_navigation_drawer">DREAM_IDLE_OPT_NAVIGATION_DRAWER</string>
+    <string name="oui_des_action_mode_n_selected">IDS_MEMO_HEADER_PD_SELECTED_ABB3 %d</string>
+    <string name="oui_des_action_mode_select_items">IDS_NOTES_HEADER_SELECT_ITEMS</string>
+    <string name="oui_des_app_info">DREAM_ST_HEADER_APP_INFO</string>
+    <string name="oui_des_version_info">IDS_NOTES_BODY_VERSION_PS %s</string>
+    <string name="oui_des_update">IDS_NOTES_BUTTON_UPDATE_ABB4</string>
+    <string name="oui_des_retry">DREAM_IDLE_BUTTON_TRY_AGAIN_16</string>
+    <string name="oui_des_new_version_is_available">IDS_NOTES_BODY_A_NEW_VERSION_IS_AVAILABLE</string>
+    <string name="oui_des_latest_version">IDS_NOTES_BODY_THE_LATEST_VERSION_IS_ALREADY_INSTALLED</string>
+    <string name="oui_des_network_connect_is_not_stable">DREAM_ST_BODY_COULDNT_CHECK_FOR_UPDATES</string>
+    <string name="oui_des_common_add">DREAM_ST_BUTTON_ADD_22</string>
+    <string name="oui_des_common_cancel">DREAM_NOTES_BUTTON_CANCEL_10</string>
+    <string name="oui_des_common_continue">DREAM_NOTES_BUTTON_CONTINUE_10</string>
+    <string name="oui_des_common_close">IDS_SBOOK_BUTTON_CLOSE</string>
+    <string name="oui_des_common_done">DREAM_NOTES_BUTTON_DONE_22</string>
+    <string name="oui_des_common_edit">IDS_NOTES_OPT_EDIT</string>
+    <string name="oui_des_action_mode_all_checkbox">DREAM_NOTES_OPT_ALL</string>
+ </resources>

@@ -13,4 +13,18 @@
     <string name="oui_des_app_info">ئەپ ئۇچۇرى</string>
     <string name="oui_des_action_mode_all_checkbox">بارلىق</string>
     <string name="oui_des_retry">قايتا سىناش</string>
+    <string name="oui_des_common_add">قوشۇش</string>
+    <string name="oui_des_common_cancel">بىكار قىل</string>
+    <string name="oui_des_common_continue">داۋام</string>
+    <string name="oui_des_common_close">تاقاش</string>
+    <string name="oui_des_common_done">تامام</string>
+    <string name="oui_des_common_edit">تەھرىرلەش</string>
+    <string name="oui_des_network_error">تور ئۇلىنىشى يوق. تورغا ئۇلاپ قايتا سىناڭ.</string>
+    <string name="oui_des_common_apply">تەدبىقلاش</string>
+    <string name="oui_des_common_button_yes">شۇنداق</string>
+    <string name="oui_des_common_disable">چەكلەش</string>
+    <string name="oui_des_common_off">ئېتىك</string>
+    <string name="oui_des_common_on">ئوچۇق</string>
+    <string name="oui_des_time_dialog_start">باشلاش</string>
+    <string name="oui_des_time_dialog_end">ئاخىر</string>
 </resources>

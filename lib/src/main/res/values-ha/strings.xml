@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="oui_des_navigation_drawer">Akwatin kewaye</string>
+    <string name="oui_des_action_mode_n_selected">%d an zaɓa</string>
+    <string name="oui_des_action_mode_select_items">Zaɓi abubuwa</string>
+    <string name="oui_des_app_info">Bayanan manhaja</string>
+    <string name="oui_des_version_info">Siga %s</string>
+    <string name="oui_des_update">Sabunta</string>
+    <string name="oui_des_retry">Sake gwadawa</string>
+    <string name="oui_des_new_version_is_available">Akwai sabon sigar nau\'i.</string>
+    <string name="oui_des_latest_version">An riga an shigar da siga na kwanan nan.</string>
+    <string name="oui_des_network_connect_is_not_stable">An kasa duba sabunta.</string>
+    <string name="oui_des_common_add">Ƙara</string>
+    <string name="oui_des_common_cancel">Soke</string>
+    <string name="oui_des_common_continue">Ci gaba</string>
+    <string name="oui_des_common_done">An gama</string>
+    <string name="oui_des_common_edit">Shirya</string>
+    <string name="oui_des_common_close">Rufe</string>
+    <string name="oui_des_action_mode_all_checkbox">Duka</string>
+    <string name="oui_des_common_button_yes">E</string>
+    <string name="oui_des_common_apply">Saka</string>
+    <string name="oui_des_common_disable">Kashe</string>
+    <string name="oui_des_time_dialog_start">Fara</string>
+    <string name="oui_des_time_dialog_end">Karshe</string>
+ </resources>

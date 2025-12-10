@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="oui_des_navigation_drawer">Ndọpụta nsoroụzọ</string>
+    <string name="oui_des_action_mode_n_selected">Ahọpụtara %d</string>
+    <string name="oui_des_action_mode_select_items">Họrọ ihe</string>
+    <string name="oui_des_app_info">Ozi ngwa</string>
+    <string name="oui_des_version_info">Ụdị %s</string>
+    <string name="oui_des_update">Melite</string>
+    <string name="oui_des_retry">Nwaa ọzọ</string>
+    <string name="oui_des_new_version_is_available">Udị ọhụrụ dị.</string>
+    <string name="oui_des_latest_version">Awụnyelarị ụdị kachasị ohụrụ.</string>
+    <string name="oui_des_network_connect_is_not_stable">Enweghị ike ịlele maka mmelite.</string>
+    <string name="oui_des_action_mode_all_checkbox">Niile</string>
+    <string name="oui_des_common_add">Gbakwunye</string>
+    <string name="oui_des_common_cancel">Kagbuo</string>
+    <string name="oui_des_common_continue">Gaa n’ihu</string>
+    <string name="oui_des_common_close">Mechie</string>
+    <string name="oui_des_common_done">E mechaala</string>
+    <string name="oui_des_common_edit">Dezie</string>
+    <string name="oui_des_common_button_yes">Ee</string>
+    <string name="oui_des_common_apply">Tinye</string>
+    <string name="oui_des_common_disable">Gbanyụọ</string>
+    <string name="oui_des_time_dialog_start">Malite</string>
+    <string name="oui_des_time_dialog_end">Ọgwụgwụ</string>
+  </resources>

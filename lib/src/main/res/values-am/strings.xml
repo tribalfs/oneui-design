@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="oui_des_navigation_drawer">የአሰሳ መሳቢያ</string>
+    <string name="oui_des_action_mode_n_selected">%d መርጠዋል</string>
+    <string name="oui_des_action_mode_select_items">ዝርዝር ነገሮች ይምረጡ</string>
+    <string name="oui_des_app_info">የመተግበሪያ መረጃ</string>
+    <string name="oui_des_version_info">ስሪት %s</string>
+    <string name="oui_des_update">ያዘምኑ</string>
+    <string name="oui_des_retry">እንደገና ይሞክሩ</string>
+    <string name="oui_des_new_version_is_available">አዲስ ስሪት ይገኛል።</string>
+    <string name="oui_des_latest_version">የቅርብ ጊዜው ስሪት አስቀድሞ ተጭኗል።</string>
+    <string name="oui_des_network_connect_is_not_stable">ዝማኔዎችን መፈለግ አልተቻለም።</string>
+    <string name="oui_des_common_add">አክል</string>
+    <string name="oui_des_common_cancel">ተወው</string>
+    <string name="oui_des_common_continue">ይቀጥሉ</string>
+    <string name="oui_des_common_done">ተከናዉኗል</string>
+    <string name="oui_des_common_edit">አርትዕ</string>
+    <string name="oui_des_common_close">ይዝጉ</string>
+    <string name="oui_des_action_mode_all_checkbox">ሁሉም</string>
+    <string name="oui_des_common_button_yes">አዎ</string>
+    <string name="oui_des_common_apply">ተግብር</string>
+    <string name="oui_des_common_disable">አሰናክል</string>
+    <string name="oui_des_time_dialog_start">ጀምር</string>
+    <string name="oui_des_time_dialog_end">መጨረሻ</string>
+</resources>

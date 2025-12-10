@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="oui_des_navigation_drawer">Droo ya maelekezo</string>
+    <string name="oui_des_action_mode_n_selected">Umechagua %d</string>
+    <string name="oui_des_action_mode_select_items">Chagua vipengee</string>
+    <string name="oui_des_app_info">Maelezo ya programu</string>
+    <string name="oui_des_version_info">Toleo la %s</string>
+    <string name="oui_des_update">Sasisha</string>
+    <string name="oui_des_retry">Jaribu tena</string>
+    <string name="oui_des_new_version_is_available">Toleo jipya linapatikana.</string>
+    <string name="oui_des_latest_version">Toleo la hivi karibuni limeshakamilika kusakinishwa.</string>
+    <string name="oui_des_network_connect_is_not_stable">Haikuweza kutafuta masasisho.</string>
+    <string name="oui_des_common_add">Ongeza</string>
+    <string name="oui_des_common_cancel">Ghairi</string>
+    <string name="oui_des_common_continue">Endelea</string>
+    <string name="oui_des_common_done">Imekamilika</string>
+    <string name="oui_des_common_edit">Badilisha</string>
+    <string name="oui_des_common_close">Funga</string>
+    <string name="oui_des_action_mode_all_checkbox">Zote</string>
+    <string name="oui_des_common_button_yes">Ndiyo</string>
+    <string name="oui_des_common_apply">Tumia</string>
+    <string name="oui_des_common_disable">Zima</string>
+    <string name="oui_des_time_dialog_start">Anza</string>
+    <string name="oui_des_time_dialog_end">Mwisho</string>
+ </resources>

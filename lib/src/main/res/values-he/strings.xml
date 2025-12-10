@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="oui_des_navigation_drawer">מגירת הניווט</string>
+    <string name="oui_des_action_mode_n_selected">%d נבחרו</string>
+    <string name="oui_des_action_mode_select_items">בחר פריטים</string>
+    <string name="oui_des_app_info">פרטי יישום</string>
+    <string name="oui_des_version_info">גרסה %s</string>
+    <string name="oui_des_update">עדכן</string>
+    <string name="oui_des_retry">נסה שוב</string>
+    <string name="oui_des_new_version_is_available">גרסה חדשה זמינה.</string>
+    <string name="oui_des_latest_version">הגרסה העדכנית ביותר כבר מותקנת.</string>
+    <string name="oui_des_network_connect_is_not_stable">לא ניתן לבדוק זמינות עדכונים.</string>
+    <string name="oui_des_common_cancel">ביטול</string>
+    <string name="oui_des_common_continue">המשך</string>
+    <string name="oui_des_common_edit">ערוך</string>
+    <string name="oui_des_common_close">סגור</string>
+    <string name="oui_des_action_mode_all_checkbox">הכל</string>
+    <string name="oui_des_common_add">הוסף</string>
+    <string name="oui_des_common_done">בוצע</string>
+    <string name="oui_des_common_button_yes">כן</string>
+    <string name="oui_des_common_apply">החל</string>
+    <string name="oui_des_common_disable">השבת</string>
+    <string name="oui_des_time_dialog_start">התחלה</string>
+    <string name="oui_des_time_dialog_end">סיום</string>
+ </resources>

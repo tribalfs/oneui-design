@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="oui_des_navigation_drawer">Laci navigasi</string>
+    <string name="oui_des_action_mode_n_selected">%d dipilih</string>
+    <string name="oui_des_action_mode_select_items">Pilih item</string>
+    <string name="oui_des_app_info">Info aplikasi</string>
+    <string name="oui_des_version_info">Versi %s</string>
+    <string name="oui_des_update">Perbarui</string>
+    <string name="oui_des_retry">Coba lagi</string>
+    <string name="oui_des_new_version_is_available">Versi baru tersedia.</string>
+    <string name="oui_des_latest_version">Versi terbaru telah terinstal.</string>
+    <string name="oui_des_network_connect_is_not_stable">Tidak dapat memeriksa pembaruan.</string>
+    <string name="oui_des_common_cancel">Batalkan</string>
+    <string name="oui_des_common_continue">Lanjutkan</string>
+    <string name="oui_des_common_close">Tutup</string>
+    <string name="oui_des_common_edit">Ubah</string>
+    <string name="oui_des_common_add">Tambah</string>
+    <string name="oui_des_common_done">Selesai</string>
+    <string name="oui_des_common_button_yes">Ya</string>
+    <string name="oui_des_action_mode_all_checkbox">Semua</string>
+    <string name="oui_des_common_apply">Terapkan</string>
+    <string name="oui_des_common_disable">Nonaktifkan</string>
+    <string name="oui_des_time_dialog_start">Mulai</string>
+    <string name="oui_des_time_dialog_end">Selesai</string>
+ </resources>
