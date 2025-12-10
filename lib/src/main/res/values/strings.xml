@@ -14,7 +14,6 @@
     <string name="oui_des_action_mode_select_items">Select items</string>
 
     <!-- AppInfoLayout -->
-    <string name="app_name" />
     <string name="oui_des_app_info">App info</string>
     <string name="oui_des_version_info">Version %s</string>
     <string name="oui_des_update">Update</string>

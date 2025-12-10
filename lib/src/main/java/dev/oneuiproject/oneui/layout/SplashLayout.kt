@@ -60,7 +60,7 @@ class SplashLayout(context: Context, attrs: AttributeSet?) : LinearLayout(contex
         context.withStyledAttributes(attrs, R.styleable.SplashLayout, 0, 0) {
             animated = getBoolean(R.styleable.SplashLayout_animated, true)
             title = getString(R.styleable.SplashLayout_title)
-            if (title == null) title = context.getString(R.string.app_name)
+                ?: context.packageManager.getApplicationLabel(context.applicationInfo).toString()
 
             if (animated) {
                 imageForeground = getDrawable(R.styleable.SplashLayout_foreground_image)
