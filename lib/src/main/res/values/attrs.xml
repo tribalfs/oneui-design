@@ -372,4 +372,9 @@
         <attr name="selectedIndex" format="integer" />
     </declare-styleable>
 
+    <declare-styleable name="StrokedTextView">
+        <attr name="textViewStroke" format="boolean" />
+        <attr name="textViewStrokeColor" format="color" />
+        <attr name="textViewStrokeWidth" format="float" />
+    </declare-styleable>
 </resources>
