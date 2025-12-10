@@ -6,6 +6,7 @@ androidx-annotation = "1.9.1"
 androidx-constraintlayout="2.2.1"
 androidx-datastore = "1.1.7"
 androidx-navigation = "2.9.5"
+androidx-preference = "1.2.1"
 androidx-room = "2.8.2"
 dokka = "2.0.0"
 hiltAndroid = "2.56.2"
@@ -34,8 +35,6 @@ sesl-swiperefreshlayout = "1.2.0-alpha01+1.0.0-sesl8+rev0"
 sesl-viewpager2 = "1.1.0+1.0.0-sesl8+rev0"
 
 zxing-core = "3.5.3"
-datastorePreferencesCore = "1.1.7"
-preferenceKtx = "1.2.1"
 
 
 [libraries]
@@ -45,9 +44,11 @@ androidx-annotation = { module = "androidx.annotation:annotation", version.ref =
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidx-constraintlayout" }
 androidx-datastoreCore = { module = "androidx.datastore:datastore-core", version.ref = "androidx-datastore" }
 androidx-datastorePreferences = { module = "androidx.datastore:datastore-preferences", version.ref = "androidx-datastore" }
+androidx-datastore-preferences-core = { group = "androidx.datastore", name = "datastore-preferences-core", version.ref = "androidx-datastore" }
 androidx-navigation-fragmentKtx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "androidx-navigation" }
 androidx-navigation-runtimeKtx = { module = "androidx.navigation:navigation-runtime-ktx", version.ref = "androidx-navigation" }
 androidx-navigation-uiKtx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "androidx-navigation" }
+androidx-preference-ktx = { group = "androidx.preference", name = "preference-ktx", version.ref = "androidx-preference" }
 
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "androidx-room" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "androidx-room" }
@@ -92,9 +93,6 @@ sesl-fragment = { module = "sesl.androidx.fragment:fragment", version.ref = "ses
 sesl-viewpager2 = { module = "sesl.androidx.viewpager2:viewpager2", version.ref = "sesl-viewpager2" }
 
 zxing-core = { module = "com.google.zxing:core", version.ref = "zxing-core" }
-androidx-datastore-preferences-core = { group = "androidx.datastore", name = "datastore-preferences-core", version.ref = "datastorePreferencesCore" }
-androidx-preference-ktx = { group = "androidx.preference", name = "preference-ktx", version.ref = "preferenceKtx" }
-
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle" }
