@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Devre dışı</string>
     <string name="oui_des_tip_popup_hint_string">Daha fazla bilgi edinmek için bu tuşa çift dokunun.</string>
     <string name="oui_des_action_mode_all_checkbox">Tümü</string>
+    <string name="oui_des_network_error">Ağ bağlantısı yok. Ağa bağlanın ve tekrar deneyin.</string>
 </resources>

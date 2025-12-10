@@ -21,6 +21,7 @@
     <string name="oui_des_new_version_is_available">A new version is available.</string>
     <string name="oui_des_latest_version">The latest version is already installed.</string>
     <string name="oui_des_network_connect_is_not_stable">Couldn\'t check for updates.</string>
+    <string name="oui_des_network_error">No network connection. Connect to network and try again.</string>
 
     <!-- StartEndTimePicker -->
     <string name="oui_des_time_dialog_end">End</string>

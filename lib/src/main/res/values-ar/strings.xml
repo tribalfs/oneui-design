@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">تعطيل</string>
     <string name="oui_des_tip_popup_hint_string">انقر مرتين فوق هذا الزر لمعرفة المزيد.</string>
     <string name="oui_des_action_mode_all_checkbox">الكل</string>
+    <string name="oui_des_network_error">لا يوجد اتصال شبكة. اتصل بالشبكة وحاول مرة أخرى.</string>
 </resources>

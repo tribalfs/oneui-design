@@ -22,4 +22,5 @@
     <string name="oui_des_common_disable">አሰናክል</string>
     <string name="oui_des_time_dialog_start">ጀምር</string>
     <string name="oui_des_time_dialog_end">መጨረሻ</string>
+    <string name="oui_des_network_error">የአውታረ መረብ ግንኙነት የለም። ከአውታረ መረብ ጋር ይገናኙ እና እንደገና ይሞክሩ።</string>
 </resources>

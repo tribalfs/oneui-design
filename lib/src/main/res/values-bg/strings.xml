@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Забрани</string>
     <string name="oui_des_tip_popup_hint_string">Докоснете двукратно този бутон, за да научите повече.</string>
     <string name="oui_des_action_mode_all_checkbox">Всички</string>
+    <string name="oui_des_network_error">Няма мрежова връзка. Свържете се към мрежа и опитайте отново</string>
 </resources>

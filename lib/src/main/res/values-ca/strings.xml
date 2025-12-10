@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Desactiv</string>
     <string name="oui_des_tip_popup_hint_string">Toca dos cops aquest botó per obtenir-ne més informació.</string>
     <string name="oui_des_action_mode_all_checkbox">Tot</string>
+    <string name="oui_des_network_error">Sense connexió a la xarxa. Connecti a la xarxa i torni-ho a intentar.</string>
 </resources>

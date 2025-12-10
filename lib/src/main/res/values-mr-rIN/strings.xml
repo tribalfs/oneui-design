@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">अक्षम</string>
     <string name="oui_des_tip_popup_hint_string">अधिक जाणून घेण्या साठी हे बटण दोनदा टॅप करा.</string>
     <string name="oui_des_action_mode_all_checkbox">सर्व</string>
+    <string name="oui_des_network_error">नेटवर्क कनेक्शन नाही. नेटवर्कला कनेक्ट करा आणि पुन्हा प्रयत्न करा.</string>
 </resources>

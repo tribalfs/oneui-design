@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Өшіру</string>
     <string name="oui_des_tip_popup_hint_string">Қосымша ақпарат алу үшін осы түймені екі рет түртіңіз.</string>
     <string name="oui_des_action_mode_all_checkbox">Барлығы</string>
+    <string name="oui_des_network_error">Желілік байланыс жоқ. Желіге қосылып, әрекетті қайталаңыз</string>
 </resources>

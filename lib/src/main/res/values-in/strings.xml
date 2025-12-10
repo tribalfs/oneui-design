@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Tdk aktif</string>
     <string name="oui_des_tip_popup_hint_string">Ketuk ganda tombol ini untuk mempelajari lebih lanjut.</string>
     <string name="oui_des_action_mode_all_checkbox">Semua</string>
+    <string name="oui_des_network_error">Tidak ada koneksi jaringan. Sambungkan ke jaringan lalu coba lagi</string>
 </resources>

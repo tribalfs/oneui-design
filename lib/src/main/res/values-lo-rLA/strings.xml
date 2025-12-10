@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">ປິດໃຊ້ງານ</string>
     <string name="oui_des_tip_popup_hint_string">ແຕະປຸ່ມນີ້ສອງຄັ້ງເພື່ອຮຽນຮູ້ເພີ່ມເຕີມ.</string>
     <string name="oui_des_action_mode_all_checkbox">ທັງໝົດ</string>
+    <string name="oui_des_network_error">ບໍ່ມີການເຊື່ອມຕໍ່ເຄືອຂ່າຍໃດ. ເຊື່ອມຕໍ່ໃສ່ເຄືອຂ່າຍ ແລະລອງໃໝ່ອີກ</string>
 </resources>

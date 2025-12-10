@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">ਅਸਮਰੱਥ ਕਰੋ</string>
     <string name="oui_des_tip_popup_hint_string">ਹੋਰ ਜਾਣਨ ਲਈ ਇਸ ਬਟਨ ਤੇ ਦੋ ਵਾਰ ਟੈਪ ਕਰੋ।</string>
     <string name="oui_des_action_mode_all_checkbox">ਸਭ</string>
+    <string name="oui_des_network_error">ਕੋਈ ਨੈੱਟਵਰਕ ਕਨੈਕਸ਼ਨ ਨਹੀਂ। ਨੈੱਟਵਰਕ ਨਾਲ ਕਨੈਕਟ ਕਰੋ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।</string>
 </resources>

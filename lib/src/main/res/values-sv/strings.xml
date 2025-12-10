@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Inaktivera</string>
     <string name="oui_des_tip_popup_hint_string">Dubbeltryck på den här knappen om du vill veta mer.</string>
     <string name="oui_des_action_mode_all_checkbox">Allt</string>
+    <string name="oui_des_network_error">Ingen nätverksanslutning. Anslut till nätverket och försök igen.</string>
 </resources>

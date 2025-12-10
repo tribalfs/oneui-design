@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">നിഷ്ക്രിയമാക്കുക</string>
     <string name="oui_des_tip_popup_hint_string">കൂടുതലറിയുന്നതിന് ഈ ബട്ടണിൽ രണ്ടുതവണ സ്പർശിക്കുക.</string>
     <string name="oui_des_action_mode_all_checkbox">എല്ലാം</string>
+    <string name="oui_des_network_error">നെറ്റ്‌വര്‍ക്ക് കണക്ഷന്‍ ഇല്ല. നെറ്റ്‌വര്‍ക്കിലേക്ക് കണക്ട് ചെയ്ത് വീണ്ടും ശ്രമിക്കുക.</string>
 </resources>

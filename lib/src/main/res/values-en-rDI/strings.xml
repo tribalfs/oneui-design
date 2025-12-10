@@ -17,4 +17,5 @@
     <string name="oui_des_common_done">DREAM_NOTES_BUTTON_DONE_22</string>
     <string name="oui_des_common_edit">IDS_NOTES_OPT_EDIT</string>
     <string name="oui_des_action_mode_all_checkbox">DREAM_NOTES_OPT_ALL</string>
- </resources>
+    <string name="oui_des_network_error">IDS_SMEMO_POP_NO_NETWORK_CONNECTION_CONNECT_TO_NETWORK_AND_TRY_AGAIN</string>
+</resources>

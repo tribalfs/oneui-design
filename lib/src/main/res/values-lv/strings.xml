@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Deaktiviz.</string>
     <string name="oui_des_tip_popup_hint_string">Veiciet dubultskārienu pie šīs pogas, lai uzzinātu vairāk.</string>
     <string name="oui_des_action_mode_all_checkbox">Visi</string>
+    <string name="oui_des_network_error">Nav savienojuma ar tīklu. Izveidojiet savienojumu ar tīklu un mēģiniet vēlreiz</string>
 </resources>

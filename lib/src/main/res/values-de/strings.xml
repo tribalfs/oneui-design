@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Deaktivieren</string>
     <string name="oui_des_tip_popup_hint_string">Tippen Sie zweimal auf diese Schaltfläche, um mehr zu erfahren.</string>
     <string name="oui_des_action_mode_all_checkbox">Alle</string>
+    <string name="oui_des_network_error">Keine Netzwerkverbindung. Stelle eine Netzwerkverbindung her und versuche es erneut.</string>
 </resources>

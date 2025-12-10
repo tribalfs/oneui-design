@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Díchumasú</string>
     <string name="oui_des_tip_popup_hint_string">Déthapáil an cnaipe seo le tuilleadh faisnéise a fháil.</string>
     <string name="oui_des_action_mode_all_checkbox">Gach</string>
+    <string name="oui_des_network_error">Níl nasc líonra ann. Nasc leis an líonra agus triail arís.</string>
 </resources>

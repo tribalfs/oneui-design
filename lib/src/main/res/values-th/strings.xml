@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">ปิด​ใช้​งาน</string>
     <string name="oui_des_tip_popup_hint_string">แตะสองครั้งที่ปุ่มนี้เพื่อเรียนรู้เพิ่มเติม</string>
     <string name="oui_des_action_mode_all_checkbox">ทั้งหมด</string>
+    <string name="oui_des_network_error">ไม่​มี​การ​เชื่อม​ต่อ​เครือ​ข่าย เชื่อม​ต่อ​กับ​เครือ​ข่าย​และ​ลอง​อีก​ครั้ง</string>
 </resources>

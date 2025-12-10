@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Απενεργ.</string>
     <string name="oui_des_tip_popup_hint_string">Πατήστε δύο φορές αυτό το κουμπί για να μάθετε περισσότερα.</string>
     <string name="oui_des_action_mode_all_checkbox">Όλα</string>
+    <string name="oui_des_network_error">Δεν υπάρχει σύνδεση δικτύου. Συνδεθείτε σε δίκτυο και προσπαθήστε ξανά</string>
 </resources>

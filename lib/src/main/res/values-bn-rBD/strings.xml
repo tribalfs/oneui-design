@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">অক্ষম</string>
     <string name="oui_des_tip_popup_hint_string">আরো জানতে এই বাটনে দু’বার ট্যাপ করুন।</string>
     <string name="oui_des_action_mode_all_checkbox">সব</string>
+    <string name="oui_des_network_error">কোনও নেটওয়ার্ক সংযোগ নেই। নেটওয়ার্কে সংযোগ স্থাপন করে আবার চেষ্টা করুন।</string>
 </resources>

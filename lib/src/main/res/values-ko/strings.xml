@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">끄기</string>
     <string name="oui_des_tip_popup_hint_string">자세히 알아보려면 이 버튼을 두 번 누르세요.</string>
     <string name="oui_des_action_mode_all_checkbox">전체</string>
+    <string name="oui_des_network_error">연결된 네트워크가 없습니다. 네트워크에 연결하고 다시 해보세요.</string>
 </resources>

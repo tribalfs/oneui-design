@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">無効</string>
     <string name="oui_des_tip_popup_hint_string">詳細については、このボタンをダブルタップしてください。</string>
     <string name="oui_des_action_mode_all_checkbox">全て</string>
+    <string name="oui_des_network_error">ネットワークに接続されていません。ネットワークに接続し、再度お試しください。</string>
 </resources>

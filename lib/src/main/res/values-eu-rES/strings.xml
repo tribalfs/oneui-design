@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Ezgaitu</string>
     <string name="oui_des_tip_popup_hint_string">Informazio gehiago lortzeko, ukitu bi aldiz botoi hau.</string>
     <string name="oui_des_action_mode_all_checkbox">Guztiak</string>
+    <string name="oui_des_network_error">Ez dago sareko konexiorik. Konektatu sarera eta saiatu berriz.</string>
 </resources>

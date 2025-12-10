@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">செயல்நீக்கு</string>
     <string name="oui_des_tip_popup_hint_string">மேலும் அறிய இந்த பொத்தானை இருமுறை டேப் செய்யவும்.</string>
     <string name="oui_des_action_mode_all_checkbox">எல்லாம்</string>
+    <string name="oui_des_network_error">நெட்வொர்க் இணைப்பு இல்லை. நெட்வொர்க்கை இணைத்து மீண்டும் முயற்சிக்கவும்.</string>
 </resources>

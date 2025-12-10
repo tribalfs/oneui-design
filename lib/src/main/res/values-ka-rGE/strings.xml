@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">გამორთვა</string>
     <string name="oui_des_tip_popup_hint_string">ორჯერ შეეხეთ ამ ღილაკს, რომ შეიტყოთ მეტი.</string>
     <string name="oui_des_action_mode_all_checkbox">ყველა</string>
+    <string name="oui_des_network_error">ქსელთან კავშირი არ არის. დაუკავშირდით ქსელს და ისევ ცადეთ</string>
 </resources>

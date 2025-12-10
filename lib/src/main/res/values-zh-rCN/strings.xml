@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">禁用</string>
     <string name="oui_des_tip_popup_hint_string">双击此按钮了解详情。</string>
     <string name="oui_des_action_mode_all_checkbox">全部</string>
+    <string name="oui_des_network_error">无网络连接。连接至网络并重试。</string>
 </resources>

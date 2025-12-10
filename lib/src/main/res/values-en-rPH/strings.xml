@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Turn off</string>
     <string name="oui_des_tip_popup_hint_string">Double tap this button to learn more.</string>
     <string name="oui_des_action_mode_all_checkbox">All</string>
+    <string name="oui_des_network_error">No network connection. Connect to network and try again.</string>
 </resources>

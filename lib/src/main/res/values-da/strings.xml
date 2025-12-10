@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Deaktiver</string>
     <string name="oui_des_tip_popup_hint_string">Dobbelttryk på denne knap for at få mere at vide.</string>
     <string name="oui_des_action_mode_all_checkbox">Alt</string>
+    <string name="oui_des_network_error">Ingen netværksforbindelse. Slut til netværket, og prøv igen.</string>
 </resources>

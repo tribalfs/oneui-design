@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Desativar</string>
     <string name="oui_des_tip_popup_hint_string">Toque duas vezes neste botão para saber mais.</string>
     <string name="oui_des_action_mode_all_checkbox">Todos</string>
+    <string name="oui_des_network_error">Sem conexão de rede. Conecte a rede e tente novamente</string>
 </resources>

@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Deaktiver</string>
     <string name="oui_des_tip_popup_hint_string">Trykk raskt to ganger på denne knappen for å finne ut mer.</string>
     <string name="oui_des_action_mode_all_checkbox">Alle</string>
+    <string name="oui_des_network_error">Ingen nettverksforbindelse. Koble til nettverket, og prøv igjen på nytt.</string>
 </resources>

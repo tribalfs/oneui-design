@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Адключыць</string>
     <string name="oui_des_tip_popup_hint_string">Націсніце гэту кнопку двойчы, каб даведацца больш.</string>
     <string name="oui_des_action_mode_all_checkbox">Усе</string>
+    <string name="oui_des_network_error">Няма злучэння з сеткай. Злучыцеся з сеткай і паўтарыце спробу.</string>
 </resources>

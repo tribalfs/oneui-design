@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Išjungti</string>
     <string name="oui_des_tip_popup_hint_string">Bakstelėkite dukart šį mygtuką ir sužinokite daugiau.</string>
     <string name="oui_des_action_mode_all_checkbox">Visi</string>
+    <string name="oui_des_network_error">Nėra ryšio su tinklu. Prisijunkite prie tinklo ir bandykite dar kartą</string>
 </resources>

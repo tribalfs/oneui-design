@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">असक्षम छ</string>
     <string name="oui_des_tip_popup_hint_string">थप जान्न यस बटनमा दुई पटक ट्याप गर्नुहोस्।</string>
     <string name="oui_des_action_mode_all_checkbox">सबै</string>
+    <string name="oui_des_network_error">कुनै नेटवर्क जड़ान छैन। नेटवर्कमा जोड्नुहोस् र फेरि प्रयास गर्नुहोस्।</string>
 </resources>

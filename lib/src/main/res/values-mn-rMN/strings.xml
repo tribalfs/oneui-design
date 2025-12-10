@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Идэвхгүй болгох</string>
     <string name="oui_des_tip_popup_hint_string">Илүү ихийг авахын тулд энэ товчыг хоёр товш.</string>
     <string name="oui_des_action_mode_all_checkbox">Бүгд</string>
+    <string name="oui_des_network_error">Сүлжээний холболт байхгүй. Сүлжээнд холбогдож, дахин оролд.</string>
 </resources>

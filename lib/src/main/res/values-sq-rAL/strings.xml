@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Çaktivizo</string>
     <string name="oui_des_tip_popup_hint_string">Dy-trokit mbi këtë buton për të mësuar më shumë.</string>
     <string name="oui_des_action_mode_all_checkbox">Të gjitha</string>
+    <string name="oui_des_network_error">Nuk ka lidhje me rrjetin. Lidhu me rrjetin dhe provo sërish</string>
 </resources>

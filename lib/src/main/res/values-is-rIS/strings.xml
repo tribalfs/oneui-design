@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Slökkva</string>
     <string name="oui_des_tip_popup_hint_string">Pikkaðu tvisvar á þennan hnapp til að fá frekari upplýsingar.</string>
     <string name="oui_des_action_mode_all_checkbox">Allt</string>
+    <string name="oui_des_network_error">Engin nettenging. Tengdu við net og reyndu aftur.</string>
 </resources>

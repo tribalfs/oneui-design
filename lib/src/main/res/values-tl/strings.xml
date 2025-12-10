@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Huwag paganahin</string>
     <string name="oui_des_tip_popup_hint_string">I-double tap ang button na ito para alamin pa.</string>
     <string name="oui_des_action_mode_all_checkbox">Lahat</string>
+    <string name="oui_des_network_error">Walang koneksyon sa network. Kumonekta sa network at subukang muli.</string>
 </resources>

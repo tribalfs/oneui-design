@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Dezactiv.</string>
     <string name="oui_des_tip_popup_hint_string">Atingeți de două ori acest buton pentru a afla mai multe.</string>
     <string name="oui_des_action_mode_all_checkbox">Toate</string>
+    <string name="oui_des_network_error">Nicio conexiune de rețea. Conectați-vă la rețea și încercați din nou</string>
 </resources>

@@ -17,4 +17,5 @@
     <string name="oui_des_common_done">Gotovo</string>
     <string name="oui_des_common_edit">Izmeni</string>
     <string name="oui_des_action_mode_all_checkbox">Sve</string>
+    <string name="oui_des_network_error">Nije uspostavljena veza sa mrežom. Poveži se na mrežu i pokušaj ponovo</string>
 </resources>

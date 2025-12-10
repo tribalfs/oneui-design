@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">අබල කරන්න</string>
     <string name="oui_des_tip_popup_hint_string">වැඩිදුර දැන ගැනීමට මෙම බොත්තම දෙවරක් තට්ටු කරන්න.</string>
     <string name="oui_des_action_mode_all_checkbox">සියල්ල</string>
+    <string name="oui_des_network_error">ජාල සම්බන්ධතාව නැත. ජාලයට සම්බන්ධ වී නැවත උත්සාහ කරන්න.</string>
 </resources>

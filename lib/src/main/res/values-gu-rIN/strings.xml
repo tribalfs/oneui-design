@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">અક્ષમ કરો</string>
     <string name="oui_des_tip_popup_hint_string">વધુ જાણવા માટે આ બટનને બે વાર ટૅપ કરો.</string>
     <string name="oui_des_action_mode_all_checkbox">બધા</string>
+    <string name="oui_des_network_error">કોઈ નેટવર્ક કનેક્શન નથી. નેટવર્ક સાથે કનેક્શન કરો અને ફરી પ્રયત્ન કરો.</string>
 </resources>

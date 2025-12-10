@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Ишт. чыгар</string>
     <string name="oui_des_tip_popup_hint_string">Дагы көбүрөөк билүү үчүн бул баскычты эки эселенте басыңыз.</string>
     <string name="oui_des_action_mode_all_checkbox">Баары</string>
+    <string name="oui_des_network_error">Тармак туташуусу жок. Тармакка туташып дагы аракет кылып көрүңүз.</string>
 </resources>

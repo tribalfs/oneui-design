@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">غیر فعال</string>
     <string name="oui_des_tip_popup_hint_string">برای اطلاعات بیشتر دوبار روی این دکمه ضربه بزنید.</string>
     <string name="oui_des_action_mode_all_checkbox">همه</string>
+    <string name="oui_des_network_error">اتصال به شبکه وجود ندارد. به شبکه وصل شده و دوباره امتحان کنید.</string>
 </resources>

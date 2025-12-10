@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Կասեցնել</string>
     <string name="oui_des_tip_popup_hint_string">Կրկնակի թակեք այս կոճակը՝ ավելին իմանալու համար:</string>
     <string name="oui_des_action_mode_all_checkbox">Բոլոր</string>
+    <string name="oui_des_network_error">Ցանցի միացում չկա: Միացեք ցանցին և նորից փորձեք</string>
 </resources>

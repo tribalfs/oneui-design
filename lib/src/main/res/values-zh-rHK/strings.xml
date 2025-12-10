@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">停用</string>
     <string name="oui_des_tip_popup_hint_string">輕觸兩下此按鍵以瞭解更多。</string>
     <string name="oui_des_action_mode_all_checkbox">全部</string>
+    <string name="oui_des_network_error">無網絡連線。連接至網絡然後重試。</string>
 </resources>

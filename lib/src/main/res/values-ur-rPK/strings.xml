@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">نااہل کریں</string>
     <string name="oui_des_tip_popup_hint_string">مزید سیکھنے کے لیے اس بٹن کو دوہری تھپکی دیں۔</string>
     <string name="oui_des_action_mode_all_checkbox">تمام</string>
+    <string name="oui_des_network_error">کوئی نیٹ ورک کنکشن نہیں۔ نیٹ ورک سے کنکٹ ہوں اور دوبارہ کوشش کریں۔</string>
 </resources>

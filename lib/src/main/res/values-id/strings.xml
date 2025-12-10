@@ -22,4 +22,5 @@
     <string name="oui_des_common_disable">Nonaktifkan</string>
     <string name="oui_des_time_dialog_start">Mulai</string>
     <string name="oui_des_time_dialog_end">Selesai</string>
- </resources>
+    <string name="oui_des_network_error">Tidak ada koneksi jaringan. Sambungkan ke jaringan lalu coba lagi</string>
+</resources>

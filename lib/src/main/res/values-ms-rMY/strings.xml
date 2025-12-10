@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Nyahaktif</string>
     <string name="oui_des_tip_popup_hint_string">Dwiketik butang ini untuk mengetahui lebih lanjut.</string>
     <string name="oui_des_action_mode_all_checkbox">Semua</string>
+    <string name="oui_des_network_error">Tiada sambungan rangkaian. Sambung ke rangkaian dan cuba lagi</string>
 </resources>

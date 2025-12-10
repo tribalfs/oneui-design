@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Onemogući</string>
     <string name="oui_des_tip_popup_hint_string">Dvaput dodirnite ovo dugme da saznate više.</string>
     <string name="oui_des_action_mode_all_checkbox">Sve</string>
+    <string name="oui_des_network_error">Nema mrežne veze. Povežite se na mrežu i pokušajte ponovno.</string>
 </resources>

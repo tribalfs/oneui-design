@@ -22,4 +22,5 @@
     <string name="oui_des_common_disable">Zima</string>
     <string name="oui_des_time_dialog_start">Anza</string>
     <string name="oui_des_time_dialog_end">Mwisho</string>
- </resources>
+    <string name="oui_des_network_error">Hakuna muunganisho wa mtandao. Unganisha kwenye mtandao na ujaribu tena.</string>
+</resources>

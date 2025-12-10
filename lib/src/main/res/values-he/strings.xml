@@ -22,4 +22,5 @@
     <string name="oui_des_common_disable">השבת</string>
     <string name="oui_des_time_dialog_start">התחלה</string>
     <string name="oui_des_time_dialog_end">סיום</string>
- </resources>
+    <string name="oui_des_network_error">אין חיבור לרשת. התחבר לרשת ונסה שוב.</string>
+</resources>

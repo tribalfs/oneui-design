@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Söndür</string>
     <string name="oui_des_tip_popup_hint_string">Ətraflı məlumat almaq üçün iki dəfə vurun.</string>
     <string name="oui_des_action_mode_all_checkbox">Hamısı</string>
+    <string name="oui_des_network_error">Şəbəkə bağlantısı yoxdur. Şəbkəyə qoşulun və yenidən cəhd edin</string>
 </resources>

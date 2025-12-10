@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">បិទ</string>
     <string name="oui_des_tip_popup_hint_string">ប៉ះ​ពីរ​ដង​លើ​ប៊ូតុង​នេះ ដើម្បី​ស្វែងយល់​បន្ថែម។</string>
     <string name="oui_des_action_mode_all_checkbox">ទាំងអស់</string>
+    <string name="oui_des_network_error">គ្មាន​ការភ្ជាប់​បណ្តាញ។ ភ្ជាប់​ទៅ​បណ្តាញ និង សាកល្បង​ម្តង​ទៀត</string>
 </resources>

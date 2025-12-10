@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Desaktiv.</string>
     <string name="oui_des_tip_popup_hint_string">Topelttoksake seda nuppu, et saada lisateavet.</string>
     <string name="oui_des_action_mode_all_checkbox">Kõik</string>
+    <string name="oui_des_network_error">Võrguühendus puudub. Ühendage võrguga ja proovige uuesti</string>
 </resources>

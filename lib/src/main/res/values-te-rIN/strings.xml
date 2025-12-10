@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">నిలిపివేయి</string>
     <string name="oui_des_tip_popup_hint_string">మరింత తెలుసుకోవడానికి ఈ బటన్‌ను రెండుసార్లు నొక్కండి.</string>
     <string name="oui_des_action_mode_all_checkbox">అన్నీ</string>
+    <string name="oui_des_network_error">ఏ నెట్‍‌వర్క్‌ కనెక్షన్ లేదు. నెట్‍‌వర్క్‌కు కనెక్ట్ చేసి మళ్లీ ప్రయత్నించండి.</string>
 </resources>

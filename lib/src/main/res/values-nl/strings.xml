@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Uitzetten</string>
     <string name="oui_des_tip_popup_hint_string">Tik twee keer op deze knop voor meer informatie.</string>
     <string name="oui_des_action_mode_all_checkbox">Alle</string>
+    <string name="oui_des_network_error">Geen netwerkverbinding. Breng de verbinding tot stand en probeer het opnieuw.</string>
 </resources>

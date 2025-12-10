@@ -74,6 +74,13 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
         data object NotUpdatable : Status
 
         /**
+         * The device connection is unstable. Show a retry button.
+         *
+         * @see [setMainButtonClickListener]
+         */
+        data object UnstableConnection : Status
+
+        /**
          * The device has no internet connection. Show a retry button.
          *
          * @see [setMainButtonClickListener]
@@ -142,11 +149,19 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
                     updateNotice.text = context.getText(R.string.oui_des_latest_version)
                 }
 
-                Status.NoConnection -> {
+                Status.UnstableConnection -> {
                     progressCircle.isGone = true
                     updateNotice.isGone = false
                     updateButton.isGone = false
                     updateNotice.text = context.getText(R.string.oui_des_network_connect_is_not_stable)
+                    updateButton.text = context.getText(R.string.oui_des_retry)
+                }
+
+                Status.NoConnection -> {
+                    progressCircle.isGone = true
+                    updateNotice.isGone = false
+                    updateButton.isGone = false
+                    updateNotice.text = context.getText(R.string.oui_des_network_error)
                     updateButton.text = context.getText(R.string.oui_des_retry)
                 }
 

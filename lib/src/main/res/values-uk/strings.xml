@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Вимкнути</string>
     <string name="oui_des_tip_popup_hint_string">Двічі натисніть цю кнопку, щоб отримати додаткові відомості.</string>
     <string name="oui_des_action_mode_all_checkbox">Усі</string>
+    <string name="oui_des_network_error">Немає підключення до мережі. Підключіться до мережі та спробуйте ще раз</string>
 </resources>

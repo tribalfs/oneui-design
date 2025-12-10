@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">ଅକ୍ଷମ</string>
     <string name="oui_des_tip_popup_hint_string">ଅଧିକ ଜାଣିବାକୁ ଏହି ବଟନ୍ ଦୁଇଥର ଟ୍ୟାପ୍ କରନ୍ତୁ।</string>
     <string name="oui_des_action_mode_all_checkbox">ସମସ୍ତ</string>
+    <string name="oui_des_network_error">କୌଣସି ନେଟୱାର୍କ୍‌ କନେକ୍ସନ୍ ନାହିଁ। ନେଟୱାର୍କକୁ କନେକ୍ଟ କରି ପୁନଃଚେଷ୍ଟା କରନ୍ତୁ।</string>
 </resources>

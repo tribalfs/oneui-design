@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Vypnout</string>
     <string name="oui_des_tip_popup_hint_string">Poklepáním na toto tlačítko získáte další informace.</string>
     <string name="oui_des_action_mode_all_checkbox">Vše</string>
+    <string name="oui_des_network_error">Připojení k síti není k dispozici. Připojte se k síti a opakujte akci</string>
 </resources>

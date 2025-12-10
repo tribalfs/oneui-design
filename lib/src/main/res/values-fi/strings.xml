@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Ei käyt.</string>
     <string name="oui_des_tip_popup_hint_string">Lisätietoja saat kaksoisnapauttamalla tätä painiketta.</string>
     <string name="oui_des_action_mode_all_checkbox">Kaikki</string>
+    <string name="oui_des_network_error">Verkkoyhteyttä ei ole. Muodosta verkkoyhteys ja yritä uudelleen.</string>
 </resources>

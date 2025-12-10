@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">Vypnúť</string>
     <string name="oui_des_tip_popup_hint_string">Dvojitým ťuknutím na toto tlačidlo zobrazíte ďalšie informácie.</string>
     <string name="oui_des_action_mode_all_checkbox">Všetky</string>
+    <string name="oui_des_network_error">Žiadne sieťové pripojenie. Pripojte sa k sieti a skúste to znova</string>
 </resources>

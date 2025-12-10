@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">O‘chirish</string>
     <string name="oui_des_tip_popup_hint_string">Qo‘shimcha ma’lumot olish uchun ikki marta teging.</string>
     <string name="oui_des_action_mode_all_checkbox">Barchasi</string>
+    <string name="oui_des_network_error">Tarmoq ulanishi yo‘q. Tarmoqqa ulaning va qayta urinib ko‘ring</string>
 </resources>

@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">השבת</string>
     <string name="oui_des_tip_popup_hint_string">הקש הקשה כפולה על לחצן זה כדי לברר פרטים נוספים.</string>
     <string name="oui_des_action_mode_all_checkbox">הכל</string>
+    <string name="oui_des_network_error">אין חיבור לרשת. התחבר לרשת ונסה שוב.</string>
 </resources>

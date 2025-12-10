@@ -25,4 +25,5 @@
     <string name="oui_des_common_disable">ನಿಶಕ್ತ</string>
     <string name="oui_des_tip_popup_hint_string">ಇನ್ನಷ್ಟು ತಿಳಿಯಲು ಈ ಬಟನ್ ಎರಡುಬಾರಿ ತಟ್ಟಿ.</string>
     <string name="oui_des_action_mode_all_checkbox">ಎಲ್ಲ</string>
+    <string name="oui_des_network_error">ನೆಟ್‌ವರ್ಕ್ ಸಂಪರ್ಕ ಇಲ್ಲ. ನೆಟ್‌ವರ್ಕ್‌ಗೆ ಸಂಪರ್ಕಿಸಿ ಮತ್ತು ಪುನಃ ಪ್ರಯತ್ನಿಸಿ.</string>
 </resources>
