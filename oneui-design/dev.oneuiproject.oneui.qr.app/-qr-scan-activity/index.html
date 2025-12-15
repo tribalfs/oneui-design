@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>QrScanActivity</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+    <div class="root">
+    <nav class="navigation theme-dark" id="navigation-wrapper">
+            <a class="library-name--link" href="../../../index.html">
+                    oneui-design
+            </a>
+        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle"
+                type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+        <div class="navigation-controls">
+        <div class="filter-section filter-section_loading" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active=""
+                        data-filter=":oneui-design/main">main</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox"
+                        data-role="dropdown-toggle"
+                        aria-controls="platform-tags-listbox"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                        aria-label="Toggle source sets"
+                ></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
+                    <div class="dropdown--header"><span>Platform filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":oneui-design/main"
+                                       data-filter=":oneui-design/main"/>
+                                <span class="checkbox--icon"></span>
+                                main
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </div>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button"
+                    type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list"
+                        data-role="dropdown-listbox">
+                        <div class="dropdown--header">
+                            <span>
+                                    oneui-design
+                            </span>
+                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                            </button>
+                        </div>
+                        <div class="sidebar--inner" id="sideMenu"></div>
+                    </ul>
+                    <div class="dropdown--overlay"></div>
+                </div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="oneui-design::dev.oneuiproject.oneui.qr.app/QrScanActivity///PointingToDeclaration//1915391025">
+  <div class="breadcrumbs"><a href="../../../index.html">oneui-design</a><span class="delimiter">/</span><a href="../index.html">dev.oneuiproject.oneui.qr.app</a><span class="delimiter">/</span><span class="current">QrScanActivity</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Qr</span><wbr></wbr><span>Scan</span><wbr></wbr><span><span>Activity</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">QrScanActivity</a> : <a href="https://tribalfs.github.io/sesl-androidx/appcompat/androidx.appcompat.app/-app-compat-activity/index.html">AppCompatActivity</a>, <a href="../../dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/-listener/index.html">QrCodeScannerView.Listener</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/tribalfs/oneui-design/blob/main/lib/src/main/java/dev/oneuiproject/oneui/qr/app/QrScanActivity.kt#L147">source</a>)</span></span></div><p class="paragraph">OneUI-styled full-screen QR code scanner built on top of CameraX and ML Kit.</p><p class="paragraph">This activity:</p><ul><li><p class="paragraph">Manages camera permission and binds a back-camera <a href="https://developer.android.com/reference/kotlin/androidx/camera/core/Preview.html">Preview</a> and <a href="https://developer.android.com/reference/kotlin/androidx/camera/core/ImageAnalysis.html">ImageAnalysis</a> use case.</p></li><li><p class="paragraph">Streams camera frames into <a href="../../dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/index.html">QrCodeScannerView</a> for real-time QR detection.</p></li><li><p class="paragraph">Supports scanning QR codes from both:</p></li><li><p class="paragraph">the live camera feed, and</p></li><li><p class="paragraph">images picked from the gallery.</p></li><li><p class="paragraph">Provides visual feedback for the scanning ROI (Region of Interest), detection, and error states via <a href="../../dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/index.html">QrCodeScannerView</a>.</p></li><li><p class="paragraph">Returns the accepted QR content to the caller via <code class="lang-kotlin">setResult(RESULT_OK, …)</code>.</p></li></ul><p class="paragraph">The actual decoding is performed by ML Kit’s barcode scanning APIs and wrapped inside <a href="../../dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/index.html">QrCodeScannerView</a>. This activity wires that into a OneUI-style UX (immersive full-screen, flash / gallery buttons, animations, and result propagation).</p><h2 class="">Result</h2><p class="paragraph">When a QR code passes validation, the decoded string is returned to the caller:</p><ul><li><p class="paragraph"><code class="lang-kotlin">resultCode</code> → <code class="lang-kotlin">RESULT_OK</code></p></li><li><p class="paragraph"><code class="lang-kotlin">Intent</code> extra → <a href="-companion/-e-x-t-r-a_-q-r_-s-c-a-n-n-e-r_-r-e-s-u-l-t.html">EXTRA_QR_SCANNER_RESULT</a></p></li></ul><h2 class="">Validation</h2><p class="paragraph">Basic validation can be configured via intent extras. If the scanned content does not satisfy these constraints, <a href="../../dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/index.html">QrCodeScannerView</a> will show its “not matched” error UI and continue scanning.</p><p class="paragraph">Supported validation extras:</p><ul><li><p class="paragraph"><a href="-companion/-e-x-t-r-a_-q-r_-r-e-q-u-i-r-e-d_-p-r-e-f-i-x.html">EXTRA_QR_REQUIRED_PREFIX</a> (optional) If set, the QR content must start with this prefix (e.g. <code class="lang-kotlin">&quot;WIFI:&quot;</code>, <code class="lang-kotlin">&quot;https://&quot;</code>).</p></li><li><p class="paragraph"><a href="-companion/-e-x-t-r-a_-q-r_-r-e-g-e-x.html">EXTRA_QR_REGEX</a> (optional) If set, the QR content must fully match the given regular expression.</p></li></ul><p class="paragraph">Both checks are evaluated in <a href="on-q-r-detected.html">onQRDetected</a>. Returning <code class="lang-kotlin">true</code> from that callback indicates that the content is accepted and the activity should finish; returning <code class="lang-kotlin">false</code> lets the view handle the “not matched” state and continue scanning.</p><h2 class="">Gallery integration</h2><p class="paragraph">Tapping the gallery button:</p><ul><li><p class="paragraph">temporarily pauses camera analysis in <a href="../../dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/index.html">QrCodeScannerView</a>,</p></li><li><p class="paragraph">launches a system picker via <a href="https://developer.android.com/reference/kotlin/androidx/activity/result/contract/ActivityResultContracts.GetContent.html">ActivityResultContracts.GetContent</a>,</p></li><li><p class="paragraph">on successful selection, passes the chosen image as <span data-unresolved-link="com.google.mlkit.vision.common/InputImage///PointingToDeclaration/">InputImage</span> back into <a href="../../dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/index.html">QrCodeScannerView</a> for offline QR detection.</p></li></ul><p class="paragraph">If the user cancels the picker, analysis is resumed.</p><h2 class="">Usage</h2><p class="paragraph">Typical usage is via the Activity Result API and the provided <a href="-companion/create-intent.html">createIntent</a> helper, or via a custom <a href="https://developer.android.com/reference/kotlin/androidx/activity/result/contract/ActivityResultContracts.html">ActivityResultContracts</a> (e.g. <code class="lang-kotlin">QrScanContract</code>) that wraps this activity.</p><p class="paragraph">Example:</p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">val launcher = registerForActivityResult(QrScanContract()) { result -&gt;<br>    if (result != null) {<br>        // handle scanned content<br>    }<br>}<br><br>launcher.launch(<br>    QrScanConfig(<br>        title = &quot;Scan Wi-Fi QR&quot;,<br>        requiredPrefix = &quot;WIFI:&quot;,<br>        regex = &quot;^WIFI:.*$&quot;<br>    )<br>)</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">You can also start this activity manually using <a href="-companion/create-intent.html">createIntent</a> and handle the result via <code class="lang-kotlin">onActivityResult</code> or your own Activity Result contract.</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="-323836641%2FConstructors%2F1915391025" anchor-label="QrScanActivity" id="-323836641%2FConstructors%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-qr-scan-activity.html"><span>Qr</span><wbr></wbr><span>Scan</span><wbr></wbr><span><span>Activity</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-323836641%2FConstructors%2F1915391025"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="-1491168939%2FClasslikes%2F1915391025" anchor-label="Companion" id="-1491168939%2FClasslikes%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-companion/index.html"><span><span>Companion</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1491168939%2FClasslikes%2F1915391025"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-companion/index.html">Companion</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-57177472%2FFunctions%2F1915391025" anchor-label="getGalleryIntentForQrScanner" id="-57177472%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-gallery-intent-for-qr-scanner.html"><span>get</span><wbr></wbr><span>Gallery</span><wbr></wbr><span>Intent</span><wbr></wbr><span>For</span><wbr></wbr><span>Qr</span><wbr></wbr><span><span>Scanner</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-57177472%2FFunctions%2F1915391025"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="get-gallery-intent-for-qr-scanner.html"><span class="token function">getGalleryIntentForQrScanner</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1632436579%2FFunctions%2F1915391025" anchor-label="isAllowClick" id="1632436579%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-allow-click.html"><span>is</span><wbr></wbr><span>Allow</span><wbr></wbr><span><span>Click</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1632436579%2FFunctions%2F1915391025"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="is-allow-click.html"><span class="token function">isAllowClick</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="548037119%2FFunctions%2F1915391025" anchor-label="onConfigurationChanged" id="548037119%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-configuration-changed.html"><span>on</span><wbr></wbr><span>Configuration</span><wbr></wbr><span><span>Changed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="548037119%2FFunctions%2F1915391025"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="on-configuration-changed.html"><span class="token function">onConfigurationChanged</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">newConfig<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/res/Configuration.html">Configuration</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1999787017%2FFunctions%2F1915391025" anchor-label="onFlashBtnClicked" id="-1999787017%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-flash-btn-clicked.html"><span>on</span><wbr></wbr><span>Flash</span><wbr></wbr><span>Btn</span><wbr></wbr><span><span>Clicked</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1999787017%2FFunctions%2F1915391025"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="on-flash-btn-clicked.html"><span class="token function">onFlashBtnClicked</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">isActivated<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1232100752%2FFunctions%2F1915391025" anchor-label="onGalleryBtnClicked" id="1232100752%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-gallery-btn-clicked.html"><span>on</span><wbr></wbr><span>Gallery</span><wbr></wbr><span>Btn</span><wbr></wbr><span><span>Clicked</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1232100752%2FFunctions%2F1915391025"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="on-gallery-btn-clicked.html"><span class="token function">onGalleryBtnClicked</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="679976986%2FFunctions%2F1915391025" anchor-label="onQRDetected" id="679976986%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-q-r-detected.html"><span>on</span><wbr></wbr><span><span>QRDetected</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="679976986%2FFunctions%2F1915391025"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="on-q-r-detected.html"><span class="token function">onQRDetected</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">content<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2064636498%2FFunctions%2F1915391025" anchor-label="onStaticImageModeChanged" id="-2064636498%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-static-image-mode-changed.html"><span>on</span><wbr></wbr><span>Static</span><wbr></wbr><span>Image</span><wbr></wbr><span>Mode</span><wbr></wbr><span><span>Changed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2064636498%2FFunctions%2F1915391025"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="on-static-image-mode-changed.html"><span class="token function">onStaticImageModeChanged</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">isStaticImageMode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Called when the scanner transitions between:</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+        <span>© 2025 Copyright</span>
+        <span class="pull-right">
+            <span>Generated by </span>
+            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                <span>dokka</span>
+            </a>
+        </span>
+    </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
