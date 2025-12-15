@@ -10,6 +10,7 @@ import com.sec.sesl.tester.BuildConfig
 import com.sec.sesl.tester.R
 import dev.oneuiproject.oneui.layout.AppInfoLayout
 import dev.oneuiproject.oneui.layout.AppInfoLayout.Status
+import dev.oneuiproject.oneui.layout.AppInfoLayout.Status.*
 import dev.oneuiproject.oneuiexample.ui.main.core.util.semToast
 
 class SampleAboutActivity : AppCompatActivity() {
@@ -31,7 +32,8 @@ class SampleAboutActivity : AppCompatActivity() {
     fun changeStatus(v: View?) {
         appInfoLayout!!.updateStatus = when (appInfoLayout!!.updateStatus){
             is Status.Failed -> Status.Loading
-            Status.Loading ->  Status.NoConnection
+            Status.Loading ->  Status.UnstableConnection
+            Status.UnstableConnection ->  Status.NoConnection
             Status.NoConnection -> Status.NoUpdate
             Status.NoUpdate -> Status.NotUpdatable
             Status.NotUpdatable -> Status.UpdateAvailable
