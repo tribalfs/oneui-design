@@ -6,6 +6,10 @@
         tools:ignore="QueryAllPackagesPermission" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
 
     <!--oneui-icons minSdk is 23-->
     <uses-sdk tools:overrideLibrary="dev.oneuiproject.oneui"/>
@@ -76,6 +80,11 @@
 
         <activity
             android:name="androidx.picker.eyeDropper.SeslEyeDropperActivity" />
+
+        <activity
+            android:name="dev.oneuiproject.oneui.qr.app.QrScanActivity"
+            android:configChanges="orientation|screenLayout|screenSize"
+            />
 
         <provider
             android:name="androidx.core.content.FileProvider"

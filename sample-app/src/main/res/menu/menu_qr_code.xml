@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:ignore="AppCompatResource,HardcodedText,AlwaysShowAction">
+
+    <item
+        android:id="@+id/menu_qr_scan"
+        android:icon="@drawable/ic_oui_qr_code_scanner"
+        android:title="QR Scanner"
+        app:iconTint="?actionMenuTextColor"
+        app:showAsAction="always" />
+
+</menu>
