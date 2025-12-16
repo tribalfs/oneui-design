@@ -28,7 +28,7 @@ package dev.oneuiproject.oneui.qr.app.internal
  * }
  * ```
  */
-class OrientationHysteresis {
+internal class OrientationHysteresis {
 
     /**
      * Logical UI orientation state (not tied to Activity/system orientation).

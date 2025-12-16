@@ -39,7 +39,7 @@
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/crop_bottom_menu"
-            style="@style/Widget.Design.BottomNavigationView.Text"
+            style="@style/OneUI.QRScannerBottomNavigationView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/qr_scanner_view"

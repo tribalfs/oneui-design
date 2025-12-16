@@ -59,4 +59,5 @@
     <string name="oui_des_qrdialog_not_matched_request_type_error_body">The QR code doesn\'t contain any info this app can use.</string>
     <string name="oui_des_qrdialog_not_matched_request_type_error_title">QR code not valid</string>
     <string name="oui_des_scan_qr_code">Scan QR Code</string>
+    <string name="oui_des_storage_perm_not_granted">Storage permission not granted.</string>
 </resources>

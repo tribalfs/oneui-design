@@ -12,9 +12,9 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.OrientationEventListener
-import android.view.View
 import android.widget.FrameLayout
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
@@ -23,7 +23,7 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
+import androidx.core.os.BundleCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -37,34 +37,20 @@ import com.google.mlkit.vision.common.InputImage
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.isInMultiWindowModeCompat
 import dev.oneuiproject.oneui.ktx.semToast
+import dev.oneuiproject.oneui.qr.app.QrScanActivity.Companion.createIntent
 import dev.oneuiproject.oneui.qr.app.internal.CameraResolutionHelper.createQrResolutionSelector
 import dev.oneuiproject.oneui.qr.app.internal.CropOverlayView
 import dev.oneuiproject.oneui.qr.app.internal.OrientationHysteresis
 import dev.oneuiproject.oneui.qr.app.internal.observeOnce
 import dev.oneuiproject.oneui.qr.widget.QrCodeScannerView
+import dev.oneuiproject.oneui.utils.applyEdgeToEdge
+import dev.oneuiproject.oneui.utils.darkSystemBars
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.util.concurrent.Executors
 
-/**
- * An Activity that provides a full-featured QR code scanning interface.
- *
- * This activity handles camera initialization, preview display, and image analysis using ML Kit.
- * It supports scanning both from the live camera feed and from static images picked from the gallery.
- *
- * Key features include:
- * - **Live Camera Scanning:** Uses CameraX to stream frames and detect QR codes in real-time.
- * - **Gallery Pick & Crop:** Allows users to pick an image, crop it using a custom overlay, and scan the cropped region.
- * - **Orientation Handling:** Locks to portrait for scanning but supports orientation changes during the static image editing phase.
- * - **Validation:** Supports optional validation of scanned content via prefix matching or Regex patterns.
- * - **UI Integration:** Implements OneUI-style design patterns, including immersive system bars and floating action buttons.
- *
- * To launch this activity with specific configurations, use [createIntent].
- *
- * @see QrCodeScannerView
- */
 /**
  * OneUI-styled full-screen QR code scanner built on top of CameraX and ML Kit.
  *
@@ -107,12 +93,15 @@ import java.util.concurrent.Executors
  * the content is accepted and the activity should finish; returning `false` lets the view handle
  * the “not matched” state and continue scanning.
  *
+ * If your validation logic requires more than `prefix` and `regex`, you can extend this activity
+ * instead and override [onQRDetected] to implement your own validation.
+ *
  * ## Gallery integration
  *
  * Tapping the gallery button:
  *
  * - temporarily pauses camera analysis in [QrCodeScannerView],
- * - launches a system picker via [ActivityResultContracts.GetContent],
+ * - launches a system picker via [Intent.ACTION_PICK],
  * - on successful selection, passes the chosen image as [InputImage] back into
  *   [QrCodeScannerView] for offline QR detection.
  *
@@ -121,7 +110,7 @@ import java.util.concurrent.Executors
  * ## Usage
  *
  * Typical usage is via the Activity Result API and the provided [createIntent] helper,
- * or via a custom [ActivityResultContracts] (e.g. `QrScanContract`) that wraps this activity.
+ * or via the provided custom [QrScanContract] that wraps this activity.
  *
  * Example:
  *
@@ -143,12 +132,30 @@ import java.util.concurrent.Executors
  *
  * You can also start this activity manually using [createIntent] and handle the result
  * via `onActivityResult` or your own Activity Result contract.
+ *
+ * ## Manifest requirements
+ *
+ * Applications using this activity **must** declare the following in their
+ * `AndroidManifest.xml`:
+ *
+ * ```xml
+ * <uses-permission android:name="android.permission.CAMERA" />
+ * <!-- Only required if minSdk is < API24-->
+ * <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+ *
+ * ```
+ *
+ * The camera permission is required for live QR scanning via CameraX.
+ * The camera hardware feature is marked as required because this activity
+ * does not provide a camera-less fallback mode.
+ *
+ * Failure to declare these entries will result in runtime failures or the
+ * activity being unavailable on compatible devices.
  */
 open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
 
     private val cameraExecutor = Executors.newSingleThreadExecutor()
     private var camera: Camera? = null
-    private var insetsController: WindowInsetsControllerCompat? = null
     private var orientationListener: OrientationEventListener? = null
     private val orientationHysteresis = OrientationHysteresis()
 
@@ -164,25 +171,37 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
     private var currentImageUri: Uri? = null
     private var restoreNormRect: CropOverlayView.NormRect? = null
     private var shouldRestoreStaticMode: Boolean = false
-    private var currentCroppedFile: File? = null // New
+    private var currentCroppedFile: File? = null
+    private var isDecodePending = false
 
     private val requestCameraPermLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
             if (granted) startCamera()
-            else semToast(getString(R.string.oui_des_camera_perm_not_granted))
+            else {
+                semToast(getString(R.string.oui_des_camera_perm_not_granted))
+                qrCodeScannerView.initialize(
+                    intent.getStringExtra(EXTRA_QR_SCANNER_TITLE),
+                    false,
+                    this@QrScanActivity
+                )
+            }
+        }
+
+    private val requestStoragePermLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            if (granted) {
+                currentImageUri?.let { showPickedImage(it) }
+            } else {
+                currentImageUri = null
+                exitStaticImageMode()
+                semToast(getString(R.string.oui_des_storage_perm_not_granted))
+            }
         }
 
     private val pickImageLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode != RESULT_OK) {
-                // User backed out → resume camera analysis
-                exitStaticImageMode()
-                qrCodeScannerView.pauseAnalysis(false)
-                return@registerForActivityResult
-            }
-
             val uri = result.data?.data
-            if (uri == null) {
+            if (result.resultCode != RESULT_OK || uri == null) {
                 exitStaticImageMode()
                 qrCodeScannerView.pauseAnalysis(false)
                 return@registerForActivityResult
@@ -191,7 +210,16 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
             currentImageUri = uri
             restoreNormRect = null
 
-            showPickedImage(uri)
+            if (Build.VERSION.SDK_INT <= 23 &&
+                ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+               requestStoragePermLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+            } else {
+               showPickedImage(uri)
+            }
         }
 
     private val resolutionSelector by lazy(LazyThreadSafetyMode.NONE) {
@@ -199,26 +227,29 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        applyEdgeToEdge { darkSystemBars() }
+        WindowCompat.getInsetsController(window, window.decorView).apply {
+            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            hide(WindowInsetsCompat.Type.statusBars())
+        }
         super.onCreate(savedInstanceState)
-        lockToPortrait()
+
         setContentView(R.layout.oui_des_qr_scanner_activity)
         initViews()
 
-        WindowCompat.setDecorFitsSystemWindows(window, true)
-        hideSystemBars()
         ViewCompat.setOnApplyWindowInsetsListener(cropBottomMenu) { v, insets ->
             val systemAndCutoutInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.updatePadding(bottom = systemAndCutoutInsets.bottom)
             insets
         }
 
-        initOrientationListener()
-
         restoreInstanceState(savedInstanceState)
 
-        // If we're restoring static mode, avoid showing live UI for a frame.
         if (shouldRestoreStaticMode) {
             forceHideLiveUiImmediately()
+            enterStaticImageMode()
+        } else {
+            exitStaticImageMode()
         }
 
         if (ContextCompat.checkSelfPermission(
@@ -232,13 +263,9 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
         }
 
         if (shouldRestoreStaticMode) {
-            // Scenario A: We have a confirmed cropped file.
-            // Load that directly and skip the cropping UI.
             if (currentCroppedFile != null && currentCroppedFile!!.exists()) {
                 showFinalCroppedImage(currentCroppedFile!!)
             }
-            // Scenario B: We were in the middle of cropping.
-            // Load original URI and apply the crop rect.
             else if (currentImageUri != null) {
                 enterStaticImageMode()
                 showPickedImage(currentImageUri!!)
@@ -256,9 +283,6 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        // Re-apply system UI visibility flags as they might be lost on rotation
-        hideSystemBars()
-
         if (isStaticImageMode) {
             cropOverlayView.doOnGlobalLayout {
                 val bounds = qrCodeScannerView.getDecodedImageBounds()
@@ -277,7 +301,9 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
 
     override fun onStart() {
         super.onStart()
-        if (orientationListener?.canDetectOrientation() == true) orientationListener?.enable()
+        orientationListener?.let {
+            if (it.canDetectOrientation()) it.enable()
+        }
     }
 
     override fun onStop() {
@@ -305,7 +331,7 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
             KEY_NOT_MATCHED_DIALOG_SHOWING,
             qrCodeScannerView.isNotMatchedDialogShowing()
         )
-
+        outState.putBoolean(KEY_DECODE_PENDING, isDecodePending)
 
         currentImageUri?.let { outState.putParcelable(KEY_IMAGE_URI, it) }
 
@@ -322,7 +348,7 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
         if (state == null) return
 
         shouldRestoreStaticMode = state.getBoolean(KEY_STATIC_MODE, false)
-        currentImageUri = state.getParcelable(KEY_IMAGE_URI, Uri::class.java)
+        currentImageUri = BundleCompat.getParcelable(state, KEY_IMAGE_URI, Uri::class.java)
 
         state.getFloatArray(KEY_CROP_NORM)?.let { arr ->
             if (arr.size == 4) {
@@ -341,29 +367,13 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
         state.getBoolean(KEY_NOT_MATCHED_DIALOG_SHOWING).let {
             if (it) qrCodeScannerView.showNotMatchedRequestedScanTypeErrorDialog()
         }
+
+        isDecodePending = state.getBoolean(KEY_DECODE_PENDING)
     }
 
     // ------------------------------------------------------------------------------------
-    // Orientation / system bars
+    // Orientation
     // ------------------------------------------------------------------------------------
-
-    private fun hideSystemBars() {
-        insetsController = WindowCompat.getInsetsController(window, window.decorView).apply {
-            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        }
-        insetsController?.hide(WindowInsetsCompat.Type.systemBars())
-        @Suppress("DEPRECATION")
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
-            window.decorView.systemUiVisibility = (
-                    View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                            or View.SYSTEM_UI_FLAG_FULLSCREEN
-                            or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    )
-        }
-    }
 
     private fun initOrientationListener() {
         orientationListener = object : OrientationEventListener(this) {
@@ -385,16 +395,25 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
 
     private fun enterStaticImageMode() {
         isStaticImageMode = true
-        orientationListener?.disable()
-        allowOrientationChange()
+        if (isRequestOrientationAllowed()) {
+            orientationListener?.disable()
+            allowOrientationChange()
+        }
     }
 
     private fun exitStaticImageMode() {
         isStaticImageMode = false
         currentCroppedFile = null
         currentImageUri = null
-        lockToPortrait()
-        if (orientationListener?.canDetectOrientation() == true) orientationListener?.enable()
+        if (isRequestOrientationAllowed()) {
+            lockToPortrait()
+            if (orientationListener == null) {
+                initOrientationListener()
+            }
+            orientationListener!!.let {
+                if (it.canDetectOrientation()) it.enable()
+            }
+        }
     }
 
     // ------------------------------------------------------------------------------------
@@ -470,13 +489,13 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
             forceHideLiveUiImmediately()
 
             val image = InputImage.fromFilePath(this, uri)
-            qrCodeScannerView.setInputImageNoDecode(image.bitmapInternal!!, image.rotationDegrees)
+            qrCodeScannerView.setInputImage(image.bitmapInternal!!, image.rotationDegrees, false)
 
             cropBottomMenu.isVisible = true
             cropOverlayView.isVisible = true
             initCropBottomMenu()
 
-            cropOverlayView.post {
+            qrCodeScannerView.postDelayed( {
                 val bounds = qrCodeScannerView.getDecodedImageBounds()
                 if (!bounds.isEmpty) {
                     cropOverlayView.setImageBounds(bounds, restoreNormRect)
@@ -484,7 +503,7 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
                     // Fallback: keep overlay hidden if we can't determine bounds yet
                     cropOverlayView.isVisible = false
                 }
-            }
+            }, 300)
 
         } catch (e: Exception) {
             e.message?.let { semToast(it) }
@@ -495,11 +514,14 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
     private fun showFinalCroppedImage(file: File) {
         enterStaticImageMode()
         forceHideLiveUiImmediately()
-
         val bitmap = BitmapFactory.decodeFile(file.absolutePath)
         if (bitmap != null) {
-            qrCodeScannerView.showDecodedImage(bitmap)
+            qrCodeScannerView.showDecodedImage(bitmap, isDecodePending)
             qrCodeScannerView.showBlackBackground()
+            if (isDecodePending) {
+                qrCodeScannerView.updateToDecodedImageLayout()
+                qrCodeScannerView.startQrRoiAnimation()
+            }
         }
     }
 
@@ -509,18 +531,20 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
         // clear visible UI.
         cropOverlayView.isVisible = false
         cropBottomMenu.isVisible = false
+        isDecodePending = true
 
-        qrCodeScannerView.cropAndDecode(cropRect)
-        lifecycleScope.launch(Dispatchers.IO) {
+        qrCodeScannerView.cropAndDecode(cropRect) {
             qrCodeScannerView.getDecodedImage()?.let {
-                val file = File(cacheDir, "cropped_qr_${System.currentTimeMillis()}.png")
-                FileOutputStream(file).use { out ->
-                    it.compress(CompressFormat.PNG, 100, out)
+                lifecycleScope.launch(Dispatchers.IO) {
+                    val file = File(cacheDir, "cropped_qr_${System.currentTimeMillis()}.png")
+                    FileOutputStream(file).use { out ->
+                        it.compress(CompressFormat.JPEG, 100, out)
+                    }
+                    currentCroppedFile = file
                 }
-                currentCroppedFile = file // Track this file
             }
         }
-        // Clear restoration state (this crop has been applied)
+
         restoreNormRect = null
         currentImageUri = null
         cropOverlayView.reset()
@@ -543,42 +567,25 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
 
     override fun isAllowClick(): Boolean = true
 
+    @CallSuper
     override fun onFlashBtnClicked(isActivated: Boolean) {
         camera?.cameraControl?.enableTorch(isActivated)
     }
 
+    @CallSuper
     override fun onGalleryBtnClicked() {
         qrCodeScannerView.pauseAnalysis(true)
-        val pickIntent = Intent(Intent.ACTION_PICK).apply {
-            type = "image/*"
-           // putExtra("crop", "true");
-           // putExtra("animationDuration", 200);
-        }
+        val pickIntent = Intent(Intent.ACTION_PICK).apply { type = "image/*" }
         pickImageLauncher.launch(pickIntent)
     }
 
-    fun getGalleryIntentForQrScanner(): Intent {
-        val uriForFile = FileProvider.getUriForFile(
-            applicationContext, applicationContext.getPackageName() + ".provider",
-            File(cacheDir, "qr_scan_temp.jpg")
-        )
-        return Intent("android.intent.action.GET_CONTENT", null).apply {
-            setPackage("com.sec.android.gallery3d")
-            setType("image/*")
-            putExtra("crop", "true");
-            putExtra("animationDuration", 200);
-            //putExtra("output", uriForFile);
-            addFlags(3);
-            //setClipData(ClipData.newRawUri("output", uriForFile));
-        }
-    }
-
-
+    @CallSuper
     override fun onStaticImageModeChanged(isStaticImageMode: Boolean) {
         if (isStaticImageMode) enterStaticImageMode() else exitStaticImageMode()
     }
 
     override fun onQRDetected(content: String): Boolean {
+        isDecodePending = false
         val requiredPrefix = intent.getStringExtra(EXTRA_QR_REQUIRED_PREFIX)
         val regexPattern = intent.getStringExtra(EXTRA_QR_REGEX)
 
@@ -592,6 +599,14 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
         setResultAndFinish(content)
         return true
     }
+
+    @CallSuper
+    override fun onInputImageError() {
+        isDecodePending = false
+    }
+
+    private fun isRequestOrientationAllowed(): Boolean =
+        resources.configuration.smallestScreenWidthDp < 600 || applicationInfo.targetSdkVersion < 36
 
     private fun setResultAndFinish(text: String) {
         setResult(RESULT_OK, Intent().apply {
@@ -617,15 +632,85 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
         private const val KEY_NOT_MATCHED_DIALOG_SHOWING = "qr_not_matched_dialog_showing"
         private const val KEY_IMAGE_URI = "qr_crop_image_uri"
         private const val KEY_CROP_NORM = "qr_crop_norm"
-        private const val KEY_CROPPED_FILE_PATH = "key_cropped_file_path"
+        private const val KEY_CROPPED_FILE_PATH = "qr_cropped_file_path"
+        private const val KEY_DECODE_PENDING = "qr_decode_pending"
 
         private const val TAG = "QrScanActivity"
 
+        /**
+         * Intent extra key for specifying a custom title displayed at the top of
+         * the QR scanner UI.
+         *
+         * If not provided, a default localized title (for example, “Scan QR code”)
+         * is shown.
+         *
+         * Type: [String]
+         */
         const val EXTRA_QR_SCANNER_TITLE = "title"
-        const val EXTRA_QR_SCANNER_RESULT = "scan_result"
+
+        /**
+         * Intent extra key that defines a required prefix for accepted QR content.
+         *
+         * When set, only QR codes whose decoded string starts with this prefix
+         * are considered valid.
+         *
+         * Examples:
+         * - `"WIFI:"` to accept only Wi-Fi configuration QR codes
+         * - `"https://"` to accept only secure URLs
+         *
+         * If the scanned content does not start with this prefix, the scan is
+         * treated as a “not matched” result and the scanner continues running.
+         *
+         * Type: [String]
+         */
         const val EXTRA_QR_REQUIRED_PREFIX = "qr_required_prefix"
+
+
+        /**
+         * Intent extra key for supplying a regular expression used to validate
+         * the scanned QR content.
+         *
+         * When provided, the decoded QR string must fully match the given regex.
+         * Partial matches are not accepted.
+         *
+         * If validation fails, the scanner displays a “not matched” error and
+         * resumes scanning.
+         *
+         * The pattern is compiled using Kotlin’s [Regex] class.
+         *
+         * Type: [String]
+         */
         const val EXTRA_QR_REGEX = "qr_regex"
 
+        /**
+         * Intent extra key used to retrieve the decoded QR content from the
+         * activity result.
+         *
+         * When [QrScanActivity] finishes with [android.app.Activity.RESULT_OK],
+         * the result [Intent] will contain the raw QR string under this key.
+         *
+         * Type: [String]
+         */
+        const val EXTRA_QR_SCANNER_RESULT = "scan_result"
+
+        /**
+         * Creates an [Intent] for launching [QrScanActivity] with optional
+         * validation configuration.
+         *
+         * This helper is intended to be used with the Activity Result API
+         * or a custom `ActivityResultContract`.
+         *
+         * @param context Context used to create the intent.
+         * @param title Optional title displayed in the scanner UI.
+         * @param requiredPrefix Optional prefix that the QR content must start with.
+         *                       If the scanned content does not match, it is treated
+         *                       as invalid and scanning continues.
+         * @param regex Optional regular expression that the QR content must fully match.
+         *              If validation fails, the scanner continues scanning.
+         *
+         * @return An [Intent] configured to start [QrScanActivity].
+         */
+        @JvmOverloads
         fun createIntent(
             context: Context,
             title: String? = null,

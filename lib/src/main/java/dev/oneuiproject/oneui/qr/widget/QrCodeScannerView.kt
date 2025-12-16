@@ -51,27 +51,27 @@ import dev.oneuiproject.oneui.qr.widget.internal.AnimatorFactory.defaultScanning
 import dev.oneuiproject.oneui.qr.widget.internal.AnimatorFactory.sineInOut60
 
 /**
- * A custom [ConstraintLayout] that provides a complete UI and logic for scanning QR codes.
+ * A high-level, self-contained UI component for scanning QR codes.
  *
- * This view integrates with CameraX (via [imageAnalyzer]) and ML Kit to perform barcode detection.
- * It handles the visual presentation of the scanning process, including:
- * - A scanning region of interest (ROI) animation (Lottie).
- * - Visual feedback when a QR code is detected (scaling and highlighting the code).
- * - Buttons for toggling the flash and picking an image from the gallery.
- * - Handling static image analysis (e.g., from gallery) with crop support.
- * - Error handling dialogs for failed detection or mismatched content types.
- * - Accessibility support (TalkBack announcements, high contrast modes).
+ * `QrCodeScannerView` encapsulates:
+ * - CameraX frame analysis via [imageAnalyzer]
+ * - QR decoding using ML Kit
+ * - OneUI-styled scanning animations and visual feedback
+ * - Flash and gallery controls
+ * - Static image decoding with optional cropping
+ * - Error handling dialogs for unsupported or failed scans
  *
- * **Usage:**
- * 1. Include this view in your layout XML.
- * 2. In your Activity/Fragment, call [initialize] after the view is created.
- * 3. Bind the [imageAnalyzer] to your CameraX `ImageAnalysis` use case.
- * 4. Implement the [Listener] interface to handle scan results and user interactions.
- * 5. Call [updateOrientation] on configuration changes to rotate UI controls.
+ * The view is designed to be embedded directly in an Activity or Fragment layout.
+ * Host components are responsible for:
  *
- * @see Listener
- * @see initialize
+ * 1. Calling [initialize] once the view is inflated.
+ * 2. Binding [imageAnalyzer] to a CameraX `ImageAnalysis` use case.
+ * 3. Forwarding orientation changes via [updateOrientation].
+ * 4. Implementing [Listener] to receive scan results and UI callbacks.
+ *
+ * This class manages its own internal state transitions and animations.
  */
+
 class QrCodeScannerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -79,22 +79,65 @@ class QrCodeScannerView @JvmOverloads constructor(
     defStyleRes: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr, defStyleRes) {
 
+    /**
+     * Callback interface for receiving scan results and user interactions
+     * from [QrCodeScannerView].
+     *
+     * Implementations typically reside in the hosting Activity or Fragment.
+     */
     interface Listener {
-        fun isAllowClick(): Boolean
-        fun onQRDetected(content: String): Boolean
-        fun onFlashBtnClicked(isActivated: Boolean)
-        fun onGalleryBtnClicked()
         /**
-         * Called when the scanner transitions between:
-         * - live camera mode (isStaticImageMode = false)
-         * - static image / decodedImage mode (isStaticImageMode = true)
+         * Determines whether touch events on the scanner view are allowed.
          *
-         * The Activity can use this to adjust orientation behavior, etc.
+         * This is consulted during [onInterceptTouchEvent].
+         *
+         * @return `true` to allow touches to pass through,
+         *         `false` to consume and block them.
+         */
+        fun isAllowClick(): Boolean
+
+        /**
+         * Called when a QR code has been successfully decoded.
+         *
+         * @param content The decoded QR payload.
+         * @return `true` if the content is accepted and handled.
+         *         Returning `false` triggers a "not supported" error dialog.
+         */
+        fun onQRDetected(content: String): Boolean
+
+        /**
+         * Called when decoding fails for a static input image
+         * (e.g. gallery image or cropped bitmap).
+         */
+        fun onInputImageError()
+
+        /**
+         * Called when the flash toggle button is pressed.
+         *
+         * @param isActivated Current flash state after the toggle.
+         */
+        fun onFlashBtnClicked(isActivated: Boolean)
+
+        /**
+         * Called when the gallery button is pressed.
+         *
+         * The host should launch an image picker and later supply the
+         * selected bitmap via [setInputImage].
+         */
+        fun onGalleryBtnClicked()
+
+        /**
+         * Called when the scanner switches between live camera mode
+         * and static image mode.
+         *
+         * @param isStaticImageMode `true` when decoding a still image,
+         *                          `false` when returning to live scanning.
          */
         fun onStaticImageModeChanged(isStaticImageMode: Boolean)
     }
 
     private var decodedImageBitmap: Bitmap? = null
+    private var listener: Listener? = null
 
     private val qrCodeScanEngine by lazy {
         QrCodeScanEngine(object : QrCodeScanEngine.Listener {
@@ -108,7 +151,10 @@ class QrCodeScannerView @JvmOverloads constructor(
             }
 
             override fun onInputImageError(cause: Exception?) {
-                if (isContextValid()) showDetectErrorDialog()
+                if (isContextValid()) {
+                    showDetectErrorDialog()
+                    listener?.onInputImageError()
+                }
             }
 
             override fun isAnalysisPaused(): Boolean {
@@ -121,11 +167,18 @@ class QrCodeScannerView @JvmOverloads constructor(
         })
     }
 
+    /**
+     * CameraX analyzer used to process frames for QR detection.
+     *
+     * Bind this instance to your `ImageAnalysis` use case:
+     *
+     * ```
+     * imageAnalysis.setAnalyzer(executor, scannerView.imageAnalyzer)
+     * ```
+     */
     val imageAnalyzer by lazy {
         ImageAnalysis.Analyzer { image -> qrCodeScanEngine.analyze(image) }
     }
-
-    private var listener: Listener? = null
 
     private val centerPoint: PointF = PointF()
     internal var detectErrorDialog: AlertDialog? = null
@@ -152,7 +205,6 @@ class QrCodeScannerView @JvmOverloads constructor(
     /** Background for decodedImage */
     private var blackBg: View
     private var guideText: TextView
-    //private var cropOverlay: CropOverlayView
 
     init {
         LayoutInflater.from(context).inflate(R.layout.oui_des_qr_scanner_view, this)
@@ -170,27 +222,16 @@ class QrCodeScannerView @JvmOverloads constructor(
         defaultViewGroup = findViewById(R.id.default_view_group)
         dimBg = findViewById(R.id.dim_bg)
         blackBg = findViewById(R.id.black_bg)
-        //cropOverlay = findViewById(R.id.crop_overlay)
     }
 
     /**
-     * Initializes the scanner UI and prepares the view for live QR scanning.
+     * Initializes the scanner UI and enables QR scanning.
      *
-     * This method is expected to be called once after the view has been inflated and
-     * after the hosting activity binds the CameraX preview and analysis pipelines.
+     * This must be called once after view inflation and before analysis begins.
      *
-     * It performs the following:
-     *
-     * - Sets the guide text shown above the scanning ROI (if provided).
-     * - Configures flash and gallery buttons based on device capabilities.
-     * - Applies accessibility-adjusted UI styling (reduced transparency mode).
-     * - Registers animation listeners for ROI transitions.
-     * - Starts the initial ROI scanning animation.
-     *
-     * @param title               Optional title text to display in the scanning UI.
-     * @param isFlashAvailable    Whether the device's camera hardware supports a flash unit.
-     * @param listener            An implementation of [Listener] used to handle user actions
-     *                            (flash toggle, gallery button click, and validation callback).
+     * @param title Optional guide text displayed above the scanning area.
+     * @param isFlashAvailable Whether the device camera supports flash.
+     * @param listener Callback receiver for scan results and UI actions.
      */
     fun initialize(
         title: CharSequence? = null,
@@ -236,8 +277,8 @@ class QrCodeScannerView @JvmOverloads constructor(
 
         galleryButton.setOnClickListener {
             cancelAnimation()
-            listener.onGalleryBtnClicked()
             listener.onStaticImageModeChanged(true)
+            listener.onGalleryBtnClicked()
         }
 
         roiLottie.addAnimatorListener(object : AnimatorListenerAdapter() {
@@ -252,18 +293,10 @@ class QrCodeScannerView @JvmOverloads constructor(
     }
 
     /**
-     * Pauses or resumes live camera frame analysis.
+     * Pauses or resumes QR analysis and related UI animations.
      *
-     * When `pause = true`:
-     * - The ImageAnalysis analyzer stops forwarding frames to ML Kit.
-     * - No new QR detections will occur.
-     * - Used when opening the gallery picker or while animations/dialogs are active.
-     *
-     * When `pause = false`:
-     * - Live analysis resumes automatically the next time a frame arrives.
-
-     *
-     * @param pause `true` to pause QR analysis, `false` to resume it.
+     * @param pause `true` to stop analysis and hide scanning UI,
+     *              `false` to resume live scanning.
      */
     fun pauseAnalysis(pause: Boolean) {
         if (pause) {
@@ -278,42 +311,33 @@ class QrCodeScannerView @JvmOverloads constructor(
     }
 
     /**
-     * Provides a static image (typically chosen from the gallery) to the scanner view
-     * for offline QR decoding.
+     * Supplies a bitmap for static (non-camera) QR decoding.
      *
-     * This method:
-     * - Clears the current camera UI elements.
-     * - Displays the selected image in the preview area.
-     * - Runs ML Kit barcode detection on the supplied [InputImage].
-     * - Plays the ROI animation, giving a consistent UX whether scanning from camera
-     *   or from gallery.
-     *
-     * Upon successful decoding, [Listener.onQRDetected] is invoked with
-     * `isCameraInput = false`.
-     *
-     * @param image The image chosen from the gallery, wrapped as an [InputImage].
+     * @param image Bitmap to decode.
+     * @param imageRotation Rotation applied to the bitmap in degrees.
+     * @param decodeNow Whether decoding should start immediately.
      */
-    fun setInputImage(image: InputImage) {
+    fun setInputImage(image: Bitmap, imageRotation: Int, decodeNow: Boolean) {
         cancelAnimation()
         listener?.onStaticImageModeChanged(true)
         resetRoiGroup()
         showBlackBackground()
         hideDefaultViewsImmediate()
-        inputImage = image
-        showDecodedImage(image.bitmapInternal!!, image.rotationDegrees)
-        startQrRoiAnimation()
+        showDecodedImage(image, imageRotation, decodeNow)
+        if (decodeNow) {
+            startQrRoiAnimation()
+        }
     }
 
-    fun setInputImageNoDecode(image: Bitmap, imageRotation: Int) {
-        cancelAnimation()
-        listener?.onStaticImageModeChanged(true)
-        resetRoiGroup()
-        showBlackBackground()
-        hideDefaultViewsImmediate()
-        showDecodedImage(image, imageRotation)
-    }
-
-    fun cropAndDecode(cropRectView: RectF) {
+    /**
+     * Crops the currently displayed decoded image and attempts QR decoding
+     * within the cropped region.
+     *
+     * @param cropRectView Crop rectangle in view coordinates.
+     * @param onDecodedImageUpdated Callback invoked after decoded image is updated
+     * to the cropped version.
+     */
+    fun cropAndDecode(cropRectView: RectF, onDecodedImageUpdated: () -> Unit) {
         decodedImage.visibility = INVISIBLE
 
         val bitmap = decodedImageBitmap ?: run {
@@ -323,9 +347,6 @@ class QrCodeScannerView @JvmOverloads constructor(
 
         // Bounds of decodedImage inside this view
         val imageBounds = getDecodedImageBounds() // RectF in view coords
-
-        // Crop rect from overlay (view coords)
-       // val cropRectView = cropOverlay.getCropRect()
 
         // Intersect to be safe
         val effectiveCrop = RectF(cropRectView)
@@ -362,18 +383,65 @@ class QrCodeScannerView @JvmOverloads constructor(
 
         val cropped = Bitmap.createBitmap(bitmap, cropX, cropY, cropW, cropH)
         updateToDecodedImageLayout()
-        inputImage = InputImage.fromBitmap(cropped, 0)
-        showDecodedImage(cropped)
+        showDecodedImage(cropped, true)
         startQrRoiAnimation()
+        onDecodedImageUpdated()
     }
 
+    /**
+     * Clears the currently decoded image and related state.
+     */
+    fun resetDecodedImage() {
+        decodedImage.visibility = INVISIBLE
+        decodedImage.setImageBitmap(null)
+        decodedImage.rotation = 0f
+        decodedImageBitmap = null
+        inputImage = null
+    }
+
+    /**
+     * Displays a black background behind the decoded image.
+     */
+    fun showBlackBackground() {
+        blackBg.alpha = 1.0f
+        blackBg.visibility = VISIBLE
+    }
+
+    /**
+     * Displays a decoded image bitmap.
+     *
+     * @param bitmap Bitmap to display.
+     * @param rotationDegrees Rotation applied before display.
+     * @param updateInputImage Whether this bitmap should be used for decoding.
+     */
+    fun showDecodedImage(bitmap: Bitmap, rotationDegrees: Int, updateInputImage: Boolean = false) {
+        val rotatedBitmap = getRotatedBitmap(bitmap, rotationDegrees)
+        showDecodedImage(rotatedBitmap, updateInputImage)
+    }
+
+    /**
+     * Displays a decoded image bitmap.
+     *
+     * @param bitmap Bitmap to display.
+     * @param updateInputImage Whether this bitmap should be used for decoding.
+     */
+    fun showDecodedImage(bitmap: Bitmap, updateInputImage: Boolean = false) {
+        decodedImageBitmap = bitmap
+        decodedImage.visibility = VISIBLE
+        decodedImage.setImageBitmap(bitmap)
+        if (updateInputImage) {
+            inputImage = InputImage.fromBitmap(bitmap, 0)
+        }
+    }
+
+    /**
+     * Returns the currently displayed decoded bitmap, if any.
+     */
     fun getDecodedImage(): Bitmap? = decodedImageBitmap
 
-    fun setDecodedImage(bitmap: Bitmap) {
-        decodedImageBitmap = bitmap
-        decodedImage.setImageBitmap(bitmap)
-    }
-
+    /**
+     * Returns the bounds of the decoded image within this view's coordinate space.
+     */
     fun getDecodedImageBounds(): RectF = RectF().apply {
         decodedImage.drawable?.let {
             decodedImage.imageMatrix.mapRect(this, RectF(it.bounds))
@@ -381,21 +449,47 @@ class QrCodeScannerView @JvmOverloads constructor(
     }
 
     /**
-     * Updates all UI elements that visually depend on device orientation.
+     * Starts the ROI scanning animation.
      *
-     * Called when the host activity receives orientation updates, allowing the
-     * scanner view to rotate:
+     * Typically called after returning from static image mode or
+     * when resuming live scanning.
+     */
+    fun startQrRoiAnimation() {
+        if (blackBg.isVisible && !decodedImage.isVisible) {
+            blackBg.animate().apply {
+                alpha(0.0f)
+                duration = 100
+                withEndAction {
+                    blackBg.visibility = INVISIBLE
+                    roiLottie.visibility = VISIBLE
+                    roiLottie.playAnimation()
+                }
+            }
+        } else {
+            roiLottie.visibility = VISIBLE
+            roiLottie.playAnimation()
+        }
+    }
+
+    /**
+     * Cancels any running scan or detection animations.
+     */
+    fun cancelAnimation() {
+        qrDetectAnimation?.apply {
+            if (isStarted) cancel()
+        }
+
+        if (isQrRoiAnimating()) {
+            roiLottie.cancelAnimation()
+        }
+    }
+
+    /**
+     * Updates the visual orientation of scanner UI elements.
      *
-     * - Flash button
-     * - Gallery button
-     * - Scanning rectangle
-     * - QR detected image overlay
+     * This does not affect camera output, only overlay UI.
      *
-     * This keeps the OneUI design consistent during device rotation
-     * even though the camera preview itself may be locked or transformed
-     * separately by CameraX.
-     *
-     * @param rotation Rotation angle in degrees to apply to the visual elements.
+     * @param rotation Rotation angle in degrees.
      */
     fun updateOrientation(rotation: Float) {
         this.rotation = rotation
@@ -404,6 +498,70 @@ class QrCodeScannerView @JvmOverloads constructor(
         qrScanningRectangle.rotation = rotation
         qrDetectedImage.rotation = rotation
         updateDecodedImageOrientation(rotation.toInt())
+    }
+
+    /**
+     * Displays a decode failure dialog for static images.
+     */
+    fun showDetectErrorDialog() {
+        listener?.onStaticImageModeChanged(true)
+        detectErrorDialog = AlertDialog.Builder(getContext()).apply {
+            setTitle(R.string.oui_des_qrdialog_decode_error_title)
+            setMessage(R.string.oui_des_qrdialog_decode_error_body)
+            setPositiveButton(android.R.string.ok) { d, _ -> d.dismiss() }
+            setOnDismissListener {
+                detectErrorDialog = null
+                listener?.onStaticImageModeChanged(false)
+                showDefaultViews()
+                resetAndAnimateRoi()
+                qrCodeScanEngine.resumeAnalysis()
+            }
+
+        }.create().apply {
+            seslSetBackgroundBlurEnabled()
+            show()
+        }
+    }
+
+    /**
+     * Displays a dialog indicating the scanned QR content
+     * does not match the expected type.
+     */
+    fun showNotMatchedRequestedScanTypeErrorDialog() {
+        listener?.onStaticImageModeChanged(true)
+        notMatchedScanTypeErrorDialog = AlertDialog.Builder(getContext()).apply {
+            setTitle(R.string.oui_des_qrdialog_not_matched_request_type_error_title)
+            setMessage(R.string.oui_des_qrdialog_not_matched_request_type_error_body)
+            setPositiveButton(android.R.string.ok) { d, _ -> d.dismiss() }
+            setOnDismissListener {
+                notMatchedScanTypeErrorDialog = null
+                listener?.onStaticImageModeChanged(false)
+                showDefaultViews()
+                resetAndAnimateRoi()
+                qrCodeScanEngine.resumeAnalysis()
+            }
+        }.create().apply {
+            seslSetBackgroundBlurEnabled()
+            show()
+        }
+    }
+
+    /**
+     * @return `true` if a decode error dialog is currently visible.
+     */
+    fun isErrorDialogShowing(): Boolean = detectErrorDialog?.isShowing() == true
+
+    /**
+     * @return `true` if a "not matched" error dialog is currently visible.
+     */
+    fun isNotMatchedDialogShowing(): Boolean = notMatchedScanTypeErrorDialog?.isShowing() == true
+
+    /**
+     * Dismisses any currently displayed error dialogs.
+     */
+    fun dismissDialog() {
+        detectErrorDialog?.dismiss()
+        notMatchedScanTypeErrorDialog?.dismiss()
     }
 
     private fun getDetectedImageRect(rectF: RectF): RectF {
@@ -571,15 +729,6 @@ class QrCodeScannerView @JvmOverloads constructor(
         )
     }
 
-    fun cancelAnimation() {
-        qrDetectAnimation?.apply {
-            if (isStarted) cancel()
-        }
-
-        if (isQrRoiAnimating()) {
-            roiLottie.cancelAnimation()
-        }
-    }
 
     fun hideDefaultViewsImmediate() {
         defaultViewGroup.animate().cancel()
@@ -600,11 +749,6 @@ class QrCodeScannerView @JvmOverloads constructor(
     private fun disableGalleryButton(disable: Boolean) {
         galleryButton.isClickable = !disable
         galleryButton.alpha = if (disable) 0.45f else 1.0f
-    }
-
-    fun dismissDialog() {
-        detectErrorDialog?.dismiss()
-        notMatchedScanTypeErrorDialog?.dismiss()
     }
 
     private fun hideDefaultViews() {
@@ -668,7 +812,7 @@ class QrCodeScannerView @JvmOverloads constructor(
     }
 
 
-    private fun updateToDecodedImageLayout() {
+    fun updateToDecodedImageLayout() {
         roiGroup.updateLayoutParams<ConstraintLayout.LayoutParams> {
             topToTop = PARENT_ID
             bottomToBottom = PARENT_ID
@@ -745,22 +889,6 @@ class QrCodeScannerView @JvmOverloads constructor(
         AnimatorFactory.alpha(qrImageGroup, 1.0f, 0.0f, 100).start()
     }
 
-    fun startQrRoiAnimation() {
-        if (blackBg.isVisible && !decodedImage.isVisible) {
-            blackBg.animate().apply {
-                alpha(0.0f)
-                duration = 100
-                withEndAction {
-                    blackBg.visibility = INVISIBLE
-                    roiLottie.visibility = VISIBLE
-                    roiLottie.playAnimation()
-                }
-            }
-        } else {
-            roiLottie.visibility = VISIBLE
-            roiLottie.playAnimation()
-        }
-    }
 
     private fun isContextValid(): Boolean {
         val ctx = context
@@ -813,57 +941,6 @@ class QrCodeScannerView @JvmOverloads constructor(
         }
     }
 
-    fun showDetectErrorDialog() {
-        listener?.onStaticImageModeChanged(true)
-        detectErrorDialog = AlertDialog.Builder(getContext()).apply {
-            setTitle(R.string.oui_des_qrdialog_decode_error_title)
-            setMessage(R.string.oui_des_qrdialog_decode_error_body)
-            setPositiveButton(android.R.string.ok) { d, _ -> d.dismiss() }
-            setOnDismissListener {
-                detectErrorDialog = null
-                listener?.onStaticImageModeChanged(false)
-                showDefaultViews()
-                resetAndAnimateRoi()
-                qrCodeScanEngine.resumeAnalysis()
-            }
-
-        }.create().apply {
-            seslSetBackgroundBlurEnabled()
-            show()
-        }
-    }
-
-    fun showNotMatchedRequestedScanTypeErrorDialog() {
-       listener?.onStaticImageModeChanged(true)
-        notMatchedScanTypeErrorDialog = AlertDialog.Builder(getContext()).apply {
-            setTitle(R.string.oui_des_qrdialog_not_matched_request_type_error_title)
-            setMessage(R.string.oui_des_qrdialog_not_matched_request_type_error_body)
-            setPositiveButton(android.R.string.ok) { d, _ -> d.dismiss() }
-            setOnDismissListener {
-                notMatchedScanTypeErrorDialog = null
-                listener?.onStaticImageModeChanged(false)
-                showDefaultViews()
-                resetAndAnimateRoi()
-                qrCodeScanEngine.resumeAnalysis()
-            }
-        }.create().apply {
-            seslSetBackgroundBlurEnabled()
-            show()
-        }
-    }
-
-    /**
-     * Completely resets the scanner UI state.
-     *
-     * This method:
-     * - Clears the dimmed background and hides the decoded image preview.
-     * - Resets the ROI group position, scaling, and visibility.
-     * - Hides QR result overlays and transitions.
-     * - Leaves the view ready to restart scanning animations.
-     *
-     * This does *not* resume or pause analysis. Call [showLiveViews] separately
-     * if needed.
-     */
     private fun resetView() {
         dimBg.alpha = 0.0f
         resetDecodedImage()
@@ -874,30 +951,6 @@ class QrCodeScannerView @JvmOverloads constructor(
     private fun resetAndAnimateRoi() {
         resetView()
         startQrRoiAnimation()
-    }
-
-    fun resetDecodedImage() {
-        decodedImage.visibility = INVISIBLE
-        decodedImage.setImageBitmap(null)
-        decodedImage.rotation = 0f
-        decodedImageBitmap = null
-        inputImage = null
-    }
-
-    fun showBlackBackground() {
-        blackBg.alpha = 1.0f
-        blackBg.visibility = VISIBLE
-    }
-
-    fun showDecodedImage(bitmap: Bitmap, rotationDegrees: Int) {
-        val rotatedBitmap = getRotatedBitmap(bitmap, rotationDegrees)
-        showDecodedImage(rotatedBitmap)
-    }
-
-    fun showDecodedImage(bitmap: Bitmap) {
-        decodedImageBitmap = bitmap
-        decodedImage.visibility = VISIBLE
-        decodedImage.setImageBitmap(bitmap)
     }
 
     private fun getTargetRectForDecodedImage(
@@ -958,9 +1011,5 @@ class QrCodeScannerView @JvmOverloads constructor(
             RectF()
         }
     }
-
-    fun isErrorDialogShowing(): Boolean = detectErrorDialog?.isShowing() == true
-    fun isNotMatchedDialogShowing(): Boolean = notMatchedScanTypeErrorDialog?.isShowing() == true
-
 }
 

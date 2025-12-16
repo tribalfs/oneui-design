@@ -188,5 +188,7 @@
     <dimen name="oui_des_qr_scanner_roi_top_margin">6dp</dimen>
     <dimen name="oui_des_qr_scanner_roi_width">330dp</dimen>
     <dimen name="oui_des_qr_scanner_scanning_rect_radius">4dp</dimen>
-
+    <dimen name="oui_des_qr_scanner_btn_bottom_margin">118dp</dimen>
+    <dimen name="oui_des_qr_scanner_btn_horizontal_margin">75dp</dimen>
+    <dimen name="oui_des_qr_scanner_btn_size">60dp</dimen>
 </resources>

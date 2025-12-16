@@ -61,7 +61,6 @@ internal class QrCodeScanEngine(
             imageProxy.toFrameBitmap()
         } catch (e: Exception) {
             imageProxy.close()
-            listener.onInputImageError(e)
             return
         }
 
@@ -85,12 +84,8 @@ internal class QrCodeScanEngine(
                     // prevent duplicate callbacks until explicitly reset
                     pauseAnalysis.set(true)
                 },
-                onError = { e ->
-                    listener.onInputImageError(e)
-                },
-                onFinally = {
-                    imageProxy.close()
-                }
+                onError = { e -> },
+                onFinally = { imageProxy.close() }
             )
     }
 

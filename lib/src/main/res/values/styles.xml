@@ -352,4 +352,9 @@
         <item name="android:layout_width">156dp</item>
     </style>
 
+    <style name="OneUI.QRScannerBottomNavigationView" parent="@style/Widget.Design.BottomNavigationView.Text">
+        <item name="android:background">#ff000000</item>
+        <item name="itemTextColor">@color/sesl_text1_dark</item>
+    </style>
+
 </resources>

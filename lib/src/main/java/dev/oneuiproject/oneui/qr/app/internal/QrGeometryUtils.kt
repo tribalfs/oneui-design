@@ -8,7 +8,7 @@ import kotlin.math.atan2
 import kotlin.math.hypot
 
 
-fun distance(ax: Float, ay: Float, bx: Float, by: Float): Float {
+internal fun distance(ax: Float, ay: Float, bx: Float, by: Float): Float {
     val dx = bx - ax
     val dy = by - ay
     return hypot(dx, dy)

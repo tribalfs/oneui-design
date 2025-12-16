@@ -9,7 +9,7 @@ import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
-class CropOverlayView @JvmOverloads constructor(
+internal class CropOverlayView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -191,9 +191,9 @@ class CropOverlayView @JvmOverloads constructor(
         if (!initialized || cropRect.isEmpty) return
 
         clipPath.reset()
-        clipPath.fillType = Path.FillType.EVEN_ODD
+        clipPath.fillType = Path.FillType.WINDING
         clipPath.addRect(0f, 0f, width.toFloat(), height.toFloat(), Path.Direction.CW)
-        clipPath.addRect(cropRect, Path.Direction.CW)
+        clipPath.addRect(cropRect, Path.Direction.CCW)
         canvas.drawPath(clipPath, dimPaint)
 
         val inset = max(0f, (handleStrokeWidth - frameStrokeWidth) / 2f)
