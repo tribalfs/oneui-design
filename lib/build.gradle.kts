@@ -32,6 +32,7 @@ dependencies {
     implementation(libs.rikka.refineRuntime)
     implementation(libs.androidx.datastore.preferences.core)
     implementation(libs.androidx.preference.ktx)
+    implementation(libs.androidx.activityKtx)
 
     compileOnly(project(":stub"))
 

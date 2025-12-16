@@ -1,7 +1,7 @@
 [versions]
 androidLint = "31.13.0"
 android-gradle = "8.13.0"
-androidx-activityKtx="1.11.0"
+androidx-activity="1.11.0"
 androidx-annotation = "1.9.1"
 androidx-constraintlayout="2.2.1"
 androidx-datastore = "1.1.7"
@@ -42,7 +42,7 @@ zxing-core = "3.5.3"
 
 [libraries]
 androidLintApi = { module = "com.android.tools.lint:lint-api", version.ref = "androidLint" }
-androidx-activityKtx = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activityKtx" }
+androidx-activityKtx = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }
 androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraVersion" }
 androidx-camera-core = { module = "androidx.camera:camera-core", version.ref = "cameraVersion" }
