@@ -24,7 +24,7 @@ class SettingsRepo @Inject constructor(@ApplicationContext appCtx: Context) {
         return dataStore.data.map {
             determineDarkMode(
                 it[darkModePrefKey] ?: "0",
-                it[autoDarkModePrefKey] == true
+                it[autoDarkModePrefKey] != false
             )
         }
     }
