@@ -108,7 +108,7 @@
   <div class="breadcrumbs"><a href="../../../index.html">oneui-design</a><span class="delimiter">/</span><a href="../index.html">dev.oneuiproject.oneui.qr.widget</a><span class="delimiter">/</span><span class="current">QrCodeScannerView</span></div>
   <div class="cover ">
     <h1 class="cover"><span>Qr</span><wbr></wbr><span>Code</span><wbr></wbr><span>Scanner</span><wbr></wbr><span><span>View</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">QrCodeScannerView</a> <span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a> </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">defStyleAttr<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter ">defStyleRes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></span></span><span class="token punctuation">)</span> : <a href="https://developer.android.com/reference/kotlin/androidx/constraintlayout/widget/ConstraintLayout.html">ConstraintLayout</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/tribalfs/oneui-design/blob/main/lib/src/main/java/dev/oneuiproject/oneui/qr/widget/QrCodeScannerView.kt#L75">source</a>)</span></span></div><p class="paragraph">A custom <a href="https://developer.android.com/reference/kotlin/androidx/constraintlayout/widget/ConstraintLayout.html">ConstraintLayout</a> that provides a complete UI and logic for scanning QR codes.</p><p class="paragraph">This view integrates with CameraX (via <a href="image-analyzer.html">imageAnalyzer</a>) and ML Kit to perform barcode detection. It handles the visual presentation of the scanning process, including:</p><ul><li><p class="paragraph">A scanning region of interest (ROI) animation (Lottie).</p></li><li><p class="paragraph">Visual feedback when a QR code is detected (scaling and highlighting the code).</p></li><li><p class="paragraph">Buttons for toggling the flash and picking an image from the gallery.</p></li><li><p class="paragraph">Handling static image analysis (e.g., from gallery) with crop support.</p></li><li><p class="paragraph">Error handling dialogs for failed detection or mismatched content types.</p></li><li><p class="paragraph">Accessibility support (TalkBack announcements, high contrast modes).</p></li></ul><p class="paragraph"><strong>Usage:</strong></p><ol><li><p class="paragraph">Include this view in your layout XML.</p></li><li><p class="paragraph">In your Activity/Fragment, call <a href="initialize.html">initialize</a> after the view is created.</p></li><li><p class="paragraph">Bind the <a href="image-analyzer.html">imageAnalyzer</a> to your CameraX <code class="lang-kotlin">ImageAnalysis</code> use case.</p></li><li><p class="paragraph">Implement the <a href="-listener/index.html">Listener</a> interface to handle scan results and user interactions.</p></li><li><p class="paragraph">Call <a href="update-orientation.html">updateOrientation</a> on configuration changes to rotate UI controls.</p></li></ol><h4 class="">See also</h4><div class="table"><div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-listener/index.html"><span>Qr</span><wbr></wbr><span>Code</span><wbr></wbr><span>Scanner</span><wbr></wbr><span>View.</span><wbr></wbr><span>Listener</span></a></div></span></div><div></div></div></div><div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="initialize.html"><span>Qr</span><wbr></wbr><span>Code</span><wbr></wbr><span>Scanner</span><wbr></wbr><span>View.</span><wbr></wbr><span>initialize</span></a></div></span></div><div></div></div></div></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">QrCodeScannerView</a> <span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a> </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">defStyleAttr<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter ">defStyleRes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></span></span><span class="token punctuation">)</span> : <a href="https://developer.android.com/reference/kotlin/androidx/constraintlayout/widget/ConstraintLayout.html">ConstraintLayout</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/tribalfs/oneui-design/blob/main/lib/src/main/java/dev/oneuiproject/oneui/qr/widget/QrCodeScannerView.kt#L75">source</a>)</span></span></div><p class="paragraph">A high-level, self-contained UI component for scanning QR codes.</p><p class="paragraph"><code class="lang-kotlin">QrCodeScannerView</code> encapsulates:</p><ul><li><p class="paragraph">CameraX frame analysis via <a href="image-analyzer.html">imageAnalyzer</a></p></li><li><p class="paragraph">QR decoding using ML Kit</p></li><li><p class="paragraph">OneUI-styled scanning animations and visual feedback</p></li><li><p class="paragraph">Flash and gallery controls</p></li><li><p class="paragraph">Static image decoding with optional cropping</p></li><li><p class="paragraph">Error handling dialogs for unsupported or failed scans</p></li></ul><p class="paragraph">The view is designed to be embedded directly in an Activity or Fragment layout. Host components are responsible for:</p><ol><li><p class="paragraph">Calling <a href="initialize.html">initialize</a> once the view is inflated.</p></li><li><p class="paragraph">Binding <a href="image-analyzer.html">imageAnalyzer</a> to a CameraX <code class="lang-kotlin">ImageAnalysis</code> use case.</p></li><li><p class="paragraph">Forwarding orientation changes via <a href="update-orientation.html">updateOrientation</a>.</p></li><li><p class="paragraph">Implementing <a href="-listener/index.html">Listener</a> to receive scan results and UI callbacks.</p></li></ol><p class="paragraph">This class manages its own internal state transitions and animations.</p></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
@@ -144,7 +144,7 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-listener/index.html">Listener</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-listener/index.html">Listener</a></div><div class="brief "><p class="paragraph">Callback interface for receiving scan results and user interactions from <a href="index.html">QrCodeScannerView</a>.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -163,7 +163,7 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="image-analyzer.html">imageAnalyzer</a><span class="token operator">: </span><span data-unresolved-link="/&amp;lt;Error class: unknown class&amp;gt;///PointingToDeclaration/">&lt;Error class: unknown class&gt;</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="image-analyzer.html">imageAnalyzer</a><span class="token operator">: </span><span data-unresolved-link="/&amp;lt;Error class: unknown class&amp;gt;///PointingToDeclaration/">&lt;Error class: unknown class&gt;</span></div><div class="brief "><p class="paragraph">CameraX analyzer used to process frames for QR detection.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -182,22 +182,22 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="cancel-animation.html"><span class="token function">cancelAnimation</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="cancel-animation.html"><span class="token function">cancelAnimation</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Cancels any running scan or detection animations.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="590690892%2FFunctions%2F1915391025" anchor-label="cropAndDecode" id="590690892%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+<a data-name="1865078515%2FFunctions%2F1915391025" anchor-label="cropAndDecode" id="1865078515%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
           <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="crop-and-decode.html"><span>crop</span><wbr></wbr><span>And</span><wbr></wbr><span><span>Decode</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="590690892%2FFunctions%2F1915391025"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1865078515%2FFunctions%2F1915391025"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="crop-and-decode.html"><span class="token function">cropAndDecode</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">cropRectView<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/RectF.html">RectF</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="crop-and-decode.html"><span class="token function">cropAndDecode</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">cropRectView<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/RectF.html">RectF</a><span class="token punctuation">, </span></span><span class="parameter ">onDecodedImageUpdated<span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Crops the currently displayed decoded image and attempts QR decoding within the cropped region.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -212,7 +212,7 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="dismiss-dialog.html"><span class="token function">dismissDialog</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="dismiss-dialog.html"><span class="token function">dismissDialog</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Dismisses any currently displayed error dialogs.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -227,7 +227,7 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="get-decoded-image.html"><span class="token function">getDecodedImage</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/Bitmap.html">Bitmap</a><span class="token operator">?</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="get-decoded-image.html"><span class="token function">getDecodedImage</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/Bitmap.html">Bitmap</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Returns the currently displayed decoded bitmap, if any.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -242,7 +242,7 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="get-decoded-image-bounds.html"><span class="token function">getDecodedImageBounds</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/RectF.html">RectF</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="get-decoded-image-bounds.html"><span class="token function">getDecodedImageBounds</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/RectF.html">RectF</a></div><div class="brief "><p class="paragraph">Returns the bounds of the decoded image within this view's coordinate space.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -272,7 +272,7 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="initialize.html"><span class="token function">initialize</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">title<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-char-sequence/index.html">CharSequence</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">isFlashAvailable<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter ">listener<span class="token operator">: </span><a href="-listener/index.html">QrCodeScannerView.Listener</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Initializes the scanner UI and prepares the view for live QR scanning.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="initialize.html"><span class="token function">initialize</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">title<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-char-sequence/index.html">CharSequence</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">isFlashAvailable<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter ">listener<span class="token operator">: </span><a href="-listener/index.html">QrCodeScannerView.Listener</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Initializes the scanner UI and enables QR scanning.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -347,7 +347,7 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="pause-analysis.html"><span class="token function">pauseAnalysis</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">pause<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Pauses or resumes live camera frame analysis.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="pause-analysis.html"><span class="token function">pauseAnalysis</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">pause<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Pauses or resumes QR analysis and related UI animations.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -362,52 +362,22 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="reset-decoded-image.html"><span class="token function">resetDecodedImage</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="reset-decoded-image.html"><span class="token function">resetDecodedImage</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Clears the currently decoded image and related state.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="963528983%2FFunctions%2F1915391025" anchor-label="setDecodedImage" id="963528983%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
-          <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="set-decoded-image.html"><span>set</span><wbr></wbr><span>Decoded</span><wbr></wbr><span><span>Image</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="963528983%2FFunctions%2F1915391025"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="set-decoded-image.html"><span class="token function">setDecodedImage</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">bitmap<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/Bitmap.html">Bitmap</a></span></span><span class="token punctuation">)</span></div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="-584173047%2FFunctions%2F1915391025" anchor-label="setInputImage" id="-584173047%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+<a data-name="1484238026%2FFunctions%2F1915391025" anchor-label="setInputImage" id="1484238026%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
           <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-input-image.html"><span>set</span><wbr></wbr><span>Input</span><wbr></wbr><span><span>Image</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-584173047%2FFunctions%2F1915391025"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1484238026%2FFunctions%2F1915391025"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="set-input-image.html"><span class="token function">setInputImage</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">image<span class="token operator">: </span><span data-unresolved-link="com.google.mlkit.vision.common/InputImage///PointingToDeclaration/">InputImage</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Provides a static image (typically chosen from the gallery) to the scanner view for offline QR decoding.</p></div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="1005920235%2FFunctions%2F1915391025" anchor-label="setInputImageNoDecode" id="1005920235%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
-          <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="set-input-image-no-decode.html"><span>set</span><wbr></wbr><span>Input</span><wbr></wbr><span>Image</span><wbr></wbr><span>No</span><wbr></wbr><span><span>Decode</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1005920235%2FFunctions%2F1915391025"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="set-input-image-no-decode.html"><span class="token function">setInputImageNoDecode</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">image<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/Bitmap.html">Bitmap</a><span class="token punctuation">, </span></span><span class="parameter ">imageRotation<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="set-input-image.html"><span class="token function">setInputImage</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">image<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/Bitmap.html">Bitmap</a><span class="token punctuation">, </span></span><span class="parameter ">imageRotation<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">decodeNow<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Supplies a bitmap for static (non-camera) QR decoding.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -422,22 +392,22 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="show-black-background.html"><span class="token function">showBlackBackground</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="show-black-background.html"><span class="token function">showBlackBackground</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Displays a black background behind the decoded image.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1856447291%2FFunctions%2F1915391025" anchor-label="showDecodedImage" id="1856447291%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+<a data-name="320072699%2FFunctions%2F1915391025" anchor-label="showDecodedImage" id="320072699%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
           <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="show-decoded-image.html"><span>show</span><wbr></wbr><span>Decoded</span><wbr></wbr><span><span>Image</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1856447291%2FFunctions%2F1915391025"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="320072699%2FFunctions%2F1915391025"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="show-decoded-image.html"><span class="token function">showDecodedImage</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">bitmap<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/Bitmap.html">Bitmap</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="show-decoded-image.html"><span class="token function">showDecodedImage</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">bitmap<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/Bitmap.html">Bitmap</a><span class="token punctuation">, </span></span><span class="parameter ">rotationDegrees<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="show-decoded-image.html"><span class="token function">showDecodedImage</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">bitmap<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/Bitmap.html">Bitmap</a><span class="token punctuation">, </span></span><span class="parameter ">updateInputImage<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="show-decoded-image.html"><span class="token function">showDecodedImage</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">bitmap<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/Bitmap.html">Bitmap</a><span class="token punctuation">, </span></span><span class="parameter ">rotationDegrees<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">updateInputImage<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Displays a decoded image bitmap.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -452,7 +422,7 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="show-detect-error-dialog.html"><span class="token function">showDetectErrorDialog</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="show-detect-error-dialog.html"><span class="token function">showDetectErrorDialog</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Displays a decode failure dialog for static images.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -467,7 +437,7 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="show-not-matched-requested-scan-type-error-dialog.html"><span class="token function">showNotMatchedRequestedScanTypeErrorDialog</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="show-not-matched-requested-scan-type-error-dialog.html"><span class="token function">showNotMatchedRequestedScanTypeErrorDialog</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Displays a dialog indicating the scanned QR content does not match the expected type.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -482,7 +452,7 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="start-qr-roi-animation.html"><span class="token function">startQrRoiAnimation</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="start-qr-roi-animation.html"><span class="token function">startQrRoiAnimation</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Starts the ROI scanning animation.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -497,7 +467,22 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="update-orientation.html"><span class="token function">updateOrientation</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">rotation<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Updates all UI elements that visually depend on device orientation.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="update-orientation.html"><span class="token function">updateOrientation</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">rotation<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Updates the visual orientation of scanner UI elements.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-849122456%2FFunctions%2F1915391025" anchor-label="updateToDecodedImageLayout" id="-849122456%2FFunctions%2F1915391025" data-filterable-set=":oneui-design/main"></a>
+          <div class="table-row" data-filterable-current=":oneui-design/main" data-filterable-set=":oneui-design/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="update-to-decoded-image-layout.html"><span>update</span><wbr></wbr><span>To</span><wbr></wbr><span>Decoded</span><wbr></wbr><span>Image</span><wbr></wbr><span><span>Layout</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-849122456%2FFunctions%2F1915391025"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":oneui-design/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="update-to-decoded-image-layout.html"><span class="token function">updateToDecodedImageLayout</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>

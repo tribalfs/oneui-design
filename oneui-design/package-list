@@ -659,29 +659,6 @@ $dokka.location:dev.oneuiproject.oneui.preference/UpdatableWidgetPreference/Upda
 $dokka.location:dev.oneuiproject.oneui.preference/UpdatableWidgetPreference/onBindViewHolder/#androidx.preference.PreferenceViewHolder/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.preference/-updatable-widget-preference/on-bind-view-holder.html
 $dokka.location:dev.oneuiproject.oneui.preference/UpdatableWidgetPreference/setWidgetLayoutResource/#kotlin.Int/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.preference/-updatable-widget-preference/set-widget-layout-resource.html
 $dokka.location:dev.oneuiproject.oneui.preference/UpdatableWidgetPreference/showWidget/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.preference/-updatable-widget-preference/show-widget.html
-$dokka.location:dev.oneuiproject.oneui.qr.app.internal////PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app.internal/index.html
-$dokka.location:dev.oneuiproject.oneui.qr.app.internal//distance/#kotlin.Float#kotlin.Float#kotlin.Float#kotlin.Float/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app.internal/distance.html
-$dokka.location:dev.oneuiproject.oneui.qr.app.internal//observeOnce/androidx.lifecycle.LiveData[TypeParam(bounds=[kotlin.Any])]#androidx.lifecycle.LifecycleOwner#kotlin.Function1[TypeParam(bounds=[kotlin.Any]),kotlin.Boolean]/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app.internal/observe-once.html
-$dokka.location:dev.oneuiproject.oneui.qr.app.internal/CropOverlayView.NormRect///PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app.internal/-crop-overlay-view/-norm-rect/index.html
-$dokka.location:dev.oneuiproject.oneui.qr.app.internal/CropOverlayView.NormRect/NormRect/#kotlin.Float#kotlin.Float#kotlin.Float#kotlin.Float/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app.internal/-crop-overlay-view/-norm-rect/-norm-rect.html
-$dokka.location:dev.oneuiproject.oneui.qr.app.internal/CropOverlayView.NormRect/b/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app.internal/-crop-overlay-view/-norm-rect/b.html
-$dokka.location:dev.oneuiproject.oneui.qr.app.internal/CropOverlayView.NormRect/clamp/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app.internal/-crop-overlay-view/-norm-rect/clamp.html
-$dokka.location:dev.oneuiproject.oneui.qr.app.internal/CropOverlayView.NormRect/isValid/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app.internal/-crop-overlay-view/-norm-rect/is-valid.html
-$dokka.location:dev.oneuiproject.oneui.qr.app.internal/CropOverlayView.NormRect/l/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app.internal/-crop-overlay-view/-norm-rect/l.html
-$dokka.location:dev.oneuiproject.oneui.qr.app.internal/CropOverlayView.NormRect/r/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app.internal/-crop-overlay-view/-norm-rect/r.html
-$dokka.location:dev.oneuiproject.oneui.qr.app.internal/CropOverlayView.NormRect/t/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app.internal/-crop-overlay-view/-norm-rect/t.html
-$dokka.location:dev.oneuiproject.oneui.qr.app.internal/CropOverlayView///PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app.internal/-crop-overlay-view/index.html
-$dokka.location:dev.oneuiproject.oneui.qr.app.internal/CropOverlayView/CropOverlayView/#android.content.Context#android.util.AttributeSet?#kotlin.Int/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app.internal/-crop-overlay-view/-crop-overlay-view.html
-$dokka.location:dev.oneuiproject.oneui.qr.app.internal/CropOverlayView/getCropRect/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app.internal/-crop-overlay-view/get-crop-rect.html
-$dokka.location:dev.oneuiproject.oneui.qr.app.internal/CropOverlayView/getCropRectNormalized/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app.internal/-crop-overlay-view/get-crop-rect-normalized.html
-$dokka.location:dev.oneuiproject.oneui.qr.app.internal/CropOverlayView/onTouchEvent/#android.view.MotionEvent/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app.internal/-crop-overlay-view/on-touch-event.html
-$dokka.location:dev.oneuiproject.oneui.qr.app.internal/CropOverlayView/reset/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app.internal/-crop-overlay-view/reset.html
-$dokka.location:dev.oneuiproject.oneui.qr.app.internal/CropOverlayView/setImageBounds/#android.graphics.RectF#dev.oneuiproject.oneui.qr.app.internal.CropOverlayView.NormRect?/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app.internal/-crop-overlay-view/set-image-bounds.html
-$dokka.location:dev.oneuiproject.oneui.qr.app.internal/OrientationHysteresis.Companion///PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app.internal/-orientation-hysteresis/-companion/index.html
-$dokka.location:dev.oneuiproject.oneui.qr.app.internal/OrientationHysteresis.Companion/ORIENTATION_UNKNOWN/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app.internal/-orientation-hysteresis/-companion/-o-r-i-e-n-t-a-t-i-o-n_-u-n-k-n-o-w-n.html
-$dokka.location:dev.oneuiproject.oneui.qr.app.internal/OrientationHysteresis///PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app.internal/-orientation-hysteresis/index.html
-$dokka.location:dev.oneuiproject.oneui.qr.app.internal/OrientationHysteresis/OrientationHysteresis/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app.internal/-orientation-hysteresis/-orientation-hysteresis.html
-$dokka.location:dev.oneuiproject.oneui.qr.app.internal/OrientationHysteresis/update/#kotlin.Int/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app.internal/-orientation-hysteresis/update.html
 $dokka.location:dev.oneuiproject.oneui.qr.app////PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app/index.html
 $dokka.location:dev.oneuiproject.oneui.qr.app/QrScanActivity.Companion///PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app/-qr-scan-activity/-companion/index.html
 $dokka.location:dev.oneuiproject.oneui.qr.app/QrScanActivity.Companion/EXTRA_QR_REGEX/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app/-qr-scan-activity/-companion/-e-x-t-r-a_-q-r_-r-e-g-e-x.html
@@ -691,11 +668,11 @@ $dokka.location:dev.oneuiproject.oneui.qr.app/QrScanActivity.Companion/EXTRA_QR_
 $dokka.location:dev.oneuiproject.oneui.qr.app/QrScanActivity.Companion/createIntent/#android.content.Context#kotlin.String?#kotlin.String?#kotlin.String?/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app/-qr-scan-activity/-companion/create-intent.html
 $dokka.location:dev.oneuiproject.oneui.qr.app/QrScanActivity///PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app/-qr-scan-activity/index.html
 $dokka.location:dev.oneuiproject.oneui.qr.app/QrScanActivity/QrScanActivity/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app/-qr-scan-activity/-qr-scan-activity.html
-$dokka.location:dev.oneuiproject.oneui.qr.app/QrScanActivity/getGalleryIntentForQrScanner/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app/-qr-scan-activity/get-gallery-intent-for-qr-scanner.html
 $dokka.location:dev.oneuiproject.oneui.qr.app/QrScanActivity/isAllowClick/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app/-qr-scan-activity/is-allow-click.html
 $dokka.location:dev.oneuiproject.oneui.qr.app/QrScanActivity/onConfigurationChanged/#android.content.res.Configuration/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app/-qr-scan-activity/on-configuration-changed.html
 $dokka.location:dev.oneuiproject.oneui.qr.app/QrScanActivity/onFlashBtnClicked/#kotlin.Boolean/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app/-qr-scan-activity/on-flash-btn-clicked.html
 $dokka.location:dev.oneuiproject.oneui.qr.app/QrScanActivity/onGalleryBtnClicked/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app/-qr-scan-activity/on-gallery-btn-clicked.html
+$dokka.location:dev.oneuiproject.oneui.qr.app/QrScanActivity/onInputImageError/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app/-qr-scan-activity/on-input-image-error.html
 $dokka.location:dev.oneuiproject.oneui.qr.app/QrScanActivity/onQRDetected/#kotlin.String/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app/-qr-scan-activity/on-q-r-detected.html
 $dokka.location:dev.oneuiproject.oneui.qr.app/QrScanActivity/onStaticImageModeChanged/#kotlin.Boolean/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app/-qr-scan-activity/on-static-image-mode-changed.html
 $dokka.location:dev.oneuiproject.oneui.qr.app/QrScanConfig///PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.app/-qr-scan-config/index.html
@@ -722,12 +699,13 @@ $dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView.Listener///Po
 $dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView.Listener/isAllowClick/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/-listener/is-allow-click.html
 $dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView.Listener/onFlashBtnClicked/#kotlin.Boolean/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/-listener/on-flash-btn-clicked.html
 $dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView.Listener/onGalleryBtnClicked/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/-listener/on-gallery-btn-clicked.html
+$dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView.Listener/onInputImageError/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/-listener/on-input-image-error.html
 $dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView.Listener/onQRDetected/#kotlin.String/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/-listener/on-q-r-detected.html
 $dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView.Listener/onStaticImageModeChanged/#kotlin.Boolean/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/-listener/on-static-image-mode-changed.html
 $dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView///PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/index.html
 $dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView/QrCodeScannerView/#android.content.Context#android.util.AttributeSet?#kotlin.Int#kotlin.Int/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/-qr-code-scanner-view.html
 $dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView/cancelAnimation/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/cancel-animation.html
-$dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView/cropAndDecode/#android.graphics.RectF/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/crop-and-decode.html
+$dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView/cropAndDecode/#android.graphics.RectF#kotlin.Function0[kotlin.Unit]/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/crop-and-decode.html
 $dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView/dismissDialog/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/dismiss-dialog.html
 $dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView/getDecodedImage/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/get-decoded-image.html
 $dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView/getDecodedImageBounds/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/get-decoded-image-bounds.html
@@ -740,16 +718,15 @@ $dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView/isQrRoiAnimat
 $dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView/onInterceptTouchEvent/#android.view.MotionEvent/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/on-intercept-touch-event.html
 $dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView/pauseAnalysis/#kotlin.Boolean/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/pause-analysis.html
 $dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView/resetDecodedImage/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/reset-decoded-image.html
-$dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView/setDecodedImage/#android.graphics.Bitmap/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/set-decoded-image.html
-$dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView/setInputImage/#com.google.mlkit.vision.common.InputImage/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/set-input-image.html
-$dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView/setInputImageNoDecode/#android.graphics.Bitmap#kotlin.Int/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/set-input-image-no-decode.html
+$dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView/setInputImage/#android.graphics.Bitmap#kotlin.Int#kotlin.Boolean/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/set-input-image.html
 $dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView/showBlackBackground/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/show-black-background.html
-$dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView/showDecodedImage/#android.graphics.Bitmap#kotlin.Int/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/show-decoded-image.html
-$dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView/showDecodedImage/#android.graphics.Bitmap/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/show-decoded-image.html
+$dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView/showDecodedImage/#android.graphics.Bitmap#kotlin.Boolean/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/show-decoded-image.html
+$dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView/showDecodedImage/#android.graphics.Bitmap#kotlin.Int#kotlin.Boolean/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/show-decoded-image.html
 $dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView/showDetectErrorDialog/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/show-detect-error-dialog.html
 $dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView/showNotMatchedRequestedScanTypeErrorDialog/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/show-not-matched-requested-scan-type-error-dialog.html
 $dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView/startQrRoiAnimation/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/start-qr-roi-animation.html
 $dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView/updateOrientation/#kotlin.Float/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/update-orientation.html
+$dokka.location:dev.oneuiproject.oneui.qr.widget/QrCodeScannerView/updateToDecodedImageLayout/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-code-scanner-view/update-to-decoded-image-layout.html
 $dokka.location:dev.oneuiproject.oneui.qr.widget/QrImageView///PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-image-view/index.html
 $dokka.location:dev.oneuiproject.oneui.qr.widget/QrImageView/QrImageView/#android.content.Context#android.util.AttributeSet?#kotlin.Int#kotlin.Int/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-image-view/-qr-image-view.html
 $dokka.location:dev.oneuiproject.oneui.qr.widget/QrImageView/invalidate/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-image-view/invalidate.html
@@ -762,11 +739,14 @@ $dokka.location:dev.oneuiproject.oneui.qr.widget/QrImageView/setSize/#kotlin.Int
 $dokka.location:dev.oneuiproject.oneui.qr.widget/QrImageView/tintAnchor/#kotlin.Boolean/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-image-view/tint-anchor.html
 $dokka.location:dev.oneuiproject.oneui.qr.widget/QrImageView/tintFrame/#kotlin.Boolean/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-image-view/tint-frame.html
 $dokka.location:dev.oneuiproject.oneui.utils////PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.utils/index.html
-$dokka.location:dev.oneuiproject.oneui.utils//applyEdgeToEdge/androidx.activity.ComponentActivity#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.utils/apply-edge-to-edge.html
+$dokka.location:dev.oneuiproject.oneui.utils//applyEdgeToEdge/androidx.activity.ComponentActivity#kotlin.Function0[kotlin.Pair[kotlin.Boolean,kotlin.Boolean]]/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.utils/apply-edge-to-edge.html
+$dokka.location:dev.oneuiproject.oneui.utils//darkSystemBars/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.utils/dark-system-bars.html
+$dokka.location:dev.oneuiproject.oneui.utils//defaultSystemBarsDarkMode/android.content.Context#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.utils/default-system-bars-dark-mode.html
 $dokka.location:dev.oneuiproject.oneui.utils//getBoldFont/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.utils/get-bold-font.html
 $dokka.location:dev.oneuiproject.oneui.utils//getLightFont/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.utils/get-light-font.html
 $dokka.location:dev.oneuiproject.oneui.utils//getRegularFont/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.utils/get-regular-font.html
 $dokka.location:dev.oneuiproject.oneui.utils//getSemiBoldFont/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.utils/get-semi-bold-font.html
+$dokka.location:dev.oneuiproject.oneui.utils//lightSystemBars/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.utils/light-system-bars.html
 $dokka.location:dev.oneuiproject.oneui.utils//supports3DTransitionFlag/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.utils/supports3-d-transition-flag.html
 $dokka.location:dev.oneuiproject.oneui.utils/DeviceLayoutUtil///PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.utils/-device-layout-util/index.html
 $dokka.location:dev.oneuiproject.oneui.utils/DeviceLayoutUtil/getNavigationBarHeight/#android.content.res.Resources/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.utils/-device-layout-util/get-navigation-bar-height.html
@@ -840,6 +820,7 @@ $dokka.location:dev.oneuiproject.oneui.utils/SemTouchFeedbackAnimator.Companion/
 $dokka.location:dev.oneuiproject.oneui.utils/SemTouchFeedbackAnimator///PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.utils/-sem-touch-feedback-animator/index.html
 $dokka.location:dev.oneuiproject.oneui.utils/SemTouchFeedbackAnimator/SemTouchFeedbackAnimator/#android.view.View/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.utils/-sem-touch-feedback-animator/-sem-touch-feedback-animator.html
 $dokka.location:dev.oneuiproject.oneui.utils/SemTouchFeedbackAnimator/animate/#android.view.MotionEvent/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.utils/-sem-touch-feedback-animator/animate.html
+$dokka.location:dev.oneuiproject.oneui.utils/SystemBarsDarkMode///PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.utils/-system-bars-dark-mode/index.html
 $dokka.location:dev.oneuiproject.oneui.utils/TabPagerMediator.Companion///PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.utils/-tab-pager-mediator/-companion/index.html
 $dokka.location:dev.oneuiproject.oneui.utils/TabPagerMediator.Companion/NO_POSITION/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.utils/-tab-pager-mediator/-companion/-n-o_-p-o-s-i-t-i-o-n.html
 $dokka.location:dev.oneuiproject.oneui.utils/TabPagerMediator///PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.utils/-tab-pager-mediator/index.html
@@ -1172,7 +1153,6 @@ dev.oneuiproject.oneui.popover
 dev.oneuiproject.oneui.preference
 dev.oneuiproject.oneui.preference.app
 dev.oneuiproject.oneui.qr.app
-dev.oneuiproject.oneui.qr.app.internal
 dev.oneuiproject.oneui.qr.utils
 dev.oneuiproject.oneui.qr.widget
 dev.oneuiproject.oneui.utils
