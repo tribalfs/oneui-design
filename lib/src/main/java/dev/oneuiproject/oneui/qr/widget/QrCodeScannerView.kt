@@ -186,7 +186,7 @@ class QrCodeScannerView @JvmOverloads constructor(
     private var flashAnimator: ValueAnimator? = null
     private var qrDetectAnimation: AnimatorSet? = null
     private var qrCodeResult: String? = null
-    private var inputImage: InputImage? = null
+    private var staticInputImage: InputImage? = null
     private var rotation: Float = 0f
 
     private var qrImageGroup: RelativeLayout
@@ -285,7 +285,7 @@ class QrCodeScannerView @JvmOverloads constructor(
             override fun onAnimationEnd(animator: Animator) {
                 roiLottie.visibility = INVISIBLE
                 roi.visibility = VISIBLE
-                inputImage?.let {
+                staticInputImage?.let {
                     qrCodeScanEngine.processSingleImage(it, it.bitmapInternal!!)
                 }
             }
@@ -396,7 +396,7 @@ class QrCodeScannerView @JvmOverloads constructor(
         decodedImage.setImageBitmap(null)
         decodedImage.rotation = 0f
         decodedImageBitmap = null
-        inputImage = null
+        staticInputImage = null
     }
 
     /**
@@ -430,7 +430,7 @@ class QrCodeScannerView @JvmOverloads constructor(
         decodedImage.visibility = VISIBLE
         decodedImage.setImageBitmap(bitmap)
         if (updateInputImage) {
-            inputImage = InputImage.fromBitmap(bitmap, 0)
+            staticInputImage = InputImage.fromBitmap(bitmap, 0)
         }
     }
 
@@ -937,7 +937,7 @@ class QrCodeScannerView @JvmOverloads constructor(
         startQrDetectAnimation(uprightQRImage, targetRect, angleDeg)
 
         if (!isCameraInput) {
-            inputImage = null
+            staticInputImage = null
         }
     }
 

@@ -6,13 +6,14 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.content.res.Configuration
-import android.graphics.Bitmap.CompressFormat
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.OrientationEventListener
 import android.widget.FrameLayout
+import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
@@ -45,7 +46,9 @@ import dev.oneuiproject.oneui.qr.app.internal.observeOnce
 import dev.oneuiproject.oneui.qr.widget.QrCodeScannerView
 import dev.oneuiproject.oneui.utils.applyEdgeToEdge
 import dev.oneuiproject.oneui.utils.darkSystemBars
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
@@ -174,6 +177,17 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
     private var currentCroppedFile: File? = null
     private var isDecodePending = false
 
+    private val cancelCropOnBackPressed by lazy(LazyThreadSafetyMode.NONE) {
+        onBackPressedDispatcher.addCallback(this, false) { cancelCrop() }
+    }
+
+    private var isCroppingActive: Boolean = false
+        set(value) {
+            if (field == value) return
+            field = value
+            cancelCropOnBackPressed.isEnabled = value
+        }
+
     private val requestCameraPermLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
             if (granted) startCamera()
@@ -210,6 +224,10 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
             currentImageUri = uri
             restoreNormRect = null
 
+            // Pre-24 pickers may return MediaStore URIs which require
+            // READ_EXTERNAL_STORAGE. From API 24 onward, pickers reliably
+            // grant per-URI read access, making storage permission unnecessary
+            // for reading the returned content URI.
             if (Build.VERSION.SDK_INT <= 23 &&
                 ContextCompat.checkSelfPermission(
                     this,
@@ -228,21 +246,13 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         applyEdgeToEdge { darkSystemBars() }
-        WindowCompat.getInsetsController(window, window.decorView).apply {
-            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-            hide(WindowInsetsCompat.Type.statusBars())
-        }
+        hideStatusBar()
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.oui_des_qr_scanner_activity)
         initViews()
 
-        ViewCompat.setOnApplyWindowInsetsListener(cropBottomMenu) { v, insets ->
-            val systemAndCutoutInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.updatePadding(bottom = systemAndCutoutInsets.bottom)
-            insets
-        }
-
+        // This updates `shouldRestoreStaticMode`
         restoreInstanceState(savedInstanceState)
 
         if (shouldRestoreStaticMode) {
@@ -273,12 +283,26 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
         }
     }
 
+    private fun hideStatusBar() {
+        WindowCompat.getInsetsController(window, window.decorView).apply {
+            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            hide(WindowInsetsCompat.Type.statusBars())
+        }
+    }
+
     private fun initViews() {
         mainLayout = findViewById(R.id.mainLayout)
         qrCodeScannerView = findViewById(R.id.qr_scanner_view)
         previewView = findViewById(R.id.preview_view)
         cropBottomMenu = findViewById(R.id.crop_bottom_menu)
         cropOverlayView = findViewById(R.id.qr_crop_overlay)
+
+        ViewCompat.setOnApplyWindowInsetsListener(cropBottomMenu) { v, insets ->
+            val systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updatePadding(bottom = systemBarsInsets.bottom)
+            insets
+        }
+
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -476,9 +500,7 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
             cropBottomMenu.isVisible = false
             when (menuItem.itemId) {
                 R.id.menu_item_crop_ok -> confirmCrop()
-                R.id.menu_item_crop_cancel -> {
-                    onGalleryBtnClicked(); cancelCrop()
-                }
+                R.id.menu_item_crop_cancel -> cancelCrop()
             }
             true
         }
@@ -486,6 +508,7 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
 
     private fun showPickedImage(uri: Uri) {
         try {
+            isCroppingActive = true
             forceHideLiveUiImmediately()
 
             val image = InputImage.fromFilePath(this, uri)
@@ -508,6 +531,7 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
         } catch (e: Exception) {
             e.message?.let { semToast(it) }
             qrCodeScannerView.pauseAnalysis(false)
+            isCroppingActive = false
         }
     }
 
@@ -535,12 +559,25 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
 
         qrCodeScannerView.cropAndDecode(cropRect) {
             qrCodeScannerView.getDecodedImage()?.let {
-                lifecycleScope.launch(Dispatchers.IO) {
-                    val file = File(cacheDir, "cropped_qr_${System.currentTimeMillis()}.png")
-                    FileOutputStream(file).use { out ->
-                        it.compress(CompressFormat.JPEG, 100, out)
+                // Ensure this survives Activity destruction
+                @OptIn(DelicateCoroutinesApi::class)
+                GlobalScope.launch(Dispatchers.IO) {
+                    try {
+                        val fileName: String
+                        val format: Bitmap.CompressFormat
+                        if (Build.VERSION.SDK_INT >= 30) {
+                            fileName = "cropped_qr_${System.currentTimeMillis()}.webp"
+                            format = Bitmap.CompressFormat.WEBP_LOSSLESS
+                        } else {
+                            fileName = "cropped_qr_${System.currentTimeMillis()}.jpg"
+                            format = Bitmap.CompressFormat.JPEG
+                        }
+                        currentCroppedFile = File(cacheDir, fileName).apply {
+                            FileOutputStream(this).use { out -> it.compress(format, 100, out) }
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
                     }
-                    currentCroppedFile = file
                 }
             }
         }
@@ -551,6 +588,9 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
     }
 
     private fun cancelCrop() {
+        // Always go back to picker when cancelling
+        onGalleryBtnClicked()
+
         restoreNormRect = null
         currentImageUri = null
 
@@ -559,6 +599,7 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
 
         qrCodeScannerView.resetDecodedImage()
         cropOverlayView.reset()
+        isCroppingActive = false
     }
 
     // ------------------------------------------------------------------------------------
@@ -586,6 +627,7 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
 
     override fun onQRDetected(content: String): Boolean {
         isDecodePending = false
+        isCroppingActive = false
         val requiredPrefix = intent.getStringExtra(EXTRA_QR_REQUIRED_PREFIX)
         val regexPattern = intent.getStringExtra(EXTRA_QR_REGEX)
 
@@ -603,6 +645,7 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
     @CallSuper
     override fun onInputImageError() {
         isDecodePending = false
+        isCroppingActive = false
     }
 
     private fun isRequestOrientationAllowed(): Boolean =

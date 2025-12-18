@@ -262,8 +262,7 @@ internal class CropOverlayView @JvmOverloads constructor(
                     DragMode.LEFT, DragMode.RIGHT,
                     DragMode.TOP, DragMode.BOTTOM,
                     DragMode.TOP_LEFT, DragMode.TOP_RIGHT,
-                    DragMode.BOTTOM_LEFT, DragMode.BOTTOM_RIGHT -> resizeRect(x, y)
-
+                    DragMode.BOTTOM_LEFT, DragMode.BOTTOM_RIGHT -> resizeRect(dx, dy)
                     else -> Unit
                 }
 
@@ -292,19 +291,18 @@ internal class CropOverlayView @JvmOverloads constructor(
         val nearRight = abs(x - r) <= touchSlop
         val nearTop = abs(y - t) <= touchSlop
         val nearBottom = abs(y - b) <= touchSlop
-        val inside = cropRect.contains(x, y)
 
         if (nearLeft && nearTop) return DragMode.TOP_LEFT
         if (nearRight && nearTop) return DragMode.TOP_RIGHT
         if (nearLeft && nearBottom) return DragMode.BOTTOM_LEFT
         if (nearRight && nearBottom) return DragMode.BOTTOM_RIGHT
 
-        if (nearLeft && inside) return DragMode.LEFT
-        if (nearRight && inside) return DragMode.RIGHT
-        if (nearTop && inside) return DragMode.TOP
-        if (nearBottom && inside) return DragMode.BOTTOM
+        if (nearLeft) return DragMode.LEFT
+        if (nearRight) return DragMode.RIGHT
+        if (nearTop) return DragMode.TOP
+        if (nearBottom) return DragMode.BOTTOM
 
-        return if (inside) DragMode.MOVE else DragMode.NONE
+        return if (cropRect.contains(x, y)) DragMode.MOVE else DragMode.NONE
     }
 
     private fun moveRect(dx: Float, dy: Float) {
@@ -312,31 +310,35 @@ internal class CropOverlayView @JvmOverloads constructor(
         limitBounds?.let { clampToBoundsAsWhole(cropRect, it) }
     }
 
-    private fun resizeRect(x: Float, y: Float) {
+    private fun resizeRect(dx: Float, dy: Float) {
         val b = limitBounds ?: return
         val r = cropRect
 
         when (dragMode) {
-            DragMode.LEFT, DragMode.TOP_LEFT, DragMode.BOTTOM_LEFT -> {
-                r.left = x.coerceIn(b.left, r.right - minCropSize)
+            DragMode.LEFT -> r.left = (r.left + dx).coerceIn(b.left, r.right - minCropSize)
+            DragMode.TOP -> r.top = (r.top + dy).coerceIn(b.top, r.bottom - minCropSize)
+            DragMode.RIGHT -> r.right = (r.right + dx).coerceIn(r.left + minCropSize, b.right)
+            DragMode.BOTTOM -> r.bottom = (r.bottom + dy).coerceIn(r.top + minCropSize, b.bottom)
+
+            DragMode.TOP_LEFT -> {
+                r.top = (r.top + dy).coerceIn(b.top, r.bottom - minCropSize)
+                r.left = (r.left + dx).coerceIn(b.left, r.right - minCropSize)
             }
 
-            DragMode.RIGHT, DragMode.TOP_RIGHT, DragMode.BOTTOM_RIGHT -> {
-                r.right = x.coerceIn(r.left + minCropSize, b.right)
+            DragMode.BOTTOM_LEFT -> {
+                r.bottom = (r.bottom + dy).coerceIn(r.top + minCropSize, b.bottom)
+                r.left = (r.left + dx).coerceIn(b.left, r.right - minCropSize)
             }
 
-            else -> Unit
-        }
-
-        when (dragMode) {
-            DragMode.TOP, DragMode.TOP_LEFT, DragMode.TOP_RIGHT -> {
-                r.top = y.coerceIn(b.top, r.bottom - minCropSize)
+            DragMode.TOP_RIGHT -> {
+                r.top = (r.top + dy).coerceIn(b.top, r.bottom - minCropSize)
+                r.right = (r.right + dx).coerceIn(r.left + minCropSize, b.right)
             }
 
-            DragMode.BOTTOM, DragMode.BOTTOM_LEFT, DragMode.BOTTOM_RIGHT -> {
-                r.bottom = y.coerceIn(r.top + minCropSize, b.bottom)
+            DragMode.BOTTOM_RIGHT -> {
+                r.bottom = (r.bottom + dy).coerceIn(r.top + minCropSize, b.bottom)
+                r.right = (r.right + dx).coerceIn(r.left + minCropSize, b.right)
             }
-
             else -> Unit
         }
 
