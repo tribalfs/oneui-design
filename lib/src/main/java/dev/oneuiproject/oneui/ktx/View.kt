@@ -279,7 +279,14 @@ fun View.setRoundedCorners(radius: Float) {
     } ?: run {
         outlineProvider = object : ViewOutlineProvider() {
             override fun getOutline(view: View, outline: Outline) {
-                outline.setRoundRect(0, 0, view.width, view.height, radius)
+                val width = view.width
+                val height = view.height
+                // Ensure width and height are positive
+                if (width > 0 && height > 0) {
+                    outline.setRoundRect(0, 0, view.width, view.height, radius)
+                } else {
+                    outline.setEmpty()
+                }
             }
         }
         clipToOutline = true

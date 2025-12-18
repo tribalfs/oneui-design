@@ -13,11 +13,19 @@ internal class DrawerOutlineProvider(@param:Px var cornerRadius: Int) :
 
         override fun getOutline(view: View, outline: Outline) {
             val isRTL = view.layoutDirection == LAYOUT_DIRECTION_RTL
-            outline.setRoundRect(
-                if (isRTL) 0 else -cornerRadius,
-                0,
-                if (isRTL) view.width + cornerRadius else view.width, view.height,
-                cornerRadius.toFloat()
-            )
+            val width = view.width
+            val height = view.height
+            // Ensure width and height are positive
+            if (width > 0 && height > 0) {
+                outline.setRoundRect(
+                    if (isRTL) 0 else -cornerRadius,
+                    0,
+                    if (isRTL) view.width + cornerRadius else view.width,
+                    view.height,
+                    cornerRadius.toFloat()
+                )
+            } else {
+                outline.setEmpty()
+            }
         }
     }
