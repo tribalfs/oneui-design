@@ -18,6 +18,8 @@ import android.graphics.RectF
 import android.os.Build
 import android.provider.Settings
 import android.util.AttributeSet
+import android.view.ContextThemeWrapper
+import android.view.Gravity
 import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -41,6 +43,7 @@ import com.airbnb.lottie.LottieAnimationView
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
 import dev.oneuiproject.oneui.design.R
+import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.qr.app.internal.QrCodeScanEngine
 import dev.oneuiproject.oneui.qr.app.internal.cropToUprightSquare
 import dev.oneuiproject.oneui.qr.app.internal.distance
@@ -49,6 +52,7 @@ import dev.oneuiproject.oneui.qr.app.internal.getTargetRect
 import dev.oneuiproject.oneui.qr.widget.internal.AnimatorFactory
 import dev.oneuiproject.oneui.qr.widget.internal.AnimatorFactory.defaultScanningPathInterpolator
 import dev.oneuiproject.oneui.qr.widget.internal.AnimatorFactory.sineInOut60
+import dev.oneuiproject.oneui.widget.StrokedTextView
 
 /**
  * A high-level, self-contained UI component for scanning QR codes.
@@ -208,7 +212,8 @@ class QrCodeScannerView @JvmOverloads constructor(
 
     init {
         LayoutInflater.from(context).inflate(R.layout.oui_des_qr_scanner_view, this)
-        guideText = findViewById(R.id.guide_text)
+        defaultViewGroup = findViewById(R.id.default_view_group)
+        guideText = createStrokedTextView().also { defaultViewGroup.addView(it, 0) }
         qrImageGroup = findViewById(R.id.qr_image_group)
         qrDetectedImage = findViewById(R.id.qr_detected_image)
         qrScanningRectangle = findViewById(R.id.qr_scanning_rectangle)
@@ -219,7 +224,6 @@ class QrCodeScannerView @JvmOverloads constructor(
         roiLottie = findViewById(R.id.roi_lottie)
         flashButton = findViewById(R.id.flash_button)
         galleryButton = findViewById(R.id.gallery_button)
-        defaultViewGroup = findViewById(R.id.default_view_group)
         dimBg = findViewById(R.id.dim_bg)
         blackBg = findViewById(R.id.black_bg)
     }
@@ -1009,6 +1013,31 @@ class QrCodeScannerView @JvmOverloads constructor(
             )
         } else {
             RectF()
+        }
+    }
+
+    private fun createStrokedTextView(): StrokedTextView {
+        return StrokedTextView(ContextThemeWrapper(context, androidx.appcompat.R.style.RobotoMedium)).apply {
+            layoutParams = ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.MATCH_PARENT,
+                resources.getDimensionPixelSize(R.dimen.oui_des_qr_scanner_guide_text_height)
+            ).apply {
+                resources.getDimensionPixelSize(R.dimen.oui_des_qr_scanner_guide_text_horizontal_margin).let {
+                    marginStart = it
+                    marginEnd = it
+                }
+                topMargin = resources.getDimensionPixelSize(R.dimen.oui_des_qr_scanner_guide_text_top_margin)
+                endToEnd = PARENT_ID
+                startToStart = PARENT_ID
+                topToTop = PARENT_ID
+                gravity = Gravity.CENTER
+            }
+            isFocusedByDefault = true
+            maxLines = 2
+            setStroke(true)
+            setStrokeColor(resources.getColor(R.color.oui_des_qr_scanner_guide_text_stroke_color, context.theme))
+            setStrokeWidth(2.dpToPx(resources))
+            text = resources.getString(R.string.oui_des_scan_qr_code)
         }
     }
 }

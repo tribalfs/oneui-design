@@ -11,8 +11,12 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.view.Gravity
 import android.view.OrientationEventListener
+import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.LinearLayout
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.CallSuper
@@ -31,13 +35,15 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
-import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.oneui.floatingdock.util.doOnGlobalLayout
 import com.google.mlkit.vision.common.InputImage
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.isInMultiWindowModeCompat
 import dev.oneuiproject.oneui.ktx.semToast
+import dev.oneuiproject.oneui.qr.app.QrScanActivity.Companion.EXTRA_QR_REGEX
+import dev.oneuiproject.oneui.qr.app.QrScanActivity.Companion.EXTRA_QR_REQUIRED_PREFIX
+import dev.oneuiproject.oneui.qr.app.QrScanActivity.Companion.EXTRA_QR_SCANNER_RESULT
 import dev.oneuiproject.oneui.qr.app.QrScanActivity.Companion.createIntent
 import dev.oneuiproject.oneui.qr.app.internal.CameraResolutionHelper.createQrResolutionSelector
 import dev.oneuiproject.oneui.qr.app.internal.CropOverlayView
@@ -249,8 +255,14 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
         hideStatusBar()
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.oui_des_qr_scanner_activity)
-        initViews()
+        inflateViews()
+        setContentView(mainLayout)
+
+        ViewCompat.setOnApplyWindowInsetsListener(cropBottomMenu) { v, insets ->
+            val systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updatePadding(bottom = systemBarsInsets.bottom)
+            insets
+        }
 
         // This updates `shouldRestoreStaticMode`
         restoreInstanceState(savedInstanceState)
@@ -290,19 +302,73 @@ open class QrScanActivity : AppCompatActivity(), QrCodeScannerView.Listener {
         }
     }
 
-    private fun initViews() {
-        mainLayout = findViewById(R.id.mainLayout)
-        qrCodeScannerView = findViewById(R.id.qr_scanner_view)
-        previewView = findViewById(R.id.preview_view)
-        cropBottomMenu = findViewById(R.id.crop_bottom_menu)
-        cropOverlayView = findViewById(R.id.qr_crop_overlay)
-
-        ViewCompat.setOnApplyWindowInsetsListener(cropBottomMenu) { v, insets ->
-            val systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.updatePadding(bottom = systemBarsInsets.bottom)
-            insets
+    private fun inflateViews() {
+        mainLayout = layoutInflater.inflate(R.layout.oui_des_qr_scanner_activity, null) as FrameLayout
+        previewView = PreviewView(this).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+            isClickable = false
         }
 
+        qrCodeScannerView = QrCodeScannerView(this).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+            clipChildren = false
+            layoutDirection = View.LAYOUT_DIRECTION_LOCALE
+        }
+
+        cropOverlayView = CropOverlayView(this).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+            visibility = View.GONE
+        }
+
+        cropBottomMenu = BottomNavigationView(
+            this,
+            null,
+            0,
+            R.style.OneUI_QRScannerBottomNavigationView
+        ).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            ).apply {
+                gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
+            }
+            visibility = View.GONE
+            inflateMenu(R.menu.oui_des_menu_qr_crop)
+        }
+
+        val scannerFrame = FrameLayout(this).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                0
+            ).apply { weight = 1f }
+        }
+        scannerFrame.apply {
+            addView(qrCodeScannerView, 0)
+            addView(cropOverlayView, 1)
+        }
+
+        val scannerOverlay = LinearLayout(this).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+            orientation = LinearLayout.VERTICAL
+        }
+
+        scannerOverlay.addView(scannerFrame, 0)
+        scannerOverlay.addView(cropBottomMenu, 1)
+
+        mainLayout.addView(previewView, 0)
+        mainLayout.addView(scannerOverlay, 1)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

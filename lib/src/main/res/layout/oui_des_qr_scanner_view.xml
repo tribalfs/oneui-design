@@ -19,26 +19,7 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent">
 
-        <dev.oneuiproject.oneui.widget.StrokedTextView
-            style="@style/RobotoMedium"
-            android:focusedByDefault="true"
-            android:gravity="center"
-            android:id="@+id/guide_text"
-            android:layout_height="@dimen/oui_des_qr_scanner_guide_text_height"
-            android:layout_marginHorizontal="@dimen/oui_des_qr_scanner_guide_text_horizontal_margin"
-            android:layout_marginTop="@dimen/oui_des_qr_scanner_guide_text_top_margin"
-            android:layout_width="match_parent"
-            android:maxLines="2"
-            android:text="@string/oui_des_scan_qr_code"
-            android:textColor="@color/oui_des_qr_scanner_guide_text_color"
-            android:textSize="@dimen/oui_des_qr_scanner_guide_text_font_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:textViewStroke="true"
-            app:textViewStrokeColor="@color/oui_des_qr_scanner_guide_text_stroke_color"
-            app:textViewStrokeWidth="@integer/oui_des_default_stroke_width"
-            />
+        <!--StrokedTextView for guide text will be added here-->
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/flash_button"
