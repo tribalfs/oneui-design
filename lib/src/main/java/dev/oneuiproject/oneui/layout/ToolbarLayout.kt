@@ -461,7 +461,6 @@ open class ToolbarLayout @JvmOverloads constructor(
         fun onSearchModeToggle(searchView: SearchView, isActive: Boolean)
     }
 
-    protected open fun getDefaultLayoutResource(): Int = R.layout.oui_des_layout_tbl_main
     protected open fun getDefaultNavigationIconResource(): Int? = null
 
 
@@ -498,15 +497,22 @@ open class ToolbarLayout @JvmOverloads constructor(
         context.withStyledAttributes(attrs, R.styleable.ToolbarLayout, 0, 0) {
             layoutRes = getResourceId(
                 R.styleable.ToolbarLayout_android_layout,
-                getDefaultLayoutResource()
+                0
             )
             getDimension(R.styleable.ToolbarLayout_edgeInsetHorizontal, 10f).let{px ->
                 if (px != 10f) edgeInsetHorizontal = px.pxToDp(resources)
             }
             toolbarGravity = getInt(R.styleable.ToolbarLayout_toolbarGravity, Gravity.BOTTOM)
 
-            inflateChildren()
-            initViews()
+            if (layoutRes != 0) {
+                Log.w(this::class.simpleName, "Inflating custom layout")
+                LayoutInflater.from(context).inflate(layoutRes, this@ToolbarLayout, true)
+            } else {
+                inflateDefaultView()
+            }
+
+            bindViews()
+            setupActionBar()
 
             _expandable = getBoolean(R.styleable.ToolbarLayout_expandable, true)
             expandedPortrait = getBoolean(R.styleable.ToolbarLayout_expanded, _expandable)
@@ -533,14 +539,11 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
     }
 
-    private fun inflateChildren() {
-        if (layoutRes != getDefaultLayoutResource()) {
-            Log.w(TAG, "Inflating custom layout")
-        }
-        LayoutInflater.from(context).inflate(layoutRes, this, true)
+    open fun inflateDefaultView() {
+       LayoutInflater.from(context).inflate(R.layout.oui_des_layout_tbl_main, this@ToolbarLayout, true)
     }
 
-    private fun initViews() {
+    private fun bindViews() {
         adpCoordinatorLayout = findViewById<AdaptiveCoordinatorLayout>(R.id.toolbarlayout_coordinator_layout).apply {
             setLandscapeHeightForStatusBar(this@ToolbarLayout._landscapeHeightForStatusBar)
         }
@@ -560,6 +563,9 @@ open class ToolbarLayout @JvmOverloads constructor(
         footerParent = findViewById(R.id.tbl_footer_parent)
         customFooterContainer = footerParent.findViewById(R.id.tbl_custom_footer_container)
 
+    }
+
+    private fun setupActionBar() {
         activity?.apply {
             setSupportActionBar(_mainToolbar)
             supportActionBar!!.apply {
@@ -1599,8 +1605,16 @@ open class ToolbarLayout @JvmOverloads constructor(
             actionModeCheckBox =
                 actionModeSelectAll.findViewById(R.id.toolbarlayout_selectall_checkbox)
             actionModeSelectAll.setOnClickListener { actionModeCheckBox.setChecked(!actionModeCheckBox.isChecked) }
-            bottomActionModeBar =
-                findViewById<ViewStub>(R.id.viewstub_tbl_actionmode_bottom_menu).inflate() as BottomNavigationView
+            bottomActionModeBar = BottomNavigationView(context).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    gravity = Gravity.BOTTOM
+                }
+                visibility = View.GONE
+            }
+            footerParent.addView(bottomActionModeBar, 1)
         }
     }
 

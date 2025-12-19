@@ -10,6 +10,7 @@ import android.os.Looper
 import android.util.AttributeSet
 import android.util.Log
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -101,17 +102,53 @@ internal class SemDrawerLayout @JvmOverloads constructor(
         }
 
         drawerElevation = 0f
+        setupViews()
+        setDrawerCornerRadius(DEFAULT_DRAWER_RADIUS)
+
+        navButtonsHandlerDelegate = ToolbarLayoutButtonsHandler(findViewById(R.id.toolbarlayout_main_toolbar))
+        navButtonsHandlerDelegate.setNavigationButtonOnClickListener{ openDrawer(drawerPane, true) }
+        addDrawerListener(drawerListener)
 
         if (!isInEditMode) {
             activity!!.window.decorView.semSetRoundedCorners(ROUNDED_CORNER_NONE)
         }
     }
 
-    override fun onFinishInflate() {
-        super.onFinishInflate()
+    private fun setupViews() {
+        slideViewPane = FrameLayout(context).apply {
+            layoutParams = LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+        }
 
-        drawerPane = findViewById(R.id.drawer_panel)
-        slideViewPane = findViewById(R.id.slideable_view)
+        drawerPane = inflate(context,
+            R.layout.oui_des_layout_drawer_panel,
+            null
+        ).apply {
+            layoutParams = LayoutParams(
+                LayoutParams.MATCH_PARENT,
+                LayoutParams.MATCH_PARENT
+            ).apply {
+                gravity = Gravity.START
+                topMargin = context.resources
+                    .getDimensionPixelSize(appcompatR.dimen.sesl_action_bar_top_padding)
+            }
+        } as LinearLayout
+
+        addView(slideViewPane, 0)
+        addView(drawerPane, 1)
+
+        val details = inflate(context,
+            R.layout.oui_des_layout_drawerlayout_details,
+            null
+        ).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT)
+        } as LinearLayout
+
+        slideViewPane.addView(details, 0)
 
         headerView = drawerPane.findViewById(R.id.header_layout)
         drawerItemsContainer = drawerPane.findViewById(R.id.drawer_items_container)
@@ -120,14 +157,10 @@ internal class SemDrawerLayout @JvmOverloads constructor(
         drawerHeaderBadgeView = headerView.findViewById(R.id.oui_des_drawer_header_button_badge)
 
         translationView = findViewById(R.id.drawer_custom_translation) ?: slideViewPane
+    }
 
-        setDrawerCornerRadius(DEFAULT_DRAWER_RADIUS)
-
-        navButtonsHandlerDelegate = ToolbarLayoutButtonsHandler(findViewById(R.id.toolbarlayout_main_toolbar))
-        navButtonsHandlerDelegate.setNavigationButtonOnClickListener{ openDrawer(drawerPane, true) }
-
-        removeDrawerListener(drawerListener)
-        addDrawerListener(drawerListener)
+    override fun onFinishInflate() {
+        super.onFinishInflate()
         updateNavBadgeVisibility()
     }
 

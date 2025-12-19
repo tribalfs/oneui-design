@@ -11,10 +11,12 @@ import android.graphics.drawable.LayerDrawable
 import android.os.SystemClock
 import android.util.AttributeSet
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.ViewStub
 import android.widget.FrameLayout
 import android.widget.ImageButton
@@ -73,7 +75,7 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
     private lateinit var toolbar: Toolbar
     private lateinit var _drawerPane: LinearLayout
     private var drawerHeaderButton: ImageButton? = null
-    private var navRailSlideViewContent: LinearLayout? = null
+    private lateinit var navRailSlideViewContent: LinearLayout
     private lateinit var mainDetailsPane: LinearLayout
     private var drawerHeaderLayout: View? = null
     private var drawerItemsContainer: FrameLayout? = null
@@ -108,24 +110,52 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
 
     private var drawerWidthProvider: DrawerWidthProvider = DEFAULT_DRAWER_WIDTH_PROVIDER
 
-    init { setOverhangSize(DEFAULT_OVERHANG_SIZE) }
-
-    override fun onConfigurationChanged(configuration: Configuration) {
-        seslSetPendingAction(if (isOpen) PENDING_ACTION_EXPANDED else PENDING_ACTION_COLLAPSED)
-        updateDrawerWidth()
-        super.onConfigurationChanged(configuration)
+    init {
+        setOverhangSize(DEFAULT_OVERHANG_SIZE)
+        setupViews()
     }
 
-    override fun onFinishInflate() {
-        super.onFinishInflate()
+    private fun setupViews() {
+        _drawerPane = inflate(context,
+            R.layout.oui_des_layout_drawer_panel,
+            null
+        ).apply {
+            layoutParams = LayoutParams(
+                if (isInEditMode) 200.dpToPx(resources) else WRAP_CONTENT,
+                MATCH_PARENT
+            )
+        } as LinearLayout
+        addView(_drawerPane, 0)
 
+        slideViewPane = FrameLayout(context).apply {
+            layoutParams = LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            ).apply {
+                marginStart = resources.getDimensionPixelSize(splR.dimen.navigation_rail_margin_start)
+            }
+        }
+        addView(slideViewPane, 1)
+
+        navRailSlideViewContent = (inflate(context,
+            R.layout.oui_des_layout_navdrawer_details,
+            null
+        ) as LinearLayout).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT)
+            weightSum = 100f
+        }
+        slideViewPane.addView(navRailSlideViewContent, 0)
+
+        mainDetailsPane = navRailSlideViewContent.findViewById(R.id.tbl_main_content_root)
         toolbar = findViewById(R.id.toolbarlayout_main_toolbar)
-        slideViewPane = findViewById(R.id.slideable_view)
-        _drawerPane = findViewById(R.id.drawer_panel)
-        navRailSlideViewContent = findViewById(R.id.slide_contents)
-        mainDetailsPane = navRailSlideViewContent!!.findViewById(R.id.tbl_main_content_root)
 
-        addPanelSlideListener(SlidingPaneSlideListener())
+        drawerHeaderLayout = _drawerPane.findViewById(R.id.header_layout)
+        drawerItemsContainer = _drawerPane.findViewById(R.id.drawer_items_container)
+        drawerHeaderButton = drawerHeaderLayout!!.findViewById(R.id.oui_des_drawer_header_button)
+        drawerHeaderButtonBadgeView =
+            drawerHeaderLayout!!.findViewById(R.id.oui_des_drawer_header_button_badge)
 
         if (navRailDrawerButton == null) {
             navRailDrawerButton =
@@ -144,13 +174,19 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
             )
         }
 
-        drawerHeaderLayout = _drawerPane.findViewById(R.id.header_layout)
-        drawerItemsContainer = _drawerPane.findViewById(R.id.drawer_items_container)
-        drawerHeaderButton = drawerHeaderLayout!!.findViewById(R.id.oui_des_drawer_header_button)
-        drawerHeaderButtonBadgeView =
-            drawerHeaderLayout!!.findViewById(R.id.oui_des_drawer_header_button_badge)
-
         setNavigationButtonTooltip(context.getText(R.string.oui_des_navigation_drawer))
+        addPanelSlideListener(SlidingPaneSlideListener())
+    }
+
+    override fun onConfigurationChanged(configuration: Configuration) {
+        seslSetPendingAction(if (isOpen) PENDING_ACTION_EXPANDED else PENDING_ACTION_COLLAPSED)
+        updateDrawerWidth()
+        super.onConfigurationChanged(configuration)
+    }
+
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+
     }
 
     override fun onAttachedToWindow() {

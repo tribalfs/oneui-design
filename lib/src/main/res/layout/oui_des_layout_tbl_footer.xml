@@ -13,11 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <ViewStub
-        android:id="@+id/viewstub_tbl_actionmode_bottom_menu"
-        android:inflatedId="@+id/tbl_actionmode_bottom_menu"
-        android:layout="@layout/oui_des_layout_tbl_actionmode_bottom_menu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <!--Inflate BottomNavigationView here for bottom menu-->
 
 </LinearLayout>

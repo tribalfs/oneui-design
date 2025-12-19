@@ -7,6 +7,8 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.ClassLoaderCreator
 import android.util.AttributeSet
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.ColorInt
@@ -19,9 +21,8 @@ import androidx.customview.view.AbsSavedState
 import androidx.customview.widget.Openable
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.dpToPx
-import dev.oneuiproject.oneui.layout.internal.backapi.BackHandler
+import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
 import dev.oneuiproject.oneui.layout.internal.delegate.DrawerLayoutBackHandler
-import dev.oneuiproject.oneui.layout.internal.delegate.ToolbarLayoutBackHandler
 import dev.oneuiproject.oneui.layout.internal.util.DrawerLayoutInterface
 import dev.oneuiproject.oneui.layout.internal.util.NavButtonsHandler
 import dev.oneuiproject.oneui.layout.internal.widget.SemDrawerLayout
@@ -88,7 +89,21 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
 
     override val backHandler: DrawerLayoutBackHandler<*> get() = containerLayout.getOrCreateBackHandler(this@DrawerLayout)
 
-    override fun getDefaultLayoutResource() = R.layout.oui_des_layout_drawerlayout_main
+    private lateinit var semDrawerLayout: SemDrawerLayout
+
+    override fun inflateDefaultView() {
+        semDrawerLayout = SemDrawerLayout(context).apply {
+            layoutParams = ToolbarLayout.ToolbarLayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+            val roundedColors =
+                context.getThemeAttributeValue(androidx.appcompat.R.attr.roundedCornerColor)?.data!!
+            setBackgroundColor(roundedColors)
+        }
+        addView(semDrawerLayout, 0)
+    }
+
     override fun getDefaultNavigationIconResource(): Int = R.drawable.oui_des_ic_ab_drawer
 
     private var drawerPreviewOpen = false
@@ -102,10 +117,6 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
                 drawerPreviewOpen = getBoolean(R.styleable.DrawerLayout_isOpen, false)
             }
         }
-    }
-
-    private val semDrawerLayout by lazy<SemDrawerLayout>(LazyThreadSafetyMode.NONE) {
-        findViewById(R.id.drawer_layout)
     }
 
     internal open val containerLayout: DrawerLayoutInterface get() = semDrawerLayout
@@ -407,6 +418,19 @@ open class DrawerLayout(context: Context, attrs: AttributeSet?) :
                 }
             }
         }
+    }
+
+    private fun inflateDefaultDrawerLayout(): SemDrawerLayout {
+        val drawerLayout = SemDrawerLayout(context).apply {
+            layoutParams = ToolbarLayout.ToolbarLayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+            val roundedColors = context.getThemeAttributeValue(androidx.appcompat.R.attr.roundedCornerColor)?.data!!
+            setBackgroundColor(roundedColors)
+        }
+        addView(drawerLayout, 0)
+        return drawerLayout
     }
 }
 

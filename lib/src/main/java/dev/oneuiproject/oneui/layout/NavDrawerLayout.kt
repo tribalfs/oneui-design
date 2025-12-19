@@ -9,20 +9,23 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.ClassLoaderCreator
 import android.util.AttributeSet
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.annotation.Px
 import androidx.annotation.RestrictTo
 import androidx.core.view.doOnLayout
 import androidx.customview.view.AbsSavedState
-import dev.oneuiproject.oneui.design.R
+import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
 import dev.oneuiproject.oneui.ktx.isSoftKeyboardShowing
 import dev.oneuiproject.oneui.layout.DrawerLayout
 import dev.oneuiproject.oneui.layout.NavDrawerLayout.Companion.DEFAULT_NAV_RAIL_DETAILS_WIDTH
-import dev.oneuiproject.oneui.layout.internal.delegate.DrawerLayoutBackHandler
 import dev.oneuiproject.oneui.layout.internal.util.DrawerLayoutInterface
 import dev.oneuiproject.oneui.layout.internal.util.NavButtonsHandler
 import dev.oneuiproject.oneui.layout.internal.widget.SemSlidingPaneLayout
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isTabletLayout
 import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout.MarginProvider
+import androidx.appcompat.R as appcompatR
 import dev.oneuiproject.oneui.layout.DrawerLayout as OneUIDrawerLayout
 
 /**
@@ -63,23 +66,36 @@ class NavDrawerLayout @JvmOverloads constructor(
     /**Returns true if the current interface is in navigation rail mode*/
     val isLargeScreenMode get() = isTabletLayout(resources)
 
-    override fun getDefaultLayoutResource() =
-        if (isLargeScreenMode) R.layout.oui_des_layout_navdrawer_main else super.getDefaultLayoutResource()
+    override fun inflateDefaultView() {
+        if (isLargeScreenMode) {
+            semSlidingPaneLayout = SemSlidingPaneLayout(context).apply {
+                layoutParams = ToolbarLayout.ToolbarLayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+                val roundedColors = context.getThemeAttributeValue(appcompatR.attr.roundedCornerColor)?.data!!
+                seslSetRoundedCornerColor(roundedColors)
+                seslSetDrawerMarginTop(resources.getDimensionPixelSize(appcompatR.dimen.sesl_action_bar_top_padding))
+                setSinglePanel(false)
+            }
+            addView(semSlidingPaneLayout,0)
+        } else {
+            super.inflateDefaultView()
+        }
+    }
 
     override val containerLayout: DrawerLayoutInterface get() =
         semSlidingPaneLayout
-            ?: findViewById<SemSlidingPaneLayout>(R.id.sliding_pane_layout)?.also { semSlidingPaneLayout = it }
             ?: super.containerLayout
 
     override val navButtonsHandler: NavButtonsHandler get() =
         semSlidingPaneLayout
-            ?: findViewById<SemSlidingPaneLayout>(R.id.sliding_pane_layout)?.also { semSlidingPaneLayout = it }
             ?: super.navButtonsHandler
 
 
     override fun updateOnBackCallbackState() {
         //Don't interrupt animation if has already started.
-        if ((backHandler as DrawerLayoutBackHandler<*>).isBackProgressStarted()) return
+        if (backHandler.isBackProgressStarted()) return
         super.updateOnBackCallbackState()
     }
 
