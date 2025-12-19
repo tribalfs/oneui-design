@@ -19,6 +19,7 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import androidx.core.view.contains
 import androidx.core.view.forEach
 import androidx.core.view.size
+import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerViewAccessibilityDelegate
 import com.google.android.material.internal.ParcelableSparseArray
@@ -27,6 +28,7 @@ import dev.oneuiproject.oneui.navigation.widget.DrawerCategoryItemView
 import dev.oneuiproject.oneui.navigation.widget.DrawerDividerItemView
 import dev.oneuiproject.oneui.navigation.widget.DrawerMenuItemView
 import dev.oneuiproject.oneui.navigation.widget.DrawerMenuView
+import com.google.android.material.R as materialR
 
 /**
  * @hide
@@ -98,17 +100,22 @@ internal class DrawerMenuPresenter(
 
     override fun getMenuView(root: ViewGroup): DrawerMenuView {
         if (drawerMenuView == null) {
-            drawerMenuView = (layoutInflater!!.inflate(R.layout.oui_des_drawer_menu_view, root, false) as DrawerMenuView)
-                .apply {
-                    setAccessibilityDelegateCompat( NavigationMenuViewAccessibilityDelegate(this))
-                }
-
+            drawerMenuView = DrawerMenuView(root.context).apply {
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+                descendantFocusability = ViewGroup.FOCUS_AFTER_DESCENDANTS
+                clipToPadding = false
+                updatePadding(bottom = resources.getDimensionPixelSize(materialR.dimen.design_navigation_padding_bottom))
+                setAccessibilityDelegateCompat( NavigationMenuViewAccessibilityDelegate(this))
+            }
             adapter = NavigationMenuAdapter().apply {
                 // Prevent recreating all the Views when notifyDataSetChanged()
                 setHasStableIds(true)
             }
             drawerMenuView!!.adapter = adapter
-
+            drawerMenuView!!.seslSetFastScrollerEnabled(true)
         }
         return drawerMenuView!!
     }
