@@ -5,8 +5,13 @@ package dev.oneuiproject.oneui.dialog
 import android.annotation.SuppressLint
 import android.content.Context
 import android.text.format.DateFormat
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.inflate
+import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.LinearLayout
 import androidx.annotation.IntRange
 import androidx.appcompat.app.AlertDialog
 import androidx.picker.widget.SeslTimePicker
@@ -14,6 +19,7 @@ import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.dialog.internal.StartEndTabLayout
 import dev.oneuiproject.oneui.dialog.internal.getCustomCalendarInstance
 import dev.oneuiproject.oneui.dialog.internal.getTimeText
+import dev.oneuiproject.oneui.ktx.addTab
 import dev.oneuiproject.oneui.utils.internal.updateWidth
 
 /**
@@ -43,7 +49,7 @@ class StartEndTimePickerDialog(
 
     private var tabLayout: StartEndTabLayout? = null
     private var timePicker: SeslTimePicker? = null
-    private var timePickerDialog: View? = null
+    private var timePickerDialog: ViewGroup? = null
 
     fun interface TimePickerChangeListener {
         fun onTimeSet(startTime: Int, endTime: Int)
@@ -92,15 +98,41 @@ class StartEndTimePickerDialog(
 
     private fun initMainView() {
         @SuppressLint("InflateParams")
-        LayoutInflater.from(context).inflate(R.layout.oui_des_dialog_start_end_time_picker, null).also {
-            setView(it)
-            timePickerDialog = it
-            timePicker = it.findViewById<SeslTimePicker>(R.id.time_picker).apply {
-                setOnEditTextModeChangedListener(this@StartEndTimePickerDialog)
-                setOnTimeChangedListener(this@StartEndTimePickerDialog)
+        timePickerDialog = inflate(context, R.layout.oui_des_dialog_start_end_time_picker, null) as LinearLayout
+        tabLayout = StartEndTabLayout(context).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                resources.getDimensionPixelSize(R.dimen.oui_des_dialog_start_end_time_picker_tab_height)
+            ).apply {
+                topMargin = resources.getDimensionPixelSize(R.dimen.oui_des_dialog_start_end_time_picker_tab_margin_top)
+                marginStart = resources.getDimensionPixelSize(R.dimen.oui_des_dialog_start_end_time_picker_tab_margin)
+                marginEnd = resources.getDimensionPixelSize(R.dimen.oui_des_dialog_start_end_time_picker_tab_margin)
             }
-            tabLayout = it.findViewById(R.id.time_picker_tab)
+            addTab(R.string.oui_des_time_dialog_start).apply {
+                tag = R.string.oui_des_time_dialog_start
+            }
+            addTab(R.string.oui_des_time_dialog_end).apply {
+                tag = R.string.oui_des_time_dialog_end
+            }
         }
+        timePickerDialog!!.findViewById<FrameLayout>(R.id.tabFrame).addView(tabLayout, 0)
+
+        timePicker = SeslTimePicker(
+            ContextThemeWrapper(context, androidx.appcompat.R.style.Theme_AppCompat_DayNight)
+        ).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                resources.getDimensionPixelSize(R.dimen.oui_des_dialog_start_end_time_picker_height)
+            ).apply {
+                topMargin = resources.getDimensionPixelSize(R.dimen.oui_des_dialog_start_end_time_picker_margin_top)
+                bottomMargin = resources.getDimensionPixelSize(R.dimen.oui_des_dialog_start_end_time_picker_margin_bottom)
+            }
+            setOnEditTextModeChangedListener(this@StartEndTimePickerDialog)
+            setOnTimeChangedListener(this@StartEndTimePickerDialog)
+        }
+        timePickerDialog!!.findViewById<LinearLayout>(R.id.timePickerLayout).addView(timePicker, 0)
+
+        setView(timePickerDialog)
         seslSetBackgroundBlurEnabled()
     }
 
