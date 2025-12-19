@@ -346,6 +346,7 @@ $dokka.location:dev.oneuiproject.oneui.layout/DrawerLayout/addView/#android.view
 $dokka.location:dev.oneuiproject.oneui.layout/DrawerLayout/applyWindowInsets/#androidx.core.view.WindowInsetsCompat/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.layout/-drawer-layout/apply-window-insets.html
 $dokka.location:dev.oneuiproject.oneui.layout/DrawerLayout/close/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.layout/-drawer-layout/close.html
 $dokka.location:dev.oneuiproject.oneui.layout/DrawerLayout/drawerOffset/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.layout/-drawer-layout/drawer-offset.html
+$dokka.location:dev.oneuiproject.oneui.layout/DrawerLayout/inflateDefaultView/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.layout/-drawer-layout/inflate-default-view.html
 $dokka.location:dev.oneuiproject.oneui.layout/DrawerLayout/isDrawerLocked/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.layout/-drawer-layout/is-drawer-locked.html
 $dokka.location:dev.oneuiproject.oneui.layout/DrawerLayout/isOpen/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.layout/-drawer-layout/is-open.html
 $dokka.location:dev.oneuiproject.oneui.layout/DrawerLayout/open/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.layout/-drawer-layout/open.html
@@ -368,6 +369,7 @@ $dokka.location:dev.oneuiproject.oneui.layout/NavDrawerLayout///PointingToDeclar
 $dokka.location:dev.oneuiproject.oneui.layout/NavDrawerLayout/NavDrawerLayout/#android.content.Context#android.util.AttributeSet?/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.layout/-nav-drawer-layout/-nav-drawer-layout.html
 $dokka.location:dev.oneuiproject.oneui.layout/NavDrawerLayout/closeNavRailOnBack/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.layout/-nav-drawer-layout/close-nav-rail-on-back.html
 $dokka.location:dev.oneuiproject.oneui.layout/NavDrawerLayout/getNavRailSlideRange/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.layout/-nav-drawer-layout/get-nav-rail-slide-range.html
+$dokka.location:dev.oneuiproject.oneui.layout/NavDrawerLayout/inflateDefaultView/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.layout/-nav-drawer-layout/inflate-default-view.html
 $dokka.location:dev.oneuiproject.oneui.layout/NavDrawerLayout/isLargeScreenMode/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.layout/-nav-drawer-layout/is-large-screen-mode.html
 $dokka.location:dev.oneuiproject.oneui.layout/NavDrawerLayout/lockNavRailOnActionMode/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.layout/-nav-drawer-layout/lock-nav-rail-on-action-mode.html
 $dokka.location:dev.oneuiproject.oneui.layout/NavDrawerLayout/lockNavRailOnSearchMode/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.layout/-nav-drawer-layout/lock-nav-rail-on-search-mode.html
@@ -439,6 +441,7 @@ $dokka.location:dev.oneuiproject.oneui.layout/ToolbarLayout/expandedSubtitle/#/P
 $dokka.location:dev.oneuiproject.oneui.layout/ToolbarLayout/expandedTitle/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.layout/-toolbar-layout/expanded-title.html
 $dokka.location:dev.oneuiproject.oneui.layout/ToolbarLayout/generateLayoutParams/#android.util.AttributeSet/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.layout/-toolbar-layout/generate-layout-params.html
 $dokka.location:dev.oneuiproject.oneui.layout/ToolbarLayout/getCustomTitleView/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.layout/-toolbar-layout/get-custom-title-view.html
+$dokka.location:dev.oneuiproject.oneui.layout/ToolbarLayout/inflateDefaultView/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.layout/-toolbar-layout/inflate-default-view.html
 $dokka.location:dev.oneuiproject.oneui.layout/ToolbarLayout/isActionMode/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.layout/-toolbar-layout/is-action-mode.html
 $dokka.location:dev.oneuiproject.oneui.layout/ToolbarLayout/isExpandable/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.layout/-toolbar-layout/is-expandable.html
 $dokka.location:dev.oneuiproject.oneui.layout/ToolbarLayout/isExpanded/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.layout/-toolbar-layout/is-expanded.html
