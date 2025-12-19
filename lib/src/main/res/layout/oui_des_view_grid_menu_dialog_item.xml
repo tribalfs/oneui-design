@@ -9,7 +9,8 @@
     android:layout_height="wrap_content"
     android:minWidth="@dimen/oui_des_grid_menu_dialog_item_min_width"
     android:minHeight="@dimen/oui_des_grid_menu_dialog_item_min_height"
-    style="@style/OneUI.BottomTabLayout.MoreMenuItemStyle">
+    style="@style/OneUI.BottomTabLayout.MoreMenuItemStyle"
+    tools:viewBindingIgnore="true">
     <RelativeLayout
         android:id="@+id/item_container"
         android:layout_width="match_parent"

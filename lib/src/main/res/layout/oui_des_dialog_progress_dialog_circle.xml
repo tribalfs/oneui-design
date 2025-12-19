@@ -2,7 +2,9 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:minHeight="70dp">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:minHeight="70dp"
+    tools:viewBindingIgnore="true">
 
     <androidx.appcompat.widget.SeslProgressBar
         android:id="@+id/progress"

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/oui_des_rounded_tab_background"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="@dimen/oui_des_rounded_tab_min_height">
+    android:minHeight="@dimen/oui_des_rounded_tab_min_height"
+    tools:viewBindingIgnore="true">
     <TextView
         android:textAppearance="@style/TabTextStyle"
         android:textColor="@color/oui_des_rounded_tab_text_color"

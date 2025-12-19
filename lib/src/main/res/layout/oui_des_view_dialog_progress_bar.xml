@@ -2,8 +2,10 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_gravity="center"
-    android:gravity="center">
+    android:gravity="center"
+    tools:viewBindingIgnore="true">
 
     <androidx.appcompat.widget.SeslProgressBar
         style="?android:attr/progressBarStyleSmall"

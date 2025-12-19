@@ -2,10 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:minHeight="44dp"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:background="@drawable/oui_des_toast_frame_mtrl">
+    android:background="@drawable/oui_des_toast_frame_mtrl"
+    tools:viewBindingIgnore="true">
 
     <TextView
         android:id="@android:id/message"

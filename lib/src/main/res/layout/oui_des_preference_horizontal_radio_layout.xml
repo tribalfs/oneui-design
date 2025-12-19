@@ -2,9 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:focusable="false"
-    android:clickable="false">
+    android:clickable="false"
+    tools:viewBindingIgnore="true">
 
     <dev.oneuiproject.oneui.preference.internal.HorizontalRadioViewContainer
         android:id="@+id/horizontal_radio_layout"

@@ -2,10 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:paddingStart="@dimen/sesl_dialog_padding_horizontal"
     android:paddingTop="@dimen/sesl_dialog_padding_vertical"
     android:paddingEnd="@dimen/sesl_dialog_padding_horizontal"
-    android:paddingBottom="@dimen/sesl_dialog_padding_vertical">
+    android:paddingBottom="@dimen/sesl_dialog_padding_vertical"
+    tools:viewBindingIgnore="true">
 
     <TextView
         android:id="@+id/message"

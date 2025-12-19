@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:paddingStart="@dimen/oui_des_horizontalradiopref_padding_start_end"
     android:paddingTop="@dimen/oui_des_horizontalradiopref_padding_top"
     android:paddingEnd="@dimen/oui_des_horizontalradiopref_padding_start_end"
@@ -10,7 +11,8 @@
     android:orientation="vertical"
     android:background="?android:attr/selectableItemBackground"
     android:focusable="true"
-    android:clickable="true">
+    android:clickable="true"
+    tools:viewBindingIgnore="true">
 
     <LinearLayout
         android:id="@+id/image_frame"

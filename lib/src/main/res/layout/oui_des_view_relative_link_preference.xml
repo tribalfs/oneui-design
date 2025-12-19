@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/oui_des_relative_link_gap_height"
     android:orientation="vertical"
-    android:background="?roundedCornerColor">
+    android:background="?roundedCornerColor"
+    tools:viewBindingIgnore="true">
 
     <View
         android:id="@+id/link_divider"

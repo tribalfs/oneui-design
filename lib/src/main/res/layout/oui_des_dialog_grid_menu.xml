@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:paddingHorizontal="@dimen/oui_des_grid_menu_dialog_horizontal_padding"
     android:paddingVertical="@dimen/oui_des_grid_menu_dialog_vertical_padding"
-    android:focusable="false">
+    android:focusable="false"
+    tools:viewBindingIgnore="true">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/grid_menu_view"
