@@ -312,7 +312,7 @@ internal class DrawerMenuPresenter(
                                     val item = items[position] as NavigationMenuTextItem
                                     (holder as SubheaderViewHolder).updateLock(item.menuItem)
                                 }
-                                VIEW_TYPE_SEPARATOR -> Unit
+                                VIEW_TYPE_SEPARATOR -> (holder as SeparatorViewHolder).updateOffset()
                             }
 
                         }
@@ -345,7 +345,7 @@ internal class DrawerMenuPresenter(
                     setAccessibilityDelegate(categoryItemViewHolder.itemView, position, false)
                 }
 
-                VIEW_TYPE_SEPARATOR -> Unit
+                VIEW_TYPE_SEPARATOR -> (holder as SeparatorViewHolder).updateOffset()
             }
         }
 
@@ -428,8 +428,11 @@ internal class DrawerMenuPresenter(
                 (itemView as DrawerDividerItemView).setNavRailSlideRangeProvider(getNavRailSlideRange)
             }
 
-            fun updateOffset(offset: Float) {
-                (itemView as DrawerDividerItemView).applyOffset(offset)
+            fun updateOffset(offset: Float? = null) {
+                val offset = offset ?: lastOffsetApplied
+                if (offset != -1f) {
+                    (itemView as DrawerDividerItemView).applyOffset(offset)
+                }
             }
         }
 

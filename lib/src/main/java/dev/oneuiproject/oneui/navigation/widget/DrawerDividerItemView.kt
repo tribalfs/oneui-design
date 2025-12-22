@@ -6,9 +6,9 @@ import android.content.res.Configuration
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import androidx.appcompat.util.SeslMisc
-import androidx.core.view.doOnLayout
 import androidx.core.view.updateLayoutParams
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.dpToPx
@@ -57,14 +57,6 @@ internal class DrawerDividerItemView @JvmOverloads constructor(
         if (this.offset == offset) return
         this.offset = offset
         updateDividerMargin()
-
-        if (isInEditMode && offset == 0f) {
-            dividerView.apply {
-                updateLayoutParams<LayoutParams> {
-                    width = defaultWidth
-                }
-            }
-        }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration?) {
@@ -76,8 +68,14 @@ internal class DrawerDividerItemView @JvmOverloads constructor(
      * Updates the divider's end margin based on the current offset and slide range.
      */
     private fun updateDividerMargin() {
-        dividerView.updateLayoutParams<LayoutParams> {
-            marginEnd = defaultMargin + (getNavRailSlideRange() * (1f - offset)).toInt()
+        if (isInEditMode) {
+            dividerView.updateLayoutParams<LayoutParams> {
+                width = if (offset == 0f) defaultWidth else MATCH_PARENT
+            }
+        } else {
+            dividerView.updateLayoutParams<LayoutParams> {
+                marginEnd = defaultMargin + (getNavRailSlideRange() * (1f - offset)).toInt()
+            }
         }
     }
 }

@@ -141,11 +141,18 @@ class DrawerNavigationView @JvmOverloads constructor(
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        doOnLayout {
+        if (isInEditMode) {
             (drawerLayout as? NavDrawerLayout)?.apply {
                 if (isLargeScreenMode) setDrawerStateListener(drawerStateListener)
             }
             menuPresenter.adapter!!.updateOffset(getInitialOffset())
+        } else {
+            doOnLayout {
+                (drawerLayout as? NavDrawerLayout)?.apply {
+                    if (isLargeScreenMode) setDrawerStateListener(drawerStateListener)
+                }
+                menuPresenter.adapter!!.updateOffset(getInitialOffset())
+            }
         }
     }
 
