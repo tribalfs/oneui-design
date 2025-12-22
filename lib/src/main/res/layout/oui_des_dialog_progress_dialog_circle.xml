@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
@@ -12,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_centerHorizontal="true"
         android:indeterminate="true"
         android:indeterminateOnly="true"
         android:minWidth="55dp"
@@ -24,11 +25,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:maxWidth="40dp"
+        android:maxWidth="150dp"
+        android:textAlignment="center"
+        android:layout_below="@id/progress"
+        android:layout_centerHorizontal="true"
         android:textSize="@dimen/sesl_progress_dialog_circle_message_text_size"
         android:textColor="@color/oui_des_progress_dialog_text_color"
         android:fontFamily="@string/sesl_font_family_regular"
-        android:singleLine="true"
         android:visibility="gone" />
 
-</FrameLayout>
+</RelativeLayout>

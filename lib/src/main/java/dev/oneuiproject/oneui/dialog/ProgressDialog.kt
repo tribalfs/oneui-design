@@ -129,11 +129,7 @@ class ProgressDialog @JvmOverloads constructor(
         super.onCreate(savedInstanceState)
 
         if (progressStyle == ProgressStyle.CIRCLE) {
-            @SuppressLint("PrivateResource")
-            val size = context.resources.getDimensionPixelSize(
-                appcompatR.dimen.sesl_progress_dialog_circle_size
-            )
-            window!!.apply { setGravity(Gravity.CENTER); setLayout(size, size) }
+            window!!.apply { setGravity(Gravity.CENTER) }
         }
 
         seslSetBackgroundBlurEnabled()
