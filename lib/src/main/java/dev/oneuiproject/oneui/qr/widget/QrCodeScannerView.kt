@@ -18,6 +18,7 @@ import android.graphics.RectF
 import android.os.Build
 import android.provider.Settings
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.ContextThemeWrapper
 import android.view.Gravity
 import android.view.HapticFeedbackConstants
@@ -37,6 +38,7 @@ import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.UNSET
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import com.airbnb.lottie.LottieAnimationView
@@ -1034,6 +1036,8 @@ class QrCodeScannerView @JvmOverloads constructor(
             }
             isFocusedByDefault = true
             maxLines = 2
+            setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.oui_des_qr_scanner_guide_text_font_size))
+            setTextColor(ContextCompat.getColor( context,R.color.oui_des_qr_scanner_guide_text_color))
             setStroke(true)
             setStrokeColor(resources.getColor(R.color.oui_des_qr_scanner_guide_text_stroke_color, context.theme))
             setStrokeWidth(2.dpToPx(resources))
