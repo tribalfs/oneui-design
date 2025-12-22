@@ -393,8 +393,16 @@ open class ToolbarLayout @JvmOverloads constructor(
      * Invoking this will automatically inflate and add the switch bar to the layout.
      */
     open val switchBar by lazy {
-        mainContainerParent.findViewById<ViewStub>(R.id.viewstub_tbl_switchbar)
-            .inflate() as SeslSwitchBar
+        SeslSwitchBar(context).apply {
+            layoutParams =
+                LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
+                    marginStart = 10.dpToPx(resources)
+                    marginEnd = 10.dpToPx(resources)
+                    bottomMargin = 20.dpToPx(resources)
+                }
+            isVisible = false
+            mainContainerParent.addView(this, 0)
+        }
     }
 
     /**

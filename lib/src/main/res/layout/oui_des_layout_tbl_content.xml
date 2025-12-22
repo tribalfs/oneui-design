@@ -50,13 +50,7 @@
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <ViewStub
-            android:id="@+id/viewstub_tbl_switchbar"
-            android:layout="@layout/oui_des_layout_tbl_switchbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginBottom="20dp" />
+        <!--Inflate SeslSwitchBar here when needed-->
 
         <dev.oneuiproject.oneui.widget.RoundedFrameLayout
             android:id="@+id/tbl_main_content"
