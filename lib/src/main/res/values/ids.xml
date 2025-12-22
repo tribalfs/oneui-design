@@ -13,4 +13,12 @@
     <item name="bottom_tab_menu_show_grid_dialog" type="id"/>
     <item name="margin_tab_view_min_width" type="id"/>
     <item name="tbl_action_mode_menu_group_id" type="id"/>
+
+    <item name="ripple_background" type="id" />
+    <item name="icon_background" type="id" />
+    <item name="drawer_menu_item_icon" type="id" />
+    <item name="drawer_menu_item_title" type="id" />
+    <item name="drawer_menu_item_count_stub" type="id" />
+    <item name="drawer_menu_expand_button_stub" type="id" />
+    <item name="nav_drawer_menu_item_action_area_stub" type="id" />
 </resources>

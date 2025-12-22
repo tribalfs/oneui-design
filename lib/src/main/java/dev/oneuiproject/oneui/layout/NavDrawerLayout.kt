@@ -9,8 +9,6 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.ClassLoaderCreator
 import android.util.AttributeSet
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.Px
 import androidx.annotation.RestrictTo

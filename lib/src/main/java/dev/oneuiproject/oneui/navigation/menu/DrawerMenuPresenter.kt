@@ -23,11 +23,14 @@ import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerViewAccessibilityDelegate
 import com.google.android.material.internal.ParcelableSparseArray
-import dev.oneuiproject.oneui.design.R
+import dev.oneuiproject.oneui.navigation.menu.DrawerMenuItemProvider.createCategoryItemView
+import dev.oneuiproject.oneui.navigation.menu.DrawerMenuItemProvider.createCategoryItemViewTablet
+import dev.oneuiproject.oneui.navigation.menu.DrawerMenuItemProvider.createDrawerMenuItem
 import dev.oneuiproject.oneui.navigation.widget.DrawerCategoryItemView
 import dev.oneuiproject.oneui.navigation.widget.DrawerDividerItemView
 import dev.oneuiproject.oneui.navigation.widget.DrawerMenuItemView
 import dev.oneuiproject.oneui.navigation.widget.DrawerMenuView
+import dev.oneuiproject.oneui.utils.DeviceLayoutUtil.isTabletLayout
 import com.google.android.material.R as materialR
 
 /**
@@ -262,19 +265,21 @@ internal class DrawerMenuPresenter(
                 VIEW_TYPE_SEPARATOR -> SeparatorViewHolder(DrawerDividerItemView(parent.context))
 
                 VIEW_TYPE_NORMAL -> NormalViewHolder(
-                    layoutInflater!!.inflate(R.layout.oui_des_drawer_menu_item, parent, false) as DrawerMenuItemView
+                    createDrawerMenuItem(parent.context)
                 ).apply {
                     itemView.setOnClickListener(onClickListener)
                 }
 
                 VIEW_TYPE_SUBHEADER -> SubheaderViewHolder(
-                    layoutInflater!!.inflate(R.layout.oui_des_drawer_menu_item, parent, false) as DrawerMenuItemView
+                    createDrawerMenuItem(parent.context)
                 ).apply {
                     itemView.setOnClickListener(onClickListener)
                 }
 
                 VIEW_TYPE_CATEGORY -> CategoryItemViewHolder(
-                    layoutInflater!!.inflate(R.layout.oui_des_drawer_menu_category, parent, false) as DrawerMenuItemView
+                    if (isTabletLayout(parent.context.resources)) {
+                        createCategoryItemViewTablet(parent.context)
+                    } else createCategoryItemView(parent.context)
                 ).apply {
                     itemView.setOnClickListener(onClickListener)
                 }
