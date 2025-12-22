@@ -27,6 +27,7 @@ import androidx.appcompat.app.AppCompatDialog
 import androidx.appcompat.view.SupportMenuInflater
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuItemImpl
+import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
@@ -109,13 +110,8 @@ class GridMenuDialog @JvmOverloads constructor(
     @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
         supportRequestWindowFeature(FEATURE_NO_TITLE)
-        val context = context
-        val inflater = LayoutInflater.from(context)
-        contentView = inflater.inflate(R.layout.oui_des_dialog_grid_menu, null) as LinearLayout
+        contentView = createContentView()
         setContentView(contentView)
-        if (Build.VERSION.SDK_INT >= 35) {
-            contentView.semSetBackgroundBlurEnabled()
-        }
         super.onCreate(savedInstanceState)
         resetContentPadding()
         setOnShowListener {
@@ -144,7 +140,7 @@ class GridMenuDialog @JvmOverloads constructor(
      */
     fun updateDialog() {
         spanCount = calculateColumnCount().coerceAtMost(gridItems.size)
-        gridListView = contentView.findViewById<RecyclerView>(R.id.grid_menu_view).apply {
+        gridListView.apply {
             layoutManager = GridLayoutManager(context, spanCount).apply {
                 spanSizeLookup = object : SpanSizeLookup() {
                     override fun getSpanSize(position: Int) = 1
@@ -494,6 +490,33 @@ class GridMenuDialog @JvmOverloads constructor(
             gridItems[index] = item.copy(badge = badge)
             adapter.notifyItemChanged(index)
         }
+    }
+
+    private fun createContentView(): LinearLayout {
+        val contentView = LinearLayout(context).apply {
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            val paddingHorizontal = resources.getDimensionPixelSize(R.dimen.oui_des_grid_menu_dialog_horizontal_padding)
+            val paddingVertical = resources.getDimensionPixelSize(R.dimen.oui_des_grid_menu_dialog_vertical_padding)
+            updatePadding(paddingHorizontal, paddingVertical, paddingHorizontal, paddingVertical)
+            isFocusable = false
+            if (Build.VERSION.SDK_INT >= 35) {
+                semSetBackgroundBlurEnabled()
+            }
+        }
+
+        gridListView = RecyclerView(context).apply {
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            clipToPadding = false
+            isFocusable = false
+        }
+        contentView.addView(gridListView)
+        return contentView
     }
 
     @SuppressLint("NotifyDataSetChanged")
