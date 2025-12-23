@@ -24,6 +24,7 @@ import androidx.preference.internal.PreferenceImageView
 import dev.oneuiproject.oneui.design.R
 import androidx.core.content.edit
 import androidx.core.graphics.toColorInt
+import dev.oneuiproject.oneui.preference.core.IntegerSetter
 
 
 /**
@@ -40,13 +41,12 @@ class ColorPickerPreference @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = androidx.preference.R.attr.preferenceStyle
 ) : Preference(context, attrs, defStyleAttr), Preference.OnPreferenceClickListener,
-    SeslColorPickerDialog.OnColorSetListener {
+    IntegerSetter {
 
     private var colorPickerDialog: SeslColorPickerDialog? = null
 
     @SuppressLint("RestrictedApi")
     private var preview: PreferenceImageView? = null
-    private var _value = Color.BLACK
     private val usedColors = ArrayList<Int>(5)
     private var lastClickTime: Long = 0
     private var alphaSliderEnabled = false
@@ -64,6 +64,25 @@ class ColorPickerPreference @JvmOverloads constructor(
         }
     }
 
+    override var value: Int = Color.BLACK
+        set(color) {
+            if (field == color) return
+
+            if (!callChangeListener(color)) {
+                return
+            }
+
+            if (isPersistent) {
+                persistInt(color)
+            }
+            field = color
+
+            addRecentColor(color)
+            notifyChanged()
+        }
+
+    private val onColorSetListener = SeslColorPickerDialog.OnColorSetListener { color -> value = color }
+
     override fun onGetDefaultValue(a: TypedArray, index: Int): Any {
         val mHexDefaultValue = a.getString(index)
         return if (mHexDefaultValue != null && mHexDefaultValue.startsWith("#")) {
@@ -74,7 +93,7 @@ class ColorPickerPreference @JvmOverloads constructor(
     }
 
     override fun onSetInitialValue(defaultValue: Any?) {
-        onColorSet(getPersistedInt(defaultValue as? Int ?: _value))
+        value = getPersistedInt(defaultValue as? Int ?: value)
         if (persistRecentColors) {
             loadRecentColors()
         }
@@ -92,21 +111,7 @@ class ColorPickerPreference @JvmOverloads constructor(
         preview!!.background =
             (ContextCompat.getDrawable(context, R.drawable.oui_des_preference_color_picker_preview)!!
                 .mutate() as GradientDrawable)
-                .apply { setColor(_value) }
-    }
-
-    override fun onColorSet(color: Int) {
-        if (!callChangeListener(color)) {
-            return
-        }
-
-        if (isPersistent) {
-            persistInt(color)
-        }
-        _value = color
-
-        addRecentColor(color)
-        notifyChanged()
+                .apply { setColor(value) }
     }
 
     override fun onPreferenceClick(preference: Preference): Boolean {
@@ -120,9 +125,9 @@ class ColorPickerPreference @JvmOverloads constructor(
 
     private fun showDialog(state: Bundle?) {
         colorPickerDialog = SeslColorPickerDialog(
-            context, this, _value, recentColors, alphaSliderEnabled
+            context, onColorSetListener, value, recentColors, alphaSliderEnabled
         ).apply {
-            setNewColor(_value)
+            setNewColor(value)
             setTransparencyControlEnabled(alphaSliderEnabled)
             if (state != null) onRestoreInstanceState(state)
             show()
@@ -143,8 +148,6 @@ class ColorPickerPreference @JvmOverloads constructor(
 
     private val recentColors: IntArray
         get() = ArrayList(usedColors).apply { reverse() }.toIntArray()
-
-    val value: Int get() = _value
 
     override fun onSaveInstanceState(): Parcelable? {
         val superState = super.onSaveInstanceState()

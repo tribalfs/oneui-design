@@ -24,6 +24,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
+import dev.oneuiproject.oneui.preference.core.StringSetter
 import dev.oneuiproject.oneui.preference.internal.HorizontalRadioViewContainer
 import dev.oneuiproject.oneui.utils.getRegularFont
 import dev.oneuiproject.oneui.utils.getSemiBoldFont
@@ -42,7 +43,7 @@ import kotlin.math.roundToInt
  * @attr ref R.styleable#HorizontalRadioPreference_entriesSubtitle
  */
 class HorizontalRadioPreference(context: Context, attrs: AttributeSet?) :
-    Preference(context, attrs) {
+    Preference(context, attrs), StringSetter {
 
     private lateinit var entriesImage: IntArray
     private lateinit var entries: Array<CharSequence>
@@ -242,7 +243,7 @@ class HorizontalRadioPreference(context: Context, attrs: AttributeSet?) :
             return
         }
         super.onRestoreInstanceState(state.superState)
-        value = state.value
+        value = state.value ?: DEFAULT_VALUE
     }
 
     override fun setEnabled(enabled: Boolean) {
@@ -260,7 +261,7 @@ class HorizontalRadioPreference(context: Context, attrs: AttributeSet?) :
             return if (index >= 0) entries[index] else null
         }
 
-    var value: String? = null
+    override var value: String = DEFAULT_VALUE
         set(value) {
             if (value != field){
                 field = value
@@ -381,5 +382,6 @@ class HorizontalRadioPreference(context: Context, attrs: AttributeSet?) :
     private companion object {
         private const val IMAGE = 0
         private const val NO_IMAGE = 1
+        private const val DEFAULT_VALUE = "0"
     }
 }

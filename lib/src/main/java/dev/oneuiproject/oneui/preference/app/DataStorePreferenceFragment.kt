@@ -20,8 +20,12 @@ import androidx.preference.PreferenceDataStore
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SeekBarPreference
 import androidx.preference.TwoStatePreference
-import dev.oneuiproject.oneui.preference.ColorPickerPreference
-import dev.oneuiproject.oneui.preference.HorizontalRadioPreference
+import dev.oneuiproject.oneui.preference.core.BooleanSetter
+import dev.oneuiproject.oneui.preference.core.FloatSetter
+import dev.oneuiproject.oneui.preference.core.IntegerSetter
+import dev.oneuiproject.oneui.preference.core.LongSetter
+import dev.oneuiproject.oneui.preference.core.StringSetSetter
+import dev.oneuiproject.oneui.preference.core.StringSetter
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -62,6 +66,16 @@ import java.util.concurrent.CopyOnWriteArraySet
  * ## Threading
  * - All write and read operations in [ObservablePreferencesDataStore]
  *   are performed synchronously.
+ *
+ * ## Custom value preferences
+ * To support custom value preference types, have your custom [Preference] class
+ * implement one of the following "Setter" interfaces:
+ * - [IntegerSetter]
+ * - [StringSetter]
+ * - [BooleanSetter]
+ * - [StringSetSetter]
+ * - [FloatSetter]
+ * - [LongSetter]
  *
  * ## Notes
  * - This class assumes the use of the **Preferences DataStore** variant (not Proto).
@@ -129,14 +143,22 @@ abstract class DataStorePreferenceFragment : PreferenceFragmentCompat(), DataSto
         }
 
     private fun updatePreference(pref: Preference, value: Any?) {
+        @Suppress("UNCHECKED_CAST")
         when (pref) {
+            // -- androidx provided prefs --
             is TwoStatePreference -> pref.isChecked = value as? Boolean ?: false
             is SeekBarPreference -> (value as? Int)?.let { pref.value = it }
             is EditTextPreference -> pref.text = value as? String
             is ListPreference -> pref.value = value as? String
-            is ColorPickerPreference -> (value as? Int)?.let { pref.onColorSet(it) }
             is MultiSelectListPreference -> pref.values = value as? Set<String> ?: emptySet()
-            is HorizontalRadioPreference -> pref.value = value as? String
+
+            // -- custom prefs --
+            is IntegerSetter -> (value as? Int)?.let { pref.value = it }
+            is StringSetter -> (value as? String)?.let { pref.value = it }
+            is BooleanSetter -> (value as? Boolean)?.let { pref.value = it }
+            is StringSetSetter -> (value as? Set<String>)?.let { pref.value = it }
+            is FloatSetter -> (value as? Float)?.let { pref.value = it }
+            is LongSetter -> (value as? Long)?.let { pref.value = it }
         }
     }
 
