@@ -13,6 +13,7 @@ import android.view.ViewStub
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.Space
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -21,13 +22,11 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
 import androidx.core.view.marginStart
 import androidx.core.view.updateLayoutParams
-import androidx.core.view.updatePaddingRelative
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.defaultSummaryColor
 import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
 import dev.oneuiproject.oneui.ktx.userUpdatableSummaryColor
 import dev.oneuiproject.oneui.utils.SemTouchFeedbackAnimator
-import java.lang.Compiler.enable
 
 /**
  * A custom view that displays a card item with a title, summary, icon, and dividers.
@@ -65,7 +64,7 @@ class CardItemView @JvmOverloads constructor(
 
     private var containerView: FrameLayout
     private var titleTextView: TextView
-    private var summaryTextView: TextView
+    private var summaryTextView: TextView? = null
     private var dividerViewTop: View? = null
     private var dividerViewBottom: View? = null
     private var iconImageView: ImageView? = null
@@ -76,6 +75,7 @@ class CardItemView @JvmOverloads constructor(
     private var containerLeftPaddingNoIcon: Int = 0
     private var dividerMarginStart: Int = 0
     private var dividerMarginStartWithIcon: Int = 0
+    private var summaryMaxLines = 10
 
     private var suspendLayoutUpdates = false
 
@@ -143,11 +143,14 @@ class CardItemView @JvmOverloads constructor(
      * This will be shown below the title.
      */
     var summary: CharSequence?
-        get() = summaryTextView.text
+        get() = summaryTextView?.text
         set(value) {
-            if (summaryTextView.text == value) return
-            summaryTextView.isVisible = !value.isNullOrEmpty()
-            summaryTextView.text = value
+            if (value != null) ensureInflatedSummaryView()
+            summaryTextView?.apply {
+                if (text == value) return
+                isVisible = !value.isNullOrEmpty()
+                text = value
+            }
         }
 
     /**
@@ -162,9 +165,9 @@ class CardItemView @JvmOverloads constructor(
             if (field == value) return
             field = value
             if (value) {
-                summaryTextView.setTextColor(context.userUpdatableSummaryColor)
+                summaryTextView?.setTextColor(context.userUpdatableSummaryColor)
             } else {
-                summaryTextView.setTextColor(context.defaultSummaryColor)
+                summaryTextView?.setTextColor(context.defaultSummaryColor)
             }
         }
 
@@ -208,7 +211,6 @@ class CardItemView @JvmOverloads constructor(
         inflate(context, R.layout.oui_des_widget_card_item, this)
         containerView = findViewById(R.id.cardview_container)
         titleTextView = findViewById<TextView>(R.id.cardview_title)
-        summaryTextView = findViewById<TextView>(R.id.cardview_summary)
 
         suspendLayoutUpdates = true
         attrs?.let { parseAttributes(it) }
@@ -234,12 +236,11 @@ class CardItemView @JvmOverloads constructor(
                     DrawableCompat.setTint(iconImageView!!.drawable, iconTint)
                 }
             }
-
-            summary = getString(R.styleable.CardItemView_summary)
+            summaryMaxLines = getInteger(R.styleable.CardItemView_summaryMaxLines, 10)
             if (getBoolean(R.styleable.CardItemView_userUpdatableSummary, false)){
                 isSummaryUserUpdatable = true
             }
-            summaryTextView.maxLines = getInteger(R.styleable.CardItemView_summaryMaxLines, 10)
+            summary = getString(R.styleable.CardItemView_summary)
             showTopDivider = getBoolean(R.styleable.CardItemView_showTopDivider, true)
             showBottomDivider = getBoolean(R.styleable.CardItemView_showBottomDivider, false)
             isEnabled = getBoolean(R.styleable.CardItemView_android_enabled, true)
@@ -250,6 +251,26 @@ class CardItemView @JvmOverloads constructor(
             if (hasValue(R.styleable.CardItemView_drawableEnd)) {
                 ensureInflatedEndView()
                 endImageView!!.setImageDrawable(getDrawable(R.styleable.CardItemView_drawableEnd))
+            }
+        }
+    }
+
+    private fun ensureInflatedSummaryView() {
+        if (summaryTextView == null) {
+            summaryTextView = (findViewById<ViewStub>(R.id.viewstub_cardview_summary).inflate() as TextView).apply {
+                setTextColor( if (isSummaryUserUpdatable) context.userUpdatableSummaryColor else context.defaultSummaryColor)
+                maxLines = summaryMaxLines
+            }
+            titleTextView.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                bottomToTop = summaryTextView!!.id
+            }
+            endImageView?.let {
+                summaryTextView!!.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                    endToStart = it.id
+                }
+            }
+            findViewById<Space>(R.id.bottom_spacer).updateLayoutParams<ConstraintLayout.LayoutParams> {
+                topToBottom = summaryTextView!!.id
             }
         }
     }
@@ -267,7 +288,7 @@ class CardItemView @JvmOverloads constructor(
     private fun ensureInflatedEndView(){
         if (endImageView == null) {
             endImageView = (findViewById<ViewStub>(R.id.viewstub_end_view).inflate() as ImageView)
-            summaryTextView.updateLayoutParams<ConstraintLayout.LayoutParams> {
+            summaryTextView?.updateLayoutParams<ConstraintLayout.LayoutParams> {
                 endToStart = endImageView!!.id
             }
         }
@@ -332,7 +353,10 @@ class CardItemView @JvmOverloads constructor(
      *
      * @return The [TextView] for the summary.
      */
-    fun getSummaryView(): TextView = summaryTextView
+    fun getSummaryView(): TextView {
+        ensureInflatedSummaryView()
+        return summaryTextView!!
+    }
 
     override fun setEnabled(enabled: Boolean) {
         if (isEnabled == enabled) return
