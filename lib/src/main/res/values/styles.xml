@@ -165,6 +165,15 @@
         <item name="android:layout_marginEnd">?listPreferredItemPaddingEnd</item>
     </style>
 
+    <!-- Radio item Divider-->
+    <style name="OneUI.RadioOItemDividerStyle" >
+        <item name="android:background">?attr/listDividerColor</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/sesl_list_divider_height</item>
+        <item name="android:layout_marginStart">@dimen/oui_des_widget_radio_divider_start_margin</item>
+        <item name="android:layout_marginEnd">?listPreferredItemPaddingEnd</item>
+    </style>
+
     <!--FloatingActionButton-->
     <style name="OneUI.FloatingActionButton" parent="@style/Widget.Design.FloatingActionButton">
         <item name="hoveredFocusedTranslationZ">6dp</item>

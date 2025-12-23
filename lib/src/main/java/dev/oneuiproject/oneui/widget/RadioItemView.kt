@@ -9,10 +9,14 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewStub
+import android.widget.Checkable
+import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.appcompat.widget.SeslCheckedTextView
 import androidx.core.content.withStyledAttributes
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.utils.SemTouchFeedbackAnimator
 
@@ -48,15 +52,18 @@ class RadioItemView @JvmOverloads constructor(
         fun onCheckedChanged(radioItem: RadioItemView, isChecked: Boolean)
     }
 
-    private var checkedTextView: SeslCheckedTextView
+    private var checkMark: Checkable
+    private var titleView: TextView
     private var topDivider: View
     private var onCheckedChangeListener: OnCheckedChangeListener? = null
+    private var summaryView: TextView? = null
 
     @RequiresApi(29)
     private lateinit var semTouchFeedbackAnimator: SemTouchFeedbackAnimator
 
     /**
-     *  Show divider on top. True by default
+     *  Show divider on top. True by default.
+     *  Controlled by [RadioItemViewGroup] when put inside it.
      */
     var showTopDivider: Boolean
         get() = topDivider.isVisible
@@ -65,15 +72,26 @@ class RadioItemView @JvmOverloads constructor(
         }
 
     var title: CharSequence?
-        get() = checkedTextView.text?.toString()
+        get() = titleView.text?.toString()
         set(value) {
-            if (checkedTextView.text != value) {
-                checkedTextView.text = value
+            if (titleView.text != value) {
+                titleView.text = value
+            }
+        }
+
+    var summary: CharSequence?
+        get() = summaryView?.text
+        set(value) {
+            if (value != null) ensureInflatedSummaryView()
+            summaryView?.apply {
+                if (text == value) return
+                isVisible = !value.isNullOrEmpty()
+                text = value
             }
         }
 
     fun setTiTle(value: SpannableString) {
-        checkedTextView.text = value
+        titleView.text = value
     }
 
     fun setOnCheckedChangeWidgetListener(listener: OnCheckedChangeListener?) {
@@ -85,7 +103,8 @@ class RadioItemView @JvmOverloads constructor(
         LayoutInflater.from(context).inflate(R.layout.oui_des_widget_radio_item, this@RadioItemView)
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
 
-        checkedTextView = findViewById(R.id.checkedTextView)
+        checkMark = findViewById(R.id.checkMark)
+        titleView = findViewById(R.id.titleView)
 
         topDivider = findViewById(R.id.top_divider)
 
@@ -102,6 +121,7 @@ class RadioItemView @JvmOverloads constructor(
                 showTopDivider = getBoolean(R.styleable.RadioItemView_showTopDivider, true).also {
                     topDivider.isVisible = it
                 }
+                summary = getString(R.styleable.RadioItemView_summary)
             }
         }
 
@@ -113,6 +133,7 @@ class RadioItemView @JvmOverloads constructor(
     override fun setChecked(checked: Boolean) {
         if (isChecked == checked) return
         super.setChecked(checked)
+        checkMark.isChecked = checked
         onCheckedChangeListener?.onCheckedChanged(this, isChecked)
     }
 
@@ -121,5 +142,16 @@ class RadioItemView @JvmOverloads constructor(
             semTouchFeedbackAnimator.animate(motionEvent)
         }
         return super.dispatchTouchEvent(motionEvent)
+    }
+
+    private fun ensureInflatedSummaryView() {
+        if (summaryView == null) {
+            summaryView = (findViewById<ViewStub>(R.id.viewstub_summary_view).inflate() as TextView).apply {
+                maxLines = 10
+            }
+            titleView.updateLayoutParams<RelativeLayout.LayoutParams> {
+                removeRule(RelativeLayout.CENTER_VERTICAL)
+            }
+        }
     }
 }

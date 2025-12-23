@@ -19,6 +19,7 @@ import android.widget.LinearLayout
 import androidx.annotation.IdRes
 import androidx.annotation.RequiresApi
 import androidx.core.content.withStyledAttributes
+import androidx.core.view.children
 import androidx.core.view.isVisible
 import dev.oneuiproject.oneui.design.R
 
@@ -179,6 +180,7 @@ class RadioItemViewGroup @JvmOverloads constructor(
             protectFromCheckedChange = false
             setCheckedId(_checkedRadioButtonId)
         }
+        updateDividers()
     }
 
     override fun addView(child: View, index: Int, params: ViewGroup.LayoutParams) {
@@ -492,6 +494,14 @@ class RadioItemViewGroup @JvmOverloads constructor(
 
     private fun isVisibleWithText(button: RadioItemView): Boolean {
         return button.isVisible && !TextUtils.isEmpty(button.title)
+    }
+
+    private fun updateDividers() {
+        children.forEachIndexed { index, it ->
+            if (it is RadioItemView) {
+                it.showTopDivider = index != 0
+            }
+        }
     }
 
 

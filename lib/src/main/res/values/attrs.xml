@@ -358,6 +358,7 @@
 
     <declare-styleable name="RadioItemView">
         <attr name="title"/>
+        <attr name="summary"/>
         <!-- Show divider above. True by default-->
         <attr name="showTopDivider"/>
         <attr name="android:enabled"/>

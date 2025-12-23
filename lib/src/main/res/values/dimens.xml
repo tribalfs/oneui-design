@@ -75,6 +75,9 @@
     <dimen name="oui_des_cardview_icon_margin_vertical">8dp</dimen>
     <dimen name="oui_des_cardview_icon_margin_end">16dp</dimen>
 
+    <!--RadoItemView-->
+    <dimen name="oui_des_widget_radio_divider_start_margin">64dp</dimen>
+
     <!--AppInfoLayout-->
     <dimen name="oui_des_ail_sub_text_size">13sp</dimen>
     <dimen name="oui_des_ail_app_label_text_size">34sp</dimen>

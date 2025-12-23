@@ -9,23 +9,53 @@
     tools:viewBindingIgnore="true">
 
     <View
-        style="@style/OneUI.ListDividerStyle"
-        android:id="@+id/top_divider"
-        android:visibility="visible"/>
+        style="@style/OneUI.RadioOItemDividerStyle"
+        android:id="@+id/top_divider"/>
 
-    <androidx.appcompat.widget.SeslCheckedTextView
-        android:id="@+id/checkedTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="-4dp"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
-        android:checkMark="?android:attr/listChoiceIndicatorSingle"
-        android:checked="false"
-        android:ellipsize="end"
-        android:gravity="center_vertical|start"
+        android:paddingStart="?listPreferredItemPaddingStart"
         android:paddingEnd="?listPreferredItemPaddingEnd"
-        android:textAlignment="viewStart"
-        android:textAppearance="?attr/textAppearanceListItem"
-        tools:text="Radio Item"
-        />
+        android:paddingVertical="14dp"
+        android:gravity="center_vertical">
+
+        <androidx.appcompat.widget.AppCompatSeslCheckedTextView
+            android:id="@+id/checkMark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkMark="?android:attr/listChoiceIndicatorSingle"
+            android:checked="false"
+            android:saveEnabled="false"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            />
+
+        <TextView
+            android:id="@+id/titleView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:layout_marginStart="-4dp"
+            android:textAlignment="viewStart"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:layout_toEndOf="@id/checkMark"
+            android:layout_centerVertical="true"
+            />
+
+        <ViewStub
+            android:id="@+id/viewstub_summary_view"
+            android:inflatedId="@+id/summary_view"
+            android:layout="@layout/oui_des_widget_item_summary_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-4dp"
+            android:layout_toEndOf="@id/checkMark"
+            android:layout_below="@id/titleView"
+            android:visibility="gone"
+            />
+
+    </RelativeLayout>
 </merge>
