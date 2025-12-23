@@ -574,13 +574,25 @@ $dokka.location:dev.oneuiproject.oneui.preference.app/ObservablePreferencesDataS
 $dokka.location:dev.oneuiproject.oneui.preference.app/ObservablePreferencesDataStore/putString/#kotlin.String#kotlin.String?/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.preference.app/-observable-preferences-data-store/put-string.html
 $dokka.location:dev.oneuiproject.oneui.preference.app/ObservablePreferencesDataStore/putStringSet/#kotlin.String#kotlin.collections.Set[kotlin.String]?/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.preference.app/-observable-preferences-data-store/put-string-set.html
 $dokka.location:dev.oneuiproject.oneui.preference.app/ObservablePreferencesDataStore/removeOnPreferencesChangeListener/#dev.oneuiproject.oneui.preference.app.ObservablePreferencesDataStore.OnPreferencesChangeListener/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.preference.app/-observable-preferences-data-store/remove-on-preferences-change-listener.html
+$dokka.location:dev.oneuiproject.oneui.preference.core////PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.preference.core/index.html
+$dokka.location:dev.oneuiproject.oneui.preference.core/BooleanSetter///PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.preference.core/-boolean-setter/index.html
+$dokka.location:dev.oneuiproject.oneui.preference.core/BooleanSetter/value/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.preference.core/-boolean-setter/value.html
+$dokka.location:dev.oneuiproject.oneui.preference.core/FloatSetter///PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.preference.core/-float-setter/index.html
+$dokka.location:dev.oneuiproject.oneui.preference.core/FloatSetter/value/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.preference.core/-float-setter/value.html
+$dokka.location:dev.oneuiproject.oneui.preference.core/IntegerSetter///PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.preference.core/-integer-setter/index.html
+$dokka.location:dev.oneuiproject.oneui.preference.core/IntegerSetter/value/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.preference.core/-integer-setter/value.html
+$dokka.location:dev.oneuiproject.oneui.preference.core/LongSetter///PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.preference.core/-long-setter/index.html
+$dokka.location:dev.oneuiproject.oneui.preference.core/LongSetter/value/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.preference.core/-long-setter/value.html
+$dokka.location:dev.oneuiproject.oneui.preference.core/StringSetSetter///PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.preference.core/-string-set-setter/index.html
+$dokka.location:dev.oneuiproject.oneui.preference.core/StringSetSetter/value/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.preference.core/-string-set-setter/value.html
+$dokka.location:dev.oneuiproject.oneui.preference.core/StringSetter///PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.preference.core/-string-setter/index.html
+$dokka.location:dev.oneuiproject.oneui.preference.core/StringSetter/value/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.preference.core/-string-setter/value.html
 $dokka.location:dev.oneuiproject.oneui.preference////PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.preference/index.html
 $dokka.location:dev.oneuiproject.oneui.preference/ColorPickerPreference.Companion///PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.preference/-color-picker-preference/-companion/index.html
 $dokka.location:dev.oneuiproject.oneui.preference/ColorPickerPreference.Companion/convertToColorInt/#kotlin.String/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.preference/-color-picker-preference/-companion/convert-to-color-int.html
 $dokka.location:dev.oneuiproject.oneui.preference/ColorPickerPreference///PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.preference/-color-picker-preference/index.html
 $dokka.location:dev.oneuiproject.oneui.preference/ColorPickerPreference/ColorPickerPreference/#android.content.Context#android.util.AttributeSet?#kotlin.Int/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.preference/-color-picker-preference/-color-picker-preference.html
 $dokka.location:dev.oneuiproject.oneui.preference/ColorPickerPreference/onBindViewHolder/#androidx.preference.PreferenceViewHolder/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.preference/-color-picker-preference/on-bind-view-holder.html
-$dokka.location:dev.oneuiproject.oneui.preference/ColorPickerPreference/onColorSet/#kotlin.Int/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.preference/-color-picker-preference/on-color-set.html
 $dokka.location:dev.oneuiproject.oneui.preference/ColorPickerPreference/onDetached/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.preference/-color-picker-preference/on-detached.html
 $dokka.location:dev.oneuiproject.oneui.preference/ColorPickerPreference/onPreferenceClick/#androidx.preference.Preference/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.preference/-color-picker-preference/on-preference-click.html
 $dokka.location:dev.oneuiproject.oneui.preference/ColorPickerPreference/setAlphaSliderEnabled/#kotlin.Boolean/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.preference/-color-picker-preference/set-alpha-slider-enabled.html
@@ -1155,6 +1167,7 @@ dev.oneuiproject.oneui.navigation.widget
 dev.oneuiproject.oneui.popover
 dev.oneuiproject.oneui.preference
 dev.oneuiproject.oneui.preference.app
+dev.oneuiproject.oneui.preference.core
 dev.oneuiproject.oneui.qr.app
 dev.oneuiproject.oneui.qr.utils
 dev.oneuiproject.oneui.qr.widget
