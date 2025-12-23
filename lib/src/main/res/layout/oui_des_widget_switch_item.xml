@@ -68,13 +68,12 @@
                 android:gravity="center"
                 android:orientation="vertical"/>
 
-            <TextView
-                android:id="@+id/switch_card_summary"
-                android:textAppearance="?android:attr/textAppearanceSmall"
+            <ViewStub
+                android:id="@+id/viewstub_switch_card_summary"
+                android:inflatedId="@+id/switch_card_summary"
+                android:layout="@layout/oui_des_widget_item_summary_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:textAlignment="viewStart"
                 android:layout_marginEnd="@dimen/sesl_preference_dot_frame_size"
                 app:layout_constraintBottom_toTopOf="@+id/bottom_spacer"
                 app:layout_constraintStart_toStartOf="@+id/switch_card_title"

@@ -75,7 +75,7 @@ class SwitchItemView @JvmOverloads constructor(
 
     private var switchView: SwitchCompat
     private var titleView: TextView
-    private var summaryView: TextView
+    private var summaryView: TextView? = null
     private var dividerViewTop: View? = null
     private var dividerViewBottom: View? = null
     private var verticalDivider: View
@@ -203,9 +203,9 @@ class SwitchItemView @JvmOverloads constructor(
             if (field == value) return
             field = value
             if (value) {
-                summaryView.setTextColor(context.userUpdatableSummaryColor)
+                summaryView?.setTextColor(context.userUpdatableSummaryColor)
             } else {
-                summaryView.setTextColor(context.defaultSummaryColor)
+                summaryView?.setTextColor(context.defaultSummaryColor)
             }
         }
 
@@ -279,7 +279,6 @@ class SwitchItemView @JvmOverloads constructor(
         }
 
         titleView = findViewById(R.id.switch_card_title)
-        summaryView = findViewById(R.id.switch_card_summary)
 
         mainContent = findViewById(R.id.main_content)
         contentFrame = findViewById(R.id.content_frame)
@@ -348,10 +347,14 @@ class SwitchItemView @JvmOverloads constructor(
 
     private fun updateSubtitleVisibility() {
         val summaryToSet = if (isChecked) summaryOn else summaryOff
-        summaryView.apply {
+        val showSummary = !summaryToSet.isNullOrEmpty()
+        if (showSummary) {
+            ensureInflatedSummaryView()
+        }
+        summaryView?.apply {
             if (text == summaryToSet) return
             text = summaryToSet
-            isVisible = summaryToSet != null
+            isVisible = showSummary
         }
     }
 
@@ -413,10 +416,12 @@ class SwitchItemView @JvmOverloads constructor(
                         (switchView.width + switchView.paddingStart + switchView.paddingEnd)
 
             if (titleLen < availableWidth) {
-                val summaryLen: Float = if (summaryView.isVisible) {
-                    summaryView.paint.measureText(summaryView.getText().toString())
-                } else 0.0f
-                if (summaryLen < availableWidth) isLargeLayout = false
+                summaryView?.let {
+                    val summaryLen: Float = if (it.isVisible) {
+                        it.paint.measureText(it.getText().toString())
+                    } else 0.0f
+                    if (summaryLen < availableWidth) isLargeLayout = false
+                }
             }
         }
 
@@ -424,7 +429,7 @@ class SwitchItemView @JvmOverloads constructor(
 
             val switchLP = switchView.layoutParams as ConstraintLayout.LayoutParams
             val titleLP = titleView.layoutParams as ConstraintLayout.LayoutParams
-            val summaryLP = summaryView.layoutParams as ConstraintLayout.LayoutParams
+            val summaryLP = summaryView?.layoutParams as? ConstraintLayout.LayoutParams
             val bottomSpacerLP = bottomSpacer.layoutParams as ConstraintLayout.LayoutParams
 
             if (isLargeLayout) {
@@ -438,8 +443,8 @@ class SwitchItemView @JvmOverloads constructor(
                     }
 
                 titleLP.endToStart = ConstraintLayout.LayoutParams.UNSET
-                summaryLP.endToStart = ConstraintLayout.LayoutParams.UNSET
-                summaryLP.bottomToBottom = ConstraintLayout.LayoutParams.UNSET
+                summaryLP?.endToStart = ConstraintLayout.LayoutParams.UNSET
+                summaryLP?.bottomToBottom = ConstraintLayout.LayoutParams.UNSET
                 bottomSpacerLP.bottomToBottom = ConstraintLayout.LayoutParams.UNSET
             } else {
                 switchLP.topToBottom = ConstraintLayout.LayoutParams.UNSET
@@ -449,12 +454,12 @@ class SwitchItemView @JvmOverloads constructor(
                 switchLP.topMargin = 0
 
                 titleLP.endToStart = R.id.switch_widget
-                summaryLP.endToStart = R.id.switch_widget
+                summaryLP?.endToStart = R.id.switch_widget
                 bottomSpacerLP.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
             }
             switchView.layoutParams = switchLP
             titleView.layoutParams = titleLP
-            summaryView.layoutParams = summaryLP
+            summaryView?.layoutParams = summaryLP
             bottomSpacer.layoutParams = bottomSpacerLP
 
             this.isLargeLayout = isLargeLayout
@@ -498,5 +503,26 @@ class SwitchItemView @JvmOverloads constructor(
             }
         }
         return super.dispatchTouchEvent(motionEvent)
+    }
+
+    private fun ensureInflatedSummaryView() {
+        if (summaryView == null) {
+            summaryView = (findViewById<ViewStub>(R.id.viewstub_switch_card_summary).inflate() as TextView).apply {
+                setTextColor( if (isSummaryUserUpdatable) context.userUpdatableSummaryColor else context.defaultSummaryColor)
+            }
+            titleView.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                bottomToTop = summaryView!!.id
+                if (isLargeLayout) {
+                    endToStart = ConstraintLayout.LayoutParams.UNSET
+                    bottomToBottom = ConstraintLayout.LayoutParams.UNSET
+                } else {
+                    endToStart = R.id.switch_widget
+                }
+            }
+
+            findViewById<Space>(R.id.bottom_spacer).updateLayoutParams<ConstraintLayout.LayoutParams> {
+                topToBottom = summaryView!!.id
+            }
+        }
     }
 }
