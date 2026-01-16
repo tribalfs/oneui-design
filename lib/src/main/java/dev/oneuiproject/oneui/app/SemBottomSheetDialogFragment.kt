@@ -7,6 +7,7 @@ import android.app.Dialog
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
@@ -63,7 +64,7 @@ open class SemBottomSheetDialogFragment : BottomSheetDialogFragment {
                 updatePadding(left = it, right = it)
             }
             findViewById<ViewGroup>(materialR.id.design_bottom_sheet).apply {
-                if (!semSetBackgroundBlurEnabled()) {
+                if (!semSetBackgroundBlurEnabled() || isReduceTransparencyOn()) {
                     setRoundedCorners(resources.getDimension(appcompatR.dimen.sesl_dialog_background_corner_radius))
                 }
             }
@@ -118,4 +119,11 @@ open class SemBottomSheetDialogFragment : BottomSheetDialogFragment {
             }
         }
     }
+
+    private fun isReduceTransparencyOn(): Boolean =
+        Settings.System.getInt(
+            requireContext().getContentResolver(),
+            "accessibility_reduce_transparency",
+            0
+        ) != 0
 }
