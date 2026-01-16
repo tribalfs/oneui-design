@@ -145,10 +145,11 @@ class CardItemView @JvmOverloads constructor(
     var summary: CharSequence?
         get() = summaryTextView?.text
         set(value) {
-            if (value != null) ensureInflatedSummaryView()
+            val showSummary = !value.isNullOrEmpty()
+            if (showSummary) ensureInflatedSummaryView()
             summaryTextView?.apply {
                 if (text == value) return
-                isVisible = !value.isNullOrEmpty()
+                isVisible = showSummary
                 text = value
             }
         }

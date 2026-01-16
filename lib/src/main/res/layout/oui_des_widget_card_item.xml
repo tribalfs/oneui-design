@@ -44,7 +44,7 @@
                 android:textAlignment="viewStart"
                 android:layout_marginEnd="@dimen/sesl_preference_dot_frame_size"
                 android:textAppearance="?attr/textAppearanceListItem"
-                app:layout_constraintBottom_toTopOf="@+id/cardview_summary"
+                app:layout_constraintBottom_toTopOf="@+id/bottom_spacer"
                 app:layout_constraintEnd_toStartOf="@+id/viewstub_end_view"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@id/viewstub_icon_frame"
