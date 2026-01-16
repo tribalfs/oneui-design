@@ -1839,7 +1839,11 @@ open class ToolbarLayout @JvmOverloads constructor(
         appBarOffsetListeners!!.add(WeakReference(listener))
     }
 
-    fun removeOnCollapsingToolbarOffsetListener(listener: (Float) -> Unit) {
+    @Deprecated("Use removeOnAppbarOffsetListener", ReplaceWith("removeOnAppbarOffsetListener(listener)"))
+    fun removeOnCollapsingToolbarOffsetListener(listener: (Float) -> Unit) =
+        removeOnAppbarOffsetListener(listener)
+
+    fun removeOnAppbarOffsetListener(listener: (Float) -> Unit) {
         appBarOffsetListeners?.let { list ->
             val iterator = list.iterator()
             while (iterator.hasNext()) {
