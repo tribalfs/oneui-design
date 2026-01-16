@@ -1831,6 +1831,18 @@ open class ToolbarLayout @JvmOverloads constructor(
             .start()
     }
 
+    /**
+     * Registers a callback to receive app bar vertical offset updates for this ToolbarLayout.
+     *
+     * The listener is held via WeakReference to avoid memory leaks. Keep your own strong reference
+     * if you plan to remove it later via removeOnAppbarOffsetListener.
+     *
+     * The callback receives the current offset in pixels as a Float, where 0f typically represents
+     * fully expanded and negative values represent collapsed offset.
+     *
+     * @param listener lambda invoked with the current app bar offset whenever it changes.
+     * @see removeOnAppbarOffsetListener
+     */
     fun addOnAppbarOffsetListener(listener: (Float) -> Unit) {
         if (appBarOffsetListeners == null) {
             appBarOffsetListeners = mutableListOf(WeakReference(listener))
@@ -1843,6 +1855,15 @@ open class ToolbarLayout @JvmOverloads constructor(
     fun removeOnCollapsingToolbarOffsetListener(listener: (Float) -> Unit) =
         removeOnAppbarOffsetListener(listener)
 
+    /**
+     * Unregisters a previously added app bar offset listener.
+     *
+     * If the same lambda instance was added multiple times it will remove all matching entries.
+     * Any listeners that have been garbage-collected are also cleared.
+     *
+     * @param listener the same instance that was passed to addOnAppbarOffsetListener.
+     * @see addOnAppbarOffsetListener
+     */
     fun removeOnAppbarOffsetListener(listener: (Float) -> Unit) {
         appBarOffsetListeners?.let { list ->
             val iterator = list.iterator()
@@ -1855,7 +1876,16 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
     }
 
-    internal fun addOnBottomOffsetChangedListener(listener: (Float) -> Unit) {
+    /**
+     * Registers a callback to receive bottom offset updates for main content
+     * of this ToolbarLayout.
+     *
+     * Duplicate registrations of the same instance are ignored.
+     *
+     * @param listener lambda invoked with the current bottom offset in pixels as a Float.
+     * @see removeOnBottomOffsetChangedListener
+     */
+    fun addOnBottomOffsetChangedListener(listener: (Float) -> Unit) {
         if (bottomOffsetListeners == null) {
             bottomOffsetListeners = mutableListOf(WeakReference(listener))
             return
@@ -1867,7 +1897,16 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
     }
 
-    internal fun removeOnBottomOffsetChangedListener(listener: (Float) -> Unit) {
+    /**
+     * Unregisters a previously added bottom offset listener.
+     *
+     * Removes all entries matching the given instance and clears any listeners that have already
+     * been garbage-collected.
+     *
+     * @param listener the same instance that was passed to addOnBottomOffsetChangedListener.
+     * @see addOnBottomOffsetChangedListener
+     */
+    fun removeOnBottomOffsetChangedListener(listener: (Float) -> Unit) {
         bottomOffsetListeners?.let { list ->
             val iterator = list.iterator()
             while (iterator.hasNext()) {
