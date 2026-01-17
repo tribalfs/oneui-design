@@ -107,6 +107,7 @@ class CardItemView @JvmOverloads constructor(
             dividerViewTop = LayoutInflater.from(context)
                 .inflate(R.layout.oui_des_widget_card_item_divider, this, false)
             addView(dividerViewTop, 0)
+            updateLayoutParams()
         }
     }
 
@@ -115,6 +116,7 @@ class CardItemView @JvmOverloads constructor(
             dividerViewBottom = LayoutInflater.from(context)
                 .inflate(R.layout.oui_des_widget_card_item_divider, this, false)
             addView(dividerViewBottom, childCount)
+            updateLayoutParams()
         }
     }
 
