@@ -97,6 +97,7 @@ import dev.oneuiproject.oneui.layout.internal.util.NavButtonsHandler
 import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.hasShowingChild
 import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.navBarCanImmScroll
 import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.setVisibility
+import dev.oneuiproject.oneui.widget.DynamicPaddingFrameLayout
 import dev.oneuiproject.oneui.utils.internal.BADGE_LIMIT_NUMBER
 import dev.oneuiproject.oneui.utils.DeviceLayoutUtil
 import dev.oneuiproject.oneui.utils.MenuSynchronizer
@@ -108,6 +109,7 @@ import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type
 import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout
 import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout.Companion.MARGIN_PROVIDER_ADP_DEFAULT
 import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout.MarginProvider
+import dev.oneuiproject.oneui.widget.DynamicPaddingFrameLayout.PaddingProvider
 import dev.oneuiproject.oneui.widget.RoundedFrameLayout
 import dev.oneuiproject.oneui.widget.RoundedLinearLayout
 import kotlinx.coroutines.Job
@@ -358,7 +360,8 @@ open class ToolbarLayout @JvmOverloads constructor(
     private lateinit var actionModeTitleTextView: TextView
     private var updateAllSelectorJob: Job? = null
 
-    private var customFooterContainer: FrameLayout? = null
+    private var customFooterContainer: DynamicPaddingFrameLayout? = null
+    private var customFooterPaddingProvider: PaddingProvider? = null
     private lateinit var bottomActionModeBar: BottomNavigationView
 
     private var searchToolbar: Toolbar? = null
@@ -479,7 +482,10 @@ open class ToolbarLayout @JvmOverloads constructor(
                 CollapsingToolbarLayout.LayoutParams(params)
             )
 
-            FOOTER -> customFooterContainer!!.addView(child, params)
+            FOOTER -> {
+                ensureCustomFooterContainer()
+                customFooterContainer!!.addView(child, params)
+            }
             ROOT, ROOT_BOUNDED -> {
                 if (params.layoutLocation == ROOT) {
                     child.setTag(R.id.tag_side_margin_excluded, true)
@@ -493,6 +499,37 @@ open class ToolbarLayout @JvmOverloads constructor(
     override fun generateDefaultLayoutParams() = ToolbarLayoutParams(LayoutParams(MATCH_PARENT, WRAP_CONTENT))
 
     override fun generateLayoutParams(attrs: AttributeSet) = ToolbarLayoutParams(context, attrs)
+
+    private fun ensureCustomFooterContainer() {
+        if (customFooterContainer == null) {
+            customFooterContainer = DynamicPaddingFrameLayout(context).apply {
+                layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+                setPaddingProvider(customFooterPaddingProvider)
+            }
+            footerParent.addView(customFooterContainer, 0)
+        }
+    }
+
+    /**
+     * Sets a custom [PaddingProvider] for the footer view.
+     *
+     * This allows for dynamic adjustment of the footer's horizontal padding. The provider
+     * will be used to calculate the appropriate horizontal padding, which are then applied
+     * to the custom footer view.
+     *
+     * The padding is automatically recalculated and applied when the layout's configuration
+     * or size changes.
+     *
+     * @param provider The [PaddingProvider] to use for calculating the footer's horizontal padding.
+     *                 Passing `null` will revert to the default padding.
+     *
+     * @see R.attr.layout_location
+     */
+    fun setCustomFooterPaddingProvider(provider: PaddingProvider) {
+        if (provider === customFooterPaddingProvider) return
+        customFooterPaddingProvider = provider
+        customFooterContainer?.setPaddingProvider(customFooterPaddingProvider)
+    }
 
     internal open val navButtonsHandler: NavButtonsHandler by lazy(LazyThreadSafetyMode.NONE) {
         ToolbarLayoutButtonsHandler(_mainToolbar)
@@ -569,7 +606,6 @@ open class ToolbarLayout @JvmOverloads constructor(
         bottomRoundedCorner = adpCoordinatorLayout.findViewById(R.id.tbl_bottom_corners)
 
         footerParent = findViewById(R.id.tbl_footer_parent)
-        customFooterContainer = footerParent.findViewById(R.id.tbl_custom_footer_container)
 
     }
 
@@ -1101,7 +1137,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         setupSearchView(predictiveBackEnabled, searchModeOnBackBehavior)
        // animatedVisibility(_mainToolbar, GONE)
         animatedVisibility(searchToolbar!!, VISIBLE)
-        customFooterContainer!!.setVisibility(GONE, false)
+        customFooterContainer?.setVisibility(GONE, false)
         setExpanded(expanded = false, animate = true)
         setupSearchModeListener()
         _searchView!!.isIconified = false//to focus
@@ -1148,7 +1184,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         //Restore views visibility
         searchToolbar!!.visibility = GONE
         animatedVisibility(_mainToolbar, VISIBLE)
-        customFooterContainer!!.setVisibility(VISIBLE, true, 450)
+        customFooterContainer?.setVisibility(VISIBLE, true, 450)
 
         searchModeListener!!.onSearchModeToggle(_searchView!!, false)
         // We are clearing the listener first. We don't want to trigger
@@ -1498,7 +1534,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             clearActionModeSearch()
             showMainToolbarAnimate()
             applyCachedTitles()
-            customFooterContainer!!.setVisibility(VISIBLE, true, 0)
+            customFooterContainer?.setVisibility(VISIBLE, true, 0)
         }
         bottomActionModeBar.setVisibility(GONE, true, 0)
         actionModeListener!!.onEndActionMode()
@@ -1574,11 +1610,13 @@ open class ToolbarLayout @JvmOverloads constructor(
             syncMenuPending = true
             return
         }
-        if (customFooterContainer!!.hasShowingChild()) {
-            customFooterContainer!!.isVisible = false
-            if (VERSION.SDK_INT >= 26) {
-                postOnAnimationDelayed({ if (isActionMode) syncActionModeMenuInternal() }, 375)
-                return
+        customFooterContainer?.let {
+            if (it.hasShowingChild()) {
+                it.isVisible = false
+                if (VERSION.SDK_INT >= 26) {
+                    postOnAnimationDelayed({ if (isActionMode) syncActionModeMenuInternal() }, 375)
+                    return
+                }
             }
         }
         syncActionModeMenuInternal()
@@ -1622,7 +1660,7 @@ open class ToolbarLayout @JvmOverloads constructor(
                 }
                 visibility = View.GONE
             }
-            footerParent.addView(bottomActionModeBar, 1)
+            footerParent.addView(bottomActionModeBar)
         }
     }
 
@@ -1997,7 +2035,6 @@ open class ToolbarLayout @JvmOverloads constructor(
         private const val APPBAR_HEADER = 1
         /**
          * Adds the view to the bottom of the layout ensuring it does not overlap with other content.
-         * This view will also have adaptive margins applied.
          */
         private const val FOOTER = 2
         /**

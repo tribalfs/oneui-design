@@ -176,8 +176,7 @@
             This is equivalent to invoking the `setCustomTitleView` method.-->
             <enum name="appbar_header" value="1" />
             <!--Adds the view to the bottom of the layout
-            ensuring it does not overlap with other content.
-            This view will also have adaptive margins applied.-->
+            ensuring it does not overlap with other content.-->
             <enum name="footer" value="2" />
             <!--Adds the view as a direct child of the CoordinatorLayout.
             Typically overlaps with the `main_content` view.-->

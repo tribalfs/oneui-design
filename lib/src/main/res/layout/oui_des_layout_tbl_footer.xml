@@ -8,10 +8,7 @@
     tools:viewBindingIgnore="true"
     android:orientation="vertical">
 
-    <FrameLayout
-        android:id="@+id/tbl_custom_footer_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    <!--Inflate container for custom footer here-->
 
     <!--Inflate BottomNavigationView here for bottom menu-->
 
