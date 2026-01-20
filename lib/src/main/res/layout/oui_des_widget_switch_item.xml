@@ -47,7 +47,7 @@
                 android:textAlignment="viewStart"
                 android:layout_marginEnd="@dimen/sesl_preference_dot_frame_size"
                 android:textAppearance="?attr/textAppearanceListItem"
-                app:layout_constraintBottom_toTopOf="@+id/switch_card_summary"
+                app:layout_constraintBottom_toTopOf="@+id/bottom_spacer"
                 app:layout_constraintEnd_toStartOf="@+id/switch_widget"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@id/viewstub_switch_item_icon_frame"
