@@ -169,6 +169,24 @@ open class ToolbarLayout @JvmOverloads constructor(
     attrs: AttributeSet? = null
 ) : LinearLayout(context, attrs) {
 
+    /**
+     * Defines the behavior and location of the action mode menu.
+     * This is returned by [ActionModeListener.getActionModeMenuBehavior].
+     */
+    enum class ActionModeMenuBehavior {
+        /**
+         * The menu's location is determined dynamically based on the screen width.
+         * It will be shown in the toolbar on wider screens and in a bottom bar on narrower screens.
+         */
+        DYNAMIC,
+
+        /** The menu is always displayed in a bottom bar, regardless of screen width. */
+        BOTTOM_BAR,
+
+        /** The menu is always displayed in the toolbar, regardless of screen width. */
+        TOOLBAR
+    }
+
     interface ActionModeListener {
         /** Called at the start of [startActionMode].
          * These object references passed in the parameter should be used
@@ -191,6 +209,17 @@ open class ToolbarLayout @JvmOverloads constructor(
 
         /** Called when the 'All' selector is clicked. This will not be triggered with [updateAllSelector].*/
         fun onSelectAll(isChecked: Boolean)
+
+        /**
+         * Determines the behavior and location of the action mode menu.
+         *
+         * Override this method to specify whether the menu should appear in the
+         * [ActionModeMenuBehavior.TOOLBAR], a [ActionModeMenuBehavior.BOTTOM_BAR],
+         * or be [ActionModeMenuBehavior.DYNAMIC] based on screen width.
+         *
+         * @return The desired [ActionModeMenuBehavior]. Defaults to [ActionModeMenuBehavior.DYNAMIC].
+         */
+        fun getActionModeMenuBehavior(): ActionModeMenuBehavior = ActionModeMenuBehavior.DYNAMIC
     }
 
     /**
@@ -386,7 +415,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     private var showActionModeSearchPending = false
 
     private var menuSynchronizer: MenuSynchronizer? = null
-    private var forcePortraitMenu: Boolean = false
+    private var actionModeMenuBehavior: ActionModeMenuBehavior = ActionModeMenuBehavior.DYNAMIC
     private var syncMenuPending = false
     private var edgeInsetHorizontal = 10f //dp
 
@@ -1572,8 +1601,6 @@ open class ToolbarLayout @JvmOverloads constructor(
     }
 
     private inline fun setupActionModeMenu(showCancel: Boolean, maxActionItems: Int) {
-        forcePortraitMenu = showCancel
-
         actionModeToolbar!!.apply {
             var cancelMenuItem: MenuItem? = menu.findItem(R.id.menu_item_am_cancel)
             if (showCancel && cancelMenuItem == null) {
@@ -1602,6 +1629,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         ).apply {
             actionModeListener!!.onInflateActionMenu(this.menu, activity!!.menuInflater)
         }
+        actionModeMenuBehavior = actionModeListener!!.getActionModeMenuBehavior()
     }
 
     private fun handlePendingActions() {
@@ -1636,11 +1664,13 @@ open class ToolbarLayout @JvmOverloads constructor(
     private fun syncActionModeMenuInternal() {
         if (allSelectorItemsCount > 0) {
             if (!isTouching) {
-                val isMenuModePortrait = forcePortraitMenu
-                        || DeviceLayoutUtil.isPortrait(resources.configuration)
-                        || DeviceLayoutUtil.isTabletLayoutOrDesktop(context)
+                val isMenuModePortrait = actionModeMenuBehavior == ActionModeMenuBehavior.BOTTOM_BAR
+                        || actionModeMenuBehavior == ActionModeMenuBehavior.DYNAMIC
+                        && (DeviceLayoutUtil.isPortrait(resources.configuration) || DeviceLayoutUtil.isTabletLayoutOrDesktop(context))
                 menuSynchronizer!!.state =
-                    if (isMenuModePortrait) State.PORTRAIT else State.LANDSCAPE
+                    if (menuSynchronizer!!.menu.visibleItems.isNotEmpty()) {
+                        if (isMenuModePortrait) State.PORTRAIT else State.LANDSCAPE
+                    } else State.HIDDEN
                 if (isImmersiveScroll) {
                     postOnAnimation { appBarLayout.setExpanded(false, true) }
                 }
