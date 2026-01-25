@@ -121,9 +121,13 @@ internal class OnBackAppBarHandler<T: ToolbarLayout>(
             }
             subTitleResolved?.let { setSubtitle(it) }
 
-            isExpandable = destination.arguments[navArgExpandable]?.defaultValue as? Boolean ?: true
+            (destination.arguments[navArgExpandable]?.defaultValue as? Boolean)?. let {
+                isExpandable = it
+            }
             if (Build.VERSION.SDK_INT >= 30) {
-                isImmersiveScroll = destination.arguments[navArgImmersiveScroll]?.defaultValue as? Boolean ?: false
+                (destination.arguments[navArgImmersiveScroll]?.defaultValue as? Boolean)?.let {
+                    isImmersiveScroll = it
+                }
             }
 
             configuration.isTopLevelDestination(destination).let {
