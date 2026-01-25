@@ -3,23 +3,28 @@ package dev.oneuiproject.oneui.layout.internal.util
 import android.content.Context
 import android.graphics.Color
 import android.os.Build
-import android.os.Build.VERSION.SDK_INT
 import android.os.Parcelable
-import android.view.Gravity
+import android.view.Gravity.BOTTOM
+import android.view.Gravity.CENTER_HORIZONTAL
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout.LayoutParams
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.view.WindowInsets
+import android.widget.FrameLayout
+import androidx.activity.ComponentActivity
 import androidx.annotation.FloatRange
 import androidx.annotation.RequiresApi
 import androidx.annotation.RestrictTo
-import androidx.activity.ComponentActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.graphics.ColorUtils
 import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.SeslImmersiveScrollBehavior
 import dev.oneuiproject.oneui.ktx.getThemeAttributeValue
+import dev.oneuiproject.oneui.widget.AdaptiveCoordinatorLayout
 import kotlinx.parcelize.Parcelize
 
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
@@ -32,21 +37,26 @@ internal class ImmersiveScrollHelper(
     private val bottomViewAlpha: Float = 1f
 ) {
 
-    private var originalParent: ViewGroup? = null
-    private var restoreParentIndex: Int = 0
-    private var defaultBottomViewBgColor =
-        activity.getThemeAttributeValue(androidx.appcompat.R.attr.roundedCornerColor)!!.data
-
-
     var isImmersiveScrollActivated = false
         private set
 
+    private var dummyBottomView: FrameLayout? = null
+
+    private val defaultBottomViewBgColor by lazy(LazyThreadSafetyMode.NONE) {
+        activity.getThemeAttributeValue(androidx.appcompat.R.attr.roundedCornerColor)!!.data
+    }
+
+    private var restoreParentIndex: Int = 0
+    private var restoreParent: ViewGroup? = null
+    private var restoreLayoutParams: ViewGroup.LayoutParams? = null
+
     @RequiresApi(Build.VERSION_CODES.R)
-    fun activateImmersiveScroll(){
+    fun activateImmersiveScroll() {
         if (isImmersiveScrollActivated) return
         isImmersiveScrollActivated = true
         ensureImmersiveScrollBehavior()
         appBarLayout.seslSetImmersiveScroll(true)
+        updateDummyBottomView()
         setupBottomView()
         appBarLayout.apply {
             //Workaround wrong collapsed height
@@ -56,129 +66,119 @@ internal class ImmersiveScrollHelper(
     }
 
     @RequiresApi(Build.VERSION_CODES.R)
-    fun deactivateImmersiveScroll(){
-        if (!isImmersiveScrollActivated) return
+    fun deactivateImmersiveScroll() {
+        if (!isImmersiveScrollActivated || activity.isDestroyed || activity.isFinishing) return
         isImmersiveScrollActivated = false
         appBarLayout.seslActivateImmersiveScroll(false, true)
-        setupBottomView()
+        appBarLayout.seslImmersiveRelease()
+        clearDummyBottomView()
+        resetCurrentBottomView()
         appBarLayout.apply {
-            //Workaround wrong collapsed height
             if (seslIsCollapsed()) setExpanded(false, true)
+        }
+    }
+
+    fun setBottomView(view: View?) {
+        if (view == bottomView) return
+        resetCurrentBottomView()
+        bottomView = view
+        if (isImmersiveScrollActivated) {
+            updateDummyBottomView()
+            setupBottomView()
+        }
+    }
+
+    private fun updateDummyBottomView() {
+        if (dummyBottomView == null) {
+            dummyBottomView = createDummyBottomView()
+        }
+
+        dummyBottomView?.apply {
+            if (parent == null) {
+                appBarLayout.let {
+                    (it.parent as AdaptiveCoordinatorLayout).addView(
+                        this,
+                        CoordinatorLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+                    )
+                }
+                (layoutParams as? CoordinatorLayout.LayoutParams)?.gravity =
+                    BOTTOM or CENTER_HORIZONTAL
+            }
+
+            setOnApplyWindowInsetsListener { v, insets ->
+                updatePadding(bottom = insets.getInsetsIgnoringVisibility(WindowInsets.Type.navigationBars()).bottom)
+                insets
+            }
             requestApplyInsets()
+            appBarLayout.seslSetBottomView(this)
         }
     }
 
-    fun setBottomView(view: View?){
-        resetBottomView(); bottomView = view; setupBottomView()
-    }
-
-
-    private fun setupBottomView(){
-        if (activity.isDestroyed || activity.isFinishing) {
-            return
-        }
-
-        if (isImmersiveScrollActivated){
-            bottomView?.apply {
-                switchFooterParent(true)
-                ColorUtils.setAlphaComponent(defaultBottomViewBgColor,
-                    // Set 0.01 as min alpha - SeslImmersiveScrollBehavior is glitching with 0f
-                    (255 * bottomViewAlpha.coerceAtLeast(0.01f)).toInt()).let {
-                    @Suppress("DEPRECATION")
-                    activity.window.navigationBarColor = it
-                    setBackgroundColor(it)
-                }
-                appBarLayout.seslSetBottomView(this)
-            }
-        }else{
-            bottomView?.apply {
-                switchFooterParent(false)
-                resetBottomView()
-                appBarLayout.seslSetBottomView(null)
-            }
+    private fun clearDummyBottomView() {
+        dummyBottomView?.apply {
+            (parent as? ViewGroup)?.removeView(this)
+            dummyBottomView = null
+            appBarLayout.seslSetBottomView(null)
+            appBarLayout.requestLayout()
         }
     }
 
-    private fun resetBottomView(){
-        bottomView?.apply {
-            @Suppress("DEPRECATION")
-            activity.window.navigationBarColor = Color.TRANSPARENT
-            setBackgroundColor(defaultBottomViewBgColor)
-            translationY = 0f
+    private fun setupBottomView() {
+        if (bottomView != null) {
+            val bottomView = bottomView!!
+            restoreParent = bottomView.parent as? ViewGroup
+            restoreLayoutParams = bottomView.layoutParams
+            restoreParentIndex = restoreParent!!.indexOfChild(bottomView)
+            restoreParent?.removeView(bottomView)
+            dummyBottomView?.apply {
+                addView(bottomView)
+                setBackgroundColor(ColorUtils.setAlphaComponent(defaultBottomViewBgColor, (255 * bottomViewAlpha).toInt()))
+            }
+            bottomView.updateLayoutParams<FrameLayout.LayoutParams> {
+                gravity = BOTTOM or CENTER_HORIZONTAL
+            }
+        } else {
+            dummyBottomView?.apply {
+                removeAllViews()
+                setBackgroundColor(Color.TRANSPARENT)
+            }
         }
     }
 
-
-    private fun switchFooterParent(isBottomViewMode: Boolean) {
-        bottomView?.clearAnimation()
-
-        if (isBottomViewMode){
-            (bottomView?.parent as? ViewGroup)?.let {
-                if (it == appBarLayout.parent){
-                    //Nothing to do
-                    return
-                }
-                originalParent = it
-                restoreParentIndex = it.indexOfChild(bottomView)
-                it.removeView(bottomView)
+    private fun resetCurrentBottomView() {
+        bottomView?.let {
+            (it.parent as? ViewGroup)?.removeView(it)
+            restoreParent?.apply {
+                it.layoutParams = restoreLayoutParams
+                addView(it, restoreParentIndex.coerceAtMost(childCount))
             }
-
-            (appBarLayout.parent as CoordinatorLayout).addView(
-                bottomView,
-                CoordinatorLayout.LayoutParams(
-                    CoordinatorLayout.LayoutParams.MATCH_PARENT,
-                    CoordinatorLayout.LayoutParams.WRAP_CONTENT
-                )
-            )
-            bottomView?.apply {
-                updateLayoutParams<CoordinatorLayout.LayoutParams> {
-                    gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
-                }
-                setBackgroundColor(ColorUtils.setAlphaComponent(defaultBottomViewBgColor,
-                    if (SDK_INT >= 35) (255*.8).toInt() else 255))
-            }
-            appBarLayout.parent.requestLayout()
-        }else{
-            originalParent?.apply {
-                (bottomView?.parent as ViewGroup).removeView(bottomView)
-                addView(bottomView, restoreParentIndex, LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                ))
-                bottomView?.apply {
-                    updateLayoutParams<LayoutParams> {
-                        gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
-                    }
-                    setBackgroundColor(defaultBottomViewBgColor)
-                }
-            }
-            appBarLayout.parent.requestLayout()
         }
     }
 
-    private fun ensureImmersiveScrollBehavior(): Boolean {
-        try {
-            appBarLayout.updateLayoutParams<CoordinatorLayout.LayoutParams> {
-                if (behavior !is SeslImmersiveScrollBehavior) {
-                    behavior = SeslImmersiveScrollBehavior(baseContext, null)
-                }
-                (behavior as SeslImmersiveScrollBehavior).apply {
-                    setNeedToCheckBottomViewMargin(false)
-                    setAutoRestoreTopAndBottom(false)
-                }
+    private fun ensureImmersiveScrollBehavior() {
+        appBarLayout.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+            if (behavior !is SeslImmersiveScrollBehavior) {
+                behavior = SeslImmersiveScrollBehavior(baseContext, null)
             }
-            return true
-        }catch(_: Throwable){
-            return false
+            (behavior as SeslImmersiveScrollBehavior).apply {
+                setNeedToCheckBottomViewMargin(false)
+                setAutoRestoreTopAndBottom(false)
+            }
         }
     }
+
+    private fun createDummyBottomView(): FrameLayout =
+        FrameLayout(activity).apply {
+            layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+        }
 
     private val baseContext: Context
-        get() = appBarLayout.context.let{ (it as? ContextThemeWrapper)?.baseContext ?: it }
-
+        get() = appBarLayout.context.let { (it as? ContextThemeWrapper)?.baseContext ?: it }
 
     @Parcelize
-    class State(val isImmersiveScrollActivated: Boolean,
-                val withFooter: Boolean): Parcelable
+    class State(
+        val isImmersiveScrollActivated: Boolean,
+        val withFooter: Boolean
+    ) : Parcelable
 
 }

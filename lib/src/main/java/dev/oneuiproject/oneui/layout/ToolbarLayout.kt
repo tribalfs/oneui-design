@@ -57,6 +57,7 @@ import androidx.core.view.WindowInsetsCompat.Type.ime
 import androidx.core.view.WindowInsetsCompat.Type.navigationBars
 import androidx.core.view.WindowInsetsCompat.Type.systemBars
 import androidx.core.view.children
+import androidx.core.view.doOnAttach
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
@@ -954,11 +955,18 @@ open class ToolbarLayout @JvmOverloads constructor(
         }
 
         if (activate) {
-            if (immersiveScrollHelper == null) {
-                immersiveScrollHelper =
-                    ImmersiveScrollHelper(activity!!, appBarLayout, footerParent, footerAlpha)
+            doOnAttach {
+                if (immersiveScrollHelper == null) {
+                    immersiveScrollHelper =
+                        ImmersiveScrollHelper(
+                            activity!!,
+                            appBarLayout,
+                            if (footerHeight > 0) footerParent else null,
+                            footerAlpha
+                        )
+                }
+                immersiveScrollHelper!!.activateImmersiveScroll()
             }
-            immersiveScrollHelper!!.activateImmersiveScroll()
         } else {
             immersiveScrollHelper?.deactivateImmersiveScroll()
             immersiveScrollHelper = null
@@ -987,7 +995,7 @@ open class ToolbarLayout @JvmOverloads constructor(
          * When this is activated, the AppBar, the Navigation bar and the layout footer will completely hide when scrolling up.
          */
         set(activate) {
-            activateImmersiveScroll(activate, if (VERSION.SDK_INT >= 35) 0.8f else 1f)
+            activateImmersiveScroll(activate)
         }
 
     /**
@@ -1777,7 +1785,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         val basePadding = insets.getInsets(systemBars() or displayCutout())
 
         if (isImmersiveScroll) {
-            setPadding(basePadding.left, basePadding.top, basePadding.right, imeInsetBottom)
+            setPadding(basePadding.left, 0, basePadding.right, imeInsetBottom)
         } else {
             if (activity.fitsSystemWindows) {
                 setPadding(0, 0, 0, imeInsetBottom)
@@ -1960,7 +1968,10 @@ open class ToolbarLayout @JvmOverloads constructor(
         OnLayoutChangeListener { v, _, _, _, _, _, _, _, _ ->
             v.height.let {
                 if (it != footerHeight) {
-                    footerHeight = it; dispatchBottomOffsetChanged()
+                    footerHeight = it
+                    @SuppressLint("NewApi")
+                    immersiveScrollHelper?.setBottomView(if (it > 0) footerParent else null)
+                    dispatchBottomOffsetChanged()
                 }
             }
         }
