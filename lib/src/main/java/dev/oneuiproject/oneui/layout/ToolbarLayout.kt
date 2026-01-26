@@ -1666,12 +1666,13 @@ open class ToolbarLayout @JvmOverloads constructor(
                 layoutParams = LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
-                ).apply {
-                    gravity = Gravity.BOTTOM
-                }
+                )
                 visibility = View.GONE
             }
             footerParent.addView(bottomActionModeBar)
+            bottomActionModeBar.updateLayoutParams<LinearLayout.LayoutParams> {
+                gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
+            }
         }
     }
 
