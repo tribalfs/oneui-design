@@ -13,6 +13,7 @@ import androidx.core.view.forEach
 import androidx.core.view.isVisible
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dev.oneuiproject.oneui.design.R
+import java.util.ArrayList
 
 /**
  * Handles the synchronization of menu items between a BottomNavigationView and a Toolbar,
@@ -130,6 +131,10 @@ class MenuSynchronizer @JvmOverloads constructor(
         @Suppress("RedundantOverride")
         //To suppress restricted api lint warning on caller
         override fun findItem(id: Int): MenuItem? = super.findItem(id)
+
+        @Suppress("RedundantOverride")
+        //To suppress restricted api lint warning on caller
+        override fun getVisibleItems(): ArrayList<MenuItemImpl?> = super.getVisibleItems()
 
         internal fun getState(): State = currentState
 
