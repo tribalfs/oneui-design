@@ -430,7 +430,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     private var isImeAnimationRunning = false
 
     private val imeAnimationCallback by lazy(LazyThreadSafetyMode.NONE) {
-        object : WindowInsetsAnimationCompat.Callback(DISPATCH_MODE_STOP) {
+        object : WindowInsetsAnimationCompat.Callback(DISPATCH_MODE_CONTINUE_ON_SUBTREE) {
             private fun WindowInsetsAnimationCompat.isImeAnimation(): Boolean =
                 (typeMask and WindowInsetsCompat.Type.ime()) != 0
 
