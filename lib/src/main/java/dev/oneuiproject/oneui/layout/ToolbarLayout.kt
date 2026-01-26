@@ -393,7 +393,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     private var _showSwitchBar = false
 
     /**
-     * The [SeslSwitchbar][androidx.appcompat.widget.SeslSwitchBar] shown below the app bar.
+     * The [SeslSwitchBar][androidx.appcompat.widget.SeslSwitchBar] shown below the app bar.
      * Invoking this will automatically inflate and add the switch bar to the layout.
      */
     open val switchBar by lazy {
@@ -712,6 +712,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         if (_expandable) {
             appBarLayout.seslSetCustomHeightProportion(false, 0f)
         } else {
+            @SuppressLint("PrivateResource")
             appBarLayout.seslSetCustomHeight(
                 context.resources.getDimensionPixelSize(appcompatR.dimen.sesl_action_bar_height_with_padding)
             )
@@ -1149,6 +1150,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         setExpanded(expanded = false, animate = true)
         setupSearchModeListener()
         _searchView!!.isIconified = false//to focus
+        @SuppressLint("PrivateResource")
         collapsingToolbarLayout.title =
             resources.getString(appcompatR.string.sesl_searchview_description_search)
         collapsingToolbarLayout.seslSetSubtitle(null)
@@ -1534,6 +1536,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             ensureSearchModeToolbar()
             setupSearchView()
             animatedVisibility(searchToolbar!!, VISIBLE)
+            @SuppressLint("PrivateResource")
             collapsingToolbarLayout.title =
                 resources.getString(appcompatR.string.sesl_searchview_description_search)
             collapsingToolbarLayout.seslSetSubtitle(null)
