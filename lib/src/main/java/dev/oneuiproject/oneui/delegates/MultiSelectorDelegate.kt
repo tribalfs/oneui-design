@@ -74,9 +74,11 @@ typealias AllSelectorState = AllSelectorState
  * @param isSelectable (Optional) lambda to be checked if not all [RecyclerView.ViewHolder] view types are selectable.
  * Required for adapter with multiple view types where not all view types are selectable. This returns `true` to all by default.
  */
+@Deprecated(
+    "Use the new (refactored) MultiSelectorDelegate found in dev.oneuiproject.oneui.recyclerview.util instead.")
 class MultiSelectorDelegate<T>(
     private val isSelectable: (viewType: Int) -> Boolean = { true },
-) : MultiSelector<T>{
+) : MultiSelector<T> {
 
     //https://developer.android.com/reference/kotlin/androidx/collection/ScatterSet
     private val selectedIds = mutableScatterSetOf<T>()
@@ -126,7 +128,7 @@ class MultiSelectorDelegate<T>(
                         onSelectItem(getSelectionId?.invoke(pos) ?: id as T, pos)
                     }
                 },
-                onStateChanged = {state, pos ->
+                onStateChanged = { state, pos ->
                     when(state){
                         STARTED -> {
                             //Temporarily disable item animator if any
@@ -317,6 +319,7 @@ class MultiSelectorDelegate<T>(
  * @param T The type of the selection ID. This should typically be a stable identifier for your items,
  *          such as `Long` when using [RecyclerView.Adapter.getItemId].
  */
+@Deprecated("Use MultiSelector found in dev.oneuiproject.oneui.recyclerview.util")
 interface MultiSelector<T> {
     /**
      * Configure the multi selector.
