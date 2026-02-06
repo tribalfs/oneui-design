@@ -21,6 +21,12 @@ android {
     lint { baseline = file("lint-baseline.xml") }
 }
 
+kotlin {
+    compilerOptions {
+        freeCompilerArgs.add("-Xcontext-parameters")
+    }
+}
+
 dependencies {
     api(libs.bundles.sesl.androidx)
     api(libs.sesl.material)
