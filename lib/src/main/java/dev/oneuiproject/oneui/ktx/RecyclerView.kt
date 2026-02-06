@@ -37,12 +37,11 @@ import dev.oneuiproject.oneui.layout.ToolbarLayout
  * This is always set to [RecyclerView.NO_POSITION] when [MultiSelectionState.ENDED].
  *
  */
-inline fun RecyclerView.doOnLongPressMultiSelection (
-    crossinline onItemSelected: (position: Int,
-                                 id: Long) -> Unit,
-    crossinline onStateChanged: (state: MultiSelectionState,
-                                 position: Int) -> Unit = { _, _ -> },
-){
+@Deprecated("Use the new doOnLongPressMultiSelection instead")
+inline fun RecyclerView.doOnLongPressMultiSelection(
+    crossinline onItemSelected: (position: Int, id: Long) -> Unit,
+    crossinline onStateChanged: (state: MultiSelectionState, position: Int) -> Unit = { _, _ -> },
+) {
     seslSetLongPressMultiSelectionListener(
         object : RecyclerView.SeslLongPressMultiSelectionListener {
             override fun onItemSelected(
@@ -70,7 +69,8 @@ inline fun RecyclerView.doOnLongPressMultiSelection (
         })
 }
 
-enum class MultiSelectionState{
+@Deprecated("")
+enum class MultiSelectionState {
     STARTED,
     ENDED
 }
