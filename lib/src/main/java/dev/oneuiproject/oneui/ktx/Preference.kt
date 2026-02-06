@@ -3,24 +3,19 @@
 package dev.oneuiproject.oneui.ktx
 
 
-import android.annotation.SuppressLint
 import android.content.res.ColorStateList
-import android.graphics.Color
-import androidx.appcompat.R.color.sesl_secondary_text_dark
-import androidx.appcompat.R.color.sesl_secondary_text_light
-import androidx.appcompat.util.SeslMisc
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.ColorUtils
+import android.view.View
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceGroup
 import androidx.preference.SeekBarPreference
 import androidx.preference.TwoStatePreference
+import androidx.recyclerview.widget.RecyclerView
 import dev.oneuiproject.oneui.preference.ColorPickerPreference
 import dev.oneuiproject.oneui.preference.HorizontalRadioPreference
-import kotlin.jvm.Throws
-import kotlin.math.min
 
 /**
  * Registers a callback to be invoked when the preference's value is changed.
@@ -627,5 +622,25 @@ inline fun <R : Preference>R.clearBadge(): R{
     return this
 }
 
-
+/**
+ * Finds the currently displayed [View] for this [Preference].
+ *
+ * This must be called only when the preference is actively displayed on the screen,
+ * typically within callbacks like [Preference.setOnPreferenceClickListener] or
+ * [Preference.setOnPreferenceChangeListener]. It is only safe to call this between
+ * `PreferenceFragmentCompat.onViewCreated` and `PreferenceFragmentCompat.onDestroyView`.
+ *
+ * @receiver The Preference whose view is to be found.
+ * @param pfc The [PreferenceFragmentCompat] instance hosting the preference.
+ * @return The [View] bound to this preference, or `null` if it is not currently
+ *         bound or displayed (e.g., scrolled off-screen).
+ *
+ * @see PreferenceFragmentCompat.findPreference
+ */
+context(pfc: PreferenceFragmentCompat)
+val Preference.itemView: View?
+    get() = (pfc.listView.adapter as? PreferenceGroup.PreferencePositionCallback)
+        ?.getPreferenceAdapterPosition(this)
+        .takeIf { it != RecyclerView.NO_POSITION }
+        ?.let { p -> pfc.listView.findViewHolderForAdapterPosition(p)?.itemView }
 
