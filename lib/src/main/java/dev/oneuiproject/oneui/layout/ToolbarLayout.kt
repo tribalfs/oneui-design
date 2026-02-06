@@ -68,7 +68,6 @@ import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.appbar.model.AppBarModel
 import com.google.android.material.appbar.model.view.AppBarView
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import dev.oneuiproject.oneui.delegates.AllSelectorState
 import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.ktx.appCompatActivity
 import dev.oneuiproject.oneui.ktx.dpToPx
@@ -291,6 +290,25 @@ open class ToolbarLayout @JvmOverloads constructor(
          */
         data class Concurrent(internal val searchModeListener: SearchModeListener?) : SearchOnActionMode
     }
+
+    /**
+     * Model to represent the state of an "All" selector button for an action/selection mode.
+     *
+     * @property totalSelected The total number of items currently selected.
+     * @property isChecked Indicates whether the "select all" checkbox should be checked.
+     * Set to `true` if all visible items are selected. Set to `false` if not all visible items are selected.
+     * Set to `null` if the state of the checkbox should remain unchanged.
+     * @property isEnabled (Optional) Determines if the "select all" button is enabled.
+     * Defaults to `true`. Set to `false` to disable the button.
+     */
+    data class AllSelectorState(
+        @JvmField
+        val totalSelected: Int = 0,
+        @JvmField
+        val isChecked: Boolean? = null,
+        @JvmField
+        val isEnabled: Boolean = true
+    )
 
     internal val activity by lazy(LazyThreadSafetyMode.NONE) { context.appCompatActivity }
 
@@ -1444,7 +1462,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         showActionModeToolbarAnimate()
         setupActionModeMenu(showCancel, maxActionItems)
 
-        allSelectorStateFlow?.let {ass ->
+        allSelectorStateFlow?.let { ass ->
             allSelectorItemsCount = 0
             updateAllSelectorJob = activity!!.lifecycleScope.launch {
                 ass.flowWithLifecycle(activity!!.lifecycle)
@@ -2221,7 +2239,7 @@ inline fun <T : ToolbarLayout> T.startSearchMode(
  * This will not be triggered with [ToolbarLayout.updateAllSelector].
  * @param searchOnActionMode (optional) The [SearchOnActionMode] option to set for this action mode.
  * Defaults to [SearchOnActionMode.Dismiss].
- * @param allSelectorStateFlow (Optional) StateFlow of [AllSelectorState] that updates the `All` selector state and count.
+ * @param allSelectorStateFlow (Optional) StateFlow of [ToolbarLayout.AllSelectorState] that updates the `All` selector state and count.
  * @param showCancel (optional) Show a Cancel button in the toolbar menu. Setting this to true
  * disables adaptive action mode menu (i.e. menu will always be shown as a bottom action menu.
  * This is false by default.
@@ -2235,7 +2253,7 @@ inline fun <T : ToolbarLayout> T.startActionMode(
     crossinline onSelectMenuItem: (item: MenuItem) -> Boolean,
     crossinline onSelectAll: (Boolean) -> Unit,
     searchOnActionMode: SearchOnActionMode = Dismiss,
-    allSelectorStateFlow: StateFlow<AllSelectorState>? = null,
+    allSelectorStateFlow: StateFlow<ToolbarLayout.AllSelectorState>? = null,
     showCancel: Boolean = false,
     maxActionItems: Int = 4
 ) {
@@ -2324,3 +2342,5 @@ inline fun <T : ToolbarLayout> T.setSubTitle(
         collapsedSubtitle = getString(collapsedTitleRes)
     }
 
+inline fun <T : ToolbarLayout> T.updateAllSelector(state: ToolbarLayout.AllSelectorState) =
+    updateAllSelector(state.totalSelected, state.isEnabled, state.isChecked)

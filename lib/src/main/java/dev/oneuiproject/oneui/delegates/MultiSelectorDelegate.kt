@@ -11,9 +11,14 @@ import dev.oneuiproject.oneui.ktx.MultiSelectionState
 import dev.oneuiproject.oneui.ktx.MultiSelectionState.ENDED
 import dev.oneuiproject.oneui.ktx.MultiSelectionState.STARTED
 import dev.oneuiproject.oneui.ktx.doOnLongPressMultiSelection
+import dev.oneuiproject.oneui.layout.ToolbarLayout.AllSelectorState
 import dev.oneuiproject.oneui.layout.internal.util.ToolbarLayoutUtils.getLayoutLocationInfo
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory
 import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type
+
+@Deprecated("Use AllSelectorState found inside dev.oneuiproject.oneui.layout.ToolbarLayout",
+    ReplaceWith("AllSelectorState", "dev.oneuiproject.oneui.layout.ToolbarLayout.AllSelectorState"))
+typealias AllSelectorState = AllSelectorState
 
 /**
  * Delegate for multi-selection for use with the [RecyclerView.Adapter].
@@ -377,24 +382,5 @@ interface MultiSelector<T> {
     /** This property is set by [onToggleActionMode] */
     val isActionMode: Boolean
 }
-
-/**
- * Model to represent the state of an "All" selector button for an action/selection mode.
- *
- * @property totalSelected The total number of items currently selected.
- * @property isChecked Indicates whether the "select all" checkbox should be checked.
- * Set to `true` if all visible items are selected. Set to `false` if not all visible items are selected.
- * Set to `null` if the state of the checkbox should remain unchanged.
- * @property isEnabled (Optional) Determines if the "select all" button is enabled.
- * Defaults to `true`. Set to `false` to disable the button.
- */
-data class AllSelectorState(
-    @JvmField
-    val totalSelected: Int = 0,
-    @JvmField
-    val isChecked: Boolean? = null,
-    @JvmField
-    val isEnabled: Boolean = true
-)
 
 
