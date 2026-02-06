@@ -471,7 +471,7 @@ open class ToolbarLayout @JvmOverloads constructor(
                 insets: WindowInsetsCompat,
                 runningAnimations: MutableList<WindowInsetsAnimationCompat>
             ): WindowInsetsCompat {
-                runningAnimations.find { it.isImeAnimation() }?.let {
+                if (isImeAnimationRunning) {
                     applyWindowInsets(insets)
                 }
                 return insets
@@ -973,7 +973,8 @@ open class ToolbarLayout @JvmOverloads constructor(
     @JvmOverloads
     @CallSuper
     open fun activateImmersiveScroll(
-        activate: Boolean, @FloatRange(0.0, 1.0)
+        activate: Boolean,
+        @FloatRange(0.0, 1.0)
         footerAlpha: Float = 1f
     ): Boolean {
         if (VERSION.SDK_INT < 30) {
@@ -1007,8 +1008,6 @@ open class ToolbarLayout @JvmOverloads constructor(
             }
         } else {
             immersiveScrollHelper?.deactivateImmersiveScroll()
-            immersiveScrollHelper = null
-            requestApplyInsets()
         }
         return true
     }
@@ -1827,7 +1826,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         val basePadding = insets.getInsets(systemBars() or displayCutout())
 
         if (isImmersiveScroll) {
-            setPadding(basePadding.left, 0, basePadding.right, imeInsetBottom)
+            setPadding(basePadding.left, 0, basePadding.right, 0)
         } else {
             if (activity.fitsSystemWindows) {
                 setPadding(0, 0, 0, imeInsetBottom)

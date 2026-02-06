@@ -484,7 +484,7 @@ internal class SemDrawerLayout @JvmOverloads constructor(
         }
 
         if (isImmersiveActive) {
-            updateSlideViewPanePadding(top = 0, bottom = imeInsetBottom)
+            updateSlideViewPanePadding(top = 0, bottom = 0)
         } else {
             updateSlideViewPanePadding(top = systemTopInset, bottom = finalBottomInset)
         }
