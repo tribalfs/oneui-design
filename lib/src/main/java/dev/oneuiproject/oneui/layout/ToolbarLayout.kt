@@ -580,7 +580,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             toolbarGravity = getInt(R.styleable.ToolbarLayout_toolbarGravity, Gravity.BOTTOM)
 
             if (layoutRes != 0) {
-                Log.w(this::class.simpleName, "Inflating custom layout")
+                Log.w(this@ToolbarLayout::class.simpleName, "Inflating custom layout")
                 LayoutInflater.from(context).inflate(layoutRes, this@ToolbarLayout, true)
             } else {
                 inflateDefaultView()
@@ -590,7 +590,14 @@ open class ToolbarLayout @JvmOverloads constructor(
             setupActionBar()
 
             _expandable = getBoolean(R.styleable.ToolbarLayout_expandable, true)
-            expandedPortrait = getBoolean(R.styleable.ToolbarLayout_expanded, _expandable)
+            if (hasValue(R.styleable.ToolbarLayout_expanded)) {
+                if (_expandable) {
+                    expandedPortrait = getBoolean(R.styleable.ToolbarLayout_expanded, true)
+                } else {
+                    Log.w(TAG, "`app:expanded` attribute is ignored when `app:expandable` is false.")
+                }
+            }
+
             _showNavigationButtonAsBack =
                 getBoolean(R.styleable.ToolbarLayout_showNavButtonAsBack, false)
             navigationIcon = getDrawable(R.styleable.ToolbarLayout_navigationIcon)
@@ -894,6 +901,7 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     /**
      * Programmatically expand or collapse the Toolbar with an optional animation.
+     * If the Toolbar is [not expandable][isExpandable], this method will do nothing.
      *
      * @see isExpanded
      * @param animate whether or not to animate the expanding or collapsing.
@@ -902,7 +910,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         if (_expandable) {
             expandedPortrait = expanded
             appBarLayout.setExpanded(expanded, animate)
-        } else Log.d(TAG, "setExpanded: mExpandable is false")
+        } else Log.w(TAG, "`setExpanded` call is ignored because `isExpandable` is false")
     }
 
     /**

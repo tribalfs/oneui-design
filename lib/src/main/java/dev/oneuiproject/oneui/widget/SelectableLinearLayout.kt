@@ -42,7 +42,6 @@ import dev.oneuiproject.oneui.widget.internal.SelectableAnimatedDrawable
  *     android:layout_width="match_parent"
  *     android:layout_height="?android:listPreferredItemHeight"
  *     android:animateLayoutChanges="true"
- *     android:background="?listChoiceBackgroundIndicator"
  *     android:gravity="center_vertical"
  *     android:orientation="horizontal"
  *     android:paddingStart="?android:listPreferredItemPaddingStart"
