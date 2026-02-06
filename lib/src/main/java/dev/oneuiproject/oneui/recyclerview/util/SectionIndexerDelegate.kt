@@ -1,6 +1,5 @@
-package dev.oneuiproject.oneui.delegates
+package dev.oneuiproject.oneui.recyclerview.util
 
-import android.content.Context
 import android.icu.text.AlphabeticIndex
 import android.os.Build
 import android.widget.SectionIndexer
@@ -35,14 +34,10 @@ import java.util.Locale
  *   //rest of the adapter's implementations
  * }
  * ```
- * @param context
  * @param labelExtractor lambda function to be invoked to get the item's label.
  * This should directly return index chars for api level <24.
  */
-@Deprecated(
-    "Use SectionIndexerDelegate found in dev.oneuiproject.oneui.recyclerview.util instead.")
 class SectionIndexerDelegate<T>(
-    context: Context,
     private val labelExtractor: (T) -> CharSequence
 ) : SemSectionIndexer<T> {
 
@@ -138,8 +133,6 @@ class SectionIndexerDelegate<T>(
  *
  * @param T The type of data items in the list that this indexer will manage.
  */
-@Deprecated(
-    "Use SemSectionIndexer found in dev.oneuiproject.oneui.recyclerview.util")
 interface SemSectionIndexer<T> : SectionIndexer {
     /**
      * Updates the section indexer with a new or modified list of data items. This method should
