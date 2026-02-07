@@ -299,7 +299,7 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
      * Sets the listener for the update and retry button clicks.
      */
     fun setMainButtonClickListener(listener: OnClickListener?) {
-        if (mainButtonClickListener == listener) return
+        if (mainButtonClickListener === listener) return
         mainButtonClickListener = listener
         updateButton.setOnClickListener(mainButtonClickListener)
     }

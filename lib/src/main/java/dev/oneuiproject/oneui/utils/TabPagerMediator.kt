@@ -147,7 +147,7 @@ class TabPagerMediator(
         get() = tabLayout.selectedTabPosition
 
     fun replaceAdapter(vpAdapter: RecyclerView.Adapter<*>) {
-        if (viewPager2.adapter == vpAdapter && tabLayoutMediator.isAttached) {
+        if (viewPager2.adapter === vpAdapter && tabLayoutMediator.isAttached) {
             return
         }
         val wasAttached = tabLayoutMediator.isAttached

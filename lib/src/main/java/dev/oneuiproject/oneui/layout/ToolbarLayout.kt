@@ -1957,7 +1957,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             val iterator = list.iterator()
             while (iterator.hasNext()) {
                 val weakRef = iterator.next()
-                if (weakRef.get() == listener || weakRef.get() == null) {
+                if (weakRef.get()?.let {it === listener} ?: true) {
                     iterator.remove()
                 }
             }
@@ -1979,7 +1979,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             return
         }
         bottomOffsetListeners!!.apply {
-            if (find { it.get() == listener } == null) {
+            if (find { it.get() === listener } == null) {
                 add(WeakReference(listener))
             }
         }
@@ -1999,7 +1999,7 @@ open class ToolbarLayout @JvmOverloads constructor(
             val iterator = list.iterator()
             while (iterator.hasNext()) {
                 val weakRef = iterator.next()
-                if (weakRef.get() == listener || weakRef.get() == null) {
+                if (weakRef.get()?.let{ it === listener } ?: true) {
                     iterator.remove()
                 }
             }

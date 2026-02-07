@@ -185,7 +185,7 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
 
     override fun attachToRecyclerView(recyclerView: RecyclerView) {
         super.attachToRecyclerView(recyclerView)
-        if (this.recyclerView == recyclerView) return
+        if (this.recyclerView === recyclerView) return
         this.recyclerView = recyclerView
         if (isAttachedToWindow){
             onAttachedToWindowInternal()
@@ -293,7 +293,7 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
      */
     fun removeOnIndexEventListener(listener: OnIndexBarEventListener) {
         indexEventListeners?.forEach {
-            if (it == listener) {
+            if (it === listener) {
                 indexEventListeners?.remove(it)
             }
         }

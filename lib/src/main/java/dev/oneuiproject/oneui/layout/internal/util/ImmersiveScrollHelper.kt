@@ -79,7 +79,7 @@ internal class ImmersiveScrollHelper(
     }
 
     fun setBottomView(view: View?) {
-        if (view == bottomView) return
+        if (view === bottomView) return
         resetCurrentBottomView()
         bottomView = view
         if (isImmersiveScrollActivated) {
