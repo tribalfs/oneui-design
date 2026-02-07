@@ -19,6 +19,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.reflect.DeviceInfo
 import com.google.android.material.shape.MaterialShapeDrawable
+import dev.oneuiproject.oneui.design.R
 import dev.rikka.tools.refine.Refine
 import dev.oneuiproject.oneui.utils.supports3DTransitionFlag
 import androidx.appcompat.R as appcompatR
@@ -31,11 +32,21 @@ import androidx.appcompat.R as appcompatR
  */
 inline fun View.doOnAttachedStateChanged(
     crossinline onChanged: (view: View, isAttached: Boolean) -> Unit
-) =
+): View.OnAttachStateChangeListener {
+    // Remove previously installed listener (if any)
+    (getTag(R.id.tag_state_listener_attached) as? View.OnAttachStateChangeListener)?.let { old
+        -> removeOnAttachStateChangeListener(old)
+    }
+
     object : View.OnAttachStateChangeListener {
-        override fun onViewAttachedToWindow(view: View) = onChanged(view,true)
-        override fun onViewDetachedFromWindow(view: View) = onChanged(view,false)
-    }.also { addOnAttachStateChangeListener(it) }
+        override fun onViewAttachedToWindow(view: View) = onChanged(view, true)
+        override fun onViewDetachedFromWindow(view: View) = onChanged(view, false)
+    }.also { listener ->
+        addOnAttachStateChangeListener(listener)
+        setTag(R.id.tag_state_listener_attached, listener)
+        return listener
+    }
+}
 
 inline val View.isSoftKeyboardShowing
     get() = ViewCompat.getRootWindowInsets(this)?.isVisible(
