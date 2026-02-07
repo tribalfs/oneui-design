@@ -186,6 +186,7 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
     override fun attachToRecyclerView(recyclerView: RecyclerView) {
         super.attachToRecyclerView(recyclerView)
         if (this.recyclerView === recyclerView) return
+        this.recyclerView?.removeOnScrollListener(rvScrollListener)
         this.recyclerView = recyclerView
         if (isAttachedToWindow){
             onAttachedToWindowInternal()
@@ -214,7 +215,8 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
                 appBarLayout = rootView.findViewById<AppBarLayout?>(R.id.toolbarlayout_app_bar)
             }
 
-            appBarLayout!!.addOnOffsetChangedListener(hideWhenExpandedListener)
+            // Note: AppBarLayout internally guards duplicate listeners
+            appBarLayout?.addOnOffsetChangedListener(hideWhenExpandedListener)
 
             addOnScrollListener(rvScrollListener)
             setupIndexEventListener(layoutManager as LinearLayoutManager)
@@ -459,10 +461,14 @@ class AutoHideIndexScrollView @JvmOverloads constructor(
     }
 
     private fun configureDummyCallback(isAttached: Boolean) {
-        if (Build.VERSION.SDK_INT >= 33 && Build.VERSION.SDK_INT < 35) {
+        if (Build.VERSION.SDK_INT in 33..<35) {
             if (isAttached) {
-                onBackInvokedDispatcher = findOnBackInvokedDispatcher()
-                dummyOnBackInvokedCallback = OnBackInvokedCallback { }
+                if (onBackInvokedDispatcher == null) {
+                    onBackInvokedDispatcher = findOnBackInvokedDispatcher()
+                }
+                if (dummyOnBackInvokedCallback == null) {
+                    dummyOnBackInvokedCallback = OnBackInvokedCallback { }
+                }
             } else {
                 onBackInvokedDispatcher = null
                 dummyOnBackInvokedCallback = null
