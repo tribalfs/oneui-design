@@ -2,8 +2,10 @@ package dev.oneuiproject.oneuiexample.ui.main.fragments.recyclerview.stargazers
 
 import android.content.Intent
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.util.LayoutDirection
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -13,6 +15,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.graphics.toColorInt
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -28,10 +31,7 @@ import dev.oneuiproject.oneui.delegates.AppBarAwareYTranslator
 import dev.oneuiproject.oneui.delegates.ViewYTranslator
 import dev.oneuiproject.oneui.dialog.ProgressDialog
 import dev.oneuiproject.oneui.dialog.ProgressDialog.ProgressStyle
-import dev.oneuiproject.oneui.ktx.configureItemSwipeAnimator
 import dev.oneuiproject.oneui.ktx.dpToPx
-import dev.oneuiproject.oneui.ktx.enableCoreSeslFeatures
-import dev.oneuiproject.oneui.ktx.hideSoftInputOnScroll
 import dev.oneuiproject.oneui.ktx.setBadge
 import dev.oneuiproject.oneui.layout.Badge
 import dev.oneuiproject.oneui.layout.NavDrawerLayout
@@ -39,12 +39,17 @@ import dev.oneuiproject.oneui.layout.ToolbarLayout
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior.CLEAR_DISMISS
 import dev.oneuiproject.oneui.layout.startActionMode
+import dev.oneuiproject.oneui.recyclerview.ktx.configureImmBottomPadding
+import dev.oneuiproject.oneui.recyclerview.ktx.configureItemSwipeAnimator
+import dev.oneuiproject.oneui.recyclerview.ktx.enableCoreSeslFeatures
+import dev.oneuiproject.oneui.recyclerview.ktx.hideSoftInputOnScroll
 import dev.oneuiproject.oneui.utils.ItemDecorRule
 import dev.oneuiproject.oneui.utils.SemItemDecoration
 import dev.oneuiproject.oneui.widget.TipPopup
 import dev.oneuiproject.oneuiexample.data.stargazers.model.ActionModeSearch
 import dev.oneuiproject.oneuiexample.data.stargazers.model.FetchState
 import dev.oneuiproject.oneuiexample.ui.main.MainActivity
+import dev.oneuiproject.oneuiexample.ui.main.MainViewModel
 import dev.oneuiproject.oneuiexample.ui.main.core.base.AbsBaseFragment
 import dev.oneuiproject.oneuiexample.ui.main.core.util.autoCleared
 import dev.oneuiproject.oneuiexample.ui.main.core.util.launchAndRepeatWithViewLifecycle
@@ -61,6 +66,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.getValue
 import dev.oneuiproject.oneui.R as iconsLibR
 
 @AndroidEntryPoint
@@ -71,9 +77,14 @@ class StargazersFragment : AbsBaseFragment(R.layout.fragment_stargazers),
     private val viewModel: StargazersViewModel by viewModels()
     private val parentViewModel by viewModels<RvParentViewModel>({ requireParentFragment() })
     private lateinit var navDrawerLayout: NavDrawerLayout
+    private val mainViewModel by activityViewModels<MainViewModel>()
 
-    @Inject
-    lateinit var stargazersAdapter: StargazersAdapter
+    private val stargazersAdapter: StargazersAdapter by lazy {
+        StargazersAdapter(
+            onAllSelectorStateChanged = { viewModel.allSelectorStateFlow.value = it },
+            onBlockActionMode = ::launchActionMode
+        )
+    }
     private var rvTipView: TipPopup? = null
     private var fabTipPopup: TipPopup? = null
     private var lastStateReceived: FetchState? = null
@@ -133,7 +144,7 @@ class StargazersFragment : AbsBaseFragment(R.layout.fragment_stargazers),
         super.onDestroyView()
         stargazersAdapter.getSelectedIds().let {
             if (it.isNotEmpty()) {
-                viewModel.initialSelectedIds = it.asSet().toTypedArray()
+                viewModel.initialSelectedIds = it
             }
         }
     }
@@ -141,10 +152,7 @@ class StargazersFragment : AbsBaseFragment(R.layout.fragment_stargazers),
     private fun configureRecyclerView() {
         binding.recyclerView.apply rv@{
             setLayoutManager(LinearLayoutManager(requireContext()))
-            setAdapter(StargazersAdapter(requireContext()).also {
-                it.setupOnClickListeners()
-                stargazersAdapter = it
-            })
+            setAdapter(stargazersAdapter.also { it.setupOnClickListeners() })
             addItemDecoration(
                 SemItemDecoration(requireContext(),
                     dividerRule = ItemDecorRule.SELECTED{
@@ -157,14 +165,13 @@ class StargazersFragment : AbsBaseFragment(R.layout.fragment_stargazers),
             )
             setItemAnimator(null)
             enableCoreSeslFeatures(fastScrollerEnabled = false)
-            stargazersAdapter.configure(
-                this,
-                StargazersAdapter.Payload.SELECTION_MODE,
-                onAllSelectorStateChanged = { viewModel.allSelectorStateFlow.value = it }
-            )
+            stargazersAdapter.configureWith(this)
             binding.fab.hideOnScroll(this@rv/*, binding.indexscrollView*/)
             binding.indexscrollView.attachToRecyclerView(this@rv)
             hideSoftInputOnScroll()
+            if (Build.VERSION.SDK_INT >= 30){
+                configureImmBottomPadding(navDrawerLayout)
+            }
         }
 
         translateYWithAppBar(
@@ -176,7 +183,7 @@ class StargazersFragment : AbsBaseFragment(R.layout.fragment_stargazers),
 
 
     private fun configureSwipeRefresh() {
-        binding.swiperefreshView.apply {
+        /*binding.swiperefreshView.apply {
             setOnRefreshListener {
                 viewModel.refreshStargazers()
                 viewLifecycleOwner.lifecycleScope.launch {
@@ -189,7 +196,7 @@ class StargazersFragment : AbsBaseFragment(R.layout.fragment_stargazers),
                     }
                 }
             }
-        }
+        }*/
 
         binding.retryBtn.apply {
             setOnClickListener {
@@ -251,6 +258,15 @@ class StargazersFragment : AbsBaseFragment(R.layout.fragment_stargazers),
                         }
                     }
             }
+
+            launch {
+                mainViewModel.isCtrlKeyPressed
+                    .collect {
+                        Log.d("XXX", "observeUIState: isCtrlKeyPressed $it")
+                        binding.recyclerView.seslSetCtrlkeyPressed(it)
+                        parentViewModel.isTabLayoutEnabled = !it && with(viewModel) {!isActionMode && !isSearchMode}
+                    }
+            }
         }
     }
 
@@ -295,7 +311,7 @@ class StargazersFragment : AbsBaseFragment(R.layout.fragment_stargazers),
     private fun StargazersAdapter.setupOnClickListeners() {
         onClickItem = { stargazer, position, vh ->
             if (isActionMode) {
-                onToggleItem(stargazer.toStableId(), position)
+               toggleItem(stargazer.toStableId(), position)
             } else {
                 when (stargazer) {
                     is StargazerItem -> {
@@ -314,7 +330,7 @@ class StargazersFragment : AbsBaseFragment(R.layout.fragment_stargazers),
 
     private fun openProfileActivity(
         vh: StargazersAdapter.ViewHolder,
-        stargazer: StargazersListItemUiModel.StargazerItem
+        stargazer: StargazerItem
     ) {
         requireActivity().startActivity(
             Intent(
@@ -386,11 +402,11 @@ class StargazersFragment : AbsBaseFragment(R.layout.fragment_stargazers),
     }
 
 
-    private fun launchActionMode(selectedIds: Array<Long>? = null) {
+    private fun launchActionMode(selectedIds: Set<Long>? = null) {
         viewModel.isActionMode = true
         parentViewModel.isTabLayoutEnabled = false
 
-        stargazersAdapter.onToggleActionMode(true, selectedIds)
+        stargazersAdapter.toggleActionMode(true, selectedIds)
 
         val contactsSettings = viewModel.stargazersSettingsStateFlow.value
         navDrawerLayout.startActionMode(
@@ -400,7 +416,7 @@ class StargazersFragment : AbsBaseFragment(R.layout.fragment_stargazers),
             onEnd = {
                 viewModel.isActionMode = false
                 parentViewModel.isTabLayoutEnabled = !viewModel.isSearchMode
-                stargazersAdapter.onToggleActionMode(false)
+                stargazersAdapter.toggleActionMode(false)
             },
             onSelectMenuItem = {
                 val selectedCount = stargazersAdapter.getSelectedIds().count()

@@ -8,6 +8,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayout.Tab
 import com.sec.sesl.tester.R
 import com.sec.sesl.tester.databinding.FragmentRecyclerBinding
+import dev.oneuiproject.oneui.ktx.blockHoverScroll
+import dev.oneuiproject.oneui.ktx.disablePenSelection
+import dev.oneuiproject.oneui.ktx.disableSeslRecoil
 import dev.oneuiproject.oneui.utils.TabPagerMediator
 import dev.oneuiproject.oneuiexample.ui.main.core.base.AbsBaseFragment
 import dev.oneuiproject.oneuiexample.ui.main.core.util.autoCleared
@@ -37,6 +40,9 @@ class RvParentFragment : AbsBaseFragment(R.layout.fragment_recycler) {
         binding.vp2.apply {
             adapter = ViewPagerAdapter(this@RvParentFragment)
             //seslSetSuggestionPaging(true)
+            disablePenSelection()
+            blockHoverScroll()
+            disableSeslRecoil()
         }
         val titles = listOf("Icons", "Stargazers", "Apps")
         tabPagerMediator = TabPagerMediator(this, binding.tabs, binding.vp2) { tab: Tab?, pos ->

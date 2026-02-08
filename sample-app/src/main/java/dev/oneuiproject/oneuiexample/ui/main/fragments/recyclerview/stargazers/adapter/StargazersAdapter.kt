@@ -1,7 +1,6 @@
 package dev.oneuiproject.oneuiexample.ui.main.fragments.recyclerview.stargazers.adapter
 
 import android.app.ActionBar.LayoutParams
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,15 +10,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sec.sesl.tester.R
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dev.oneuiproject.oneui.delegates.MultiSelector
-import dev.oneuiproject.oneui.delegates.MultiSelectorDelegate
-import dev.oneuiproject.oneui.delegates.SectionIndexerDelegate
-import dev.oneuiproject.oneui.delegates.SemSectionIndexer
+import dev.oneuiproject.oneui.layout.ToolbarLayout.AllSelectorState
+import dev.oneuiproject.oneui.recyclerview.adapter.IndexedSelectableListAdapter
+import dev.oneuiproject.oneui.recyclerview.model.AdapterItem
 import dev.oneuiproject.oneui.utils.SearchHighlighter
 import dev.oneuiproject.oneui.widget.SelectableLinearLayout
 import dev.oneuiproject.oneui.widget.Separator
@@ -28,13 +24,20 @@ import dev.oneuiproject.oneuiexample.ui.main.fragments.recyclerview.stargazers.m
 import dev.oneuiproject.oneuiexample.ui.main.fragments.recyclerview.stargazers.model.StargazersListItemUiModel.SeparatorItem
 import dev.oneuiproject.oneuiexample.ui.main.fragments.recyclerview.stargazers.model.StargazersListItemUiModel.StargazerItem
 import dev.oneuiproject.oneuiexample.ui.main.fragments.recyclerview.stargazers.util.loadImageFromUrl
-import javax.inject.Inject
 
-class StargazersAdapter @Inject constructor(
-    @ApplicationContext context: Context
-): RecyclerView.Adapter<StargazersAdapter.ViewHolder>(),
-    MultiSelector<Long> by MultiSelectorDelegate(isSelectable = { it != SeparatorItem.VIEW_TYPE }),
-    SemSectionIndexer<StargazersListItemUiModel> by SectionIndexerDelegate(context, labelExtractor = { getLabel(it) }) {
+class StargazersAdapter(
+    onAllSelectorStateChanged: ((AllSelectorState) -> Unit),
+    onBlockActionMode: (() -> Unit),
+) :
+    IndexedSelectableListAdapter<StargazersListItemUiModel, StargazersAdapter.ViewHolder, Long>(
+        indexLabelExtractor = indexLabelExtractor,
+        onAllSelectorStateChanged = onAllSelectorStateChanged,
+        onBlockActionMode = onBlockActionMode,
+        selectableIdsProvider = selectableIdsProvider,
+        isSelectable = isSelectable,
+        selectionChangePayload = Payload.SELECTION_MODE,
+        diffCallback = diffCallback
+) {
 
     init {
         setHasStableIds(true)
@@ -52,33 +55,12 @@ class StargazersAdapter @Inject constructor(
             }
         }
 
-    private val asyncListDiffer = AsyncListDiffer(this,
-        object : DiffUtil.ItemCallback<StargazersListItemUiModel>() {
-            override fun areItemsTheSame(oldItem: StargazersListItemUiModel, newItem: StargazersListItemUiModel): Boolean {
-                if (oldItem is StargazerItem && newItem is StargazerItem){
-                    return  oldItem.stargazer == newItem.stargazer
-                }
-                if (oldItem is SeparatorItem && newItem is SeparatorItem){
-                    return  oldItem.indexText == newItem.indexText
-                }
-                return false
-            }
-            override fun areContentsTheSame(oldItem: StargazersListItemUiModel, newItem: StargazersListItemUiModel): Boolean {
-                return oldItem == newItem
-            }
-        })
-
     var onClickItem: ((StargazersListItemUiModel, Int, ViewHolder) -> Unit)? = null
 
     var onLongClickItem: (() -> Unit)? = null
 
-    fun submitList(listItems: List<StargazersListItemUiModel>){
-        updateSections(listItems, true)
-        asyncListDiffer.submitList(listItems)
-        updateSelectableIds(listItems.filter {it !is SeparatorItem}.map { it.toStableId() } )
-    }
 
-    var highlightWord = ""
+    var highlightWord: String = ""
         set(value) {
             if (value != field) {
                 field = value
@@ -86,13 +68,10 @@ class StargazersAdapter @Inject constructor(
             }
         }
 
-    private val currentList: List<StargazersListItemUiModel> get() = asyncListDiffer.currentList
-
-    fun getItemByPosition(position: Int) = currentList[position]
 
     override fun getItemId(position: Int) = currentList[position].toStableId()
 
-    override fun getItemCount(): Int = currentList.size
+    fun getItemByPosition(position: Int): StargazersListItemUiModel = currentList[position]
 
     override fun getItemViewType(position: Int): Int {
         return when(currentList[position]){
@@ -235,12 +214,41 @@ class StargazersAdapter @Inject constructor(
         HIGHLIGHT
     }
 
-    companion object{
-        fun getLabel(uiModel: StargazersListItemUiModel): String{
-            return when (uiModel) {
-                is StargazerItem -> uiModel.stargazer.getDisplayName().first().toString()
-                is GroupItem -> "\uD83D\uDC65"
-                is SeparatorItem -> uiModel.indexText
+    companion object {
+        private val indexLabelExtractor: (StargazersListItemUiModel) -> CharSequence =
+            { uiModel ->
+                when (uiModel) {
+                    is StargazerItem -> uiModel.stargazer.getDisplayName().first().toString().uppercase()
+                    is GroupItem -> "\uD83D\uDC65"
+                    is SeparatorItem -> uiModel.indexText
+                }
+            }
+
+        private val isSelectable: ((rv: RecyclerView, item: AdapterItem) -> Boolean) =
+            { rv, item -> rv.adapter!!.getItemViewType(item.position)  != SeparatorItem.VIEW_TYPE }
+
+        private val selectableIdsProvider: (currentList: List<StargazersListItemUiModel>) -> List<Long> =
+            { listItems -> listItems.filter {it !is SeparatorItem}.map { it.toStableId() } }
+
+        private val diffCallback = object :DiffUtil.ItemCallback<StargazersListItemUiModel>() {
+            override fun areItemsTheSame(
+                oldItem: StargazersListItemUiModel,
+                newItem: StargazersListItemUiModel
+            ): Boolean {
+                if (oldItem is StargazerItem && newItem is StargazerItem) {
+                    return oldItem.stargazer == newItem.stargazer
+                }
+                if (oldItem is SeparatorItem && newItem is SeparatorItem) {
+                    return oldItem.indexText == newItem.indexText
+                }
+                return false
+            }
+
+            override fun areContentsTheSame(
+                oldItem: StargazersListItemUiModel,
+                newItem: StargazersListItemUiModel
+            ): Boolean {
+                return oldItem == newItem
             }
         }
     }

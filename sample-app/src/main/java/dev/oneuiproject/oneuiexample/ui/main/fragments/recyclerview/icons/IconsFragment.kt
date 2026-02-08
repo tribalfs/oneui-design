@@ -1,6 +1,7 @@
 package dev.oneuiproject.oneuiexample.ui.main.fragments.recyclerview.icons
 
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,10 +23,7 @@ import dev.oneuiproject.oneui.delegates.AppBarAwareYTranslator
 import dev.oneuiproject.oneui.delegates.ViewYTranslator
 import dev.oneuiproject.oneui.ktx.clearBadge
 import dev.oneuiproject.oneui.ktx.dpToPx
-import dev.oneuiproject.oneui.ktx.enableCoreSeslFeatures
 import dev.oneuiproject.oneui.ktx.hideSoftInput
-import dev.oneuiproject.oneui.ktx.hideSoftInputOnScroll
-import dev.oneuiproject.oneui.ktx.seslSetFastScrollerAdditionalPadding
 import dev.oneuiproject.oneui.ktx.setBadge
 import dev.oneuiproject.oneui.layout.Badge
 import dev.oneuiproject.oneui.layout.ToolbarLayout
@@ -32,10 +31,14 @@ import dev.oneuiproject.oneui.layout.ToolbarLayout.ActionModeListener
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeListener
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchModeOnBackBehavior
 import dev.oneuiproject.oneui.layout.ToolbarLayout.SearchOnActionMode.Concurrent
+import dev.oneuiproject.oneui.recyclerview.ktx.enableCoreSeslFeatures
+import dev.oneuiproject.oneui.recyclerview.ktx.hideSoftInputOnScroll
+import dev.oneuiproject.oneui.recyclerview.ktx.seslSetFastScrollerAdditionalPadding
 import dev.oneuiproject.oneui.utils.ItemDecorRule
 import dev.oneuiproject.oneui.utils.SemItemDecoration
 import dev.oneuiproject.oneui.widget.TipPopup
 import dev.oneuiproject.oneuiexample.ui.main.MainActivity
+import dev.oneuiproject.oneuiexample.ui.main.MainViewModel
 import dev.oneuiproject.oneuiexample.ui.main.core.base.AbsBaseFragment
 import dev.oneuiproject.oneuiexample.ui.main.core.util.autoCleared
 import dev.oneuiproject.oneuiexample.ui.main.core.util.launchAndRepeatWithViewLifecycle
@@ -43,9 +46,9 @@ import dev.oneuiproject.oneuiexample.ui.main.core.util.showTipPopup
 import dev.oneuiproject.oneuiexample.ui.main.core.util.suggestiveSnackBar
 import dev.oneuiproject.oneuiexample.ui.main.fragments.recyclerview.RvParentViewModel
 import dev.oneuiproject.oneuiexample.ui.main.fragments.recyclerview.icons.adapter.IconsAdapter
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class IconsFragment : AbsBaseFragment(R.layout.fragment_icons),
@@ -54,11 +57,18 @@ class IconsFragment : AbsBaseFragment(R.layout.fragment_icons),
     private val binding by autoCleared { FragmentIconsBinding.bind(requireView()) }
     private val viewModel by viewModels<IconsViewModel>()
     private val parentViewModel by viewModels<RvParentViewModel>( {requireParentFragment()} )
+    private val mainViewModel by activityViewModels<MainViewModel>()
     private lateinit var toolbarLayout: ToolbarLayout
     private var rvTipView: TipPopup? = null
 
-    @Inject
-    lateinit var iconsAdapter: IconsAdapter
+    private val iconsAdapter: IconsAdapter by lazy {
+        IconsAdapter(
+            onAllSelectorStateChanged = { ass ->
+                toolbarLayout.updateAllSelector(ass.totalSelected, ass.isEnabled, ass.isChecked)
+            },
+            onBlockActionMode = { launchActionMode() },
+        )
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -72,7 +82,7 @@ class IconsFragment : AbsBaseFragment(R.layout.fragment_icons),
 
         if (viewModel.isSearchMode) launchSearchMode()
         if (viewModel.isActionMode) {
-            launchActionMode(viewModel.initialSelectedIds)
+            launchActionMode(viewModel.initialSelectedIds?.toSet())
             viewModel.initialSelectedIds = null //not anymore needed
         }
 
@@ -105,6 +115,14 @@ class IconsFragment : AbsBaseFragment(R.layout.fragment_icons),
                         }
                     }
             }
+
+            launch {
+                mainViewModel.isCtrlKeyPressed
+                    .collect {
+                        binding.recyclerView.seslSetCtrlkeyPressed(it)
+                        updateTabLayoutState()
+                    }
+            }
         }
     }
 
@@ -119,7 +137,7 @@ class IconsFragment : AbsBaseFragment(R.layout.fragment_icons),
         super.onSaveInstanceState(outState)
         iconsAdapter.getSelectedIds().let {
             if (it.isNotEmpty()) {
-                viewModel.initialSelectedIds = it.asSet().toTypedArray()
+                viewModel.initialSelectedIds = it.toTypedArray()
             }
         }
     }
@@ -141,25 +159,20 @@ class IconsFragment : AbsBaseFragment(R.layout.fragment_icons),
             seslSetFastScrollerAdditionalPadding(8.dpToPx(resources))
         }
 
-        iconsAdapter.configure(
-            binding.recyclerView,
-            null,
-            selectionId = { iconsAdapter.getItem(it).id },
-            onAllSelectorStateChanged = { ass ->
-                toolbarLayout.updateAllSelector(ass.totalSelected, ass.isEnabled, ass.isChecked)
-            }
+        iconsAdapter.configureWith(
+            binding.recyclerView
         )
 
         binding.tvNoItem.translateYWithAppBar(
             this@IconsFragment.toolbarLayout.appBarLayout,
-            requireActivity()
+            this
         )
     }
 
     private fun IconsAdapter.setupOnClickListeners() {
         onClickItem = { icon, position ->
             if (isActionMode) {
-                onToggleItem(icon.id, position)
+                toggleItem(icon.id)
             } else {
                 requireActivity().hideSoftInput()
                 suggestiveSnackBar("${icon.name} clicked!", duration = Snackbar.LENGTH_SHORT)
@@ -189,18 +202,18 @@ class IconsFragment : AbsBaseFragment(R.layout.fragment_icons),
             } else {
                 viewModel.setQuery("")
             }
-            parentViewModel.isTabLayoutEnabled = !(isActive || viewModel.isActionMode)
 
             //Ignore if it's action mode search
             if (viewModel.isActionMode) return
             viewModel.isSearchMode = isActive
+            updateTabLayoutState()
         }
     }
 
-    private fun launchActionMode(selectedIds: Array<Int>? = null) {
+    private fun launchActionMode(selectedIds: Set<Int>? = null) {
         viewModel.isActionMode = true
-        parentViewModel.isTabLayoutEnabled = false
-        iconsAdapter.onToggleActionMode(true, selectedIds)
+        updateTabLayoutState()
+        iconsAdapter.toggleActionMode(true, selectedIds)
 
         toolbarLayout.startActionMode(
             object : ActionModeListener {
@@ -210,8 +223,8 @@ class IconsFragment : AbsBaseFragment(R.layout.fragment_icons),
 
                 override fun onEndActionMode() {
                     viewModel.isActionMode = false
-                    parentViewModel.isTabLayoutEnabled = !viewModel.isSearchMode
-                    iconsAdapter.onToggleActionMode(false, null)
+                    updateTabLayoutState()
+                    iconsAdapter.toggleActionMode(false, null)
                 }
 
                 override fun onMenuItemClicked(item: MenuItem): Boolean {
@@ -230,12 +243,17 @@ class IconsFragment : AbsBaseFragment(R.layout.fragment_icons),
                     iconsAdapter.onToggleSelectAll(isChecked)
                 }
             },
-            Concurrent(searchModeListener)
+            Concurrent(searchModeListener),
+            null as? StateFlow<ToolbarLayout.AllSelectorState>?
         )
     }
 
     private fun launchSearchMode() {
         toolbarLayout.startSearchMode(searchModeListener, SearchModeOnBackBehavior.DISMISS)
+    }
+
+    private fun updateTabLayoutState() {
+        parentViewModel.isTabLayoutEnabled = !(viewModel.isSearchMode || viewModel.isActionMode || mainViewModel.isCtrlKeyPressed.value)
     }
 
     private val menuProvider = object : MenuProvider {

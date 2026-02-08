@@ -2,7 +2,9 @@ package dev.oneuiproject.oneuiexample.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
@@ -21,6 +23,7 @@ import dev.oneuiproject.oneui.R as iconsLibR
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private val viewModel by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,5 +83,14 @@ class MainActivity : AppCompatActivity() {
         if (intent.action == Intent.ACTION_SEARCH) {
             binding.drawerLayout.setSearchQueryFromIntent(intent)
         }
+    }
+
+    override fun dispatchKeyEvent(keyEvent: KeyEvent): Boolean {
+        val keyCode = keyEvent.keyCode
+        val action = keyEvent.action
+        if (keyCode == KeyEvent.KEYCODE_CTRL_RIGHT || keyCode == KeyEvent.KEYCODE_CTRL_LEFT) {
+            viewModel.isCtrlKeyPressed.value = action == KeyEvent.ACTION_DOWN
+        }
+        return super.dispatchKeyEvent(keyEvent)
     }
 }

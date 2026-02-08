@@ -26,11 +26,11 @@ import dev.oneuiproject.oneui.delegates.AppBarAwareYTranslator
 import dev.oneuiproject.oneui.delegates.ViewYTranslator
 import dev.oneuiproject.oneui.ktx.dpToPx
 import dev.oneuiproject.oneui.ktx.isSoftKeyboardShowing
-import dev.oneuiproject.oneui.ktx.seslSetFastScrollerAdditionalPadding
 import dev.oneuiproject.oneui.ktx.setEntries
 import dev.oneuiproject.oneui.layout.NavDrawerLayout
 import dev.oneuiproject.oneui.layout.ToolbarLayout
 import dev.oneuiproject.oneui.layout.startSearchMode
+import dev.oneuiproject.oneui.recyclerview.ktx.seslSetFastScrollerAdditionalPadding
 import dev.oneuiproject.oneuiexample.ui.main.MainActivity
 import dev.oneuiproject.oneuiexample.ui.main.core.base.AbsBaseFragment
 import dev.oneuiproject.oneuiexample.ui.main.core.util.autoCleared

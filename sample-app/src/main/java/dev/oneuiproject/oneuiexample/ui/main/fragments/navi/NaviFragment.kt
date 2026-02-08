@@ -22,20 +22,26 @@ class NaviFragment : AbsBaseFragment(R.layout.fragment_navi) {
 
     override fun onStart() {
         super.onStart()
-        (requireActivity() as MainActivity).bottomTab.apply {
-            show(true)
-            setOnMenuItemClickListener { menuItem ->
-                requireContext().semToast("${menuItem.title} selected!")
-                true
+        (requireActivity() as MainActivity).apply{
+            bottomTab.let {
+                it.show(true)
+                it.setOnMenuItemClickListener { menuItem ->
+                    requireContext().semToast("${menuItem.title} selected!")
+                    true
+                }
             }
+            drawerLayout.isImmersiveScroll = true
         }
     }
 
     override fun onStop() {
         super.onStop()
-        (requireActivity() as MainActivity).bottomTab.apply {
-            hide(false)
-            setOnMenuItemClickListener(null)
+        (requireActivity() as MainActivity).apply{
+            bottomTab.let {
+                it.hide(false)
+                it.setOnMenuItemClickListener(null)
+            }
+            drawerLayout.isImmersiveScroll = false
         }
     }
 

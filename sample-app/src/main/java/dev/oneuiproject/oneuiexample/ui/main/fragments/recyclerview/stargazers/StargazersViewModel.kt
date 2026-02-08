@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dev.oneuiproject.oneui.delegates.AllSelectorState
+import dev.oneuiproject.oneui.layout.ToolbarLayout
 import dev.oneuiproject.oneuiexample.data.stargazers.StargazersRepo
 import dev.oneuiproject.oneuiexample.data.stargazers.model.ActionModeSearch
 import dev.oneuiproject.oneuiexample.data.stargazers.model.FetchState
@@ -131,7 +131,7 @@ class StargazersViewModel @Inject constructor(
         stargazersRepo.setShowCancel(showCancel)
     }
 
-    val allSelectorStateFlow = MutableStateFlow(AllSelectorState())
+    val allSelectorStateFlow = MutableStateFlow(ToolbarLayout.AllSelectorState())
     private val isActionModeStateFlow: StateFlow<Boolean> =
         savedStateHandle.getStateFlow(KEY_IS_ACTION_MODE, false)
 
@@ -142,7 +142,7 @@ class StargazersViewModel @Inject constructor(
         }
 
     var initialSelectedIds
-        get() = savedStateHandle.get<Array<Long>>(KEY_ACTION_MODE_SELECTED_IDS)
+        get() = savedStateHandle.get<Set<Long>>(KEY_ACTION_MODE_SELECTED_IDS)
         set(value) {
             savedStateHandle[KEY_ACTION_MODE_SELECTED_IDS] = value
         }
