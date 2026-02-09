@@ -72,6 +72,7 @@ class RadioItemViewGroup @JvmOverloads constructor(
     // Indicates whether the child was set from resources or dynamically, so it can be used
     // to sanitize autofill requests.
     private var initialCheckedId = View.NO_ID
+    private var hideDividers = false
 
     init {
         orientation = VERTICAL
@@ -97,6 +98,7 @@ class RadioItemViewGroup @JvmOverloads constructor(
                     initialCheckedId = checkedButtonId
                 }
             }
+            hideDividers = getBoolean(R.styleable.RadioItemViewGroup_hideDividers, false)
         }
 
         super.setOnHierarchyChangeListener(passThroughListener)
@@ -499,7 +501,7 @@ class RadioItemViewGroup @JvmOverloads constructor(
     private fun updateDividers() {
         children.forEachIndexed { index, it ->
             if (it is RadioItemView) {
-                it.showTopDivider = index != 0
+                it.showTopDivider = !hideDividers && index != 0
             }
         }
     }

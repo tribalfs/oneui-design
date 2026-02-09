@@ -350,7 +350,9 @@
     </declare-styleable>
 
     <declare-styleable name="RadioItemViewGroup">
-        <attr name="checkedButton"/>
+        <attr name="checkedButton" />
+        <!-- Whether to hide or not the dividers in between RadioItemViews. False by default-->
+        <attr name="hideDividers" format="boolean" />
     </declare-styleable>
 
     <attr name="radioItemViewGroupStyle"/>

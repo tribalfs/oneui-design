@@ -64,6 +64,8 @@ class RadioItemView @JvmOverloads constructor(
     /**
      *  Show divider on top. True by default.
      *  Controlled by [RadioItemViewGroup] when put inside it.
+     *
+     *  @see R.styleable.RadioItemViewGroup_hideDividers
      */
     var showTopDivider: Boolean
         get() = topDivider.isVisible
