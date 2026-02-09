@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import dev.oneuiproject.oneui.layout.ToolbarLayout
 import dev.oneuiproject.oneui.layout.ToolbarLayout.AllSelectorState
+import dev.oneuiproject.oneui.recyclerview.ktx.doOnBlockMultiSelection
 import dev.oneuiproject.oneui.recyclerview.model.AdapterItem
 import dev.oneuiproject.oneui.recyclerview.util.MultiSelector
 import dev.oneuiproject.oneui.recyclerview.util.MultiSelectorDelegate
@@ -57,9 +58,11 @@ import dev.oneuiproject.oneui.recyclerview.util.SemSectionIndexer
  * @param selectionIdProvider (Optional) A function to get the item's selection id.
  * If not provided, the adapter's [stable ids][setHasStableIds] will be used and the [SID]  must be `Long`.
  *
- * @param isSelectable (Optional) lambda to be checked if not all items are selectable.
- * This can be used to get the [getItemViewType] if being selectable
- * is determined based on the view type of the item's ViewHolder. This returns `true` to all by default.
+ * @param isSelectable (Optional) A function to be checked if not all items are selectable
+ * that includes the [RecyclerView] and [AdapterItem] params.
+ *  - **Important note**: The implementation for this should account for null [item views][AdapterItem.itemView]
+ *  and NO_ID [item id][AdapterItem.id] as this function may be invoked for items which are off-screen
+ *  and not bounded to a view/viewholder. This is normally the case during [block selection][doOnBlockMultiSelection].
  *
  * @param selectionChangePayload (Optional) Change payload for more efficient updating of selected items.
  *
