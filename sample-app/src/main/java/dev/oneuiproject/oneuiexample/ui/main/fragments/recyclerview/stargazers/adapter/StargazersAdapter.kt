@@ -225,7 +225,7 @@ class StargazersAdapter(
             }
 
         private val isSelectable: ((rv: RecyclerView, item: AdapterItem) -> Boolean) =
-            { rv, item -> rv.adapter!!.getItemViewType(item.position)  != SeparatorItem.VIEW_TYPE }
+            { rv, item -> (rv.adapter as StargazersAdapter).getItemByPosition(item.position) !is SeparatorItem }
 
         private val selectableIdsProvider: (currentList: List<StargazersListItemUiModel>) -> List<Long> =
             { listItems -> listItems.filter {it !is SeparatorItem}.map { it.toStableId() } }
