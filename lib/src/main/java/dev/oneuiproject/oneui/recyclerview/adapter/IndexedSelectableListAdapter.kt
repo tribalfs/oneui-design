@@ -1,5 +1,6 @@
 package dev.oneuiproject.oneui.recyclerview.adapter
 
+import android.icu.text.AlphabeticIndex
 import androidx.annotation.CallSuper
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -66,6 +67,9 @@ import dev.oneuiproject.oneui.recyclerview.util.SemSectionIndexer
  *
  * @param selectionChangePayload (Optional) Change payload for more efficient updating of selected items.
  *
+ * @param useAlphabeticIndex Whether to generate index characters automatically using
+ * [AlphabeticIndex]. This is applicable only for API level 24 and above. Defaults to `true`.
+ *
  * @param diffCallback A [DiffUtil.ItemCallback] used to compute list differences.
  */
 abstract class IndexedSelectableListAdapter<T, VH : RecyclerView.ViewHolder, SID>
@@ -77,6 +81,7 @@ abstract class IndexedSelectableListAdapter<T, VH : RecyclerView.ViewHolder, SID
         selectionIdProvider: ((rv: RecyclerView, item: AdapterItem) -> SID)? = null,
         isSelectable: ((rv: RecyclerView, item: AdapterItem) -> Boolean)? = null,
         selectionChangePayload: Any? = null,
+        private val useAlphabeticIndex: Boolean = true,
         diffCallback: DiffUtil.ItemCallback<T>
 ) : ListAdapter<T, VH>(diffCallback),
     MultiSelector<SID> by MultiSelectorDelegate(
@@ -92,14 +97,14 @@ abstract class IndexedSelectableListAdapter<T, VH : RecyclerView.ViewHolder, SID
     @CallSuper
     override fun submitList(list: List<T>?, commitCallback: Runnable?) {
         super.submitList(list, commitCallback)
-        updateSections(list ?: emptyList(), false)
+        updateSections(list ?: emptyList(), useAlphabeticIndex)
         updateSelectableIds(list?.let { selectableIdsProvider(it) } ?: emptyList())
     }
 
     @CallSuper
     override fun submitList(list: List<T>?) {
         super.submitList(list)
-        updateSections(list ?: emptyList(), false)
+        updateSections(list ?: emptyList(), useAlphabeticIndex)
         updateSelectableIds(list?.let { selectableIdsProvider(it) } ?: emptyList())
     }
 }
