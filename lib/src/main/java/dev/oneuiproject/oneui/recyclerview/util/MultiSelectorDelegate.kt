@@ -15,6 +15,7 @@ import dev.oneuiproject.oneui.utils.internal.CachedInterpolatorFactory.Type
 import dev.oneuiproject.oneui.recyclerview.ktx.doOnBlockMultiSelection
 import dev.oneuiproject.oneui.recyclerview.ktx.doOnLongPressMultiSelection
 import dev.oneuiproject.oneui.recyclerview.model.AdapterItem
+import dev.oneuiproject.oneui.recyclerview.adapter.IndexedSelectableListAdapter
 
 /**
  * Delegate for multi-selection for use with the [Adapter].
@@ -95,6 +96,7 @@ import dev.oneuiproject.oneui.recyclerview.model.AdapterItem
  *
  * @param selectionChangePayload (Optional) Change payload for more efficient binding on changes of selected items.
  *
+ * @see IndexedSelectableListAdapter
  */
 class MultiSelectorDelegate<SID>(
     private val onAllSelectorStateChanged: (state: AllSelectorState) -> Unit,

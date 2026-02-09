@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.collection.MutableScatterMap
 import androidx.collection.mutableScatterMapOf
+import dev.oneuiproject.oneui.recyclerview.adapter.IndexedSelectableListAdapter
 import java.util.Locale
 
 
@@ -16,12 +17,9 @@ import java.util.Locale
  *
  * ## Example usage:
  *```
- * class IconsAdapter (
- *    private val context: Context
- * ) : RecyclerView.Adapter<IconsAdapter.ViewHolder>(),
+ * class IconsAdapter() : RecyclerView.Adapter<IconsAdapter.ViewHolder>(),
  *     SemSectionIndexer<Int> by SectionIndexerDelegate(
- *           context,
- *           labelExtractor = {iconId -> getLabel(mContext, iconId)}){
+ *        labelExtractor = {iconId -> getLabel(mContext, iconId)}){
  *
  *
  *   fun submitList(list: List<Icon>) {
@@ -36,6 +34,8 @@ import java.util.Locale
  * ```
  * @param labelExtractor lambda function to be invoked to get the item's label.
  * This should directly return index chars for api level <24.
+ *
+ * @see IndexedSelectableListAdapter
  */
 class SectionIndexerDelegate<T>(
     private val labelExtractor: (T) -> CharSequence
