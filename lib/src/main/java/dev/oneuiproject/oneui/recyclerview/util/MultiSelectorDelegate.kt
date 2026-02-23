@@ -161,7 +161,8 @@ class MultiSelectorDelegate<SID>(
                         itemAnimator = it
                         restoreItemAnimator = null
                     }
-                }
+                },
+                isSelectable = isSelectable
             )
 
             if (onBlockActionMode != null) {
