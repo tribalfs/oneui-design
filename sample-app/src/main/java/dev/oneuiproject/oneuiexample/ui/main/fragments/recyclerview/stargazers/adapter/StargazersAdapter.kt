@@ -36,6 +36,7 @@ class StargazersAdapter(
         selectableIdsProvider = selectableIdsProvider,
         isSelectable = isSelectable,
         selectionChangePayload = Payload.SELECTION_MODE,
+        useAlphabeticIndex = false,
         diffCallback = diffCallback
 ) {
 

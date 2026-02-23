@@ -27,7 +27,8 @@ class IconsAdapter(
         selectionIdProvider,
         null,
         null,
-        diffCallback
+        false,
+        diffCallback,
 ) {
 
     var onClickItem: ((IconListItemUiModel, Int) -> Unit)? = null
