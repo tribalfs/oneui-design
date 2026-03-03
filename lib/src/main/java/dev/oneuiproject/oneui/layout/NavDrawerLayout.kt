@@ -334,7 +334,8 @@ class NavDrawerLayout @JvmOverloads constructor(
         return SavedState(superState).apply {
             navRailContentPaneResizeOff = navRailContentPaneResizeOffState.ordinal
             hideNavRailDrawerOnCollapse = this@NavDrawerLayout.hideNavRailDrawerOnCollapseState.ordinal
-            isNavRailOpen = (containerLayout as? SemSlidingPaneLayout)?.isDrawerOpen ?: sNavRailOpen
+            this.isDrawerOpen = containerLayout.isDrawerOpen
+            this.previousIsLargeScreen = isLargeScreenMode
         }
     }
 
@@ -351,11 +352,11 @@ class NavDrawerLayout @JvmOverloads constructor(
             FeatureState.entries[state.hideNavRailDrawerOnCollapse] == FeatureState.ENABLED) {
             setHideNavRailDrawerOnCollapse(true)
         }
-        val semSlidingPane = containerLayout as? SemSlidingPaneLayout
-        if (semSlidingPane != null) {
-            if (state.isNavRailOpen) semSlidingPane.open(false)
-        } else {
-            sNavRailOpen = state.isNavRailOpen
+
+        if (!state.previousIsLargeScreen || isLargeScreenMode) {
+            if (state.isDrawerOpen && !containerLayout.isDrawerOpen) {
+                containerLayout.open(false)
+            }
         }
         super.onRestoreInstanceState(state.superState)
     }
@@ -363,20 +364,23 @@ class NavDrawerLayout @JvmOverloads constructor(
     private class SavedState : AbsSavedState {
         var navRailContentPaneResizeOff: Int = 0
         var hideNavRailDrawerOnCollapse: Int = 0
-        var isNavRailOpen = false
+        var isDrawerOpen = false
+        var previousIsLargeScreen = false
 
         constructor(superState: Parcelable?) : super(superState!!)
         constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
             navRailContentPaneResizeOff = parcel.readInt()
             hideNavRailDrawerOnCollapse = parcel.readInt()
-            isNavRailOpen = parcel.readInt() != 0
+            isDrawerOpen = parcel.readInt() != 0
+            previousIsLargeScreen = parcel.readInt() != 0
         }
 
         override fun writeToParcel(out: Parcel, flags: Int) {
             super.writeToParcel(out, flags)
             out.writeInt(navRailContentPaneResizeOff)
             out.writeInt(hideNavRailDrawerOnCollapse)
-            out.writeInt(if (isNavRailOpen) 1 else 0)
+            out.writeInt(if (isDrawerOpen) 1 else 0)
+            out.writeInt(if (previousIsLargeScreen) 1 else 0)
         }
 
         companion object {
@@ -394,7 +398,6 @@ class NavDrawerLayout @JvmOverloads constructor(
 
     companion object {
         const val DEFAULT_NAV_RAIL_DETAILS_WIDTH = -1
-        private var sNavRailOpen = false
     }
 
     private object Constants{

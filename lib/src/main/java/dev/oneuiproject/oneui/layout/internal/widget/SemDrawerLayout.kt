@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Handler
 import android.os.Looper
+import android.os.Parcelable
 import android.util.AttributeSet
 import android.util.Log
 import android.view.Gravity
@@ -85,7 +86,7 @@ internal class SemDrawerLayout @JvmOverloads constructor(
     private var _showNavButtonAsBack = false
     private var _showNavigationButton = true
 
-    private lateinit var navButtonsHandlerDelegate: NavButtonsHandler
+    private var navButtonsHandlerDelegate: NavButtonsHandler
 
     private val activity by lazy(LazyThreadSafetyMode.NONE) {  context.appCompatActivity }
 
@@ -93,6 +94,10 @@ internal class SemDrawerLayout @JvmOverloads constructor(
     private var lastScreenWidthDp: Int = 0
 
     private var drawerWidthProvider: DrawerWidthProvider = DEFAULT_DRAWER_WIDTH_PROVIDER
+
+    @Volatile
+    private var slideOffset = 0f
+    private var currentState: DrawerState = DrawerState.CLOSE
 
     init {
         ContextCompat.getColor(context, R.color.oui_des_drawerlayout_drawer_dim_color).let {
@@ -230,10 +235,13 @@ internal class SemDrawerLayout @JvmOverloads constructor(
     }
 
     override fun open(animate: Boolean) = openDrawer(drawerPane, animate)
+        .also { dispatchDrawerStateChange(1f) }
 
     override fun close(animate: Boolean) = closeDrawer(drawerPane, animate)
+        .also { dispatchDrawerStateChange(0f) }
 
     override fun close() = closeDrawer(drawerPane, true)
+        .also { dispatchDrawerStateChange(0f) }
 
     override fun setDrawerCornerRadius(@Dimension dp: Float) {
         setDrawerCornerRadius(dp.dpToPx(resources))
@@ -284,9 +292,9 @@ internal class SemDrawerLayout @JvmOverloads constructor(
     }
 
     private fun dispatchDrawerStateChange(newSlideOffset: Float) {
-        if (sSlideOffset == newSlideOffset) return
-        val newState = getDrawerStateUpdate(sSlideOffset, newSlideOffset)
-        sSlideOffset = newSlideOffset
+        if (slideOffset == newSlideOffset) return
+        val newState = getDrawerStateUpdate(slideOffset, newSlideOffset)
+        slideOffset = newSlideOffset
 
         if (!isInEditMode) {
             if (systemBarsColor != -1) {
@@ -296,8 +304,8 @@ internal class SemDrawerLayout @JvmOverloads constructor(
             }
         }
 
-        if (newState != sCurrentState) {
-            sCurrentState = newState
+        if (newState != currentState) {
+            currentState = newState
             drawerStateListener?.invoke(newState)
 
             updateNavBadgeVisibility()
@@ -305,7 +313,7 @@ internal class SemDrawerLayout @JvmOverloads constructor(
     }
 
     private fun updateNavBadgeVisibility() {
-        if (sCurrentState != DrawerState.CLOSE){
+        if (currentState != DrawerState.CLOSE){
             navButtonsHandlerDelegate.setNavigationButtonBadge(Badge.NONE)
         }else {
             if (navDrawerButtonBadge != Badge.NONE) {
@@ -346,10 +354,10 @@ internal class SemDrawerLayout @JvmOverloads constructor(
         }
         get() = getDrawerLockMode(Gravity.LEFT) != LOCK_MODE_UNLOCKED
 
-    override val isDrawerOpen: Boolean get() = sCurrentState == DrawerState.OPEN
+    override val isDrawerOpen: Boolean get() = (currentState == DrawerState.OPEN)
 
     override val isDrawerOpenOrIsOpening: Boolean
-        get() = sCurrentState == DrawerState.OPEN || sCurrentState == DrawerState.OPENING
+        get() = currentState == DrawerState.OPEN || currentState == DrawerState.OPENING
 
 
     override var showNavigationButtonAsBack: Boolean
@@ -424,7 +432,7 @@ internal class SemDrawerLayout @JvmOverloads constructor(
 
     }
 
-    override fun getDrawerSlideOffset(): Float = sSlideOffset
+    override fun getDrawerSlideOffset(): Float = slideOffset
 
     private var _backHandler: DrawerLayoutBackHandler<OneUIDrawerLayout>? = null
 
@@ -507,9 +515,6 @@ internal class SemDrawerLayout @JvmOverloads constructor(
     companion object{
         private const val TAG = "SemDrawerLayout"
         private const val DEFAULT_DRAWER_RADIUS = 15f
-        @Volatile
-        private var sSlideOffset = 0f
-        private var sCurrentState: DrawerState = DrawerState.CLOSE
     }
 }
 

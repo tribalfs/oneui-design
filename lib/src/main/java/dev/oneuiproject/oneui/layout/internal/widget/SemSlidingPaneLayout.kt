@@ -197,6 +197,8 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
     }
 
     override fun open(animate: Boolean) = seslOpenPane(animate).also {
+        // Workaround - Sometimes seslOpenPane doesn't work
+        seslSetPendingAction(PENDING_ACTION_EXPANDED)
         if (isInEditMode) ensureLayoutPreview()
     }
 
