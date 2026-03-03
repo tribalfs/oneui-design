@@ -10,9 +10,12 @@ import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.ui.AppBarConfiguration
-import dev.oneuiproject.oneui.design.R
 import dev.oneuiproject.oneui.layout.NavDrawerLayout
 import dev.oneuiproject.oneui.layout.ToolbarLayout
+import dev.oneuiproject.oneui.navigation.navArgExpandable
+import dev.oneuiproject.oneui.navigation.navArgImmersiveScroll
+import dev.oneuiproject.oneui.navigation.navArgSubTitle
+import dev.oneuiproject.oneui.navigation.navArgTitle
 
 /**
  * Delegate for updating the toolbar titles and navigation icon
@@ -38,9 +41,6 @@ internal class OnBackAppBarHandler<T: ToolbarLayout>(
     private var _showNavButtonAsBack = true
 
     private val context = toolbarLayout.context
-    private var navArgSubTitle: String = context.getString(R.string.navArg_subtitle)
-    private var navArgExpandable: String = context.getString(R.string.navArg_expandable)
-    private var navArgImmersiveScroll: String = context.getString(R.string.navArg_immersiveScroll)
 
     @JvmField
     var startDestination: NavDestination? = null
@@ -94,7 +94,13 @@ internal class OnBackAppBarHandler<T: ToolbarLayout>(
 
         updateTitleOnBackProgress = isChildDestination
         if (isChildDestination && popupDestination != null) {
-            backFragmentLabel = popupDestination.label
+            val navArgTitleValue = popupDestination.arguments[navArgTitle]?.defaultValue
+            backFragmentLabel = when (navArgTitleValue) {
+                is String -> navArgTitleValue
+                is CharSequence -> navArgTitleValue.toString()
+                is Int -> context.getString(navArgTitleValue)
+                else ->  popupDestination.label
+            }
             val rawSubtitleValue = popupDestination.arguments[navArgSubTitle]?.defaultValue
             val subTitleResolved = when (rawSubtitleValue) {
                 is String -> rawSubtitleValue

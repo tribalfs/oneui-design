@@ -44,6 +44,11 @@ private const val EXTRA_NAV_CURRENT = "android-support-navigation:ActivityNaviga
 private const val EXTRA_POP_ENTER_ANIM = "android-support-navigation:ActivityNavigator:popEnterAnim"
 private const val EXTRA_POP_EXIT_ANIM = "android-support-navigation:ActivityNavigator:popExitAnim"
 
+const val navArgTitle: String = "toolbarLayoutTitle"
+const val navArgSubTitle: String = "toolbarLayoutSubtitle"
+const val navArgExpandable: String = "toolbarLayoutIsExpandable"
+const val navArgImmersiveScroll: String = "toolbarLayoutIsImmersiveScroll"
+
 /**
  * Sets up navigation for [DrawerLayout] with a [DrawerNavigationView] and [NavHostFragment].
  * Supports both XML and programmatically created navigation graphs (NavGraphBuilder DSL).
