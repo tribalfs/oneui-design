@@ -421,7 +421,7 @@ class SwitchItemView @JvmOverloads constructor(
                         it.paint.measureText(it.getText().toString())
                     } else 0.0f
                     if (summaryLen < availableWidth) isLargeLayout = false
-                }
+                } ?: { isLargeLayout = false }
             }
         }
 
@@ -434,7 +434,7 @@ class SwitchItemView @JvmOverloads constructor(
 
             if (isLargeLayout) {
                 switchLP.topToTop = ConstraintLayout.LayoutParams.UNSET
-                switchLP.topToBottom = R.id.switch_card_summary
+                switchLP.topToBottom = summaryView?.id ?: titleView.id
                 switchLP.height = 22.dpToPx(res)
                 res.getDimensionPixelSize(androidx.preference.R.dimen.sesl_preference_switch_padding_vertical)
                     .let {
@@ -443,6 +443,8 @@ class SwitchItemView @JvmOverloads constructor(
                     }
 
                 titleLP.endToStart = ConstraintLayout.LayoutParams.UNSET
+                titleLP.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
+                titleLP.bottomToTop = summaryView?.id ?: switchView.id
                 summaryLP?.endToStart = ConstraintLayout.LayoutParams.UNSET
                 summaryLP?.bottomToBottom = ConstraintLayout.LayoutParams.UNSET
                 bottomSpacerLP.bottomToBottom = ConstraintLayout.LayoutParams.UNSET
@@ -453,6 +455,8 @@ class SwitchItemView @JvmOverloads constructor(
                 switchLP.bottomMargin = 0
                 switchLP.topMargin = 0
 
+                titleLP.endToEnd = ConstraintLayout.LayoutParams.UNSET
+                titleLP.bottomToTop = summaryView?.id ?: bottomSpacer.id
                 titleLP.endToStart = R.id.switch_widget
                 summaryLP?.endToStart = R.id.switch_widget
                 bottomSpacerLP.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
