@@ -370,7 +370,7 @@ open class ToolbarLayout @JvmOverloads constructor(
     private var layoutRes: Int = 0
 
     private var _expandable: Boolean = false
-    private var expandedPortrait: Boolean = false
+    private var expandedPortrait: Boolean = true
     private var _collapsedTitle: CharSequence? = null
     private var _titleExpanded: CharSequence? = null
     private var _collapsedSubtitle: CharSequence? = null
