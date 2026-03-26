@@ -37,7 +37,7 @@ import dev.oneuiproject.oneui.delegates.ViewRoundedCornerDelegate
 open class RoundedRecyclerView @JvmOverloads constructor(
     context: Context, attrs:
     AttributeSet? = null,
-    defStyleAttr: Int = 0
+    defStyleAttr: Int = androidx.recyclerview.R.attr.recyclerViewStyle
 ) : RecyclerView(context, attrs, defStyleAttr),
     ViewRoundedCorner by ViewRoundedCornerDelegate(context, attrs, defStyleAttr, 0) {
 

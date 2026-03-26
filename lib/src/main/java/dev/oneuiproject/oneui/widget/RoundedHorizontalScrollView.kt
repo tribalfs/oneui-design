@@ -42,7 +42,7 @@ import dev.oneuiproject.oneui.delegates.ViewRoundedCorner
 open class RoundedHorizontalScrollView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0,
+    defStyleAttr: Int = android.R.attr.horizontalScrollViewStyle,
     defStyleRes: Int = 0
 ) : HorizontalScrollView(context, attrs, defStyleAttr, defStyleRes),
     ViewRoundedCorner by ViewRoundedCornerDelegate(context, attrs, defStyleAttr, defStyleRes) {
