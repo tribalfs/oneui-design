@@ -689,6 +689,8 @@ $dokka.location:dev.oneuiproject.oneui.qr.utils/QrEncoder/QrEncoder/#android.con
 $dokka.location:dev.oneuiproject.oneui.qr.utils/QrEncoder/generate/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.utils/-qr-encoder/generate.html
 $dokka.location:dev.oneuiproject.oneui.qr.utils/QrEncoder/roundedFrame/#kotlin.Boolean/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.utils/-qr-encoder/rounded-frame.html
 $dokka.location:dev.oneuiproject.oneui.qr.utils/QrEncoder/setBackgroundColor/#kotlin.Int/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.utils/-qr-encoder/set-background-color.html
+$dokka.location:dev.oneuiproject.oneui.qr.utils/QrEncoder/setBorderRadius/#kotlin.Int/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.utils/-qr-encoder/set-border-radius.html
+$dokka.location:dev.oneuiproject.oneui.qr.utils/QrEncoder/setBorderWidth/#kotlin.Int/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.utils/-qr-encoder/set-border-width.html
 $dokka.location:dev.oneuiproject.oneui.qr.utils/QrEncoder/setForegroundColor/#kotlin.Int#kotlin.Boolean#kotlin.Boolean/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.utils/-qr-encoder/set-foreground-color.html
 $dokka.location:dev.oneuiproject.oneui.qr.utils/QrEncoder/setIcon/#android.graphics.drawable.Drawable?/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.utils/-qr-encoder/set-icon.html
 $dokka.location:dev.oneuiproject.oneui.qr.utils/QrEncoder/setIcon/#kotlin.Int/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.utils/-qr-encoder/set-icon.html
@@ -730,6 +732,8 @@ $dokka.location:dev.oneuiproject.oneui.qr.widget/QrImageView///PointingToDeclara
 $dokka.location:dev.oneuiproject.oneui.qr.widget/QrImageView/QrImageView/#android.content.Context#android.util.AttributeSet?#kotlin.Int#kotlin.Int/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-image-view/-qr-image-view.html
 $dokka.location:dev.oneuiproject.oneui.qr.widget/QrImageView/invalidate/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-image-view/invalidate.html
 $dokka.location:dev.oneuiproject.oneui.qr.widget/QrImageView/setBackgroundColor/#kotlin.Int/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-image-view/set-background-color.html
+$dokka.location:dev.oneuiproject.oneui.qr.widget/QrImageView/setBorderRadius/#kotlin.Int/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-image-view/set-border-radius.html
+$dokka.location:dev.oneuiproject.oneui.qr.widget/QrImageView/setBorderWidth/#kotlin.Int/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-image-view/set-border-width.html
 $dokka.location:dev.oneuiproject.oneui.qr.widget/QrImageView/setContent/#kotlin.String?/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-image-view/set-content.html
 $dokka.location:dev.oneuiproject.oneui.qr.widget/QrImageView/setForegroundColor/#kotlin.Int/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-image-view/set-foreground-color.html
 $dokka.location:dev.oneuiproject.oneui.qr.widget/QrImageView/setIcon/#android.graphics.drawable.Drawable?/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.qr.widget/-qr-image-view/set-icon.html
