@@ -381,4 +381,8 @@
         <attr name="textViewStrokeColor" format="color" />
         <attr name="textViewStrokeWidth" format="float" />
     </declare-styleable>
+
+    <declare-styleable name="BottomFloatingLayout">
+        <attr name="maxChildWidth" format="dimension" />
+    </declare-styleable>
 </resources>
