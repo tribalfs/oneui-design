@@ -27,7 +27,7 @@ dependencies {
   //sesl and other dependencies
 
   //For OneUI 8 - must use sesl8 dependencies
-  implementation("io.github.tribalfs:oneui-design:0.9.9+oneui8")
+  implementation("io.github.tribalfs:oneui-design:0.9.10+oneui8")
   
   //For OneUI 7 - must use sesl7 dependencies
   implementation("io.github.tribalfs:oneui-design:0.7.12+oneui7")
@@ -75,6 +75,7 @@ dependencies {
 
 [Galaxy MaxHz](https://github.com/tribalfs/GalaxyMaxHzPub)
 | [Pixels: Resolution+DPI Changer](https://play.google.com/store/apps/details?id=com.tribalfs.pixels)
+| [Box Score: Game Score Tracker](https://play.google.com/store/apps/details?id=com.tribalfs.scorer)
 | [ECOIN Wallet: Crypto DeFi, BTC](https://play.google.com/store/apps/details?id=org.ecoinwallet)
 | [OneURL - URL Shortener (QR)](https://play.google.com/store/apps/details?id=de.lemke.oneurl)
 | [Get Icon](https://play.google.com/store/apps/details?id=de.lemke.geticon)
