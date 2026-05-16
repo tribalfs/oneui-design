@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.text.SpannableString
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -25,6 +26,8 @@ import androidx.core.content.withStyledAttributes
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.core.view.marginEnd
+import androidx.core.view.marginStart
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePaddingRelative
 import dev.oneuiproject.oneui.design.R
@@ -412,8 +415,8 @@ class SwitchItemView @JvmOverloads constructor(
             val titleLen: Float = titleView.paint.measureText(titleView.getText().toString())
 
             val availableWidth =
-                mainContent.width - mainContent.paddingStart - mainContent.paddingEnd -
-                        (switchView.width + switchView.paddingStart + switchView.paddingEnd)
+                mainContent.width - mainContent.marginStart - mainContent.marginEnd -
+                        (switchView.width + switchView.marginStart + switchView.marginEnd)
 
             if (titleLen < availableWidth) {
                 summaryView?.let {
@@ -421,11 +424,12 @@ class SwitchItemView @JvmOverloads constructor(
                         it.paint.measureText(it.getText().toString())
                     } else 0.0f
                     if (summaryLen < availableWidth) isLargeLayout = false
-                } ?: { isLargeLayout = false }
+                } ?: run { isLargeLayout = false }
             }
         }
 
         if (this.isLargeLayout != isLargeLayout) {
+            this.isLargeLayout = isLargeLayout
 
             val switchLP = switchView.layoutParams as ConstraintLayout.LayoutParams
             val titleLP = titleView.layoutParams as ConstraintLayout.LayoutParams
@@ -465,8 +469,6 @@ class SwitchItemView @JvmOverloads constructor(
             titleView.layoutParams = titleLP
             summaryView?.layoutParams = summaryLP
             bottomSpacer.layoutParams = bottomSpacerLP
-
-            this.isLargeLayout = isLargeLayout
 
             post { requestLayout() }
         }
