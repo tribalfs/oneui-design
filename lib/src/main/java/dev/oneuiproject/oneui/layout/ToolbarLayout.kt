@@ -1332,7 +1332,17 @@ open class ToolbarLayout @JvmOverloads constructor(
                     background = null
                     applyThemeColors()
                     seslSetUpButtonVisibility(VISIBLE)
-                    seslSetOnUpButtonClickListener { endSearchMode() }
+                    seslSetOnUpButtonClickListener {
+                        if (searchModeOBPBehavior == CLEAR_CLOSE) {
+                            if (query.isNullOrEmpty()) {
+                                activity?.onBackPressedDispatcher?.onBackPressed()
+                            } else {
+                                setQuery("", true)
+                            }
+                        } else {
+                            endSearchMode()
+                        }
+                    }
                     onCloseClickListener = null
                     if (!isDescendantOf(searchToolbar!!)) {
                         (parent as? ViewGroup)?.removeView(this)
