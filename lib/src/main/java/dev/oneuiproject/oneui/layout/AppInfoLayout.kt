@@ -336,15 +336,16 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
         // init() called setSupportActionBar(toolbar), so mActionBar retains this view hierarchy via
         // ToolbarActionBar → SemToolbar.mParent. Restore the host ToolbarLayout's toolbar as the
         // action bar to release that chain. mParent is still set here (cleared after detach).
+        val act = activity?.takeIf { !it.isDestroyed && !it.isFinishing } ?: return
         var p: ViewParent? = parent
         while (p != null) {
             if (p is ToolbarLayout && p !== this) {
-                activity?.setSupportActionBar(p.toolbar)
+                act.setSupportActionBar(p.toolbar)
                 return
             }
             p = (p as? View)?.parent
         }
-        activity?.setSupportActionBar(null)
+        act.setSupportActionBar(null)
     }
 
     private fun updateButtonsWidth(){
