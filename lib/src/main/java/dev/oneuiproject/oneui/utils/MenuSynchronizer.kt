@@ -13,6 +13,13 @@ import androidx.core.view.forEach
 import androidx.core.view.isVisible
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dev.oneuiproject.oneui.design.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.yield
 import java.util.ArrayList
 
 /**
@@ -23,7 +30,7 @@ import java.util.ArrayList
  * @param toolbar The Toolbar to synchronize the menu items with.
  * @param onMenuItemClick A callback to handle menu item click events.
  * @param initialState (Optional) The initial state of the menu - either [State.PORTRAIT], [State.LANDSCAPE], or [State.HIDDEN].
- * @param maxActionItems (Optional) The maximum number of items to show as action items in the Toolbar. By default, it's 2.
+ * @param maxActionItems (Optional) The maximum number of items to show as action items in the Toolbar. By default, it's 4.
  * @param copyIcon (Optional) Boolean flag to determine whether to show icons on the Toolbar menu items.
  * By default, it's true when there are more than one item in the menu and `maxActionItems` is greater than 1.
  */
@@ -34,10 +41,10 @@ class MenuSynchronizer @JvmOverloads constructor(
     onMenuItemClick: (menuItem: MenuItem) -> Boolean,
     initialState: State? = null,
     maxActionItems: Int = 4,
-    private var copyIcon: Boolean? = null,
+    copyIcon: Boolean? = null,
 ) {
 
-    val menu = SynchronizedMenuBuilder(toolbar, bottomNavView, maxActionItems)
+    val menu = SynchronizedMenuBuilder(toolbar, bottomNavView, maxActionItems, copyIcon)
 
     init{
         toolbar.setOnMenuItemClickListener {
@@ -68,16 +75,29 @@ class MenuSynchronizer @JvmOverloads constructor(
 
     fun clear()= menu.clearAll()
 
-    class SynchronizedMenuBuilder(private val toolbar: Toolbar,
-                                        private val bottomNavView: BottomNavigationView,
-                                        private val maxActionItems: Int): MenuBuilder(toolbar.context){
+    class SynchronizedMenuBuilder(
+        private val toolbar: Toolbar,
+        private val bottomNavView: BottomNavigationView,
+        private val maxActionItems: Int,
+        private val copyIcon: Boolean? = null,
+    ): MenuBuilder(toolbar.context){
 
         private var currentState: State = State.HIDDEN
         private var refreshToolbarMenu = false
         private var refreshBottomMenu = false
+        private val scope = CoroutineScope(Dispatchers.Main.immediate + SupervisorJob())
+        private var refreshJob: Job? = null
 
         override fun onItemsChanged(structureChanged: Boolean) {
-            when (currentState){
+            if (refreshJob?.isActive == true) return
+            refreshJob = scope.launch {
+                yield()
+                performSync()
+            }
+        }
+
+        private fun performSync() {
+            when (currentState) {
                 State.PORTRAIT -> {
                     toolbar.menu.removeGroup(AMT_GROUP_MENU_ID)
                     refreshBottomMenu = false
@@ -101,13 +121,15 @@ class MenuSynchronizer @JvmOverloads constructor(
             }
         }
 
-        private fun refreshToolbarMenu(){
+        private fun refreshToolbarMenu() {
+            toolbar.menu.removeGroup(AMT_GROUP_MENU_ID)
             var menuItemsAdded = 0
             val size = size()
             forEach {
                 if (!it.isVisible) return@forEach
                 menuItemsAdded++
-                addMenuItem(toolbar.menu, it, size > 1, AMT_GROUP_MENU_ID).apply {
+                val showIcon = copyIcon ?: (size > 1)
+                addMenuItem(toolbar.menu, it, showIcon, AMT_GROUP_MENU_ID).apply {
                     if (menuItemsAdded <= maxActionItems) {
                         setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
                     }
@@ -116,6 +138,7 @@ class MenuSynchronizer @JvmOverloads constructor(
         }
 
         private fun refreshBottomMenu(){
+            bottomNavView.menu.clear()
             var menuItemsAdded = 0
             forEach {
                 if (!it.isVisible) return@forEach
@@ -169,15 +192,21 @@ class MenuSynchronizer @JvmOverloads constructor(
 
 
         internal fun setMenuItemEnabled(@IdRes menuItemId: Int, enabled: Boolean) {
-            findItem(menuItemId)?.isEnabled = enabled
+            val menuItem = findItem(menuItemId) ?: return
+            if (menuItem.isEnabled != enabled) {
+                menuItem.isEnabled = enabled
+            }
         }
 
         internal fun setMenuItemHidden(@IdRes menuItemId: Int, isHidden: Boolean) {
-            findItem(menuItemId)?.isVisible = !isHidden
+            val menuItem = findItem(menuItemId) ?: return
+            if (menuItem.isVisible == isHidden) {
+                menuItem.isVisible = !isHidden
+            }
         }
-
-        override fun clearAll(){
+        override fun clearAll() {
             super.clearAll()
+            scope.cancel()
             bottomNavView.setOnItemSelectedListener(null)
             toolbar.setOnMenuItemClickListener(null)
             toolbar.menu.clear()
