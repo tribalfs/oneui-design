@@ -341,6 +341,10 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
         while (p != null) {
             if (p is ToolbarLayout && p !== this) {
                 act.setSupportActionBar(p.toolbar)
+                act.supportActionBar?.apply {
+                    setDisplayHomeAsUpEnabled(false)
+                    setDisplayShowTitleEnabled(false)
+                }
                 return
             }
             p = (p as? View)?.parent
