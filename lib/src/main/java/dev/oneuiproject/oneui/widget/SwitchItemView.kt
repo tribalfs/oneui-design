@@ -49,6 +49,7 @@ import dev.oneuiproject.oneui.utils.SemTouchFeedbackAnimator
  *       If true, the switch can be clicked independently of the rest of the view.
  * - `app:showTopDivider`: Whether to display a divider line above the view.
  * - `app:showBottomDivider`: Whether to display a divider line below the view.
+ * - `app:fullWidthDivider`: Whether the top and bottom divider lines span across the icon view.
  * - `app:userUpdatableSummary`: Whether the summary text color should change based on the switch state.
  * - `app:icon`: The optional icon displayed at the start of the view.
  * - `app:iconTint`: The tint color to be applied to icon.
@@ -90,6 +91,8 @@ class SwitchItemView @JvmOverloads constructor(
     private var iconImageView: ImageView? = null
     private var containerLeftPaddingWithIcon: Int = 0
     private var containerLeftPaddingNoIcon: Int = 0
+    private var dividerMarginStart: Int = 0
+    private var dividerMarginStartWithIcon: Int = 0
 
     @RequiresApi(29)
     private lateinit var semTouchFeedbackAnimator: SemTouchFeedbackAnimator
@@ -149,6 +152,7 @@ class SwitchItemView @JvmOverloads constructor(
             dividerViewTop = LayoutInflater.from(context)
                 .inflate(R.layout.oui_des_widget_card_item_divider, this, false)
             addView(dividerViewTop, 0)
+            updateLayoutParams()
         }
     }
 
@@ -157,8 +161,19 @@ class SwitchItemView @JvmOverloads constructor(
             dividerViewBottom = LayoutInflater.from(context)
                 .inflate(R.layout.oui_des_widget_card_item_divider, this, false)
             addView(dividerViewBottom, childCount)
+            updateLayoutParams()
         }
     }
+
+    /**
+     * Show full divider width even when there's an icon.
+     */
+    var fullWidthDivider: Boolean = true
+        set(value) {
+            if (field == value) return
+            field = value
+            updateLayoutParams()
+        }
 
     /**
      * The summary for the switch when it's checked.
@@ -269,6 +284,8 @@ class SwitchItemView @JvmOverloads constructor(
             )
         }
 
+    private var suspendLayoutUpdates = false
+
     init {
         orientation = VERTICAL
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
@@ -280,6 +297,10 @@ class SwitchItemView @JvmOverloads constructor(
             containerLeftPaddingNoIcon = it
             containerLeftPaddingWithIcon = it - 4
         }
+
+        dividerMarginStart = containerLeftPaddingNoIcon
+        dividerMarginStartWithIcon = containerLeftPaddingWithIcon + resources.getDimensionPixelSize(R.dimen.oui_des_cardview_icon_size) +
+                resources.getDimensionPixelSize(R.dimen.oui_des_cardview_icon_margin_end)
 
         titleView = findViewById(R.id.switch_card_title)
 
@@ -293,6 +314,33 @@ class SwitchItemView @JvmOverloads constructor(
 
         bottomSpacer = findViewById(R.id.bottom_spacer)
 
+        switchView.setOnCheckedChangeListener { _, isChecked ->
+            updateSubtitleVisibility()
+            onCheckedChangedListener?.invoke(this@SwitchItemView.id, isChecked)
+        }
+
+        suspendLayoutUpdates = true
+        attrs?.let { parseAttributes(it, defStyleAttr, defStyleRes) }
+        suspendLayoutUpdates = false
+        updateLayoutParams()
+
+        contentFrame.setOnClickListener {
+            if (isClickable) {
+                if (!separateSwitch) {
+                    this.isChecked = !this.isChecked
+                    super.callOnClick()
+                } else {
+                    super.callOnClick()
+                }
+            }
+        }
+
+        if (Build.VERSION.SDK_INT >= 29) {
+            semTouchFeedbackAnimator = SemTouchFeedbackAnimator(contentFrame)
+        }
+    }
+
+    private fun parseAttributes(attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) {
         context.withStyledAttributes(
             attrs,
             R.styleable.SwitchItemView,
@@ -312,6 +360,7 @@ class SwitchItemView @JvmOverloads constructor(
             if (getBoolean(R.styleable.SwitchItemView_userUpdatableSummary, false)){
                 isSummaryUserUpdatable = true
             }
+            fullWidthDivider = getBoolean(R.styleable.SwitchItemView_fullWidthDivider, true)
             val iconDrawable = getDrawable(R.styleable.SwitchItemView_icon)
             if (iconDrawable != null) {
                 icon = iconDrawable
@@ -321,25 +370,24 @@ class SwitchItemView @JvmOverloads constructor(
                 }
             }
         }
+    }
 
-        contentFrame.setOnClickListener {
-            if (isClickable) {
-                if (!separateSwitch) {
-                    this.isChecked = !this.isChecked
-                    super.callOnClick()
-                } else {
-                    super.callOnClick()
-                }
-            }
+    private fun updateLayoutParams(){
+        if (suspendLayoutUpdates) return
+
+        val hasIcon = iconImageView?.drawable != null
+        (iconImageView?.parent as? FrameLayout)?.isVisible = hasIcon
+
+        val desiredDividerStartMargin = if (!hasIcon || fullWidthDivider) dividerMarginStart else dividerMarginStartWithIcon
+
+        dividerViewTop?.apply {
+            if (desiredDividerStartMargin == marginStart) return@apply
+            updateLayoutParams<LayoutParams> { marginStart = desiredDividerStartMargin }
         }
 
-        switchView.setOnCheckedChangeListener { _, isChecked ->
-            updateSubtitleVisibility()
-            onCheckedChangedListener?.invoke(this@SwitchItemView.id, isChecked)
-        }
-
-        if (Build.VERSION.SDK_INT >= 29) {
-            semTouchFeedbackAnimator = SemTouchFeedbackAnimator(contentFrame)
+        dividerViewBottom?.apply {
+            if (desiredDividerStartMargin == marginStart) return@apply
+            updateLayoutParams<LayoutParams> { marginStart = desiredDividerStartMargin }
         }
     }
 
