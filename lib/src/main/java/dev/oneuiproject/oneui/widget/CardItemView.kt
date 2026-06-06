@@ -38,8 +38,10 @@ import dev.oneuiproject.oneui.utils.SemTouchFeedbackAnimator
  * - `app:summary`: The optional summary text displayed in the view.
  * - `app:showTopDivider`: Whether to display a divider line above the view.
  * - `app:showBottomDivider`: Whether to display a divider line below the view.
+ * - `app:fullWidthDivider`: Whether the top and bottom divider lines span across the icon view.
  * - `app:icon`: The optional drawable displayed at the start of the view.
  * - `app:iconTint`: The tint color to be applied to icon.
+ * - `app:iconSize`: The size of the icon.
  * - `app:drawableEnd`: The optional drawable displayed at the end of the view.
  *
  * ## Example usage:
@@ -75,7 +77,6 @@ class CardItemView @JvmOverloads constructor(
     private var containerLeftPaddingWithIcon: Int = 0
     private var containerLeftPaddingNoIcon: Int = 0
     private var dividerMarginStart: Int = 0
-    private var dividerMarginStartWithIcon: Int = 0
     private var summaryMaxLines = 10
 
     private var suspendLayoutUpdates = false
@@ -185,6 +186,18 @@ class CardItemView @JvmOverloads constructor(
             }
         }
 
+    /** The size of the icon in pixels. */
+    var iconSize: Int = resources.getDimensionPixelSize(R.dimen.oui_des_cardview_icon_size)
+        set(value) {
+            if (field == value) return
+            field = value
+            iconImageView?.updateLayoutParams {
+                width = value
+                height = value
+            }
+            updateLayoutParams()
+        }
+
     /** The icon to be displayed in the card item view. */
     var icon: Drawable?
         get() = iconImageView?.drawable
@@ -219,8 +232,6 @@ class CardItemView @JvmOverloads constructor(
         }
 
         dividerMarginStart = containerLeftPaddingNoIcon
-        dividerMarginStartWithIcon = containerLeftPaddingWithIcon + resources.getDimensionPixelSize(R.dimen.oui_des_cardview_icon_size) +
-                resources.getDimensionPixelSize(R.dimen.oui_des_cardview_icon_margin_end)
 
         inflate(context, R.layout.oui_des_widget_card_item, this)
         containerView = findViewById(R.id.cardview_container)
@@ -243,6 +254,7 @@ class CardItemView @JvmOverloads constructor(
             hint = getString(R.styleable.CardItemView_hint)
             titleTextView.maxLines = getInteger(R.styleable.CardItemView_titleMaxLines, 5)
 
+            iconSize = getDimensionPixelSize(R.styleable.CardItemView_iconSize, iconSize)
             val iconDrawable = getDrawable(R.styleable.CardItemView_icon)
             if (iconDrawable != null) {
                 icon = iconDrawable
@@ -297,6 +309,10 @@ class CardItemView @JvmOverloads constructor(
                 startToEnd = iconFrame.id
             }
             iconImageView = iconFrame.findViewById(R.id.cardview_icon)
+            iconImageView!!.updateLayoutParams {
+                width = iconSize
+                height = iconSize
+            }
         }
     }
 
@@ -318,7 +334,12 @@ class CardItemView @JvmOverloads constructor(
         val hasIcon = iconImageView?.drawable != null
         (iconImageView?.parent as? FrameLayout)?.isVisible = hasIcon
 
-        val desiredDividerStartMargin = if (!hasIcon || fullWidthDivider) dividerMarginStart else dividerMarginStartWithIcon
+        val desiredDividerStartMargin = if (!hasIcon || fullWidthDivider) {
+            dividerMarginStart
+        } else {
+            containerLeftPaddingWithIcon + iconSize +
+                    context.resources.getDimensionPixelSize(R.dimen.oui_des_cardview_icon_margin_end)
+        }
 
         dividerViewTop?.apply {
             if (desiredDividerStartMargin == marginStart) return@apply

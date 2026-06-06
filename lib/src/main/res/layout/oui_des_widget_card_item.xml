@@ -51,7 +51,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintVertical_chainStyle="packed"
-                tools:text="Title" />
+                tools:text="Title"
+                android:gravity="center_vertical|start"/>
 
             <ViewStub
                 android:id="@+id/viewstub_badge_frame"

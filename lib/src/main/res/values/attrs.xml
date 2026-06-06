@@ -245,7 +245,7 @@
     <attr name="userUpdatableSummary" format="boolean"/>
     <attr name="showBottomDivider" format="boolean" />
     <attr name="fullWidthDivider" format="boolean"/>
-    <attr name="hint" format="string" />
+    <attr name="iconSize" format="dimension" />
 
     <declare-styleable name="CardItemView">
         <attr name="android:enabled"/>
@@ -253,8 +253,9 @@
         <attr name="android:focusable"/>
         <attr name="icon" />
         <attr name="iconTint"/>
+        <attr name="iconSize" />
         <attr name="title" />
-        <attr name="hint" />
+        <attr name="hint" format="string" />
         <attr name="titleMaxLines" format="integer" />
         <attr name="summary"/>
         <attr name="summaryMaxLines" format="integer" />
@@ -335,7 +336,6 @@
     <!--SwitchItemView-->
     <declare-styleable name="SwitchItemView">
         <attr name="title"/>
-        <attr name="hint" />
         <!-- Show divider above. True by default-->
         <attr name="showTopDivider"/>
         <!--Show divider at the bottom. Default is false-->
