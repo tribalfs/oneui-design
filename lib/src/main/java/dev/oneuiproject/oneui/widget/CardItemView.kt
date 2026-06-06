@@ -34,6 +34,7 @@ import dev.oneuiproject.oneui.utils.SemTouchFeedbackAnimator
  *
  * The SwitchItemView supports the following custom attributes among others:
  * - `app:title`: The main text displayed in the view.
+ * - `app:hint`: The optional hint text displayed when the title is empty.
  * - `app:summary`: The optional summary text displayed in the view.
  * - `app:showTopDivider`: Whether to display a divider line above the view.
  * - `app:showBottomDivider`: Whether to display a divider line below the view.
@@ -141,6 +142,16 @@ class CardItemView @JvmOverloads constructor(
         }
 
     /**
+     * The hint of the card item.
+     */
+    var hint: CharSequence?
+        get() = titleTextView.hint
+        set(value) {
+            if (titleTextView.hint == value) return
+            titleTextView.hint = value
+        }
+
+    /**
      * The summary for the item.
      * This will be shown below the title.
      */
@@ -229,6 +240,7 @@ class CardItemView @JvmOverloads constructor(
     private fun parseAttributes(attrs: AttributeSet) {
         context.withStyledAttributes(attrs, R.styleable.CardItemView) {
             title = getString(R.styleable.CardItemView_title)
+            hint = getString(R.styleable.CardItemView_hint)
             titleTextView.maxLines = getInteger(R.styleable.CardItemView_titleMaxLines, 5)
 
             val iconDrawable = getDrawable(R.styleable.CardItemView_icon)

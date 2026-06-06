@@ -252,6 +252,7 @@
         <attr name="icon" />
         <attr name="iconTint"/>
         <attr name="title" />
+        <attr name="hint" format="string" />
         <attr name="titleMaxLines" format="integer" />
         <attr name="summary"/>
         <attr name="summaryMaxLines" format="integer" />
