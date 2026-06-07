@@ -497,7 +497,8 @@ class SwitchItemView @JvmOverloads constructor(
 
             val availableWidth =
                 mainContent.width - mainContent.marginStart - mainContent.marginEnd -
-                        (switchView.width + switchView.marginStart + switchView.marginEnd)
+                        (switchView.width + switchView.marginStart + switchView.marginEnd) -
+                        (iconImageView?.let{ it.width + it.marginStart + it.marginEnd } ?: 0)
 
             if (titleLen < availableWidth) {
                 summaryView?.let {
