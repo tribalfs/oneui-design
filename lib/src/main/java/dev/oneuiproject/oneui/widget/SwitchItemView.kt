@@ -43,6 +43,7 @@ import dev.oneuiproject.oneui.utils.SemTouchFeedbackAnimator
  *
  * The SwitchItemView supports the following custom attributes among others:
  * - `app:title`: The main text displayed in the view.
+ * - `app:hint`: The optional hint text displayed when the title is empty.
  * - `app:summaryOn`: The summary text displayed when the switch is checked.
  * - `app:summaryOff`: The summary text displayed when the switch is unchecked.
  * - `app:separateSwitch`: Whether to separate the click and check change events.
@@ -239,6 +240,17 @@ class SwitchItemView @JvmOverloads constructor(
         }
 
     /**
+     * The hint for the title of the switch item.
+     */
+    var hint: CharSequence?
+        get() = titleView.hint
+        set(value) {
+            if (titleView.hint != value) {
+                titleView.hint = value
+            }
+        }
+
+    /**
      * Sets the title of this item using a [SpannableString]
      *
      * @param value The [SpannableString] to set as title.
@@ -352,6 +364,7 @@ class SwitchItemView @JvmOverloads constructor(
             isFocusable = getBoolean(R.styleable.SwitchItemView_android_focusable, true)
             isChecked = getBoolean(R.styleable.SwitchItemView_android_checked, false)
             title = getText(R.styleable.SwitchItemView_title)
+            hint = getText(R.styleable.SwitchItemView_hint)
             summaryOn = getText(R.styleable.SwitchItemView_summaryOn)
             summaryOff = getText(R.styleable.SwitchItemView_summaryOff)
             separateSwitch = getBoolean(R.styleable.SwitchItemView_separateSwitch, false)
