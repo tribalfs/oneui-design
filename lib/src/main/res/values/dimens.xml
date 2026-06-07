@@ -74,6 +74,7 @@
     <dimen name="oui_des_cardview_icon_size">38dp</dimen>
     <dimen name="oui_des_cardview_icon_margin_vertical">8dp</dimen>
     <dimen name="oui_des_cardview_icon_margin_end">16dp</dimen>
+    <dimen name="oui_des_widget_item_vertical_padding">8dp</dimen>
 
     <!--RadoItemView-->
     <dimen name="oui_des_widget_radio_divider_start_margin">64dp</dimen>

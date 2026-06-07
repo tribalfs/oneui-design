@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="oui_des_widget_item_vertical_padding">14dp</dimen>
+</resources>

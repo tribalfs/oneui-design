@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="5"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="@dimen/oui_des_widget_item_vertical_padding"
                 android:textAlignment="viewStart"
                 android:layout_marginEnd="@dimen/sesl_preference_dot_frame_size"
                 android:textAppearance="?attr/textAppearanceListItem"
@@ -54,7 +54,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintVertical_chainStyle="packed"
-                tools:text="Title" />
+                tools:text="Title"
+                android:gravity="center_vertical|start"/>
 
             <ViewStub
                 android:id="@+id/viewstub_badge_frame"
@@ -87,7 +88,7 @@
             <Space
                 android:id="@+id/bottom_spacer"
                 android:layout_width="0dp"
-                android:layout_height="14dp"
+                android:layout_height="@dimen/oui_des_widget_item_vertical_padding"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/switch_card_summary"
                 app:layout_constraintStart_toStartOf="parent"/>
