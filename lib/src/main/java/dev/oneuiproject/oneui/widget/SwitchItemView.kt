@@ -54,6 +54,7 @@ import dev.oneuiproject.oneui.utils.SemTouchFeedbackAnimator
  * - `app:userUpdatableSummary`: Whether the summary text color should change based on the switch state.
  * - `app:icon`: The optional icon displayed at the start of the view.
  * - `app:iconTint`: The tint color to be applied to icon.
+ * - `app:iconSize`: The size of the icon.
  *
  * # Example usage:
  * ```xml
@@ -93,7 +94,6 @@ class SwitchItemView @JvmOverloads constructor(
     private var containerLeftPaddingWithIcon: Int = 0
     private var containerLeftPaddingNoIcon: Int = 0
     private var dividerMarginStart: Int = 0
-    private var dividerMarginStartWithIcon: Int = 0
 
     @RequiresApi(29)
     private lateinit var semTouchFeedbackAnimator: SemTouchFeedbackAnimator
@@ -281,6 +281,18 @@ class SwitchItemView @JvmOverloads constructor(
             }
         }
 
+    /** The size of the icon in pixels. */
+    var iconSize: Int = resources.getDimensionPixelSize(R.dimen.oui_des_cardview_icon_size)
+        set(value) {
+            if (field == value) return
+            field = value
+            iconImageView?.updateLayoutParams {
+                width = value
+                height = value
+            }
+            updateLayoutParams()
+        }
+
     /** The icon to be displayed at the start of view. */
     var icon: Drawable?
         get() = iconImageView?.drawable
@@ -311,8 +323,6 @@ class SwitchItemView @JvmOverloads constructor(
         }
 
         dividerMarginStart = containerLeftPaddingNoIcon
-        dividerMarginStartWithIcon = containerLeftPaddingWithIcon + resources.getDimensionPixelSize(R.dimen.oui_des_cardview_icon_size) +
-                resources.getDimensionPixelSize(R.dimen.oui_des_cardview_icon_margin_end)
 
         titleView = findViewById(R.id.switch_card_title)
 
@@ -374,6 +384,7 @@ class SwitchItemView @JvmOverloads constructor(
                 isSummaryUserUpdatable = true
             }
             fullWidthDivider = getBoolean(R.styleable.SwitchItemView_fullWidthDivider, true)
+            iconSize = getDimensionPixelSize(R.styleable.SwitchItemView_iconSize, iconSize)
             val iconDrawable = getDrawable(R.styleable.SwitchItemView_icon)
             if (iconDrawable != null) {
                 icon = iconDrawable
@@ -391,7 +402,12 @@ class SwitchItemView @JvmOverloads constructor(
         val hasIcon = iconImageView?.drawable != null
         (iconImageView?.parent as? FrameLayout)?.isVisible = hasIcon
 
-        val desiredDividerStartMargin = if (!hasIcon || fullWidthDivider) dividerMarginStart else dividerMarginStartWithIcon
+        val desiredDividerStartMargin = if (!hasIcon || fullWidthDivider) {
+            dividerMarginStart
+        } else {
+            containerLeftPaddingWithIcon + iconSize +
+                    context.resources.getDimensionPixelSize(R.dimen.oui_des_cardview_icon_margin_end)
+        }
 
         dividerViewTop?.apply {
             if (desiredDividerStartMargin == marginStart) return@apply
@@ -439,6 +455,10 @@ class SwitchItemView @JvmOverloads constructor(
         if (iconImageView == null) {
             val iconFrame = findViewById<ViewStub>(R.id.viewstub_switch_item_icon_frame).inflate() as FrameLayout
             iconImageView = iconFrame.findViewById(R.id.switch_item_icon)
+            iconImageView!!.updateLayoutParams {
+                width = iconSize
+                height = iconSize
+            }
             titleView.updateLayoutParams<ConstraintLayout.LayoutParams> {
                 startToEnd = R.id.switch_item_icon_frame
             }

@@ -356,6 +356,7 @@
         <attr name="fullWidthDivider" />
         <attr name="icon" />
         <attr name="iconTint" />
+        <attr name="iconSize" />
     </declare-styleable>
 
     <declare-styleable name="RadioItemViewGroup">
