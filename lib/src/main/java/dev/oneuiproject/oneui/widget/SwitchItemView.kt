@@ -531,6 +531,7 @@ class SwitchItemView @JvmOverloads constructor(
                 titleLP.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
                 titleLP.bottomToTop = summaryView?.id ?: switchView.id
                 summaryLP?.endToStart = ConstraintLayout.LayoutParams.UNSET
+                summaryLP?.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
                 summaryLP?.bottomToBottom = ConstraintLayout.LayoutParams.UNSET
                 bottomSpacerLP.bottomToBottom = ConstraintLayout.LayoutParams.UNSET
             } else {
@@ -543,6 +544,7 @@ class SwitchItemView @JvmOverloads constructor(
                 titleLP.endToEnd = ConstraintLayout.LayoutParams.UNSET
                 titleLP.bottomToTop = summaryView?.id ?: bottomSpacer.id
                 titleLP.endToStart = R.id.switch_widget
+                summaryLP?.endToEnd = ConstraintLayout.LayoutParams.UNSET
                 summaryLP?.endToStart = R.id.switch_widget
                 bottomSpacerLP.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
             }
