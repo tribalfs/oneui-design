@@ -837,7 +837,7 @@ $dokka.location:dev.oneuiproject.oneui.utils/MenuSynchronizer.State/entries/#/Po
 $dokka.location:dev.oneuiproject.oneui.utils/MenuSynchronizer.State/valueOf/#kotlin.String/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.utils/-menu-synchronizer/-state/value-of.html
 $dokka.location:dev.oneuiproject.oneui.utils/MenuSynchronizer.State/values/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.utils/-menu-synchronizer/-state/values.html
 $dokka.location:dev.oneuiproject.oneui.utils/MenuSynchronizer.SynchronizedMenuBuilder///PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.utils/-menu-synchronizer/-synchronized-menu-builder/index.html
-$dokka.location:dev.oneuiproject.oneui.utils/MenuSynchronizer.SynchronizedMenuBuilder/SynchronizedMenuBuilder/#androidx.appcompat.widget.Toolbar#com.google.android.material.bottomnavigation.BottomNavigationView#kotlin.Int/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.utils/-menu-synchronizer/-synchronized-menu-builder/-synchronized-menu-builder.html
+$dokka.location:dev.oneuiproject.oneui.utils/MenuSynchronizer.SynchronizedMenuBuilder/SynchronizedMenuBuilder/#androidx.appcompat.widget.Toolbar#com.google.android.material.bottomnavigation.BottomNavigationView#kotlin.Int#kotlin.Boolean?/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.utils/-menu-synchronizer/-synchronized-menu-builder/-synchronized-menu-builder.html
 $dokka.location:dev.oneuiproject.oneui.utils/MenuSynchronizer.SynchronizedMenuBuilder/clearAll/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.utils/-menu-synchronizer/-synchronized-menu-builder/clear-all.html
 $dokka.location:dev.oneuiproject.oneui.utils/MenuSynchronizer.SynchronizedMenuBuilder/findItem/#kotlin.Int/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.utils/-menu-synchronizer/-synchronized-menu-builder/find-item.html
 $dokka.location:dev.oneuiproject.oneui.utils/MenuSynchronizer.SynchronizedMenuBuilder/getVisibleItems/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.utils/-menu-synchronizer/-synchronized-menu-builder/get-visible-items.html
@@ -956,7 +956,9 @@ $dokka.location:dev.oneuiproject.oneui.widget/CardItemView/getEndImageView/#/Poi
 $dokka.location:dev.oneuiproject.oneui.widget/CardItemView/getIconImageView/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.widget/-card-item-view/get-icon-image-view.html
 $dokka.location:dev.oneuiproject.oneui.widget/CardItemView/getSummaryView/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.widget/-card-item-view/get-summary-view.html
 $dokka.location:dev.oneuiproject.oneui.widget/CardItemView/getTitleView/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.widget/-card-item-view/get-title-view.html
+$dokka.location:dev.oneuiproject.oneui.widget/CardItemView/hint/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.widget/-card-item-view/hint.html
 $dokka.location:dev.oneuiproject.oneui.widget/CardItemView/icon/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.widget/-card-item-view/icon.html
+$dokka.location:dev.oneuiproject.oneui.widget/CardItemView/iconSize/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.widget/-card-item-view/icon-size.html
 $dokka.location:dev.oneuiproject.oneui.widget/CardItemView/isSummaryUserUpdatable/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.widget/-card-item-view/is-summary-user-updatable.html
 $dokka.location:dev.oneuiproject.oneui.widget/CardItemView/setClickable/#kotlin.Boolean/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.widget/-card-item-view/set-clickable.html
 $dokka.location:dev.oneuiproject.oneui.widget/CardItemView/setEnabled/#kotlin.Boolean/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.widget/-card-item-view/set-enabled.html
@@ -1121,8 +1123,11 @@ $dokka.location:dev.oneuiproject.oneui.widget/StrokedTextView/setStrokeWidth/#ko
 $dokka.location:dev.oneuiproject.oneui.widget/SwitchItemView///PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.widget/-switch-item-view/index.html
 $dokka.location:dev.oneuiproject.oneui.widget/SwitchItemView/SwitchItemView/#android.content.Context#android.util.AttributeSet?#kotlin.Int#kotlin.Int/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.widget/-switch-item-view/-switch-item-view.html
 $dokka.location:dev.oneuiproject.oneui.widget/SwitchItemView/dispatchTouchEvent/#android.view.MotionEvent/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.widget/-switch-item-view/dispatch-touch-event.html
+$dokka.location:dev.oneuiproject.oneui.widget/SwitchItemView/fullWidthDivider/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.widget/-switch-item-view/full-width-divider.html
 $dokka.location:dev.oneuiproject.oneui.widget/SwitchItemView/getIconImageView/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.widget/-switch-item-view/get-icon-image-view.html
+$dokka.location:dev.oneuiproject.oneui.widget/SwitchItemView/hint/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.widget/-switch-item-view/hint.html
 $dokka.location:dev.oneuiproject.oneui.widget/SwitchItemView/icon/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.widget/-switch-item-view/icon.html
+$dokka.location:dev.oneuiproject.oneui.widget/SwitchItemView/iconSize/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.widget/-switch-item-view/icon-size.html
 $dokka.location:dev.oneuiproject.oneui.widget/SwitchItemView/isChecked/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.widget/-switch-item-view/is-checked.html
 $dokka.location:dev.oneuiproject.oneui.widget/SwitchItemView/isSummaryUserUpdatable/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.widget/-switch-item-view/is-summary-user-updatable.html
 $dokka.location:dev.oneuiproject.oneui.widget/SwitchItemView/onCheckedChangedListener/#/PointingToDeclaration/oneui-design/dev.oneuiproject.oneui.widget/-switch-item-view/on-checked-changed-listener.html
