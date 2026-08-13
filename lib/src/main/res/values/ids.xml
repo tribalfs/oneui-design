@@ -22,4 +22,8 @@
     <item name="drawer_menu_item_count_stub" type="id" />
     <item name="drawer_menu_expand_button_stub" type="id" />
     <item name="nav_drawer_menu_item_action_area_stub" type="id" />
+    <item name="tag_button_show_progress_lp" type="id" />
+    <item name="tag_button_original_width" type="id" />
+    <item name="tag_button_original_height" type="id" />
+    <item name="tag_button_original_background" type="id" />
 </resources>
