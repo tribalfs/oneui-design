@@ -88,8 +88,8 @@ open class MarginsTabLayout @JvmOverloads constructor(
             if (tab != null && viewGroup != null) {
                 val textView = tab.seslGetTextView()
                 val subTextView = tab.seslGetSubTextView()
-                val tabTextWidth = textView?.paint?.measureText(textView.getText().toString())
-                    ?.coerceAtLeast(subTextView?.paint?.measureText(textView.getText().toString()) ?: 0f)
+                val tabTextWidth = textView?.paint?.measureText(textView.text.toString())
+                    ?.coerceAtLeast(subTextView?.paint?.measureText(subTextView.text.toString()) ?: 0f)
                     ?: 0f
                 val minTabWidth = tab.view.getTag(R.id.margin_tab_view_min_width) as Int
                 tabTextWidthsList.add(tabTextWidth.coerceAtLeast(minTabWidth.toFloat()))
@@ -98,7 +98,7 @@ open class MarginsTabLayout @JvmOverloads constructor(
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
-        (parent as ViewGroup).doOnLayout { calculateMarginsInternal() }
+        (parent as? ViewGroup)?.doOnLayout { calculateMarginsInternal() }
         super.onConfigurationChanged(newConfig)
     }
 
@@ -106,6 +106,18 @@ open class MarginsTabLayout @JvmOverloads constructor(
         calculateMarginsInternal()
         setScrollPosition(selectedTabPosition, 0.0f, true)
         super.onAttachedToWindow()
+    }
+
+    override fun selectTab(tab: Tab?, updateIndicator: Boolean) {
+        super.selectTab(tab, updateIndicator)
+        // We use post here to ensure that the scrolling happens after the layout pass.
+        // This is necessary when the selection occurs during view restoration or when
+        // dynamic margins have just been applied, as dimensions might not be stable yet.
+        post {
+            if (isAttachedToWindow) {
+                setScrollPosition(selectedTabPosition, 0.0f, true)
+            }
+        }
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -118,7 +130,8 @@ open class MarginsTabLayout @JvmOverloads constructor(
 
 
     private fun calculateMarginsInternal(): Boolean {
-        val parentWidth = with(parent as ViewGroup) { width - paddingStart - paddingEnd }
+        val parentGroup = parent as? ViewGroup ?: return false
+        val parentWidth = parentGroup.width - parentGroup.paddingStart - parentGroup.paddingEnd
         if (parentWidth != 0 && containerWidth != parentWidth) {
             containerWidth = parentWidth
             if (tabDimens == null) {
@@ -211,14 +224,4 @@ open class MarginsTabLayout @JvmOverloads constructor(
                 .coerceIn(tabLayoutPaddingMin, tabLayoutPaddingMax)
         }
     }
-
-    companion object{
-        private const val DEPTH_TYPE_MAIN = 1
-        private const val DEPTH_TYPE_SUB = 2
-
-        private const val TAG = "MarginsTabLayout"
-    }
-
-
 }
-
