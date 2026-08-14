@@ -58,6 +58,7 @@ import androidx.core.view.WindowInsetsCompat.Type.navigationBars
 import androidx.core.view.WindowInsetsCompat.Type.systemBars
 import androidx.core.view.children
 import androidx.core.view.doOnAttach
+import androidx.core.view.isEmpty
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
@@ -1995,19 +1996,21 @@ open class ToolbarLayout @JvmOverloads constructor(
      * Registers a callback to receive bottom offset updates for main content
      * of this ToolbarLayout.
      *
+     * The listener is invoked immediately upon registration with the current offset.
+     *
      * Duplicate registrations of the same instance are ignored.
      *
      * @param listener lambda invoked with the current bottom offset in pixels as a Float.
      * @see removeOnBottomOffsetChangedListener
      */
     fun addOnBottomOffsetChangedListener(listener: (Float) -> Unit) {
-        if (bottomOffsetListeners == null) {
-            bottomOffsetListeners = mutableListOf(WeakReference(listener))
-            return
-        }
-        bottomOffsetListeners!!.apply {
-            if (find { it.get() === listener } == null) {
+        val bottomOffsetListeners = bottomOffsetListeners
+            ?: mutableListOf<WeakReference<(Float) -> Unit>>().also { bottomOffsetListeners = it }
+
+        bottomOffsetListeners.apply {
+            if (isEmpty() || find { it.get() === listener } == null) {
                 add(WeakReference(listener))
+                listener.invoke(scrollDelta + computeAdjBottomInset())
             }
         }
     }
@@ -2048,16 +2051,20 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     private fun dispatchBottomOffsetChanged() {
         bottomOffsetListeners?.apply {
-            val scrollDeltaBottom = scrollDelta - appBarLayout.seslGetCollapsedHeight()
-            val maxBottomInset = navBarInsetBottom + footerHeight
-            val adjBottomInset = if (isImmersiveScroll && maxBottomInset > 0) {
-                val scrollRatio = (1f + scrollDeltaBottom / maxBottomInset).coerceIn(0f, 1f)
-                (maxBottomInset * scrollRatio).applyMinForNonScrollingNavBar()
-            } else 0f
+            val adjBottomInset = computeAdjBottomInset()
             forEach {
                 it.get()?.invoke(scrollDelta + adjBottomInset)
             }
         }
+    }
+
+    private fun computeAdjBottomInset(): Float {
+        val scrollDeltaBottom = scrollDelta - appBarLayout.seslGetCollapsedHeight()
+        val maxBottomInset = navBarInsetBottom + footerHeight
+        return if (isImmersiveScroll && maxBottomInset > 0) {
+            val scrollRatio = (1f + scrollDeltaBottom / maxBottomInset).coerceIn(0f, 1f)
+            (maxBottomInset * scrollRatio).applyMinForNonScrollingNavBar()
+        } else 0f
     }
 
     private var lastAppbarOffsetDispatched = -1f
