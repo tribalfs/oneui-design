@@ -667,10 +667,14 @@ open class ToolbarLayout @JvmOverloads constructor(
 
     private fun setupActionBar() {
         activity?.apply {
-            setSupportActionBar(_mainToolbar)
-            supportActionBar!!.apply {
-                setDisplayHomeAsUpEnabled(false)
-                setDisplayShowTitleEnabled(false)
+            try {
+                setSupportActionBar(_mainToolbar)
+                supportActionBar!!.apply {
+                    setDisplayHomeAsUpEnabled(false)
+                    setDisplayShowTitleEnabled(false)
+                }
+            } catch (_: Throwable) {
+                Log.e(TAG, "An error occurred while setting up the action bar.")
             }
         }
     }
