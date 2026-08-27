@@ -4,7 +4,6 @@ plugins {
 
 android {
     namespace = "io.github.tribalfs.stub"
-    compileSdk = 35
 
     defaultConfig {
         minSdk = 21

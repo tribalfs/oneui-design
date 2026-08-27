@@ -10,3 +10,5 @@
 local.properties
 /lint/build
 /github.properties
+/buildSrc/build
+.kotlin/sessions

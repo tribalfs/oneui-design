@@ -5,7 +5,7 @@ name: Build and Commit APK
 #    branches:
 #      - main
 #    paths:
-#      - 'manifest.gradle'
+#      - 'buildSrc/src/main/kotlin/com/oneui/Versions.kt'
 #  workflow_dispatch:
 jobs:
   check-and-publish:
@@ -27,8 +27,8 @@ jobs:
         id: check_sample_app
         run: |
           PREV_COMMIT=$(git rev-parse HEAD^)
-          OLD_LINE=$(git show $PREV_COMMIT:manifest.gradle | grep '"sample-app"')
-          NEW_LINE=$(grep '"sample-app"' manifest.gradle)
+          OLD_LINE=$(git show $PREV_COMMIT:buildSrc/src/main/kotlin/com/oneui/Versions.kt | grep '"sample-app"')
+          NEW_LINE=$(grep '"sample-app"' buildSrc/src/main/kotlin/com/oneui/Versions.kt)
           echo "Old: $OLD_LINE"
           echo "New: $NEW_LINE"
           if [ "$OLD_LINE" != "$NEW_LINE" ]; then

@@ -9,8 +9,3 @@ dependencies {
     compileOnly(libs.kotlinStdlib)
 }
 
-kotlin {
-    sourceSets.all {
-        languageSettings.enableLanguageFeature(LanguageFeature.WhenGuards.name)
-    }
-}

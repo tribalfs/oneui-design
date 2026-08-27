@@ -2,7 +2,6 @@ import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
 
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.maven.publish)
@@ -70,7 +69,7 @@ dokka {
         suppressInheritedMembers.set(true)
     }
 
-    dokkaSourceSets.main {
+    dokkaSourceSets.configureEach {
         sourceRoots.from(file("src"))
         skipDeprecated.set(true)
         displayName.set(name)

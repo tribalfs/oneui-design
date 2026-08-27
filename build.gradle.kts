@@ -1,8 +1,9 @@
 @file:Suppress("UNCHECKED_CAST")
 
-import com.android.build.gradle.AppExtension
-import com.android.build.gradle.BaseExtension
-import com.android.build.gradle.LibraryExtension
+import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.LibraryExtension
+import com.oneui.Versions
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -11,7 +12,6 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
-    alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.rikka.refine) apply false
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.dokka) apply false
@@ -19,8 +19,6 @@ plugins {
     alias(libs.plugins.hilt.android) apply false
     alias(libs.plugins.ksp) apply false
 }
-
-apply(from = "manifest.gradle")
 
 /**
  * Converts a camelCase or mixedCase string to ENV_VAR_STYLE (uppercase with underscores).
@@ -90,14 +88,14 @@ allprojects {
 
 
 subprojects {
-    plugins.withId("com.android.base") {
+    plugins.withType<com.android.build.gradle.api.AndroidBasePlugin> {
         plugins.apply("dev.rikka.tools.refine")
-        project.extensions.findByType(BaseExtension::class.java)?.apply {
-            compileOptions {
-                sourceCompatibility = JavaVersion.VERSION_21
-                targetCompatibility = JavaVersion.VERSION_21
-            }
-            configurations.all{
+        val android = project.extensions.findByName("android")
+        if (android is CommonExtension) {
+            android.compileOptions.sourceCompatibility = JavaVersion.VERSION_21
+            android.compileOptions.targetCompatibility = JavaVersion.VERSION_21
+            
+            project.configurations.all {
                 exclude(group = "androidx.core", module = "core")
                 exclude(group = "androidx.core", module = "core-ktx")
                 exclude(group = "androidx.customview", module = "customview")
@@ -125,111 +123,96 @@ subprojects {
 
     val group = "io.github.tribalfs"
 
-    plugins.whenPluginAdded {
-        val isAndroidLibrary = javaClass.name == "com.android.build.gradle.LibraryPlugin"
-        val isAndroidApp = javaClass.name == "com.android.build.gradle.AppPlugin"
+    fun configureAndroidModule(project: Project) {
+        val artifact = project.name
+        val versionInfo = Versions.metadata
+        val artifactVersionInfo = versionInfo[artifact] ?: return
 
-        if (isAndroidLibrary || isAndroidApp) {
-            val artifact = project.name
-            val versionInfo =
-                rootProject.extensions.extraProperties.get("versions_metadata") as? Map<String, List<Any>>
-            val artifactVersionInfo = versionInfo?.get(artifact)
+        val designVersion = versionInfo["oneui-design"]?.get(0).toString()
 
-            if (artifactVersionInfo == null) {
-                throw GradleException("No version info found for module: $artifact")
-            }
-
-            val designVersion = versionInfo["oneui-design"]?.get(0).toString()
-
-            extensions.findByType(BaseExtension::class.java)?.apply {
-                defaultConfig.versionName = artifactVersionInfo[0].toString()
-                compileSdkVersion((artifactVersionInfo[2] as Number).toInt())
-                defaultConfig.minSdk = (artifactVersionInfo[1] as Number).toInt()
-                defaultConfig.targetSdk = (artifactVersionInfo[2] as Number).toInt()
-                buildFeatures.buildConfig = true
-                defaultConfig.versionCode = 1
-
-                when (this) {
-                    is AppExtension -> {
-                        defaultConfig.buildConfigField(
-                            "String",
-                            "ONEUI_DESIGN_VERSION",
-                            "\"$designVersion\""
-                        )
-                    }
-
-                    is LibraryExtension -> {
-                        publishing {
-                            singleVariant("release") {
-                                withSourcesJar()
-                                withJavadocJar()
-                            }
-                        }
+        val android = project.extensions.findByName("android")
+        if (android is CommonExtension) {
+            android.compileSdk = (artifactVersionInfo[2] as Number).toInt()
+            android.defaultConfig.minSdk = (artifactVersionInfo[1] as Number).toInt()
+            
+            if (android is LibraryExtension) {
+                android.publishing {
+                    singleVariant("release") {
+                        withSourcesJar()
+                        withJavadocJar()
                     }
                 }
-
+            } else if (android is ApplicationExtension) {
+                android.defaultConfig.targetSdk = (artifactVersionInfo[2] as Number).toInt()
+                android.defaultConfig.versionName = artifactVersionInfo[0].toString()
+                android.defaultConfig.versionCode = 1
+                android.defaultConfig.buildConfigField("String", "ONEUI_DESIGN_VERSION", "\"$designVersion\"")
             }
+            
+            android.buildFeatures.buildConfig = true
+        }
 
-            afterEvaluate {
-                if (!plugins.hasPlugin("maven-publish")) return@afterEvaluate
+        project.afterEvaluate {
+            if (!plugins.hasPlugin("maven-publish")) return@afterEvaluate
 
-                if (artifact == "oneui-design" || artifact == "oneui-icons") {
-                    file("${rootProject.projectDir}/README.md").apply {
-                        if (exists()) {
-                            val readmeContent = readText()
-                            val newVersionString = "$group:$artifact:$designVersion"
-                            val oneuiVersion = "oneui\\d+".toRegex().find(designVersion)?.value ?: ""
-                            val pattern =
-                                "io\\.github\\.tribalfs:$artifact:\\S+$oneuiVersion".toRegex()
+            if (artifact == "oneui-design" || artifact == "oneui-icons") {
+                file("${rootProject.projectDir}/README.md").apply {
+                    if (exists()) {
+                        val readmeContent = readText()
+                        val newVersionString = "$group:$artifact:$designVersion"
+                        val oneuiVersion = "oneui\\d+".toRegex().find(designVersion)?.value ?: ""
+                        val pattern =
+                            "io\\.github\\.tribalfs:$artifact:\\S+$oneuiVersion".toRegex()
 
-                            writeText(readmeContent.replace(pattern, newVersionString))
-                            println("Updated README.md with version: $newVersionString")
-                        }
+                        writeText(readmeContent.replace(pattern, newVersionString))
+                        println("Updated README.md with version: $newVersionString")
                     }
                 }
+            }
 
-                extensions.findByType(PublishingExtension::class.java)?.apply {
-                    publications {
-                        create("mavenJava", MavenPublication::class.java) {
-                            version = designVersion
-                            groupId = group
-                            artifactId = artifact
-                            afterEvaluate { from(components.findByName("release")) }
+            extensions.findByType(org.gradle.api.publish.PublishingExtension::class.java)?.apply {
+                publications {
+                    create<MavenPublication>("mavenJava") {
+                        version = designVersion
+                        groupId = group
+                        artifactId = artifact
+                        from(components.findByName("release"))
 
-                            pom {
-                                name.set(artifact)
-                                url.set("https://github.com/tribalfs/oneui-design")
-                                developers {
-                                    developer {
-                                        id.set("tribalfs")
-                                        name.set("Tribalfs")
-                                        email.set("tribalfs@gmail.com")
-                                        url.set("https://github.com/tribalfs")
-                                    }
+                        pom {
+                            name.set(artifact)
+                            url.set("https://github.com/tribalfs/oneui-design")
+                            developers {
+                                developer {
+                                    id.set("tribalfs")
+                                    name.set("Tribalfs")
+                                    email.set("tribalfs@gmail.com")
+                                    url.set("https://github.com/tribalfs")
                                 }
-                                licenses {
-                                    license {
-                                        name.set("MIT License")
-                                        url.set("https://github.com/tribalfs/oneui-design/blob/main/LICENSE")
-                                        distribution.set("repo")
-                                    }
+                            }
+                            licenses {
+                                license {
+                                    name.set("MIT License")
+                                    url.set("https://github.com/tribalfs/oneui-design/blob/main/LICENSE")
+                                    distribution.set("repo")
                                 }
                             }
                         }
                     }
-                    repositories {
-                        maven {
-                            name = "GitHubPackages"
-                            url = uri("https://maven.pkg.github.com/tribalfs/oneui-design")
-                            credentials {
-                                username = githubUsername
-                                password = githubAccessToken
-                            }
+                }
+                repositories {
+                    maven {
+                        name = "GitHubPackages"
+                        url = uri("https://maven.pkg.github.com/tribalfs/oneui-design")
+                        credentials {
+                            username = githubUsername
+                            password = githubAccessToken
                         }
                     }
                 }
-
             }
         }
     }
+
+    plugins.withId("com.android.library") { configureAndroidModule(project) }
+    plugins.withId("com.android.application") { configureAndroidModule(project) }
 }

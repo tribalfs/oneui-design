@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'manifest.gradle'
+      - 'buildSrc/src/main/kotlin/com/oneui/Versions.kt'
 
 jobs:
   check-and-publish:
@@ -30,8 +30,8 @@ jobs:
           # Get the previous commit hash on main
           PREV_COMMIT=$(git rev-parse HEAD^)
           # Extract the oneui-design line from both versions
-          OLD_LINE=$(git show $PREV_COMMIT:manifest.gradle | grep '"oneui-design"')
-          NEW_LINE=$(grep '"oneui-design"' manifest.gradle)
+          OLD_LINE=$(git show $PREV_COMMIT:buildSrc/src/main/kotlin/com/oneui/Versions.kt | grep '"oneui-design"')
+          NEW_LINE=$(grep '"oneui-design"' buildSrc/src/main/kotlin/com/oneui/Versions.kt)
           echo "Old: $OLD_LINE"
           echo "New: $NEW_LINE"
           if [ "$OLD_LINE" != "$NEW_LINE" ]; then

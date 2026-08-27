@@ -2,14 +2,12 @@ import org.jetbrains.kotlin.gradle.internal.config.LanguageFeature
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.ksp)
     id ("kotlin-parcelize")
 }
 
 android {
-    compileSdk = 36
     namespace = "com.sec.sesl.tester"
 
     defaultConfig {
@@ -34,7 +32,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = true
+            optimization { enable = true }
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
