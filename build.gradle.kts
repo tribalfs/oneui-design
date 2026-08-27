@@ -98,6 +98,7 @@ subprojects {
             project.configurations.all {
                 exclude(group = "androidx.core", module = "core")
                 exclude(group = "androidx.core", module = "core-ktx")
+                exclude(group = "androidx.fragment", module = "fragment-ktx")
                 exclude(group = "androidx.customview", module = "customview")
                 exclude(group = "androidx.coordinatorlayout", module = "coordinatorlayout")
                 exclude(group = "androidx.drawerlayout", module = "drawerlayout")
