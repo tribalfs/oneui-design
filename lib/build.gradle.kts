@@ -72,27 +72,29 @@ dokka {
         suppressInheritedMembers.set(true)
     }
 
-    dokkaSourceSets.configureEach {
-        sourceRoots.from(file("src"))
-        skipDeprecated.set(true)
-        displayName.set(name)
-        reportUndocumented.set(true)
-        documentedVisibilities.set(setOf(VisibilityModifier.Public))
+    dokkaSourceSets {
+        register("main") {
+            sourceRoots.setFrom(file("src/main/java"))
+            skipDeprecated.set(true)
+            displayName.set("main")
+            reportUndocumented.set(true)
+            documentedVisibilities.set(setOf(VisibilityModifier.Public))
 
-        sourceLink {
-            localDirectory.set(projectDir.resolve("src"))
-            remoteUrl("https://github.com/tribalfs/oneui-design/blob/main/lib/src")
-            remoteLineSuffix.set("#L")
-        }
-
-        externalDocumentationLinks{
-            register("sesl.androidx") {
-                url("https://tribalfs.github.io/sesl-androidx/")
-                packageListUrl("https://tribalfs.github.io/sesl-androidx/package-list")
+            sourceLink {
+                localDirectory.set(projectDir.resolve("src"))
+                remoteUrl("https://github.com/tribalfs/oneui-design/blob/main/lib/src")
+                remoteLineSuffix.set("#L")
             }
-            register("sesl.material") {
-                url("https://tribalfs.github.io/sesl-material-components-android/")
-                packageListUrl("https://tribalfs.github.io/sesl-material-components-android/-s-e-s-l%20-material/package-list")
+
+            externalDocumentationLinks {
+                register("sesl.androidx") {
+                    url("https://tribalfs.github.io/sesl-androidx/")
+                    packageListUrl("https://tribalfs.github.io/sesl-androidx/package-list")
+                }
+                register("sesl.material") {
+                    url("https://tribalfs.github.io/sesl-material-components-android/")
+                    packageListUrl("https://tribalfs.github.io/sesl-material-components-android/-s-e-s-l%20-material/package-list")
+                }
             }
         }
     }
