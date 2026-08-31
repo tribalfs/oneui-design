@@ -208,7 +208,7 @@ internal class SemSlidingPaneLayout @JvmOverloads constructor(
     private fun ensureLayoutPreview() {
         slideOffset = 1f
         if (!seslGetResizeOff()) {
-            navRailSlideViewContent!!.updatePadding(
+            navRailSlideViewContent.updatePadding(
                 right = _drawerPane.layoutParams.width
                         - ((DEFAULT_OVERHANG_SIZE + 40) * context.dpToPxFactor + 0.5f).toInt()
             )

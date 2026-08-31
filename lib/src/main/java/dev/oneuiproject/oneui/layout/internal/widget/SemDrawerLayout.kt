@@ -5,9 +5,6 @@ import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.os.Handler
-import android.os.Looper
-import android.os.Parcelable
 import android.util.AttributeSet
 import android.util.Log
 import android.view.Gravity
@@ -82,16 +79,12 @@ internal class SemDrawerLayout @JvmOverloads constructor(
     private lateinit var drawerItemsContainer: FrameLayout
 
     private lateinit var translationView: View
-    private var handleInsets = false
     private var _showNavButtonAsBack = false
     private var _showNavigationButton = true
 
     private var navButtonsHandlerDelegate: NavButtonsHandler
 
     private val activity by lazy(LazyThreadSafetyMode.NONE) {  context.appCompatActivity }
-
-    private val updateHandler = Handler(Looper.getMainLooper())
-    private var lastScreenWidthDp: Int = 0
 
     private var drawerWidthProvider: DrawerWidthProvider = DEFAULT_DRAWER_WIDTH_PROVIDER
 
@@ -121,8 +114,8 @@ internal class SemDrawerLayout @JvmOverloads constructor(
     private fun setupViews() {
         slideViewPane = FrameLayout(context).apply {
             layoutParams = LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
+                LayoutParams.MATCH_PARENT,
+                LayoutParams.MATCH_PARENT
             )
         }
 
