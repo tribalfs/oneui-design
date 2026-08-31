@@ -826,6 +826,14 @@ class QrCodeScannerView @JvmOverloads constructor(
         centerPoint.set(measuredWidth / 2.0f, measuredHeight / 2.0f)
     }
 
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        cancelAnimation()
+        flashAnimator?.cancel()
+        dismissDialog()
+        // engine stays reusable: scanner client is recreated on next frame if detached again
+        qrCodeScanEngine.release()
+    }
 
     fun updateToDecodedImageLayout() {
         roiGroup.updateLayoutParams<ConstraintLayout.LayoutParams> {

@@ -3,6 +3,7 @@ package dev.oneuiproject.oneui.qr.app.internal
 import android.graphics.Bitmap
 import androidx.camera.core.ImageProxy
 import com.google.android.gms.tasks.Task
+import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
@@ -44,13 +45,16 @@ internal class QrCodeScanEngine(
 
     private val pauseAnalysis = AtomicBoolean(false)
 
-    private val scanner by lazy {
-        BarcodeScanning.getClient(
+    private var scanner: BarcodeScanner? = null
+
+    // nullable instead of lazy so the client can be recreated after release()
+    private fun requireScanner(): BarcodeScanner {
+        return scanner ?: BarcodeScanning.getClient(
             BarcodeScannerOptions
                 .Builder()
                 .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
                 .build()
-        )
+        ).also { scanner = it }
     }
 
     /**
@@ -66,7 +70,7 @@ internal class QrCodeScanEngine(
 
         val inputImage = InputImage.fromBitmap(frameBitmap, 0)
 
-        scanner.process(inputImage)
+        requireScanner().process(inputImage)
             .handleResult(
                 onSuccess = { barcodes ->
                     if (listener.isAnalysisPaused() || pauseAnalysis.get()) return@handleResult
@@ -97,7 +101,7 @@ internal class QrCodeScanEngine(
      * The bitmap must match the orientation used to build the [InputImage].
      */
     fun processSingleImage(image: InputImage, originalBitmap: Bitmap) {
-        scanner.process(image)
+        requireScanner().process(image)
             .handleResult(
                 onSuccess = { barcodes ->
                     val barcode = barcodes.firstOrNull()
@@ -130,9 +134,14 @@ internal class QrCodeScanEngine(
         pauseAnalysis.set(true)
     }
 
-    /** Clear internal state and allow analysis again. */
-    fun reset() {
-        pauseAnalysis.set(false)
+    /**
+     * Release resources used by the engine.
+     *
+     * The engine remains usable: a new scanner client is created on next use.
+     */
+    fun release() {
+        scanner?.close()
+        scanner = null
     }
 
     /**
