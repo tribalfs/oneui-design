@@ -433,6 +433,8 @@ open class ToolbarLayout @JvmOverloads constructor(
     private var searchOnActionMode: SearchOnActionMode? = null
     private var showActionModeSearchPending = false
 
+    private var backCallbackUpdaterJob: Job? = null
+
     private var menuSynchronizer: MenuSynchronizer? = null
     private var actionModeMenuBehavior: ActionModeMenuBehavior = ActionModeMenuBehavior.DYNAMIC
     private var syncMenuPending = false
@@ -713,6 +715,7 @@ open class ToolbarLayout @JvmOverloads constructor(
         ViewCompat.setWindowInsetsAnimationCallback(this, null)
         appBarLayout.removeOnOffsetChangedListener(appBarOffsetListener)
         footerParent.removeOnLayoutChangeListener(footerLayoutListener)
+        backCallbackUpdaterJob?.cancel()
         isTouching = false
     }
 
@@ -1220,7 +1223,6 @@ open class ToolbarLayout @JvmOverloads constructor(
     private fun setupSearchModeListener() {
         _searchView!!.setOnQueryTextListener(
             object : SearchView.OnQueryTextListener {
-                private var backCallbackUpdaterJob: Job? = null
 
                 override fun onQueryTextSubmit(query: String): Boolean {
                     return searchModeListener?.onQueryTextSubmit(query) == true
