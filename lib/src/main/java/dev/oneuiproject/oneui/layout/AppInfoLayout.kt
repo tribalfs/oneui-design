@@ -10,6 +10,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewParent
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -326,6 +327,29 @@ class AppInfoLayout(context: Context, attrs: AttributeSet?) : ToolbarLayout(cont
         ailContainer!!.post {
             updateButtonsWidth()
         }
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        // Prevent AppCompatDelegateImpl.mActionBar → SemToolbar.mOnMenuItemClickListener → AppInfoLayout leak.
+        toolbar.setOnMenuItemClickListener(null)
+        // init() called setSupportActionBar(toolbar), so mActionBar retains this view hierarchy via
+        // ToolbarActionBar → SemToolbar.mParent. Restore the host ToolbarLayout's toolbar as the
+        // action bar to release that chain. mParent is still set here (cleared after detach).
+        val act = activity?.takeIf { !it.isDestroyed && !it.isFinishing } ?: return
+        var p: ViewParent? = parent
+        while (p != null) {
+            if (p is ToolbarLayout && p !== this) {
+                act.setSupportActionBar(p.toolbar)
+                act.supportActionBar?.apply {
+                    setDisplayHomeAsUpEnabled(false)
+                    setDisplayShowTitleEnabled(false)
+                }
+                return
+            }
+            p = (p as? View)?.parent
+        }
+        act.setSupportActionBar(null)
     }
 
     private fun updateButtonsWidth(){
