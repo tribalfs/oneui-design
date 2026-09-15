@@ -1220,11 +1220,11 @@ class TipPopup(parentView: View, mode: Mode) {
             }
             val minX = displayFrame.left + sideMargin
             val maxX = maxOf(minX, (windowWidthInDexMode - sideMargin) - balloonWidth - minOf(windowLocation[0], 0))
-            arrowPositionX.coerceIn(minX, maxX)
+            balloonX.coerceIn(minX, maxX)
         } else {
             val minX = displayFrame.left + sideMargin
             val maxX = maxOf(minX, (displayFrame.right - sideMargin) - balloonWidth)
-            arrowPositionX.coerceIn(minX, maxX)
+            balloonX.coerceIn(minX, maxX)
         }
 
         when (arrowDirection) {
