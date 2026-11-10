@@ -25,6 +25,9 @@ repositories {
 ```
 dependencies {
   //sesl and other dependencies
+  
+  //For OneUI 9 - must use sesl9 dependencies
+  //Coming soon..
 
   //For OneUI 8 - must use sesl8 dependencies
   implementation("io.github.tribalfs:oneui-design:0.9.20+oneui8")
@@ -73,7 +76,8 @@ dependencies {
 
 ### Projects using this lib (Add yours too!)
 
-[Galaxy MaxHz](https://github.com/tribalfs/GalaxyMaxHzPub)
+ [Accountant: Personal finance, the double-entry way — made easy](https://play.google.com/store/apps/details?id=com.tribalfs.acct)
+| [Galaxy MaxHz](https://github.com/tribalfs/GalaxyMaxHzPub)
 | [Pixels: Resolution+DPI Changer](https://play.google.com/store/apps/details?id=com.tribalfs.pixels)
 | [Box Score: Game Score Tracker](https://play.google.com/store/apps/details?id=com.tribalfs.scorer)
 | [Real-time FPS Monitor](https://play.google.com/store/apps/details?id=com.tribalfs.realtimefps)
